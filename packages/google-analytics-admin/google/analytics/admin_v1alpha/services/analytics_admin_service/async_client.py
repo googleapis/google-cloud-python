@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -52,12 +41,8 @@ from google.type import date_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service import pagers
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
-from google.analytics.admin_v1alpha.types import (
-    expanded_data_set as gaa_expanded_data_set,
-)
-from google.analytics.admin_v1alpha.types import (
-    subproperty_event_filter as gaa_subproperty_event_filter,
-)
+from google.analytics.admin_v1alpha.types import expanded_data_set as gaa_expanded_data_set
+from google.analytics.admin_v1alpha.types import subproperty_event_filter as gaa_subproperty_event_filter
 from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -94,223 +79,91 @@ class AnalyticsAdminServiceAsyncClient:
     _DEFAULT_UNIVERSE = AnalyticsAdminServiceClient._DEFAULT_UNIVERSE
 
     access_binding_path = staticmethod(AnalyticsAdminServiceClient.access_binding_path)
-    parse_access_binding_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_access_binding_path
-    )
+    parse_access_binding_path = staticmethod(AnalyticsAdminServiceClient.parse_access_binding_path)
     account_path = staticmethod(AnalyticsAdminServiceClient.account_path)
     parse_account_path = staticmethod(AnalyticsAdminServiceClient.parse_account_path)
-    account_summary_path = staticmethod(
-        AnalyticsAdminServiceClient.account_summary_path
-    )
-    parse_account_summary_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_account_summary_path
-    )
+    account_summary_path = staticmethod(AnalyticsAdminServiceClient.account_summary_path)
+    parse_account_summary_path = staticmethod(AnalyticsAdminServiceClient.parse_account_summary_path)
     ad_sense_link_path = staticmethod(AnalyticsAdminServiceClient.ad_sense_link_path)
-    parse_ad_sense_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_ad_sense_link_path
-    )
-    attribution_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.attribution_settings_path
-    )
-    parse_attribution_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_attribution_settings_path
-    )
+    parse_ad_sense_link_path = staticmethod(AnalyticsAdminServiceClient.parse_ad_sense_link_path)
+    attribution_settings_path = staticmethod(AnalyticsAdminServiceClient.attribution_settings_path)
+    parse_attribution_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_attribution_settings_path)
     audience_path = staticmethod(AnalyticsAdminServiceClient.audience_path)
     parse_audience_path = staticmethod(AnalyticsAdminServiceClient.parse_audience_path)
     big_query_link_path = staticmethod(AnalyticsAdminServiceClient.big_query_link_path)
-    parse_big_query_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_big_query_link_path
-    )
-    calculated_metric_path = staticmethod(
-        AnalyticsAdminServiceClient.calculated_metric_path
-    )
-    parse_calculated_metric_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_calculated_metric_path
-    )
+    parse_big_query_link_path = staticmethod(AnalyticsAdminServiceClient.parse_big_query_link_path)
+    calculated_metric_path = staticmethod(AnalyticsAdminServiceClient.calculated_metric_path)
+    parse_calculated_metric_path = staticmethod(AnalyticsAdminServiceClient.parse_calculated_metric_path)
     channel_group_path = staticmethod(AnalyticsAdminServiceClient.channel_group_path)
-    parse_channel_group_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_channel_group_path
-    )
-    conversion_event_path = staticmethod(
-        AnalyticsAdminServiceClient.conversion_event_path
-    )
-    parse_conversion_event_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_conversion_event_path
-    )
-    custom_dimension_path = staticmethod(
-        AnalyticsAdminServiceClient.custom_dimension_path
-    )
-    parse_custom_dimension_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_custom_dimension_path
-    )
+    parse_channel_group_path = staticmethod(AnalyticsAdminServiceClient.parse_channel_group_path)
+    conversion_event_path = staticmethod(AnalyticsAdminServiceClient.conversion_event_path)
+    parse_conversion_event_path = staticmethod(AnalyticsAdminServiceClient.parse_conversion_event_path)
+    custom_dimension_path = staticmethod(AnalyticsAdminServiceClient.custom_dimension_path)
+    parse_custom_dimension_path = staticmethod(AnalyticsAdminServiceClient.parse_custom_dimension_path)
     custom_metric_path = staticmethod(AnalyticsAdminServiceClient.custom_metric_path)
-    parse_custom_metric_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_custom_metric_path
-    )
-    data_redaction_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.data_redaction_settings_path
-    )
-    parse_data_redaction_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_data_redaction_settings_path
-    )
-    data_retention_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.data_retention_settings_path
-    )
-    parse_data_retention_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_data_retention_settings_path
-    )
-    data_sharing_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.data_sharing_settings_path
-    )
-    parse_data_sharing_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_data_sharing_settings_path
-    )
+    parse_custom_metric_path = staticmethod(AnalyticsAdminServiceClient.parse_custom_metric_path)
+    data_redaction_settings_path = staticmethod(AnalyticsAdminServiceClient.data_redaction_settings_path)
+    parse_data_redaction_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_data_redaction_settings_path)
+    data_retention_settings_path = staticmethod(AnalyticsAdminServiceClient.data_retention_settings_path)
+    parse_data_retention_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_data_retention_settings_path)
+    data_sharing_settings_path = staticmethod(AnalyticsAdminServiceClient.data_sharing_settings_path)
+    parse_data_sharing_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_data_sharing_settings_path)
     data_stream_path = staticmethod(AnalyticsAdminServiceClient.data_stream_path)
-    parse_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_data_stream_path
-    )
-    display_video360_advertiser_link_path = staticmethod(
-        AnalyticsAdminServiceClient.display_video360_advertiser_link_path
-    )
-    parse_display_video360_advertiser_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_display_video360_advertiser_link_path
-    )
-    display_video360_advertiser_link_proposal_path = staticmethod(
-        AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path
-    )
+    parse_data_stream_path = staticmethod(AnalyticsAdminServiceClient.parse_data_stream_path)
+    display_video360_advertiser_link_path = staticmethod(AnalyticsAdminServiceClient.display_video360_advertiser_link_path)
+    parse_display_video360_advertiser_link_path = staticmethod(AnalyticsAdminServiceClient.parse_display_video360_advertiser_link_path)
+    display_video360_advertiser_link_proposal_path = staticmethod(AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path)
     parse_display_video360_advertiser_link_proposal_path = staticmethod(
         AnalyticsAdminServiceClient.parse_display_video360_advertiser_link_proposal_path
     )
-    enhanced_measurement_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.enhanced_measurement_settings_path
-    )
-    parse_enhanced_measurement_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_enhanced_measurement_settings_path
-    )
-    event_create_rule_path = staticmethod(
-        AnalyticsAdminServiceClient.event_create_rule_path
-    )
-    parse_event_create_rule_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_event_create_rule_path
-    )
-    event_edit_rule_path = staticmethod(
-        AnalyticsAdminServiceClient.event_edit_rule_path
-    )
-    parse_event_edit_rule_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_event_edit_rule_path
-    )
-    expanded_data_set_path = staticmethod(
-        AnalyticsAdminServiceClient.expanded_data_set_path
-    )
-    parse_expanded_data_set_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_expanded_data_set_path
-    )
+    enhanced_measurement_settings_path = staticmethod(AnalyticsAdminServiceClient.enhanced_measurement_settings_path)
+    parse_enhanced_measurement_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_enhanced_measurement_settings_path)
+    event_create_rule_path = staticmethod(AnalyticsAdminServiceClient.event_create_rule_path)
+    parse_event_create_rule_path = staticmethod(AnalyticsAdminServiceClient.parse_event_create_rule_path)
+    event_edit_rule_path = staticmethod(AnalyticsAdminServiceClient.event_edit_rule_path)
+    parse_event_edit_rule_path = staticmethod(AnalyticsAdminServiceClient.parse_event_edit_rule_path)
+    expanded_data_set_path = staticmethod(AnalyticsAdminServiceClient.expanded_data_set_path)
+    parse_expanded_data_set_path = staticmethod(AnalyticsAdminServiceClient.parse_expanded_data_set_path)
     firebase_link_path = staticmethod(AnalyticsAdminServiceClient.firebase_link_path)
-    parse_firebase_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_firebase_link_path
-    )
-    global_site_tag_path = staticmethod(
-        AnalyticsAdminServiceClient.global_site_tag_path
-    )
-    parse_global_site_tag_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_global_site_tag_path
-    )
-    google_ads_link_path = staticmethod(
-        AnalyticsAdminServiceClient.google_ads_link_path
-    )
-    parse_google_ads_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_google_ads_link_path
-    )
-    google_signals_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.google_signals_settings_path
-    )
-    parse_google_signals_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_google_signals_settings_path
-    )
+    parse_firebase_link_path = staticmethod(AnalyticsAdminServiceClient.parse_firebase_link_path)
+    global_site_tag_path = staticmethod(AnalyticsAdminServiceClient.global_site_tag_path)
+    parse_global_site_tag_path = staticmethod(AnalyticsAdminServiceClient.parse_global_site_tag_path)
+    google_ads_link_path = staticmethod(AnalyticsAdminServiceClient.google_ads_link_path)
+    parse_google_ads_link_path = staticmethod(AnalyticsAdminServiceClient.parse_google_ads_link_path)
+    google_signals_settings_path = staticmethod(AnalyticsAdminServiceClient.google_signals_settings_path)
+    parse_google_signals_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_google_signals_settings_path)
     key_event_path = staticmethod(AnalyticsAdminServiceClient.key_event_path)
-    parse_key_event_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_key_event_path
-    )
-    measurement_protocol_secret_path = staticmethod(
-        AnalyticsAdminServiceClient.measurement_protocol_secret_path
-    )
-    parse_measurement_protocol_secret_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_measurement_protocol_secret_path
-    )
+    parse_key_event_path = staticmethod(AnalyticsAdminServiceClient.parse_key_event_path)
+    measurement_protocol_secret_path = staticmethod(AnalyticsAdminServiceClient.measurement_protocol_secret_path)
+    parse_measurement_protocol_secret_path = staticmethod(AnalyticsAdminServiceClient.parse_measurement_protocol_secret_path)
     organization_path = staticmethod(AnalyticsAdminServiceClient.organization_path)
-    parse_organization_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_organization_path
-    )
+    parse_organization_path = staticmethod(AnalyticsAdminServiceClient.parse_organization_path)
     property_path = staticmethod(AnalyticsAdminServiceClient.property_path)
     parse_property_path = staticmethod(AnalyticsAdminServiceClient.parse_property_path)
-    reporting_data_annotation_path = staticmethod(
-        AnalyticsAdminServiceClient.reporting_data_annotation_path
-    )
-    parse_reporting_data_annotation_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_reporting_data_annotation_path
-    )
-    reporting_identity_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.reporting_identity_settings_path
-    )
-    parse_reporting_identity_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_reporting_identity_settings_path
-    )
-    rollup_property_source_link_path = staticmethod(
-        AnalyticsAdminServiceClient.rollup_property_source_link_path
-    )
-    parse_rollup_property_source_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_rollup_property_source_link_path
-    )
-    search_ads360_link_path = staticmethod(
-        AnalyticsAdminServiceClient.search_ads360_link_path
-    )
-    parse_search_ads360_link_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_search_ads360_link_path
-    )
-    sk_ad_network_conversion_value_schema_path = staticmethod(
-        AnalyticsAdminServiceClient.sk_ad_network_conversion_value_schema_path
-    )
-    parse_sk_ad_network_conversion_value_schema_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_sk_ad_network_conversion_value_schema_path
-    )
-    subproperty_event_filter_path = staticmethod(
-        AnalyticsAdminServiceClient.subproperty_event_filter_path
-    )
-    parse_subproperty_event_filter_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_subproperty_event_filter_path
-    )
-    subproperty_sync_config_path = staticmethod(
-        AnalyticsAdminServiceClient.subproperty_sync_config_path
-    )
-    parse_subproperty_sync_config_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_subproperty_sync_config_path
-    )
-    common_billing_account_path = staticmethod(
-        AnalyticsAdminServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_common_billing_account_path
-    )
+    reporting_data_annotation_path = staticmethod(AnalyticsAdminServiceClient.reporting_data_annotation_path)
+    parse_reporting_data_annotation_path = staticmethod(AnalyticsAdminServiceClient.parse_reporting_data_annotation_path)
+    reporting_identity_settings_path = staticmethod(AnalyticsAdminServiceClient.reporting_identity_settings_path)
+    parse_reporting_identity_settings_path = staticmethod(AnalyticsAdminServiceClient.parse_reporting_identity_settings_path)
+    rollup_property_source_link_path = staticmethod(AnalyticsAdminServiceClient.rollup_property_source_link_path)
+    parse_rollup_property_source_link_path = staticmethod(AnalyticsAdminServiceClient.parse_rollup_property_source_link_path)
+    search_ads360_link_path = staticmethod(AnalyticsAdminServiceClient.search_ads360_link_path)
+    parse_search_ads360_link_path = staticmethod(AnalyticsAdminServiceClient.parse_search_ads360_link_path)
+    sk_ad_network_conversion_value_schema_path = staticmethod(AnalyticsAdminServiceClient.sk_ad_network_conversion_value_schema_path)
+    parse_sk_ad_network_conversion_value_schema_path = staticmethod(AnalyticsAdminServiceClient.parse_sk_ad_network_conversion_value_schema_path)
+    subproperty_event_filter_path = staticmethod(AnalyticsAdminServiceClient.subproperty_event_filter_path)
+    parse_subproperty_event_filter_path = staticmethod(AnalyticsAdminServiceClient.parse_subproperty_event_filter_path)
+    subproperty_sync_config_path = staticmethod(AnalyticsAdminServiceClient.subproperty_sync_config_path)
+    parse_subproperty_sync_config_path = staticmethod(AnalyticsAdminServiceClient.parse_subproperty_sync_config_path)
+    common_billing_account_path = staticmethod(AnalyticsAdminServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AnalyticsAdminServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AnalyticsAdminServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AnalyticsAdminServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(AnalyticsAdminServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AnalyticsAdminServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AnalyticsAdminServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(AnalyticsAdminServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        AnalyticsAdminServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(AnalyticsAdminServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(AnalyticsAdminServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(AnalyticsAdminServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -346,9 +199,7 @@ class AnalyticsAdminServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -415,13 +266,7 @@ class AnalyticsAdminServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                AnalyticsAdminServiceTransport,
-                Callable[..., AnalyticsAdminServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AnalyticsAdminServiceTransport, Callable[..., AnalyticsAdminServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -481,20 +326,14 @@ class AnalyticsAdminServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -543,14 +382,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -564,15 +398,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_account
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_account]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -631,9 +461,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_accounts
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_accounts]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -707,14 +535,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -728,15 +551,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_account
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_account]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -800,14 +619,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [account, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -823,17 +637,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_account
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_account]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("account.name", request.account.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account.name", request.account.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -851,9 +659,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def provision_account_ticket(
         self,
-        request: Optional[
-            Union[analytics_admin.ProvisionAccountTicketRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ProvisionAccountTicketRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -887,9 +693,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.provision_account_ticket
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.provision_account_ticket]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -907,9 +711,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_account_summaries(
         self,
-        request: Optional[
-            Union[analytics_admin.ListAccountSummariesRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListAccountSummariesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -947,9 +749,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_account_summaries
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_account_summaries]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1015,14 +815,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1036,15 +831,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_property
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_property]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1104,9 +895,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_properties
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_properties]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1175,14 +964,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [property]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1196,9 +980,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_property
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_property]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1267,14 +1049,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1288,15 +1065,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_property
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_property]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1364,14 +1137,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [property, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1387,17 +1155,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_property
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_property]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("property.name", request.property.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("property.name", request.property.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1415,9 +1177,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_firebase_link(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateFirebaseLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateFirebaseLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         firebase_link: Optional[resources.FirebaseLink] = None,
@@ -1466,14 +1226,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, firebase_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1489,15 +1244,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_firebase_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_firebase_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1515,9 +1266,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_firebase_link(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteFirebaseLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteFirebaseLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1551,14 +1300,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1572,15 +1316,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_firebase_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_firebase_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1638,14 +1378,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1659,15 +1394,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_firebase_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_firebase_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1742,14 +1473,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1763,15 +1489,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_global_site_tag
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_global_site_tag]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1789,9 +1511,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_google_ads_link(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateGoogleAdsLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateGoogleAdsLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         google_ads_link: Optional[resources.GoogleAdsLink] = None,
@@ -1837,14 +1557,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, google_ads_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1860,15 +1575,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_google_ads_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_google_ads_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1886,9 +1597,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_google_ads_link(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateGoogleAdsLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateGoogleAdsLinkRequest, dict]] = None,
         *,
         google_ads_link: Optional[resources.GoogleAdsLink] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1935,14 +1644,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [google_ads_link, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1958,17 +1662,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_google_ads_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_google_ads_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("google_ads_link.name", request.google_ads_link.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("google_ads_link.name", request.google_ads_link.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1986,9 +1684,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_google_ads_link(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteGoogleAdsLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteGoogleAdsLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2020,14 +1716,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2041,15 +1732,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_google_ads_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_google_ads_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2064,9 +1751,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_google_ads_links(
         self,
-        request: Optional[
-            Union[analytics_admin.ListGoogleAdsLinksRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListGoogleAdsLinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2107,14 +1792,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2128,15 +1808,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_google_ads_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_google_ads_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2165,9 +1841,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_data_sharing_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetDataSharingSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetDataSharingSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2209,14 +1883,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2230,15 +1899,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_sharing_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_sharing_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2256,9 +1921,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_measurement_protocol_secret(
         self,
-        request: Optional[
-            Union[analytics_admin.GetMeasurementProtocolSecretRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetMeasurementProtocolSecretRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2298,14 +1961,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2319,15 +1977,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_measurement_protocol_secret
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_measurement_protocol_secret]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2345,9 +1999,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_measurement_protocol_secrets(
         self,
-        request: Optional[
-            Union[analytics_admin.ListMeasurementProtocolSecretsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListMeasurementProtocolSecretsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2391,20 +2043,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.ListMeasurementProtocolSecretsRequest
-        ):
+        if not isinstance(request, analytics_admin.ListMeasurementProtocolSecretsRequest):
             request = analytics_admin.ListMeasurementProtocolSecretsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2414,15 +2059,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_measurement_protocol_secrets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_measurement_protocol_secrets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2451,14 +2092,10 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_measurement_protocol_secret(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateMeasurementProtocolSecretRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateMeasurementProtocolSecretRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        measurement_protocol_secret: Optional[
-            resources.MeasurementProtocolSecret
-        ] = None,
+        measurement_protocol_secret: Optional[resources.MeasurementProtocolSecret] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2502,20 +2139,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, measurement_protocol_secret]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CreateMeasurementProtocolSecretRequest
-        ):
+        if not isinstance(request, analytics_admin.CreateMeasurementProtocolSecretRequest):
             request = analytics_admin.CreateMeasurementProtocolSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2527,15 +2157,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_measurement_protocol_secret
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_measurement_protocol_secret]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2553,9 +2179,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_measurement_protocol_secret(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteMeasurementProtocolSecretRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteMeasurementProtocolSecretRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2590,20 +2214,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.DeleteMeasurementProtocolSecretRequest
-        ):
+        if not isinstance(request, analytics_admin.DeleteMeasurementProtocolSecretRequest):
             request = analytics_admin.DeleteMeasurementProtocolSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2613,15 +2230,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_measurement_protocol_secret
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_measurement_protocol_secret]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2636,13 +2249,9 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_measurement_protocol_secret(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateMeasurementProtocolSecretRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateMeasurementProtocolSecretRequest, dict]] = None,
         *,
-        measurement_protocol_secret: Optional[
-            resources.MeasurementProtocolSecret
-        ] = None,
+        measurement_protocol_secret: Optional[resources.MeasurementProtocolSecret] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2687,20 +2296,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [measurement_protocol_secret, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.UpdateMeasurementProtocolSecretRequest
-        ):
+        if not isinstance(request, analytics_admin.UpdateMeasurementProtocolSecretRequest):
             request = analytics_admin.UpdateMeasurementProtocolSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2712,21 +2314,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_measurement_protocol_secret
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_measurement_protocol_secret]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "measurement_protocol_secret.name",
-                        request.measurement_protocol_secret.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("measurement_protocol_secret.name", request.measurement_protocol_secret.name),)),
         )
 
         # Validate the universe domain.
@@ -2745,9 +2338,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def acknowledge_user_data_collection(
         self,
-        request: Optional[
-            Union[analytics_admin.AcknowledgeUserDataCollectionRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.AcknowledgeUserDataCollectionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2780,22 +2371,16 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.AcknowledgeUserDataCollectionRequest
-        ):
+        if not isinstance(request, analytics_admin.AcknowledgeUserDataCollectionRequest):
             request = analytics_admin.AcknowledgeUserDataCollectionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.acknowledge_user_data_collection
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.acknowledge_user_data_collection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2813,9 +2398,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_sk_ad_network_conversion_value_schema(
         self,
-        request: Optional[
-            Union[analytics_admin.GetSKAdNetworkConversionValueSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetSKAdNetworkConversionValueSchemaRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2854,23 +2437,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.GetSKAdNetworkConversionValueSchemaRequest
-        ):
-            request = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.GetSKAdNetworkConversionValueSchemaRequest):
+            request = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2879,15 +2453,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_sk_ad_network_conversion_value_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_sk_ad_network_conversion_value_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2905,14 +2475,10 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_sk_ad_network_conversion_value_schema(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        skadnetwork_conversion_value_schema: Optional[
-            resources.SKAdNetworkConversionValueSchema
-        ] = None,
+        skadnetwork_conversion_value_schema: Optional[resources.SKAdNetworkConversionValueSchema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2957,44 +2523,29 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, skadnetwork_conversion_value_schema]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest
-        ):
-            request = analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest):
+            request = analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
         if skadnetwork_conversion_value_schema is not None:
-            request.skadnetwork_conversion_value_schema = (
-                skadnetwork_conversion_value_schema
-            )
+            request.skadnetwork_conversion_value_schema = skadnetwork_conversion_value_schema
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_sk_ad_network_conversion_value_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_sk_ad_network_conversion_value_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3012,9 +2563,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_sk_ad_network_conversion_value_schema(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3048,23 +2597,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest
-        ):
-            request = analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest):
+            request = analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3073,15 +2613,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_sk_ad_network_conversion_value_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_sk_ad_network_conversion_value_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3096,13 +2632,9 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_sk_ad_network_conversion_value_schema(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest, dict]] = None,
         *,
-        skadnetwork_conversion_value_schema: Optional[
-            resources.SKAdNetworkConversionValueSchema
-        ] = None,
+        skadnetwork_conversion_value_schema: Optional[resources.SKAdNetworkConversionValueSchema] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3148,49 +2680,31 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [skadnetwork_conversion_value_schema, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest
-        ):
-            request = analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest):
+            request = analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if skadnetwork_conversion_value_schema is not None:
-            request.skadnetwork_conversion_value_schema = (
-                skadnetwork_conversion_value_schema
-            )
+            request.skadnetwork_conversion_value_schema = skadnetwork_conversion_value_schema
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_sk_ad_network_conversion_value_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_sk_ad_network_conversion_value_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "skadnetwork_conversion_value_schema.name",
-                        request.skadnetwork_conversion_value_schema.name,
-                    ),
-                )
+                (("skadnetwork_conversion_value_schema.name", request.skadnetwork_conversion_value_schema.name),)
             ),
         )
 
@@ -3210,9 +2724,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_sk_ad_network_conversion_value_schemas(
         self,
-        request: Optional[
-            Union[analytics_admin.ListSKAdNetworkConversionValueSchemasRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListSKAdNetworkConversionValueSchemasRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3258,23 +2770,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.ListSKAdNetworkConversionValueSchemasRequest
-        ):
-            request = analytics_admin.ListSKAdNetworkConversionValueSchemasRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.ListSKAdNetworkConversionValueSchemasRequest):
+            request = analytics_admin.ListSKAdNetworkConversionValueSchemasRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3283,15 +2786,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_sk_ad_network_conversion_value_schemas
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sk_ad_network_conversion_value_schemas]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3320,9 +2819,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def search_change_history_events(
         self,
-        request: Optional[
-            Union[analytics_admin.SearchChangeHistoryEventsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.SearchChangeHistoryEventsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3363,15 +2860,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_change_history_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_change_history_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3400,9 +2893,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_google_signals_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetGoogleSignalsSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetGoogleSignalsSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3441,14 +2932,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3462,15 +2948,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_google_signals_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_google_signals_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3488,9 +2970,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_google_signals_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateGoogleSignalsSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateGoogleSignalsSettingsRequest, dict]] = None,
         *,
         google_signals_settings: Optional[resources.GoogleSignalsSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3539,14 +3019,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [google_signals_settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3562,21 +3037,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_google_signals_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_google_signals_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "google_signals_settings.name",
-                        request.google_signals_settings.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("google_signals_settings.name", request.google_signals_settings.name),)),
         )
 
         # Validate the universe domain.
@@ -3595,9 +3061,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_conversion_event(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateConversionEventRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateConversionEventRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         conversion_event: Optional[resources.ConversionEvent] = None,
@@ -3642,23 +3106,15 @@ class AnalyticsAdminServiceAsyncClient:
                 Analytics property.
 
         """
-        warnings.warn(
-            "AnalyticsAdminServiceAsyncClient.create_conversion_event is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AnalyticsAdminServiceAsyncClient.create_conversion_event is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, conversion_event]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3674,15 +3130,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_conversion_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_conversion_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3700,9 +3152,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_conversion_event(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateConversionEventRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateConversionEventRequest, dict]] = None,
         *,
         conversion_event: Optional[resources.ConversionEvent] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3748,23 +3198,15 @@ class AnalyticsAdminServiceAsyncClient:
                 Analytics property.
 
         """
-        warnings.warn(
-            "AnalyticsAdminServiceAsyncClient.update_conversion_event is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AnalyticsAdminServiceAsyncClient.update_conversion_event is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [conversion_event, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3780,17 +3222,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_conversion_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_conversion_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversion_event.name", request.conversion_event.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("conversion_event.name", request.conversion_event.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3808,9 +3244,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_conversion_event(
         self,
-        request: Optional[
-            Union[analytics_admin.GetConversionEventRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetConversionEventRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3847,23 +3281,15 @@ class AnalyticsAdminServiceAsyncClient:
                 Analytics property.
 
         """
-        warnings.warn(
-            "AnalyticsAdminServiceAsyncClient.get_conversion_event is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AnalyticsAdminServiceAsyncClient.get_conversion_event is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3877,15 +3303,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_conversion_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_conversion_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3903,9 +3325,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_conversion_event(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteConversionEventRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteConversionEventRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3936,23 +3356,15 @@ class AnalyticsAdminServiceAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
-        warnings.warn(
-            "AnalyticsAdminServiceAsyncClient.delete_conversion_event is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AnalyticsAdminServiceAsyncClient.delete_conversion_event is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3966,15 +3378,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_conversion_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_conversion_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3989,9 +3397,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_conversion_events(
         self,
-        request: Optional[
-            Union[analytics_admin.ListConversionEventsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListConversionEventsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4032,23 +3438,15 @@ class AnalyticsAdminServiceAsyncClient:
                 automatically.
 
         """
-        warnings.warn(
-            "AnalyticsAdminServiceAsyncClient.list_conversion_events is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AnalyticsAdminServiceAsyncClient.list_conversion_events is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4062,15 +3460,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_conversion_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_conversion_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4144,14 +3538,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, key_event]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4167,15 +3556,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_key_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_key_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4242,14 +3627,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [key_event, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4265,17 +3645,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_key_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_key_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("key_event.name", request.key_event.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("key_event.name", request.key_event.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4332,14 +3706,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4353,15 +3722,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_key_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_key_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4412,14 +3777,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4433,15 +3793,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_key_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_key_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4499,14 +3855,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4520,15 +3871,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_key_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_key_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4557,9 +3904,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_display_video360_advertiser_link(
         self,
-        request: Optional[
-            Union[analytics_admin.GetDisplayVideo360AdvertiserLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetDisplayVideo360AdvertiserLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4600,20 +3945,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.GetDisplayVideo360AdvertiserLinkRequest
-        ):
+        if not isinstance(request, analytics_admin.GetDisplayVideo360AdvertiserLinkRequest):
             request = analytics_admin.GetDisplayVideo360AdvertiserLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -4623,15 +3961,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_display_video360_advertiser_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_display_video360_advertiser_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4649,9 +3983,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_display_video360_advertiser_links(
         self,
-        request: Optional[
-            Union[analytics_admin.ListDisplayVideo360AdvertiserLinksRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListDisplayVideo360AdvertiserLinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4693,20 +4025,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.ListDisplayVideo360AdvertiserLinksRequest
-        ):
+        if not isinstance(request, analytics_admin.ListDisplayVideo360AdvertiserLinksRequest):
             request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -4716,15 +4041,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_display_video360_advertiser_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_display_video360_advertiser_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4753,14 +4074,10 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_display_video360_advertiser_link(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        display_video_360_advertiser_link: Optional[
-            resources.DisplayVideo360AdvertiserLink
-        ] = None,
+        display_video_360_advertiser_link: Optional[resources.DisplayVideo360AdvertiserLink] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4809,44 +4126,29 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, display_video_360_advertiser_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest):
+            request = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
         if display_video_360_advertiser_link is not None:
-            request.display_video_360_advertiser_link = (
-                display_video_360_advertiser_link
-            )
+            request.display_video_360_advertiser_link = display_video_360_advertiser_link
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_display_video360_advertiser_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_display_video360_advertiser_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4864,9 +4166,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_display_video360_advertiser_link(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4901,23 +4201,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest):
+            request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4926,15 +4217,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_display_video360_advertiser_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_display_video360_advertiser_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4949,13 +4236,9 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_display_video360_advertiser_link(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest, dict]] = None,
         *,
-        display_video_360_advertiser_link: Optional[
-            resources.DisplayVideo360AdvertiserLink
-        ] = None,
+        display_video_360_advertiser_link: Optional[resources.DisplayVideo360AdvertiserLink] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -5003,50 +4286,30 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [display_video_360_advertiser_link, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest):
+            request = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if display_video_360_advertiser_link is not None:
-            request.display_video_360_advertiser_link = (
-                display_video_360_advertiser_link
-            )
+            request.display_video_360_advertiser_link = display_video_360_advertiser_link
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_display_video360_advertiser_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_display_video360_advertiser_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "display_video_360_advertiser_link.name",
-                        request.display_video_360_advertiser_link.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("display_video_360_advertiser_link.name", request.display_video_360_advertiser_link.name),)),
         )
 
         # Validate the universe domain.
@@ -5065,9 +4328,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_display_video360_advertiser_link_proposal(
         self,
-        request: Optional[
-            Union[analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5117,23 +4378,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest):
+            request = analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5142,15 +4394,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_display_video360_advertiser_link_proposal
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_display_video360_advertiser_link_proposal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5168,11 +4416,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_display_video360_advertiser_link_proposals(
         self,
-        request: Optional[
-            Union[
-                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5215,23 +4459,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest
-        ):
-            request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
-                request
-            )
+        if not isinstance(request, analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest):
+            request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5240,15 +4475,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_display_video360_advertiser_link_proposals
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_display_video360_advertiser_link_proposals]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5277,16 +4508,10 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_display_video360_advertiser_link_proposal(
         self,
-        request: Optional[
-            Union[
-                analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        display_video_360_advertiser_link_proposal: Optional[
-            resources.DisplayVideo360AdvertiserLinkProposal
-        ] = None,
+        display_video_360_advertiser_link_proposal: Optional[resources.DisplayVideo360AdvertiserLinkProposal] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -5339,46 +4564,29 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, display_video_360_advertiser_link_proposal]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
+        if not isinstance(request, analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest):
+            request = analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
         if display_video_360_advertiser_link_proposal is not None:
-            request.display_video_360_advertiser_link_proposal = (
-                display_video_360_advertiser_link_proposal
-            )
+            request.display_video_360_advertiser_link_proposal = display_video_360_advertiser_link_proposal
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_display_video360_advertiser_link_proposal
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_display_video360_advertiser_link_proposal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5396,11 +4604,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_display_video360_advertiser_link_proposal(
         self,
-        request: Optional[
-            Union[
-                analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5436,25 +4640,14 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
+        if not isinstance(request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest):
+            request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5463,15 +4656,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_display_video360_advertiser_link_proposal
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_display_video360_advertiser_link_proposal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5486,12 +4675,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def approve_display_video360_advertiser_link_proposal(
         self,
-        request: Optional[
-            Union[
-                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -5525,26 +4709,16 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
+        if not isinstance(request, analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest):
+            request = analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.approve_display_video360_advertiser_link_proposal
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.approve_display_video360_advertiser_link_proposal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5562,11 +4736,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def cancel_display_video360_advertiser_link_proposal(
         self,
-        request: Optional[
-            Union[
-                analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -5611,26 +4781,16 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
+        if not isinstance(request, analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest):
+            request = analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_display_video360_advertiser_link_proposal
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.cancel_display_video360_advertiser_link_proposal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5648,9 +4808,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_custom_dimension(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateCustomDimensionRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateCustomDimensionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         custom_dimension: Optional[resources.CustomDimension] = None,
@@ -5694,14 +4852,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, custom_dimension]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5717,15 +4870,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_custom_dimension
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_custom_dimension]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5743,9 +4892,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_custom_dimension(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateCustomDimensionRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateCustomDimensionRequest, dict]] = None,
         *,
         custom_dimension: Optional[resources.CustomDimension] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -5789,14 +4936,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [custom_dimension, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5812,17 +4954,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_custom_dimension
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_custom_dimension]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("custom_dimension.name", request.custom_dimension.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("custom_dimension.name", request.custom_dimension.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5840,9 +4976,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_custom_dimensions(
         self,
-        request: Optional[
-            Union[analytics_admin.ListCustomDimensionsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListCustomDimensionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5883,14 +5017,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5904,15 +5033,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_custom_dimensions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_custom_dimensions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5941,9 +5066,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def archive_custom_dimension(
         self,
-        request: Optional[
-            Union[analytics_admin.ArchiveCustomDimensionRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ArchiveCustomDimensionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5977,14 +5100,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5998,15 +5116,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.archive_custom_dimension
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.archive_custom_dimension]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6021,9 +5135,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_custom_dimension(
         self,
-        request: Optional[
-            Union[analytics_admin.GetCustomDimensionRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetCustomDimensionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6060,14 +5172,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6081,15 +5188,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_custom_dimension
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_custom_dimension]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6107,9 +5210,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_custom_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateCustomMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateCustomMetricRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         custom_metric: Optional[resources.CustomMetric] = None,
@@ -6151,14 +5252,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, custom_metric]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6174,15 +5270,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_custom_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_custom_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6200,9 +5292,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_custom_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateCustomMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateCustomMetricRequest, dict]] = None,
         *,
         custom_metric: Optional[resources.CustomMetric] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -6246,14 +5336,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [custom_metric, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6269,17 +5354,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_custom_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_custom_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("custom_metric.name", request.custom_metric.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("custom_metric.name", request.custom_metric.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6338,14 +5417,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6359,15 +5433,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_custom_metrics
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_custom_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6396,9 +5466,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def archive_custom_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.ArchiveCustomMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ArchiveCustomMetricRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6431,14 +5499,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6452,15 +5515,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.archive_custom_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.archive_custom_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6512,14 +5571,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6533,15 +5587,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_custom_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_custom_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6559,9 +5609,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_data_retention_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetDataRetentionSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetDataRetentionSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6604,14 +5652,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6625,15 +5668,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_retention_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_retention_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6651,9 +5690,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_data_retention_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateDataRetentionSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateDataRetentionSettingsRequest, dict]] = None,
         *,
         data_retention_settings: Optional[resources.DataRetentionSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -6703,14 +5740,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_retention_settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6726,21 +5758,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_retention_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_retention_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "data_retention_settings.name",
-                        request.data_retention_settings.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("data_retention_settings.name", request.data_retention_settings.name),)),
         )
 
         # Validate the universe domain.
@@ -6803,14 +5826,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, data_stream]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6826,15 +5844,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_data_stream
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_data_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6885,14 +5899,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6906,15 +5915,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_data_stream
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_data_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6975,14 +5980,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_stream, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6998,17 +5998,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_stream
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("data_stream.name", request.data_stream.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("data_stream.name", request.data_stream.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7067,14 +6061,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7088,15 +6077,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_streams
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_data_streams]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7164,14 +6149,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7185,15 +6165,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_stream
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7251,14 +6227,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7272,15 +6243,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_audience
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_audience]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7341,14 +6308,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7362,15 +6324,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_audiences
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_audiences]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7443,14 +6401,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, audience]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7466,15 +6419,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_audience
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_audience]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7542,14 +6491,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [audience, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7565,17 +6509,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_audience
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_audience]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("audience.name", request.audience.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("audience.name", request.audience.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7621,15 +6559,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.archive_audience
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.archive_audience]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7644,9 +6578,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_search_ads360_link(
         self,
-        request: Optional[
-            Union[analytics_admin.GetSearchAds360LinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetSearchAds360LinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7685,14 +6617,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7706,15 +6633,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_search_ads360_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_search_ads360_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7732,9 +6655,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_search_ads360_links(
         self,
-        request: Optional[
-            Union[analytics_admin.ListSearchAds360LinksRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListSearchAds360LinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7775,14 +6696,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7796,15 +6712,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_search_ads360_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_search_ads360_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7833,9 +6745,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_search_ads360_link(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateSearchAds360LinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateSearchAds360LinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         search_ads_360_link: Optional[resources.SearchAds360Link] = None,
@@ -7881,14 +6791,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, search_ads_360_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7904,15 +6809,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_search_ads360_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_search_ads360_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7930,9 +6831,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_search_ads360_link(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteSearchAds360LinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteSearchAds360LinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7966,14 +6865,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7987,15 +6881,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_search_ads360_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_search_ads360_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8010,9 +6900,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_search_ads360_link(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateSearchAds360LinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateSearchAds360LinkRequest, dict]] = None,
         *,
         search_ads_360_link: Optional[resources.SearchAds360Link] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -8058,14 +6946,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [search_ads_360_link, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8081,17 +6964,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_search_ads360_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_search_ads360_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("search_ads_360_link.name", request.search_ads_360_link.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("search_ads_360_link.name", request.search_ads_360_link.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8109,9 +6986,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_attribution_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetAttributionSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetAttributionSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8151,14 +7026,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8172,15 +7042,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_attribution_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_attribution_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8198,9 +7064,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_attribution_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateAttributionSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateAttributionSettingsRequest, dict]] = None,
         *,
         attribution_settings: Optional[resources.AttributionSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -8251,14 +7115,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [attribution_settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8274,17 +7133,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_attribution_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_attribution_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attribution_settings.name", request.attribution_settings.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attribution_settings.name", request.attribution_settings.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8356,15 +7209,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.run_access_report
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.run_access_report]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("entity", request.entity),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("entity", request.entity),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8382,9 +7231,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_access_binding(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateAccessBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateAccessBindingRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         access_binding: Optional[resources.AccessBinding] = None,
@@ -8432,14 +7279,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, access_binding]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8455,15 +7297,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_access_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_access_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8524,14 +7362,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8545,15 +7378,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_access_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_access_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8571,9 +7400,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_access_binding(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateAccessBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateAccessBindingRequest, dict]] = None,
         *,
         access_binding: Optional[resources.AccessBinding] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8611,14 +7438,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [access_binding]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8632,17 +7454,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_access_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_access_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("access_binding.name", request.access_binding.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("access_binding.name", request.access_binding.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8660,9 +7476,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_access_binding(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteAccessBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteAccessBindingRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8698,14 +7512,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8719,15 +7528,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_access_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_access_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8742,9 +7547,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_access_bindings(
         self,
-        request: Optional[
-            Union[analytics_admin.ListAccessBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListAccessBindingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8787,14 +7590,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8808,15 +7606,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_access_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_access_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8845,9 +7639,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def batch_create_access_bindings(
         self,
-        request: Optional[
-            Union[analytics_admin.BatchCreateAccessBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.BatchCreateAccessBindingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8886,15 +7678,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_create_access_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_create_access_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8912,9 +7700,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def batch_get_access_bindings(
         self,
-        request: Optional[
-            Union[analytics_admin.BatchGetAccessBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.BatchGetAccessBindingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8949,15 +7735,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_get_access_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_access_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8975,9 +7757,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def batch_update_access_bindings(
         self,
-        request: Optional[
-            Union[analytics_admin.BatchUpdateAccessBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.BatchUpdateAccessBindingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -9012,15 +7792,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_update_access_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_update_access_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9038,9 +7814,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def batch_delete_access_bindings(
         self,
-        request: Optional[
-            Union[analytics_admin.BatchDeleteAccessBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.BatchDeleteAccessBindingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -9069,15 +7843,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_delete_access_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_delete_access_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9092,9 +7862,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_expanded_data_set(
         self,
-        request: Optional[
-            Union[analytics_admin.GetExpandedDataSetRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetExpandedDataSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9131,14 +7899,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9152,15 +7915,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_expanded_data_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_expanded_data_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9178,9 +7937,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_expanded_data_sets(
         self,
-        request: Optional[
-            Union[analytics_admin.ListExpandedDataSetsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListExpandedDataSetsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9221,14 +7978,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9242,15 +7994,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_expanded_data_sets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_expanded_data_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9279,9 +8027,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_expanded_data_set(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateExpandedDataSetRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateExpandedDataSetRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         expanded_data_set: Optional[gaa_expanded_data_set.ExpandedDataSet] = None,
@@ -9325,14 +8071,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, expanded_data_set]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9348,15 +8089,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_expanded_data_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_expanded_data_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9374,9 +8111,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_expanded_data_set(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateExpandedDataSetRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateExpandedDataSetRequest, dict]] = None,
         *,
         expanded_data_set: Optional[gaa_expanded_data_set.ExpandedDataSet] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -9424,14 +8159,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [expanded_data_set, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9447,17 +8177,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_expanded_data_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_expanded_data_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("expanded_data_set.name", request.expanded_data_set.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("expanded_data_set.name", request.expanded_data_set.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9475,9 +8199,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_expanded_data_set(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteExpandedDataSetRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteExpandedDataSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9509,14 +8231,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9530,15 +8247,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_expanded_data_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_expanded_data_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9592,14 +8305,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9613,15 +8321,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_channel_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9681,14 +8385,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9702,15 +8401,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_channel_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channel_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9739,9 +8434,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_channel_group(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateChannelGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateChannelGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         channel_group: Optional[gaa_channel_group.ChannelGroup] = None,
@@ -9786,14 +8479,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, channel_group]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9809,15 +8497,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_channel_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9835,9 +8519,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_channel_group(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateChannelGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateChannelGroupRequest, dict]] = None,
         *,
         channel_group: Optional[gaa_channel_group.ChannelGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -9887,14 +8569,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [channel_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9910,17 +8587,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_channel_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_channel_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("channel_group.name", request.channel_group.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("channel_group.name", request.channel_group.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9938,9 +8609,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_channel_group(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteChannelGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteChannelGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9973,14 +8642,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9994,15 +8658,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_channel_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10017,9 +8677,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_big_query_link(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateBigQueryLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateBigQueryLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         bigquery_link: Optional[resources.BigQueryLink] = None,
@@ -10063,14 +8721,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, bigquery_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10086,15 +8739,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_big_query_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_big_query_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10152,14 +8801,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10173,15 +8817,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_big_query_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_big_query_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10241,14 +8881,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10262,15 +8897,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_big_query_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_big_query_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10299,9 +8930,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_big_query_link(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteBigQueryLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteBigQueryLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -10334,14 +8963,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10355,15 +8979,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_big_query_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_big_query_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10378,9 +8998,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_big_query_link(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateBigQueryLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateBigQueryLinkRequest, dict]] = None,
         *,
         bigquery_link: Optional[resources.BigQueryLink] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -10429,14 +9047,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [bigquery_link, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10452,17 +9065,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_big_query_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_big_query_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("bigquery_link.name", request.bigquery_link.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("bigquery_link.name", request.bigquery_link.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10480,9 +9087,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_enhanced_measurement_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetEnhancedMeasurementSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetEnhancedMeasurementSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -10526,20 +9131,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.GetEnhancedMeasurementSettingsRequest
-        ):
+        if not isinstance(request, analytics_admin.GetEnhancedMeasurementSettingsRequest):
             request = analytics_admin.GetEnhancedMeasurementSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -10549,15 +9147,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_enhanced_measurement_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_enhanced_measurement_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10575,13 +9169,9 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_enhanced_measurement_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateEnhancedMeasurementSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateEnhancedMeasurementSettingsRequest, dict]] = None,
         *,
-        enhanced_measurement_settings: Optional[
-            resources.EnhancedMeasurementSettings
-        ] = None,
+        enhanced_measurement_settings: Optional[resources.EnhancedMeasurementSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -10632,20 +9222,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [enhanced_measurement_settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.UpdateEnhancedMeasurementSettingsRequest
-        ):
+        if not isinstance(request, analytics_admin.UpdateEnhancedMeasurementSettingsRequest):
             request = analytics_admin.UpdateEnhancedMeasurementSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -10657,21 +9240,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_enhanced_measurement_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_enhanced_measurement_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "enhanced_measurement_settings.name",
-                        request.enhanced_measurement_settings.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("enhanced_measurement_settings.name", request.enhanced_measurement_settings.name),)),
         )
 
         # Validate the universe domain.
@@ -10732,14 +9306,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10753,15 +9322,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_ad_sense_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_ad_sense_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10826,14 +9391,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, adsense_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10849,15 +9409,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_ad_sense_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_ad_sense_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10910,14 +9466,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10931,15 +9482,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_ad_sense_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_ad_sense_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -10997,14 +9544,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11018,15 +9560,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_ad_sense_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_ad_sense_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11055,9 +9593,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_event_create_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.GetEventCreateRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetEventCreateRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -11108,14 +9644,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11129,15 +9660,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_event_create_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_event_create_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11155,9 +9682,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_event_create_rules(
         self,
-        request: Optional[
-            Union[analytics_admin.ListEventCreateRulesRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListEventCreateRulesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -11198,14 +9723,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11219,15 +9739,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_event_create_rules
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_event_create_rules]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11256,9 +9772,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_event_create_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateEventCreateRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateEventCreateRuleRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         event_create_rule: Optional[event_create_and_edit.EventCreateRule] = None,
@@ -11316,14 +9830,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, event_create_rule]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11339,15 +9848,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_event_create_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_event_create_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11365,9 +9870,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_event_create_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateEventCreateRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateEventCreateRuleRequest, dict]] = None,
         *,
         event_create_rule: Optional[event_create_and_edit.EventCreateRule] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -11429,14 +9932,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [event_create_rule, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11452,17 +9950,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_event_create_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_event_create_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("event_create_rule.name", request.event_create_rule.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("event_create_rule.name", request.event_create_rule.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11480,9 +9972,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_event_create_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteEventCreateRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteEventCreateRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -11515,14 +10005,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11536,15 +10021,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_event_create_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_event_create_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11610,14 +10091,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11631,15 +10107,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_event_edit_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_event_edit_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11657,9 +10129,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_event_edit_rules(
         self,
-        request: Optional[
-            Union[analytics_admin.ListEventEditRulesRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListEventEditRulesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -11700,14 +10170,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11721,15 +10186,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_event_edit_rules
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_event_edit_rules]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11758,9 +10219,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_event_edit_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateEventEditRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateEventEditRuleRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         event_edit_rule: Optional[event_create_and_edit.EventEditRule] = None,
@@ -11818,14 +10277,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, event_edit_rule]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11841,15 +10295,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_event_edit_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_event_edit_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11867,9 +10317,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_event_edit_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateEventEditRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateEventEditRuleRequest, dict]] = None,
         *,
         event_edit_rule: Optional[event_create_and_edit.EventEditRule] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -11931,14 +10379,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [event_edit_rule, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11954,17 +10397,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_event_edit_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_event_edit_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("event_edit_rule.name", request.event_edit_rule.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("event_edit_rule.name", request.event_edit_rule.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -11982,9 +10419,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_event_edit_rule(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteEventEditRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteEventEditRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12016,14 +10451,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12037,15 +10467,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_event_edit_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_event_edit_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12060,9 +10486,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def reorder_event_edit_rules(
         self,
-        request: Optional[
-            Union[analytics_admin.ReorderEventEditRulesRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ReorderEventEditRulesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -12091,15 +10515,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reorder_event_edit_rules
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reorder_event_edit_rules]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12114,9 +10534,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_data_redaction_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateDataRedactionSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateDataRedactionSettingsRequest, dict]] = None,
         *,
         data_redaction_settings: Optional[resources.DataRedactionSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -12166,14 +10584,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_redaction_settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12189,21 +10602,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_redaction_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_redaction_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "data_redaction_settings.name",
-                        request.data_redaction_settings.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("data_redaction_settings.name", request.data_redaction_settings.name),)),
         )
 
         # Validate the universe domain.
@@ -12222,9 +10626,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_data_redaction_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetDataRedactionSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetDataRedactionSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12265,14 +10667,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12286,15 +10683,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_redaction_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_redaction_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12312,9 +10705,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_calculated_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.GetCalculatedMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetCalculatedMetricRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12352,14 +10743,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12373,15 +10759,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_calculated_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_calculated_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12399,9 +10781,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_calculated_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateCalculatedMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateCalculatedMetricRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         calculated_metric: Optional[resources.CalculatedMetric] = None,
@@ -12462,14 +10842,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, calculated_metric, calculated_metric_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12487,15 +10862,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_calculated_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_calculated_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12513,9 +10884,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_calculated_metrics(
         self,
-        request: Optional[
-            Union[analytics_admin.ListCalculatedMetricsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListCalculatedMetricsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12556,14 +10925,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12577,15 +10941,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_calculated_metrics
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_calculated_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12614,9 +10974,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_calculated_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateCalculatedMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateCalculatedMetricRequest, dict]] = None,
         *,
         calculated_metric: Optional[resources.CalculatedMetric] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -12662,14 +11020,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [calculated_metric, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12685,17 +11038,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_calculated_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_calculated_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("calculated_metric.name", request.calculated_metric.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("calculated_metric.name", request.calculated_metric.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12713,9 +11060,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_calculated_metric(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteCalculatedMetricRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteCalculatedMetricRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12749,14 +11094,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12770,15 +11110,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_calculated_metric
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_calculated_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12793,9 +11129,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_rollup_property(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateRollupPropertyRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateRollupPropertyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -12830,9 +11164,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_rollup_property
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_rollup_property]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12850,9 +11182,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_rollup_property_source_link(
         self,
-        request: Optional[
-            Union[analytics_admin.GetRollupPropertySourceLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetRollupPropertySourceLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12896,14 +11226,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12917,15 +11242,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_rollup_property_source_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_rollup_property_source_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -12943,9 +11264,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_rollup_property_source_links(
         self,
-        request: Optional[
-            Union[analytics_admin.ListRollupPropertySourceLinksRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListRollupPropertySourceLinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -12990,20 +11309,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.ListRollupPropertySourceLinksRequest
-        ):
+        if not isinstance(request, analytics_admin.ListRollupPropertySourceLinksRequest):
             request = analytics_admin.ListRollupPropertySourceLinksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -13013,15 +11325,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_rollup_property_source_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_rollup_property_source_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13050,14 +11358,10 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_rollup_property_source_link(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateRollupPropertySourceLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateRollupPropertySourceLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        rollup_property_source_link: Optional[
-            resources.RollupPropertySourceLink
-        ] = None,
+        rollup_property_source_link: Optional[resources.RollupPropertySourceLink] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -13104,20 +11408,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, rollup_property_source_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CreateRollupPropertySourceLinkRequest
-        ):
+        if not isinstance(request, analytics_admin.CreateRollupPropertySourceLinkRequest):
             request = analytics_admin.CreateRollupPropertySourceLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -13129,15 +11426,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_rollup_property_source_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_rollup_property_source_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13155,9 +11448,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_rollup_property_source_link(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteRollupPropertySourceLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteRollupPropertySourceLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -13193,20 +11484,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.DeleteRollupPropertySourceLinkRequest
-        ):
+        if not isinstance(request, analytics_admin.DeleteRollupPropertySourceLinkRequest):
             request = analytics_admin.DeleteRollupPropertySourceLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -13216,15 +11500,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_rollup_property_source_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_rollup_property_source_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13239,9 +11519,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def provision_subproperty(
         self,
-        request: Optional[
-            Union[analytics_admin.ProvisionSubpropertyRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ProvisionSubpropertyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -13276,9 +11554,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.provision_subproperty
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.provision_subproperty]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13296,14 +11572,10 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_subproperty_event_filter(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateSubpropertyEventFilterRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateSubpropertyEventFilterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        subproperty_event_filter: Optional[
-            gaa_subproperty_event_filter.SubpropertyEventFilter
-        ] = None,
+        subproperty_event_filter: Optional[gaa_subproperty_event_filter.SubpropertyEventFilter] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -13348,14 +11620,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, subproperty_event_filter]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13371,15 +11638,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_subproperty_event_filter
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_subproperty_event_filter]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13397,9 +11660,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_subproperty_event_filter(
         self,
-        request: Optional[
-            Union[analytics_admin.GetSubpropertyEventFilterRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetSubpropertyEventFilterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -13440,14 +11701,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13461,15 +11717,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_subproperty_event_filter
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_subproperty_event_filter]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13487,9 +11739,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_subproperty_event_filters(
         self,
-        request: Optional[
-            Union[analytics_admin.ListSubpropertyEventFiltersRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListSubpropertyEventFiltersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -13530,14 +11780,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13551,15 +11796,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_subproperty_event_filters
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_subproperty_event_filters]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13588,13 +11829,9 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_subproperty_event_filter(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateSubpropertyEventFilterRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateSubpropertyEventFilterRequest, dict]] = None,
         *,
-        subproperty_event_filter: Optional[
-            gaa_subproperty_event_filter.SubpropertyEventFilter
-        ] = None,
+        subproperty_event_filter: Optional[gaa_subproperty_event_filter.SubpropertyEventFilter] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -13642,14 +11879,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [subproperty_event_filter, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13665,21 +11897,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_subproperty_event_filter
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_subproperty_event_filter]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "subproperty_event_filter.name",
-                        request.subproperty_event_filter.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("subproperty_event_filter.name", request.subproperty_event_filter.name),)),
         )
 
         # Validate the universe domain.
@@ -13698,9 +11921,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_subproperty_event_filter(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteSubpropertyEventFilterRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteSubpropertyEventFilterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -13734,14 +11955,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13755,15 +11971,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_subproperty_event_filter
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_subproperty_event_filter]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13778,9 +11990,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def create_reporting_data_annotation(
         self,
-        request: Optional[
-            Union[analytics_admin.CreateReportingDataAnnotationRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.CreateReportingDataAnnotationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         reporting_data_annotation: Optional[resources.ReportingDataAnnotation] = None,
@@ -13828,20 +12038,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, reporting_data_annotation]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.CreateReportingDataAnnotationRequest
-        ):
+        if not isinstance(request, analytics_admin.CreateReportingDataAnnotationRequest):
             request = analytics_admin.CreateReportingDataAnnotationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -13853,15 +12056,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_reporting_data_annotation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_reporting_data_annotation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13879,9 +12078,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_reporting_data_annotation(
         self,
-        request: Optional[
-            Union[analytics_admin.GetReportingDataAnnotationRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetReportingDataAnnotationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -13922,14 +12119,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13943,15 +12135,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_reporting_data_annotation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_reporting_data_annotation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -13969,9 +12157,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_reporting_data_annotations(
         self,
-        request: Optional[
-            Union[analytics_admin.ListReportingDataAnnotationsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListReportingDataAnnotationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -14012,14 +12198,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14033,15 +12214,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_reporting_data_annotations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_reporting_data_annotations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14070,9 +12247,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_reporting_data_annotation(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateReportingDataAnnotationRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateReportingDataAnnotationRequest, dict]] = None,
         *,
         reporting_data_annotation: Optional[resources.ReportingDataAnnotation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -14122,20 +12297,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [reporting_data_annotation, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.UpdateReportingDataAnnotationRequest
-        ):
+        if not isinstance(request, analytics_admin.UpdateReportingDataAnnotationRequest):
             request = analytics_admin.UpdateReportingDataAnnotationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -14147,21 +12315,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_reporting_data_annotation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_reporting_data_annotation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "reporting_data_annotation.name",
-                        request.reporting_data_annotation.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("reporting_data_annotation.name", request.reporting_data_annotation.name),)),
         )
 
         # Validate the universe domain.
@@ -14180,9 +12339,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def delete_reporting_data_annotation(
         self,
-        request: Optional[
-            Union[analytics_admin.DeleteReportingDataAnnotationRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.DeleteReportingDataAnnotationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -14216,20 +12373,13 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.DeleteReportingDataAnnotationRequest
-        ):
+        if not isinstance(request, analytics_admin.DeleteReportingDataAnnotationRequest):
             request = analytics_admin.DeleteReportingDataAnnotationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -14239,15 +12389,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_reporting_data_annotation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_reporting_data_annotation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14262,9 +12408,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def submit_user_deletion(
         self,
-        request: Optional[
-            Union[analytics_admin.SubmitUserDeletionRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.SubmitUserDeletionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -14302,14 +12446,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14323,15 +12462,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.submit_user_deletion
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.submit_user_deletion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14349,9 +12484,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def list_subproperty_sync_configs(
         self,
-        request: Optional[
-            Union[analytics_admin.ListSubpropertySyncConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.ListSubpropertySyncConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -14392,14 +12525,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14413,15 +12541,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_subproperty_sync_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_subproperty_sync_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14450,9 +12574,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def update_subproperty_sync_config(
         self,
-        request: Optional[
-            Union[analytics_admin.UpdateSubpropertySyncConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.UpdateSubpropertySyncConfigRequest, dict]] = None,
         *,
         subproperty_sync_config: Optional[resources.SubpropertySyncConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -14503,14 +12625,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [subproperty_sync_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14526,21 +12643,12 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_subproperty_sync_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_subproperty_sync_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "subproperty_sync_config.name",
-                        request.subproperty_sync_config.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("subproperty_sync_config.name", request.subproperty_sync_config.name),)),
         )
 
         # Validate the universe domain.
@@ -14559,9 +12667,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_subproperty_sync_config(
         self,
-        request: Optional[
-            Union[analytics_admin.GetSubpropertySyncConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetSubpropertySyncConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -14605,14 +12711,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14626,15 +12727,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_subproperty_sync_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_subproperty_sync_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14652,9 +12749,7 @@ class AnalyticsAdminServiceAsyncClient:
 
     async def get_reporting_identity_settings(
         self,
-        request: Optional[
-            Union[analytics_admin.GetReportingIdentitySettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[analytics_admin.GetReportingIdentitySettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -14697,14 +12792,9 @@ class AnalyticsAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14718,15 +12808,11 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_reporting_identity_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_reporting_identity_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14749,9 +12835,7 @@ class AnalyticsAdminServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

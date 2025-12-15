@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -61,9 +49,7 @@ class ListNotificationChannelDescriptorsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., notification_service.ListNotificationChannelDescriptorsResponse
-        ],
+        method: Callable[..., notification_service.ListNotificationChannelDescriptorsResponse],
         request: notification_service.ListNotificationChannelDescriptorsRequest,
         response: notification_service.ListNotificationChannelDescriptorsResponse,
         *,
@@ -89,9 +75,7 @@ class ListNotificationChannelDescriptorsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = notification_service.ListNotificationChannelDescriptorsRequest(
-            request
-        )
+        self._request = notification_service.ListNotificationChannelDescriptorsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -101,18 +85,11 @@ class ListNotificationChannelDescriptorsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[notification_service.ListNotificationChannelDescriptorsResponse]:
+    def pages(self) -> Iterator[notification_service.ListNotificationChannelDescriptorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[notification.NotificationChannelDescriptor]:
@@ -143,10 +120,7 @@ class ListNotificationChannelDescriptorsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[notification_service.ListNotificationChannelDescriptorsResponse],
-        ],
+        method: Callable[..., Awaitable[notification_service.ListNotificationChannelDescriptorsResponse]],
         request: notification_service.ListNotificationChannelDescriptorsRequest,
         response: notification_service.ListNotificationChannelDescriptorsResponse,
         *,
@@ -172,9 +146,7 @@ class ListNotificationChannelDescriptorsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = notification_service.ListNotificationChannelDescriptorsRequest(
-            request
-        )
+        self._request = notification_service.ListNotificationChannelDescriptorsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -184,18 +156,11 @@ class ListNotificationChannelDescriptorsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[notification_service.ListNotificationChannelDescriptorsResponse]:
+    async def pages(self) -> AsyncIterator[notification_service.ListNotificationChannelDescriptorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[notification.NotificationChannelDescriptor]:
@@ -270,12 +235,7 @@ class ListNotificationChannelsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[notification.NotificationChannel]:
@@ -306,9 +266,7 @@ class ListNotificationChannelsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[notification_service.ListNotificationChannelsResponse]
-        ],
+        method: Callable[..., Awaitable[notification_service.ListNotificationChannelsResponse]],
         request: notification_service.ListNotificationChannelsRequest,
         response: notification_service.ListNotificationChannelsResponse,
         *,
@@ -344,18 +302,11 @@ class ListNotificationChannelsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[notification_service.ListNotificationChannelsResponse]:
+    async def pages(self) -> AsyncIterator[notification_service.ListNotificationChannelsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[notification.NotificationChannel]:

@@ -95,12 +95,8 @@ class BusinessInfoServiceRestInterceptor:
     """
 
     def pre_get_business_info(
-        self,
-        request: businessinfo.GetBusinessInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        businessinfo.GetBusinessInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: businessinfo.GetBusinessInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[businessinfo.GetBusinessInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_business_info
 
         Override in a subclass to manipulate the request or metadata
@@ -108,9 +104,7 @@ class BusinessInfoServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_business_info(
-        self, response: businessinfo.BusinessInfo
-    ) -> businessinfo.BusinessInfo:
+    def post_get_business_info(self, response: businessinfo.BusinessInfo) -> businessinfo.BusinessInfo:
         """Post-rpc interceptor for get_business_info
 
         DEPRECATED. Please use the `post_get_business_info_with_metadata`
@@ -124,9 +118,7 @@ class BusinessInfoServiceRestInterceptor:
         return response
 
     def post_get_business_info_with_metadata(
-        self,
-        response: businessinfo.BusinessInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: businessinfo.BusinessInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[businessinfo.BusinessInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_business_info
 
@@ -143,12 +135,8 @@ class BusinessInfoServiceRestInterceptor:
         return response, metadata
 
     def pre_update_business_info(
-        self,
-        request: businessinfo.UpdateBusinessInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        businessinfo.UpdateBusinessInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: businessinfo.UpdateBusinessInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[businessinfo.UpdateBusinessInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_business_info
 
         Override in a subclass to manipulate the request or metadata
@@ -156,9 +144,7 @@ class BusinessInfoServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_business_info(
-        self, response: businessinfo.BusinessInfo
-    ) -> businessinfo.BusinessInfo:
+    def post_update_business_info(self, response: businessinfo.BusinessInfo) -> businessinfo.BusinessInfo:
         """Post-rpc interceptor for update_business_info
 
         DEPRECATED. Please use the `post_update_business_info_with_metadata`
@@ -172,9 +158,7 @@ class BusinessInfoServiceRestInterceptor:
         return response
 
     def post_update_business_info_with_metadata(
-        self,
-        response: businessinfo.BusinessInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: businessinfo.BusinessInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[businessinfo.BusinessInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_business_info
 
@@ -270,31 +254,18 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or BusinessInfoServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetBusinessInfo(
-        _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo,
-        BusinessInfoServiceRestStub,
-    ):
+    class _GetBusinessInfo(_BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo, BusinessInfoServiceRestStub):
         def __hash__(self):
             return hash("BusinessInfoServiceRestTransport.GetBusinessInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -339,28 +310,16 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_http_options()
-            )
+            http_options = _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_business_info(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_business_info(request, metadata)
+            transcoded_request = _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -384,12 +343,7 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
 
             # Send the request
             response = BusinessInfoServiceRestTransport._GetBusinessInfo._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -405,12 +359,8 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
 
             resp = self._interceptor.post_get_business_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_business_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_business_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = businessinfo.BusinessInfo.to_json(response)
                 except:
@@ -431,23 +381,12 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
                 )
             return resp
 
-    class _UpdateBusinessInfo(
-        _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo,
-        BusinessInfoServiceRestStub,
-    ):
+    class _UpdateBusinessInfo(_BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo, BusinessInfoServiceRestStub):
         def __hash__(self):
             return hash("BusinessInfoServiceRestTransport.UpdateBusinessInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -493,32 +432,18 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_http_options()
-            )
+            http_options = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_business_info(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_business_info(request, metadata)
+            transcoded_request = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -541,16 +466,8 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                BusinessInfoServiceRestTransport._UpdateBusinessInfo._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BusinessInfoServiceRestTransport._UpdateBusinessInfo._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -566,12 +483,8 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
 
             resp = self._interceptor.post_update_business_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_business_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_business_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = businessinfo.BusinessInfo.to_json(response)
                 except:
@@ -593,17 +506,13 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             return resp
 
     @property
-    def get_business_info(
-        self,
-    ) -> Callable[[businessinfo.GetBusinessInfoRequest], businessinfo.BusinessInfo]:
+    def get_business_info(self) -> Callable[[businessinfo.GetBusinessInfoRequest], businessinfo.BusinessInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBusinessInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_business_info(
-        self,
-    ) -> Callable[[businessinfo.UpdateBusinessInfoRequest], businessinfo.BusinessInfo]:
+    def update_business_info(self) -> Callable[[businessinfo.UpdateBusinessInfoRequest], businessinfo.BusinessInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBusinessInfo(self._session, self._host, self._interceptor)  # type: ignore

@@ -170,9 +170,7 @@ class ProjectsRestInterceptor:
     """
 
     def pre_create_project(
-        self,
-        request: projects.CreateProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.CreateProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.CreateProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_project
 
@@ -181,9 +179,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_project
 
         DEPRECATED. Please use the `post_create_project_with_metadata`
@@ -197,9 +193,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_create_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_project
 
@@ -216,9 +210,7 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_delete_project(
-        self,
-        request: projects.DeleteProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.DeleteProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.DeleteProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_project
 
@@ -227,9 +219,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_project
 
         DEPRECATED. Please use the `post_delete_project_with_metadata`
@@ -243,9 +233,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_delete_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_project
 
@@ -262,12 +250,8 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +273,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -308,9 +290,7 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_get_project(
-        self,
-        request: projects.GetProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.GetProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.GetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_project
 
@@ -333,9 +313,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_get_project_with_metadata(
-        self,
-        response: projects.Project,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: projects.Project, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_project
 
@@ -352,9 +330,7 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_list_projects(
-        self,
-        request: projects.ListProjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.ListProjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.ListProjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_projects
 
@@ -363,9 +339,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_projects(
-        self, response: projects.ListProjectsResponse
-    ) -> projects.ListProjectsResponse:
+    def post_list_projects(self, response: projects.ListProjectsResponse) -> projects.ListProjectsResponse:
         """Post-rpc interceptor for list_projects
 
         DEPRECATED. Please use the `post_list_projects_with_metadata`
@@ -379,9 +353,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_list_projects_with_metadata(
-        self,
-        response: projects.ListProjectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: projects.ListProjectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.ListProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_projects
 
@@ -398,9 +370,7 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_move_project(
-        self,
-        request: projects.MoveProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.MoveProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.MoveProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_project
 
@@ -409,9 +379,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_move_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_move_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for move_project
 
         DEPRECATED. Please use the `post_move_project_with_metadata`
@@ -425,9 +393,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_move_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_project
 
@@ -444,9 +410,7 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_search_projects(
-        self,
-        request: projects.SearchProjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.SearchProjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.SearchProjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_projects
 
@@ -455,9 +419,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_search_projects(
-        self, response: projects.SearchProjectsResponse
-    ) -> projects.SearchProjectsResponse:
+    def post_search_projects(self, response: projects.SearchProjectsResponse) -> projects.SearchProjectsResponse:
         """Post-rpc interceptor for search_projects
 
         DEPRECATED. Please use the `post_search_projects_with_metadata`
@@ -471,12 +433,8 @@ class ProjectsRestInterceptor:
         return response
 
     def post_search_projects_with_metadata(
-        self,
-        response: projects.SearchProjectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        projects.SearchProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: projects.SearchProjectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[projects.SearchProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_projects
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -492,12 +450,8 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -519,9 +473,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -538,13 +490,8 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -552,9 +499,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -568,13 +513,8 @@ class ProjectsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -590,12 +530,8 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_undelete_project(
-        self,
-        request: projects.UndeleteProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        projects.UndeleteProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: projects.UndeleteProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[projects.UndeleteProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_project
 
         Override in a subclass to manipulate the request or metadata
@@ -603,9 +539,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_project
 
         DEPRECATED. Please use the `post_undelete_project_with_metadata`
@@ -619,9 +553,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_undelete_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_project
 
@@ -638,9 +570,7 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_update_project(
-        self,
-        request: projects.UpdateProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: projects.UpdateProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[projects.UpdateProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_project
 
@@ -649,9 +579,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_project
 
         DEPRECATED. Please use the `post_update_project_with_metadata`
@@ -665,9 +593,7 @@ class ProjectsRestInterceptor:
         return response
 
     def post_update_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_project
 
@@ -684,12 +610,8 @@ class ProjectsRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -697,9 +619,7 @@ class ProjectsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -788,9 +708,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -824,29 +742,17 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateProject(
-        _BaseProjectsRestTransport._BaseCreateProject, ProjectsRestStub
-    ):
+    class _CreateProject(_BaseProjectsRestTransport._BaseCreateProject, ProjectsRestStub):
         def __hash__(self):
             return hash("ProjectsRestTransport.CreateProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -891,34 +797,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseCreateProject._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseCreateProject._get_http_options()
 
             request, metadata = self._interceptor.pre_create_project(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseCreateProject._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseCreateProject._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectsRestTransport._BaseCreateProject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectsRestTransport._BaseCreateProject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseCreateProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseCreateProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -942,13 +832,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._CreateProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -962,12 +846,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_create_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -988,22 +868,12 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
             return resp
 
-    class _DeleteProject(
-        _BaseProjectsRestTransport._BaseDeleteProject, ProjectsRestStub
-    ):
+    class _DeleteProject(_BaseProjectsRestTransport._BaseDeleteProject, ProjectsRestStub):
         def __hash__(self):
             return hash("ProjectsRestTransport.DeleteProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1046,30 +916,16 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseDeleteProject._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseDeleteProject._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_project(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseDeleteProject._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseDeleteProject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseDeleteProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseDeleteProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1093,12 +949,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._DeleteProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1112,12 +963,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_delete_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1143,15 +990,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return hash("ProjectsRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1266,34 +1105,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectsRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectsRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1317,13 +1140,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1339,12 +1156,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1370,15 +1183,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return hash("ProjectsRestTransport.GetProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1423,30 +1228,16 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseGetProject._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseGetProject._get_http_options()
 
             request, metadata = self._interceptor.pre_get_project(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseGetProject._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseGetProject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseGetProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseGetProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1469,14 +1260,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
 
             # Send the request
-            response = ProjectsRestTransport._GetProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ProjectsRestTransport._GetProject._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1491,12 +1275,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_get_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = projects.Project.to_json(response)
                 except:
@@ -1522,15 +1302,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return hash("ProjectsRestTransport.ListProjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1582,30 +1354,16 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseListProjects._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseListProjects._get_http_options()
 
             request, metadata = self._interceptor.pre_list_projects(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseListProjects._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseListProjects._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseListProjects._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseListProjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1629,12 +1387,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._ListProjects._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1650,12 +1403,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_list_projects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_projects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_projects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = projects.ListProjectsResponse.to_json(response)
                 except:
@@ -1681,15 +1430,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return hash("ProjectsRestTransport.MoveProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1734,34 +1475,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseMoveProject._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseMoveProject._get_http_options()
 
             request, metadata = self._interceptor.pre_move_project(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseMoveProject._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseMoveProject._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectsRestTransport._BaseMoveProject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectsRestTransport._BaseMoveProject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseMoveProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseMoveProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1785,13 +1510,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._MoveProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1805,12 +1524,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_move_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1831,22 +1546,12 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
             return resp
 
-    class _SearchProjects(
-        _BaseProjectsRestTransport._BaseSearchProjects, ProjectsRestStub
-    ):
+    class _SearchProjects(_BaseProjectsRestTransport._BaseSearchProjects, ProjectsRestStub):
         def __hash__(self):
             return hash("ProjectsRestTransport.SearchProjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1894,30 +1599,16 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseSearchProjects._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseSearchProjects._get_http_options()
 
             request, metadata = self._interceptor.pre_search_projects(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseSearchProjects._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseSearchProjects._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseSearchProjects._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseSearchProjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1941,12 +1632,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._SearchProjects._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1962,12 +1648,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_search_projects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_projects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_projects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = projects.SearchProjectsResponse.to_json(response)
                 except:
@@ -1993,15 +1675,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return hash("ProjectsRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2116,34 +1790,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectsRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectsRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2167,13 +1825,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2189,12 +1841,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2215,22 +1863,12 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseProjectsRestTransport._BaseTestIamPermissions, ProjectsRestStub
-    ):
+    class _TestIamPermissions(_BaseProjectsRestTransport._BaseTestIamPermissions, ProjectsRestStub):
         def __hash__(self):
             return hash("ProjectsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2270,32 +1908,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseProjectsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseProjectsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProjectsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2319,13 +1943,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2341,12 +1959,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2367,22 +1981,12 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
             return resp
 
-    class _UndeleteProject(
-        _BaseProjectsRestTransport._BaseUndeleteProject, ProjectsRestStub
-    ):
+    class _UndeleteProject(_BaseProjectsRestTransport._BaseUndeleteProject, ProjectsRestStub):
         def __hash__(self):
             return hash("ProjectsRestTransport.UndeleteProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2427,38 +2031,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseUndeleteProject._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseUndeleteProject._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_project(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseUndeleteProject._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_undelete_project(request, metadata)
+            transcoded_request = _BaseProjectsRestTransport._BaseUndeleteProject._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseProjectsRestTransport._BaseUndeleteProject._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseProjectsRestTransport._BaseUndeleteProject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseUndeleteProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseUndeleteProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2482,13 +2066,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._UndeleteProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2502,12 +2080,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_undelete_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2528,22 +2102,12 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
             return resp
 
-    class _UpdateProject(
-        _BaseProjectsRestTransport._BaseUpdateProject, ProjectsRestStub
-    ):
+    class _UpdateProject(_BaseProjectsRestTransport._BaseUpdateProject, ProjectsRestStub):
         def __hash__(self):
             return hash("ProjectsRestTransport.UpdateProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2593,34 +2157,18 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseUpdateProject._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseUpdateProject._get_http_options()
 
             request, metadata = self._interceptor.pre_update_project(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseUpdateProject._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseUpdateProject._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectsRestTransport._BaseUpdateProject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectsRestTransport._BaseUpdateProject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseUpdateProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseUpdateProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2644,13 +2192,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._UpdateProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2664,12 +2206,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             resp = self._interceptor.post_update_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2691,25 +2229,19 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return resp
 
     @property
-    def create_project(
-        self,
-    ) -> Callable[[projects.CreateProjectRequest], operations_pb2.Operation]:
+    def create_project(self) -> Callable[[projects.CreateProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_project(
-        self,
-    ) -> Callable[[projects.DeleteProjectRequest], operations_pb2.Operation]:
+    def delete_project(self) -> Callable[[projects.DeleteProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -2721,60 +2253,43 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
         return self._GetProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_projects(
-        self,
-    ) -> Callable[[projects.ListProjectsRequest], projects.ListProjectsResponse]:
+    def list_projects(self) -> Callable[[projects.ListProjectsRequest], projects.ListProjectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_project(
-        self,
-    ) -> Callable[[projects.MoveProjectRequest], operations_pb2.Operation]:
+    def move_project(self) -> Callable[[projects.MoveProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_projects(
-        self,
-    ) -> Callable[[projects.SearchProjectsRequest], projects.SearchProjectsResponse]:
+    def search_projects(self) -> Callable[[projects.SearchProjectsRequest], projects.SearchProjectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchProjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_project(
-        self,
-    ) -> Callable[[projects.UndeleteProjectRequest], operations_pb2.Operation]:
+    def undelete_project(self) -> Callable[[projects.UndeleteProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_project(
-        self,
-    ) -> Callable[[projects.UpdateProjectRequest], operations_pb2.Operation]:
+    def update_project(self) -> Callable[[projects.UpdateProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProject(self._session, self._host, self._interceptor)  # type: ignore
@@ -2788,15 +2303,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             return hash("ProjectsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2834,30 +2341,16 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseProjectsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseProjectsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseProjectsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseProjectsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2881,12 +2374,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
 
             # Send the request
             response = ProjectsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2898,9 +2386,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

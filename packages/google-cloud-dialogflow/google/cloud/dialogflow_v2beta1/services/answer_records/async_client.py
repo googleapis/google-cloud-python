@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -82,9 +71,7 @@ class AnswerRecordsAsyncClient:
     _DEFAULT_UNIVERSE = AnswerRecordsClient._DEFAULT_UNIVERSE
 
     answer_record_path = staticmethod(AnswerRecordsClient.answer_record_path)
-    parse_answer_record_path = staticmethod(
-        AnswerRecordsClient.parse_answer_record_path
-    )
+    parse_answer_record_path = staticmethod(AnswerRecordsClient.parse_answer_record_path)
     context_path = staticmethod(AnswerRecordsClient.context_path)
     parse_context_path = staticmethod(AnswerRecordsClient.parse_context_path)
     document_path = staticmethod(AnswerRecordsClient.document_path)
@@ -93,30 +80,16 @@ class AnswerRecordsAsyncClient:
     parse_intent_path = staticmethod(AnswerRecordsClient.parse_intent_path)
     tool_path = staticmethod(AnswerRecordsClient.tool_path)
     parse_tool_path = staticmethod(AnswerRecordsClient.parse_tool_path)
-    common_billing_account_path = staticmethod(
-        AnswerRecordsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AnswerRecordsClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(AnswerRecordsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AnswerRecordsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AnswerRecordsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AnswerRecordsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AnswerRecordsClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AnswerRecordsClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(AnswerRecordsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AnswerRecordsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AnswerRecordsClient.parse_common_organization_path)
     common_project_path = staticmethod(AnswerRecordsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        AnswerRecordsClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(AnswerRecordsClient.parse_common_project_path)
     common_location_path = staticmethod(AnswerRecordsClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        AnswerRecordsClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(AnswerRecordsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -152,9 +125,7 @@ class AnswerRecordsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -221,9 +192,7 @@ class AnswerRecordsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, AnswerRecordsTransport, Callable[..., AnswerRecordsTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AnswerRecordsTransport, Callable[..., AnswerRecordsTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -283,20 +252,14 @@ class AnswerRecordsAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.dialogflow_v2beta1.AnswerRecordsAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.dialogflow.v2beta1.AnswerRecords",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -391,10 +354,7 @@ class AnswerRecordsAsyncClient:
                    wrong.
 
         """
-        warnings.warn(
-            "AnswerRecordsAsyncClient.get_answer_record is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AnswerRecordsAsyncClient.get_answer_record is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -404,15 +364,11 @@ class AnswerRecordsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_answer_record
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_answer_record]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -499,14 +455,9 @@ class AnswerRecordsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -520,15 +471,11 @@ class AnswerRecordsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_answer_records
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_answer_records]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -557,9 +504,7 @@ class AnswerRecordsAsyncClient:
 
     async def update_answer_record(
         self,
-        request: Optional[
-            Union[gcd_answer_record.UpdateAnswerRecordRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_answer_record.UpdateAnswerRecordRequest, dict]] = None,
         *,
         answer_record: Optional[gcd_answer_record.AnswerRecord] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -660,14 +605,9 @@ class AnswerRecordsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [answer_record, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -683,17 +623,11 @@ class AnswerRecordsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_answer_record
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_answer_record]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("answer_record.name", request.answer_record.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("answer_record.name", request.answer_record.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -746,9 +680,7 @@ class AnswerRecordsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -801,9 +733,7 @@ class AnswerRecordsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -859,9 +789,7 @@ class AnswerRecordsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -911,9 +839,7 @@ class AnswerRecordsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -966,9 +892,7 @@ class AnswerRecordsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -991,9 +915,7 @@ class AnswerRecordsAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

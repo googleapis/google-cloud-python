@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -274,18 +263,14 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -321,9 +306,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -346,20 +329,13 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [secure_source_manager.ListInstancesRequest],
-        Awaitable[secure_source_manager.ListInstancesResponse],
-    ]:
+    def list_instances(self) -> Callable[[secure_source_manager.ListInstancesRequest], Awaitable[secure_source_manager.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists Instances in a given project and location.
@@ -383,12 +359,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetInstanceRequest],
-        Awaitable[secure_source_manager.Instance],
-    ]:
+    def get_instance(self) -> Callable[[secure_source_manager.GetInstanceRequest], Awaitable[secure_source_manager.Instance]]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets details of a single instance.
@@ -412,12 +383,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreateInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_instance(self) -> Callable[[secure_source_manager.CreateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a new instance in a given project and
@@ -442,12 +408,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_instance"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeleteInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_instance(self) -> Callable[[secure_source_manager.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single instance.
@@ -473,10 +434,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_repositories(
         self,
-    ) -> Callable[
-        [secure_source_manager.ListRepositoriesRequest],
-        Awaitable[secure_source_manager.ListRepositoriesResponse],
-    ]:
+    ) -> Callable[[secure_source_manager.ListRepositoriesRequest], Awaitable[secure_source_manager.ListRepositoriesResponse]]:
         r"""Return a callable for the list repositories method over gRPC.
 
         Lists Repositories in a given project and location.
@@ -504,12 +462,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_repositories"]
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetRepositoryRequest],
-        Awaitable[secure_source_manager.Repository],
-    ]:
+    def get_repository(self) -> Callable[[secure_source_manager.GetRepositoryRequest], Awaitable[secure_source_manager.Repository]]:
         r"""Return a callable for the get repository method over gRPC.
 
         Gets metadata of a repository.
@@ -533,12 +486,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["get_repository"]
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreateRepositoryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_repository(self) -> Callable[[secure_source_manager.CreateRepositoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create repository method over gRPC.
 
         Creates a new repository in a given project and
@@ -566,12 +514,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_repository"]
 
     @property
-    def update_repository(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdateRepositoryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_repository(self) -> Callable[[secure_source_manager.UpdateRepositoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update repository method over gRPC.
 
         Updates the metadata of a repository.
@@ -595,12 +538,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_repository"]
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeleteRepositoryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_repository(self) -> Callable[[secure_source_manager.DeleteRepositoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete repository method over gRPC.
 
         Deletes a Repository.
@@ -624,12 +562,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["delete_repository"]
 
     @property
-    def list_hooks(
-        self,
-    ) -> Callable[
-        [secure_source_manager.ListHooksRequest],
-        Awaitable[secure_source_manager.ListHooksResponse],
-    ]:
+    def list_hooks(self) -> Callable[[secure_source_manager.ListHooksRequest], Awaitable[secure_source_manager.ListHooksResponse]]:
         r"""Return a callable for the list hooks method over gRPC.
 
         Lists hooks in a given repository.
@@ -653,11 +586,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_hooks"]
 
     @property
-    def get_hook(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetHookRequest], Awaitable[secure_source_manager.Hook]
-    ]:
+    def get_hook(self) -> Callable[[secure_source_manager.GetHookRequest], Awaitable[secure_source_manager.Hook]]:
         r"""Return a callable for the get hook method over gRPC.
 
         Gets metadata of a hook.
@@ -681,11 +610,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["get_hook"]
 
     @property
-    def create_hook(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreateHookRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_hook(self) -> Callable[[secure_source_manager.CreateHookRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create hook method over gRPC.
 
         Creates a new hook in a given repository.
@@ -709,11 +634,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_hook"]
 
     @property
-    def update_hook(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdateHookRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_hook(self) -> Callable[[secure_source_manager.UpdateHookRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update hook method over gRPC.
 
         Updates the metadata of a hook.
@@ -737,11 +658,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_hook"]
 
     @property
-    def delete_hook(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeleteHookRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_hook(self) -> Callable[[secure_source_manager.DeleteHookRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete hook method over gRPC.
 
         Deletes a Hook.
@@ -765,9 +682,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["delete_hook"]
 
     @property
-    def get_iam_policy_repo(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy_repo(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy repo method over gRPC.
 
         Get IAM policy for a repository.
@@ -791,9 +706,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["get_iam_policy_repo"]
 
     @property
-    def set_iam_policy_repo(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy_repo(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy repo method over gRPC.
 
         Set IAM policy on a repository.
@@ -817,12 +730,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["set_iam_policy_repo"]
 
     @property
-    def test_iam_permissions_repo(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions_repo(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions repo method over gRPC.
 
         Test IAM permissions on a repository.
@@ -847,12 +755,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["test_iam_permissions_repo"]
 
     @property
-    def create_branch_rule(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreateBranchRuleRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_branch_rule(self) -> Callable[[secure_source_manager.CreateBranchRuleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create branch rule method over gRPC.
 
         CreateBranchRule creates a branch rule in a given
@@ -877,12 +780,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_branch_rule"]
 
     @property
-    def list_branch_rules(
-        self,
-    ) -> Callable[
-        [secure_source_manager.ListBranchRulesRequest],
-        Awaitable[secure_source_manager.ListBranchRulesResponse],
-    ]:
+    def list_branch_rules(self) -> Callable[[secure_source_manager.ListBranchRulesRequest], Awaitable[secure_source_manager.ListBranchRulesResponse]]:
         r"""Return a callable for the list branch rules method over gRPC.
 
         ListBranchRules lists branch rules in a given
@@ -907,12 +805,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_branch_rules"]
 
     @property
-    def get_branch_rule(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetBranchRuleRequest],
-        Awaitable[secure_source_manager.BranchRule],
-    ]:
+    def get_branch_rule(self) -> Callable[[secure_source_manager.GetBranchRuleRequest], Awaitable[secure_source_manager.BranchRule]]:
         r"""Return a callable for the get branch rule method over gRPC.
 
         GetBranchRule gets a branch rule.
@@ -936,12 +829,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["get_branch_rule"]
 
     @property
-    def update_branch_rule(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdateBranchRuleRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_branch_rule(self) -> Callable[[secure_source_manager.UpdateBranchRuleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update branch rule method over gRPC.
 
         UpdateBranchRule updates a branch rule.
@@ -965,12 +853,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_branch_rule"]
 
     @property
-    def delete_branch_rule(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeleteBranchRuleRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_branch_rule(self) -> Callable[[secure_source_manager.DeleteBranchRuleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete branch rule method over gRPC.
 
         DeleteBranchRule deletes a branch rule.
@@ -994,12 +877,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["delete_branch_rule"]
 
     @property
-    def create_pull_request(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreatePullRequestRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_pull_request(self) -> Callable[[secure_source_manager.CreatePullRequestRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create pull request method over gRPC.
 
         Creates a pull request.
@@ -1023,12 +901,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_pull_request"]
 
     @property
-    def get_pull_request(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetPullRequestRequest],
-        Awaitable[secure_source_manager.PullRequest],
-    ]:
+    def get_pull_request(self) -> Callable[[secure_source_manager.GetPullRequestRequest], Awaitable[secure_source_manager.PullRequest]]:
         r"""Return a callable for the get pull request method over gRPC.
 
         Gets a pull request.
@@ -1054,10 +927,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_pull_requests(
         self,
-    ) -> Callable[
-        [secure_source_manager.ListPullRequestsRequest],
-        Awaitable[secure_source_manager.ListPullRequestsResponse],
-    ]:
+    ) -> Callable[[secure_source_manager.ListPullRequestsRequest], Awaitable[secure_source_manager.ListPullRequestsResponse]]:
         r"""Return a callable for the list pull requests method over gRPC.
 
         Lists pull requests in a repository.
@@ -1081,12 +951,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_pull_requests"]
 
     @property
-    def update_pull_request(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdatePullRequestRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_pull_request(self) -> Callable[[secure_source_manager.UpdatePullRequestRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update pull request method over gRPC.
 
         Updates a pull request.
@@ -1110,12 +975,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_pull_request"]
 
     @property
-    def merge_pull_request(
-        self,
-    ) -> Callable[
-        [secure_source_manager.MergePullRequestRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def merge_pull_request(self) -> Callable[[secure_source_manager.MergePullRequestRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the merge pull request method over gRPC.
 
         Merges a pull request.
@@ -1139,12 +999,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["merge_pull_request"]
 
     @property
-    def open_pull_request(
-        self,
-    ) -> Callable[
-        [secure_source_manager.OpenPullRequestRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def open_pull_request(self) -> Callable[[secure_source_manager.OpenPullRequestRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the open pull request method over gRPC.
 
         Opens a pull request.
@@ -1168,12 +1023,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["open_pull_request"]
 
     @property
-    def close_pull_request(
-        self,
-    ) -> Callable[
-        [secure_source_manager.ClosePullRequestRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def close_pull_request(self) -> Callable[[secure_source_manager.ClosePullRequestRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the close pull request method over gRPC.
 
         Closes a pull request without merging.
@@ -1199,10 +1049,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_pull_request_file_diffs(
         self,
-    ) -> Callable[
-        [secure_source_manager.ListPullRequestFileDiffsRequest],
-        Awaitable[secure_source_manager.ListPullRequestFileDiffsResponse],
-    ]:
+    ) -> Callable[[secure_source_manager.ListPullRequestFileDiffsRequest], Awaitable[secure_source_manager.ListPullRequestFileDiffsResponse]]:
         r"""Return a callable for the list pull request file diffs method over gRPC.
 
         Lists a pull request's file diffs.
@@ -1218,9 +1065,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_pull_request_file_diffs" not in self._stubs:
-            self._stubs[
-                "list_pull_request_file_diffs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_pull_request_file_diffs"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestFileDiffs",
                 request_serializer=secure_source_manager.ListPullRequestFileDiffsRequest.serialize,
                 response_deserializer=secure_source_manager.ListPullRequestFileDiffsResponse.deserialize,
@@ -1228,12 +1073,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_pull_request_file_diffs"]
 
     @property
-    def fetch_tree(
-        self,
-    ) -> Callable[
-        [secure_source_manager.FetchTreeRequest],
-        Awaitable[secure_source_manager.FetchTreeResponse],
-    ]:
+    def fetch_tree(self) -> Callable[[secure_source_manager.FetchTreeRequest], Awaitable[secure_source_manager.FetchTreeResponse]]:
         r"""Return a callable for the fetch tree method over gRPC.
 
         Fetches a tree from a repository.
@@ -1257,12 +1097,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["fetch_tree"]
 
     @property
-    def fetch_blob(
-        self,
-    ) -> Callable[
-        [secure_source_manager.FetchBlobRequest],
-        Awaitable[secure_source_manager.FetchBlobResponse],
-    ]:
+    def fetch_blob(self) -> Callable[[secure_source_manager.FetchBlobRequest], Awaitable[secure_source_manager.FetchBlobResponse]]:
         r"""Return a callable for the fetch blob method over gRPC.
 
         Fetches a blob from a repository.
@@ -1286,11 +1121,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["fetch_blob"]
 
     @property
-    def create_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreateIssueRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_issue(self) -> Callable[[secure_source_manager.CreateIssueRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create issue method over gRPC.
 
         Creates an issue.
@@ -1314,11 +1145,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_issue"]
 
     @property
-    def get_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetIssueRequest], Awaitable[secure_source_manager.Issue]
-    ]:
+    def get_issue(self) -> Callable[[secure_source_manager.GetIssueRequest], Awaitable[secure_source_manager.Issue]]:
         r"""Return a callable for the get issue method over gRPC.
 
         Gets an issue.
@@ -1342,12 +1169,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["get_issue"]
 
     @property
-    def list_issues(
-        self,
-    ) -> Callable[
-        [secure_source_manager.ListIssuesRequest],
-        Awaitable[secure_source_manager.ListIssuesResponse],
-    ]:
+    def list_issues(self) -> Callable[[secure_source_manager.ListIssuesRequest], Awaitable[secure_source_manager.ListIssuesResponse]]:
         r"""Return a callable for the list issues method over gRPC.
 
         Lists issues in a repository.
@@ -1371,11 +1193,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_issues"]
 
     @property
-    def update_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdateIssueRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_issue(self) -> Callable[[secure_source_manager.UpdateIssueRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update issue method over gRPC.
 
         Updates a issue.
@@ -1399,11 +1217,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_issue"]
 
     @property
-    def delete_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeleteIssueRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_issue(self) -> Callable[[secure_source_manager.DeleteIssueRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete issue method over gRPC.
 
         Deletes an issue.
@@ -1427,11 +1241,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["delete_issue"]
 
     @property
-    def open_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.OpenIssueRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def open_issue(self) -> Callable[[secure_source_manager.OpenIssueRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the open issue method over gRPC.
 
         Opens an issue.
@@ -1455,11 +1265,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["open_issue"]
 
     @property
-    def close_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CloseIssueRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def close_issue(self) -> Callable[[secure_source_manager.CloseIssueRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the close issue method over gRPC.
 
         Closes an issue.
@@ -1485,10 +1291,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def get_pull_request_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.GetPullRequestCommentRequest],
-        Awaitable[secure_source_manager.PullRequestComment],
-    ]:
+    ) -> Callable[[secure_source_manager.GetPullRequestCommentRequest], Awaitable[secure_source_manager.PullRequestComment]]:
         r"""Return a callable for the get pull request comment method over gRPC.
 
         Gets a pull request comment.
@@ -1514,10 +1317,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_pull_request_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.ListPullRequestCommentsRequest],
-        Awaitable[secure_source_manager.ListPullRequestCommentsResponse],
-    ]:
+    ) -> Callable[[secure_source_manager.ListPullRequestCommentsRequest], Awaitable[secure_source_manager.ListPullRequestCommentsResponse]]:
         r"""Return a callable for the list pull request comments method over gRPC.
 
         Lists pull request comments.
@@ -1533,9 +1333,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "list_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_pull_request_comments"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestComments",
                 request_serializer=secure_source_manager.ListPullRequestCommentsRequest.serialize,
                 response_deserializer=secure_source_manager.ListPullRequestCommentsResponse.deserialize,
@@ -1543,12 +1341,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_pull_request_comments"]
 
     @property
-    def create_pull_request_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreatePullRequestCommentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_pull_request_comment(self) -> Callable[[secure_source_manager.CreatePullRequestCommentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create pull request comment method over gRPC.
 
         Creates a pull request comment. This function is used
@@ -1569,9 +1362,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_pull_request_comment" not in self._stubs:
-            self._stubs[
-                "create_pull_request_comment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_pull_request_comment"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequestComment",
                 request_serializer=secure_source_manager.CreatePullRequestCommentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1579,12 +1370,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_pull_request_comment"]
 
     @property
-    def update_pull_request_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdatePullRequestCommentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_pull_request_comment(self) -> Callable[[secure_source_manager.UpdatePullRequestCommentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update pull request comment method over gRPC.
 
         Updates a pull request comment.
@@ -1600,9 +1386,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_pull_request_comment" not in self._stubs:
-            self._stubs[
-                "update_pull_request_comment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_pull_request_comment"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequestComment",
                 request_serializer=secure_source_manager.UpdatePullRequestCommentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1610,12 +1394,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_pull_request_comment"]
 
     @property
-    def delete_pull_request_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeletePullRequestCommentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_pull_request_comment(self) -> Callable[[secure_source_manager.DeletePullRequestCommentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete pull request comment method over gRPC.
 
         Deletes a pull request comment.
@@ -1631,9 +1410,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_pull_request_comment" not in self._stubs:
-            self._stubs[
-                "delete_pull_request_comment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_pull_request_comment"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeletePullRequestComment",
                 request_serializer=secure_source_manager.DeletePullRequestCommentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1643,10 +1420,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def batch_create_pull_request_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.BatchCreatePullRequestCommentsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[secure_source_manager.BatchCreatePullRequestCommentsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch create pull request
         comments method over gRPC.
 
@@ -1668,9 +1442,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "batch_create_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_create_pull_request_comments"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/BatchCreatePullRequestComments",
                 request_serializer=secure_source_manager.BatchCreatePullRequestCommentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1680,10 +1452,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def resolve_pull_request_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.ResolvePullRequestCommentsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[secure_source_manager.ResolvePullRequestCommentsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the resolve pull request comments method over gRPC.
 
         Resolves pull request comments. A list of PullRequestComment
@@ -1702,9 +1471,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "resolve_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "resolve_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["resolve_pull_request_comments"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/ResolvePullRequestComments",
                 request_serializer=secure_source_manager.ResolvePullRequestCommentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1714,10 +1481,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def unresolve_pull_request_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.UnresolvePullRequestCommentsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[secure_source_manager.UnresolvePullRequestCommentsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the unresolve pull request
         comments method over gRPC.
 
@@ -1737,9 +1501,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "unresolve_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "unresolve_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["unresolve_pull_request_comments"] = self._logged_channel.unary_unary(
                 "/google.cloud.securesourcemanager.v1.SecureSourceManager/UnresolvePullRequestComments",
                 request_serializer=secure_source_manager.UnresolvePullRequestCommentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1747,12 +1509,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["unresolve_pull_request_comments"]
 
     @property
-    def create_issue_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.CreateIssueCommentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_issue_comment(self) -> Callable[[secure_source_manager.CreateIssueCommentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create issue comment method over gRPC.
 
         Creates an issue comment.
@@ -1776,12 +1533,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["create_issue_comment"]
 
     @property
-    def get_issue_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetIssueCommentRequest],
-        Awaitable[secure_source_manager.IssueComment],
-    ]:
+    def get_issue_comment(self) -> Callable[[secure_source_manager.GetIssueCommentRequest], Awaitable[secure_source_manager.IssueComment]]:
         r"""Return a callable for the get issue comment method over gRPC.
 
         Gets an issue comment.
@@ -1807,10 +1559,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_issue_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.ListIssueCommentsRequest],
-        Awaitable[secure_source_manager.ListIssueCommentsResponse],
-    ]:
+    ) -> Callable[[secure_source_manager.ListIssueCommentsRequest], Awaitable[secure_source_manager.ListIssueCommentsResponse]]:
         r"""Return a callable for the list issue comments method over gRPC.
 
         Lists comments in an issue.
@@ -1834,12 +1583,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["list_issue_comments"]
 
     @property
-    def update_issue_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.UpdateIssueCommentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_issue_comment(self) -> Callable[[secure_source_manager.UpdateIssueCommentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update issue comment method over gRPC.
 
         Updates an issue comment.
@@ -1863,12 +1607,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
         return self._stubs["update_issue_comment"]
 
     @property
-    def delete_issue_comment(
-        self,
-    ) -> Callable[
-        [secure_source_manager.DeleteIssueCommentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_issue_comment(self) -> Callable[[secure_source_manager.DeleteIssueCommentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete issue comment method over gRPC.
 
         Deletes an issue comment.
@@ -2312,9 +2051,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2331,9 +2068,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2418,10 +2153,7 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

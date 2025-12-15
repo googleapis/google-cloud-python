@@ -15,20 +15,9 @@
 #
 from .build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from .condition import Condition
-from .execution import (
-    CancelExecutionRequest,
-    DeleteExecutionRequest,
-    Execution,
-    GetExecutionRequest,
-    ListExecutionsRequest,
-    ListExecutionsResponse,
-)
+from .execution import CancelExecutionRequest, DeleteExecutionRequest, Execution, GetExecutionRequest, ListExecutionsRequest, ListExecutionsResponse
 from .execution_template import ExecutionTemplate
-from .instance_split import (
-    InstanceSplit,
-    InstanceSplitAllocationType,
-    InstanceSplitStatus,
-)
+from .instance_split import InstanceSplit, InstanceSplitAllocationType, InstanceSplitStatus
 from .job import (
     CreateJobRequest,
     DeleteJobRequest,
@@ -63,13 +52,7 @@ from .k8s_min import (
     Volume,
     VolumeMount,
 )
-from .revision import (
-    DeleteRevisionRequest,
-    GetRevisionRequest,
-    ListRevisionsRequest,
-    ListRevisionsResponse,
-    Revision,
-)
+from .revision import DeleteRevisionRequest, GetRevisionRequest, ListRevisionsRequest, ListRevisionsResponse, Revision
 from .revision_template import RevisionTemplate
 from .service import (
     CreateServiceRequest,
@@ -81,19 +64,9 @@ from .service import (
     UpdateServiceRequest,
 )
 from .status import RevisionScalingStatus
-from .task import (
-    GetTaskRequest,
-    ListTasksRequest,
-    ListTasksResponse,
-    Task,
-    TaskAttemptResult,
-)
+from .task import GetTaskRequest, ListTasksRequest, ListTasksResponse, Task, TaskAttemptResult
 from .task_template import TaskTemplate
-from .traffic_target import (
-    TrafficTarget,
-    TrafficTargetAllocationType,
-    TrafficTargetStatus,
-)
+from .traffic_target import TrafficTarget, TrafficTargetAllocationType, TrafficTargetStatus
 from .vendor_settings import (
     BinaryAuthorization,
     BuildConfig,

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -94,60 +83,38 @@ class CloudBuildAsyncClient:
     parse_build_trigger_path = staticmethod(CloudBuildClient.parse_build_trigger_path)
     crypto_key_path = staticmethod(CloudBuildClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(CloudBuildClient.parse_crypto_key_path)
-    default_service_account_path = staticmethod(
-        CloudBuildClient.default_service_account_path
-    )
-    parse_default_service_account_path = staticmethod(
-        CloudBuildClient.parse_default_service_account_path
-    )
-    github_enterprise_config_path = staticmethod(
-        CloudBuildClient.github_enterprise_config_path
-    )
-    parse_github_enterprise_config_path = staticmethod(
-        CloudBuildClient.parse_github_enterprise_config_path
-    )
+    default_service_account_path = staticmethod(CloudBuildClient.default_service_account_path)
+    parse_default_service_account_path = staticmethod(CloudBuildClient.parse_default_service_account_path)
+    github_enterprise_config_path = staticmethod(CloudBuildClient.github_enterprise_config_path)
+    parse_github_enterprise_config_path = staticmethod(CloudBuildClient.parse_github_enterprise_config_path)
     git_repository_link_path = staticmethod(CloudBuildClient.git_repository_link_path)
-    parse_git_repository_link_path = staticmethod(
-        CloudBuildClient.parse_git_repository_link_path
-    )
+    parse_git_repository_link_path = staticmethod(CloudBuildClient.parse_git_repository_link_path)
     network_path = staticmethod(CloudBuildClient.network_path)
     parse_network_path = staticmethod(CloudBuildClient.parse_network_path)
     network_attachment_path = staticmethod(CloudBuildClient.network_attachment_path)
-    parse_network_attachment_path = staticmethod(
-        CloudBuildClient.parse_network_attachment_path
-    )
+    parse_network_attachment_path = staticmethod(CloudBuildClient.parse_network_attachment_path)
     repository_path = staticmethod(CloudBuildClient.repository_path)
     parse_repository_path = staticmethod(CloudBuildClient.parse_repository_path)
     secret_version_path = staticmethod(CloudBuildClient.secret_version_path)
     parse_secret_version_path = staticmethod(CloudBuildClient.parse_secret_version_path)
     service_account_path = staticmethod(CloudBuildClient.service_account_path)
-    parse_service_account_path = staticmethod(
-        CloudBuildClient.parse_service_account_path
-    )
+    parse_service_account_path = staticmethod(CloudBuildClient.parse_service_account_path)
     subscription_path = staticmethod(CloudBuildClient.subscription_path)
     parse_subscription_path = staticmethod(CloudBuildClient.parse_subscription_path)
     topic_path = staticmethod(CloudBuildClient.topic_path)
     parse_topic_path = staticmethod(CloudBuildClient.parse_topic_path)
     worker_pool_path = staticmethod(CloudBuildClient.worker_pool_path)
     parse_worker_pool_path = staticmethod(CloudBuildClient.parse_worker_pool_path)
-    common_billing_account_path = staticmethod(
-        CloudBuildClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CloudBuildClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(CloudBuildClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CloudBuildClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(CloudBuildClient.common_folder_path)
     parse_common_folder_path = staticmethod(CloudBuildClient.parse_common_folder_path)
     common_organization_path = staticmethod(CloudBuildClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        CloudBuildClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(CloudBuildClient.parse_common_organization_path)
     common_project_path = staticmethod(CloudBuildClient.common_project_path)
     parse_common_project_path = staticmethod(CloudBuildClient.parse_common_project_path)
     common_location_path = staticmethod(CloudBuildClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        CloudBuildClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(CloudBuildClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -183,9 +150,7 @@ class CloudBuildAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -252,9 +217,7 @@ class CloudBuildAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, CloudBuildTransport, Callable[..., CloudBuildTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, CloudBuildTransport, Callable[..., CloudBuildTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -314,20 +277,14 @@ class CloudBuildAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.devtools.cloudbuild_v1.CloudBuildAsyncClient`.",
                 extra={
                     "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -447,14 +404,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, build, parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -472,23 +424,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_build
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_build]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -616,14 +562,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, id, name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -641,23 +582,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_build
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_build]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -751,14 +686,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, filter]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -774,23 +704,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_builds
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_builds]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -917,14 +841,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, id, name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -942,23 +861,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_build
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.cancel_build]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1113,14 +1026,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, id, name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1138,23 +1046,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.retry_build
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.retry_build]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1286,14 +1188,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, approval_result]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1309,23 +1206,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.approve_build
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.approve_build]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1433,14 +1324,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, trigger, parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1458,23 +1344,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_build_trigger
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_build_trigger]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1573,14 +1453,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, trigger_id, name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1598,23 +1473,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_build_trigger
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_build_trigger]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1698,14 +1567,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1719,23 +1583,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_build_triggers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_build_triggers]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1833,14 +1691,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, trigger_id, name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1858,23 +1711,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_build_trigger
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_build_trigger]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1970,14 +1817,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, trigger_id, trigger]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1995,23 +1837,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_build_trigger
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_build_trigger]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$")
         regex_match = routing_param_regex.match(request.trigger.resource_name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2143,14 +1979,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project_id, trigger_id, source]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2168,23 +1999,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.run_build_trigger
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.run_build_trigger]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2271,9 +2096,7 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.receive_trigger_webhook
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.receive_trigger_webhook]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2406,14 +2229,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, worker_pool, worker_pool_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2431,23 +2249,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_worker_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_worker_pool]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2550,14 +2362,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2571,23 +2378,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_worker_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_worker_pool]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2683,14 +2484,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2704,23 +2500,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_worker_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_worker_pool]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2840,14 +2630,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [worker_pool, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2863,23 +2648,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_worker_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_worker_pool]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$")
         regex_match = routing_param_regex.match(request.worker_pool.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2972,14 +2751,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2993,23 +2767,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_worker_pools
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_worker_pools]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3038,9 +2806,7 @@ class CloudBuildAsyncClient:
 
     async def get_default_service_account(
         self,
-        request: Optional[
-            Union[cloudbuild.GetDefaultServiceAccountRequest, dict]
-        ] = None,
+        request: Optional[Union[cloudbuild.GetDefaultServiceAccountRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3103,14 +2869,9 @@ class CloudBuildAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3124,23 +2885,17 @@ class CloudBuildAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_default_service_account
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_default_service_account]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)/defaultServiceAccount$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)/defaultServiceAccount$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3163,9 +2918,7 @@ class CloudBuildAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

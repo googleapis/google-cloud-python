@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    private_auction_deal_messages,
-    private_auction_deal_service,
-)
+from google.ads.admanager_v1.types import private_auction_deal_messages, private_auction_deal_service
 
 
 class ListPrivateAuctionDealsPager:
@@ -64,9 +49,7 @@ class ListPrivateAuctionDealsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., private_auction_deal_service.ListPrivateAuctionDealsResponse
-        ],
+        method: Callable[..., private_auction_deal_service.ListPrivateAuctionDealsResponse],
         request: private_auction_deal_service.ListPrivateAuctionDealsRequest,
         response: private_auction_deal_service.ListPrivateAuctionDealsResponse,
         *,
@@ -92,9 +75,7 @@ class ListPrivateAuctionDealsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = private_auction_deal_service.ListPrivateAuctionDealsRequest(
-            request
-        )
+        self._request = private_auction_deal_service.ListPrivateAuctionDealsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,18 +85,11 @@ class ListPrivateAuctionDealsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[private_auction_deal_service.ListPrivateAuctionDealsResponse]:
+    def pages(self) -> Iterator[private_auction_deal_service.ListPrivateAuctionDealsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[private_auction_deal_messages.PrivateAuctionDeal]:

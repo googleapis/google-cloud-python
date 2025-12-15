@@ -107,12 +107,8 @@ class StreamingServiceRestInterceptor:
     """
 
     def pre_acquire_lease(
-        self,
-        request: streaming_service.AcquireLeaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        streaming_service.AcquireLeaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: streaming_service.AcquireLeaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[streaming_service.AcquireLeaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for acquire_lease
 
         Override in a subclass to manipulate the request or metadata
@@ -120,9 +116,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_acquire_lease(
-        self, response: streaming_service.Lease
-    ) -> streaming_service.Lease:
+    def post_acquire_lease(self, response: streaming_service.Lease) -> streaming_service.Lease:
         """Post-rpc interceptor for acquire_lease
 
         DEPRECATED. Please use the `post_acquire_lease_with_metadata`
@@ -136,9 +130,7 @@ class StreamingServiceRestInterceptor:
         return response
 
     def post_acquire_lease_with_metadata(
-        self,
-        response: streaming_service.Lease,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: streaming_service.Lease, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[streaming_service.Lease, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for acquire_lease
 
@@ -155,12 +147,8 @@ class StreamingServiceRestInterceptor:
         return response, metadata
 
     def pre_release_lease(
-        self,
-        request: streaming_service.ReleaseLeaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        streaming_service.ReleaseLeaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: streaming_service.ReleaseLeaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[streaming_service.ReleaseLeaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for release_lease
 
         Override in a subclass to manipulate the request or metadata
@@ -168,9 +156,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_release_lease(
-        self, response: streaming_service.ReleaseLeaseResponse
-    ) -> streaming_service.ReleaseLeaseResponse:
+    def post_release_lease(self, response: streaming_service.ReleaseLeaseResponse) -> streaming_service.ReleaseLeaseResponse:
         """Post-rpc interceptor for release_lease
 
         DEPRECATED. Please use the `post_release_lease_with_metadata`
@@ -184,12 +170,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def post_release_lease_with_metadata(
-        self,
-        response: streaming_service.ReleaseLeaseResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        streaming_service.ReleaseLeaseResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: streaming_service.ReleaseLeaseResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[streaming_service.ReleaseLeaseResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for release_lease
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -205,12 +187,8 @@ class StreamingServiceRestInterceptor:
         return response, metadata
 
     def pre_renew_lease(
-        self,
-        request: streaming_service.RenewLeaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        streaming_service.RenewLeaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: streaming_service.RenewLeaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[streaming_service.RenewLeaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for renew_lease
 
         Override in a subclass to manipulate the request or metadata
@@ -218,9 +196,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_renew_lease(
-        self, response: streaming_service.Lease
-    ) -> streaming_service.Lease:
+    def post_renew_lease(self, response: streaming_service.Lease) -> streaming_service.Lease:
         """Post-rpc interceptor for renew_lease
 
         DEPRECATED. Please use the `post_renew_lease_with_metadata`
@@ -234,9 +210,7 @@ class StreamingServiceRestInterceptor:
         return response
 
     def post_renew_lease_with_metadata(
-        self,
-        response: streaming_service.Lease,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: streaming_service.Lease, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[streaming_service.Lease, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for renew_lease
 
@@ -253,12 +227,8 @@ class StreamingServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -266,9 +236,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -278,12 +246,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -291,9 +255,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -303,12 +265,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -326,12 +284,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -349,13 +303,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -363,9 +312,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -375,12 +322,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -398,12 +341,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -421,12 +360,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -434,9 +369,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -446,12 +379,8 @@ class StreamingServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -459,9 +388,7 @@ class StreamingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -550,30 +477,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or StreamingServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AcquireLease(
-        _BaseStreamingServiceRestTransport._BaseAcquireLease, StreamingServiceRestStub
-    ):
+    class _AcquireLease(_BaseStreamingServiceRestTransport._BaseAcquireLease, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.AcquireLease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -614,30 +529,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                     The lease message.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseAcquireLease._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_http_options()
 
             request, metadata = self._interceptor.pre_acquire_lease(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_transcoded_request(http_options, request)
 
-            body = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseAcquireLease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -661,13 +564,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._AcquireLease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -683,12 +580,8 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             resp = self._interceptor.post_acquire_lease(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_acquire_lease_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_acquire_lease_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = streaming_service.Lease.to_json(response)
                 except:
@@ -709,9 +602,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 )
             return resp
 
-    class _ReceiveEvents(
-        _BaseStreamingServiceRestTransport._BaseReceiveEvents, StreamingServiceRestStub
-    ):
+    class _ReceiveEvents(_BaseStreamingServiceRestTransport._BaseReceiveEvents, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.ReceiveEvents")
 
@@ -723,13 +614,9 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method ReceiveEvents is not available over REST transport"
-            )
+            raise NotImplementedError("Method ReceiveEvents is not available over REST transport")
 
-    class _ReceivePackets(
-        _BaseStreamingServiceRestTransport._BaseReceivePackets, StreamingServiceRestStub
-    ):
+    class _ReceivePackets(_BaseStreamingServiceRestTransport._BaseReceivePackets, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.ReceivePackets")
 
@@ -741,26 +628,14 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method ReceivePackets is not available over REST transport"
-            )
+            raise NotImplementedError("Method ReceivePackets is not available over REST transport")
 
-    class _ReleaseLease(
-        _BaseStreamingServiceRestTransport._BaseReleaseLease, StreamingServiceRestStub
-    ):
+    class _ReleaseLease(_BaseStreamingServiceRestTransport._BaseReleaseLease, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.ReleaseLease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -800,30 +675,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                     Response message for release lease.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseReleaseLease._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_http_options()
 
             request, metadata = self._interceptor.pre_release_lease(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_transcoded_request(http_options, request)
 
-            body = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseReleaseLease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -847,13 +710,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._ReleaseLease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -869,16 +726,10 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             resp = self._interceptor.post_release_lease(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_release_lease_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_release_lease_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = streaming_service.ReleaseLeaseResponse.to_json(
-                        response
-                    )
+                    response_payload = streaming_service.ReleaseLeaseResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -897,22 +748,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 )
             return resp
 
-    class _RenewLease(
-        _BaseStreamingServiceRestTransport._BaseRenewLease, StreamingServiceRestStub
-    ):
+    class _RenewLease(_BaseStreamingServiceRestTransport._BaseRenewLease, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.RenewLease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -952,30 +793,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                     The lease message.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseRenewLease._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseRenewLease._get_http_options()
 
             request, metadata = self._interceptor.pre_renew_lease(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseRenewLease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseRenewLease._get_transcoded_request(http_options, request)
 
-            body = _BaseStreamingServiceRestTransport._BaseRenewLease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStreamingServiceRestTransport._BaseRenewLease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseRenewLease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseRenewLease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -999,13 +828,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._RenewLease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1021,12 +844,8 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             resp = self._interceptor.post_renew_lease(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_renew_lease_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_renew_lease_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = streaming_service.Lease.to_json(response)
                 except:
@@ -1047,9 +866,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 )
             return resp
 
-    class _SendPackets(
-        _BaseStreamingServiceRestTransport._BaseSendPackets, StreamingServiceRestStub
-    ):
+    class _SendPackets(_BaseStreamingServiceRestTransport._BaseSendPackets, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.SendPackets")
 
@@ -1061,64 +878,40 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method SendPackets is not available over REST transport"
-            )
+            raise NotImplementedError("Method SendPackets is not available over REST transport")
 
     @property
-    def acquire_lease(
-        self,
-    ) -> Callable[[streaming_service.AcquireLeaseRequest], streaming_service.Lease]:
+    def acquire_lease(self) -> Callable[[streaming_service.AcquireLeaseRequest], streaming_service.Lease]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AcquireLease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def receive_events(
-        self,
-    ) -> Callable[
-        [streaming_service.ReceiveEventsRequest],
-        streaming_service.ReceiveEventsResponse,
-    ]:
+    def receive_events(self) -> Callable[[streaming_service.ReceiveEventsRequest], streaming_service.ReceiveEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReceiveEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def receive_packets(
-        self,
-    ) -> Callable[
-        [streaming_service.ReceivePacketsRequest],
-        streaming_service.ReceivePacketsResponse,
-    ]:
+    def receive_packets(self) -> Callable[[streaming_service.ReceivePacketsRequest], streaming_service.ReceivePacketsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReceivePackets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def release_lease(
-        self,
-    ) -> Callable[
-        [streaming_service.ReleaseLeaseRequest], streaming_service.ReleaseLeaseResponse
-    ]:
+    def release_lease(self) -> Callable[[streaming_service.ReleaseLeaseRequest], streaming_service.ReleaseLeaseResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReleaseLease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def renew_lease(
-        self,
-    ) -> Callable[[streaming_service.RenewLeaseRequest], streaming_service.Lease]:
+    def renew_lease(self) -> Callable[[streaming_service.RenewLeaseRequest], streaming_service.Lease]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenewLease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def send_packets(
-        self,
-    ) -> Callable[
-        [streaming_service.SendPacketsRequest], streaming_service.SendPacketsResponse
-    ]:
+    def send_packets(self) -> Callable[[streaming_service.SendPacketsRequest], streaming_service.SendPacketsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SendPackets(self._session, self._host, self._interceptor)  # type: ignore
@@ -1127,22 +920,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseStreamingServiceRestTransport._BaseGetLocation, StreamingServiceRestStub
-    ):
+    class _GetLocation(_BaseStreamingServiceRestTransport._BaseGetLocation, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1180,26 +963,16 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1223,12 +996,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1240,9 +1008,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1267,22 +1033,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseStreamingServiceRestTransport._BaseListLocations, StreamingServiceRestStub
-    ):
+    class _ListLocations(_BaseStreamingServiceRestTransport._BaseListLocations, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1320,26 +1076,16 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1363,12 +1109,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1380,9 +1121,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1407,22 +1146,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseStreamingServiceRestTransport._BaseGetIamPolicy, StreamingServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseStreamingServiceRestTransport._BaseGetIamPolicy, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1460,26 +1189,16 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1503,12 +1222,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1520,9 +1234,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1547,22 +1259,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseStreamingServiceRestTransport._BaseSetIamPolicy, StreamingServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseStreamingServiceRestTransport._BaseSetIamPolicy, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1601,30 +1303,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1648,13 +1338,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1666,9 +1350,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1693,23 +1375,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseStreamingServiceRestTransport._BaseTestIamPermissions,
-        StreamingServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseStreamingServiceRestTransport._BaseTestIamPermissions, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1748,32 +1419,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1797,13 +1454,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1815,9 +1466,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1842,23 +1491,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseStreamingServiceRestTransport._BaseCancelOperation,
-        StreamingServiceRestStub,
-    ):
+    class _CancelOperation(_BaseStreamingServiceRestTransport._BaseCancelOperation, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1894,32 +1532,18 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1943,13 +1567,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1963,23 +1581,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseStreamingServiceRestTransport._BaseDeleteOperation,
-        StreamingServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseStreamingServiceRestTransport._BaseDeleteOperation, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2014,28 +1621,16 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2059,12 +1654,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2078,22 +1668,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseStreamingServiceRestTransport._BaseGetOperation, StreamingServiceRestStub
-    ):
+    class _GetOperation(_BaseStreamingServiceRestTransport._BaseGetOperation, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2131,26 +1711,16 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2174,12 +1744,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2191,9 +1756,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2218,22 +1781,12 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseStreamingServiceRestTransport._BaseListOperations, StreamingServiceRestStub
-    ):
+    class _ListOperations(_BaseStreamingServiceRestTransport._BaseListOperations, StreamingServiceRestStub):
         def __hash__(self):
             return hash("StreamingServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2271,26 +1824,16 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseStreamingServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseStreamingServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseStreamingServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStreamingServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStreamingServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStreamingServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2314,12 +1857,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
 
             # Send the request
             response = StreamingServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2331,9 +1869,7 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

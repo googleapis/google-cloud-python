@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -50,12 +39,8 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.recommender_v1beta1.services.recommender import pagers
-from google.cloud.recommender_v1beta1.types import (
-    insight_type_config as gcr_insight_type_config,
-)
-from google.cloud.recommender_v1beta1.types import (
-    recommender_config as gcr_recommender_config,
-)
+from google.cloud.recommender_v1beta1.types import insight_type_config as gcr_insight_type_config
+from google.cloud.recommender_v1beta1.types import recommender_config as gcr_recommender_config
 from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import insight_type_config
 from google.cloud.recommender_v1beta1.types import recommendation
@@ -98,39 +83,23 @@ class RecommenderAsyncClient:
     insight_type_path = staticmethod(RecommenderClient.insight_type_path)
     parse_insight_type_path = staticmethod(RecommenderClient.parse_insight_type_path)
     insight_type_config_path = staticmethod(RecommenderClient.insight_type_config_path)
-    parse_insight_type_config_path = staticmethod(
-        RecommenderClient.parse_insight_type_config_path
-    )
+    parse_insight_type_config_path = staticmethod(RecommenderClient.parse_insight_type_config_path)
     recommendation_path = staticmethod(RecommenderClient.recommendation_path)
-    parse_recommendation_path = staticmethod(
-        RecommenderClient.parse_recommendation_path
-    )
+    parse_recommendation_path = staticmethod(RecommenderClient.parse_recommendation_path)
     recommender_path = staticmethod(RecommenderClient.recommender_path)
     parse_recommender_path = staticmethod(RecommenderClient.parse_recommender_path)
     recommender_config_path = staticmethod(RecommenderClient.recommender_config_path)
-    parse_recommender_config_path = staticmethod(
-        RecommenderClient.parse_recommender_config_path
-    )
-    common_billing_account_path = staticmethod(
-        RecommenderClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        RecommenderClient.parse_common_billing_account_path
-    )
+    parse_recommender_config_path = staticmethod(RecommenderClient.parse_recommender_config_path)
+    common_billing_account_path = staticmethod(RecommenderClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(RecommenderClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(RecommenderClient.common_folder_path)
     parse_common_folder_path = staticmethod(RecommenderClient.parse_common_folder_path)
     common_organization_path = staticmethod(RecommenderClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        RecommenderClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(RecommenderClient.parse_common_organization_path)
     common_project_path = staticmethod(RecommenderClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        RecommenderClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(RecommenderClient.parse_common_project_path)
     common_location_path = staticmethod(RecommenderClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        RecommenderClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(RecommenderClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -166,9 +135,7 @@ class RecommenderAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -235,9 +202,7 @@ class RecommenderAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, RecommenderTransport, Callable[..., RecommenderTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, RecommenderTransport, Callable[..., RecommenderTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,20 +262,14 @@ class RecommenderAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.recommender_v1beta1.RecommenderAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.recommender.v1beta1.Recommender",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -404,14 +363,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -425,15 +379,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_insights
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_insights]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -526,14 +476,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -547,15 +492,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_insight
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_insight]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -573,9 +514,7 @@ class RecommenderAsyncClient:
 
     async def mark_insight_accepted(
         self,
-        request: Optional[
-            Union[recommender_service.MarkInsightAcceptedRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.MarkInsightAcceptedRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         state_metadata: Optional[MutableMapping[str, str]] = None,
@@ -662,14 +601,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, state_metadata, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -688,15 +622,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.mark_insight_accepted
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.mark_insight_accepted]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -714,9 +644,7 @@ class RecommenderAsyncClient:
 
     async def list_recommendations(
         self,
-        request: Optional[
-            Union[recommender_service.ListRecommendationsRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.ListRecommendationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         filter: Optional[str] = None,
@@ -826,14 +754,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, filter]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -849,15 +772,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_recommendations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_recommendations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -886,9 +805,7 @@ class RecommenderAsyncClient:
 
     async def get_recommendation(
         self,
-        request: Optional[
-            Union[recommender_service.GetRecommendationRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.GetRecommendationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -952,14 +869,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -973,15 +885,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_recommendation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_recommendation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -999,9 +907,7 @@ class RecommenderAsyncClient:
 
     async def mark_recommendation_claimed(
         self,
-        request: Optional[
-            Union[recommender_service.MarkRecommendationClaimedRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.MarkRecommendationClaimedRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         state_metadata: Optional[MutableMapping[str, str]] = None,
@@ -1094,20 +1000,13 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, state_metadata, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, recommender_service.MarkRecommendationClaimedRequest
-        ):
+        if not isinstance(request, recommender_service.MarkRecommendationClaimedRequest):
             request = recommender_service.MarkRecommendationClaimedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1122,15 +1021,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.mark_recommendation_claimed
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.mark_recommendation_claimed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1148,9 +1043,7 @@ class RecommenderAsyncClient:
 
     async def mark_recommendation_succeeded(
         self,
-        request: Optional[
-            Union[recommender_service.MarkRecommendationSucceededRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.MarkRecommendationSucceededRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         state_metadata: Optional[MutableMapping[str, str]] = None,
@@ -1243,20 +1136,13 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, state_metadata, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, recommender_service.MarkRecommendationSucceededRequest
-        ):
+        if not isinstance(request, recommender_service.MarkRecommendationSucceededRequest):
             request = recommender_service.MarkRecommendationSucceededRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1271,15 +1157,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.mark_recommendation_succeeded
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.mark_recommendation_succeeded]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1297,9 +1179,7 @@ class RecommenderAsyncClient:
 
     async def mark_recommendation_failed(
         self,
-        request: Optional[
-            Union[recommender_service.MarkRecommendationFailedRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.MarkRecommendationFailedRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         state_metadata: Optional[MutableMapping[str, str]] = None,
@@ -1392,14 +1272,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, state_metadata, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1418,15 +1293,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.mark_recommendation_failed
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.mark_recommendation_failed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1444,9 +1315,7 @@ class RecommenderAsyncClient:
 
     async def get_recommender_config(
         self,
-        request: Optional[
-            Union[recommender_service.GetRecommenderConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.GetRecommenderConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1515,14 +1384,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1536,15 +1400,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_recommender_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_recommender_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1562,9 +1422,7 @@ class RecommenderAsyncClient:
 
     async def update_recommender_config(
         self,
-        request: Optional[
-            Union[recommender_service.UpdateRecommenderConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.UpdateRecommenderConfigRequest, dict]] = None,
         *,
         recommender_config: Optional[gcr_recommender_config.RecommenderConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1631,14 +1489,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [recommender_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1654,17 +1507,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_recommender_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_recommender_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("recommender_config.name", request.recommender_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("recommender_config.name", request.recommender_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1682,9 +1529,7 @@ class RecommenderAsyncClient:
 
     async def get_insight_type_config(
         self,
-        request: Optional[
-            Union[recommender_service.GetInsightTypeConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.GetInsightTypeConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1753,14 +1598,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1774,15 +1614,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_insight_type_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_insight_type_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1800,9 +1636,7 @@ class RecommenderAsyncClient:
 
     async def update_insight_type_config(
         self,
-        request: Optional[
-            Union[recommender_service.UpdateInsightTypeConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.UpdateInsightTypeConfigRequest, dict]] = None,
         *,
         insight_type_config: Optional[gcr_insight_type_config.InsightTypeConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1869,14 +1703,9 @@ class RecommenderAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [insight_type_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1892,17 +1721,11 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_insight_type_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_insight_type_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("insight_type_config.name", request.insight_type_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("insight_type_config.name", request.insight_type_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1920,9 +1743,7 @@ class RecommenderAsyncClient:
 
     async def list_recommenders(
         self,
-        request: Optional[
-            Union[recommender_service.ListRecommendersRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.ListRecommendersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1984,9 +1805,7 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_recommenders
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_recommenders]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2015,9 +1834,7 @@ class RecommenderAsyncClient:
 
     async def list_insight_types(
         self,
-        request: Optional[
-            Union[recommender_service.ListInsightTypesRequest, dict]
-        ] = None,
+        request: Optional[Union[recommender_service.ListInsightTypesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2079,9 +1896,7 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_insight_types
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_insight_types]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2115,9 +1930,7 @@ class RecommenderAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

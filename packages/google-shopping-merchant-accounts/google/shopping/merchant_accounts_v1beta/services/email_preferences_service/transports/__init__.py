@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import EmailPreferencesServiceTransport
 from .grpc import EmailPreferencesServiceGrpcTransport
 from .grpc_asyncio import EmailPreferencesServiceGrpcAsyncIOTransport
-from .rest import (
-    EmailPreferencesServiceRestInterceptor,
-    EmailPreferencesServiceRestTransport,
-)
+from .rest import EmailPreferencesServiceRestInterceptor, EmailPreferencesServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[EmailPreferencesServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[EmailPreferencesServiceTransport]]
 _transport_registry["grpc"] = EmailPreferencesServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = EmailPreferencesServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = EmailPreferencesServiceRestTransport

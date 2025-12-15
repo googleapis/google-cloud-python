@@ -18,20 +18,9 @@ from google.cloud.optimization import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.optimization_v1.services.fleet_routing.async_client import (
-    FleetRoutingAsyncClient,
-)
-from google.cloud.optimization_v1.services.fleet_routing.client import (
-    FleetRoutingClient,
-)
-from google.cloud.optimization_v1.types.async_model import (
-    AsyncModelMetadata,
-    DataFormat,
-    GcsDestination,
-    GcsSource,
-    InputConfig,
-    OutputConfig,
-)
+from google.cloud.optimization_v1.services.fleet_routing.async_client import FleetRoutingAsyncClient
+from google.cloud.optimization_v1.services.fleet_routing.client import FleetRoutingClient
+from google.cloud.optimization_v1.types.async_model import AsyncModelMetadata, DataFormat, GcsDestination, GcsSource, InputConfig, OutputConfig
 from google.cloud.optimization_v1.types.fleet_routing import (
     AggregatedMetrics,
     BatchOptimizeToursRequest,

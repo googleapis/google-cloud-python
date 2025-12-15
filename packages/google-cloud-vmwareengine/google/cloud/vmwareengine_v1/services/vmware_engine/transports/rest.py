@@ -675,12 +675,8 @@ class VmwareEngineRestInterceptor:
     """
 
     def pre_create_cluster(
-        self,
-        request: vmwareengine.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.CreateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -688,9 +684,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
         DEPRECATED. Please use the `post_create_cluster_with_metadata`
@@ -704,9 +698,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cluster
 
@@ -723,13 +715,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_external_access_rule(
-        self,
-        request: vmwareengine.CreateExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateExternalAccessRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreateExternalAccessRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateExternalAccessRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -737,9 +724,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_external_access_rule(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_external_access_rule(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_external_access_rule
 
         DEPRECATED. Please use the `post_create_external_access_rule_with_metadata`
@@ -753,9 +738,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_external_access_rule_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_external_access_rule
 
@@ -772,13 +755,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_external_address(
-        self,
-        request: vmwareengine.CreateExternalAddressRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateExternalAddressRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreateExternalAddressRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateExternalAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -786,9 +764,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_external_address(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_external_address(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_external_address
 
         DEPRECATED. Please use the `post_create_external_address_with_metadata`
@@ -802,9 +778,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_external_address_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_external_address
 
@@ -821,13 +795,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_hcx_activation_key(
-        self,
-        request: vmwareengine.CreateHcxActivationKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateHcxActivationKeyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreateHcxActivationKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateHcxActivationKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_hcx_activation_key
 
         Override in a subclass to manipulate the request or metadata
@@ -835,9 +804,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_hcx_activation_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_hcx_activation_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_hcx_activation_key
 
         DEPRECATED. Please use the `post_create_hcx_activation_key_with_metadata`
@@ -851,9 +818,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_hcx_activation_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_hcx_activation_key
 
@@ -870,12 +835,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_logging_server(
-        self,
-        request: vmwareengine.CreateLoggingServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.CreateLoggingServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -883,9 +844,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_logging_server(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_logging_server(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_logging_server
 
         DEPRECATED. Please use the `post_create_logging_server_with_metadata`
@@ -899,9 +858,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_logging_server_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_logging_server
 
@@ -918,13 +875,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_management_dns_zone_binding(
-        self,
-        request: vmwareengine.CreateManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateManagementDnsZoneBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreateManagementDnsZoneBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateManagementDnsZoneBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_management_dns_zone_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -932,9 +884,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_management_dns_zone_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_management_dns_zone_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_management_dns_zone_binding
 
         DEPRECATED. Please use the `post_create_management_dns_zone_binding_with_metadata`
@@ -948,9 +898,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_management_dns_zone_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_management_dns_zone_binding
 
@@ -967,13 +915,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_network_peering(
-        self,
-        request: vmwareengine.CreateNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateNetworkPeeringRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreateNetworkPeeringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateNetworkPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -981,9 +924,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_network_peering(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_network_peering(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_network_peering
 
         DEPRECATED. Please use the `post_create_network_peering_with_metadata`
@@ -997,9 +938,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_network_peering_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_network_peering
 
@@ -1016,12 +955,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_network_policy(
-        self,
-        request: vmwareengine.CreateNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.CreateNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1029,9 +964,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_network_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_network_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_network_policy
 
         DEPRECATED. Please use the `post_create_network_policy_with_metadata`
@@ -1045,9 +978,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_network_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_network_policy
 
@@ -1064,12 +995,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_private_cloud(
-        self,
-        request: vmwareengine.CreatePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreatePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.CreatePrivateCloudRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreatePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -1077,9 +1004,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_private_cloud(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_private_cloud(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_private_cloud
 
         DEPRECATED. Please use the `post_create_private_cloud_with_metadata`
@@ -1093,9 +1018,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_private_cloud_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_private_cloud
 
@@ -1112,13 +1035,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_private_connection(
-        self,
-        request: vmwareengine.CreatePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreatePrivateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreatePrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreatePrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1126,9 +1044,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_private_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_private_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_private_connection
 
         DEPRECATED. Please use the `post_create_private_connection_with_metadata`
@@ -1142,9 +1058,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_private_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_private_connection
 
@@ -1161,13 +1075,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_create_vmware_engine_network(
-        self,
-        request: vmwareengine.CreateVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.CreateVmwareEngineNetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.CreateVmwareEngineNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.CreateVmwareEngineNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_vmware_engine_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1175,9 +1084,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_create_vmware_engine_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_vmware_engine_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_vmware_engine_network
 
         DEPRECATED. Please use the `post_create_vmware_engine_network_with_metadata`
@@ -1191,9 +1098,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_create_vmware_engine_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_vmware_engine_network
 
@@ -1210,12 +1115,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_cluster(
-        self,
-        request: vmwareengine.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.DeleteClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1223,9 +1124,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
         DEPRECATED. Please use the `post_delete_cluster_with_metadata`
@@ -1239,9 +1138,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cluster
 
@@ -1258,13 +1155,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_external_access_rule(
-        self,
-        request: vmwareengine.DeleteExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteExternalAccessRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.DeleteExternalAccessRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteExternalAccessRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1272,9 +1164,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_external_access_rule(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_external_access_rule(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_external_access_rule
 
         DEPRECATED. Please use the `post_delete_external_access_rule_with_metadata`
@@ -1288,9 +1178,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_external_access_rule_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_external_access_rule
 
@@ -1307,13 +1195,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_external_address(
-        self,
-        request: vmwareengine.DeleteExternalAddressRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteExternalAddressRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.DeleteExternalAddressRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteExternalAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -1321,9 +1204,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_external_address(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_external_address(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_external_address
 
         DEPRECATED. Please use the `post_delete_external_address_with_metadata`
@@ -1337,9 +1218,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_external_address_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_external_address
 
@@ -1356,12 +1235,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_logging_server(
-        self,
-        request: vmwareengine.DeleteLoggingServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.DeleteLoggingServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -1369,9 +1244,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_logging_server(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_logging_server(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_logging_server
 
         DEPRECATED. Please use the `post_delete_logging_server_with_metadata`
@@ -1385,9 +1258,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_logging_server_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_logging_server
 
@@ -1404,13 +1275,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_management_dns_zone_binding(
-        self,
-        request: vmwareengine.DeleteManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteManagementDnsZoneBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.DeleteManagementDnsZoneBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteManagementDnsZoneBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_management_dns_zone_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -1418,9 +1284,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_management_dns_zone_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_management_dns_zone_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_management_dns_zone_binding
 
         DEPRECATED. Please use the `post_delete_management_dns_zone_binding_with_metadata`
@@ -1434,9 +1298,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_management_dns_zone_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_management_dns_zone_binding
 
@@ -1453,13 +1315,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_network_peering(
-        self,
-        request: vmwareengine.DeleteNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteNetworkPeeringRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.DeleteNetworkPeeringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteNetworkPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -1467,9 +1324,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_network_peering(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_network_peering(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_network_peering
 
         DEPRECATED. Please use the `post_delete_network_peering_with_metadata`
@@ -1483,9 +1338,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_network_peering_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_network_peering
 
@@ -1502,12 +1355,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_network_policy(
-        self,
-        request: vmwareengine.DeleteNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.DeleteNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1515,9 +1364,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_network_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_network_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_network_policy
 
         DEPRECATED. Please use the `post_delete_network_policy_with_metadata`
@@ -1531,9 +1378,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_network_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_network_policy
 
@@ -1550,12 +1395,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_private_cloud(
-        self,
-        request: vmwareengine.DeletePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeletePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.DeletePrivateCloudRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeletePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -1563,9 +1404,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_private_cloud(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_private_cloud(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_cloud
 
         DEPRECATED. Please use the `post_delete_private_cloud_with_metadata`
@@ -1579,9 +1418,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_private_cloud_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_private_cloud
 
@@ -1598,13 +1435,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_private_connection(
-        self,
-        request: vmwareengine.DeletePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeletePrivateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.DeletePrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeletePrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1612,9 +1444,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_private_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_private_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_connection
 
         DEPRECATED. Please use the `post_delete_private_connection_with_metadata`
@@ -1628,9 +1458,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_private_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_private_connection
 
@@ -1647,13 +1475,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_delete_vmware_engine_network(
-        self,
-        request: vmwareengine.DeleteVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.DeleteVmwareEngineNetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.DeleteVmwareEngineNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.DeleteVmwareEngineNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_vmware_engine_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1661,9 +1484,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_vmware_engine_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_vmware_engine_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_vmware_engine_network
 
         DEPRECATED. Please use the `post_delete_vmware_engine_network_with_metadata`
@@ -1677,9 +1498,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_delete_vmware_engine_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_vmware_engine_network
 
@@ -1696,13 +1515,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_fetch_network_policy_external_addresses(
-        self,
-        request: vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.FetchNetworkPolicyExternalAddressesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.FetchNetworkPolicyExternalAddressesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_network_policy_external_addresses
 
         Override in a subclass to manipulate the request or metadata
@@ -1726,13 +1540,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_fetch_network_policy_external_addresses_with_metadata(
-        self,
-        response: vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.FetchNetworkPolicyExternalAddressesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.FetchNetworkPolicyExternalAddressesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_network_policy_external_addresses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1748,9 +1557,7 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_cluster(
-        self,
-        request: vmwareengine.GetClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmwareengine.GetClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
@@ -1759,9 +1566,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cluster(
-        self, response: vmwareengine_resources.Cluster
-    ) -> vmwareengine_resources.Cluster:
+    def post_get_cluster(self, response: vmwareengine_resources.Cluster) -> vmwareengine_resources.Cluster:
         """Post-rpc interceptor for get_cluster
 
         DEPRECATED. Please use the `post_get_cluster_with_metadata`
@@ -1775,9 +1580,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_cluster_with_metadata(
-        self,
-        response: vmwareengine_resources.Cluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmwareengine_resources.Cluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine_resources.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cluster
 
@@ -1794,13 +1597,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_dns_bind_permission(
-        self,
-        request: vmwareengine.GetDnsBindPermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetDnsBindPermissionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.GetDnsBindPermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetDnsBindPermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dns_bind_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -1808,9 +1606,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_dns_bind_permission(
-        self, response: vmwareengine_resources.DnsBindPermission
-    ) -> vmwareengine_resources.DnsBindPermission:
+    def post_get_dns_bind_permission(self, response: vmwareengine_resources.DnsBindPermission) -> vmwareengine_resources.DnsBindPermission:
         """Post-rpc interceptor for get_dns_bind_permission
 
         DEPRECATED. Please use the `post_get_dns_bind_permission_with_metadata`
@@ -1824,13 +1620,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_dns_bind_permission_with_metadata(
-        self,
-        response: vmwareengine_resources.DnsBindPermission,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.DnsBindPermission,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine_resources.DnsBindPermission, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.DnsBindPermission, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dns_bind_permission
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1846,12 +1637,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_dns_forwarding(
-        self,
-        request: vmwareengine.GetDnsForwardingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetDnsForwardingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetDnsForwardingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetDnsForwardingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dns_forwarding
 
         Override in a subclass to manipulate the request or metadata
@@ -1859,9 +1646,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_dns_forwarding(
-        self, response: vmwareengine_resources.DnsForwarding
-    ) -> vmwareengine_resources.DnsForwarding:
+    def post_get_dns_forwarding(self, response: vmwareengine_resources.DnsForwarding) -> vmwareengine_resources.DnsForwarding:
         """Post-rpc interceptor for get_dns_forwarding
 
         DEPRECATED. Please use the `post_get_dns_forwarding_with_metadata`
@@ -1875,12 +1660,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_dns_forwarding_with_metadata(
-        self,
-        response: vmwareengine_resources.DnsForwarding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.DnsForwarding, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.DnsForwarding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.DnsForwarding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dns_forwarding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1896,13 +1677,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_external_access_rule(
-        self,
-        request: vmwareengine.GetExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetExternalAccessRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.GetExternalAccessRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetExternalAccessRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1910,9 +1686,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_external_access_rule(
-        self, response: vmwareengine_resources.ExternalAccessRule
-    ) -> vmwareengine_resources.ExternalAccessRule:
+    def post_get_external_access_rule(self, response: vmwareengine_resources.ExternalAccessRule) -> vmwareengine_resources.ExternalAccessRule:
         """Post-rpc interceptor for get_external_access_rule
 
         DEPRECATED. Please use the `post_get_external_access_rule_with_metadata`
@@ -1926,13 +1700,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_external_access_rule_with_metadata(
-        self,
-        response: vmwareengine_resources.ExternalAccessRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.ExternalAccessRule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine_resources.ExternalAccessRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.ExternalAccessRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_external_access_rule
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1948,12 +1717,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_external_address(
-        self,
-        request: vmwareengine.GetExternalAddressRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetExternalAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetExternalAddressRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetExternalAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -1961,9 +1726,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_external_address(
-        self, response: vmwareengine_resources.ExternalAddress
-    ) -> vmwareengine_resources.ExternalAddress:
+    def post_get_external_address(self, response: vmwareengine_resources.ExternalAddress) -> vmwareengine_resources.ExternalAddress:
         """Post-rpc interceptor for get_external_address
 
         DEPRECATED. Please use the `post_get_external_address_with_metadata`
@@ -1977,12 +1740,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_external_address_with_metadata(
-        self,
-        response: vmwareengine_resources.ExternalAddress,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.ExternalAddress, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.ExternalAddress, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.ExternalAddress, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_external_address
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1998,12 +1757,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_hcx_activation_key(
-        self,
-        request: vmwareengine.GetHcxActivationKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetHcxActivationKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetHcxActivationKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetHcxActivationKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_hcx_activation_key
 
         Override in a subclass to manipulate the request or metadata
@@ -2011,9 +1766,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_hcx_activation_key(
-        self, response: vmwareengine_resources.HcxActivationKey
-    ) -> vmwareengine_resources.HcxActivationKey:
+    def post_get_hcx_activation_key(self, response: vmwareengine_resources.HcxActivationKey) -> vmwareengine_resources.HcxActivationKey:
         """Post-rpc interceptor for get_hcx_activation_key
 
         DEPRECATED. Please use the `post_get_hcx_activation_key_with_metadata`
@@ -2027,12 +1780,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_hcx_activation_key_with_metadata(
-        self,
-        response: vmwareengine_resources.HcxActivationKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.HcxActivationKey, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.HcxActivationKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.HcxActivationKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_hcx_activation_key
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2048,12 +1797,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_logging_server(
-        self,
-        request: vmwareengine.GetLoggingServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetLoggingServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -2061,9 +1806,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_logging_server(
-        self, response: vmwareengine_resources.LoggingServer
-    ) -> vmwareengine_resources.LoggingServer:
+    def post_get_logging_server(self, response: vmwareengine_resources.LoggingServer) -> vmwareengine_resources.LoggingServer:
         """Post-rpc interceptor for get_logging_server
 
         DEPRECATED. Please use the `post_get_logging_server_with_metadata`
@@ -2077,12 +1820,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_logging_server_with_metadata(
-        self,
-        response: vmwareengine_resources.LoggingServer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.LoggingServer, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.LoggingServer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.LoggingServer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_logging_server
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2098,13 +1837,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_management_dns_zone_binding(
-        self,
-        request: vmwareengine.GetManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetManagementDnsZoneBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.GetManagementDnsZoneBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetManagementDnsZoneBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_management_dns_zone_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -2128,13 +1862,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_management_dns_zone_binding_with_metadata(
-        self,
-        response: vmwareengine_resources.ManagementDnsZoneBinding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.ManagementDnsZoneBinding,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine_resources.ManagementDnsZoneBinding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.ManagementDnsZoneBinding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_management_dns_zone_binding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2150,12 +1879,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_network_peering(
-        self,
-        request: vmwareengine.GetNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetNetworkPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetNetworkPeeringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetNetworkPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -2163,9 +1888,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_network_peering(
-        self, response: vmwareengine_resources.NetworkPeering
-    ) -> vmwareengine_resources.NetworkPeering:
+    def post_get_network_peering(self, response: vmwareengine_resources.NetworkPeering) -> vmwareengine_resources.NetworkPeering:
         """Post-rpc interceptor for get_network_peering
 
         DEPRECATED. Please use the `post_get_network_peering_with_metadata`
@@ -2179,12 +1902,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_network_peering_with_metadata(
-        self,
-        response: vmwareengine_resources.NetworkPeering,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.NetworkPeering, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.NetworkPeering, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.NetworkPeering, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_network_peering
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2200,12 +1919,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_network_policy(
-        self,
-        request: vmwareengine.GetNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2213,9 +1928,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_network_policy(
-        self, response: vmwareengine_resources.NetworkPolicy
-    ) -> vmwareengine_resources.NetworkPolicy:
+    def post_get_network_policy(self, response: vmwareengine_resources.NetworkPolicy) -> vmwareengine_resources.NetworkPolicy:
         """Post-rpc interceptor for get_network_policy
 
         DEPRECATED. Please use the `post_get_network_policy_with_metadata`
@@ -2229,12 +1942,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_network_policy_with_metadata(
-        self,
-        response: vmwareengine_resources.NetworkPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.NetworkPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.NetworkPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.NetworkPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_network_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2250,9 +1959,7 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_node(
-        self,
-        request: vmwareengine.GetNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmwareengine.GetNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine.GetNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_node
 
@@ -2261,9 +1968,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_node(
-        self, response: vmwareengine_resources.Node
-    ) -> vmwareengine_resources.Node:
+    def post_get_node(self, response: vmwareengine_resources.Node) -> vmwareengine_resources.Node:
         """Post-rpc interceptor for get_node
 
         DEPRECATED. Please use the `post_get_node_with_metadata`
@@ -2277,9 +1982,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_node_with_metadata(
-        self,
-        response: vmwareengine_resources.Node,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmwareengine_resources.Node, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine_resources.Node, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_node
 
@@ -2296,12 +1999,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_node_type(
-        self,
-        request: vmwareengine.GetNodeTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetNodeTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetNodeTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetNodeTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_node_type
 
         Override in a subclass to manipulate the request or metadata
@@ -2309,9 +2008,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_node_type(
-        self, response: vmwareengine_resources.NodeType
-    ) -> vmwareengine_resources.NodeType:
+    def post_get_node_type(self, response: vmwareengine_resources.NodeType) -> vmwareengine_resources.NodeType:
         """Post-rpc interceptor for get_node_type
 
         DEPRECATED. Please use the `post_get_node_type_with_metadata`
@@ -2325,12 +2022,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_node_type_with_metadata(
-        self,
-        response: vmwareengine_resources.NodeType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.NodeType, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.NodeType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.NodeType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_node_type
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2346,12 +2039,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_private_cloud(
-        self,
-        request: vmwareengine.GetPrivateCloudRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetPrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.GetPrivateCloudRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetPrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -2359,9 +2048,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_private_cloud(
-        self, response: vmwareengine_resources.PrivateCloud
-    ) -> vmwareengine_resources.PrivateCloud:
+    def post_get_private_cloud(self, response: vmwareengine_resources.PrivateCloud) -> vmwareengine_resources.PrivateCloud:
         """Post-rpc interceptor for get_private_cloud
 
         DEPRECATED. Please use the `post_get_private_cloud_with_metadata`
@@ -2375,12 +2062,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_private_cloud_with_metadata(
-        self,
-        response: vmwareengine_resources.PrivateCloud,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.PrivateCloud, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.PrivateCloud, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.PrivateCloud, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_private_cloud
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2396,13 +2079,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_private_connection(
-        self,
-        request: vmwareengine.GetPrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetPrivateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.GetPrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetPrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -2410,9 +2088,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_private_connection(
-        self, response: vmwareengine_resources.PrivateConnection
-    ) -> vmwareengine_resources.PrivateConnection:
+    def post_get_private_connection(self, response: vmwareengine_resources.PrivateConnection) -> vmwareengine_resources.PrivateConnection:
         """Post-rpc interceptor for get_private_connection
 
         DEPRECATED. Please use the `post_get_private_connection_with_metadata`
@@ -2426,13 +2102,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_private_connection_with_metadata(
-        self,
-        response: vmwareengine_resources.PrivateConnection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.PrivateConnection,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine_resources.PrivateConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.PrivateConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_private_connection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2448,9 +2119,7 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_subnet(
-        self,
-        request: vmwareengine.GetSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmwareengine.GetSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine.GetSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_subnet
 
@@ -2459,9 +2128,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_subnet(
-        self, response: vmwareengine_resources.Subnet
-    ) -> vmwareengine_resources.Subnet:
+    def post_get_subnet(self, response: vmwareengine_resources.Subnet) -> vmwareengine_resources.Subnet:
         """Post-rpc interceptor for get_subnet
 
         DEPRECATED. Please use the `post_get_subnet_with_metadata`
@@ -2475,9 +2142,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_subnet_with_metadata(
-        self,
-        response: vmwareengine_resources.Subnet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmwareengine_resources.Subnet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine_resources.Subnet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_subnet
 
@@ -2494,13 +2159,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_vmware_engine_network(
-        self,
-        request: vmwareengine.GetVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GetVmwareEngineNetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.GetVmwareEngineNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GetVmwareEngineNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vmware_engine_network
 
         Override in a subclass to manipulate the request or metadata
@@ -2508,9 +2168,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vmware_engine_network(
-        self, response: vmwareengine_resources.VmwareEngineNetwork
-    ) -> vmwareengine_resources.VmwareEngineNetwork:
+    def post_get_vmware_engine_network(self, response: vmwareengine_resources.VmwareEngineNetwork) -> vmwareengine_resources.VmwareEngineNetwork:
         """Post-rpc interceptor for get_vmware_engine_network
 
         DEPRECATED. Please use the `post_get_vmware_engine_network_with_metadata`
@@ -2524,13 +2182,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_get_vmware_engine_network_with_metadata(
-        self,
-        response: vmwareengine_resources.VmwareEngineNetwork,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.VmwareEngineNetwork,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine_resources.VmwareEngineNetwork, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.VmwareEngineNetwork, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vmware_engine_network
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2546,13 +2199,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_grant_dns_bind_permission(
-        self,
-        request: vmwareengine.GrantDnsBindPermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.GrantDnsBindPermissionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.GrantDnsBindPermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.GrantDnsBindPermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for grant_dns_bind_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -2560,9 +2208,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_grant_dns_bind_permission(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_grant_dns_bind_permission(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for grant_dns_bind_permission
 
         DEPRECATED. Please use the `post_grant_dns_bind_permission_with_metadata`
@@ -2576,9 +2222,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_grant_dns_bind_permission_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for grant_dns_bind_permission
 
@@ -2595,12 +2239,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_clusters(
-        self,
-        request: vmwareengine.ListClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -2608,9 +2248,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_clusters(
-        self, response: vmwareengine.ListClustersResponse
-    ) -> vmwareengine.ListClustersResponse:
+    def post_list_clusters(self, response: vmwareengine.ListClustersResponse) -> vmwareengine.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
         DEPRECATED. Please use the `post_list_clusters_with_metadata`
@@ -2624,12 +2262,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_clusters_with_metadata(
-        self,
-        response: vmwareengine.ListClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine.ListClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2645,13 +2279,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_external_access_rules(
-        self,
-        request: vmwareengine.ListExternalAccessRulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListExternalAccessRulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListExternalAccessRulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListExternalAccessRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_external_access_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -2659,9 +2288,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_external_access_rules(
-        self, response: vmwareengine.ListExternalAccessRulesResponse
-    ) -> vmwareengine.ListExternalAccessRulesResponse:
+    def post_list_external_access_rules(self, response: vmwareengine.ListExternalAccessRulesResponse) -> vmwareengine.ListExternalAccessRulesResponse:
         """Post-rpc interceptor for list_external_access_rules
 
         DEPRECATED. Please use the `post_list_external_access_rules_with_metadata`
@@ -2675,13 +2302,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_external_access_rules_with_metadata(
-        self,
-        response: vmwareengine.ListExternalAccessRulesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListExternalAccessRulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListExternalAccessRulesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListExternalAccessRulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_external_access_rules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2697,13 +2319,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_external_addresses(
-        self,
-        request: vmwareengine.ListExternalAddressesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListExternalAddressesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListExternalAddressesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListExternalAddressesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_external_addresses
 
         Override in a subclass to manipulate the request or metadata
@@ -2711,9 +2328,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_external_addresses(
-        self, response: vmwareengine.ListExternalAddressesResponse
-    ) -> vmwareengine.ListExternalAddressesResponse:
+    def post_list_external_addresses(self, response: vmwareengine.ListExternalAddressesResponse) -> vmwareengine.ListExternalAddressesResponse:
         """Post-rpc interceptor for list_external_addresses
 
         DEPRECATED. Please use the `post_list_external_addresses_with_metadata`
@@ -2727,13 +2342,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_external_addresses_with_metadata(
-        self,
-        response: vmwareengine.ListExternalAddressesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListExternalAddressesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListExternalAddressesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListExternalAddressesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_external_addresses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2749,13 +2359,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_hcx_activation_keys(
-        self,
-        request: vmwareengine.ListHcxActivationKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListHcxActivationKeysRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListHcxActivationKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListHcxActivationKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_hcx_activation_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -2763,9 +2368,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_hcx_activation_keys(
-        self, response: vmwareengine.ListHcxActivationKeysResponse
-    ) -> vmwareengine.ListHcxActivationKeysResponse:
+    def post_list_hcx_activation_keys(self, response: vmwareengine.ListHcxActivationKeysResponse) -> vmwareengine.ListHcxActivationKeysResponse:
         """Post-rpc interceptor for list_hcx_activation_keys
 
         DEPRECATED. Please use the `post_list_hcx_activation_keys_with_metadata`
@@ -2779,13 +2382,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_hcx_activation_keys_with_metadata(
-        self,
-        response: vmwareengine.ListHcxActivationKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListHcxActivationKeysResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListHcxActivationKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListHcxActivationKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_hcx_activation_keys
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2801,12 +2399,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_logging_servers(
-        self,
-        request: vmwareengine.ListLoggingServersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListLoggingServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListLoggingServersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListLoggingServersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_logging_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -2814,9 +2408,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_logging_servers(
-        self, response: vmwareengine.ListLoggingServersResponse
-    ) -> vmwareengine.ListLoggingServersResponse:
+    def post_list_logging_servers(self, response: vmwareengine.ListLoggingServersResponse) -> vmwareengine.ListLoggingServersResponse:
         """Post-rpc interceptor for list_logging_servers
 
         DEPRECATED. Please use the `post_list_logging_servers_with_metadata`
@@ -2830,12 +2422,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_logging_servers_with_metadata(
-        self,
-        response: vmwareengine.ListLoggingServersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListLoggingServersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine.ListLoggingServersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListLoggingServersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_logging_servers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2851,13 +2439,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_management_dns_zone_bindings(
-        self,
-        request: vmwareengine.ListManagementDnsZoneBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListManagementDnsZoneBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListManagementDnsZoneBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListManagementDnsZoneBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_management_dns_zone_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -2881,13 +2464,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_management_dns_zone_bindings_with_metadata(
-        self,
-        response: vmwareengine.ListManagementDnsZoneBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListManagementDnsZoneBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListManagementDnsZoneBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListManagementDnsZoneBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_management_dns_zone_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2903,12 +2481,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_network_peerings(
-        self,
-        request: vmwareengine.ListNetworkPeeringsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListNetworkPeeringsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListNetworkPeeringsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListNetworkPeeringsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_network_peerings
 
         Override in a subclass to manipulate the request or metadata
@@ -2916,9 +2490,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_network_peerings(
-        self, response: vmwareengine.ListNetworkPeeringsResponse
-    ) -> vmwareengine.ListNetworkPeeringsResponse:
+    def post_list_network_peerings(self, response: vmwareengine.ListNetworkPeeringsResponse) -> vmwareengine.ListNetworkPeeringsResponse:
         """Post-rpc interceptor for list_network_peerings
 
         DEPRECATED. Please use the `post_list_network_peerings_with_metadata`
@@ -2932,13 +2504,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_network_peerings_with_metadata(
-        self,
-        response: vmwareengine.ListNetworkPeeringsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListNetworkPeeringsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListNetworkPeeringsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListNetworkPeeringsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_network_peerings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2954,12 +2521,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_network_policies(
-        self,
-        request: vmwareengine.ListNetworkPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListNetworkPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListNetworkPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListNetworkPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_network_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -2967,9 +2530,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_network_policies(
-        self, response: vmwareengine.ListNetworkPoliciesResponse
-    ) -> vmwareengine.ListNetworkPoliciesResponse:
+    def post_list_network_policies(self, response: vmwareengine.ListNetworkPoliciesResponse) -> vmwareengine.ListNetworkPoliciesResponse:
         """Post-rpc interceptor for list_network_policies
 
         DEPRECATED. Please use the `post_list_network_policies_with_metadata`
@@ -2983,13 +2544,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_network_policies_with_metadata(
-        self,
-        response: vmwareengine.ListNetworkPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListNetworkPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListNetworkPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListNetworkPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_network_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3005,9 +2561,7 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_nodes(
-        self,
-        request: vmwareengine.ListNodesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmwareengine.ListNodesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine.ListNodesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_nodes
 
@@ -3016,9 +2570,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_nodes(
-        self, response: vmwareengine.ListNodesResponse
-    ) -> vmwareengine.ListNodesResponse:
+    def post_list_nodes(self, response: vmwareengine.ListNodesResponse) -> vmwareengine.ListNodesResponse:
         """Post-rpc interceptor for list_nodes
 
         DEPRECATED. Please use the `post_list_nodes_with_metadata`
@@ -3032,9 +2584,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_nodes_with_metadata(
-        self,
-        response: vmwareengine.ListNodesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmwareengine.ListNodesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmwareengine.ListNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_nodes
 
@@ -3051,12 +2601,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_node_types(
-        self,
-        request: vmwareengine.ListNodeTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListNodeTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListNodeTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListNodeTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_node_types
 
         Override in a subclass to manipulate the request or metadata
@@ -3064,9 +2610,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_node_types(
-        self, response: vmwareengine.ListNodeTypesResponse
-    ) -> vmwareengine.ListNodeTypesResponse:
+    def post_list_node_types(self, response: vmwareengine.ListNodeTypesResponse) -> vmwareengine.ListNodeTypesResponse:
         """Post-rpc interceptor for list_node_types
 
         DEPRECATED. Please use the `post_list_node_types_with_metadata`
@@ -3080,12 +2624,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_node_types_with_metadata(
-        self,
-        response: vmwareengine.ListNodeTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListNodeTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine.ListNodeTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListNodeTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_node_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3101,12 +2641,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_peering_routes(
-        self,
-        request: vmwareengine.ListPeeringRoutesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPeeringRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListPeeringRoutesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPeeringRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_peering_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -3114,9 +2650,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_peering_routes(
-        self, response: vmwareengine.ListPeeringRoutesResponse
-    ) -> vmwareengine.ListPeeringRoutesResponse:
+    def post_list_peering_routes(self, response: vmwareengine.ListPeeringRoutesResponse) -> vmwareengine.ListPeeringRoutesResponse:
         """Post-rpc interceptor for list_peering_routes
 
         DEPRECATED. Please use the `post_list_peering_routes_with_metadata`
@@ -3130,12 +2664,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_peering_routes_with_metadata(
-        self,
-        response: vmwareengine.ListPeeringRoutesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPeeringRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine.ListPeeringRoutesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPeeringRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_peering_routes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3151,12 +2681,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_private_clouds(
-        self,
-        request: vmwareengine.ListPrivateCloudsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPrivateCloudsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListPrivateCloudsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPrivateCloudsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_private_clouds
 
         Override in a subclass to manipulate the request or metadata
@@ -3164,9 +2690,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_private_clouds(
-        self, response: vmwareengine.ListPrivateCloudsResponse
-    ) -> vmwareengine.ListPrivateCloudsResponse:
+    def post_list_private_clouds(self, response: vmwareengine.ListPrivateCloudsResponse) -> vmwareengine.ListPrivateCloudsResponse:
         """Post-rpc interceptor for list_private_clouds
 
         DEPRECATED. Please use the `post_list_private_clouds_with_metadata`
@@ -3180,12 +2704,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_private_clouds_with_metadata(
-        self,
-        response: vmwareengine.ListPrivateCloudsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPrivateCloudsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine.ListPrivateCloudsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPrivateCloudsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_private_clouds
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3201,13 +2721,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_private_connection_peering_routes(
-        self,
-        request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPrivateConnectionPeeringRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_private_connection_peering_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -3231,13 +2746,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_private_connection_peering_routes_with_metadata(
-        self,
-        response: vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListPrivateConnectionPeeringRoutesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPrivateConnectionPeeringRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_private_connection_peering_routes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3253,13 +2763,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_private_connections(
-        self,
-        request: vmwareengine.ListPrivateConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPrivateConnectionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListPrivateConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPrivateConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_private_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -3267,9 +2772,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_private_connections(
-        self, response: vmwareengine.ListPrivateConnectionsResponse
-    ) -> vmwareengine.ListPrivateConnectionsResponse:
+    def post_list_private_connections(self, response: vmwareengine.ListPrivateConnectionsResponse) -> vmwareengine.ListPrivateConnectionsResponse:
         """Post-rpc interceptor for list_private_connections
 
         DEPRECATED. Please use the `post_list_private_connections_with_metadata`
@@ -3283,13 +2786,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_private_connections_with_metadata(
-        self,
-        response: vmwareengine.ListPrivateConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListPrivateConnectionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListPrivateConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListPrivateConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_private_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3305,12 +2803,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_subnets(
-        self,
-        request: vmwareengine.ListSubnetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ListSubnetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_subnets
 
         Override in a subclass to manipulate the request or metadata
@@ -3318,9 +2812,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_subnets(
-        self, response: vmwareengine.ListSubnetsResponse
-    ) -> vmwareengine.ListSubnetsResponse:
+    def post_list_subnets(self, response: vmwareengine.ListSubnetsResponse) -> vmwareengine.ListSubnetsResponse:
         """Post-rpc interceptor for list_subnets
 
         DEPRECATED. Please use the `post_list_subnets_with_metadata`
@@ -3334,12 +2826,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_subnets_with_metadata(
-        self,
-        response: vmwareengine.ListSubnetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine.ListSubnetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_subnets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3355,13 +2843,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_list_vmware_engine_networks(
-        self,
-        request: vmwareengine.ListVmwareEngineNetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListVmwareEngineNetworksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ListVmwareEngineNetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListVmwareEngineNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_vmware_engine_networks
 
         Override in a subclass to manipulate the request or metadata
@@ -3385,13 +2868,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_list_vmware_engine_networks_with_metadata(
-        self,
-        response: vmwareengine.ListVmwareEngineNetworksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ListVmwareEngineNetworksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmwareengine.ListVmwareEngineNetworksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ListVmwareEngineNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_vmware_engine_networks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3407,13 +2885,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_repair_management_dns_zone_binding(
-        self,
-        request: vmwareengine.RepairManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.RepairManagementDnsZoneBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.RepairManagementDnsZoneBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.RepairManagementDnsZoneBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for repair_management_dns_zone_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -3421,9 +2894,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_repair_management_dns_zone_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_repair_management_dns_zone_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for repair_management_dns_zone_binding
 
         DEPRECATED. Please use the `post_repair_management_dns_zone_binding_with_metadata`
@@ -3437,9 +2908,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_repair_management_dns_zone_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for repair_management_dns_zone_binding
 
@@ -3456,12 +2925,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_reset_nsx_credentials(
-        self,
-        request: vmwareengine.ResetNsxCredentialsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ResetNsxCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ResetNsxCredentialsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ResetNsxCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_nsx_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -3469,9 +2934,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_nsx_credentials(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reset_nsx_credentials(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_nsx_credentials
 
         DEPRECATED. Please use the `post_reset_nsx_credentials_with_metadata`
@@ -3485,9 +2948,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_reset_nsx_credentials_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_nsx_credentials
 
@@ -3504,13 +2965,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_reset_vcenter_credentials(
-        self,
-        request: vmwareengine.ResetVcenterCredentialsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ResetVcenterCredentialsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ResetVcenterCredentialsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ResetVcenterCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_vcenter_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -3518,9 +2974,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_vcenter_credentials(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reset_vcenter_credentials(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_vcenter_credentials
 
         DEPRECATED. Please use the `post_reset_vcenter_credentials_with_metadata`
@@ -3534,9 +2988,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_reset_vcenter_credentials_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_vcenter_credentials
 
@@ -3553,13 +3005,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_revoke_dns_bind_permission(
-        self,
-        request: vmwareengine.RevokeDnsBindPermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.RevokeDnsBindPermissionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.RevokeDnsBindPermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.RevokeDnsBindPermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for revoke_dns_bind_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -3567,9 +3014,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_revoke_dns_bind_permission(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_revoke_dns_bind_permission(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for revoke_dns_bind_permission
 
         DEPRECATED. Please use the `post_revoke_dns_bind_permission_with_metadata`
@@ -3583,9 +3028,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_revoke_dns_bind_permission_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for revoke_dns_bind_permission
 
@@ -3602,12 +3045,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_show_nsx_credentials(
-        self,
-        request: vmwareengine.ShowNsxCredentialsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ShowNsxCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.ShowNsxCredentialsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ShowNsxCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for show_nsx_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -3615,9 +3054,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_show_nsx_credentials(
-        self, response: vmwareengine_resources.Credentials
-    ) -> vmwareengine_resources.Credentials:
+    def post_show_nsx_credentials(self, response: vmwareengine_resources.Credentials) -> vmwareengine_resources.Credentials:
         """Post-rpc interceptor for show_nsx_credentials
 
         DEPRECATED. Please use the `post_show_nsx_credentials_with_metadata`
@@ -3631,12 +3068,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_show_nsx_credentials_with_metadata(
-        self,
-        response: vmwareengine_resources.Credentials,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.Credentials, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.Credentials, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.Credentials, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for show_nsx_credentials
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3652,13 +3085,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_show_vcenter_credentials(
-        self,
-        request: vmwareengine.ShowVcenterCredentialsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.ShowVcenterCredentialsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.ShowVcenterCredentialsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.ShowVcenterCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for show_vcenter_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -3666,9 +3094,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_show_vcenter_credentials(
-        self, response: vmwareengine_resources.Credentials
-    ) -> vmwareengine_resources.Credentials:
+    def post_show_vcenter_credentials(self, response: vmwareengine_resources.Credentials) -> vmwareengine_resources.Credentials:
         """Post-rpc interceptor for show_vcenter_credentials
 
         DEPRECATED. Please use the `post_show_vcenter_credentials_with_metadata`
@@ -3682,12 +3108,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_show_vcenter_credentials_with_metadata(
-        self,
-        response: vmwareengine_resources.Credentials,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine_resources.Credentials, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmwareengine_resources.Credentials, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine_resources.Credentials, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for show_vcenter_credentials
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3703,13 +3125,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_undelete_private_cloud(
-        self,
-        request: vmwareengine.UndeletePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UndeletePrivateCloudRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UndeletePrivateCloudRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UndeletePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -3717,9 +3134,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_private_cloud(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_private_cloud(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_private_cloud
 
         DEPRECATED. Please use the `post_undelete_private_cloud_with_metadata`
@@ -3733,9 +3148,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_undelete_private_cloud_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_private_cloud
 
@@ -3752,12 +3165,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_cluster(
-        self,
-        request: vmwareengine.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.UpdateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -3765,9 +3174,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
         DEPRECATED. Please use the `post_update_cluster_with_metadata`
@@ -3781,9 +3188,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cluster
 
@@ -3800,12 +3205,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_dns_forwarding(
-        self,
-        request: vmwareengine.UpdateDnsForwardingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateDnsForwardingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.UpdateDnsForwardingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateDnsForwardingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dns_forwarding
 
         Override in a subclass to manipulate the request or metadata
@@ -3813,9 +3214,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dns_forwarding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_dns_forwarding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_dns_forwarding
 
         DEPRECATED. Please use the `post_update_dns_forwarding_with_metadata`
@@ -3829,9 +3228,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_dns_forwarding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dns_forwarding
 
@@ -3848,13 +3245,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_external_access_rule(
-        self,
-        request: vmwareengine.UpdateExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateExternalAccessRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UpdateExternalAccessRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateExternalAccessRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -3862,9 +3254,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_external_access_rule(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_external_access_rule(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_external_access_rule
 
         DEPRECATED. Please use the `post_update_external_access_rule_with_metadata`
@@ -3878,9 +3268,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_external_access_rule_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_external_access_rule
 
@@ -3897,13 +3285,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_external_address(
-        self,
-        request: vmwareengine.UpdateExternalAddressRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateExternalAddressRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UpdateExternalAddressRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateExternalAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -3911,9 +3294,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_external_address(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_external_address(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_external_address
 
         DEPRECATED. Please use the `post_update_external_address_with_metadata`
@@ -3927,9 +3308,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_external_address_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_external_address
 
@@ -3946,12 +3325,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_logging_server(
-        self,
-        request: vmwareengine.UpdateLoggingServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.UpdateLoggingServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -3959,9 +3334,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_logging_server(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_logging_server(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_logging_server
 
         DEPRECATED. Please use the `post_update_logging_server_with_metadata`
@@ -3975,9 +3348,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_logging_server_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_logging_server
 
@@ -3994,13 +3365,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_management_dns_zone_binding(
-        self,
-        request: vmwareengine.UpdateManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateManagementDnsZoneBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UpdateManagementDnsZoneBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateManagementDnsZoneBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_management_dns_zone_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -4008,9 +3374,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_management_dns_zone_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_management_dns_zone_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_management_dns_zone_binding
 
         DEPRECATED. Please use the `post_update_management_dns_zone_binding_with_metadata`
@@ -4024,9 +3388,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_management_dns_zone_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_management_dns_zone_binding
 
@@ -4043,13 +3405,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_network_peering(
-        self,
-        request: vmwareengine.UpdateNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateNetworkPeeringRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UpdateNetworkPeeringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateNetworkPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -4057,9 +3414,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_network_peering(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_network_peering(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_network_peering
 
         DEPRECATED. Please use the `post_update_network_peering_with_metadata`
@@ -4073,9 +3428,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_network_peering_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_network_peering
 
@@ -4092,12 +3445,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_network_policy(
-        self,
-        request: vmwareengine.UpdateNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.UpdateNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -4105,9 +3454,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_network_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_network_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_network_policy
 
         DEPRECATED. Please use the `post_update_network_policy_with_metadata`
@@ -4121,9 +3468,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_network_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_network_policy
 
@@ -4140,12 +3485,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_private_cloud(
-        self,
-        request: vmwareengine.UpdatePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdatePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.UpdatePrivateCloudRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdatePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -4153,9 +3494,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_private_cloud(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_private_cloud(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_private_cloud
 
         DEPRECATED. Please use the `post_update_private_cloud_with_metadata`
@@ -4169,9 +3508,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_private_cloud_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_private_cloud
 
@@ -4188,13 +3525,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_private_connection(
-        self,
-        request: vmwareengine.UpdatePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdatePrivateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UpdatePrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdatePrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -4202,9 +3534,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_private_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_private_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_private_connection
 
         DEPRECATED. Please use the `post_update_private_connection_with_metadata`
@@ -4218,9 +3548,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_private_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_private_connection
 
@@ -4237,12 +3565,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_subnet(
-        self,
-        request: vmwareengine.UpdateSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmwareengine.UpdateSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -4250,9 +3574,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_subnet(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_subnet(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_subnet
 
         DEPRECATED. Please use the `post_update_subnet_with_metadata`
@@ -4266,9 +3588,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_subnet_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_subnet
 
@@ -4285,13 +3605,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_update_vmware_engine_network(
-        self,
-        request: vmwareengine.UpdateVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmwareengine.UpdateVmwareEngineNetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmwareengine.UpdateVmwareEngineNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmwareengine.UpdateVmwareEngineNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_vmware_engine_network
 
         Override in a subclass to manipulate the request or metadata
@@ -4299,9 +3614,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_update_vmware_engine_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_vmware_engine_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_vmware_engine_network
 
         DEPRECATED. Please use the `post_update_vmware_engine_network_with_metadata`
@@ -4315,9 +3628,7 @@ class VmwareEngineRestInterceptor:
         return response
 
     def post_update_vmware_engine_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_vmware_engine_network
 
@@ -4334,12 +3645,8 @@ class VmwareEngineRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -4347,9 +3654,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -4359,12 +3664,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -4372,9 +3673,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -4384,12 +3683,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -4407,12 +3702,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -4430,13 +3721,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -4444,9 +3730,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -4456,12 +3740,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -4479,12 +3759,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -4492,9 +3768,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -4504,12 +3778,8 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -4517,9 +3787,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -4608,9 +3876,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -4656,29 +3922,17 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateCluster(
-        _BaseVmwareEngineRestTransport._BaseCreateCluster, VmwareEngineRestStub
-    ):
+    class _CreateCluster(_BaseVmwareEngineRestTransport._BaseCreateCluster, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4722,30 +3976,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4769,13 +4011,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4789,12 +4025,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4815,23 +4047,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateExternalAccessRule(
-        _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule,
-        VmwareEngineRestStub,
-    ):
+    class _CreateExternalAccessRule(_BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateExternalAccessRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4876,32 +4097,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_external_access_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_external_access_rule(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4924,16 +4131,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._CreateExternalAccessRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._CreateExternalAccessRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4947,12 +4146,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_external_access_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_external_access_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_external_access_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4973,22 +4168,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateExternalAddress(
-        _BaseVmwareEngineRestTransport._BaseCreateExternalAddress, VmwareEngineRestStub
-    ):
+    class _CreateExternalAddress(_BaseVmwareEngineRestTransport._BaseCreateExternalAddress, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateExternalAddress")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5032,32 +4217,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_external_address(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_external_address(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5081,13 +4252,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreateExternalAddress._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5101,12 +4266,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_external_address(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_external_address_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_external_address_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5127,22 +4288,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateHcxActivationKey(
-        _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey, VmwareEngineRestStub
-    ):
+    class _CreateHcxActivationKey(_BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateHcxActivationKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5186,32 +4337,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_hcx_activation_key(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_hcx_activation_key(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5235,13 +4372,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreateHcxActivationKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5255,12 +4386,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_hcx_activation_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_hcx_activation_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_hcx_activation_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5281,22 +4408,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateLoggingServer(
-        _BaseVmwareEngineRestTransport._BaseCreateLoggingServer, VmwareEngineRestStub
-    ):
+    class _CreateLoggingServer(_BaseVmwareEngineRestTransport._BaseCreateLoggingServer, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateLoggingServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5340,32 +4457,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_logging_server(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_logging_server(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5389,13 +4492,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreateLoggingServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5409,12 +4506,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_logging_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_logging_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_logging_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5435,23 +4528,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateManagementDnsZoneBinding(
-        _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding,
-        VmwareEngineRestStub,
-    ):
+    class _CreateManagementDnsZoneBinding(_BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateManagementDnsZoneBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5496,35 +4578,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_management_dns_zone_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_management_dns_zone_binding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5547,16 +4612,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._CreateManagementDnsZoneBinding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._CreateManagementDnsZoneBinding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5570,15 +4627,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_management_dns_zone_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_management_dns_zone_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_management_dns_zone_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5599,22 +4649,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateNetworkPeering(
-        _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering, VmwareEngineRestStub
-    ):
+    class _CreateNetworkPeering(_BaseVmwareEngineRestTransport._BaseCreateNetworkPeering, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateNetworkPeering")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5658,32 +4698,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_network_peering(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_network_peering(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5707,13 +4733,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreateNetworkPeering._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5727,12 +4747,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_network_peering(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_network_peering_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_network_peering_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5753,22 +4769,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateNetworkPolicy(
-        _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy, VmwareEngineRestStub
-    ):
+    class _CreateNetworkPolicy(_BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateNetworkPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5812,32 +4818,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_network_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_network_policy(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5861,13 +4853,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreateNetworkPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5881,12 +4867,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_network_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_network_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_network_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5907,22 +4889,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreatePrivateCloud(
-        _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud, VmwareEngineRestStub
-    ):
+    class _CreatePrivateCloud(_BaseVmwareEngineRestTransport._BaseCreatePrivateCloud, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreatePrivateCloud")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5966,32 +4938,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_private_cloud(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_private_cloud(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6015,13 +4973,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreatePrivateCloud._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6035,12 +4987,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_private_cloud(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_private_cloud_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_private_cloud_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6061,23 +5009,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreatePrivateConnection(
-        _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection,
-        VmwareEngineRestStub,
-    ):
+    class _CreatePrivateConnection(_BaseVmwareEngineRestTransport._BaseCreatePrivateConnection, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreatePrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6121,32 +5058,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_private_connection(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6170,13 +5093,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._CreatePrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6190,12 +5107,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6216,23 +5129,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _CreateVmwareEngineNetwork(
-        _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork,
-        VmwareEngineRestStub,
-    ):
+    class _CreateVmwareEngineNetwork(_BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.CreateVmwareEngineNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6277,32 +5179,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_vmware_engine_network(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_vmware_engine_network(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6325,16 +5213,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._CreateVmwareEngineNetwork._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._CreateVmwareEngineNetwork._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6348,12 +5228,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_create_vmware_engine_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_vmware_engine_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_vmware_engine_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6374,22 +5250,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteCluster(
-        _BaseVmwareEngineRestTransport._BaseDeleteCluster, VmwareEngineRestStub
-    ):
+    class _DeleteCluster(_BaseVmwareEngineRestTransport._BaseDeleteCluster, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6432,26 +5298,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6475,12 +5331,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6494,12 +5345,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6520,23 +5367,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteExternalAccessRule(
-        _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule,
-        VmwareEngineRestStub,
-    ):
+    class _DeleteExternalAccessRule(_BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteExternalAccessRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6580,28 +5416,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_external_access_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_external_access_rule(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6624,15 +5448,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._DeleteExternalAccessRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmwareEngineRestTransport._DeleteExternalAccessRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6646,12 +5463,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_external_access_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_external_access_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_external_access_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6672,22 +5485,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteExternalAddress(
-        _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress, VmwareEngineRestStub
-    ):
+    class _DeleteExternalAddress(_BaseVmwareEngineRestTransport._BaseDeleteExternalAddress, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteExternalAddress")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6730,28 +5533,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_external_address(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_external_address(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6775,12 +5566,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteExternalAddress._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6794,12 +5580,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_external_address(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_external_address_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_external_address_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6820,22 +5602,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteLoggingServer(
-        _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer, VmwareEngineRestStub
-    ):
+    class _DeleteLoggingServer(_BaseVmwareEngineRestTransport._BaseDeleteLoggingServer, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteLoggingServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6878,28 +5650,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_logging_server(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_logging_server(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6923,12 +5683,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteLoggingServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6942,12 +5697,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_logging_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_logging_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_logging_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6968,23 +5719,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteManagementDnsZoneBinding(
-        _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding,
-        VmwareEngineRestStub,
-    ):
+    class _DeleteManagementDnsZoneBinding(_BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteManagementDnsZoneBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7028,31 +5768,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_management_dns_zone_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_management_dns_zone_binding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7075,15 +5800,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._DeleteManagementDnsZoneBinding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmwareEngineRestTransport._DeleteManagementDnsZoneBinding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7097,15 +5815,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_management_dns_zone_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_management_dns_zone_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_management_dns_zone_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7126,22 +5837,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteNetworkPeering(
-        _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering, VmwareEngineRestStub
-    ):
+    class _DeleteNetworkPeering(_BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteNetworkPeering")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7184,28 +5885,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_network_peering(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_network_peering(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7229,12 +5918,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteNetworkPeering._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7248,12 +5932,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_network_peering(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_network_peering_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_network_peering_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7274,22 +5954,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteNetworkPolicy(
-        _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy, VmwareEngineRestStub
-    ):
+    class _DeleteNetworkPolicy(_BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteNetworkPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7332,28 +6002,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_network_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_network_policy(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7377,12 +6035,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteNetworkPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7396,12 +6049,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_network_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_network_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_network_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7422,22 +6071,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeletePrivateCloud(
-        _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud, VmwareEngineRestStub
-    ):
+    class _DeletePrivateCloud(_BaseVmwareEngineRestTransport._BaseDeletePrivateCloud, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeletePrivateCloud")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7480,28 +6119,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_private_cloud(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_private_cloud(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7525,12 +6152,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeletePrivateCloud._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7544,12 +6166,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_private_cloud(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_private_cloud_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_private_cloud_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7570,23 +6188,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeletePrivateConnection(
-        _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection,
-        VmwareEngineRestStub,
-    ):
+    class _DeletePrivateConnection(_BaseVmwareEngineRestTransport._BaseDeletePrivateConnection, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeletePrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7629,28 +6236,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_private_connection(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7674,12 +6269,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeletePrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7693,12 +6283,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7719,23 +6305,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _DeleteVmwareEngineNetwork(
-        _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork,
-        VmwareEngineRestStub,
-    ):
+    class _DeleteVmwareEngineNetwork(_BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteVmwareEngineNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7779,28 +6354,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_vmware_engine_network(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_vmware_engine_network(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7823,15 +6386,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._DeleteVmwareEngineNetwork._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmwareEngineRestTransport._DeleteVmwareEngineNetwork._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7845,12 +6401,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_delete_vmware_engine_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_vmware_engine_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_vmware_engine_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7871,23 +6423,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _FetchNetworkPolicyExternalAddresses(
-        _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses,
-        VmwareEngineRestStub,
-    ):
+    class _FetchNetworkPolicyExternalAddresses(_BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.FetchNetworkPolicyExternalAddresses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7930,31 +6471,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_fetch_network_policy_external_addresses(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_fetch_network_policy_external_addresses(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7978,12 +6506,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._FetchNetworkPolicyExternalAddresses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7999,19 +6522,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_fetch_network_policy_external_addresses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_network_policy_external_addresses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_network_policy_external_addresses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8030,22 +6544,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetCluster(
-        _BaseVmwareEngineRestTransport._BaseGetCluster, VmwareEngineRestStub
-    ):
+    class _GetCluster(_BaseVmwareEngineRestTransport._BaseGetCluster, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8085,30 +6589,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     A cluster in a private cloud.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetCluster._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseGetCluster._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetCluster._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8132,12 +6622,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8153,12 +6638,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.Cluster.to_json(response)
                 except:
@@ -8179,22 +6660,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetDnsBindPermission(
-        _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission, VmwareEngineRestStub
-    ):
+    class _GetDnsBindPermission(_BaseVmwareEngineRestTransport._BaseGetDnsBindPermission, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetDnsBindPermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8239,28 +6710,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_dns_bind_permission(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_dns_bind_permission(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8284,12 +6743,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetDnsBindPermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8305,16 +6759,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_dns_bind_permission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dns_bind_permission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dns_bind_permission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.DnsBindPermission.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.DnsBindPermission.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8333,22 +6781,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetDnsForwarding(
-        _BaseVmwareEngineRestTransport._BaseGetDnsForwarding, VmwareEngineRestStub
-    ):
+    class _GetDnsForwarding(_BaseVmwareEngineRestTransport._BaseGetDnsForwarding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetDnsForwarding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8393,28 +6831,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_dns_forwarding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_dns_forwarding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8438,12 +6864,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetDnsForwarding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8459,16 +6880,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_dns_forwarding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dns_forwarding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dns_forwarding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.DnsForwarding.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.DnsForwarding.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8487,22 +6902,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetExternalAccessRule(
-        _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule, VmwareEngineRestStub
-    ):
+    class _GetExternalAccessRule(_BaseVmwareEngineRestTransport._BaseGetExternalAccessRule, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetExternalAccessRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8544,28 +6949,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_external_access_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_external_access_rule(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8589,12 +6982,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetExternalAccessRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8610,16 +6998,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_external_access_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_external_access_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_external_access_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine_resources.ExternalAccessRule.to_json(response)
-                    )
+                    response_payload = vmwareengine_resources.ExternalAccessRule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8638,22 +7020,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetExternalAddress(
-        _BaseVmwareEngineRestTransport._BaseGetExternalAddress, VmwareEngineRestStub
-    ):
+    class _GetExternalAddress(_BaseVmwareEngineRestTransport._BaseGetExternalAddress, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetExternalAddress")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8696,28 +7068,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_external_address(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_external_address(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8741,12 +7101,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetExternalAddress._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8762,16 +7117,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_external_address(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_external_address_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_external_address_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.ExternalAddress.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.ExternalAddress.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8790,22 +7139,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetHcxActivationKey(
-        _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey, VmwareEngineRestStub
-    ):
+    class _GetHcxActivationKey(_BaseVmwareEngineRestTransport._BaseGetHcxActivationKey, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetHcxActivationKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8852,28 +7191,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_hcx_activation_key(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_hcx_activation_key(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8897,12 +7224,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetHcxActivationKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8918,16 +7240,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_hcx_activation_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_hcx_activation_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_hcx_activation_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.HcxActivationKey.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.HcxActivationKey.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8946,22 +7262,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetLoggingServer(
-        _BaseVmwareEngineRestTransport._BaseGetLoggingServer, VmwareEngineRestStub
-    ):
+    class _GetLoggingServer(_BaseVmwareEngineRestTransport._BaseGetLoggingServer, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetLoggingServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9003,28 +7309,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_logging_server(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_logging_server(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9048,12 +7342,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetLoggingServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9069,16 +7358,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_logging_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_logging_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_logging_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.LoggingServer.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.LoggingServer.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9097,23 +7380,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetManagementDnsZoneBinding(
-        _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding,
-        VmwareEngineRestStub,
-    ):
+    class _GetManagementDnsZoneBinding(_BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetManagementDnsZoneBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9163,28 +7435,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_management_dns_zone_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_management_dns_zone_binding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9207,15 +7467,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._GetManagementDnsZoneBinding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmwareEngineRestTransport._GetManagementDnsZoneBinding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9231,21 +7484,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_management_dns_zone_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_management_dns_zone_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_management_dns_zone_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine_resources.ManagementDnsZoneBinding.to_json(
-                            response
-                        )
-                    )
+                    response_payload = vmwareengine_resources.ManagementDnsZoneBinding.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9264,22 +7506,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetNetworkPeering(
-        _BaseVmwareEngineRestTransport._BaseGetNetworkPeering, VmwareEngineRestStub
-    ):
+    class _GetNetworkPeering(_BaseVmwareEngineRestTransport._BaseGetNetworkPeering, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetNetworkPeering")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9319,28 +7551,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     Details of a network peering.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_network_peering(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_network_peering(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9364,12 +7584,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetNetworkPeering._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9385,16 +7600,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_network_peering(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_network_peering_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_network_peering_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.NetworkPeering.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.NetworkPeering.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9413,22 +7622,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetNetworkPolicy(
-        _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy, VmwareEngineRestStub
-    ):
+    class _GetNetworkPolicy(_BaseVmwareEngineRestTransport._BaseGetNetworkPolicy, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetNetworkPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9479,28 +7678,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_network_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_network_policy(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9524,12 +7711,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetNetworkPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9545,16 +7727,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_network_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_network_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_network_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.NetworkPolicy.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.NetworkPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9578,15 +7754,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             return hash("VmwareEngineRestTransport.GetNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9626,30 +7794,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     Node in a cluster.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetNode._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetNode._get_http_options()
 
             request, metadata = self._interceptor.pre_get_node(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseGetNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNode._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetNode._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9673,12 +7827,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9694,12 +7843,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.Node.to_json(response)
                 except:
@@ -9720,22 +7865,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetNodeType(
-        _BaseVmwareEngineRestTransport._BaseGetNodeType, VmwareEngineRestStub
-    ):
+    class _GetNodeType(_BaseVmwareEngineRestTransport._BaseGetNodeType, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetNodeType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9775,30 +7910,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     Describes node type.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetNodeType._get_http_options()
 
             request, metadata = self._interceptor.pre_get_node_type(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNodeType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetNodeType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9822,12 +7943,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetNodeType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9843,12 +7959,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_node_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_node_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_node_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.NodeType.to_json(response)
                 except:
@@ -9869,22 +7981,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetPrivateCloud(
-        _BaseVmwareEngineRestTransport._BaseGetPrivateCloud, VmwareEngineRestStub
-    ):
+    class _GetPrivateCloud(_BaseVmwareEngineRestTransport._BaseGetPrivateCloud, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetPrivateCloud")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9927,28 +8029,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_private_cloud(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_private_cloud(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9972,12 +8062,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetPrivateCloud._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9993,16 +8078,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_private_cloud(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_private_cloud_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_private_cloud_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.PrivateCloud.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.PrivateCloud.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10021,22 +8100,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetPrivateConnection(
-        _BaseVmwareEngineRestTransport._BaseGetPrivateConnection, VmwareEngineRestStub
-    ):
+    class _GetPrivateConnection(_BaseVmwareEngineRestTransport._BaseGetPrivateConnection, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetPrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10079,28 +8148,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_private_connection(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10124,12 +8181,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetPrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10145,16 +8197,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.PrivateConnection.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.PrivateConnection.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10173,22 +8219,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetSubnet(
-        _BaseVmwareEngineRestTransport._BaseGetSubnet, VmwareEngineRestStub
-    ):
+    class _GetSubnet(_BaseVmwareEngineRestTransport._BaseGetSubnet, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10231,30 +8267,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_subnet(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetSubnet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10278,12 +8300,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10299,12 +8316,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.Subnet.to_json(response)
                 except:
@@ -10325,22 +8338,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GetVmwareEngineNetwork(
-        _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork, VmwareEngineRestStub
-    ):
+    class _GetVmwareEngineNetwork(_BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetVmwareEngineNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10383,28 +8386,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_vmware_engine_network(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_vmware_engine_network(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10428,12 +8419,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetVmwareEngineNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10449,16 +8435,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_get_vmware_engine_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vmware_engine_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vmware_engine_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine_resources.VmwareEngineNetwork.to_json(response)
-                    )
+                    response_payload = vmwareengine_resources.VmwareEngineNetwork.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10477,22 +8457,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _GrantDnsBindPermission(
-        _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission, VmwareEngineRestStub
-    ):
+    class _GrantDnsBindPermission(_BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GrantDnsBindPermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10536,32 +8506,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_http_options()
 
-            request, metadata = self._interceptor.pre_grant_dns_bind_permission(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_grant_dns_bind_permission(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10585,13 +8541,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GrantDnsBindPermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10605,12 +8555,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_grant_dns_bind_permission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_grant_dns_bind_permission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_grant_dns_bind_permission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10631,22 +8577,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListClusters(
-        _BaseVmwareEngineRestTransport._BaseListClusters, VmwareEngineRestStub
-    ):
+    class _ListClusters(_BaseVmwareEngineRestTransport._BaseListClusters, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10688,28 +8624,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListClusters._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseListClusters._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10733,12 +8657,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10754,16 +8673,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListClustersResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10782,23 +8695,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListExternalAccessRules(
-        _BaseVmwareEngineRestTransport._BaseListExternalAccessRules,
-        VmwareEngineRestStub,
-    ):
+    class _ListExternalAccessRules(_BaseVmwareEngineRestTransport._BaseListExternalAccessRules, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListExternalAccessRules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10841,28 +8743,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_external_access_rules(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_external_access_rules(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10886,12 +8776,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListExternalAccessRules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10907,16 +8792,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_external_access_rules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_external_access_rules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_external_access_rules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListExternalAccessRulesResponse.to_json(response)
-                    )
+                    response_payload = vmwareengine.ListExternalAccessRulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10935,22 +8814,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListExternalAddresses(
-        _BaseVmwareEngineRestTransport._BaseListExternalAddresses, VmwareEngineRestStub
-    ):
+    class _ListExternalAddresses(_BaseVmwareEngineRestTransport._BaseListExternalAddresses, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListExternalAddresses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10992,28 +8861,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_external_addresses(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_external_addresses(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11037,12 +8894,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListExternalAddresses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11058,16 +8910,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_external_addresses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_external_addresses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_external_addresses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListExternalAddressesResponse.to_json(response)
-                    )
+                    response_payload = vmwareengine.ListExternalAddressesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11086,22 +8932,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListHcxActivationKeys(
-        _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys, VmwareEngineRestStub
-    ):
+    class _ListHcxActivationKeys(_BaseVmwareEngineRestTransport._BaseListHcxActivationKeys, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListHcxActivationKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11143,28 +8979,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_hcx_activation_keys(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_hcx_activation_keys(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11188,12 +9012,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListHcxActivationKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11209,16 +9028,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_hcx_activation_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_hcx_activation_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_hcx_activation_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListHcxActivationKeysResponse.to_json(response)
-                    )
+                    response_payload = vmwareengine.ListHcxActivationKeysResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11237,22 +9050,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListLoggingServers(
-        _BaseVmwareEngineRestTransport._BaseListLoggingServers, VmwareEngineRestStub
-    ):
+    class _ListLoggingServers(_BaseVmwareEngineRestTransport._BaseListLoggingServers, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListLoggingServers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11294,28 +9097,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_logging_servers(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_logging_servers(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11339,12 +9130,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListLoggingServers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11360,16 +9146,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_logging_servers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_logging_servers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_logging_servers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListLoggingServersResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListLoggingServersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11388,23 +9168,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListManagementDnsZoneBindings(
-        _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings,
-        VmwareEngineRestStub,
-    ):
+    class _ListManagementDnsZoneBindings(_BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListManagementDnsZoneBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11447,28 +9216,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_management_dns_zone_bindings(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_management_dns_zone_bindings(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11491,15 +9248,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._ListManagementDnsZoneBindings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmwareEngineRestTransport._ListManagementDnsZoneBindings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11515,21 +9265,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_management_dns_zone_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_management_dns_zone_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_management_dns_zone_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListManagementDnsZoneBindingsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = vmwareengine.ListManagementDnsZoneBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11548,22 +9287,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListNetworkPeerings(
-        _BaseVmwareEngineRestTransport._BaseListNetworkPeerings, VmwareEngineRestStub
-    ):
+    class _ListNetworkPeerings(_BaseVmwareEngineRestTransport._BaseListNetworkPeerings, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListNetworkPeerings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11605,28 +9334,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_network_peerings(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_network_peerings(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11650,12 +9367,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListNetworkPeerings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11671,16 +9383,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_network_peerings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_network_peerings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_network_peerings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListNetworkPeeringsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListNetworkPeeringsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11699,22 +9405,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListNetworkPolicies(
-        _BaseVmwareEngineRestTransport._BaseListNetworkPolicies, VmwareEngineRestStub
-    ):
+    class _ListNetworkPolicies(_BaseVmwareEngineRestTransport._BaseListNetworkPolicies, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListNetworkPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11756,28 +9452,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_network_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_network_policies(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11801,12 +9485,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListNetworkPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11822,16 +9501,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_network_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_network_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_network_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListNetworkPoliciesResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListNetworkPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11850,22 +9523,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListNodes(
-        _BaseVmwareEngineRestTransport._BaseListNodes, VmwareEngineRestStub
-    ):
+    class _ListNodes(_BaseVmwareEngineRestTransport._BaseListNodes, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListNodes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11907,30 +9570,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListNodes._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListNodes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_nodes(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseListNodes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNodes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseListNodes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNodes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11954,12 +9603,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListNodes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11975,12 +9619,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_nodes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_nodes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_nodes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine.ListNodesResponse.to_json(response)
                 except:
@@ -12001,22 +9641,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListNodeTypes(
-        _BaseVmwareEngineRestTransport._BaseListNodeTypes, VmwareEngineRestStub
-    ):
+    class _ListNodeTypes(_BaseVmwareEngineRestTransport._BaseListNodeTypes, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListNodeTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12058,26 +9688,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_node_types(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12101,12 +9721,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListNodeTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12122,16 +9737,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_node_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_node_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_node_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListNodeTypesResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListNodeTypesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12150,22 +9759,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListPeeringRoutes(
-        _BaseVmwareEngineRestTransport._BaseListPeeringRoutes, VmwareEngineRestStub
-    ):
+    class _ListPeeringRoutes(_BaseVmwareEngineRestTransport._BaseListPeeringRoutes, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListPeeringRoutes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12207,28 +9806,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_peering_routes(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_peering_routes(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12252,12 +9839,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListPeeringRoutes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12273,16 +9855,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_peering_routes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_peering_routes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_peering_routes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListPeeringRoutesResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListPeeringRoutesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12301,22 +9877,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListPrivateClouds(
-        _BaseVmwareEngineRestTransport._BaseListPrivateClouds, VmwareEngineRestStub
-    ):
+    class _ListPrivateClouds(_BaseVmwareEngineRestTransport._BaseListPrivateClouds, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListPrivateClouds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12358,28 +9924,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_private_clouds(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_private_clouds(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12403,12 +9957,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListPrivateClouds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12424,16 +9973,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_private_clouds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_private_clouds_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_private_clouds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListPrivateCloudsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListPrivateCloudsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12452,23 +9995,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListPrivateConnectionPeeringRoutes(
-        _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes,
-        VmwareEngineRestStub,
-    ):
+    class _ListPrivateConnectionPeeringRoutes(_BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListPrivateConnectionPeeringRoutes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12511,31 +10043,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_private_connection_peering_routes(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_private_connection_peering_routes(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12559,12 +10076,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListPrivateConnectionPeeringRoutes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12580,21 +10092,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_private_connection_peering_routes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_private_connection_peering_routes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_private_connection_peering_routes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListPrivateConnectionPeeringRoutesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = vmwareengine.ListPrivateConnectionPeeringRoutesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12613,22 +10114,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListPrivateConnections(
-        _BaseVmwareEngineRestTransport._BaseListPrivateConnections, VmwareEngineRestStub
-    ):
+    class _ListPrivateConnections(_BaseVmwareEngineRestTransport._BaseListPrivateConnections, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListPrivateConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12670,28 +10161,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_private_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_private_connections(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12715,12 +10194,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListPrivateConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12736,16 +10210,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_private_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_private_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_private_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListPrivateConnectionsResponse.to_json(response)
-                    )
+                    response_payload = vmwareengine.ListPrivateConnectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12764,22 +10232,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListSubnets(
-        _BaseVmwareEngineRestTransport._BaseListSubnets, VmwareEngineRestStub
-    ):
+    class _ListSubnets(_BaseVmwareEngineRestTransport._BaseListSubnets, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListSubnets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12821,30 +10279,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListSubnets._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListSubnets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_subnets(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseListSubnets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListSubnets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseListSubnets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListSubnets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12868,12 +10312,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListSubnets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12889,16 +10328,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_subnets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_subnets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_subnets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine.ListSubnetsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine.ListSubnetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12917,23 +10350,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ListVmwareEngineNetworks(
-        _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks,
-        VmwareEngineRestStub,
-    ):
+    class _ListVmwareEngineNetworks(_BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListVmwareEngineNetworks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12976,28 +10398,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_vmware_engine_networks(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_vmware_engine_networks(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13020,15 +10430,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._ListVmwareEngineNetworks._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmwareEngineRestTransport._ListVmwareEngineNetworks._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13044,16 +10447,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_list_vmware_engine_networks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_vmware_engine_networks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_vmware_engine_networks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmwareengine.ListVmwareEngineNetworksResponse.to_json(response)
-                    )
+                    response_payload = vmwareengine.ListVmwareEngineNetworksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -13072,23 +10469,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _RepairManagementDnsZoneBinding(
-        _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding,
-        VmwareEngineRestStub,
-    ):
+    class _RepairManagementDnsZoneBinding(_BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.RepairManagementDnsZoneBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13133,35 +10519,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_repair_management_dns_zone_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_repair_management_dns_zone_binding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13184,16 +10553,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._RepairManagementDnsZoneBinding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._RepairManagementDnsZoneBinding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13207,15 +10568,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_repair_management_dns_zone_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_repair_management_dns_zone_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_repair_management_dns_zone_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13236,22 +10590,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ResetNsxCredentials(
-        _BaseVmwareEngineRestTransport._BaseResetNsxCredentials, VmwareEngineRestStub
-    ):
+    class _ResetNsxCredentials(_BaseVmwareEngineRestTransport._BaseResetNsxCredentials, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ResetNsxCredentials")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13295,32 +10639,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_http_options()
 
-            request, metadata = self._interceptor.pre_reset_nsx_credentials(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reset_nsx_credentials(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13344,13 +10674,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ResetNsxCredentials._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13364,12 +10688,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_reset_nsx_credentials(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_nsx_credentials_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_nsx_credentials_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13390,23 +10710,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ResetVcenterCredentials(
-        _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials,
-        VmwareEngineRestStub,
-    ):
+    class _ResetVcenterCredentials(_BaseVmwareEngineRestTransport._BaseResetVcenterCredentials, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ResetVcenterCredentials")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13450,32 +10759,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_http_options()
 
-            request, metadata = self._interceptor.pre_reset_vcenter_credentials(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reset_vcenter_credentials(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13499,13 +10794,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ResetVcenterCredentials._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13519,12 +10808,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_reset_vcenter_credentials(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_vcenter_credentials_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_vcenter_credentials_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13545,23 +10830,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _RevokeDnsBindPermission(
-        _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission,
-        VmwareEngineRestStub,
-    ):
+    class _RevokeDnsBindPermission(_BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.RevokeDnsBindPermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13606,32 +10880,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_http_options()
 
-            request, metadata = self._interceptor.pre_revoke_dns_bind_permission(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_revoke_dns_bind_permission(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13655,13 +10915,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._RevokeDnsBindPermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13675,12 +10929,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_revoke_dns_bind_permission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_revoke_dns_bind_permission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_revoke_dns_bind_permission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13701,22 +10951,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ShowNsxCredentials(
-        _BaseVmwareEngineRestTransport._BaseShowNsxCredentials, VmwareEngineRestStub
-    ):
+    class _ShowNsxCredentials(_BaseVmwareEngineRestTransport._BaseShowNsxCredentials, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ShowNsxCredentials")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13756,28 +10996,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     Credentials for a private cloud.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_http_options()
 
-            request, metadata = self._interceptor.pre_show_nsx_credentials(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_show_nsx_credentials(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13801,12 +11029,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ShowNsxCredentials._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13822,16 +11045,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_show_nsx_credentials(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_show_nsx_credentials_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_show_nsx_credentials_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.Credentials.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.Credentials.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -13850,22 +11067,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _ShowVcenterCredentials(
-        _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials, VmwareEngineRestStub
-    ):
+    class _ShowVcenterCredentials(_BaseVmwareEngineRestTransport._BaseShowVcenterCredentials, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ShowVcenterCredentials")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13905,28 +11112,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     Credentials for a private cloud.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_http_options()
 
-            request, metadata = self._interceptor.pre_show_vcenter_credentials(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_show_vcenter_credentials(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13950,12 +11145,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ShowVcenterCredentials._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13971,16 +11161,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_show_vcenter_credentials(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_show_vcenter_credentials_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_show_vcenter_credentials_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmwareengine_resources.Credentials.to_json(
-                        response
-                    )
+                    response_payload = vmwareengine_resources.Credentials.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -13999,22 +11183,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UndeletePrivateCloud(
-        _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud, VmwareEngineRestStub
-    ):
+    class _UndeletePrivateCloud(_BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UndeletePrivateCloud")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14058,32 +11232,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_private_cloud(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undelete_private_cloud(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14107,13 +11267,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UndeletePrivateCloud._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14127,12 +11281,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_undelete_private_cloud(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_private_cloud_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_private_cloud_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14153,22 +11303,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateCluster(
-        _BaseVmwareEngineRestTransport._BaseUpdateCluster, VmwareEngineRestStub
-    ):
+    class _UpdateCluster(_BaseVmwareEngineRestTransport._BaseUpdateCluster, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14212,30 +11352,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14259,13 +11387,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14279,12 +11401,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14305,22 +11423,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateDnsForwarding(
-        _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding, VmwareEngineRestStub
-    ):
+    class _UpdateDnsForwarding(_BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateDnsForwarding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14364,32 +11472,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_dns_forwarding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_dns_forwarding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14413,13 +11507,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateDnsForwarding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14433,12 +11521,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_dns_forwarding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dns_forwarding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dns_forwarding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14459,23 +11543,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateExternalAccessRule(
-        _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule,
-        VmwareEngineRestStub,
-    ):
+    class _UpdateExternalAccessRule(_BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateExternalAccessRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14520,32 +11593,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_external_access_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_external_access_rule(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14568,16 +11627,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._UpdateExternalAccessRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._UpdateExternalAccessRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14591,12 +11642,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_external_access_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_external_access_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_external_access_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14617,22 +11664,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateExternalAddress(
-        _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress, VmwareEngineRestStub
-    ):
+    class _UpdateExternalAddress(_BaseVmwareEngineRestTransport._BaseUpdateExternalAddress, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateExternalAddress")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14676,32 +11713,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_external_address(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_external_address(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14725,13 +11748,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateExternalAddress._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14745,12 +11762,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_external_address(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_external_address_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_external_address_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14771,22 +11784,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateLoggingServer(
-        _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer, VmwareEngineRestStub
-    ):
+    class _UpdateLoggingServer(_BaseVmwareEngineRestTransport._BaseUpdateLoggingServer, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateLoggingServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14830,32 +11833,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_logging_server(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_logging_server(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14879,13 +11868,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateLoggingServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14899,12 +11882,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_logging_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_logging_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_logging_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14925,23 +11904,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateManagementDnsZoneBinding(
-        _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding,
-        VmwareEngineRestStub,
-    ):
+    class _UpdateManagementDnsZoneBinding(_BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateManagementDnsZoneBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14986,35 +11954,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_management_dns_zone_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_management_dns_zone_binding(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15037,16 +11988,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._UpdateManagementDnsZoneBinding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._UpdateManagementDnsZoneBinding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15060,15 +12003,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_management_dns_zone_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_management_dns_zone_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_management_dns_zone_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15089,22 +12025,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateNetworkPeering(
-        _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering, VmwareEngineRestStub
-    ):
+    class _UpdateNetworkPeering(_BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateNetworkPeering")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15148,32 +12074,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_network_peering(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_network_peering(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15197,13 +12109,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateNetworkPeering._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15217,12 +12123,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_network_peering(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_network_peering_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_network_peering_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15243,22 +12145,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateNetworkPolicy(
-        _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy, VmwareEngineRestStub
-    ):
+    class _UpdateNetworkPolicy(_BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateNetworkPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15302,32 +12194,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_network_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_network_policy(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15351,13 +12229,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateNetworkPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15371,12 +12243,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_network_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_network_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_network_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15397,22 +12265,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdatePrivateCloud(
-        _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud, VmwareEngineRestStub
-    ):
+    class _UpdatePrivateCloud(_BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdatePrivateCloud")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15456,32 +12314,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_private_cloud(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_private_cloud(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15505,13 +12349,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdatePrivateCloud._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15525,12 +12363,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_private_cloud(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_private_cloud_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_private_cloud_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15551,23 +12385,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdatePrivateConnection(
-        _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection,
-        VmwareEngineRestStub,
-    ):
+    class _UpdatePrivateConnection(_BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdatePrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15611,32 +12434,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_private_connection(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15660,13 +12469,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdatePrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15680,12 +12483,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15706,22 +12505,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateSubnet(
-        _BaseVmwareEngineRestTransport._BaseUpdateSubnet, VmwareEngineRestStub
-    ):
+    class _UpdateSubnet(_BaseVmwareEngineRestTransport._BaseUpdateSubnet, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15765,34 +12554,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_update_subnet(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15816,13 +12589,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15836,12 +12603,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15862,23 +12625,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
             return resp
 
-    class _UpdateVmwareEngineNetwork(
-        _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork,
-        VmwareEngineRestStub,
-    ):
+    class _UpdateVmwareEngineNetwork(_BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.UpdateVmwareEngineNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15923,32 +12675,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_vmware_engine_network(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_vmware_engine_network(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15971,16 +12709,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmwareEngineRestTransport._UpdateVmwareEngineNetwork._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmwareEngineRestTransport._UpdateVmwareEngineNetwork._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15994,12 +12724,8 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             resp = self._interceptor.post_update_vmware_engine_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_vmware_engine_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_vmware_engine_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -16021,191 +12747,127 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             return resp
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[vmwareengine.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[vmwareengine.CreateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateExternalAccessRuleRequest], operations_pb2.Operation
-    ]:
+    def create_external_access_rule(self) -> Callable[[vmwareengine.CreateExternalAccessRuleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExternalAccessRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateExternalAddressRequest], operations_pb2.Operation
-    ]:
+    def create_external_address(self) -> Callable[[vmwareengine.CreateExternalAddressRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExternalAddress(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_hcx_activation_key(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateHcxActivationKeyRequest], operations_pb2.Operation
-    ]:
+    def create_hcx_activation_key(self) -> Callable[[vmwareengine.CreateHcxActivationKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateHcxActivationKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_logging_server(
-        self,
-    ) -> Callable[[vmwareengine.CreateLoggingServerRequest], operations_pb2.Operation]:
+    def create_logging_server(self) -> Callable[[vmwareengine.CreateLoggingServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLoggingServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def create_management_dns_zone_binding(self) -> Callable[[vmwareengine.CreateManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateManagementDnsZoneBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_network_peering(
-        self,
-    ) -> Callable[[vmwareengine.CreateNetworkPeeringRequest], operations_pb2.Operation]:
+    def create_network_peering(self) -> Callable[[vmwareengine.CreateNetworkPeeringRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNetworkPeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_network_policy(
-        self,
-    ) -> Callable[[vmwareengine.CreateNetworkPolicyRequest], operations_pb2.Operation]:
+    def create_network_policy(self) -> Callable[[vmwareengine.CreateNetworkPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNetworkPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.CreatePrivateCloudRequest], operations_pb2.Operation]:
+    def create_private_cloud(self) -> Callable[[vmwareengine.CreatePrivateCloudRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreatePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def create_private_connection(self) -> Callable[[vmwareengine.CreatePrivateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateVmwareEngineNetworkRequest], operations_pb2.Operation
-    ]:
+    def create_vmware_engine_network(self) -> Callable[[vmwareengine.CreateVmwareEngineNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVmwareEngineNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[vmwareengine.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[vmwareengine.DeleteClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteExternalAccessRuleRequest], operations_pb2.Operation
-    ]:
+    def delete_external_access_rule(self) -> Callable[[vmwareengine.DeleteExternalAccessRuleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExternalAccessRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteExternalAddressRequest], operations_pb2.Operation
-    ]:
+    def delete_external_address(self) -> Callable[[vmwareengine.DeleteExternalAddressRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExternalAddress(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_logging_server(
-        self,
-    ) -> Callable[[vmwareengine.DeleteLoggingServerRequest], operations_pb2.Operation]:
+    def delete_logging_server(self) -> Callable[[vmwareengine.DeleteLoggingServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLoggingServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_management_dns_zone_binding(self) -> Callable[[vmwareengine.DeleteManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteManagementDnsZoneBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_network_peering(
-        self,
-    ) -> Callable[[vmwareengine.DeleteNetworkPeeringRequest], operations_pb2.Operation]:
+    def delete_network_peering(self) -> Callable[[vmwareengine.DeleteNetworkPeeringRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNetworkPeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_network_policy(
-        self,
-    ) -> Callable[[vmwareengine.DeleteNetworkPolicyRequest], operations_pb2.Operation]:
+    def delete_network_policy(self) -> Callable[[vmwareengine.DeleteNetworkPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNetworkPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.DeletePrivateCloudRequest], operations_pb2.Operation]:
+    def delete_private_cloud(self) -> Callable[[vmwareengine.DeletePrivateCloudRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeletePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def delete_private_connection(self) -> Callable[[vmwareengine.DeletePrivateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteVmwareEngineNetworkRequest], operations_pb2.Operation
-    ]:
+    def delete_vmware_engine_network(self) -> Callable[[vmwareengine.DeleteVmwareEngineNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVmwareEngineNetwork(self._session, self._host, self._interceptor)  # type: ignore
@@ -16213,81 +12875,49 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     @property
     def fetch_network_policy_external_addresses(
         self,
-    ) -> Callable[
-        [vmwareengine.FetchNetworkPolicyExternalAddressesRequest],
-        vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
-    ]:
+    ) -> Callable[[vmwareengine.FetchNetworkPolicyExternalAddressesRequest], vmwareengine.FetchNetworkPolicyExternalAddressesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchNetworkPolicyExternalAddresses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine_resources.Cluster]:
+    def get_cluster(self) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine_resources.Cluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dns_bind_permission(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetDnsBindPermissionRequest],
-        vmwareengine_resources.DnsBindPermission,
-    ]:
+    def get_dns_bind_permission(self) -> Callable[[vmwareengine.GetDnsBindPermissionRequest], vmwareengine_resources.DnsBindPermission]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDnsBindPermission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dns_forwarding(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetDnsForwardingRequest], vmwareengine_resources.DnsForwarding
-    ]:
+    def get_dns_forwarding(self) -> Callable[[vmwareengine.GetDnsForwardingRequest], vmwareengine_resources.DnsForwarding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDnsForwarding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetExternalAccessRuleRequest],
-        vmwareengine_resources.ExternalAccessRule,
-    ]:
+    def get_external_access_rule(self) -> Callable[[vmwareengine.GetExternalAccessRuleRequest], vmwareengine_resources.ExternalAccessRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetExternalAccessRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetExternalAddressRequest], vmwareengine_resources.ExternalAddress
-    ]:
+    def get_external_address(self) -> Callable[[vmwareengine.GetExternalAddressRequest], vmwareengine_resources.ExternalAddress]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetExternalAddress(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_hcx_activation_key(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetHcxActivationKeyRequest],
-        vmwareengine_resources.HcxActivationKey,
-    ]:
+    def get_hcx_activation_key(self) -> Callable[[vmwareengine.GetHcxActivationKeyRequest], vmwareengine_resources.HcxActivationKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHcxActivationKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_logging_server(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetLoggingServerRequest], vmwareengine_resources.LoggingServer
-    ]:
+    def get_logging_server(self) -> Callable[[vmwareengine.GetLoggingServerRequest], vmwareengine_resources.LoggingServer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLoggingServer(self._session, self._host, self._interceptor)  # type: ignore
@@ -16295,150 +12925,91 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     @property
     def get_management_dns_zone_binding(
         self,
-    ) -> Callable[
-        [vmwareengine.GetManagementDnsZoneBindingRequest],
-        vmwareengine_resources.ManagementDnsZoneBinding,
-    ]:
+    ) -> Callable[[vmwareengine.GetManagementDnsZoneBindingRequest], vmwareengine_resources.ManagementDnsZoneBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetManagementDnsZoneBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_network_peering(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetNetworkPeeringRequest], vmwareengine_resources.NetworkPeering
-    ]:
+    def get_network_peering(self) -> Callable[[vmwareengine.GetNetworkPeeringRequest], vmwareengine_resources.NetworkPeering]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNetworkPeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_network_policy(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetNetworkPolicyRequest], vmwareengine_resources.NetworkPolicy
-    ]:
+    def get_network_policy(self) -> Callable[[vmwareengine.GetNetworkPolicyRequest], vmwareengine_resources.NetworkPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNetworkPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_node(
-        self,
-    ) -> Callable[[vmwareengine.GetNodeRequest], vmwareengine_resources.Node]:
+    def get_node(self) -> Callable[[vmwareengine.GetNodeRequest], vmwareengine_resources.Node]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_node_type(
-        self,
-    ) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine_resources.NodeType]:
+    def get_node_type(self) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine_resources.NodeType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNodeType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_private_cloud(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetPrivateCloudRequest], vmwareengine_resources.PrivateCloud
-    ]:
+    def get_private_cloud(self) -> Callable[[vmwareengine.GetPrivateCloudRequest], vmwareengine_resources.PrivateCloud]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetPrivateConnectionRequest],
-        vmwareengine_resources.PrivateConnection,
-    ]:
+    def get_private_connection(self) -> Callable[[vmwareengine.GetPrivateConnectionRequest], vmwareengine_resources.PrivateConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_subnet(
-        self,
-    ) -> Callable[[vmwareengine.GetSubnetRequest], vmwareengine_resources.Subnet]:
+    def get_subnet(self) -> Callable[[vmwareengine.GetSubnetRequest], vmwareengine_resources.Subnet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetVmwareEngineNetworkRequest],
-        vmwareengine_resources.VmwareEngineNetwork,
-    ]:
+    def get_vmware_engine_network(self) -> Callable[[vmwareengine.GetVmwareEngineNetworkRequest], vmwareengine_resources.VmwareEngineNetwork]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVmwareEngineNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def grant_dns_bind_permission(
-        self,
-    ) -> Callable[
-        [vmwareengine.GrantDnsBindPermissionRequest], operations_pb2.Operation
-    ]:
+    def grant_dns_bind_permission(self) -> Callable[[vmwareengine.GrantDnsBindPermissionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GrantDnsBindPermission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListClustersRequest], vmwareengine.ListClustersResponse
-    ]:
+    def list_clusters(self) -> Callable[[vmwareengine.ListClustersRequest], vmwareengine.ListClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_external_access_rules(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListExternalAccessRulesRequest],
-        vmwareengine.ListExternalAccessRulesResponse,
-    ]:
+    def list_external_access_rules(self) -> Callable[[vmwareengine.ListExternalAccessRulesRequest], vmwareengine.ListExternalAccessRulesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExternalAccessRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_external_addresses(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListExternalAddressesRequest],
-        vmwareengine.ListExternalAddressesResponse,
-    ]:
+    def list_external_addresses(self) -> Callable[[vmwareengine.ListExternalAddressesRequest], vmwareengine.ListExternalAddressesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExternalAddresses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_hcx_activation_keys(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListHcxActivationKeysRequest],
-        vmwareengine.ListHcxActivationKeysResponse,
-    ]:
+    def list_hcx_activation_keys(self) -> Callable[[vmwareengine.ListHcxActivationKeysRequest], vmwareengine.ListHcxActivationKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListHcxActivationKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_logging_servers(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListLoggingServersRequest],
-        vmwareengine.ListLoggingServersResponse,
-    ]:
+    def list_logging_servers(self) -> Callable[[vmwareengine.ListLoggingServersRequest], vmwareengine.ListLoggingServersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLoggingServers(self._session, self._host, self._interceptor)  # type: ignore
@@ -16446,70 +13017,43 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     @property
     def list_management_dns_zone_bindings(
         self,
-    ) -> Callable[
-        [vmwareengine.ListManagementDnsZoneBindingsRequest],
-        vmwareengine.ListManagementDnsZoneBindingsResponse,
-    ]:
+    ) -> Callable[[vmwareengine.ListManagementDnsZoneBindingsRequest], vmwareengine.ListManagementDnsZoneBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListManagementDnsZoneBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_network_peerings(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListNetworkPeeringsRequest],
-        vmwareengine.ListNetworkPeeringsResponse,
-    ]:
+    def list_network_peerings(self) -> Callable[[vmwareengine.ListNetworkPeeringsRequest], vmwareengine.ListNetworkPeeringsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNetworkPeerings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_network_policies(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListNetworkPoliciesRequest],
-        vmwareengine.ListNetworkPoliciesResponse,
-    ]:
+    def list_network_policies(self) -> Callable[[vmwareengine.ListNetworkPoliciesRequest], vmwareengine.ListNetworkPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNetworkPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_nodes(
-        self,
-    ) -> Callable[[vmwareengine.ListNodesRequest], vmwareengine.ListNodesResponse]:
+    def list_nodes(self) -> Callable[[vmwareengine.ListNodesRequest], vmwareengine.ListNodesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNodes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_node_types(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListNodeTypesRequest], vmwareengine.ListNodeTypesResponse
-    ]:
+    def list_node_types(self) -> Callable[[vmwareengine.ListNodeTypesRequest], vmwareengine.ListNodeTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNodeTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_peering_routes(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListPeeringRoutesRequest], vmwareengine.ListPeeringRoutesResponse
-    ]:
+    def list_peering_routes(self) -> Callable[[vmwareengine.ListPeeringRoutesRequest], vmwareengine.ListPeeringRoutesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPeeringRoutes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_private_clouds(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListPrivateCloudsRequest], vmwareengine.ListPrivateCloudsResponse
-    ]:
+    def list_private_clouds(self) -> Callable[[vmwareengine.ListPrivateCloudsRequest], vmwareengine.ListPrivateCloudsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrivateClouds(self._session, self._host, self._interceptor)  # type: ignore
@@ -16517,212 +13061,139 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     @property
     def list_private_connection_peering_routes(
         self,
-    ) -> Callable[
-        [vmwareengine.ListPrivateConnectionPeeringRoutesRequest],
-        vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
-    ]:
+    ) -> Callable[[vmwareengine.ListPrivateConnectionPeeringRoutesRequest], vmwareengine.ListPrivateConnectionPeeringRoutesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrivateConnectionPeeringRoutes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_private_connections(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListPrivateConnectionsRequest],
-        vmwareengine.ListPrivateConnectionsResponse,
-    ]:
+    def list_private_connections(self) -> Callable[[vmwareengine.ListPrivateConnectionsRequest], vmwareengine.ListPrivateConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrivateConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_subnets(
-        self,
-    ) -> Callable[[vmwareengine.ListSubnetsRequest], vmwareengine.ListSubnetsResponse]:
+    def list_subnets(self) -> Callable[[vmwareengine.ListSubnetsRequest], vmwareengine.ListSubnetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSubnets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_vmware_engine_networks(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListVmwareEngineNetworksRequest],
-        vmwareengine.ListVmwareEngineNetworksResponse,
-    ]:
+    def list_vmware_engine_networks(self) -> Callable[[vmwareengine.ListVmwareEngineNetworksRequest], vmwareengine.ListVmwareEngineNetworksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVmwareEngineNetworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def repair_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.RepairManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def repair_management_dns_zone_binding(self) -> Callable[[vmwareengine.RepairManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RepairManagementDnsZoneBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_nsx_credentials(
-        self,
-    ) -> Callable[[vmwareengine.ResetNsxCredentialsRequest], operations_pb2.Operation]:
+    def reset_nsx_credentials(self) -> Callable[[vmwareengine.ResetNsxCredentialsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetNsxCredentials(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_vcenter_credentials(
-        self,
-    ) -> Callable[
-        [vmwareengine.ResetVcenterCredentialsRequest], operations_pb2.Operation
-    ]:
+    def reset_vcenter_credentials(self) -> Callable[[vmwareengine.ResetVcenterCredentialsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetVcenterCredentials(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def revoke_dns_bind_permission(
-        self,
-    ) -> Callable[
-        [vmwareengine.RevokeDnsBindPermissionRequest], operations_pb2.Operation
-    ]:
+    def revoke_dns_bind_permission(self) -> Callable[[vmwareengine.RevokeDnsBindPermissionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RevokeDnsBindPermission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def show_nsx_credentials(
-        self,
-    ) -> Callable[
-        [vmwareengine.ShowNsxCredentialsRequest], vmwareengine_resources.Credentials
-    ]:
+    def show_nsx_credentials(self) -> Callable[[vmwareengine.ShowNsxCredentialsRequest], vmwareengine_resources.Credentials]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ShowNsxCredentials(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def show_vcenter_credentials(
-        self,
-    ) -> Callable[
-        [vmwareengine.ShowVcenterCredentialsRequest], vmwareengine_resources.Credentials
-    ]:
+    def show_vcenter_credentials(self) -> Callable[[vmwareengine.ShowVcenterCredentialsRequest], vmwareengine_resources.Credentials]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ShowVcenterCredentials(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.UndeletePrivateCloudRequest], operations_pb2.Operation]:
+    def undelete_private_cloud(self) -> Callable[[vmwareengine.UndeletePrivateCloudRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeletePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[vmwareengine.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[vmwareengine.UpdateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_dns_forwarding(
-        self,
-    ) -> Callable[[vmwareengine.UpdateDnsForwardingRequest], operations_pb2.Operation]:
+    def update_dns_forwarding(self) -> Callable[[vmwareengine.UpdateDnsForwardingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDnsForwarding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateExternalAccessRuleRequest], operations_pb2.Operation
-    ]:
+    def update_external_access_rule(self) -> Callable[[vmwareengine.UpdateExternalAccessRuleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExternalAccessRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateExternalAddressRequest], operations_pb2.Operation
-    ]:
+    def update_external_address(self) -> Callable[[vmwareengine.UpdateExternalAddressRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExternalAddress(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_logging_server(
-        self,
-    ) -> Callable[[vmwareengine.UpdateLoggingServerRequest], operations_pb2.Operation]:
+    def update_logging_server(self) -> Callable[[vmwareengine.UpdateLoggingServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLoggingServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def update_management_dns_zone_binding(self) -> Callable[[vmwareengine.UpdateManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateManagementDnsZoneBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_network_peering(
-        self,
-    ) -> Callable[[vmwareengine.UpdateNetworkPeeringRequest], operations_pb2.Operation]:
+    def update_network_peering(self) -> Callable[[vmwareengine.UpdateNetworkPeeringRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNetworkPeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_network_policy(
-        self,
-    ) -> Callable[[vmwareengine.UpdateNetworkPolicyRequest], operations_pb2.Operation]:
+    def update_network_policy(self) -> Callable[[vmwareengine.UpdateNetworkPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNetworkPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.UpdatePrivateCloudRequest], operations_pb2.Operation]:
+    def update_private_cloud(self) -> Callable[[vmwareengine.UpdatePrivateCloudRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdatePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def update_private_connection(self) -> Callable[[vmwareengine.UpdatePrivateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_subnet(
-        self,
-    ) -> Callable[[vmwareengine.UpdateSubnetRequest], operations_pb2.Operation]:
+    def update_subnet(self) -> Callable[[vmwareengine.UpdateSubnetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateVmwareEngineNetworkRequest], operations_pb2.Operation
-    ]:
+    def update_vmware_engine_network(self) -> Callable[[vmwareengine.UpdateVmwareEngineNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVmwareEngineNetwork(self._session, self._host, self._interceptor)  # type: ignore
@@ -16731,22 +13202,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseVmwareEngineRestTransport._BaseGetLocation, VmwareEngineRestStub
-    ):
+    class _GetLocation(_BaseVmwareEngineRestTransport._BaseGetLocation, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -16784,30 +13245,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseVmwareEngineRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -16831,12 +13278,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16848,9 +13290,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -16875,22 +13315,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseVmwareEngineRestTransport._BaseListLocations, VmwareEngineRestStub
-    ):
+    class _ListLocations(_BaseVmwareEngineRestTransport._BaseListLocations, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -16928,26 +13358,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -16971,12 +13391,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16988,9 +13403,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -17015,22 +13428,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseVmwareEngineRestTransport._BaseGetIamPolicy, VmwareEngineRestStub
-    ):
+    class _GetIamPolicy(_BaseVmwareEngineRestTransport._BaseGetIamPolicy, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -17068,28 +13471,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -17113,12 +13504,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17130,9 +13516,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -17157,22 +13541,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseVmwareEngineRestTransport._BaseSetIamPolicy, VmwareEngineRestStub
-    ):
+    class _SetIamPolicy(_BaseVmwareEngineRestTransport._BaseSetIamPolicy, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -17211,34 +13585,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -17262,13 +13620,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17280,9 +13632,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -17307,22 +13657,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseVmwareEngineRestTransport._BaseTestIamPermissions, VmwareEngineRestStub
-    ):
+    class _TestIamPermissions(_BaseVmwareEngineRestTransport._BaseTestIamPermissions, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -17361,32 +13701,18 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -17410,13 +13736,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17428,9 +13748,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -17455,22 +13773,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseVmwareEngineRestTransport._BaseDeleteOperation, VmwareEngineRestStub
-    ):
+    class _DeleteOperation(_BaseVmwareEngineRestTransport._BaseDeleteOperation, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -17505,28 +13813,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -17550,12 +13846,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17569,22 +13860,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseVmwareEngineRestTransport._BaseGetOperation, VmwareEngineRestStub
-    ):
+    class _GetOperation(_BaseVmwareEngineRestTransport._BaseGetOperation, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -17622,28 +13903,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmwareEngineRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -17667,12 +13936,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17684,9 +13948,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -17711,22 +13973,12 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVmwareEngineRestTransport._BaseListOperations, VmwareEngineRestStub
-    ):
+    class _ListOperations(_BaseVmwareEngineRestTransport._BaseListOperations, VmwareEngineRestStub):
         def __hash__(self):
             return hash("VmwareEngineRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -17764,26 +14016,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVmwareEngineRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVmwareEngineRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseVmwareEngineRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmwareEngineRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmwareEngineRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -17807,12 +14049,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
 
             # Send the request
             response = VmwareEngineRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17824,9 +14061,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -273,9 +273,7 @@ class ListSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions: MutableSequence[
-        subscription_resource.Subscription
-    ] = proto.RepeatedField(
+    subscriptions: MutableSequence[subscription_resource.Subscription] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=subscription_resource.Subscription,

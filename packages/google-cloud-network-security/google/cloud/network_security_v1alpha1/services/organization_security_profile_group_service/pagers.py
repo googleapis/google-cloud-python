@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group,
-    security_profile_group_service,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group, security_profile_group_service
 
 
 class ListSecurityProfileGroupsPager:
@@ -64,9 +49,7 @@ class ListSecurityProfileGroupsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., security_profile_group_service.ListSecurityProfileGroupsResponse
-        ],
+        method: Callable[..., security_profile_group_service.ListSecurityProfileGroupsResponse],
         request: security_profile_group_service.ListSecurityProfileGroupsRequest,
         response: security_profile_group_service.ListSecurityProfileGroupsResponse,
         *,
@@ -92,9 +75,7 @@ class ListSecurityProfileGroupsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = security_profile_group_service.ListSecurityProfileGroupsRequest(
-            request
-        )
+        self._request = security_profile_group_service.ListSecurityProfileGroupsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,18 +85,11 @@ class ListSecurityProfileGroupsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[security_profile_group_service.ListSecurityProfileGroupsResponse]:
+    def pages(self) -> Iterator[security_profile_group_service.ListSecurityProfileGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[security_profile_group.SecurityProfileGroup]:
@@ -146,10 +120,7 @@ class ListSecurityProfileGroupsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[security_profile_group_service.ListSecurityProfileGroupsResponse],
-        ],
+        method: Callable[..., Awaitable[security_profile_group_service.ListSecurityProfileGroupsResponse]],
         request: security_profile_group_service.ListSecurityProfileGroupsRequest,
         response: security_profile_group_service.ListSecurityProfileGroupsResponse,
         *,
@@ -175,9 +146,7 @@ class ListSecurityProfileGroupsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = security_profile_group_service.ListSecurityProfileGroupsRequest(
-            request
-        )
+        self._request = security_profile_group_service.ListSecurityProfileGroupsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -187,20 +156,11 @@ class ListSecurityProfileGroupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        security_profile_group_service.ListSecurityProfileGroupsResponse
-    ]:
+    async def pages(self) -> AsyncIterator[security_profile_group_service.ListSecurityProfileGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[security_profile_group.SecurityProfileGroup]:
@@ -235,9 +195,7 @@ class ListSecurityProfilesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., security_profile_group_service.ListSecurityProfilesResponse
-        ],
+        method: Callable[..., security_profile_group_service.ListSecurityProfilesResponse],
         request: security_profile_group_service.ListSecurityProfilesRequest,
         response: security_profile_group_service.ListSecurityProfilesResponse,
         *,
@@ -263,9 +221,7 @@ class ListSecurityProfilesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = security_profile_group_service.ListSecurityProfilesRequest(
-            request
-        )
+        self._request = security_profile_group_service.ListSecurityProfilesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -275,18 +231,11 @@ class ListSecurityProfilesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[security_profile_group_service.ListSecurityProfilesResponse]:
+    def pages(self) -> Iterator[security_profile_group_service.ListSecurityProfilesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[security_profile_group.SecurityProfile]:
@@ -317,9 +266,7 @@ class ListSecurityProfilesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[security_profile_group_service.ListSecurityProfilesResponse]
-        ],
+        method: Callable[..., Awaitable[security_profile_group_service.ListSecurityProfilesResponse]],
         request: security_profile_group_service.ListSecurityProfilesRequest,
         response: security_profile_group_service.ListSecurityProfilesResponse,
         *,
@@ -345,9 +292,7 @@ class ListSecurityProfilesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = security_profile_group_service.ListSecurityProfilesRequest(
-            request
-        )
+        self._request = security_profile_group_service.ListSecurityProfilesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -357,18 +302,11 @@ class ListSecurityProfilesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[security_profile_group_service.ListSecurityProfilesResponse]:
+    async def pages(self) -> AsyncIterator[security_profile_group_service.ListSecurityProfilesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[security_profile_group.SecurityProfile]:

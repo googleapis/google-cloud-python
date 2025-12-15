@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -326,11 +311,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._grpc_channel
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[
-        [environment.ListEnvironmentsRequest], environment.ListEnvironmentsResponse
-    ]:
+    def list_environments(self) -> Callable[[environment.ListEnvironmentsRequest], environment.ListEnvironmentsResponse]:
         r"""Return a callable for the list environments method over gRPC.
 
         Returns the list of all non-draft environments of the
@@ -355,9 +336,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["list_environments"]
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[environment.GetEnvironmentRequest], environment.Environment]:
+    def get_environment(self) -> Callable[[environment.GetEnvironmentRequest], environment.Environment]:
         r"""Return a callable for the get environment method over gRPC.
 
         Retrieves the specified agent environment.
@@ -381,9 +360,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["get_environment"]
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[[environment.CreateEnvironmentRequest], environment.Environment]:
+    def create_environment(self) -> Callable[[environment.CreateEnvironmentRequest], environment.Environment]:
         r"""Return a callable for the create environment method over gRPC.
 
         Creates an agent environment.
@@ -407,9 +384,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["create_environment"]
 
     @property
-    def update_environment(
-        self,
-    ) -> Callable[[environment.UpdateEnvironmentRequest], environment.Environment]:
+    def update_environment(self) -> Callable[[environment.UpdateEnvironmentRequest], environment.Environment]:
         r"""Return a callable for the update environment method over gRPC.
 
         Updates the specified agent environment.
@@ -445,9 +420,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["update_environment"]
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[environment.DeleteEnvironmentRequest], empty_pb2.Empty]:
+    def delete_environment(self) -> Callable[[environment.DeleteEnvironmentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete environment method over gRPC.
 
         Deletes the specified agent environment.
@@ -471,11 +444,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["delete_environment"]
 
     @property
-    def get_environment_history(
-        self,
-    ) -> Callable[
-        [environment.GetEnvironmentHistoryRequest], environment.EnvironmentHistory
-    ]:
+    def get_environment_history(self) -> Callable[[environment.GetEnvironmentHistoryRequest], environment.EnvironmentHistory]:
         r"""Return a callable for the get environment history method over gRPC.
 
         Gets the history of the specified environment.
@@ -538,9 +507,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -557,9 +524,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

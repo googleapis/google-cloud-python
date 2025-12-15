@@ -95,9 +95,7 @@ class DiskSettingsServiceRestInterceptor:
     """
 
     def pre_get(
-        self,
-        request: compute.GetDiskSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetDiskSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetDiskSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -120,9 +118,7 @@ class DiskSettingsServiceRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.DiskSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.DiskSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DiskSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -139,12 +135,8 @@ class DiskSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchDiskSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchDiskSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchDiskSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchDiskSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -166,9 +158,7 @@ class DiskSettingsServiceRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -268,30 +258,18 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DiskSettingsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Get(
-        _BaseDiskSettingsServiceRestTransport._BaseGet, DiskSettingsServiceRestStub
-    ):
+    class _Get(_BaseDiskSettingsServiceRestTransport._BaseGet, DiskSettingsServiceRestStub):
         def __hash__(self):
             return hash("DiskSettingsServiceRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -332,30 +310,16 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDiskSettingsServiceRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseDiskSettingsServiceRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseDiskSettingsServiceRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDiskSettingsServiceRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDiskSettingsServiceRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDiskSettingsServiceRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -379,12 +343,7 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
 
             # Send the request
             response = DiskSettingsServiceRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -401,9 +360,7 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.DiskSettings.to_json(response)
                 except:
@@ -424,22 +381,12 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
                 )
             return resp
 
-    class _Patch(
-        _BaseDiskSettingsServiceRestTransport._BasePatch, DiskSettingsServiceRestStub
-    ):
+    class _Patch(_BaseDiskSettingsServiceRestTransport._BasePatch, DiskSettingsServiceRestStub):
         def __hash__(self):
             return hash("DiskSettingsServiceRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -498,34 +445,18 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDiskSettingsServiceRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseDiskSettingsServiceRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = _BaseDiskSettingsServiceRestTransport._BasePatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDiskSettingsServiceRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDiskSettingsServiceRestTransport._BasePatch._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDiskSettingsServiceRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDiskSettingsServiceRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDiskSettingsServiceRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -549,13 +480,7 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
 
             # Send the request
             response = DiskSettingsServiceRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -571,12 +496,8 @@ class DiskSettingsServiceRestTransport(_BaseDiskSettingsServiceRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:

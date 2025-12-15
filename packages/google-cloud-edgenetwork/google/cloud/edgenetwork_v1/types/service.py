@@ -712,9 +712,7 @@ class ListInterconnectAttachmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    interconnect_attachments: MutableSequence[
-        resources.InterconnectAttachment
-    ] = proto.RepeatedField(
+    interconnect_attachments: MutableSequence[resources.InterconnectAttachment] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.InterconnectAttachment,

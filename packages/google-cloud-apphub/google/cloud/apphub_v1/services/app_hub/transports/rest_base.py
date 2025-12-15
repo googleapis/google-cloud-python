@@ -24,13 +24,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.apphub_v1.types import (
-    apphub_service,
-    application,
-    service,
-    service_project_attachment,
-    workload,
-)
+from google.cloud.apphub_v1.types import apphub_service, application, service, service_project_attachment, workload
 
 from .base import DEFAULT_CLIENT_INFO, AppHubTransport
 
@@ -81,20 +75,14 @@ class _BaseAppHubRestTransport(AppHubTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateApplication:
@@ -107,11 +95,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -134,9 +118,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -147,11 +129,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseCreateApplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseCreateApplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -166,11 +144,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -193,9 +167,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -206,11 +178,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseCreateService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseCreateService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -225,11 +193,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -244,9 +208,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = apphub_service.CreateServiceProjectAttachmentRequest.pb(
-                request
-            )
+            pb_request = apphub_service.CreateServiceProjectAttachmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -254,9 +216,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -267,11 +227,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseCreateServiceProjectAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseCreateServiceProjectAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -286,11 +242,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -313,9 +265,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -326,11 +276,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseCreateWorkload._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseCreateWorkload._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -343,11 +289,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -373,11 +315,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseDeleteApplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseDeleteApplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -390,11 +328,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -420,11 +354,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseDeleteService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseDeleteService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -437,11 +367,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -455,9 +381,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = apphub_service.DeleteServiceProjectAttachmentRequest.pb(
-                request
-            )
+            pb_request = apphub_service.DeleteServiceProjectAttachmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -469,11 +393,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseDeleteServiceProjectAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseDeleteServiceProjectAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -486,11 +406,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -516,11 +432,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseDeleteWorkload._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseDeleteWorkload._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -533,11 +445,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -552,9 +460,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = apphub_service.DetachServiceProjectAttachmentRequest.pb(
-                request
-            )
+            pb_request = apphub_service.DetachServiceProjectAttachmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -562,9 +468,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -575,11 +479,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseDetachServiceProjectAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseDetachServiceProjectAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -592,11 +492,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -622,11 +518,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseGetApplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseGetApplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -639,11 +531,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -669,11 +557,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseGetDiscoveredService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseGetDiscoveredService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -686,11 +570,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -716,11 +596,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseGetDiscoveredWorkload._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseGetDiscoveredWorkload._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -733,11 +609,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -763,11 +635,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseGetService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseGetService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -780,11 +648,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -810,11 +674,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseGetServiceProjectAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseGetServiceProjectAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -827,11 +687,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -857,11 +713,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseGetWorkload._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseGetWorkload._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -874,11 +726,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -904,11 +752,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseListApplications._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseListApplications._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -921,11 +765,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -951,11 +791,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseListDiscoveredServices._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseListDiscoveredServices._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -968,11 +804,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -998,11 +830,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseListDiscoveredWorkloads._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseListDiscoveredWorkloads._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1015,11 +843,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1045,11 +869,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseListServiceProjectAttachments._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseListServiceProjectAttachments._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1062,11 +882,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1092,11 +908,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseListServices._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseListServices._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1109,11 +921,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1139,11 +947,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseListWorkloads._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseListWorkloads._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1158,11 +962,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1188,11 +988,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseLookupDiscoveredService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseLookupDiscoveredService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1207,11 +1003,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1237,11 +1029,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseLookupDiscoveredWorkload._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseLookupDiscoveredWorkload._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1254,11 +1042,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1272,9 +1056,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = apphub_service.LookupServiceProjectAttachmentRequest.pb(
-                request
-            )
+            pb_request = apphub_service.LookupServiceProjectAttachmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1286,11 +1068,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseLookupServiceProjectAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseLookupServiceProjectAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1305,11 +1083,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1332,9 +1106,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1345,11 +1117,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseUpdateApplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseUpdateApplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1364,11 +1132,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1391,9 +1155,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1404,11 +1166,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseUpdateService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseUpdateService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1423,11 +1181,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1450,9 +1204,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1463,11 +1215,7 @@ class _BaseAppHubRestTransport(AppHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAppHubRestTransport._BaseUpdateWorkload._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAppHubRestTransport._BaseUpdateWorkload._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

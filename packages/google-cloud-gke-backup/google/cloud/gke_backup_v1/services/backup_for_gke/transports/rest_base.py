@@ -86,20 +86,14 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateBackup:
@@ -110,11 +104,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -137,9 +127,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -150,11 +138,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseCreateBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseCreateBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -167,11 +151,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -194,9 +174,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -207,11 +185,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -226,11 +200,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -253,9 +223,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -266,11 +234,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -285,11 +249,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -312,9 +272,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -325,11 +283,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseCreateRestore._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseCreateRestore._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -342,11 +296,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -369,9 +319,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -382,11 +330,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -401,11 +345,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -428,9 +368,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -441,11 +379,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -458,11 +392,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -488,11 +418,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseDeleteBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseDeleteBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -505,11 +431,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -535,11 +457,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -552,11 +470,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -582,11 +496,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -599,11 +509,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -629,11 +535,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseDeleteRestore._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseDeleteRestore._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -646,11 +548,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -676,11 +574,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -693,11 +587,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -723,11 +613,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -740,11 +626,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -770,11 +652,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -787,11 +665,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -817,11 +691,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetBackupChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -834,11 +704,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -864,11 +730,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -881,11 +743,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -911,11 +769,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -928,11 +782,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -958,11 +808,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -975,11 +821,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1005,11 +847,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetRestore._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetRestore._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1022,11 +860,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1052,11 +886,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1069,11 +899,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1099,11 +925,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetRestorePlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1116,11 +938,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1146,11 +964,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1163,11 +977,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1193,11 +1003,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1210,11 +1016,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1240,11 +1042,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1257,11 +1055,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1287,11 +1081,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListBackupChannels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListBackupChannels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1304,11 +1094,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1334,11 +1120,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1351,11 +1133,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1381,11 +1159,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListBackupPlans._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListBackupPlans._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1398,11 +1172,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1428,11 +1198,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListBackups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListBackups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1445,11 +1211,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1475,11 +1237,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListRestoreChannels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1492,11 +1250,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1522,11 +1276,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1539,11 +1289,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1569,11 +1315,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListRestorePlans._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListRestorePlans._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1586,11 +1328,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1616,11 +1354,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListRestores._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListRestores._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1633,11 +1367,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1663,11 +1393,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListVolumeBackups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1680,11 +1406,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1710,11 +1432,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseListVolumeRestores._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1727,11 +1445,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1754,9 +1468,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1767,11 +1479,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseUpdateBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseUpdateBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1784,11 +1492,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1811,9 +1515,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1824,11 +1526,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1841,11 +1539,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1868,9 +1562,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1881,11 +1573,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1898,11 +1586,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1925,9 +1609,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1938,11 +1620,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseUpdateRestore._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseUpdateRestore._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1955,11 +1633,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1982,9 +1656,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1995,11 +1667,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2012,11 +1680,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2039,9 +1703,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2052,11 +1714,7 @@ class _BaseBackupForGKERestTransport(BackupForGKETransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

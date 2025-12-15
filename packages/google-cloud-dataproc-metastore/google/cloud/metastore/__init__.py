@@ -18,18 +18,10 @@ from google.cloud.metastore import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.metastore_v1.services.dataproc_metastore.async_client import (
-    DataprocMetastoreAsyncClient,
-)
-from google.cloud.metastore_v1.services.dataproc_metastore.client import (
-    DataprocMetastoreClient,
-)
-from google.cloud.metastore_v1.services.dataproc_metastore_federation.async_client import (
-    DataprocMetastoreFederationAsyncClient,
-)
-from google.cloud.metastore_v1.services.dataproc_metastore_federation.client import (
-    DataprocMetastoreFederationClient,
-)
+from google.cloud.metastore_v1.services.dataproc_metastore.async_client import DataprocMetastoreAsyncClient
+from google.cloud.metastore_v1.services.dataproc_metastore.client import DataprocMetastoreClient
+from google.cloud.metastore_v1.services.dataproc_metastore_federation.async_client import DataprocMetastoreFederationAsyncClient
+from google.cloud.metastore_v1.services.dataproc_metastore_federation.client import DataprocMetastoreFederationClient
 from google.cloud.metastore_v1.types.metastore import (
     AlterMetadataResourceLocationRequest,
     AlterMetadataResourceLocationResponse,

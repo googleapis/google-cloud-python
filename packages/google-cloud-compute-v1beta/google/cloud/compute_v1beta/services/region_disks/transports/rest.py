@@ -215,13 +215,8 @@ class RegionDisksRestInterceptor:
     """
 
     def pre_add_resource_policies(
-        self,
-        request: compute.AddResourcePoliciesRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddResourcePoliciesRegionDiskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AddResourcePoliciesRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddResourcePoliciesRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_resource_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -229,9 +224,7 @@ class RegionDisksRestInterceptor:
         """
         return request, metadata
 
-    def post_add_resource_policies(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_add_resource_policies(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for add_resource_policies
 
         DEPRECATED. Please use the `post_add_resource_policies_with_metadata`
@@ -245,9 +238,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_add_resource_policies_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_resource_policies
 
@@ -264,12 +255,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_bulk_insert(
-        self,
-        request: compute.BulkInsertRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.BulkInsertRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.BulkInsertRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.BulkInsertRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for bulk_insert
 
         Override in a subclass to manipulate the request or metadata
@@ -291,9 +278,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_bulk_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for bulk_insert
 
@@ -310,12 +295,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_create_snapshot(
-        self,
-        request: compute.CreateSnapshotRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.CreateSnapshotRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.CreateSnapshotRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.CreateSnapshotRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +318,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_create_snapshot_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_snapshot
 
@@ -356,12 +335,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -383,9 +358,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -402,9 +375,7 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -444,12 +415,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetIamPolicyRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -471,9 +438,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -490,12 +455,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +478,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -536,9 +495,7 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionDisksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListRegionDisksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListRegionDisksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -561,9 +518,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.DiskList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.DiskList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DiskList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -580,13 +535,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_remove_resource_policies(
-        self,
-        request: compute.RemoveResourcePoliciesRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveResourcePoliciesRegionDiskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RemoveResourcePoliciesRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveResourcePoliciesRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_resource_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -594,9 +544,7 @@ class RegionDisksRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_resource_policies(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_remove_resource_policies(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for remove_resource_policies
 
         DEPRECATED. Please use the `post_remove_resource_policies_with_metadata`
@@ -610,9 +558,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_remove_resource_policies_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_resource_policies
 
@@ -629,12 +575,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_resize(
-        self,
-        request: compute.ResizeRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ResizeRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ResizeRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ResizeRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resize
 
         Override in a subclass to manipulate the request or metadata
@@ -656,9 +598,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_resize_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resize
 
@@ -675,12 +615,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetIamPolicyRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -702,9 +638,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -721,12 +655,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetLabelsRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetLabelsRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetLabelsRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -748,9 +678,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -767,13 +695,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_start_async_replication(
-        self,
-        request: compute.StartAsyncReplicationRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.StartAsyncReplicationRegionDiskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.StartAsyncReplicationRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.StartAsyncReplicationRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_async_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -781,9 +704,7 @@ class RegionDisksRestInterceptor:
         """
         return request, metadata
 
-    def post_start_async_replication(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_start_async_replication(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for start_async_replication
 
         DEPRECATED. Please use the `post_start_async_replication_with_metadata`
@@ -797,9 +718,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_start_async_replication_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_async_replication
 
@@ -816,13 +735,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_stop_async_replication(
-        self,
-        request: compute.StopAsyncReplicationRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.StopAsyncReplicationRegionDiskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.StopAsyncReplicationRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.StopAsyncReplicationRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_async_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -830,9 +744,7 @@ class RegionDisksRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_async_replication(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_stop_async_replication(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for stop_async_replication
 
         DEPRECATED. Please use the `post_stop_async_replication_with_metadata`
@@ -846,9 +758,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_stop_async_replication_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_async_replication
 
@@ -865,13 +775,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_stop_group_async_replication(
-        self,
-        request: compute.StopGroupAsyncReplicationRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.StopGroupAsyncReplicationRegionDiskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.StopGroupAsyncReplicationRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.StopGroupAsyncReplicationRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_group_async_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -879,9 +784,7 @@ class RegionDisksRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_group_async_replication(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_stop_group_async_replication(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for stop_group_async_replication
 
         DEPRECATED. Please use the `post_stop_group_async_replication_with_metadata`
@@ -895,9 +798,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_stop_group_async_replication_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_group_async_replication
 
@@ -914,13 +815,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsRegionDiskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -928,9 +824,7 @@ class RegionDisksRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -944,12 +838,8 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -965,12 +855,8 @@ class RegionDisksRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdateRegionDiskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdateRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.UpdateRegionDiskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdateRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -992,9 +878,7 @@ class RegionDisksRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -1094,30 +978,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionDisksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AddResourcePolicies(
-        _BaseRegionDisksRestTransport._BaseAddResourcePolicies, RegionDisksRestStub
-    ):
+    class _AddResourcePolicies(_BaseRegionDisksRestTransport._BaseAddResourcePolicies, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.AddResourcePolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1176,32 +1048,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_resource_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_resource_policies(request, metadata)
+            transcoded_request = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1225,13 +1083,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._AddResourcePolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1247,12 +1099,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_add_resource_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_resource_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_resource_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1273,22 +1121,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _BulkInsert(
-        _BaseRegionDisksRestTransport._BaseBulkInsert, RegionDisksRestStub
-    ):
+    class _BulkInsert(_BaseRegionDisksRestTransport._BaseBulkInsert, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.BulkInsert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1347,34 +1185,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseBulkInsert._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseBulkInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_bulk_insert(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseBulkInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseBulkInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseBulkInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseBulkInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseBulkInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseBulkInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1398,13 +1220,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._BulkInsert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1420,12 +1236,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_bulk_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_bulk_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_bulk_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1446,22 +1258,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _CreateSnapshot(
-        _BaseRegionDisksRestTransport._BaseCreateSnapshot, RegionDisksRestStub
-    ):
+    class _CreateSnapshot(_BaseRegionDisksRestTransport._BaseCreateSnapshot, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.CreateSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1520,30 +1322,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
-            transcoded_request = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1567,13 +1357,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._CreateSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1589,12 +1373,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_create_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1620,15 +1400,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1689,25 +1461,13 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = _BaseRegionDisksRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1730,14 +1490,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
 
             # Send the request
-            response = RegionDisksRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = RegionDisksRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1752,12 +1505,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1783,15 +1532,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1847,25 +1588,13 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = _BaseRegionDisksRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1888,14 +1617,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
 
             # Send the request
-            response = RegionDisksRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = RegionDisksRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1911,9 +1633,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Disk.to_json(response)
                 except:
@@ -1934,22 +1654,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseRegionDisksRestTransport._BaseGetIamPolicy, RegionDisksRestStub
-    ):
+    class _GetIamPolicy(_BaseRegionDisksRestTransport._BaseGetIamPolicy, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2013,30 +1723,16 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2060,12 +1756,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2081,12 +1772,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2112,15 +1799,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2182,29 +1861,15 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = _BaseRegionDisksRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2228,13 +1893,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2250,12 +1909,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2281,15 +1936,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2333,25 +1980,13 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = _BaseRegionDisksRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2374,14 +2009,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
 
             # Send the request
-            response = RegionDisksRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = RegionDisksRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2397,9 +2025,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.DiskList.to_json(response)
                 except:
@@ -2420,22 +2046,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _RemoveResourcePolicies(
-        _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies, RegionDisksRestStub
-    ):
+    class _RemoveResourcePolicies(_BaseRegionDisksRestTransport._BaseRemoveResourcePolicies, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.RemoveResourcePolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2494,32 +2110,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_resource_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_resource_policies(request, metadata)
+            transcoded_request = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2543,13 +2145,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._RemoveResourcePolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2565,12 +2161,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_remove_resource_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_resource_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_resource_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2596,15 +2188,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.Resize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2666,29 +2250,15 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = _BaseRegionDisksRestTransport._BaseResize._get_http_options()
 
             request, metadata = self._interceptor.pre_resize(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseResize._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseResize._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseResize._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseResize._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseResize._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseResize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2712,13 +2282,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._Resize._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2734,12 +2298,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_resize(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resize_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resize_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2760,22 +2320,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseRegionDisksRestTransport._BaseSetIamPolicy, RegionDisksRestStub
-    ):
+    class _SetIamPolicy(_BaseRegionDisksRestTransport._BaseSetIamPolicy, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2840,36 +2390,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2893,13 +2425,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2915,12 +2441,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2946,15 +2468,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3013,34 +2527,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseSetLabels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseSetLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseSetLabels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3064,13 +2562,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3086,12 +2578,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3112,22 +2600,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _StartAsyncReplication(
-        _BaseRegionDisksRestTransport._BaseStartAsyncReplication, RegionDisksRestStub
-    ):
+    class _StartAsyncReplication(_BaseRegionDisksRestTransport._BaseStartAsyncReplication, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.StartAsyncReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3186,32 +2664,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_async_replication(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_async_replication(request, metadata)
+            transcoded_request = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3235,13 +2699,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._StartAsyncReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3257,12 +2715,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_start_async_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_async_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_async_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3283,22 +2737,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _StopAsyncReplication(
-        _BaseRegionDisksRestTransport._BaseStopAsyncReplication, RegionDisksRestStub
-    ):
+    class _StopAsyncReplication(_BaseRegionDisksRestTransport._BaseStopAsyncReplication, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.StopAsyncReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3356,28 +2800,16 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_stop_async_replication(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_stop_async_replication(request, metadata)
+            transcoded_request = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3401,12 +2833,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._StopAsyncReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3422,12 +2849,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_stop_async_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_async_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_async_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3448,23 +2871,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _StopGroupAsyncReplication(
-        _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication,
-        RegionDisksRestStub,
-    ):
+    class _StopGroupAsyncReplication(_BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.StopGroupAsyncReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3524,32 +2936,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_stop_group_async_replication(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_stop_group_async_replication(request, metadata)
+            transcoded_request = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3572,16 +2970,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
 
             # Send the request
-            response = (
-                RegionDisksRestTransport._StopGroupAsyncReplication._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionDisksRestTransport._StopGroupAsyncReplication._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3597,12 +2987,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_stop_group_async_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_group_async_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_group_async_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3623,22 +3009,12 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseRegionDisksRestTransport._BaseTestIamPermissions, RegionDisksRestStub
-    ):
+    class _TestIamPermissions(_BaseRegionDisksRestTransport._BaseTestIamPermissions, RegionDisksRestStub):
         def __hash__(self):
             return hash("RegionDisksRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3680,32 +3056,18 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3729,13 +3091,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3751,12 +3107,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -3782,15 +3134,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return hash("RegionDisksRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3852,29 +3196,15 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = _BaseRegionDisksRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BaseRegionDisksRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionDisksRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionDisksRestTransport._BaseUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionDisksRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionDisksRestTransport._BaseUpdate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionDisksRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3898,13 +3228,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             # Send the request
             response = RegionDisksRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3920,12 +3244,8 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3947,25 +3267,19 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             return resp
 
     @property
-    def add_resource_policies(
-        self,
-    ) -> Callable[[compute.AddResourcePoliciesRegionDiskRequest], compute.Operation]:
+    def add_resource_policies(self) -> Callable[[compute.AddResourcePoliciesRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddResourcePolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def bulk_insert(
-        self,
-    ) -> Callable[[compute.BulkInsertRegionDiskRequest], compute.Operation]:
+    def bulk_insert(self) -> Callable[[compute.BulkInsertRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkInsert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[[compute.CreateSnapshotRegionDiskRequest], compute.Operation]:
+    def create_snapshot(self) -> Callable[[compute.CreateSnapshotRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
@@ -3983,9 +3297,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyRegionDiskRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyRegionDiskRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -4003,9 +3315,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_resource_policies(
-        self,
-    ) -> Callable[[compute.RemoveResourcePoliciesRegionDiskRequest], compute.Operation]:
+    def remove_resource_policies(self) -> Callable[[compute.RemoveResourcePoliciesRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveResourcePolicies(self._session, self._host, self._interceptor)  # type: ignore
@@ -4017,53 +3327,37 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
         return self._Resize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyRegionDiskRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyRegionDiskRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsRegionDiskRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_async_replication(
-        self,
-    ) -> Callable[[compute.StartAsyncReplicationRegionDiskRequest], compute.Operation]:
+    def start_async_replication(self) -> Callable[[compute.StartAsyncReplicationRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_async_replication(
-        self,
-    ) -> Callable[[compute.StopAsyncReplicationRegionDiskRequest], compute.Operation]:
+    def stop_async_replication(self) -> Callable[[compute.StopAsyncReplicationRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_group_async_replication(
-        self,
-    ) -> Callable[
-        [compute.StopGroupAsyncReplicationRegionDiskRequest], compute.Operation
-    ]:
+    def stop_group_async_replication(self) -> Callable[[compute.StopGroupAsyncReplicationRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopGroupAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsRegionDiskRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsRegionDiskRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

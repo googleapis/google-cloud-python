@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.storage_control_v2 import gapic_version as package_version
 from google.cloud.storage_control_v2.types import storage_control
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -102,23 +100,15 @@ class StorageControlTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -550,87 +540,47 @@ class StorageControlTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_folder(
-        self,
-    ) -> Callable[
-        [storage_control.CreateFolderRequest],
-        Union[storage_control.Folder, Awaitable[storage_control.Folder]],
-    ]:
+    def create_folder(self) -> Callable[[storage_control.CreateFolderRequest], Union[storage_control.Folder, Awaitable[storage_control.Folder]]]:
         raise NotImplementedError()
 
     @property
-    def delete_folder(
-        self,
-    ) -> Callable[
-        [storage_control.DeleteFolderRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_folder(self) -> Callable[[storage_control.DeleteFolderRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_folder(
-        self,
-    ) -> Callable[
-        [storage_control.GetFolderRequest],
-        Union[storage_control.Folder, Awaitable[storage_control.Folder]],
-    ]:
+    def get_folder(self) -> Callable[[storage_control.GetFolderRequest], Union[storage_control.Folder, Awaitable[storage_control.Folder]]]:
         raise NotImplementedError()
 
     @property
     def list_folders(
         self,
-    ) -> Callable[
-        [storage_control.ListFoldersRequest],
-        Union[
-            storage_control.ListFoldersResponse,
-            Awaitable[storage_control.ListFoldersResponse],
-        ],
-    ]:
+    ) -> Callable[[storage_control.ListFoldersRequest], Union[storage_control.ListFoldersResponse, Awaitable[storage_control.ListFoldersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def rename_folder(
-        self,
-    ) -> Callable[
-        [storage_control.RenameFolderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def rename_folder(self) -> Callable[[storage_control.RenameFolderRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_storage_layout(
         self,
-    ) -> Callable[
-        [storage_control.GetStorageLayoutRequest],
-        Union[storage_control.StorageLayout, Awaitable[storage_control.StorageLayout]],
-    ]:
+    ) -> Callable[[storage_control.GetStorageLayoutRequest], Union[storage_control.StorageLayout, Awaitable[storage_control.StorageLayout]]]:
         raise NotImplementedError()
 
     @property
     def create_managed_folder(
         self,
-    ) -> Callable[
-        [storage_control.CreateManagedFolderRequest],
-        Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]],
-    ]:
+    ) -> Callable[[storage_control.CreateManagedFolderRequest], Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]]]:
         raise NotImplementedError()
 
     @property
-    def delete_managed_folder(
-        self,
-    ) -> Callable[
-        [storage_control.DeleteManagedFolderRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_managed_folder(self) -> Callable[[storage_control.DeleteManagedFolderRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_managed_folder(
         self,
-    ) -> Callable[
-        [storage_control.GetManagedFolderRequest],
-        Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]],
-    ]:
+    ) -> Callable[[storage_control.GetManagedFolderRequest], Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]]]:
         raise NotImplementedError()
 
     @property
@@ -638,65 +588,44 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.ListManagedFoldersRequest],
-        Union[
-            storage_control.ListManagedFoldersResponse,
-            Awaitable[storage_control.ListManagedFoldersResponse],
-        ],
+        Union[storage_control.ListManagedFoldersResponse, Awaitable[storage_control.ListManagedFoldersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_anywhere_cache(
         self,
-    ) -> Callable[
-        [storage_control.CreateAnywhereCacheRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storage_control.CreateAnywhereCacheRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_anywhere_cache(
         self,
-    ) -> Callable[
-        [storage_control.UpdateAnywhereCacheRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storage_control.UpdateAnywhereCacheRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def disable_anywhere_cache(
         self,
-    ) -> Callable[
-        [storage_control.DisableAnywhereCacheRequest],
-        Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]],
-    ]:
+    ) -> Callable[[storage_control.DisableAnywhereCacheRequest], Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]]]:
         raise NotImplementedError()
 
     @property
     def pause_anywhere_cache(
         self,
-    ) -> Callable[
-        [storage_control.PauseAnywhereCacheRequest],
-        Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]],
-    ]:
+    ) -> Callable[[storage_control.PauseAnywhereCacheRequest], Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]]]:
         raise NotImplementedError()
 
     @property
     def resume_anywhere_cache(
         self,
-    ) -> Callable[
-        [storage_control.ResumeAnywhereCacheRequest],
-        Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]],
-    ]:
+    ) -> Callable[[storage_control.ResumeAnywhereCacheRequest], Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]]]:
         raise NotImplementedError()
 
     @property
     def get_anywhere_cache(
         self,
-    ) -> Callable[
-        [storage_control.GetAnywhereCacheRequest],
-        Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]],
-    ]:
+    ) -> Callable[[storage_control.GetAnywhereCacheRequest], Union[storage_control.AnywhereCache, Awaitable[storage_control.AnywhereCache]]]:
         raise NotImplementedError()
 
     @property
@@ -704,10 +633,7 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.ListAnywhereCachesRequest],
-        Union[
-            storage_control.ListAnywhereCachesResponse,
-            Awaitable[storage_control.ListAnywhereCachesResponse],
-        ],
+        Union[storage_control.ListAnywhereCachesResponse, Awaitable[storage_control.ListAnywhereCachesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -716,10 +642,7 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.GetProjectIntelligenceConfigRequest],
-        Union[
-            storage_control.IntelligenceConfig,
-            Awaitable[storage_control.IntelligenceConfig],
-        ],
+        Union[storage_control.IntelligenceConfig, Awaitable[storage_control.IntelligenceConfig]],
     ]:
         raise NotImplementedError()
 
@@ -728,10 +651,7 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.UpdateProjectIntelligenceConfigRequest],
-        Union[
-            storage_control.IntelligenceConfig,
-            Awaitable[storage_control.IntelligenceConfig],
-        ],
+        Union[storage_control.IntelligenceConfig, Awaitable[storage_control.IntelligenceConfig]],
     ]:
         raise NotImplementedError()
 
@@ -739,11 +659,7 @@ class StorageControlTransport(abc.ABC):
     def get_folder_intelligence_config(
         self,
     ) -> Callable[
-        [storage_control.GetFolderIntelligenceConfigRequest],
-        Union[
-            storage_control.IntelligenceConfig,
-            Awaitable[storage_control.IntelligenceConfig],
-        ],
+        [storage_control.GetFolderIntelligenceConfigRequest], Union[storage_control.IntelligenceConfig, Awaitable[storage_control.IntelligenceConfig]]
     ]:
         raise NotImplementedError()
 
@@ -752,10 +668,7 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.UpdateFolderIntelligenceConfigRequest],
-        Union[
-            storage_control.IntelligenceConfig,
-            Awaitable[storage_control.IntelligenceConfig],
-        ],
+        Union[storage_control.IntelligenceConfig, Awaitable[storage_control.IntelligenceConfig]],
     ]:
         raise NotImplementedError()
 
@@ -764,10 +677,7 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.GetOrganizationIntelligenceConfigRequest],
-        Union[
-            storage_control.IntelligenceConfig,
-            Awaitable[storage_control.IntelligenceConfig],
-        ],
+        Union[storage_control.IntelligenceConfig, Awaitable[storage_control.IntelligenceConfig]],
     ]:
         raise NotImplementedError()
 
@@ -776,29 +686,16 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.UpdateOrganizationIntelligenceConfigRequest],
-        Union[
-            storage_control.IntelligenceConfig,
-            Awaitable[storage_control.IntelligenceConfig],
-        ],
+        Union[storage_control.IntelligenceConfig, Awaitable[storage_control.IntelligenceConfig]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -806,10 +703,7 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 

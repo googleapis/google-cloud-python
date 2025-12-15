@@ -18,12 +18,8 @@ from google.cloud.securesourcemanager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.securesourcemanager_v1.services.secure_source_manager.async_client import (
-    SecureSourceManagerAsyncClient,
-)
-from google.cloud.securesourcemanager_v1.services.secure_source_manager.client import (
-    SecureSourceManagerClient,
-)
+from google.cloud.securesourcemanager_v1.services.secure_source_manager.async_client import SecureSourceManagerAsyncClient
+from google.cloud.securesourcemanager_v1.services.secure_source_manager.client import SecureSourceManagerClient
 from google.cloud.securesourcemanager_v1.types.secure_source_manager import (
     BatchCreatePullRequestCommentsRequest,
     BatchCreatePullRequestCommentsResponse,

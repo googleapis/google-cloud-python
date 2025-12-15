@@ -1722,13 +1722,11 @@ class NodeConfig(proto.Message):
         proto.STRING,
         number=49,
     )
-    secondary_boot_disk_update_strategy: "SecondaryBootDiskUpdateStrategy" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=50,
-            optional=True,
-            message="SecondaryBootDiskUpdateStrategy",
-        )
+    secondary_boot_disk_update_strategy: "SecondaryBootDiskUpdateStrategy" = proto.Field(
+        proto.MESSAGE,
+        number=50,
+        optional=True,
+        message="SecondaryBootDiskUpdateStrategy",
     )
     max_run_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -1987,16 +1985,12 @@ class NodeNetworkConfig(proto.Message):
         number=13,
         message="PodCIDROverprovisionConfig",
     )
-    additional_node_network_configs: MutableSequence[
-        "AdditionalNodeNetworkConfig"
-    ] = proto.RepeatedField(
+    additional_node_network_configs: MutableSequence["AdditionalNodeNetworkConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="AdditionalNodeNetworkConfig",
     )
-    additional_pod_network_configs: MutableSequence[
-        "AdditionalPodNetworkConfig"
-    ] = proto.RepeatedField(
+    additional_pod_network_configs: MutableSequence["AdditionalPodNetworkConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message="AdditionalPodNetworkConfig",
@@ -2707,12 +2701,10 @@ class AddonsConfig(proto.Message):
         number=10,
         message="ConfigConnectorConfig",
     )
-    gce_persistent_disk_csi_driver_config: "GcePersistentDiskCsiDriverConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=11,
-            message="GcePersistentDiskCsiDriverConfig",
-        )
+    gce_persistent_disk_csi_driver_config: "GcePersistentDiskCsiDriverConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="GcePersistentDiskCsiDriverConfig",
     )
     gcp_filestore_csi_driver_config: "GcpFilestoreCsiDriverConfig" = proto.Field(
         proto.MESSAGE,
@@ -3642,9 +3634,7 @@ class IPAllocationPolicy(proto.Message):
         proto.DOUBLE,
         number=25,
     )
-    additional_ip_ranges_configs: MutableSequence[
-        "AdditionalIPRangesConfig"
-    ] = proto.RepeatedField(
+    additional_ip_ranges_configs: MutableSequence["AdditionalIPRangesConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=29,
         message="AdditionalIPRangesConfig",
@@ -5241,12 +5231,10 @@ class ClusterUpdate(proto.Message):
         proto.STRING,
         number=10,
     )
-    desired_master_authorized_networks_config: "MasterAuthorizedNetworksConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=12,
-            message="MasterAuthorizedNetworksConfig",
-        )
+    desired_master_authorized_networks_config: "MasterAuthorizedNetworksConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="MasterAuthorizedNetworksConfig",
     )
     desired_cluster_autoscaling: "ClusterAutoscaling" = proto.Field(
         proto.MESSAGE,
@@ -5445,12 +5433,10 @@ class ClusterUpdate(proto.Message):
         number=135,
         optional=True,
     )
-    desired_node_pool_auto_config_resource_manager_tags: "ResourceManagerTags" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=136,
-            message="ResourceManagerTags",
-        )
+    desired_node_pool_auto_config_resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=136,
+        message="ResourceManagerTags",
     )
     desired_in_transit_encryption_config: "InTransitEncryptionConfig" = proto.Field(
         proto.ENUM,
@@ -5496,12 +5482,10 @@ class ClusterUpdate(proto.Message):
         optional=True,
         message="RBACBindingConfig",
     )
-    desired_additional_ip_ranges_config: "DesiredAdditionalIPRangesConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=145,
-            message="DesiredAdditionalIPRangesConfig",
-        )
+    desired_additional_ip_ranges_config: "DesiredAdditionalIPRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=145,
+        message="DesiredAdditionalIPRangesConfig",
     )
     desired_enterprise_config: "DesiredEnterpriseConfig" = proto.Field(
         proto.MESSAGE,
@@ -5528,12 +5512,10 @@ class ClusterUpdate(proto.Message):
         number=152,
         message="UserManagedKeysConfig",
     )
-    desired_anonymous_authentication_config: "AnonymousAuthenticationConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=156,
-            message="AnonymousAuthenticationConfig",
-        )
+    desired_anonymous_authentication_config: "AnonymousAuthenticationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=156,
+        message="AnonymousAuthenticationConfig",
     )
     gke_auto_upgrade_config: "GkeAutoUpgradeConfig" = proto.Field(
         proto.MESSAGE,
@@ -5611,9 +5593,7 @@ class DesiredAdditionalIPRangesConfig(proto.Message):
             subnetwork's IP ranges
     """
 
-    additional_ip_ranges_configs: MutableSequence[
-        "AdditionalIPRangesConfig"
-    ] = proto.RepeatedField(
+    additional_ip_ranges_configs: MutableSequence["AdditionalIPRangesConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AdditionalIPRangesConfig",
@@ -8762,12 +8742,10 @@ class ClusterAutoscaling(proto.Message):
         number=3,
         enum=AutoscalingProfile,
     )
-    autoprovisioning_node_pool_defaults: "AutoprovisioningNodePoolDefaults" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=4,
-            message="AutoprovisioningNodePoolDefaults",
-        )
+    autoprovisioning_node_pool_defaults: "AutoprovisioningNodePoolDefaults" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="AutoprovisioningNodePoolDefaults",
     )
     autoprovisioning_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -10681,9 +10659,7 @@ class UsableSubnetwork(proto.Message):
         proto.STRING,
         number=3,
     )
-    secondary_ip_ranges: MutableSequence[
-        "UsableSubnetworkSecondaryRange"
-    ] = proto.RepeatedField(
+    secondary_ip_ranges: MutableSequence["UsableSubnetworkSecondaryRange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="UsableSubnetworkSecondaryRange",
@@ -10906,9 +10882,7 @@ class NotificationConfig(proto.Message):
                 Event types to allowlist.
         """
 
-        event_type: MutableSequence[
-            "NotificationConfig.EventType"
-        ] = proto.RepeatedField(
+        event_type: MutableSequence["NotificationConfig.EventType"] = proto.RepeatedField(
             proto.ENUM,
             number=1,
             enum="NotificationConfig.EventType",
@@ -11485,12 +11459,10 @@ class MonitoringConfig(proto.Message):
         number=2,
         message="ManagedPrometheusConfig",
     )
-    advanced_datapath_observability_config: "AdvancedDatapathObservabilityConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="AdvancedDatapathObservabilityConfig",
-        )
+    advanced_datapath_observability_config: "AdvancedDatapathObservabilityConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AdvancedDatapathObservabilityConfig",
     )
 
 

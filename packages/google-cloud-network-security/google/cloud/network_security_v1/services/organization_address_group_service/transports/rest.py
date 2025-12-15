@@ -156,13 +156,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
     """
 
     def pre_add_address_group_items(
-        self,
-        request: gcn_address_group.AddAddressGroupItemsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.AddAddressGroupItemsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_address_group.AddAddressGroupItemsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.AddAddressGroupItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_address_group_items
 
         Override in a subclass to manipulate the request or metadata
@@ -170,9 +165,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_add_address_group_items(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_address_group_items(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_address_group_items
 
         DEPRECATED. Please use the `post_add_address_group_items_with_metadata`
@@ -186,9 +179,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_add_address_group_items_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_address_group_items
 
@@ -205,13 +196,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_clone_address_group_items(
-        self,
-        request: gcn_address_group.CloneAddressGroupItemsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.CloneAddressGroupItemsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_address_group.CloneAddressGroupItemsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.CloneAddressGroupItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for clone_address_group_items
 
         Override in a subclass to manipulate the request or metadata
@@ -219,9 +205,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_clone_address_group_items(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_clone_address_group_items(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for clone_address_group_items
 
         DEPRECATED. Please use the `post_clone_address_group_items_with_metadata`
@@ -235,9 +219,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_clone_address_group_items_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for clone_address_group_items
 
@@ -254,13 +236,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_create_address_group(
-        self,
-        request: gcn_address_group.CreateAddressGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.CreateAddressGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_address_group.CreateAddressGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.CreateAddressGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_address_group
 
         Override in a subclass to manipulate the request or metadata
@@ -268,9 +245,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_address_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_address_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_address_group
 
         DEPRECATED. Please use the `post_create_address_group_with_metadata`
@@ -284,9 +259,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_create_address_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_address_group
 
@@ -303,12 +276,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_address_group(
-        self,
-        request: address_group.DeleteAddressGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_group.DeleteAddressGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: address_group.DeleteAddressGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_group.DeleteAddressGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_address_group
 
         Override in a subclass to manipulate the request or metadata
@@ -316,9 +285,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_address_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_address_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_address_group
 
         DEPRECATED. Please use the `post_delete_address_group_with_metadata`
@@ -332,9 +299,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_delete_address_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_address_group
 
@@ -351,12 +316,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_get_address_group(
-        self,
-        request: address_group.GetAddressGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_group.GetAddressGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: address_group.GetAddressGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_group.GetAddressGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_address_group
 
         Override in a subclass to manipulate the request or metadata
@@ -364,9 +325,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_address_group(
-        self, response: address_group.AddressGroup
-    ) -> address_group.AddressGroup:
+    def post_get_address_group(self, response: address_group.AddressGroup) -> address_group.AddressGroup:
         """Post-rpc interceptor for get_address_group
 
         DEPRECATED. Please use the `post_get_address_group_with_metadata`
@@ -380,9 +339,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_get_address_group_with_metadata(
-        self,
-        response: address_group.AddressGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: address_group.AddressGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[address_group.AddressGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_address_group
 
@@ -399,13 +356,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_list_address_group_references(
-        self,
-        request: gcn_address_group.ListAddressGroupReferencesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.ListAddressGroupReferencesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_address_group.ListAddressGroupReferencesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.ListAddressGroupReferencesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_address_group_references
 
         Override in a subclass to manipulate the request or metadata
@@ -429,13 +381,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_list_address_group_references_with_metadata(
-        self,
-        response: gcn_address_group.ListAddressGroupReferencesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.ListAddressGroupReferencesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcn_address_group.ListAddressGroupReferencesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.ListAddressGroupReferencesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_address_group_references
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -451,12 +398,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_list_address_groups(
-        self,
-        request: address_group.ListAddressGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_group.ListAddressGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: address_group.ListAddressGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_group.ListAddressGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_address_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -464,9 +407,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_address_groups(
-        self, response: address_group.ListAddressGroupsResponse
-    ) -> address_group.ListAddressGroupsResponse:
+    def post_list_address_groups(self, response: address_group.ListAddressGroupsResponse) -> address_group.ListAddressGroupsResponse:
         """Post-rpc interceptor for list_address_groups
 
         DEPRECATED. Please use the `post_list_address_groups_with_metadata`
@@ -480,12 +421,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_list_address_groups_with_metadata(
-        self,
-        response: address_group.ListAddressGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_group.ListAddressGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: address_group.ListAddressGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_group.ListAddressGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_address_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -501,13 +438,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_remove_address_group_items(
-        self,
-        request: gcn_address_group.RemoveAddressGroupItemsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.RemoveAddressGroupItemsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_address_group.RemoveAddressGroupItemsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.RemoveAddressGroupItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_address_group_items
 
         Override in a subclass to manipulate the request or metadata
@@ -515,9 +447,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_address_group_items(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_address_group_items(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_address_group_items
 
         DEPRECATED. Please use the `post_remove_address_group_items_with_metadata`
@@ -531,9 +461,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_remove_address_group_items_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_address_group_items
 
@@ -550,13 +478,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_update_address_group(
-        self,
-        request: gcn_address_group.UpdateAddressGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_address_group.UpdateAddressGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_address_group.UpdateAddressGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_address_group.UpdateAddressGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_address_group
 
         Override in a subclass to manipulate the request or metadata
@@ -564,9 +487,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_address_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_address_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_address_group
 
         DEPRECATED. Please use the `post_update_address_group_with_metadata`
@@ -580,9 +501,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def post_update_address_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_address_group
 
@@ -599,12 +518,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -612,9 +527,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -624,12 +537,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -637,9 +546,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -649,12 +556,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -672,12 +575,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -695,13 +594,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -709,9 +603,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -721,12 +613,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -744,12 +632,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -767,12 +651,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -780,9 +660,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -792,12 +670,8 @@ class OrganizationAddressGroupServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -805,9 +679,7 @@ class OrganizationAddressGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -824,9 +696,7 @@ class OrganizationAddressGroupServiceRestStub:
     _interceptor: OrganizationAddressGroupServiceRestInterceptor
 
 
-class OrganizationAddressGroupServiceRestTransport(
-    _BaseOrganizationAddressGroupServiceRestTransport
-):
+class OrganizationAddressGroupServiceRestTransport(_BaseOrganizationAddressGroupServiceRestTransport):
     """REST backend synchronous transport for OrganizationAddressGroupService.
 
     Organization AddressGroup is created under organization.
@@ -900,15 +770,11 @@ class OrganizationAddressGroupServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or OrganizationAddressGroupServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or OrganizationAddressGroupServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -974,32 +840,17 @@ class OrganizationAddressGroupServiceRestTransport(
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddAddressGroupItems(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _AddAddressGroupItems(_BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.AddAddressGroupItems"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.AddAddressGroupItems")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1043,32 +894,20 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_address_group_items(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_add_address_group_items(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1092,13 +931,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._AddAddressGroupItems._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1112,12 +945,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_add_address_group_items(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_address_group_items_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_address_group_items_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1139,24 +968,13 @@ class OrganizationAddressGroupServiceRestTransport(
             return resp
 
     class _CloneAddressGroupItems(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems,
-        OrganizationAddressGroupServiceRestStub,
+        _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems, OrganizationAddressGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.CloneAddressGroupItems"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.CloneAddressGroupItems")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1200,32 +1018,20 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_http_options()
 
-            request, metadata = self._interceptor.pre_clone_address_group_items(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_clone_address_group_items(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1249,13 +1055,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._CloneAddressGroupItems._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1269,12 +1069,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_clone_address_group_items(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_clone_address_group_items_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_clone_address_group_items_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1295,25 +1091,12 @@ class OrganizationAddressGroupServiceRestTransport(
                 )
             return resp
 
-    class _CreateAddressGroup(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _CreateAddressGroup(_BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.CreateAddressGroup"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.CreateAddressGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1357,32 +1140,20 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_address_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_address_group(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1406,13 +1177,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._CreateAddressGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1426,12 +1191,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_create_address_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_address_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_address_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1452,25 +1213,12 @@ class OrganizationAddressGroupServiceRestTransport(
                 )
             return resp
 
-    class _DeleteAddressGroup(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _DeleteAddressGroup(_BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.DeleteAddressGroup"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.DeleteAddressGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1513,28 +1261,18 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_address_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_address_group(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1558,12 +1296,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._DeleteAddressGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1577,12 +1310,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_delete_address_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_address_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_address_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1603,23 +1332,12 @@ class OrganizationAddressGroupServiceRestTransport(
                 )
             return resp
 
-    class _GetAddressGroup(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _GetAddressGroup(_BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.GetAddressGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1662,28 +1380,16 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_address_group(
-                request, metadata
-            )
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_address_group(request, metadata)
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1707,12 +1413,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._GetAddressGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1728,12 +1429,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_get_address_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_address_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_address_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = address_group.AddressGroup.to_json(response)
                 except:
@@ -1755,24 +1452,13 @@ class OrganizationAddressGroupServiceRestTransport(
             return resp
 
     class _ListAddressGroupReferences(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences,
-        OrganizationAddressGroupServiceRestStub,
+        _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences, OrganizationAddressGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.ListAddressGroupReferences"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.ListAddressGroupReferences")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1815,13 +1501,9 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_address_group_references(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_address_group_references(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences._get_transcoded_request(
                 http_options, request
             )
@@ -1831,12 +1513,8 @@ class OrganizationAddressGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1860,12 +1538,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._ListAddressGroupReferences._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1881,21 +1554,10 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_list_address_group_references(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_address_group_references_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_address_group_references_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcn_address_group.ListAddressGroupReferencesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = gcn_address_group.ListAddressGroupReferencesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1914,25 +1576,12 @@ class OrganizationAddressGroupServiceRestTransport(
                 )
             return resp
 
-    class _ListAddressGroups(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _ListAddressGroups(_BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.ListAddressGroups"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.ListAddressGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1974,28 +1623,18 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_address_groups(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_address_groups(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2019,12 +1658,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._ListAddressGroups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2040,16 +1674,10 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_list_address_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_address_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_address_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = address_group.ListAddressGroupsResponse.to_json(
-                        response
-                    )
+                    response_payload = address_group.ListAddressGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2069,24 +1697,13 @@ class OrganizationAddressGroupServiceRestTransport(
             return resp
 
     class _RemoveAddressGroupItems(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems,
-        OrganizationAddressGroupServiceRestStub,
+        _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems, OrganizationAddressGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.RemoveAddressGroupItems"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.RemoveAddressGroupItems")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2131,32 +1748,20 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_address_group_items(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_remove_address_group_items(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2180,13 +1785,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._RemoveAddressGroupItems._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2200,12 +1799,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_remove_address_group_items(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_address_group_items_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_address_group_items_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2226,25 +1821,12 @@ class OrganizationAddressGroupServiceRestTransport(
                 )
             return resp
 
-    class _UpdateAddressGroup(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _UpdateAddressGroup(_BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.UpdateAddressGroup"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.UpdateAddressGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2288,32 +1870,20 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_address_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_address_group(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2337,13 +1907,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._UpdateAddressGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2357,12 +1921,8 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_update_address_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_address_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_address_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2384,47 +1944,31 @@ class OrganizationAddressGroupServiceRestTransport(
             return resp
 
     @property
-    def add_address_group_items(
-        self,
-    ) -> Callable[
-        [gcn_address_group.AddAddressGroupItemsRequest], operations_pb2.Operation
-    ]:
+    def add_address_group_items(self) -> Callable[[gcn_address_group.AddAddressGroupItemsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddAddressGroupItems(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def clone_address_group_items(
-        self,
-    ) -> Callable[
-        [gcn_address_group.CloneAddressGroupItemsRequest], operations_pb2.Operation
-    ]:
+    def clone_address_group_items(self) -> Callable[[gcn_address_group.CloneAddressGroupItemsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CloneAddressGroupItems(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_address_group(
-        self,
-    ) -> Callable[
-        [gcn_address_group.CreateAddressGroupRequest], operations_pb2.Operation
-    ]:
+    def create_address_group(self) -> Callable[[gcn_address_group.CreateAddressGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAddressGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_address_group(
-        self,
-    ) -> Callable[[address_group.DeleteAddressGroupRequest], operations_pb2.Operation]:
+    def delete_address_group(self) -> Callable[[address_group.DeleteAddressGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAddressGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_address_group(
-        self,
-    ) -> Callable[[address_group.GetAddressGroupRequest], address_group.AddressGroup]:
+    def get_address_group(self) -> Callable[[address_group.GetAddressGroupRequest], address_group.AddressGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAddressGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -2432,41 +1976,25 @@ class OrganizationAddressGroupServiceRestTransport(
     @property
     def list_address_group_references(
         self,
-    ) -> Callable[
-        [gcn_address_group.ListAddressGroupReferencesRequest],
-        gcn_address_group.ListAddressGroupReferencesResponse,
-    ]:
+    ) -> Callable[[gcn_address_group.ListAddressGroupReferencesRequest], gcn_address_group.ListAddressGroupReferencesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAddressGroupReferences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_address_groups(
-        self,
-    ) -> Callable[
-        [address_group.ListAddressGroupsRequest],
-        address_group.ListAddressGroupsResponse,
-    ]:
+    def list_address_groups(self) -> Callable[[address_group.ListAddressGroupsRequest], address_group.ListAddressGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAddressGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_address_group_items(
-        self,
-    ) -> Callable[
-        [gcn_address_group.RemoveAddressGroupItemsRequest], operations_pb2.Operation
-    ]:
+    def remove_address_group_items(self) -> Callable[[gcn_address_group.RemoveAddressGroupItemsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveAddressGroupItems(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_address_group(
-        self,
-    ) -> Callable[
-        [gcn_address_group.UpdateAddressGroupRequest], operations_pb2.Operation
-    ]:
+    def update_address_group(self) -> Callable[[gcn_address_group.UpdateAddressGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAddressGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -2475,23 +2003,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _GetLocation(_BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2529,26 +2046,16 @@ class OrganizationAddressGroupServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2571,15 +2078,8 @@ class OrganizationAddressGroupServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                OrganizationAddressGroupServiceRestTransport._GetLocation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OrganizationAddressGroupServiceRestTransport._GetLocation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2591,9 +2091,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2618,23 +2116,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _ListLocations(_BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2672,26 +2159,16 @@ class OrganizationAddressGroupServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2715,12 +2192,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2732,9 +2204,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2759,23 +2229,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2813,26 +2272,16 @@ class OrganizationAddressGroupServiceRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2856,12 +2305,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2873,9 +2317,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2900,23 +2342,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2955,30 +2386,18 @@ class OrganizationAddressGroupServiceRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3002,13 +2421,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3020,9 +2433,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3047,25 +2458,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationAddressGroupServiceRestTransport.TestIamPermissions"
-            )
+            return hash("OrganizationAddressGroupServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3104,32 +2502,20 @@ class OrganizationAddressGroupServiceRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3153,13 +2539,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3171,9 +2551,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3198,23 +2576,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _CancelOperation(_BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3250,32 +2617,18 @@ class OrganizationAddressGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3299,13 +2652,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3319,23 +2666,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3370,28 +2706,16 @@ class OrganizationAddressGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3415,12 +2739,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3434,23 +2753,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _GetOperation(_BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3488,26 +2796,16 @@ class OrganizationAddressGroupServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3531,12 +2829,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3548,9 +2841,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3575,23 +2866,12 @@ class OrganizationAddressGroupServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations,
-        OrganizationAddressGroupServiceRestStub,
-    ):
+    class _ListOperations(_BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations, OrganizationAddressGroupServiceRestStub):
         def __hash__(self):
             return hash("OrganizationAddressGroupServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3629,26 +2909,16 @@ class OrganizationAddressGroupServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3672,12 +2942,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationAddressGroupServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3689,9 +2954,7 @@ class OrganizationAddressGroupServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.network_security_v1beta1.types import (
-    dns_threat_detector as gcn_dns_threat_detector,
-)
+from google.cloud.network_security_v1beta1.types import dns_threat_detector as gcn_dns_threat_detector
 from google.cloud.network_security_v1beta1.types import dns_threat_detector
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -123,13 +121,8 @@ class DnsThreatDetectorServiceRestInterceptor:
     """
 
     def pre_create_dns_threat_detector(
-        self,
-        request: gcn_dns_threat_detector.CreateDnsThreatDetectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_dns_threat_detector.CreateDnsThreatDetectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_dns_threat_detector.CreateDnsThreatDetectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_dns_threat_detector.CreateDnsThreatDetectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dns_threat_detector
 
         Override in a subclass to manipulate the request or metadata
@@ -137,9 +130,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_dns_threat_detector(
-        self, response: gcn_dns_threat_detector.DnsThreatDetector
-    ) -> gcn_dns_threat_detector.DnsThreatDetector:
+    def post_create_dns_threat_detector(self, response: gcn_dns_threat_detector.DnsThreatDetector) -> gcn_dns_threat_detector.DnsThreatDetector:
         """Post-rpc interceptor for create_dns_threat_detector
 
         DEPRECATED. Please use the `post_create_dns_threat_detector_with_metadata`
@@ -153,13 +144,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def post_create_dns_threat_detector_with_metadata(
-        self,
-        response: gcn_dns_threat_detector.DnsThreatDetector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_dns_threat_detector.DnsThreatDetector,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcn_dns_threat_detector.DnsThreatDetector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_dns_threat_detector.DnsThreatDetector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_dns_threat_detector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -175,13 +161,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_dns_threat_detector(
-        self,
-        request: dns_threat_detector.DeleteDnsThreatDetectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dns_threat_detector.DeleteDnsThreatDetectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dns_threat_detector.DeleteDnsThreatDetectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dns_threat_detector.DeleteDnsThreatDetectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dns_threat_detector
 
         Override in a subclass to manipulate the request or metadata
@@ -190,13 +171,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return request, metadata
 
     def pre_get_dns_threat_detector(
-        self,
-        request: dns_threat_detector.GetDnsThreatDetectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dns_threat_detector.GetDnsThreatDetectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dns_threat_detector.GetDnsThreatDetectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dns_threat_detector.GetDnsThreatDetectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dns_threat_detector
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +180,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_dns_threat_detector(
-        self, response: dns_threat_detector.DnsThreatDetector
-    ) -> dns_threat_detector.DnsThreatDetector:
+    def post_get_dns_threat_detector(self, response: dns_threat_detector.DnsThreatDetector) -> dns_threat_detector.DnsThreatDetector:
         """Post-rpc interceptor for get_dns_threat_detector
 
         DEPRECATED. Please use the `post_get_dns_threat_detector_with_metadata`
@@ -220,12 +194,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def post_get_dns_threat_detector_with_metadata(
-        self,
-        response: dns_threat_detector.DnsThreatDetector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dns_threat_detector.DnsThreatDetector, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dns_threat_detector.DnsThreatDetector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dns_threat_detector.DnsThreatDetector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dns_threat_detector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -241,13 +211,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response, metadata
 
     def pre_list_dns_threat_detectors(
-        self,
-        request: dns_threat_detector.ListDnsThreatDetectorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dns_threat_detector.ListDnsThreatDetectorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dns_threat_detector.ListDnsThreatDetectorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dns_threat_detector.ListDnsThreatDetectorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_dns_threat_detectors
 
         Override in a subclass to manipulate the request or metadata
@@ -271,13 +236,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def post_list_dns_threat_detectors_with_metadata(
-        self,
-        response: dns_threat_detector.ListDnsThreatDetectorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dns_threat_detector.ListDnsThreatDetectorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dns_threat_detector.ListDnsThreatDetectorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dns_threat_detector.ListDnsThreatDetectorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_dns_threat_detectors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,13 +253,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response, metadata
 
     def pre_update_dns_threat_detector(
-        self,
-        request: gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dns_threat_detector
 
         Override in a subclass to manipulate the request or metadata
@@ -307,9 +262,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dns_threat_detector(
-        self, response: gcn_dns_threat_detector.DnsThreatDetector
-    ) -> gcn_dns_threat_detector.DnsThreatDetector:
+    def post_update_dns_threat_detector(self, response: gcn_dns_threat_detector.DnsThreatDetector) -> gcn_dns_threat_detector.DnsThreatDetector:
         """Post-rpc interceptor for update_dns_threat_detector
 
         DEPRECATED. Please use the `post_update_dns_threat_detector_with_metadata`
@@ -323,13 +276,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def post_update_dns_threat_detector_with_metadata(
-        self,
-        response: gcn_dns_threat_detector.DnsThreatDetector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_dns_threat_detector.DnsThreatDetector,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcn_dns_threat_detector.DnsThreatDetector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_dns_threat_detector.DnsThreatDetector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dns_threat_detector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -345,12 +293,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +302,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -370,12 +312,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -383,9 +321,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -395,12 +331,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -418,12 +350,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -441,13 +369,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -455,9 +378,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -467,12 +388,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -490,12 +407,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -513,12 +426,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -526,9 +435,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -538,12 +445,8 @@ class DnsThreatDetectorServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -551,9 +454,7 @@ class DnsThreatDetectorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -642,31 +543,18 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DnsThreatDetectorServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDnsThreatDetector(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _CreateDnsThreatDetector(_BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.CreateDnsThreatDetector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -713,32 +601,20 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_dns_threat_detector(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_dns_threat_detector(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -762,13 +638,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             # Send the request
             response = DnsThreatDetectorServiceRestTransport._CreateDnsThreatDetector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -784,16 +654,10 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             resp = self._interceptor.post_create_dns_threat_detector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dns_threat_detector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dns_threat_detector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcn_dns_threat_detector.DnsThreatDetector.to_json(response)
-                    )
+                    response_payload = gcn_dns_threat_detector.DnsThreatDetector.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -812,23 +676,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
             return resp
 
-    class _DeleteDnsThreatDetector(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _DeleteDnsThreatDetector(_BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.DeleteDnsThreatDetector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -865,28 +718,18 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_dns_threat_detector(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_dns_threat_detector(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -910,12 +753,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             # Send the request
             response = DnsThreatDetectorServiceRestTransport._DeleteDnsThreatDetector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -923,23 +761,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDnsThreatDetector(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _GetDnsThreatDetector(_BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.GetDnsThreatDetector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -984,28 +811,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_dns_threat_detector(
-                request, metadata
-            )
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_dns_threat_detector(request, metadata)
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1029,12 +844,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             # Send the request
             response = DnsThreatDetectorServiceRestTransport._GetDnsThreatDetector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1050,16 +860,10 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             resp = self._interceptor.post_get_dns_threat_detector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dns_threat_detector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dns_threat_detector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dns_threat_detector.DnsThreatDetector.to_json(
-                        response
-                    )
+                    response_payload = dns_threat_detector.DnsThreatDetector.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1078,23 +882,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
             return resp
 
-    class _ListDnsThreatDetectors(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _ListDnsThreatDetectors(_BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.ListDnsThreatDetectors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1136,28 +929,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_dns_threat_detectors(
-                request, metadata
-            )
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_dns_threat_detectors(request, metadata)
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1181,12 +962,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             # Send the request
             response = DnsThreatDetectorServiceRestTransport._ListDnsThreatDetectors._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1202,18 +978,10 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             resp = self._interceptor.post_list_dns_threat_detectors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_dns_threat_detectors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_dns_threat_detectors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dns_threat_detector.ListDnsThreatDetectorsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = dns_threat_detector.ListDnsThreatDetectorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1232,23 +1000,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
             return resp
 
-    class _UpdateDnsThreatDetector(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _UpdateDnsThreatDetector(_BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.UpdateDnsThreatDetector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1295,32 +1052,20 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_dns_threat_detector(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_dns_threat_detector(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1344,13 +1089,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             # Send the request
             response = DnsThreatDetectorServiceRestTransport._UpdateDnsThreatDetector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1366,16 +1105,10 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             resp = self._interceptor.post_update_dns_threat_detector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dns_threat_detector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dns_threat_detector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcn_dns_threat_detector.DnsThreatDetector.to_json(response)
-                    )
+                    response_payload = gcn_dns_threat_detector.DnsThreatDetector.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1397,31 +1130,19 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     @property
     def create_dns_threat_detector(
         self,
-    ) -> Callable[
-        [gcn_dns_threat_detector.CreateDnsThreatDetectorRequest],
-        gcn_dns_threat_detector.DnsThreatDetector,
-    ]:
+    ) -> Callable[[gcn_dns_threat_detector.CreateDnsThreatDetectorRequest], gcn_dns_threat_detector.DnsThreatDetector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_dns_threat_detector(
-        self,
-    ) -> Callable[
-        [dns_threat_detector.DeleteDnsThreatDetectorRequest], empty_pb2.Empty
-    ]:
+    def delete_dns_threat_detector(self) -> Callable[[dns_threat_detector.DeleteDnsThreatDetectorRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dns_threat_detector(
-        self,
-    ) -> Callable[
-        [dns_threat_detector.GetDnsThreatDetectorRequest],
-        dns_threat_detector.DnsThreatDetector,
-    ]:
+    def get_dns_threat_detector(self) -> Callable[[dns_threat_detector.GetDnsThreatDetectorRequest], dns_threat_detector.DnsThreatDetector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
@@ -1429,10 +1150,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     @property
     def list_dns_threat_detectors(
         self,
-    ) -> Callable[
-        [dns_threat_detector.ListDnsThreatDetectorsRequest],
-        dns_threat_detector.ListDnsThreatDetectorsResponse,
-    ]:
+    ) -> Callable[[dns_threat_detector.ListDnsThreatDetectorsRequest], dns_threat_detector.ListDnsThreatDetectorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDnsThreatDetectors(self._session, self._host, self._interceptor)  # type: ignore
@@ -1440,10 +1158,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     @property
     def update_dns_threat_detector(
         self,
-    ) -> Callable[
-        [gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest],
-        gcn_dns_threat_detector.DnsThreatDetector,
-    ]:
+    ) -> Callable[[gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest], gcn_dns_threat_detector.DnsThreatDetector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
@@ -1452,23 +1167,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _GetLocation(_BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1506,26 +1210,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1549,12 +1243,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             # Send the request
             response = DnsThreatDetectorServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1566,9 +1255,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1593,23 +1280,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _ListLocations(_BaseDnsThreatDetectorServiceRestTransport._BaseListLocations, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1647,26 +1323,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1689,15 +1355,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DnsThreatDetectorServiceRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1709,9 +1368,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1736,23 +1393,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1790,26 +1436,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1832,15 +1468,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._GetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DnsThreatDetectorServiceRestTransport._GetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1852,9 +1481,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1879,23 +1506,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1934,30 +1550,18 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1980,16 +1584,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._SetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DnsThreatDetectorServiceRestTransport._SetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2001,9 +1597,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2028,23 +1622,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2083,32 +1666,18 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2131,16 +1700,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DnsThreatDetectorServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2152,9 +1713,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2179,23 +1738,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _CancelOperation(_BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2231,32 +1779,18 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2279,16 +1813,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DnsThreatDetectorServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2302,23 +1828,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2353,28 +1868,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2397,15 +1900,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DnsThreatDetectorServiceRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2419,23 +1915,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _GetOperation(_BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2473,26 +1958,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2515,15 +1990,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DnsThreatDetectorServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2535,9 +2003,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2562,23 +2028,12 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations,
-        DnsThreatDetectorServiceRestStub,
-    ):
+    class _ListOperations(_BaseDnsThreatDetectorServiceRestTransport._BaseListOperations, DnsThreatDetectorServiceRestStub):
         def __hash__(self):
             return hash("DnsThreatDetectorServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2616,26 +2071,16 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2658,15 +2103,8 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DnsThreatDetectorServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DnsThreatDetectorServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2678,9 +2116,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

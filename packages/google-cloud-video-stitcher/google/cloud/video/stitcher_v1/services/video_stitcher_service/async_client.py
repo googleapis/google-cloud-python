@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -96,66 +85,32 @@ class VideoStitcherServiceAsyncClient:
 
     cdn_key_path = staticmethod(VideoStitcherServiceClient.cdn_key_path)
     parse_cdn_key_path = staticmethod(VideoStitcherServiceClient.parse_cdn_key_path)
-    live_ad_tag_detail_path = staticmethod(
-        VideoStitcherServiceClient.live_ad_tag_detail_path
-    )
-    parse_live_ad_tag_detail_path = staticmethod(
-        VideoStitcherServiceClient.parse_live_ad_tag_detail_path
-    )
+    live_ad_tag_detail_path = staticmethod(VideoStitcherServiceClient.live_ad_tag_detail_path)
+    parse_live_ad_tag_detail_path = staticmethod(VideoStitcherServiceClient.parse_live_ad_tag_detail_path)
     live_config_path = staticmethod(VideoStitcherServiceClient.live_config_path)
-    parse_live_config_path = staticmethod(
-        VideoStitcherServiceClient.parse_live_config_path
-    )
+    parse_live_config_path = staticmethod(VideoStitcherServiceClient.parse_live_config_path)
     live_session_path = staticmethod(VideoStitcherServiceClient.live_session_path)
-    parse_live_session_path = staticmethod(
-        VideoStitcherServiceClient.parse_live_session_path
-    )
+    parse_live_session_path = staticmethod(VideoStitcherServiceClient.parse_live_session_path)
     slate_path = staticmethod(VideoStitcherServiceClient.slate_path)
     parse_slate_path = staticmethod(VideoStitcherServiceClient.parse_slate_path)
-    vod_ad_tag_detail_path = staticmethod(
-        VideoStitcherServiceClient.vod_ad_tag_detail_path
-    )
-    parse_vod_ad_tag_detail_path = staticmethod(
-        VideoStitcherServiceClient.parse_vod_ad_tag_detail_path
-    )
+    vod_ad_tag_detail_path = staticmethod(VideoStitcherServiceClient.vod_ad_tag_detail_path)
+    parse_vod_ad_tag_detail_path = staticmethod(VideoStitcherServiceClient.parse_vod_ad_tag_detail_path)
     vod_config_path = staticmethod(VideoStitcherServiceClient.vod_config_path)
-    parse_vod_config_path = staticmethod(
-        VideoStitcherServiceClient.parse_vod_config_path
-    )
+    parse_vod_config_path = staticmethod(VideoStitcherServiceClient.parse_vod_config_path)
     vod_session_path = staticmethod(VideoStitcherServiceClient.vod_session_path)
-    parse_vod_session_path = staticmethod(
-        VideoStitcherServiceClient.parse_vod_session_path
-    )
-    vod_stitch_detail_path = staticmethod(
-        VideoStitcherServiceClient.vod_stitch_detail_path
-    )
-    parse_vod_stitch_detail_path = staticmethod(
-        VideoStitcherServiceClient.parse_vod_stitch_detail_path
-    )
-    common_billing_account_path = staticmethod(
-        VideoStitcherServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        VideoStitcherServiceClient.parse_common_billing_account_path
-    )
+    parse_vod_session_path = staticmethod(VideoStitcherServiceClient.parse_vod_session_path)
+    vod_stitch_detail_path = staticmethod(VideoStitcherServiceClient.vod_stitch_detail_path)
+    parse_vod_stitch_detail_path = staticmethod(VideoStitcherServiceClient.parse_vod_stitch_detail_path)
+    common_billing_account_path = staticmethod(VideoStitcherServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(VideoStitcherServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(VideoStitcherServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        VideoStitcherServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        VideoStitcherServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        VideoStitcherServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(VideoStitcherServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(VideoStitcherServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(VideoStitcherServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(VideoStitcherServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        VideoStitcherServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(VideoStitcherServiceClient.parse_common_project_path)
     common_location_path = staticmethod(VideoStitcherServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        VideoStitcherServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(VideoStitcherServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -191,9 +146,7 @@ class VideoStitcherServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -260,13 +213,7 @@ class VideoStitcherServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                VideoStitcherServiceTransport,
-                Callable[..., VideoStitcherServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, VideoStitcherServiceTransport, Callable[..., VideoStitcherServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -326,20 +273,14 @@ class VideoStitcherServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.video.stitcher_v1.VideoStitcherServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.video.stitcher.v1.VideoStitcherService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -350,9 +291,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_cdn_key(
         self,
-        request: Optional[
-            Union[video_stitcher_service.CreateCdnKeyRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.CreateCdnKeyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         cdn_key: Optional[cdn_keys.CdnKey] = None,
@@ -449,14 +388,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, cdn_key, cdn_key_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -474,15 +408,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_cdn_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_cdn_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -508,9 +438,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_cdn_keys(
         self,
-        request: Optional[
-            Union[video_stitcher_service.ListCdnKeysRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.ListCdnKeysRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -580,14 +508,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -601,15 +524,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_cdn_keys
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_cdn_keys]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -705,14 +624,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -726,15 +640,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_cdn_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_cdn_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -752,9 +662,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def delete_cdn_key(
         self,
-        request: Optional[
-            Union[video_stitcher_service.DeleteCdnKeyRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.DeleteCdnKeyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -833,14 +741,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -854,15 +757,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_cdn_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_cdn_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -888,9 +787,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def update_cdn_key(
         self,
-        request: Optional[
-            Union[video_stitcher_service.UpdateCdnKeyRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.UpdateCdnKeyRequest, dict]] = None,
         *,
         cdn_key: Optional[cdn_keys.CdnKey] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -970,14 +867,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [cdn_key, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -993,17 +885,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_cdn_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_cdn_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("cdn_key.name", request.cdn_key.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("cdn_key.name", request.cdn_key.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1029,9 +915,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_vod_session(
         self,
-        request: Optional[
-            Union[video_stitcher_service.CreateVodSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.CreateVodSessionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         vod_session: Optional[sessions.VodSession] = None,
@@ -1111,14 +995,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, vod_session]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1134,15 +1013,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_vod_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_vod_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1160,9 +1035,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_session(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetVodSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetVodSessionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1229,14 +1102,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1250,15 +1118,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_vod_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_vod_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1276,9 +1140,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_vod_stitch_details(
         self,
-        request: Optional[
-            Union[video_stitcher_service.ListVodStitchDetailsRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.ListVodStitchDetailsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1348,14 +1210,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1369,15 +1226,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_vod_stitch_details
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_vod_stitch_details]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1406,9 +1259,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_stitch_detail(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetVodStitchDetailRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetVodStitchDetailRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1477,14 +1328,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1498,15 +1344,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_vod_stitch_detail
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_vod_stitch_detail]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1524,9 +1366,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_vod_ad_tag_details(
         self,
-        request: Optional[
-            Union[video_stitcher_service.ListVodAdTagDetailsRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.ListVodAdTagDetailsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1596,14 +1436,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1617,15 +1452,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_vod_ad_tag_details
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_vod_ad_tag_details]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1654,9 +1485,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_ad_tag_detail(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetVodAdTagDetailRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetVodAdTagDetailRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1725,14 +1554,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1746,15 +1570,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_vod_ad_tag_detail
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_vod_ad_tag_detail]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1772,9 +1592,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_live_ad_tag_details(
         self,
-        request: Optional[
-            Union[video_stitcher_service.ListLiveAdTagDetailsRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.ListLiveAdTagDetailsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1843,14 +1661,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1864,15 +1677,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_live_ad_tag_details
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_live_ad_tag_details]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1901,9 +1710,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_live_ad_tag_detail(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetLiveAdTagDetailRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetLiveAdTagDetailRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1971,14 +1778,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1992,15 +1794,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_live_ad_tag_detail
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_live_ad_tag_detail]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2018,9 +1816,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_slate(
         self,
-        request: Optional[
-            Union[video_stitcher_service.CreateSlateRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.CreateSlateRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         slate: Optional[slates.Slate] = None,
@@ -2112,14 +1908,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, slate, slate_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2137,15 +1928,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_slate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_slate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2240,14 +2027,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2261,15 +2043,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_slates
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_slates]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2361,14 +2139,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2382,15 +2155,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_slate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_slate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2408,9 +2177,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def update_slate(
         self,
-        request: Optional[
-            Union[video_stitcher_service.UpdateSlateRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.UpdateSlateRequest, dict]] = None,
         *,
         slate: Optional[slates.Slate] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2489,14 +2256,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [slate, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2512,17 +2274,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_slate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_slate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("slate.name", request.slate.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("slate.name", request.slate.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2548,9 +2304,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def delete_slate(
         self,
-        request: Optional[
-            Union[video_stitcher_service.DeleteSlateRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.DeleteSlateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2629,14 +2383,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2650,15 +2399,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_slate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_slate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2684,9 +2429,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_live_session(
         self,
-        request: Optional[
-            Union[video_stitcher_service.CreateLiveSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.CreateLiveSessionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         live_session: Optional[sessions.LiveSession] = None,
@@ -2765,14 +2508,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, live_session]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2788,15 +2526,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_live_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_live_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2814,9 +2548,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_live_session(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetLiveSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetLiveSessionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2882,14 +2614,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2903,15 +2630,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_live_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_live_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2929,9 +2652,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_live_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.CreateLiveConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.CreateLiveConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         live_config: Optional[live_configs.LiveConfig] = None,
@@ -3026,14 +2747,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, live_config, live_config_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3051,15 +2767,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_live_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_live_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3085,9 +2797,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_live_configs(
         self,
-        request: Optional[
-            Union[video_stitcher_service.ListLiveConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.ListLiveConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3157,14 +2867,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3178,15 +2883,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_live_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_live_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3215,9 +2916,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_live_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetLiveConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetLiveConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3283,14 +2982,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3304,15 +2998,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_live_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_live_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3330,9 +3020,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def delete_live_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.DeleteLiveConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.DeleteLiveConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3411,14 +3099,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3432,15 +3115,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_live_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_live_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3466,9 +3145,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def update_live_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.UpdateLiveConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.UpdateLiveConfigRequest, dict]] = None,
         *,
         live_config: Optional[live_configs.LiveConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3554,14 +3231,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [live_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3577,17 +3249,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_live_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_live_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("live_config.name", request.live_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("live_config.name", request.live_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3613,9 +3279,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def create_vod_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.CreateVodConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.CreateVodConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         vod_config: Optional[vod_configs.VodConfig] = None,
@@ -3710,14 +3374,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, vod_config, vod_config_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3735,15 +3394,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_vod_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_vod_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3769,9 +3424,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def list_vod_configs(
         self,
-        request: Optional[
-            Union[video_stitcher_service.ListVodConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.ListVodConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3841,14 +3494,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3862,15 +3510,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_vod_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_vod_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3899,9 +3543,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def get_vod_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.GetVodConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.GetVodConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3967,14 +3609,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3988,15 +3625,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_vod_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_vod_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4014,9 +3647,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def delete_vod_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.DeleteVodConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.DeleteVodConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4095,14 +3726,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4116,15 +3742,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_vod_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_vod_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4150,9 +3772,7 @@ class VideoStitcherServiceAsyncClient:
 
     async def update_vod_config(
         self,
-        request: Optional[
-            Union[video_stitcher_service.UpdateVodConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[video_stitcher_service.UpdateVodConfigRequest, dict]] = None,
         *,
         vod_config: Optional[vod_configs.VodConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -4238,14 +3858,9 @@ class VideoStitcherServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [vod_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4261,17 +3876,11 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_vod_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_vod_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("vod_config.name", request.vod_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("vod_config.name", request.vod_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4332,9 +3941,7 @@ class VideoStitcherServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4387,9 +3994,7 @@ class VideoStitcherServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4446,9 +4051,7 @@ class VideoStitcherServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4501,9 +4104,7 @@ class VideoStitcherServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4523,9 +4124,7 @@ class VideoStitcherServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

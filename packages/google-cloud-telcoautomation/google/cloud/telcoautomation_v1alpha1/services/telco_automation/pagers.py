@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class ListOrchestrationClustersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.OrchestrationCluster]:
@@ -137,9 +120,7 @@ class ListOrchestrationClustersAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[telcoautomation.ListOrchestrationClustersResponse]
-        ],
+        method: Callable[..., Awaitable[telcoautomation.ListOrchestrationClustersResponse]],
         request: telcoautomation.ListOrchestrationClustersRequest,
         response: telcoautomation.ListOrchestrationClustersResponse,
         *,
@@ -175,18 +156,11 @@ class ListOrchestrationClustersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.ListOrchestrationClustersResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.ListOrchestrationClustersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.OrchestrationCluster]:
@@ -261,12 +235,7 @@ class ListEdgeSlmsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.EdgeSlm]:
@@ -337,12 +306,7 @@ class ListEdgeSlmsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.EdgeSlm]:
@@ -417,12 +381,7 @@ class ListBlueprintsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.Blueprint]:
@@ -493,12 +452,7 @@ class ListBlueprintsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.Blueprint]:
@@ -573,12 +527,7 @@ class ListBlueprintRevisionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.Blueprint]:
@@ -609,9 +558,7 @@ class ListBlueprintRevisionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[telcoautomation.ListBlueprintRevisionsResponse]
-        ],
+        method: Callable[..., Awaitable[telcoautomation.ListBlueprintRevisionsResponse]],
         request: telcoautomation.ListBlueprintRevisionsRequest,
         response: telcoautomation.ListBlueprintRevisionsResponse,
         *,
@@ -647,18 +594,11 @@ class ListBlueprintRevisionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.ListBlueprintRevisionsResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.ListBlueprintRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.Blueprint]:
@@ -733,12 +673,7 @@ class SearchBlueprintRevisionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.Blueprint]:
@@ -769,9 +704,7 @@ class SearchBlueprintRevisionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[telcoautomation.SearchBlueprintRevisionsResponse]
-        ],
+        method: Callable[..., Awaitable[telcoautomation.SearchBlueprintRevisionsResponse]],
         request: telcoautomation.SearchBlueprintRevisionsRequest,
         response: telcoautomation.SearchBlueprintRevisionsResponse,
         *,
@@ -807,18 +740,11 @@ class SearchBlueprintRevisionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.SearchBlueprintRevisionsResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.SearchBlueprintRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.Blueprint]:
@@ -893,12 +819,7 @@ class SearchDeploymentRevisionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.Deployment]:
@@ -929,9 +850,7 @@ class SearchDeploymentRevisionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[telcoautomation.SearchDeploymentRevisionsResponse]
-        ],
+        method: Callable[..., Awaitable[telcoautomation.SearchDeploymentRevisionsResponse]],
         request: telcoautomation.SearchDeploymentRevisionsRequest,
         response: telcoautomation.SearchDeploymentRevisionsResponse,
         *,
@@ -967,18 +886,11 @@ class SearchDeploymentRevisionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.SearchDeploymentRevisionsResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.SearchDeploymentRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.Deployment]:
@@ -1053,12 +965,7 @@ class ListPublicBlueprintsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.PublicBlueprint]:
@@ -1125,18 +1032,11 @@ class ListPublicBlueprintsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.ListPublicBlueprintsResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.ListPublicBlueprintsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.PublicBlueprint]:
@@ -1211,12 +1111,7 @@ class ListDeploymentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.Deployment]:
@@ -1287,12 +1182,7 @@ class ListDeploymentsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.Deployment]:
@@ -1367,12 +1257,7 @@ class ListDeploymentRevisionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.Deployment]:
@@ -1403,9 +1288,7 @@ class ListDeploymentRevisionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[telcoautomation.ListDeploymentRevisionsResponse]
-        ],
+        method: Callable[..., Awaitable[telcoautomation.ListDeploymentRevisionsResponse]],
         request: telcoautomation.ListDeploymentRevisionsRequest,
         response: telcoautomation.ListDeploymentRevisionsResponse,
         *,
@@ -1441,18 +1324,11 @@ class ListDeploymentRevisionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.ListDeploymentRevisionsResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.ListDeploymentRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.Deployment]:
@@ -1527,12 +1403,7 @@ class ListHydratedDeploymentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[telcoautomation.HydratedDeployment]:
@@ -1563,9 +1434,7 @@ class ListHydratedDeploymentsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[telcoautomation.ListHydratedDeploymentsResponse]
-        ],
+        method: Callable[..., Awaitable[telcoautomation.ListHydratedDeploymentsResponse]],
         request: telcoautomation.ListHydratedDeploymentsRequest,
         response: telcoautomation.ListHydratedDeploymentsResponse,
         *,
@@ -1601,18 +1470,11 @@ class ListHydratedDeploymentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[telcoautomation.ListHydratedDeploymentsResponse]:
+    async def pages(self) -> AsyncIterator[telcoautomation.ListHydratedDeploymentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[telcoautomation.HydratedDeployment]:

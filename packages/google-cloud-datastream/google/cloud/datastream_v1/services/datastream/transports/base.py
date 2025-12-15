@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.datastream_v1 import gapic_version as package_version
 from google.cloud.datastream_v1.types import datastream, datastream_resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class DatastreamTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -318,10 +308,7 @@ class DatastreamTransport(abc.ABC):
         self,
     ) -> Callable[
         [datastream.ListConnectionProfilesRequest],
-        Union[
-            datastream.ListConnectionProfilesResponse,
-            Awaitable[datastream.ListConnectionProfilesResponse],
-        ],
+        Union[datastream.ListConnectionProfilesResponse, Awaitable[datastream.ListConnectionProfilesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -329,39 +316,26 @@ class DatastreamTransport(abc.ABC):
     def get_connection_profile(
         self,
     ) -> Callable[
-        [datastream.GetConnectionProfileRequest],
-        Union[
-            datastream_resources.ConnectionProfile,
-            Awaitable[datastream_resources.ConnectionProfile],
-        ],
+        [datastream.GetConnectionProfileRequest], Union[datastream_resources.ConnectionProfile, Awaitable[datastream_resources.ConnectionProfile]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_connection_profile(
         self,
-    ) -> Callable[
-        [datastream.CreateConnectionProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[datastream.CreateConnectionProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_connection_profile(
         self,
-    ) -> Callable[
-        [datastream.UpdateConnectionProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[datastream.UpdateConnectionProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_connection_profile(
         self,
-    ) -> Callable[
-        [datastream.DeleteConnectionProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[datastream.DeleteConnectionProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -369,159 +343,85 @@ class DatastreamTransport(abc.ABC):
         self,
     ) -> Callable[
         [datastream.DiscoverConnectionProfileRequest],
-        Union[
-            datastream.DiscoverConnectionProfileResponse,
-            Awaitable[datastream.DiscoverConnectionProfileResponse],
-        ],
+        Union[datastream.DiscoverConnectionProfileResponse, Awaitable[datastream.DiscoverConnectionProfileResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_streams(
         self,
-    ) -> Callable[
-        [datastream.ListStreamsRequest],
-        Union[
-            datastream.ListStreamsResponse, Awaitable[datastream.ListStreamsResponse]
-        ],
-    ]:
+    ) -> Callable[[datastream.ListStreamsRequest], Union[datastream.ListStreamsResponse, Awaitable[datastream.ListStreamsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_stream(
-        self,
-    ) -> Callable[
-        [datastream.GetStreamRequest],
-        Union[datastream_resources.Stream, Awaitable[datastream_resources.Stream]],
-    ]:
+    def get_stream(self) -> Callable[[datastream.GetStreamRequest], Union[datastream_resources.Stream, Awaitable[datastream_resources.Stream]]]:
         raise NotImplementedError()
 
     @property
-    def create_stream(
-        self,
-    ) -> Callable[
-        [datastream.CreateStreamRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_stream(self) -> Callable[[datastream.CreateStreamRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_stream(
-        self,
-    ) -> Callable[
-        [datastream.UpdateStreamRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_stream(self) -> Callable[[datastream.UpdateStreamRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_stream(
-        self,
-    ) -> Callable[
-        [datastream.DeleteStreamRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_stream(self) -> Callable[[datastream.DeleteStreamRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def run_stream(
-        self,
-    ) -> Callable[
-        [datastream.RunStreamRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def run_stream(self) -> Callable[[datastream.RunStreamRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_stream_object(
         self,
-    ) -> Callable[
-        [datastream.GetStreamObjectRequest],
-        Union[
-            datastream_resources.StreamObject,
-            Awaitable[datastream_resources.StreamObject],
-        ],
-    ]:
+    ) -> Callable[[datastream.GetStreamObjectRequest], Union[datastream_resources.StreamObject, Awaitable[datastream_resources.StreamObject]]]:
         raise NotImplementedError()
 
     @property
     def lookup_stream_object(
         self,
-    ) -> Callable[
-        [datastream.LookupStreamObjectRequest],
-        Union[
-            datastream_resources.StreamObject,
-            Awaitable[datastream_resources.StreamObject],
-        ],
-    ]:
+    ) -> Callable[[datastream.LookupStreamObjectRequest], Union[datastream_resources.StreamObject, Awaitable[datastream_resources.StreamObject]]]:
         raise NotImplementedError()
 
     @property
     def list_stream_objects(
         self,
     ) -> Callable[
-        [datastream.ListStreamObjectsRequest],
-        Union[
-            datastream.ListStreamObjectsResponse,
-            Awaitable[datastream.ListStreamObjectsResponse],
-        ],
+        [datastream.ListStreamObjectsRequest], Union[datastream.ListStreamObjectsResponse, Awaitable[datastream.ListStreamObjectsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def start_backfill_job(
         self,
-    ) -> Callable[
-        [datastream.StartBackfillJobRequest],
-        Union[
-            datastream.StartBackfillJobResponse,
-            Awaitable[datastream.StartBackfillJobResponse],
-        ],
-    ]:
+    ) -> Callable[[datastream.StartBackfillJobRequest], Union[datastream.StartBackfillJobResponse, Awaitable[datastream.StartBackfillJobResponse]]]:
         raise NotImplementedError()
 
     @property
     def stop_backfill_job(
         self,
-    ) -> Callable[
-        [datastream.StopBackfillJobRequest],
-        Union[
-            datastream.StopBackfillJobResponse,
-            Awaitable[datastream.StopBackfillJobResponse],
-        ],
-    ]:
+    ) -> Callable[[datastream.StopBackfillJobRequest], Union[datastream.StopBackfillJobResponse, Awaitable[datastream.StopBackfillJobResponse]]]:
         raise NotImplementedError()
 
     @property
     def fetch_static_ips(
         self,
-    ) -> Callable[
-        [datastream.FetchStaticIpsRequest],
-        Union[
-            datastream.FetchStaticIpsResponse,
-            Awaitable[datastream.FetchStaticIpsResponse],
-        ],
-    ]:
+    ) -> Callable[[datastream.FetchStaticIpsRequest], Union[datastream.FetchStaticIpsResponse, Awaitable[datastream.FetchStaticIpsResponse]]]:
         raise NotImplementedError()
 
     @property
     def create_private_connection(
         self,
-    ) -> Callable[
-        [datastream.CreatePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[datastream.CreatePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_private_connection(
         self,
     ) -> Callable[
-        [datastream.GetPrivateConnectionRequest],
-        Union[
-            datastream_resources.PrivateConnection,
-            Awaitable[datastream_resources.PrivateConnection],
-        ],
+        [datastream.GetPrivateConnectionRequest], Union[datastream_resources.PrivateConnection, Awaitable[datastream_resources.PrivateConnection]]
     ]:
         raise NotImplementedError()
 
@@ -530,56 +430,30 @@ class DatastreamTransport(abc.ABC):
         self,
     ) -> Callable[
         [datastream.ListPrivateConnectionsRequest],
-        Union[
-            datastream.ListPrivateConnectionsResponse,
-            Awaitable[datastream.ListPrivateConnectionsResponse],
-        ],
+        Union[datastream.ListPrivateConnectionsResponse, Awaitable[datastream.ListPrivateConnectionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_private_connection(
         self,
-    ) -> Callable[
-        [datastream.DeletePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[datastream.DeletePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_route(
-        self,
-    ) -> Callable[
-        [datastream.CreateRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_route(self) -> Callable[[datastream.CreateRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_route(
-        self,
-    ) -> Callable[
-        [datastream.GetRouteRequest],
-        Union[datastream_resources.Route, Awaitable[datastream_resources.Route]],
-    ]:
+    def get_route(self) -> Callable[[datastream.GetRouteRequest], Union[datastream_resources.Route, Awaitable[datastream_resources.Route]]]:
         raise NotImplementedError()
 
     @property
-    def list_routes(
-        self,
-    ) -> Callable[
-        [datastream.ListRoutesRequest],
-        Union[datastream.ListRoutesResponse, Awaitable[datastream.ListRoutesResponse]],
-    ]:
+    def list_routes(self) -> Callable[[datastream.ListRoutesRequest], Union[datastream.ListRoutesResponse, Awaitable[datastream.ListRoutesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_route(
-        self,
-    ) -> Callable[
-        [datastream.DeleteRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_route(self) -> Callable[[datastream.DeleteRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -587,20 +461,14 @@ class DatastreamTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -618,22 +486,13 @@ class DatastreamTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

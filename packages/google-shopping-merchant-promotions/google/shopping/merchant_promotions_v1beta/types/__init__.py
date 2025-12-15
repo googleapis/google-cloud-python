@@ -13,22 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .promotions import (
-    GetPromotionRequest,
-    InsertPromotionRequest,
-    ListPromotionsRequest,
-    ListPromotionsResponse,
-    Promotion,
-)
-from .promotions_common import (
-    Attributes,
-    CouponValueType,
-    OfferType,
-    ProductApplicability,
-    PromotionStatus,
-    RedemptionChannel,
-    StoreApplicability,
-)
+from .promotions import GetPromotionRequest, InsertPromotionRequest, ListPromotionsRequest, ListPromotionsResponse, Promotion
+from .promotions_common import Attributes, CouponValueType, OfferType, ProductApplicability, PromotionStatus, RedemptionChannel, StoreApplicability
 
 __all__ = (
     "GetPromotionRequest",

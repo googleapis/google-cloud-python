@@ -73,20 +73,14 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateInstance:
@@ -99,11 +93,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -126,9 +116,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -139,11 +127,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseCreateInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseCreateInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -156,11 +140,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -186,11 +166,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseDeleteInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseDeleteInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -203,11 +179,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -230,9 +202,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -243,11 +213,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseExportInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseExportInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -260,11 +226,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -287,9 +249,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -300,11 +260,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseFailoverInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseFailoverInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -317,11 +273,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -347,11 +299,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseGetInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseGetInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -364,11 +312,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -394,11 +338,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -411,11 +351,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -438,9 +374,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -451,11 +385,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseImportInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseImportInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -468,11 +398,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -498,11 +424,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseListInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseListInstances._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -515,11 +437,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -542,9 +460,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -555,11 +471,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -574,11 +486,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -601,9 +509,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -614,11 +520,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseUpdateInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseUpdateInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -631,11 +533,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -658,9 +556,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -671,11 +567,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudRedisRestTransport._BaseUpgradeInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

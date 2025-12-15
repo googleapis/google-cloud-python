@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +213,14 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +254,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,17 +321,13 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_functions(
-        self,
-    ) -> Callable[[functions.ListFunctionsRequest], functions.ListFunctionsResponse]:
+    def list_functions(self) -> Callable[[functions.ListFunctionsRequest], functions.ListFunctionsResponse]:
         r"""Return a callable for the list functions method over gRPC.
 
         Returns a list of functions that belong to the
@@ -371,9 +352,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["list_functions"]
 
     @property
-    def get_function(
-        self,
-    ) -> Callable[[functions.GetFunctionRequest], functions.CloudFunction]:
+    def get_function(self) -> Callable[[functions.GetFunctionRequest], functions.CloudFunction]:
         r"""Return a callable for the get function method over gRPC.
 
         Returns a function with the given name from the
@@ -398,9 +377,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["get_function"]
 
     @property
-    def create_function(
-        self,
-    ) -> Callable[[functions.CreateFunctionRequest], operations_pb2.Operation]:
+    def create_function(self) -> Callable[[functions.CreateFunctionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create function method over gRPC.
 
         Creates a new function. If a function with the given name
@@ -426,9 +403,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["create_function"]
 
     @property
-    def update_function(
-        self,
-    ) -> Callable[[functions.UpdateFunctionRequest], operations_pb2.Operation]:
+    def update_function(self) -> Callable[[functions.UpdateFunctionRequest], operations_pb2.Operation]:
         r"""Return a callable for the update function method over gRPC.
 
         Updates existing function.
@@ -452,9 +427,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["update_function"]
 
     @property
-    def delete_function(
-        self,
-    ) -> Callable[[functions.DeleteFunctionRequest], operations_pb2.Operation]:
+    def delete_function(self) -> Callable[[functions.DeleteFunctionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete function method over gRPC.
 
         Deletes a function with the given name from the
@@ -481,9 +454,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["delete_function"]
 
     @property
-    def call_function(
-        self,
-    ) -> Callable[[functions.CallFunctionRequest], functions.CallFunctionResponse]:
+    def call_function(self) -> Callable[[functions.CallFunctionRequest], functions.CallFunctionResponse]:
         r"""Return a callable for the call function method over gRPC.
 
         Synchronously invokes a deployed Cloud Function. To be used for
@@ -510,11 +481,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["call_function"]
 
     @property
-    def generate_upload_url(
-        self,
-    ) -> Callable[
-        [functions.GenerateUploadUrlRequest], functions.GenerateUploadUrlResponse
-    ]:
+    def generate_upload_url(self) -> Callable[[functions.GenerateUploadUrlRequest], functions.GenerateUploadUrlResponse]:
         r"""Return a callable for the generate upload url method over gRPC.
 
         Returns a signed URL for uploading a function source code. For
@@ -565,11 +532,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["generate_upload_url"]
 
     @property
-    def generate_download_url(
-        self,
-    ) -> Callable[
-        [functions.GenerateDownloadUrlRequest], functions.GenerateDownloadUrlResponse
-    ]:
+    def generate_download_url(self) -> Callable[[functions.GenerateDownloadUrlRequest], functions.GenerateDownloadUrlResponse]:
         r"""Return a callable for the generate download url method over gRPC.
 
         Returns a signed URL for downloading deployed
@@ -599,9 +562,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["generate_download_url"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM access control policy on the specified
@@ -626,9 +587,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM access control policy for a function.
@@ -654,12 +613,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests the specified permissions against the IAM access control
@@ -707,9 +661,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -726,9 +678,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

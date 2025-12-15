@@ -243,12 +243,8 @@ class DepServiceRestInterceptor:
     """
 
     def pre_create_authz_extension(
-        self,
-        request: dep.CreateAuthzExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.CreateAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.CreateAuthzExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.CreateAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_authz_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +252,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_authz_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_authz_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_authz_extension
 
         DEPRECATED. Please use the `post_create_authz_extension_with_metadata`
@@ -272,9 +266,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_create_authz_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_authz_extension
 
@@ -291,12 +283,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_create_lb_edge_extension(
-        self,
-        request: dep.CreateLbEdgeExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.CreateLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.CreateLbEdgeExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.CreateLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_lb_edge_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -304,9 +292,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_lb_edge_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_lb_edge_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_lb_edge_extension
 
         DEPRECATED. Please use the `post_create_lb_edge_extension_with_metadata`
@@ -320,9 +306,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_create_lb_edge_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_lb_edge_extension
 
@@ -339,12 +323,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_create_lb_route_extension(
-        self,
-        request: dep.CreateLbRouteExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.CreateLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.CreateLbRouteExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.CreateLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_lb_route_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -352,9 +332,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_lb_route_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_lb_route_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_lb_route_extension
 
         DEPRECATED. Please use the `post_create_lb_route_extension_with_metadata`
@@ -368,9 +346,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_create_lb_route_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_lb_route_extension
 
@@ -387,12 +363,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_create_lb_traffic_extension(
-        self,
-        request: dep.CreateLbTrafficExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.CreateLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.CreateLbTrafficExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.CreateLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_lb_traffic_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -400,9 +372,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_lb_traffic_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_lb_traffic_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_lb_traffic_extension
 
         DEPRECATED. Please use the `post_create_lb_traffic_extension_with_metadata`
@@ -416,9 +386,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_create_lb_traffic_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_lb_traffic_extension
 
@@ -435,12 +403,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_authz_extension(
-        self,
-        request: dep.DeleteAuthzExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.DeleteAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.DeleteAuthzExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.DeleteAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_authz_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -448,9 +412,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_authz_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_authz_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_authz_extension
 
         DEPRECATED. Please use the `post_delete_authz_extension_with_metadata`
@@ -464,9 +426,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_delete_authz_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_authz_extension
 
@@ -483,12 +443,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_lb_edge_extension(
-        self,
-        request: dep.DeleteLbEdgeExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.DeleteLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.DeleteLbEdgeExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.DeleteLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_lb_edge_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -496,9 +452,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_lb_edge_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_lb_edge_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_lb_edge_extension
 
         DEPRECATED. Please use the `post_delete_lb_edge_extension_with_metadata`
@@ -512,9 +466,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_delete_lb_edge_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_lb_edge_extension
 
@@ -531,12 +483,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_lb_route_extension(
-        self,
-        request: dep.DeleteLbRouteExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.DeleteLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.DeleteLbRouteExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.DeleteLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_lb_route_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -544,9 +492,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_lb_route_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_lb_route_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_lb_route_extension
 
         DEPRECATED. Please use the `post_delete_lb_route_extension_with_metadata`
@@ -560,9 +506,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_delete_lb_route_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_lb_route_extension
 
@@ -579,12 +523,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_lb_traffic_extension(
-        self,
-        request: dep.DeleteLbTrafficExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.DeleteLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.DeleteLbTrafficExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.DeleteLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_lb_traffic_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -592,9 +532,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_lb_traffic_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_lb_traffic_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_lb_traffic_extension
 
         DEPRECATED. Please use the `post_delete_lb_traffic_extension_with_metadata`
@@ -608,9 +546,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_delete_lb_traffic_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_lb_traffic_extension
 
@@ -627,9 +563,7 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_get_authz_extension(
-        self,
-        request: dep.GetAuthzExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dep.GetAuthzExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.GetAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_authz_extension
 
@@ -638,9 +572,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_authz_extension(
-        self, response: dep.AuthzExtension
-    ) -> dep.AuthzExtension:
+    def post_get_authz_extension(self, response: dep.AuthzExtension) -> dep.AuthzExtension:
         """Post-rpc interceptor for get_authz_extension
 
         DEPRECATED. Please use the `post_get_authz_extension_with_metadata`
@@ -654,9 +586,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_get_authz_extension_with_metadata(
-        self,
-        response: dep.AuthzExtension,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dep.AuthzExtension, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.AuthzExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_authz_extension
 
@@ -673,9 +603,7 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_get_lb_edge_extension(
-        self,
-        request: dep.GetLbEdgeExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dep.GetLbEdgeExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.GetLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lb_edge_extension
 
@@ -684,9 +612,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_lb_edge_extension(
-        self, response: dep.LbEdgeExtension
-    ) -> dep.LbEdgeExtension:
+    def post_get_lb_edge_extension(self, response: dep.LbEdgeExtension) -> dep.LbEdgeExtension:
         """Post-rpc interceptor for get_lb_edge_extension
 
         DEPRECATED. Please use the `post_get_lb_edge_extension_with_metadata`
@@ -700,9 +626,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_get_lb_edge_extension_with_metadata(
-        self,
-        response: dep.LbEdgeExtension,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dep.LbEdgeExtension, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.LbEdgeExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_lb_edge_extension
 
@@ -719,9 +643,7 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_get_lb_route_extension(
-        self,
-        request: dep.GetLbRouteExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dep.GetLbRouteExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.GetLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lb_route_extension
 
@@ -730,9 +652,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_lb_route_extension(
-        self, response: dep.LbRouteExtension
-    ) -> dep.LbRouteExtension:
+    def post_get_lb_route_extension(self, response: dep.LbRouteExtension) -> dep.LbRouteExtension:
         """Post-rpc interceptor for get_lb_route_extension
 
         DEPRECATED. Please use the `post_get_lb_route_extension_with_metadata`
@@ -746,9 +666,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_get_lb_route_extension_with_metadata(
-        self,
-        response: dep.LbRouteExtension,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dep.LbRouteExtension, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.LbRouteExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_lb_route_extension
 
@@ -765,12 +683,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_get_lb_traffic_extension(
-        self,
-        request: dep.GetLbTrafficExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.GetLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.GetLbTrafficExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.GetLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lb_traffic_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -778,9 +692,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_lb_traffic_extension(
-        self, response: dep.LbTrafficExtension
-    ) -> dep.LbTrafficExtension:
+    def post_get_lb_traffic_extension(self, response: dep.LbTrafficExtension) -> dep.LbTrafficExtension:
         """Post-rpc interceptor for get_lb_traffic_extension
 
         DEPRECATED. Please use the `post_get_lb_traffic_extension_with_metadata`
@@ -794,9 +706,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_get_lb_traffic_extension_with_metadata(
-        self,
-        response: dep.LbTrafficExtension,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dep.LbTrafficExtension, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.LbTrafficExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_lb_traffic_extension
 
@@ -813,9 +723,7 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_list_authz_extensions(
-        self,
-        request: dep.ListAuthzExtensionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dep.ListAuthzExtensionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dep.ListAuthzExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_authz_extensions
 
@@ -824,9 +732,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_authz_extensions(
-        self, response: dep.ListAuthzExtensionsResponse
-    ) -> dep.ListAuthzExtensionsResponse:
+    def post_list_authz_extensions(self, response: dep.ListAuthzExtensionsResponse) -> dep.ListAuthzExtensionsResponse:
         """Post-rpc interceptor for list_authz_extensions
 
         DEPRECATED. Please use the `post_list_authz_extensions_with_metadata`
@@ -840,12 +746,8 @@ class DepServiceRestInterceptor:
         return response
 
     def post_list_authz_extensions_with_metadata(
-        self,
-        response: dep.ListAuthzExtensionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListAuthzExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dep.ListAuthzExtensionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListAuthzExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_authz_extensions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -861,12 +763,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_list_lb_edge_extensions(
-        self,
-        request: dep.ListLbEdgeExtensionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListLbEdgeExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.ListLbEdgeExtensionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListLbEdgeExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lb_edge_extensions
 
         Override in a subclass to manipulate the request or metadata
@@ -874,9 +772,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lb_edge_extensions(
-        self, response: dep.ListLbEdgeExtensionsResponse
-    ) -> dep.ListLbEdgeExtensionsResponse:
+    def post_list_lb_edge_extensions(self, response: dep.ListLbEdgeExtensionsResponse) -> dep.ListLbEdgeExtensionsResponse:
         """Post-rpc interceptor for list_lb_edge_extensions
 
         DEPRECATED. Please use the `post_list_lb_edge_extensions_with_metadata`
@@ -890,12 +786,8 @@ class DepServiceRestInterceptor:
         return response
 
     def post_list_lb_edge_extensions_with_metadata(
-        self,
-        response: dep.ListLbEdgeExtensionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListLbEdgeExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dep.ListLbEdgeExtensionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListLbEdgeExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lb_edge_extensions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -911,12 +803,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_list_lb_route_extensions(
-        self,
-        request: dep.ListLbRouteExtensionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListLbRouteExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.ListLbRouteExtensionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListLbRouteExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lb_route_extensions
 
         Override in a subclass to manipulate the request or metadata
@@ -924,9 +812,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lb_route_extensions(
-        self, response: dep.ListLbRouteExtensionsResponse
-    ) -> dep.ListLbRouteExtensionsResponse:
+    def post_list_lb_route_extensions(self, response: dep.ListLbRouteExtensionsResponse) -> dep.ListLbRouteExtensionsResponse:
         """Post-rpc interceptor for list_lb_route_extensions
 
         DEPRECATED. Please use the `post_list_lb_route_extensions_with_metadata`
@@ -940,12 +826,8 @@ class DepServiceRestInterceptor:
         return response
 
     def post_list_lb_route_extensions_with_metadata(
-        self,
-        response: dep.ListLbRouteExtensionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListLbRouteExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dep.ListLbRouteExtensionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListLbRouteExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lb_route_extensions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -961,12 +843,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_list_lb_traffic_extensions(
-        self,
-        request: dep.ListLbTrafficExtensionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListLbTrafficExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.ListLbTrafficExtensionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListLbTrafficExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lb_traffic_extensions
 
         Override in a subclass to manipulate the request or metadata
@@ -974,9 +852,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lb_traffic_extensions(
-        self, response: dep.ListLbTrafficExtensionsResponse
-    ) -> dep.ListLbTrafficExtensionsResponse:
+    def post_list_lb_traffic_extensions(self, response: dep.ListLbTrafficExtensionsResponse) -> dep.ListLbTrafficExtensionsResponse:
         """Post-rpc interceptor for list_lb_traffic_extensions
 
         DEPRECATED. Please use the `post_list_lb_traffic_extensions_with_metadata`
@@ -990,12 +866,8 @@ class DepServiceRestInterceptor:
         return response
 
     def post_list_lb_traffic_extensions_with_metadata(
-        self,
-        response: dep.ListLbTrafficExtensionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.ListLbTrafficExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dep.ListLbTrafficExtensionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.ListLbTrafficExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lb_traffic_extensions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1011,12 +883,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_update_authz_extension(
-        self,
-        request: dep.UpdateAuthzExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.UpdateAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.UpdateAuthzExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.UpdateAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_authz_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -1024,9 +892,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_authz_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_authz_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_authz_extension
 
         DEPRECATED. Please use the `post_update_authz_extension_with_metadata`
@@ -1040,9 +906,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_update_authz_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_authz_extension
 
@@ -1059,12 +923,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_update_lb_edge_extension(
-        self,
-        request: dep.UpdateLbEdgeExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.UpdateLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.UpdateLbEdgeExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.UpdateLbEdgeExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_lb_edge_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -1072,9 +932,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_lb_edge_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_lb_edge_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_lb_edge_extension
 
         DEPRECATED. Please use the `post_update_lb_edge_extension_with_metadata`
@@ -1088,9 +946,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_update_lb_edge_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_lb_edge_extension
 
@@ -1107,12 +963,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_update_lb_route_extension(
-        self,
-        request: dep.UpdateLbRouteExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.UpdateLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.UpdateLbRouteExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.UpdateLbRouteExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_lb_route_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -1120,9 +972,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_lb_route_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_lb_route_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_lb_route_extension
 
         DEPRECATED. Please use the `post_update_lb_route_extension_with_metadata`
@@ -1136,9 +986,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_update_lb_route_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_lb_route_extension
 
@@ -1155,12 +1003,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_update_lb_traffic_extension(
-        self,
-        request: dep.UpdateLbTrafficExtensionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dep.UpdateLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dep.UpdateLbTrafficExtensionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dep.UpdateLbTrafficExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_lb_traffic_extension
 
         Override in a subclass to manipulate the request or metadata
@@ -1168,9 +1012,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_lb_traffic_extension(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_lb_traffic_extension(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_lb_traffic_extension
 
         DEPRECATED. Please use the `post_update_lb_traffic_extension_with_metadata`
@@ -1184,9 +1026,7 @@ class DepServiceRestInterceptor:
         return response
 
     def post_update_lb_traffic_extension_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_lb_traffic_extension
 
@@ -1203,12 +1043,8 @@ class DepServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1216,9 +1052,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1228,12 +1062,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1241,9 +1071,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1253,12 +1081,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1276,12 +1100,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1299,13 +1119,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1313,9 +1128,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1325,12 +1138,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1348,12 +1157,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1371,12 +1176,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1384,9 +1185,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1396,12 +1195,8 @@ class DepServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1409,9 +1204,7 @@ class DepServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1500,9 +1293,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1555,29 +1346,17 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAuthzExtension(
-        _BaseDepServiceRestTransport._BaseCreateAuthzExtension, DepServiceRestStub
-    ):
+    class _CreateAuthzExtension(_BaseDepServiceRestTransport._BaseCreateAuthzExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.CreateAuthzExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1620,32 +1399,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_authz_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_authz_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1669,13 +1434,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._CreateAuthzExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1689,12 +1448,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_create_authz_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_authz_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_authz_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1715,22 +1470,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _CreateLbEdgeExtension(
-        _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension, DepServiceRestStub
-    ):
+    class _CreateLbEdgeExtension(_BaseDepServiceRestTransport._BaseCreateLbEdgeExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.CreateLbEdgeExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1773,32 +1518,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_lb_edge_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_lb_edge_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1822,13 +1553,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._CreateLbEdgeExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1842,12 +1567,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_create_lb_edge_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_lb_edge_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_lb_edge_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1868,22 +1589,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _CreateLbRouteExtension(
-        _BaseDepServiceRestTransport._BaseCreateLbRouteExtension, DepServiceRestStub
-    ):
+    class _CreateLbRouteExtension(_BaseDepServiceRestTransport._BaseCreateLbRouteExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.CreateLbRouteExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1926,32 +1637,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_lb_route_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_lb_route_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1975,13 +1672,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._CreateLbRouteExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1995,12 +1686,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_create_lb_route_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_lb_route_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_lb_route_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2021,22 +1708,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _CreateLbTrafficExtension(
-        _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension, DepServiceRestStub
-    ):
+    class _CreateLbTrafficExtension(_BaseDepServiceRestTransport._BaseCreateLbTrafficExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.CreateLbTrafficExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2080,32 +1757,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_lb_traffic_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_lb_traffic_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2129,13 +1792,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._CreateLbTrafficExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2149,12 +1806,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_create_lb_traffic_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_lb_traffic_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_lb_traffic_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2175,22 +1828,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _DeleteAuthzExtension(
-        _BaseDepServiceRestTransport._BaseDeleteAuthzExtension, DepServiceRestStub
-    ):
+    class _DeleteAuthzExtension(_BaseDepServiceRestTransport._BaseDeleteAuthzExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.DeleteAuthzExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2232,28 +1875,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_authz_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_authz_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2277,12 +1908,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._DeleteAuthzExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2296,12 +1922,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_delete_authz_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_authz_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_authz_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2322,22 +1944,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _DeleteLbEdgeExtension(
-        _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension, DepServiceRestStub
-    ):
+    class _DeleteLbEdgeExtension(_BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.DeleteLbEdgeExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2379,28 +1991,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_lb_edge_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_lb_edge_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2424,12 +2024,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._DeleteLbEdgeExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2443,12 +2038,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_delete_lb_edge_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_lb_edge_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_lb_edge_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2469,22 +2060,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _DeleteLbRouteExtension(
-        _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension, DepServiceRestStub
-    ):
+    class _DeleteLbRouteExtension(_BaseDepServiceRestTransport._BaseDeleteLbRouteExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.DeleteLbRouteExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2526,28 +2107,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_lb_route_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_lb_route_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2571,12 +2140,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._DeleteLbRouteExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2590,12 +2154,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_delete_lb_route_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_lb_route_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_lb_route_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2616,22 +2176,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _DeleteLbTrafficExtension(
-        _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension, DepServiceRestStub
-    ):
+    class _DeleteLbTrafficExtension(_BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.DeleteLbTrafficExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2674,28 +2224,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_lb_traffic_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_lb_traffic_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2719,12 +2257,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._DeleteLbTrafficExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2738,12 +2271,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_delete_lb_traffic_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_lb_traffic_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_lb_traffic_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2764,22 +2293,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _GetAuthzExtension(
-        _BaseDepServiceRestTransport._BaseGetAuthzExtension, DepServiceRestStub
-    ):
+    class _GetAuthzExtension(_BaseDepServiceRestTransport._BaseGetAuthzExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetAuthzExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2821,28 +2340,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_authz_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_authz_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2866,12 +2373,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetAuthzExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2887,12 +2389,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_get_authz_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_authz_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_authz_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dep.AuthzExtension.to_json(response)
                 except:
@@ -2913,22 +2411,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _GetLbEdgeExtension(
-        _BaseDepServiceRestTransport._BaseGetLbEdgeExtension, DepServiceRestStub
-    ):
+    class _GetLbEdgeExtension(_BaseDepServiceRestTransport._BaseGetLbEdgeExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetLbEdgeExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2971,28 +2459,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetLbEdgeExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_lb_edge_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseGetLbEdgeExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_lb_edge_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetLbEdgeExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseGetLbEdgeExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetLbEdgeExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3016,12 +2492,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetLbEdgeExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3037,12 +2508,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_get_lb_edge_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lb_edge_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lb_edge_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dep.LbEdgeExtension.to_json(response)
                 except:
@@ -3063,22 +2530,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _GetLbRouteExtension(
-        _BaseDepServiceRestTransport._BaseGetLbRouteExtension, DepServiceRestStub
-    ):
+    class _GetLbRouteExtension(_BaseDepServiceRestTransport._BaseGetLbRouteExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetLbRouteExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3119,28 +2576,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_lb_route_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_lb_route_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3164,12 +2609,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetLbRouteExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3185,12 +2625,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_get_lb_route_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lb_route_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lb_route_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dep.LbRouteExtension.to_json(response)
                 except:
@@ -3211,22 +2647,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _GetLbTrafficExtension(
-        _BaseDepServiceRestTransport._BaseGetLbTrafficExtension, DepServiceRestStub
-    ):
+    class _GetLbTrafficExtension(_BaseDepServiceRestTransport._BaseGetLbTrafficExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetLbTrafficExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3270,28 +2696,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_lb_traffic_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_lb_traffic_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3315,12 +2729,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetLbTrafficExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3336,12 +2745,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_get_lb_traffic_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lb_traffic_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lb_traffic_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dep.LbTrafficExtension.to_json(response)
                 except:
@@ -3362,22 +2767,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _ListAuthzExtensions(
-        _BaseDepServiceRestTransport._BaseListAuthzExtensions, DepServiceRestStub
-    ):
+    class _ListAuthzExtensions(_BaseDepServiceRestTransport._BaseListAuthzExtensions, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.ListAuthzExtensions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3419,28 +2814,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_authz_extensions(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_authz_extensions(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3464,12 +2847,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._ListAuthzExtensions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3485,12 +2863,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_list_authz_extensions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_authz_extensions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_authz_extensions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dep.ListAuthzExtensionsResponse.to_json(response)
                 except:
@@ -3511,22 +2885,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _ListLbEdgeExtensions(
-        _BaseDepServiceRestTransport._BaseListLbEdgeExtensions, DepServiceRestStub
-    ):
+    class _ListLbEdgeExtensions(_BaseDepServiceRestTransport._BaseListLbEdgeExtensions, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.ListLbEdgeExtensions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3568,28 +2932,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_lb_edge_extensions(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_lb_edge_extensions(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3613,12 +2965,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._ListLbEdgeExtensions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3634,16 +2981,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_list_lb_edge_extensions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lb_edge_extensions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lb_edge_extensions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dep.ListLbEdgeExtensionsResponse.to_json(
-                        response
-                    )
+                    response_payload = dep.ListLbEdgeExtensionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3662,22 +3003,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _ListLbRouteExtensions(
-        _BaseDepServiceRestTransport._BaseListLbRouteExtensions, DepServiceRestStub
-    ):
+    class _ListLbRouteExtensions(_BaseDepServiceRestTransport._BaseListLbRouteExtensions, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.ListLbRouteExtensions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3719,28 +3050,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_lb_route_extensions(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_lb_route_extensions(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3764,12 +3083,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._ListLbRouteExtensions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3785,16 +3099,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_list_lb_route_extensions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lb_route_extensions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lb_route_extensions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dep.ListLbRouteExtensionsResponse.to_json(
-                        response
-                    )
+                    response_payload = dep.ListLbRouteExtensionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3813,22 +3121,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _ListLbTrafficExtensions(
-        _BaseDepServiceRestTransport._BaseListLbTrafficExtensions, DepServiceRestStub
-    ):
+    class _ListLbTrafficExtensions(_BaseDepServiceRestTransport._BaseListLbTrafficExtensions, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.ListLbTrafficExtensions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3871,28 +3169,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_lb_traffic_extensions(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_lb_traffic_extensions(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3916,12 +3202,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._ListLbTrafficExtensions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3937,16 +3218,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_list_lb_traffic_extensions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lb_traffic_extensions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lb_traffic_extensions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dep.ListLbTrafficExtensionsResponse.to_json(
-                        response
-                    )
+                    response_payload = dep.ListLbTrafficExtensionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3965,22 +3240,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAuthzExtension(
-        _BaseDepServiceRestTransport._BaseUpdateAuthzExtension, DepServiceRestStub
-    ):
+    class _UpdateAuthzExtension(_BaseDepServiceRestTransport._BaseUpdateAuthzExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.UpdateAuthzExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4023,32 +3288,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_authz_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_authz_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4072,13 +3323,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._UpdateAuthzExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4092,12 +3337,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_update_authz_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_authz_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_authz_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4118,22 +3359,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLbEdgeExtension(
-        _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension, DepServiceRestStub
-    ):
+    class _UpdateLbEdgeExtension(_BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.UpdateLbEdgeExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4176,32 +3407,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_lb_edge_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_lb_edge_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4225,13 +3442,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._UpdateLbEdgeExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4245,12 +3456,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_update_lb_edge_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_lb_edge_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_lb_edge_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4271,22 +3478,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLbRouteExtension(
-        _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension, DepServiceRestStub
-    ):
+    class _UpdateLbRouteExtension(_BaseDepServiceRestTransport._BaseUpdateLbRouteExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.UpdateLbRouteExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4329,32 +3526,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_lb_route_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_lb_route_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4378,13 +3561,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._UpdateLbRouteExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4398,12 +3575,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_update_lb_route_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_lb_route_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_lb_route_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4424,22 +3597,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLbTrafficExtension(
-        _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension, DepServiceRestStub
-    ):
+    class _UpdateLbTrafficExtension(_BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.UpdateLbTrafficExtension")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4483,32 +3646,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_lb_traffic_extension(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_lb_traffic_extension(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4532,13 +3681,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._UpdateLbTrafficExtension._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4552,12 +3695,8 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             resp = self._interceptor.post_update_lb_traffic_extension(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_lb_traffic_extension_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_lb_traffic_extension_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4579,165 +3718,121 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             return resp
 
     @property
-    def create_authz_extension(
-        self,
-    ) -> Callable[[dep.CreateAuthzExtensionRequest], operations_pb2.Operation]:
+    def create_authz_extension(self) -> Callable[[dep.CreateAuthzExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_lb_edge_extension(
-        self,
-    ) -> Callable[[dep.CreateLbEdgeExtensionRequest], operations_pb2.Operation]:
+    def create_lb_edge_extension(self) -> Callable[[dep.CreateLbEdgeExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLbEdgeExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_lb_route_extension(
-        self,
-    ) -> Callable[[dep.CreateLbRouteExtensionRequest], operations_pb2.Operation]:
+    def create_lb_route_extension(self) -> Callable[[dep.CreateLbRouteExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_lb_traffic_extension(
-        self,
-    ) -> Callable[[dep.CreateLbTrafficExtensionRequest], operations_pb2.Operation]:
+    def create_lb_traffic_extension(self) -> Callable[[dep.CreateLbTrafficExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_authz_extension(
-        self,
-    ) -> Callable[[dep.DeleteAuthzExtensionRequest], operations_pb2.Operation]:
+    def delete_authz_extension(self) -> Callable[[dep.DeleteAuthzExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_lb_edge_extension(
-        self,
-    ) -> Callable[[dep.DeleteLbEdgeExtensionRequest], operations_pb2.Operation]:
+    def delete_lb_edge_extension(self) -> Callable[[dep.DeleteLbEdgeExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLbEdgeExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_lb_route_extension(
-        self,
-    ) -> Callable[[dep.DeleteLbRouteExtensionRequest], operations_pb2.Operation]:
+    def delete_lb_route_extension(self) -> Callable[[dep.DeleteLbRouteExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_lb_traffic_extension(
-        self,
-    ) -> Callable[[dep.DeleteLbTrafficExtensionRequest], operations_pb2.Operation]:
+    def delete_lb_traffic_extension(self) -> Callable[[dep.DeleteLbTrafficExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_authz_extension(
-        self,
-    ) -> Callable[[dep.GetAuthzExtensionRequest], dep.AuthzExtension]:
+    def get_authz_extension(self) -> Callable[[dep.GetAuthzExtensionRequest], dep.AuthzExtension]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_lb_edge_extension(
-        self,
-    ) -> Callable[[dep.GetLbEdgeExtensionRequest], dep.LbEdgeExtension]:
+    def get_lb_edge_extension(self) -> Callable[[dep.GetLbEdgeExtensionRequest], dep.LbEdgeExtension]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLbEdgeExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_lb_route_extension(
-        self,
-    ) -> Callable[[dep.GetLbRouteExtensionRequest], dep.LbRouteExtension]:
+    def get_lb_route_extension(self) -> Callable[[dep.GetLbRouteExtensionRequest], dep.LbRouteExtension]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_lb_traffic_extension(
-        self,
-    ) -> Callable[[dep.GetLbTrafficExtensionRequest], dep.LbTrafficExtension]:
+    def get_lb_traffic_extension(self) -> Callable[[dep.GetLbTrafficExtensionRequest], dep.LbTrafficExtension]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_authz_extensions(
-        self,
-    ) -> Callable[[dep.ListAuthzExtensionsRequest], dep.ListAuthzExtensionsResponse]:
+    def list_authz_extensions(self) -> Callable[[dep.ListAuthzExtensionsRequest], dep.ListAuthzExtensionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAuthzExtensions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lb_edge_extensions(
-        self,
-    ) -> Callable[[dep.ListLbEdgeExtensionsRequest], dep.ListLbEdgeExtensionsResponse]:
+    def list_lb_edge_extensions(self) -> Callable[[dep.ListLbEdgeExtensionsRequest], dep.ListLbEdgeExtensionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLbEdgeExtensions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lb_route_extensions(
-        self,
-    ) -> Callable[
-        [dep.ListLbRouteExtensionsRequest], dep.ListLbRouteExtensionsResponse
-    ]:
+    def list_lb_route_extensions(self) -> Callable[[dep.ListLbRouteExtensionsRequest], dep.ListLbRouteExtensionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLbRouteExtensions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lb_traffic_extensions(
-        self,
-    ) -> Callable[
-        [dep.ListLbTrafficExtensionsRequest], dep.ListLbTrafficExtensionsResponse
-    ]:
+    def list_lb_traffic_extensions(self) -> Callable[[dep.ListLbTrafficExtensionsRequest], dep.ListLbTrafficExtensionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLbTrafficExtensions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_authz_extension(
-        self,
-    ) -> Callable[[dep.UpdateAuthzExtensionRequest], operations_pb2.Operation]:
+    def update_authz_extension(self) -> Callable[[dep.UpdateAuthzExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_lb_edge_extension(
-        self,
-    ) -> Callable[[dep.UpdateLbEdgeExtensionRequest], operations_pb2.Operation]:
+    def update_lb_edge_extension(self) -> Callable[[dep.UpdateLbEdgeExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLbEdgeExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_lb_route_extension(
-        self,
-    ) -> Callable[[dep.UpdateLbRouteExtensionRequest], operations_pb2.Operation]:
+    def update_lb_route_extension(self) -> Callable[[dep.UpdateLbRouteExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_lb_traffic_extension(
-        self,
-    ) -> Callable[[dep.UpdateLbTrafficExtensionRequest], operations_pb2.Operation]:
+    def update_lb_traffic_extension(self) -> Callable[[dep.UpdateLbTrafficExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
@@ -4746,22 +3841,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDepServiceRestTransport._BaseGetLocation, DepServiceRestStub
-    ):
+    class _GetLocation(_BaseDepServiceRestTransport._BaseGetLocation, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4799,30 +3884,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseDepServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDepServiceRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4846,12 +3917,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4863,9 +3929,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4890,22 +3954,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDepServiceRestTransport._BaseListLocations, DepServiceRestStub
-    ):
+    class _ListLocations(_BaseDepServiceRestTransport._BaseListLocations, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4943,30 +3997,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseDepServiceRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDepServiceRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDepServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4990,12 +4030,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5007,9 +4042,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5034,22 +4067,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseDepServiceRestTransport._BaseGetIamPolicy, DepServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseDepServiceRestTransport._BaseGetIamPolicy, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5087,30 +4110,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDepServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDepServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5134,12 +4143,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5151,9 +4155,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5178,22 +4180,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseDepServiceRestTransport._BaseSetIamPolicy, DepServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseDepServiceRestTransport._BaseSetIamPolicy, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5232,36 +4224,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDepServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDepServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDepServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDepServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDepServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5285,13 +4259,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5303,9 +4271,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5330,22 +4296,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseDepServiceRestTransport._BaseTestIamPermissions, DepServiceRestStub
-    ):
+    class _TestIamPermissions(_BaseDepServiceRestTransport._BaseTestIamPermissions, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5384,32 +4340,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5433,13 +4375,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5451,9 +4387,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5478,22 +4412,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDepServiceRestTransport._BaseCancelOperation, DepServiceRestStub
-    ):
+    class _CancelOperation(_BaseDepServiceRestTransport._BaseCancelOperation, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5529,32 +4453,18 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDepServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDepServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5578,13 +4488,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5598,22 +4502,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDepServiceRestTransport._BaseDeleteOperation, DepServiceRestStub
-    ):
+    class _DeleteOperation(_BaseDepServiceRestTransport._BaseDeleteOperation, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5648,28 +4542,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDepServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDepServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5693,12 +4575,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5712,22 +4589,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDepServiceRestTransport._BaseGetOperation, DepServiceRestStub
-    ):
+    class _GetOperation(_BaseDepServiceRestTransport._BaseGetOperation, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5765,30 +4632,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseDepServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDepServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDepServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5812,12 +4665,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5829,9 +4677,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5856,22 +4702,12 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDepServiceRestTransport._BaseListOperations, DepServiceRestStub
-    ):
+    class _ListOperations(_BaseDepServiceRestTransport._BaseListOperations, DepServiceRestStub):
         def __hash__(self):
             return hash("DepServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5909,28 +4745,16 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDepServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDepServiceRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDepServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5954,12 +4778,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             # Send the request
             response = DepServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5971,9 +4790,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

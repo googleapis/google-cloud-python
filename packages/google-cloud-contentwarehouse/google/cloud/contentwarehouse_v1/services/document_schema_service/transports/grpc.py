@@ -30,9 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.contentwarehouse_v1.types import (
-    document_schema as gcc_document_schema,
-)
+from google.cloud.contentwarehouse_v1.types import document_schema as gcc_document_schema
 from google.cloud.contentwarehouse_v1.types import document_schema
 from google.cloud.contentwarehouse_v1.types import document_schema_service
 
@@ -50,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +211,14 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +252,7 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -328,12 +311,7 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.CreateDocumentSchemaRequest],
-        gcc_document_schema.DocumentSchema,
-    ]:
+    def create_document_schema(self) -> Callable[[document_schema_service.CreateDocumentSchemaRequest], gcc_document_schema.DocumentSchema]:
         r"""Return a callable for the create document schema method over gRPC.
 
         Creates a document schema.
@@ -357,12 +335,7 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
         return self._stubs["create_document_schema"]
 
     @property
-    def update_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.UpdateDocumentSchemaRequest],
-        gcc_document_schema.DocumentSchema,
-    ]:
+    def update_document_schema(self) -> Callable[[document_schema_service.UpdateDocumentSchemaRequest], gcc_document_schema.DocumentSchema]:
         r"""Return a callable for the update document schema method over gRPC.
 
         Updates a Document Schema. Returns INVALID_ARGUMENT if the name
@@ -392,12 +365,7 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
         return self._stubs["update_document_schema"]
 
     @property
-    def get_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.GetDocumentSchemaRequest],
-        document_schema.DocumentSchema,
-    ]:
+    def get_document_schema(self) -> Callable[[document_schema_service.GetDocumentSchemaRequest], document_schema.DocumentSchema]:
         r"""Return a callable for the get document schema method over gRPC.
 
         Gets a document schema. Returns NOT_FOUND if the document schema
@@ -422,11 +390,7 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
         return self._stubs["get_document_schema"]
 
     @property
-    def delete_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.DeleteDocumentSchemaRequest], empty_pb2.Empty
-    ]:
+    def delete_document_schema(self) -> Callable[[document_schema_service.DeleteDocumentSchemaRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete document schema method over gRPC.
 
         Deletes a document schema. Returns NOT_FOUND if the document
@@ -454,10 +418,7 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
     @property
     def list_document_schemas(
         self,
-    ) -> Callable[
-        [document_schema_service.ListDocumentSchemasRequest],
-        document_schema_service.ListDocumentSchemasResponse,
-    ]:
+    ) -> Callable[[document_schema_service.ListDocumentSchemasRequest], document_schema_service.ListDocumentSchemasResponse]:
         r"""Return a callable for the list document schemas method over gRPC.
 
         Lists document schemas.

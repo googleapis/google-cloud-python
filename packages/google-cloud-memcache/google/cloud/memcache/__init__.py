@@ -18,9 +18,7 @@ from google.cloud.memcache import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.memcache_v1.services.cloud_memcache.async_client import (
-    CloudMemcacheAsyncClient,
-)
+from google.cloud.memcache_v1.services.cloud_memcache.async_client import CloudMemcacheAsyncClient
 from google.cloud.memcache_v1.services.cloud_memcache.client import CloudMemcacheClient
 from google.cloud.memcache_v1.types.cloud_memcache import (
     ApplyParametersRequest,

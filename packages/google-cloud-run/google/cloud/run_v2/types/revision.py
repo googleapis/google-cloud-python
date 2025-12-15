@@ -397,12 +397,10 @@ class Revision(proto.Message):
         number=22,
         message=vendor_settings.ServiceMesh,
     )
-    encryption_key_revocation_action: vendor_settings.EncryptionKeyRevocationAction = (
-        proto.Field(
-            proto.ENUM,
-            number=23,
-            enum=vendor_settings.EncryptionKeyRevocationAction,
-        )
+    encryption_key_revocation_action: vendor_settings.EncryptionKeyRevocationAction = proto.Field(
+        proto.ENUM,
+        number=23,
+        enum=vendor_settings.EncryptionKeyRevocationAction,
     )
     encryption_key_shutdown_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,

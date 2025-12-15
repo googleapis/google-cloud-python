@@ -28,9 +28,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.cloudquotas_v1beta.types import (
-    quota_adjuster_settings as gac_quota_adjuster_settings,
-)
+from google.cloud.cloudquotas_v1beta.types import quota_adjuster_settings as gac_quota_adjuster_settings
 from google.cloud.cloudquotas_v1beta.types import quota_adjuster_settings
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -98,13 +96,8 @@ class QuotaAdjusterSettingsManagerRestInterceptor:
     """
 
     def pre_get_quota_adjuster_settings(
-        self,
-        request: quota_adjuster_settings.GetQuotaAdjusterSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        quota_adjuster_settings.GetQuotaAdjusterSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: quota_adjuster_settings.GetQuotaAdjusterSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[quota_adjuster_settings.GetQuotaAdjusterSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_quota_adjuster_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -128,13 +121,8 @@ class QuotaAdjusterSettingsManagerRestInterceptor:
         return response
 
     def post_get_quota_adjuster_settings_with_metadata(
-        self,
-        response: quota_adjuster_settings.QuotaAdjusterSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        quota_adjuster_settings.QuotaAdjusterSettings,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: quota_adjuster_settings.QuotaAdjusterSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[quota_adjuster_settings.QuotaAdjusterSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_quota_adjuster_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -150,13 +138,8 @@ class QuotaAdjusterSettingsManagerRestInterceptor:
         return response, metadata
 
     def pre_update_quota_adjuster_settings(
-        self,
-        request: gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_quota_adjuster_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -180,13 +163,8 @@ class QuotaAdjusterSettingsManagerRestInterceptor:
         return response
 
     def post_update_quota_adjuster_settings_with_metadata(
-        self,
-        response: gac_quota_adjuster_settings.QuotaAdjusterSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gac_quota_adjuster_settings.QuotaAdjusterSettings,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gac_quota_adjuster_settings.QuotaAdjusterSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gac_quota_adjuster_settings.QuotaAdjusterSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_quota_adjuster_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -209,9 +187,7 @@ class QuotaAdjusterSettingsManagerRestStub:
     _interceptor: QuotaAdjusterSettingsManagerRestInterceptor
 
 
-class QuotaAdjusterSettingsManagerRestTransport(
-    _BaseQuotaAdjusterSettingsManagerRestTransport
-):
+class QuotaAdjusterSettingsManagerRestTransport(_BaseQuotaAdjusterSettingsManagerRestTransport):
     """REST backend synchronous transport for QuotaAdjusterSettingsManager.
 
     The Quotas Adjuster Settings API is an infrastructure service
@@ -288,33 +264,20 @@ class QuotaAdjusterSettingsManagerRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or QuotaAdjusterSettingsManagerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _GetQuotaAdjusterSettings(
-        _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings,
-        QuotaAdjusterSettingsManagerRestStub,
+        _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings, QuotaAdjusterSettingsManagerRestStub
     ):
         def __hash__(self):
-            return hash(
-                "QuotaAdjusterSettingsManagerRestTransport.GetQuotaAdjusterSettings"
-            )
+            return hash("QuotaAdjusterSettingsManagerRestTransport.GetQuotaAdjusterSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -358,28 +321,18 @@ class QuotaAdjusterSettingsManagerRestTransport(
 
             """
 
-            http_options = (
-                _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings._get_http_options()
-            )
+            http_options = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_quota_adjuster_settings(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_quota_adjuster_settings(request, metadata)
             transcoded_request = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseGetQuotaAdjusterSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -403,12 +356,7 @@ class QuotaAdjusterSettingsManagerRestTransport(
 
             # Send the request
             response = QuotaAdjusterSettingsManagerRestTransport._GetQuotaAdjusterSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -424,16 +372,10 @@ class QuotaAdjusterSettingsManagerRestTransport(
 
             resp = self._interceptor.post_get_quota_adjuster_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_quota_adjuster_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_quota_adjuster_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        quota_adjuster_settings.QuotaAdjusterSettings.to_json(response)
-                    )
+                    response_payload = quota_adjuster_settings.QuotaAdjusterSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -453,24 +395,13 @@ class QuotaAdjusterSettingsManagerRestTransport(
             return resp
 
     class _UpdateQuotaAdjusterSettings(
-        _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings,
-        QuotaAdjusterSettingsManagerRestStub,
+        _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings, QuotaAdjusterSettingsManagerRestStub
     ):
         def __hash__(self):
-            return hash(
-                "QuotaAdjusterSettingsManagerRestTransport.UpdateQuotaAdjusterSettings"
-            )
+            return hash("QuotaAdjusterSettingsManagerRestTransport.UpdateQuotaAdjusterSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -515,32 +446,20 @@ class QuotaAdjusterSettingsManagerRestTransport(
 
             """
 
-            http_options = (
-                _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_http_options()
-            )
+            http_options = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_quota_adjuster_settings(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_quota_adjuster_settings(request, metadata)
             transcoded_request = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuotaAdjusterSettingsManagerRestTransport._BaseUpdateQuotaAdjusterSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -564,13 +483,7 @@ class QuotaAdjusterSettingsManagerRestTransport(
 
             # Send the request
             response = QuotaAdjusterSettingsManagerRestTransport._UpdateQuotaAdjusterSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -586,21 +499,10 @@ class QuotaAdjusterSettingsManagerRestTransport(
 
             resp = self._interceptor.post_update_quota_adjuster_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_quota_adjuster_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_quota_adjuster_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gac_quota_adjuster_settings.QuotaAdjusterSettings.to_json(
-                            response
-                        )
-                    )
+                    response_payload = gac_quota_adjuster_settings.QuotaAdjusterSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -622,10 +524,7 @@ class QuotaAdjusterSettingsManagerRestTransport(
     @property
     def get_quota_adjuster_settings(
         self,
-    ) -> Callable[
-        [quota_adjuster_settings.GetQuotaAdjusterSettingsRequest],
-        quota_adjuster_settings.QuotaAdjusterSettings,
-    ]:
+    ) -> Callable[[quota_adjuster_settings.GetQuotaAdjusterSettingsRequest], quota_adjuster_settings.QuotaAdjusterSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQuotaAdjusterSettings(self._session, self._host, self._interceptor)  # type: ignore
@@ -633,10 +532,7 @@ class QuotaAdjusterSettingsManagerRestTransport(
     @property
     def update_quota_adjuster_settings(
         self,
-    ) -> Callable[
-        [gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest],
-        gac_quota_adjuster_settings.QuotaAdjusterSettings,
-    ]:
+    ) -> Callable[[gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest], gac_quota_adjuster_settings.QuotaAdjusterSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateQuotaAdjusterSettings(self._session, self._host, self._interceptor)  # type: ignore

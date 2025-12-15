@@ -135,9 +135,7 @@ class Access(proto.Message):
         proto.STRING,
         number=9,
     )
-    service_account_delegation_info: MutableSequence[
-        "ServiceAccountDelegationInfo"
-    ] = proto.RepeatedField(
+    service_account_delegation_info: MutableSequence["ServiceAccountDelegationInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="ServiceAccountDelegationInfo",

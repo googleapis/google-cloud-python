@@ -453,16 +453,12 @@ class AssistantGroundedContent(proto.Message):
                 message="AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata",
             )
 
-        segments: MutableSequence[
-            "AssistantGroundedContent.TextGroundingMetadata.Segment"
-        ] = proto.RepeatedField(
+        segments: MutableSequence["AssistantGroundedContent.TextGroundingMetadata.Segment"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="AssistantGroundedContent.TextGroundingMetadata.Segment",
         )
-        references: MutableSequence[
-            "AssistantGroundedContent.TextGroundingMetadata.Reference"
-        ] = proto.RepeatedField(
+        references: MutableSequence["AssistantGroundedContent.TextGroundingMetadata.Reference"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="AssistantGroundedContent.TextGroundingMetadata.Reference",

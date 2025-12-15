@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -48,9 +37,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_schema_service import pagers
-from google.cloud.contentwarehouse_v1.types import (
-    document_schema as gcc_document_schema,
-)
+from google.cloud.contentwarehouse_v1.types import document_schema as gcc_document_schema
 from google.cloud.contentwarehouse_v1.types import document_schema
 from google.cloud.contentwarehouse_v1.types import document_schema_service
 
@@ -80,40 +67,20 @@ class DocumentSchemaServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DocumentSchemaServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DocumentSchemaServiceClient._DEFAULT_UNIVERSE
 
-    document_schema_path = staticmethod(
-        DocumentSchemaServiceClient.document_schema_path
-    )
-    parse_document_schema_path = staticmethod(
-        DocumentSchemaServiceClient.parse_document_schema_path
-    )
+    document_schema_path = staticmethod(DocumentSchemaServiceClient.document_schema_path)
+    parse_document_schema_path = staticmethod(DocumentSchemaServiceClient.parse_document_schema_path)
     location_path = staticmethod(DocumentSchemaServiceClient.location_path)
     parse_location_path = staticmethod(DocumentSchemaServiceClient.parse_location_path)
-    common_billing_account_path = staticmethod(
-        DocumentSchemaServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DocumentSchemaServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DocumentSchemaServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DocumentSchemaServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DocumentSchemaServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DocumentSchemaServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DocumentSchemaServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DocumentSchemaServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DocumentSchemaServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DocumentSchemaServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DocumentSchemaServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DocumentSchemaServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DocumentSchemaServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        DocumentSchemaServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        DocumentSchemaServiceClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(DocumentSchemaServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(DocumentSchemaServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(DocumentSchemaServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -149,9 +116,7 @@ class DocumentSchemaServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -218,13 +183,7 @@ class DocumentSchemaServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                DocumentSchemaServiceTransport,
-                Callable[..., DocumentSchemaServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DocumentSchemaServiceTransport, Callable[..., DocumentSchemaServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -284,20 +243,14 @@ class DocumentSchemaServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.contentwarehouse_v1.DocumentSchemaServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.contentwarehouse.v1.DocumentSchemaService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -308,9 +261,7 @@ class DocumentSchemaServiceAsyncClient:
 
     async def create_document_schema(
         self,
-        request: Optional[
-            Union[document_schema_service.CreateDocumentSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[document_schema_service.CreateDocumentSchemaRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         document_schema: Optional[gcc_document_schema.DocumentSchema] = None,
@@ -384,14 +335,9 @@ class DocumentSchemaServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, document_schema]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -407,15 +353,11 @@ class DocumentSchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_document_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_document_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -433,9 +375,7 @@ class DocumentSchemaServiceAsyncClient:
 
     async def update_document_schema(
         self,
-        request: Optional[
-            Union[document_schema_service.UpdateDocumentSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[document_schema_service.UpdateDocumentSchemaRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         document_schema: Optional[gcc_document_schema.DocumentSchema] = None,
@@ -518,14 +458,9 @@ class DocumentSchemaServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, document_schema]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -541,15 +476,11 @@ class DocumentSchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_document_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_document_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -567,9 +498,7 @@ class DocumentSchemaServiceAsyncClient:
 
     async def get_document_schema(
         self,
-        request: Optional[
-            Union[document_schema_service.GetDocumentSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[document_schema_service.GetDocumentSchemaRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -634,14 +563,9 @@ class DocumentSchemaServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -655,15 +579,11 @@ class DocumentSchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_document_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_document_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -681,9 +601,7 @@ class DocumentSchemaServiceAsyncClient:
 
     async def delete_document_schema(
         self,
-        request: Optional[
-            Union[document_schema_service.DeleteDocumentSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[document_schema_service.DeleteDocumentSchemaRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -740,14 +658,9 @@ class DocumentSchemaServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -761,15 +674,11 @@ class DocumentSchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_document_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_document_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -784,9 +693,7 @@ class DocumentSchemaServiceAsyncClient:
 
     async def list_document_schemas(
         self,
-        request: Optional[
-            Union[document_schema_service.ListDocumentSchemasRequest, dict]
-        ] = None,
+        request: Optional[Union[document_schema_service.ListDocumentSchemasRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -855,14 +762,9 @@ class DocumentSchemaServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -876,15 +778,11 @@ class DocumentSchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_document_schemas
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_document_schemas]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -948,9 +846,7 @@ class DocumentSchemaServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -973,9 +869,7 @@ class DocumentSchemaServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

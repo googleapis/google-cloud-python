@@ -49,9 +49,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +78,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -227,18 +218,14 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -272,9 +259,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -341,17 +326,13 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_lake(
-        self,
-    ) -> Callable[[service.CreateLakeRequest], operations_pb2.Operation]:
+    def create_lake(self) -> Callable[[service.CreateLakeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create lake method over gRPC.
 
         Creates a lake resource.
@@ -375,9 +356,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["create_lake"]
 
     @property
-    def update_lake(
-        self,
-    ) -> Callable[[service.UpdateLakeRequest], operations_pb2.Operation]:
+    def update_lake(self) -> Callable[[service.UpdateLakeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update lake method over gRPC.
 
         Updates a lake resource.
@@ -401,9 +380,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["update_lake"]
 
     @property
-    def delete_lake(
-        self,
-    ) -> Callable[[service.DeleteLakeRequest], operations_pb2.Operation]:
+    def delete_lake(self) -> Callable[[service.DeleteLakeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete lake method over gRPC.
 
         Deletes a lake resource. All zones within the lake
@@ -428,9 +405,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["delete_lake"]
 
     @property
-    def list_lakes(
-        self,
-    ) -> Callable[[service.ListLakesRequest], service.ListLakesResponse]:
+    def list_lakes(self) -> Callable[[service.ListLakesRequest], service.ListLakesResponse]:
         r"""Return a callable for the list lakes method over gRPC.
 
         Lists lake resources in a project and location.
@@ -478,9 +453,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["get_lake"]
 
     @property
-    def list_lake_actions(
-        self,
-    ) -> Callable[[service.ListLakeActionsRequest], service.ListActionsResponse]:
+    def list_lake_actions(self) -> Callable[[service.ListLakeActionsRequest], service.ListActionsResponse]:
         r"""Return a callable for the list lake actions method over gRPC.
 
         Lists action resources in a lake.
@@ -504,9 +477,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["list_lake_actions"]
 
     @property
-    def create_zone(
-        self,
-    ) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
+    def create_zone(self) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
         r"""Return a callable for the create zone method over gRPC.
 
         Creates a zone resource within a lake.
@@ -530,9 +501,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["create_zone"]
 
     @property
-    def update_zone(
-        self,
-    ) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
+    def update_zone(self) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
         r"""Return a callable for the update zone method over gRPC.
 
         Updates a zone resource.
@@ -556,9 +525,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["update_zone"]
 
     @property
-    def delete_zone(
-        self,
-    ) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
+    def delete_zone(self) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete zone method over gRPC.
 
         Deletes a zone resource. All assets within a zone
@@ -583,9 +550,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["delete_zone"]
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
         r"""Return a callable for the list zones method over gRPC.
 
         Lists zone resources in a lake.
@@ -633,9 +598,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["get_zone"]
 
     @property
-    def list_zone_actions(
-        self,
-    ) -> Callable[[service.ListZoneActionsRequest], service.ListActionsResponse]:
+    def list_zone_actions(self) -> Callable[[service.ListZoneActionsRequest], service.ListActionsResponse]:
         r"""Return a callable for the list zone actions method over gRPC.
 
         Lists action resources in a zone.
@@ -659,9 +622,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["list_zone_actions"]
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
+    def create_asset(self) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create asset method over gRPC.
 
         Creates an asset resource.
@@ -685,9 +646,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["create_asset"]
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[[service.UpdateAssetRequest], operations_pb2.Operation]:
+    def update_asset(self) -> Callable[[service.UpdateAssetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update asset method over gRPC.
 
         Updates an asset resource.
@@ -711,9 +670,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["update_asset"]
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
+    def delete_asset(self) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete asset method over gRPC.
 
         Deletes an asset resource. The referenced storage
@@ -739,9 +696,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["delete_asset"]
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
+    def list_assets(self) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
         r"""Return a callable for the list assets method over gRPC.
 
         Lists asset resources in a zone.
@@ -789,9 +744,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["get_asset"]
 
     @property
-    def list_asset_actions(
-        self,
-    ) -> Callable[[service.ListAssetActionsRequest], service.ListActionsResponse]:
+    def list_asset_actions(self) -> Callable[[service.ListAssetActionsRequest], service.ListActionsResponse]:
         r"""Return a callable for the list asset actions method over gRPC.
 
         Lists action resources in an asset.
@@ -815,9 +768,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["list_asset_actions"]
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[[service.CreateTaskRequest], operations_pb2.Operation]:
+    def create_task(self) -> Callable[[service.CreateTaskRequest], operations_pb2.Operation]:
         r"""Return a callable for the create task method over gRPC.
 
         Creates a task resource within a lake.
@@ -841,9 +792,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["create_task"]
 
     @property
-    def update_task(
-        self,
-    ) -> Callable[[service.UpdateTaskRequest], operations_pb2.Operation]:
+    def update_task(self) -> Callable[[service.UpdateTaskRequest], operations_pb2.Operation]:
         r"""Return a callable for the update task method over gRPC.
 
         Update the task resource.
@@ -867,9 +816,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["update_task"]
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[[service.DeleteTaskRequest], operations_pb2.Operation]:
+    def delete_task(self) -> Callable[[service.DeleteTaskRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete task method over gRPC.
 
         Delete the task resource.
@@ -893,9 +840,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["delete_task"]
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[[service.ListTasksRequest], service.ListTasksResponse]:
+    def list_tasks(self) -> Callable[[service.ListTasksRequest], service.ListTasksResponse]:
         r"""Return a callable for the list tasks method over gRPC.
 
         Lists tasks under the given lake.
@@ -943,9 +888,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["get_task"]
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[[service.ListJobsRequest], service.ListJobsResponse]:
+    def list_jobs(self) -> Callable[[service.ListJobsRequest], service.ListJobsResponse]:
         r"""Return a callable for the list jobs method over gRPC.
 
         Lists Jobs under the given task.
@@ -1041,9 +984,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["cancel_job"]
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
+    def create_environment(self) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create environment method over gRPC.
 
         Create an environment resource.
@@ -1067,9 +1008,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["create_environment"]
 
     @property
-    def update_environment(
-        self,
-    ) -> Callable[[service.UpdateEnvironmentRequest], operations_pb2.Operation]:
+    def update_environment(self) -> Callable[[service.UpdateEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the update environment method over gRPC.
 
         Update the environment resource.
@@ -1093,9 +1032,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["update_environment"]
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
+    def delete_environment(self) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete environment method over gRPC.
 
         Delete the environment resource. All the child
@@ -1121,9 +1058,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["delete_environment"]
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
+    def list_environments(self) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
         r"""Return a callable for the list environments method over gRPC.
 
         Lists environments under the given lake.
@@ -1147,9 +1082,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["list_environments"]
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[service.GetEnvironmentRequest], analyze.Environment]:
+    def get_environment(self) -> Callable[[service.GetEnvironmentRequest], analyze.Environment]:
         r"""Return a callable for the get environment method over gRPC.
 
         Get environment resource.
@@ -1173,9 +1106,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["get_environment"]
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[[service.ListSessionsRequest], service.ListSessionsResponse]:
+    def list_sessions(self) -> Callable[[service.ListSessionsRequest], service.ListSessionsResponse]:
         r"""Return a callable for the list sessions method over gRPC.
 
         Lists session resources in an environment.
@@ -1255,9 +1186,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1274,9 +1203,7 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

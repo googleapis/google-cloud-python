@@ -18,24 +18,11 @@ from google.cloud.network_services import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.network_services_v1.services.dep_service.async_client import (
-    DepServiceAsyncClient,
-)
-from google.cloud.network_services_v1.services.dep_service.client import (
-    DepServiceClient,
-)
-from google.cloud.network_services_v1.services.network_services.async_client import (
-    NetworkServicesAsyncClient,
-)
-from google.cloud.network_services_v1.services.network_services.client import (
-    NetworkServicesClient,
-)
-from google.cloud.network_services_v1.types.common import (
-    EndpointMatcher,
-    EnvoyHeaders,
-    OperationMetadata,
-    TrafficPortSelector,
-)
+from google.cloud.network_services_v1.services.dep_service.async_client import DepServiceAsyncClient
+from google.cloud.network_services_v1.services.dep_service.client import DepServiceClient
+from google.cloud.network_services_v1.services.network_services.async_client import NetworkServicesAsyncClient
+from google.cloud.network_services_v1.services.network_services.client import NetworkServicesClient
+from google.cloud.network_services_v1.types.common import EndpointMatcher, EnvoyHeaders, OperationMetadata, TrafficPortSelector
 from google.cloud.network_services_v1.types.dep import (
     AuthzExtension,
     CreateAuthzExtensionRequest,

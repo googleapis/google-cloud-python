@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,17 +326,13 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_nodes(
-        self,
-    ) -> Callable[[cloud_tpu.ListNodesRequest], Awaitable[cloud_tpu.ListNodesResponse]]:
+    def list_nodes(self) -> Callable[[cloud_tpu.ListNodesRequest], Awaitable[cloud_tpu.ListNodesResponse]]:
         r"""Return a callable for the list nodes method over gRPC.
 
         Lists nodes.
@@ -377,9 +356,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["list_nodes"]
 
     @property
-    def get_node(
-        self,
-    ) -> Callable[[cloud_tpu.GetNodeRequest], Awaitable[cloud_tpu.Node]]:
+    def get_node(self) -> Callable[[cloud_tpu.GetNodeRequest], Awaitable[cloud_tpu.Node]]:
         r"""Return a callable for the get node method over gRPC.
 
         Gets the details of a node.
@@ -403,9 +380,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["get_node"]
 
     @property
-    def create_node(
-        self,
-    ) -> Callable[[cloud_tpu.CreateNodeRequest], Awaitable[operations_pb2.Operation]]:
+    def create_node(self) -> Callable[[cloud_tpu.CreateNodeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create node method over gRPC.
 
         Creates a node.
@@ -429,9 +404,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["create_node"]
 
     @property
-    def delete_node(
-        self,
-    ) -> Callable[[cloud_tpu.DeleteNodeRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_node(self) -> Callable[[cloud_tpu.DeleteNodeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete node method over gRPC.
 
         Deletes a node.
@@ -455,9 +428,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["delete_node"]
 
     @property
-    def reimage_node(
-        self,
-    ) -> Callable[[cloud_tpu.ReimageNodeRequest], Awaitable[operations_pb2.Operation]]:
+    def reimage_node(self) -> Callable[[cloud_tpu.ReimageNodeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the reimage node method over gRPC.
 
         Reimages a node's OS.
@@ -481,9 +452,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["reimage_node"]
 
     @property
-    def stop_node(
-        self,
-    ) -> Callable[[cloud_tpu.StopNodeRequest], Awaitable[operations_pb2.Operation]]:
+    def stop_node(self) -> Callable[[cloud_tpu.StopNodeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the stop node method over gRPC.
 
         Stops a node, this operation is only available with
@@ -508,9 +477,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["stop_node"]
 
     @property
-    def start_node(
-        self,
-    ) -> Callable[[cloud_tpu.StartNodeRequest], Awaitable[operations_pb2.Operation]]:
+    def start_node(self) -> Callable[[cloud_tpu.StartNodeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start node method over gRPC.
 
         Starts a node.
@@ -534,12 +501,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["start_node"]
 
     @property
-    def list_tensor_flow_versions(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListTensorFlowVersionsRequest],
-        Awaitable[cloud_tpu.ListTensorFlowVersionsResponse],
-    ]:
+    def list_tensor_flow_versions(self) -> Callable[[cloud_tpu.ListTensorFlowVersionsRequest], Awaitable[cloud_tpu.ListTensorFlowVersionsResponse]]:
         r"""Return a callable for the list tensor flow versions method over gRPC.
 
         List TensorFlow versions supported by this API.
@@ -563,11 +525,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["list_tensor_flow_versions"]
 
     @property
-    def get_tensor_flow_version(
-        self,
-    ) -> Callable[
-        [cloud_tpu.GetTensorFlowVersionRequest], Awaitable[cloud_tpu.TensorFlowVersion]
-    ]:
+    def get_tensor_flow_version(self) -> Callable[[cloud_tpu.GetTensorFlowVersionRequest], Awaitable[cloud_tpu.TensorFlowVersion]]:
         r"""Return a callable for the get tensor flow version method over gRPC.
 
         Gets TensorFlow Version.
@@ -591,12 +549,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["get_tensor_flow_version"]
 
     @property
-    def list_accelerator_types(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListAcceleratorTypesRequest],
-        Awaitable[cloud_tpu.ListAcceleratorTypesResponse],
-    ]:
+    def list_accelerator_types(self) -> Callable[[cloud_tpu.ListAcceleratorTypesRequest], Awaitable[cloud_tpu.ListAcceleratorTypesResponse]]:
         r"""Return a callable for the list accelerator types method over gRPC.
 
         Lists accelerator types supported by this API.
@@ -620,11 +573,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["list_accelerator_types"]
 
     @property
-    def get_accelerator_type(
-        self,
-    ) -> Callable[
-        [cloud_tpu.GetAcceleratorTypeRequest], Awaitable[cloud_tpu.AcceleratorType]
-    ]:
+    def get_accelerator_type(self) -> Callable[[cloud_tpu.GetAcceleratorTypeRequest], Awaitable[cloud_tpu.AcceleratorType]]:
         r"""Return a callable for the get accelerator type method over gRPC.
 
         Gets AcceleratorType.
@@ -803,9 +752,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -822,9 +769,7 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

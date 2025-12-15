@@ -36,9 +36,7 @@ from google.cloud.tasks_v2beta2.types import queue as gct_queue
 from google.cloud.tasks_v2beta2.types import task
 from google.cloud.tasks_v2beta2.types import task as gct_task
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +98,15 @@ class CloudTasksTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -348,98 +338,47 @@ class CloudTasksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_queues(
-        self,
-    ) -> Callable[
-        [cloudtasks.ListQueuesRequest],
-        Union[cloudtasks.ListQueuesResponse, Awaitable[cloudtasks.ListQueuesResponse]],
-    ]:
+    def list_queues(self) -> Callable[[cloudtasks.ListQueuesRequest], Union[cloudtasks.ListQueuesResponse, Awaitable[cloudtasks.ListQueuesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.GetQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]
-    ]:
+    def get_queue(self) -> Callable[[cloudtasks.GetQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]]:
         raise NotImplementedError()
 
     @property
-    def create_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.CreateQueueRequest],
-        Union[gct_queue.Queue, Awaitable[gct_queue.Queue]],
-    ]:
+    def create_queue(self) -> Callable[[cloudtasks.CreateQueueRequest], Union[gct_queue.Queue, Awaitable[gct_queue.Queue]]]:
         raise NotImplementedError()
 
     @property
-    def update_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.UpdateQueueRequest],
-        Union[gct_queue.Queue, Awaitable[gct_queue.Queue]],
-    ]:
+    def update_queue(self) -> Callable[[cloudtasks.UpdateQueueRequest], Union[gct_queue.Queue, Awaitable[gct_queue.Queue]]]:
         raise NotImplementedError()
 
     @property
-    def delete_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.DeleteQueueRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_queue(self) -> Callable[[cloudtasks.DeleteQueueRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def purge_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.PurgeQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]
-    ]:
+    def purge_queue(self) -> Callable[[cloudtasks.PurgeQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]]:
         raise NotImplementedError()
 
     @property
-    def pause_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.PauseQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]
-    ]:
+    def pause_queue(self) -> Callable[[cloudtasks.PauseQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]]:
         raise NotImplementedError()
 
     @property
-    def resume_queue(
-        self,
-    ) -> Callable[
-        [cloudtasks.ResumeQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]
-    ]:
+    def resume_queue(self) -> Callable[[cloudtasks.ResumeQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]]:
         raise NotImplementedError()
 
     @property
-    def upload_queue_yaml(
-        self,
-    ) -> Callable[
-        [cloudtasks.UploadQueueYamlRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def upload_queue_yaml(self) -> Callable[[cloudtasks.UploadQueueYamlRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -447,104 +386,56 @@ class CloudTasksTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[
-        [cloudtasks.ListTasksRequest],
-        Union[cloudtasks.ListTasksResponse, Awaitable[cloudtasks.ListTasksResponse]],
-    ]:
+    def list_tasks(self) -> Callable[[cloudtasks.ListTasksRequest], Union[cloudtasks.ListTasksResponse, Awaitable[cloudtasks.ListTasksResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_task(
-        self,
-    ) -> Callable[[cloudtasks.GetTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
+    def get_task(self) -> Callable[[cloudtasks.GetTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
         raise NotImplementedError()
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[
-        [cloudtasks.CreateTaskRequest], Union[gct_task.Task, Awaitable[gct_task.Task]]
-    ]:
+    def create_task(self) -> Callable[[cloudtasks.CreateTaskRequest], Union[gct_task.Task, Awaitable[gct_task.Task]]]:
         raise NotImplementedError()
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[
-        [cloudtasks.DeleteTaskRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_task(self) -> Callable[[cloudtasks.DeleteTaskRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def lease_tasks(
-        self,
-    ) -> Callable[
-        [cloudtasks.LeaseTasksRequest],
-        Union[cloudtasks.LeaseTasksResponse, Awaitable[cloudtasks.LeaseTasksResponse]],
-    ]:
+    def lease_tasks(self) -> Callable[[cloudtasks.LeaseTasksRequest], Union[cloudtasks.LeaseTasksResponse, Awaitable[cloudtasks.LeaseTasksResponse]]]:
         raise NotImplementedError()
 
     @property
-    def acknowledge_task(
-        self,
-    ) -> Callable[
-        [cloudtasks.AcknowledgeTaskRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def acknowledge_task(self) -> Callable[[cloudtasks.AcknowledgeTaskRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def renew_lease(
-        self,
-    ) -> Callable[
-        [cloudtasks.RenewLeaseRequest], Union[task.Task, Awaitable[task.Task]]
-    ]:
+    def renew_lease(self) -> Callable[[cloudtasks.RenewLeaseRequest], Union[task.Task, Awaitable[task.Task]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_lease(
-        self,
-    ) -> Callable[
-        [cloudtasks.CancelLeaseRequest], Union[task.Task, Awaitable[task.Task]]
-    ]:
+    def cancel_lease(self) -> Callable[[cloudtasks.CancelLeaseRequest], Union[task.Task, Awaitable[task.Task]]]:
         raise NotImplementedError()
 
     @property
-    def run_task(
-        self,
-    ) -> Callable[[cloudtasks.RunTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
+    def run_task(self) -> Callable[[cloudtasks.RunTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

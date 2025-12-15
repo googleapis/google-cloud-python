@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -269,18 +258,14 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -316,9 +301,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -341,19 +324,13 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def export_assets(
-        self,
-    ) -> Callable[
-        [asset_service.ExportAssetsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def export_assets(self) -> Callable[[asset_service.ExportAssetsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export assets method over gRPC.
 
         Exports assets with time and resource types to a given Cloud
@@ -389,11 +366,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["export_assets"]
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [asset_service.ListAssetsRequest], Awaitable[asset_service.ListAssetsResponse]
-    ]:
+    def list_assets(self) -> Callable[[asset_service.ListAssetsRequest], Awaitable[asset_service.ListAssetsResponse]]:
         r"""Return a callable for the list assets method over gRPC.
 
         Lists assets with time and resource types and returns
@@ -420,10 +393,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
     @property
     def batch_get_assets_history(
         self,
-    ) -> Callable[
-        [asset_service.BatchGetAssetsHistoryRequest],
-        Awaitable[asset_service.BatchGetAssetsHistoryResponse],
-    ]:
+    ) -> Callable[[asset_service.BatchGetAssetsHistoryRequest], Awaitable[asset_service.BatchGetAssetsHistoryResponse]]:
         r"""Return a callable for the batch get assets history method over gRPC.
 
         Batch gets the update history of assets that overlap a time
@@ -453,9 +423,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["batch_get_assets_history"]
 
     @property
-    def create_feed(
-        self,
-    ) -> Callable[[asset_service.CreateFeedRequest], Awaitable[asset_service.Feed]]:
+    def create_feed(self) -> Callable[[asset_service.CreateFeedRequest], Awaitable[asset_service.Feed]]:
         r"""Return a callable for the create feed method over gRPC.
 
         Creates a feed in a parent
@@ -481,9 +449,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["create_feed"]
 
     @property
-    def get_feed(
-        self,
-    ) -> Callable[[asset_service.GetFeedRequest], Awaitable[asset_service.Feed]]:
+    def get_feed(self) -> Callable[[asset_service.GetFeedRequest], Awaitable[asset_service.Feed]]:
         r"""Return a callable for the get feed method over gRPC.
 
         Gets details about an asset feed.
@@ -507,11 +473,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["get_feed"]
 
     @property
-    def list_feeds(
-        self,
-    ) -> Callable[
-        [asset_service.ListFeedsRequest], Awaitable[asset_service.ListFeedsResponse]
-    ]:
+    def list_feeds(self) -> Callable[[asset_service.ListFeedsRequest], Awaitable[asset_service.ListFeedsResponse]]:
         r"""Return a callable for the list feeds method over gRPC.
 
         Lists all asset feeds in a parent
@@ -536,9 +498,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["list_feeds"]
 
     @property
-    def update_feed(
-        self,
-    ) -> Callable[[asset_service.UpdateFeedRequest], Awaitable[asset_service.Feed]]:
+    def update_feed(self) -> Callable[[asset_service.UpdateFeedRequest], Awaitable[asset_service.Feed]]:
         r"""Return a callable for the update feed method over gRPC.
 
         Updates an asset feed configuration.
@@ -562,9 +522,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["update_feed"]
 
     @property
-    def delete_feed(
-        self,
-    ) -> Callable[[asset_service.DeleteFeedRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_feed(self) -> Callable[[asset_service.DeleteFeedRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete feed method over gRPC.
 
         Deletes an asset feed.
@@ -588,12 +546,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["delete_feed"]
 
     @property
-    def search_all_resources(
-        self,
-    ) -> Callable[
-        [asset_service.SearchAllResourcesRequest],
-        Awaitable[asset_service.SearchAllResourcesResponse],
-    ]:
+    def search_all_resources(self) -> Callable[[asset_service.SearchAllResourcesRequest], Awaitable[asset_service.SearchAllResourcesResponse]]:
         r"""Return a callable for the search all resources method over gRPC.
 
         Searches all Google Cloud resources within the specified scope,
@@ -620,12 +573,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["search_all_resources"]
 
     @property
-    def search_all_iam_policies(
-        self,
-    ) -> Callable[
-        [asset_service.SearchAllIamPoliciesRequest],
-        Awaitable[asset_service.SearchAllIamPoliciesResponse],
-    ]:
+    def search_all_iam_policies(self) -> Callable[[asset_service.SearchAllIamPoliciesRequest], Awaitable[asset_service.SearchAllIamPoliciesResponse]]:
         r"""Return a callable for the search all iam policies method over gRPC.
 
         Searches all IAM policies within the specified scope, such as a
@@ -652,12 +600,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["search_all_iam_policies"]
 
     @property
-    def analyze_iam_policy(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeIamPolicyRequest],
-        Awaitable[asset_service.AnalyzeIamPolicyResponse],
-    ]:
+    def analyze_iam_policy(self) -> Callable[[asset_service.AnalyzeIamPolicyRequest], Awaitable[asset_service.AnalyzeIamPolicyResponse]]:
         r"""Return a callable for the analyze iam policy method over gRPC.
 
         Analyzes IAM policies to answer which identities have
@@ -682,12 +625,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["analyze_iam_policy"]
 
     @property
-    def analyze_iam_policy_longrunning(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeIamPolicyLongrunningRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def analyze_iam_policy_longrunning(self) -> Callable[[asset_service.AnalyzeIamPolicyLongrunningRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the analyze iam policy longrunning method over gRPC.
 
         Analyzes IAM policies asynchronously to answer which identities
@@ -714,9 +652,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "analyze_iam_policy_longrunning" not in self._stubs:
-            self._stubs[
-                "analyze_iam_policy_longrunning"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["analyze_iam_policy_longrunning"] = self._logged_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning",
                 request_serializer=asset_service.AnalyzeIamPolicyLongrunningRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -724,11 +660,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["analyze_iam_policy_longrunning"]
 
     @property
-    def analyze_move(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeMoveRequest], Awaitable[asset_service.AnalyzeMoveResponse]
-    ]:
+    def analyze_move(self) -> Callable[[asset_service.AnalyzeMoveRequest], Awaitable[asset_service.AnalyzeMoveResponse]]:
         r"""Return a callable for the analyze move method over gRPC.
 
         Analyze moving a resource to a specified destination
@@ -758,11 +690,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["analyze_move"]
 
     @property
-    def query_assets(
-        self,
-    ) -> Callable[
-        [asset_service.QueryAssetsRequest], Awaitable[asset_service.QueryAssetsResponse]
-    ]:
+    def query_assets(self) -> Callable[[asset_service.QueryAssetsRequest], Awaitable[asset_service.QueryAssetsResponse]]:
         r"""Return a callable for the query assets method over gRPC.
 
         Issue a job that queries assets using a SQL statement compatible
@@ -801,11 +729,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["query_assets"]
 
     @property
-    def create_saved_query(
-        self,
-    ) -> Callable[
-        [asset_service.CreateSavedQueryRequest], Awaitable[asset_service.SavedQuery]
-    ]:
+    def create_saved_query(self) -> Callable[[asset_service.CreateSavedQueryRequest], Awaitable[asset_service.SavedQuery]]:
         r"""Return a callable for the create saved query method over gRPC.
 
         Creates a saved query in a parent
@@ -830,11 +754,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["create_saved_query"]
 
     @property
-    def get_saved_query(
-        self,
-    ) -> Callable[
-        [asset_service.GetSavedQueryRequest], Awaitable[asset_service.SavedQuery]
-    ]:
+    def get_saved_query(self) -> Callable[[asset_service.GetSavedQueryRequest], Awaitable[asset_service.SavedQuery]]:
         r"""Return a callable for the get saved query method over gRPC.
 
         Gets details about a saved query.
@@ -858,12 +778,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["get_saved_query"]
 
     @property
-    def list_saved_queries(
-        self,
-    ) -> Callable[
-        [asset_service.ListSavedQueriesRequest],
-        Awaitable[asset_service.ListSavedQueriesResponse],
-    ]:
+    def list_saved_queries(self) -> Callable[[asset_service.ListSavedQueriesRequest], Awaitable[asset_service.ListSavedQueriesResponse]]:
         r"""Return a callable for the list saved queries method over gRPC.
 
         Lists all saved queries in a parent
@@ -888,11 +803,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["list_saved_queries"]
 
     @property
-    def update_saved_query(
-        self,
-    ) -> Callable[
-        [asset_service.UpdateSavedQueryRequest], Awaitable[asset_service.SavedQuery]
-    ]:
+    def update_saved_query(self) -> Callable[[asset_service.UpdateSavedQueryRequest], Awaitable[asset_service.SavedQuery]]:
         r"""Return a callable for the update saved query method over gRPC.
 
         Updates a saved query.
@@ -916,9 +827,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["update_saved_query"]
 
     @property
-    def delete_saved_query(
-        self,
-    ) -> Callable[[asset_service.DeleteSavedQueryRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_saved_query(self) -> Callable[[asset_service.DeleteSavedQueryRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete saved query method over gRPC.
 
         Deletes a saved query.
@@ -944,10 +853,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
     @property
     def batch_get_effective_iam_policies(
         self,
-    ) -> Callable[
-        [asset_service.BatchGetEffectiveIamPoliciesRequest],
-        Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse],
-    ]:
+    ) -> Callable[[asset_service.BatchGetEffectiveIamPoliciesRequest], Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse]]:
         r"""Return a callable for the batch get effective iam
         policies method over gRPC.
 
@@ -964,9 +870,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_get_effective_iam_policies" not in self._stubs:
-            self._stubs[
-                "batch_get_effective_iam_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_get_effective_iam_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies",
                 request_serializer=asset_service.BatchGetEffectiveIamPoliciesRequest.serialize,
                 response_deserializer=asset_service.BatchGetEffectiveIamPoliciesResponse.deserialize,
@@ -974,12 +878,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["batch_get_effective_iam_policies"]
 
     @property
-    def analyze_org_policies(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeOrgPoliciesRequest],
-        Awaitable[asset_service.AnalyzeOrgPoliciesResponse],
-    ]:
+    def analyze_org_policies(self) -> Callable[[asset_service.AnalyzeOrgPoliciesRequest], Awaitable[asset_service.AnalyzeOrgPoliciesResponse]]:
         r"""Return a callable for the analyze org policies method over gRPC.
 
         Analyzes organization policies under a scope.
@@ -1005,10 +904,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
     @property
     def analyze_org_policy_governed_containers(
         self,
-    ) -> Callable[
-        [asset_service.AnalyzeOrgPolicyGovernedContainersRequest],
-        Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse],
-    ]:
+    ) -> Callable[[asset_service.AnalyzeOrgPolicyGovernedContainersRequest], Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]]:
         r"""Return a callable for the analyze org policy governed
         containers method over gRPC.
 
@@ -1026,9 +922,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "analyze_org_policy_governed_containers" not in self._stubs:
-            self._stubs[
-                "analyze_org_policy_governed_containers"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["analyze_org_policy_governed_containers"] = self._logged_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers",
                 request_serializer=asset_service.AnalyzeOrgPolicyGovernedContainersRequest.serialize,
                 response_deserializer=asset_service.AnalyzeOrgPolicyGovernedContainersResponse.deserialize,
@@ -1038,10 +932,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
     @property
     def analyze_org_policy_governed_assets(
         self,
-    ) -> Callable[
-        [asset_service.AnalyzeOrgPolicyGovernedAssetsRequest],
-        Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
-    ]:
+    ) -> Callable[[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest], Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]]:
         r"""Return a callable for the analyze org policy governed
         assets method over gRPC.
 
@@ -1107,9 +998,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "analyze_org_policy_governed_assets" not in self._stubs:
-            self._stubs[
-                "analyze_org_policy_governed_assets"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["analyze_org_policy_governed_assets"] = self._logged_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets",
                 request_serializer=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.serialize,
                 response_deserializer=asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.deserialize,

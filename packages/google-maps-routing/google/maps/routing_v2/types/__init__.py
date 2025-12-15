@@ -21,15 +21,7 @@ from .maneuver import Maneuver
 from .navigation_instruction import NavigationInstruction
 from .polyline import Polyline, PolylineEncoding, PolylineQuality
 from .polyline_details import PolylineDetails
-from .route import (
-    Route,
-    RouteLeg,
-    RouteLegStep,
-    RouteLegStepTransitDetails,
-    RouteLegStepTravelAdvisory,
-    RouteLegTravelAdvisory,
-    RouteTravelAdvisory,
-)
+from .route import Route, RouteLeg, RouteLegStep, RouteLegStepTransitDetails, RouteLegStepTravelAdvisory, RouteLegTravelAdvisory, RouteTravelAdvisory
 from .route_label import RouteLabel
 from .route_modifiers import RouteModifiers
 from .route_travel_mode import RouteTravelMode

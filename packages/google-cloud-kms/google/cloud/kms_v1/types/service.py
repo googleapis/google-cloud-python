@@ -414,9 +414,7 @@ class ListCryptoKeyVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    crypto_key_versions: MutableSequence[
-        resources.CryptoKeyVersion
-    ] = proto.RepeatedField(
+    crypto_key_versions: MutableSequence[resources.CryptoKeyVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CryptoKeyVersion,

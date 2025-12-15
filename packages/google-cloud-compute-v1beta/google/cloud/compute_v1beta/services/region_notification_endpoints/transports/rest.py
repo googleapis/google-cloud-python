@@ -119,13 +119,8 @@ class RegionNotificationEndpointsRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionNotificationEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionNotificationEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteRegionNotificationEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionNotificationEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -147,9 +142,7 @@ class RegionNotificationEndpointsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -166,13 +159,8 @@ class RegionNotificationEndpointsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionNotificationEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionNotificationEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetRegionNotificationEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionNotificationEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -180,9 +168,7 @@ class RegionNotificationEndpointsRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.NotificationEndpoint
-    ) -> compute.NotificationEndpoint:
+    def post_get(self, response: compute.NotificationEndpoint) -> compute.NotificationEndpoint:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -196,9 +182,7 @@ class RegionNotificationEndpointsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.NotificationEndpoint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NotificationEndpoint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NotificationEndpoint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -215,13 +199,8 @@ class RegionNotificationEndpointsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionNotificationEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionNotificationEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertRegionNotificationEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionNotificationEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -243,9 +222,7 @@ class RegionNotificationEndpointsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -262,13 +239,8 @@ class RegionNotificationEndpointsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionNotificationEndpointsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionNotificationEndpointsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListRegionNotificationEndpointsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionNotificationEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +248,7 @@ class RegionNotificationEndpointsRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.NotificationEndpointList
-    ) -> compute.NotificationEndpointList:
+    def post_list(self, response: compute.NotificationEndpointList) -> compute.NotificationEndpointList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -292,12 +262,8 @@ class RegionNotificationEndpointsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.NotificationEndpointList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NotificationEndpointList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.NotificationEndpointList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NotificationEndpointList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -313,13 +279,8 @@ class RegionNotificationEndpointsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsRegionNotificationEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsRegionNotificationEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsRegionNotificationEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsRegionNotificationEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -327,9 +288,7 @@ class RegionNotificationEndpointsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -343,12 +302,8 @@ class RegionNotificationEndpointsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -371,9 +326,7 @@ class RegionNotificationEndpointsRestStub:
     _interceptor: RegionNotificationEndpointsRestInterceptor
 
 
-class RegionNotificationEndpointsRestTransport(
-    _BaseRegionNotificationEndpointsRestTransport
-):
+class RegionNotificationEndpointsRestTransport(_BaseRegionNotificationEndpointsRestTransport):
     """REST backend synchronous transport for RegionNotificationEndpoints.
 
     The RegionNotificationEndpoints API.
@@ -449,31 +402,18 @@ class RegionNotificationEndpointsRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionNotificationEndpointsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Delete(
-        _BaseRegionNotificationEndpointsRestTransport._BaseDelete,
-        RegionNotificationEndpointsRestStub,
-    ):
+    class _Delete(_BaseRegionNotificationEndpointsRestTransport._BaseDelete, RegionNotificationEndpointsRestStub):
         def __hash__(self):
             return hash("RegionNotificationEndpointsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -531,26 +471,16 @@ class RegionNotificationEndpointsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNotificationEndpointsRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionNotificationEndpointsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -574,12 +504,7 @@ class RegionNotificationEndpointsRestTransport(
 
             # Send the request
             response = RegionNotificationEndpointsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -595,12 +520,8 @@ class RegionNotificationEndpointsRestTransport(
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -621,23 +542,12 @@ class RegionNotificationEndpointsRestTransport(
                 )
             return resp
 
-    class _Get(
-        _BaseRegionNotificationEndpointsRestTransport._BaseGet,
-        RegionNotificationEndpointsRestStub,
-    ):
+    class _Get(_BaseRegionNotificationEndpointsRestTransport._BaseGet, RegionNotificationEndpointsRestStub):
         def __hash__(self):
             return hash("RegionNotificationEndpointsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -685,26 +595,16 @@ class RegionNotificationEndpointsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNotificationEndpointsRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionNotificationEndpointsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -728,12 +628,7 @@ class RegionNotificationEndpointsRestTransport(
 
             # Send the request
             response = RegionNotificationEndpointsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -750,9 +645,7 @@ class RegionNotificationEndpointsRestTransport(
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NotificationEndpoint.to_json(response)
                 except:
@@ -773,23 +666,12 @@ class RegionNotificationEndpointsRestTransport(
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionNotificationEndpointsRestTransport._BaseInsert,
-        RegionNotificationEndpointsRestStub,
-    ):
+    class _Insert(_BaseRegionNotificationEndpointsRestTransport._BaseInsert, RegionNotificationEndpointsRestStub):
         def __hash__(self):
             return hash("RegionNotificationEndpointsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -848,30 +730,18 @@ class RegionNotificationEndpointsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -895,13 +765,7 @@ class RegionNotificationEndpointsRestTransport(
 
             # Send the request
             response = RegionNotificationEndpointsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -917,12 +781,8 @@ class RegionNotificationEndpointsRestTransport(
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -943,23 +803,12 @@ class RegionNotificationEndpointsRestTransport(
                 )
             return resp
 
-    class _List(
-        _BaseRegionNotificationEndpointsRestTransport._BaseList,
-        RegionNotificationEndpointsRestStub,
-    ):
+    class _List(_BaseRegionNotificationEndpointsRestTransport._BaseList, RegionNotificationEndpointsRestStub):
         def __hash__(self):
             return hash("RegionNotificationEndpointsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1000,26 +849,16 @@ class RegionNotificationEndpointsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNotificationEndpointsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionNotificationEndpointsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1043,12 +882,7 @@ class RegionNotificationEndpointsRestTransport(
 
             # Send the request
             response = RegionNotificationEndpointsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1065,13 +899,9 @@ class RegionNotificationEndpointsRestTransport(
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.NotificationEndpointList.to_json(
-                        response
-                    )
+                    response_payload = compute.NotificationEndpointList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1090,23 +920,12 @@ class RegionNotificationEndpointsRestTransport(
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions,
-        RegionNotificationEndpointsRestStub,
-    ):
+    class _TestIamPermissions(_BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions, RegionNotificationEndpointsRestStub):
         def __hash__(self):
             return hash("RegionNotificationEndpointsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1148,32 +967,18 @@ class RegionNotificationEndpointsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNotificationEndpointsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1197,13 +1002,7 @@ class RegionNotificationEndpointsRestTransport(
 
             # Send the request
             response = RegionNotificationEndpointsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1219,12 +1018,8 @@ class RegionNotificationEndpointsRestTransport(
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -1246,49 +1041,31 @@ class RegionNotificationEndpointsRestTransport(
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionNotificationEndpointRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionNotificationEndpointRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetRegionNotificationEndpointRequest], compute.NotificationEndpoint
-    ]:
+    def get(self) -> Callable[[compute.GetRegionNotificationEndpointRequest], compute.NotificationEndpoint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionNotificationEndpointRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionNotificationEndpointRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionNotificationEndpointsRequest],
-        compute.NotificationEndpointList,
-    ]:
+    def list(self) -> Callable[[compute.ListRegionNotificationEndpointsRequest], compute.NotificationEndpointList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsRegionNotificationEndpointRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsRegionNotificationEndpointRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

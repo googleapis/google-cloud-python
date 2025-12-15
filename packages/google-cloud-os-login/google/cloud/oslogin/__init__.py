@@ -18,12 +18,8 @@ from google.cloud.oslogin import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.oslogin_v1.services.os_login_service.async_client import (
-    OsLoginServiceAsyncClient,
-)
-from google.cloud.oslogin_v1.services.os_login_service.client import (
-    OsLoginServiceClient,
-)
+from google.cloud.oslogin_v1.services.os_login_service.async_client import OsLoginServiceAsyncClient
+from google.cloud.oslogin_v1.services.os_login_service.client import OsLoginServiceClient
 from google.cloud.oslogin_v1.types.oslogin import (
     CreateSshPublicKeyRequest,
     DeletePosixAccountRequest,

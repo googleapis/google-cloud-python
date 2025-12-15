@@ -327,9 +327,7 @@ class ListVodStitchDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vod_stitch_details: MutableSequence[
-        stitch_details.VodStitchDetail
-    ] = proto.RepeatedField(
+    vod_stitch_details: MutableSequence[stitch_details.VodStitchDetail] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=stitch_details.VodStitchDetail,
@@ -400,9 +398,7 @@ class ListVodAdTagDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vod_ad_tag_details: MutableSequence[
-        ad_tag_details.VodAdTagDetail
-    ] = proto.RepeatedField(
+    vod_ad_tag_details: MutableSequence[ad_tag_details.VodAdTagDetail] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ad_tag_details.VodAdTagDetail,
@@ -473,9 +469,7 @@ class ListLiveAdTagDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    live_ad_tag_details: MutableSequence[
-        ad_tag_details.LiveAdTagDetail
-    ] = proto.RepeatedField(
+    live_ad_tag_details: MutableSequence[ad_tag_details.LiveAdTagDetail] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ad_tag_details.LiveAdTagDetail,

@@ -306,9 +306,7 @@ class ListTlsInspectionPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tls_inspection_policies: MutableSequence[
-        "TlsInspectionPolicy"
-    ] = proto.RepeatedField(
+    tls_inspection_policies: MutableSequence["TlsInspectionPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TlsInspectionPolicy",

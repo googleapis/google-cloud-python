@@ -18,12 +18,7 @@ from google.cloud.appengine_logging import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.appengine_logging_v1.types.request_log import (
-    LogLine,
-    RequestLog,
-    SourceLocation,
-    SourceReference,
-)
+from google.cloud.appengine_logging_v1.types.request_log import LogLine, RequestLog, SourceLocation, SourceReference
 
 __all__ = (
     "LogLine",

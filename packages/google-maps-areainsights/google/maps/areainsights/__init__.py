@@ -18,9 +18,7 @@ from google.maps.areainsights import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.areainsights_v1.services.area_insights.async_client import (
-    AreaInsightsAsyncClient,
-)
+from google.maps.areainsights_v1.services.area_insights.async_client import AreaInsightsAsyncClient
 from google.maps.areainsights_v1.services.area_insights.client import AreaInsightsClient
 from google.maps.areainsights_v1.types.area_insights_service import (
     ComputeInsightsRequest,

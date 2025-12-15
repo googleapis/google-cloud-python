@@ -41,9 +41,7 @@ def sample_create_exascale_db_storage_vault():
     # Initialize request argument(s)
     exascale_db_storage_vault = oracledatabase_v1.ExascaleDbStorageVault()
     exascale_db_storage_vault.display_name = "display_name_value"
-    exascale_db_storage_vault.properties.exascale_db_storage_details.total_size_gbs = (
-        1497
-    )
+    exascale_db_storage_vault.properties.exascale_db_storage_details.total_size_gbs = 1497
 
     request = oracledatabase_v1.CreateExascaleDbStorageVaultRequest(
         parent="parent_value",

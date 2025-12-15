@@ -350,9 +350,7 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exascale_db_storage_vaults: MutableSequence[
-        "ExascaleDbStorageVault"
-    ] = proto.RepeatedField(
+    exascale_db_storage_vaults: MutableSequence["ExascaleDbStorageVault"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ExascaleDbStorageVault",

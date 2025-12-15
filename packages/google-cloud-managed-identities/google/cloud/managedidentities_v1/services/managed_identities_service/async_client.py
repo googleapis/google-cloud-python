@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -110,41 +99,21 @@ class ManagedIdentitiesServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ManagedIdentitiesServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ManagedIdentitiesServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        ManagedIdentitiesServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = ManagedIdentitiesServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ManagedIdentitiesServiceClient._DEFAULT_UNIVERSE
 
     domain_path = staticmethod(ManagedIdentitiesServiceClient.domain_path)
     parse_domain_path = staticmethod(ManagedIdentitiesServiceClient.parse_domain_path)
-    common_billing_account_path = staticmethod(
-        ManagedIdentitiesServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ManagedIdentitiesServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ManagedIdentitiesServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ManagedIdentitiesServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ManagedIdentitiesServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ManagedIdentitiesServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ManagedIdentitiesServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ManagedIdentitiesServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        ManagedIdentitiesServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        ManagedIdentitiesServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        ManagedIdentitiesServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        ManagedIdentitiesServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(ManagedIdentitiesServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ManagedIdentitiesServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ManagedIdentitiesServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(ManagedIdentitiesServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(ManagedIdentitiesServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(ManagedIdentitiesServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(ManagedIdentitiesServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -180,9 +149,7 @@ class ManagedIdentitiesServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -249,13 +216,7 @@ class ManagedIdentitiesServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ManagedIdentitiesServiceTransport,
-                Callable[..., ManagedIdentitiesServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ManagedIdentitiesServiceTransport, Callable[..., ManagedIdentitiesServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -315,20 +276,14 @@ class ManagedIdentitiesServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.managedidentities_v1.ManagedIdentitiesServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.managedidentities.v1.ManagedIdentitiesService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -339,9 +294,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def create_microsoft_ad_domain(
         self,
-        request: Optional[
-            Union[managed_identities_service.CreateMicrosoftAdDomainRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.CreateMicrosoftAdDomainRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         domain_name: Optional[str] = None,
@@ -447,20 +400,13 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, domain_name, domain]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, managed_identities_service.CreateMicrosoftAdDomainRequest
-        ):
+        if not isinstance(request, managed_identities_service.CreateMicrosoftAdDomainRequest):
             request = managed_identities_service.CreateMicrosoftAdDomainRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -474,15 +420,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_microsoft_ad_domain
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_microsoft_ad_domain]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -508,9 +450,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def reset_admin_password(
         self,
-        request: Optional[
-            Union[managed_identities_service.ResetAdminPasswordRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.ResetAdminPasswordRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -574,20 +514,13 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, managed_identities_service.ResetAdminPasswordRequest
-        ):
+        if not isinstance(request, managed_identities_service.ResetAdminPasswordRequest):
             request = managed_identities_service.ResetAdminPasswordRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -597,15 +530,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reset_admin_password
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reset_admin_password]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -623,9 +552,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def list_domains(
         self,
-        request: Optional[
-            Union[managed_identities_service.ListDomainsRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.ListDomainsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -693,14 +620,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -714,15 +636,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_domains
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_domains]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -751,9 +669,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def get_domain(
         self,
-        request: Optional[
-            Union[managed_identities_service.GetDomainRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.GetDomainRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -817,14 +733,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -838,15 +749,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_domain
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_domain]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -864,9 +771,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def update_domain(
         self,
-        request: Optional[
-            Union[managed_identities_service.UpdateDomainRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.UpdateDomainRequest, dict]] = None,
         *,
         domain: Optional[resource.Domain] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -956,14 +861,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [domain, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -979,17 +879,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_domain
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_domain]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("domain.name", request.domain.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("domain.name", request.domain.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1015,9 +909,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def delete_domain(
         self,
-        request: Optional[
-            Union[managed_identities_service.DeleteDomainRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.DeleteDomainRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1095,14 +987,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1116,15 +1003,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_domain
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_domain]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1150,9 +1033,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def attach_trust(
         self,
-        request: Optional[
-            Union[managed_identities_service.AttachTrustRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.AttachTrustRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         trust: Optional[resource.Trust] = None,
@@ -1238,14 +1119,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, trust]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1261,15 +1137,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.attach_trust
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.attach_trust]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1295,9 +1167,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def reconfigure_trust(
         self,
-        request: Optional[
-            Union[managed_identities_service.ReconfigureTrustRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.ReconfigureTrustRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         target_domain_name: Optional[str] = None,
@@ -1389,14 +1259,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, target_domain_name, target_dns_ip_addresses]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1414,15 +1279,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reconfigure_trust
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reconfigure_trust]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1448,9 +1309,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def detach_trust(
         self,
-        request: Optional[
-            Union[managed_identities_service.DetachTrustRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.DetachTrustRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         trust: Optional[resource.Trust] = None,
@@ -1538,14 +1397,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, trust]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1561,15 +1415,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.detach_trust
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.detach_trust]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1595,9 +1445,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def validate_trust(
         self,
-        request: Optional[
-            Union[managed_identities_service.ValidateTrustRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_identities_service.ValidateTrustRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         trust: Optional[resource.Trust] = None,
@@ -1687,14 +1535,9 @@ class ManagedIdentitiesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, trust]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1710,15 +1553,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.validate_trust
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.validate_trust]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1749,9 +1588,7 @@ class ManagedIdentitiesServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

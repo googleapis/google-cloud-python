@@ -18,12 +18,8 @@ from google.cloud.bigquery_datatransfer import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.async_client import (
-    DataTransferServiceAsyncClient,
-)
-from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.client import (
-    DataTransferServiceClient,
-)
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.async_client import DataTransferServiceAsyncClient
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.client import DataTransferServiceClient
 from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
     CheckValidCredsRequest,
     CheckValidCredsResponse,

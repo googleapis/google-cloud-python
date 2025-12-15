@@ -132,9 +132,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
     """
 
     def pre_create_attestor(
-        self,
-        request: service.CreateAttestorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateAttestorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateAttestorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_attestor
 
@@ -157,9 +155,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response
 
     def post_create_attestor_with_metadata(
-        self,
-        response: resources.Attestor,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Attestor, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Attestor, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_attestor
 
@@ -176,9 +172,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_delete_attestor(
-        self,
-        request: service.DeleteAttestorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteAttestorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteAttestorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_attestor
 
@@ -188,9 +182,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return request, metadata
 
     def pre_get_attestor(
-        self,
-        request: service.GetAttestorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetAttestorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetAttestorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_attestor
 
@@ -213,9 +205,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response
 
     def post_get_attestor_with_metadata(
-        self,
-        response: resources.Attestor,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Attestor, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Attestor, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_attestor
 
@@ -232,9 +222,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_get_policy(
-        self,
-        request: service.GetPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_policy
 
@@ -257,9 +245,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response
 
     def post_get_policy_with_metadata(
-        self,
-        response: resources.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_policy
 
@@ -276,9 +262,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_list_attestors(
-        self,
-        request: service.ListAttestorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListAttestorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListAttestorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_attestors
 
@@ -287,9 +271,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         """
         return request, metadata
 
-    def post_list_attestors(
-        self, response: service.ListAttestorsResponse
-    ) -> service.ListAttestorsResponse:
+    def post_list_attestors(self, response: service.ListAttestorsResponse) -> service.ListAttestorsResponse:
         """Post-rpc interceptor for list_attestors
 
         DEPRECATED. Please use the `post_list_attestors_with_metadata`
@@ -303,9 +285,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response
 
     def post_list_attestors_with_metadata(
-        self,
-        response: service.ListAttestorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListAttestorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListAttestorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_attestors
 
@@ -322,9 +302,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_update_attestor(
-        self,
-        request: service.UpdateAttestorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateAttestorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateAttestorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_attestor
 
@@ -347,9 +325,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response
 
     def post_update_attestor_with_metadata(
-        self,
-        response: resources.Attestor,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Attestor, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Attestor, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_attestor
 
@@ -366,9 +342,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_update_policy(
-        self,
-        request: service.UpdatePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdatePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_policy
 
@@ -391,9 +365,7 @@ class BinauthzManagementServiceV1Beta1RestInterceptor:
         return response
 
     def post_update_policy_with_metadata(
-        self,
-        response: resources.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_policy
 
@@ -417,9 +389,7 @@ class BinauthzManagementServiceV1Beta1RestStub:
     _interceptor: BinauthzManagementServiceV1Beta1RestInterceptor
 
 
-class BinauthzManagementServiceV1Beta1RestTransport(
-    _BaseBinauthzManagementServiceV1Beta1RestTransport
-):
+class BinauthzManagementServiceV1Beta1RestTransport(_BaseBinauthzManagementServiceV1Beta1RestTransport):
     """REST backend synchronous transport for BinauthzManagementServiceV1Beta1.
 
     Google Cloud Management Service for Binary Authorization admission
@@ -497,33 +467,18 @@ class BinauthzManagementServiceV1Beta1RestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or BinauthzManagementServiceV1Beta1RestInterceptor()
-        )
+        self._interceptor = interceptor or BinauthzManagementServiceV1Beta1RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAttestor(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _CreateAttestor(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.CreateAttestor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -568,30 +523,18 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_create_attestor(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_transcoded_request(http_options, request)
 
-            body = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -615,13 +558,7 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             # Send the request
             response = BinauthzManagementServiceV1Beta1RestTransport._CreateAttestor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -637,12 +574,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_create_attestor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_attestor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_attestor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Attestor.to_json(response)
                 except:
@@ -663,23 +596,12 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                 )
             return resp
 
-    class _DeleteAttestor(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _DeleteAttestor(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.DeleteAttestor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -715,26 +637,16 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_attestor(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -758,12 +670,7 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             # Send the request
             response = BinauthzManagementServiceV1Beta1RestTransport._DeleteAttestor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -771,23 +678,12 @@ class BinauthzManagementServiceV1Beta1RestTransport(
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAttestor(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _GetAttestor(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.GetAttestor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -831,26 +727,16 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_get_attestor(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -874,12 +760,7 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             # Send the request
             response = BinauthzManagementServiceV1Beta1RestTransport._GetAttestor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -895,12 +776,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_get_attestor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_attestor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_attestor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Attestor.to_json(response)
                 except:
@@ -921,23 +798,12 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                 )
             return resp
 
-    class _GetPolicy(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _GetPolicy(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.GetPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -980,26 +846,16 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1022,15 +878,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                 )
 
             # Send the request
-            response = (
-                BinauthzManagementServiceV1Beta1RestTransport._GetPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BinauthzManagementServiceV1Beta1RestTransport._GetPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1046,12 +895,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_get_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Policy.to_json(response)
                 except:
@@ -1072,23 +917,12 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                 )
             return resp
 
-    class _ListAttestors(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _ListAttestors(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.ListAttestors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1130,26 +964,16 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_attestors(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1173,12 +997,7 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             # Send the request
             response = BinauthzManagementServiceV1Beta1RestTransport._ListAttestors._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1194,12 +1013,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_list_attestors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_attestors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_attestors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListAttestorsResponse.to_json(response)
                 except:
@@ -1220,23 +1035,12 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                 )
             return resp
 
-    class _UpdateAttestor(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _UpdateAttestor(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.UpdateAttestor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1281,30 +1085,18 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_update_attestor(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_transcoded_request(http_options, request)
 
-            body = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1328,13 +1120,7 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             # Send the request
             response = BinauthzManagementServiceV1Beta1RestTransport._UpdateAttestor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1350,12 +1136,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_update_attestor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_attestor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_attestor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Attestor.to_json(response)
                 except:
@@ -1376,23 +1158,12 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                 )
             return resp
 
-    class _UpdatePolicy(
-        _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy,
-        BinauthzManagementServiceV1Beta1RestStub,
-    ):
+    class _UpdatePolicy(_BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy, BinauthzManagementServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("BinauthzManagementServiceV1Beta1RestTransport.UpdatePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1436,30 +1207,18 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_policy(request, metadata)
-            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1483,13 +1242,7 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             # Send the request
             response = BinauthzManagementServiceV1Beta1RestTransport._UpdatePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1505,12 +1258,8 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_update_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Policy.to_json(response)
                 except:
@@ -1532,25 +1281,19 @@ class BinauthzManagementServiceV1Beta1RestTransport(
             return resp
 
     @property
-    def create_attestor(
-        self,
-    ) -> Callable[[service.CreateAttestorRequest], resources.Attestor]:
+    def create_attestor(self) -> Callable[[service.CreateAttestorRequest], resources.Attestor]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAttestor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_attestor(
-        self,
-    ) -> Callable[[service.DeleteAttestorRequest], empty_pb2.Empty]:
+    def delete_attestor(self) -> Callable[[service.DeleteAttestorRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAttestor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_attestor(
-        self,
-    ) -> Callable[[service.GetAttestorRequest], resources.Attestor]:
+    def get_attestor(self) -> Callable[[service.GetAttestorRequest], resources.Attestor]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAttestor(self._session, self._host, self._interceptor)  # type: ignore
@@ -1562,25 +1305,19 @@ class BinauthzManagementServiceV1Beta1RestTransport(
         return self._GetPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_attestors(
-        self,
-    ) -> Callable[[service.ListAttestorsRequest], service.ListAttestorsResponse]:
+    def list_attestors(self) -> Callable[[service.ListAttestorsRequest], service.ListAttestorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAttestors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_attestor(
-        self,
-    ) -> Callable[[service.UpdateAttestorRequest], resources.Attestor]:
+    def update_attestor(self) -> Callable[[service.UpdateAttestorRequest], resources.Attestor]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAttestor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_policy(
-        self,
-    ) -> Callable[[service.UpdatePolicyRequest], resources.Policy]:
+    def update_policy(self) -> Callable[[service.UpdatePolicyRequest], resources.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePolicy(self._session, self._host, self._interceptor)  # type: ignore

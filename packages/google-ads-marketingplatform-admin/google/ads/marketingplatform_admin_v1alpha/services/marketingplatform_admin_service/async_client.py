@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -44,13 +33,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.marketingplatform_admin_v1alpha.services.marketingplatform_admin_service import (
-    pagers,
-)
-from google.ads.marketingplatform_admin_v1alpha.types import (
-    marketingplatform_admin,
-    resources,
-)
+from google.ads.marketingplatform_admin_v1alpha.services.marketingplatform_admin_service import pagers
+from google.ads.marketingplatform_admin_v1alpha.types import marketingplatform_admin, resources
 
 from .client import MarketingplatformAdminServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, MarketingplatformAdminServiceTransport
@@ -77,61 +61,27 @@ class MarketingplatformAdminServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = MarketingplatformAdminServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = MarketingplatformAdminServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        MarketingplatformAdminServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = MarketingplatformAdminServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = MarketingplatformAdminServiceClient._DEFAULT_UNIVERSE
 
     account_path = staticmethod(MarketingplatformAdminServiceClient.account_path)
-    parse_account_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_account_path
-    )
-    analytics_account_link_path = staticmethod(
-        MarketingplatformAdminServiceClient.analytics_account_link_path
-    )
-    parse_analytics_account_link_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_analytics_account_link_path
-    )
-    organization_path = staticmethod(
-        MarketingplatformAdminServiceClient.organization_path
-    )
-    parse_organization_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_organization_path
-    )
+    parse_account_path = staticmethod(MarketingplatformAdminServiceClient.parse_account_path)
+    analytics_account_link_path = staticmethod(MarketingplatformAdminServiceClient.analytics_account_link_path)
+    parse_analytics_account_link_path = staticmethod(MarketingplatformAdminServiceClient.parse_analytics_account_link_path)
+    organization_path = staticmethod(MarketingplatformAdminServiceClient.organization_path)
+    parse_organization_path = staticmethod(MarketingplatformAdminServiceClient.parse_organization_path)
     property_path = staticmethod(MarketingplatformAdminServiceClient.property_path)
-    parse_property_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_property_path
-    )
-    common_billing_account_path = staticmethod(
-        MarketingplatformAdminServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        MarketingplatformAdminServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        MarketingplatformAdminServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        MarketingplatformAdminServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        MarketingplatformAdminServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        MarketingplatformAdminServiceClient.parse_common_location_path
-    )
+    parse_property_path = staticmethod(MarketingplatformAdminServiceClient.parse_property_path)
+    common_billing_account_path = staticmethod(MarketingplatformAdminServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(MarketingplatformAdminServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(MarketingplatformAdminServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(MarketingplatformAdminServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(MarketingplatformAdminServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(MarketingplatformAdminServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(MarketingplatformAdminServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(MarketingplatformAdminServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(MarketingplatformAdminServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(MarketingplatformAdminServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -167,9 +117,7 @@ class MarketingplatformAdminServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -237,11 +185,7 @@ class MarketingplatformAdminServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                MarketingplatformAdminServiceTransport,
-                Callable[..., MarketingplatformAdminServiceTransport],
-            ]
+            Union[str, MarketingplatformAdminServiceTransport, Callable[..., MarketingplatformAdminServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -302,20 +246,14 @@ class MarketingplatformAdminServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -326,9 +264,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def get_organization(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.GetOrganizationRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.GetOrganizationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -392,14 +328,9 @@ class MarketingplatformAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -413,15 +344,11 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_organization
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_organization]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -439,9 +366,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def list_organizations(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.ListOrganizationsRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.ListOrganizationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -505,9 +430,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_organizations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_organizations]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -536,9 +459,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def find_sales_partner_managed_clients(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.FindSalesPartnerManagedClientsRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.FindSalesPartnerManagedClientsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -596,26 +517,16 @@ class MarketingplatformAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, marketingplatform_admin.FindSalesPartnerManagedClientsRequest
-        ):
-            request = marketingplatform_admin.FindSalesPartnerManagedClientsRequest(
-                request
-            )
+        if not isinstance(request, marketingplatform_admin.FindSalesPartnerManagedClientsRequest):
+            request = marketingplatform_admin.FindSalesPartnerManagedClientsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.find_sales_partner_managed_clients
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.find_sales_partner_managed_clients]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("organization", request.organization),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("organization", request.organization),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -633,9 +544,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def list_analytics_account_links(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.ListAnalyticsAccountLinksRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.ListAnalyticsAccountLinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -705,20 +614,13 @@ class MarketingplatformAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, marketingplatform_admin.ListAnalyticsAccountLinksRequest
-        ):
+        if not isinstance(request, marketingplatform_admin.ListAnalyticsAccountLinksRequest):
             request = marketingplatform_admin.ListAnalyticsAccountLinksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -728,15 +630,11 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_analytics_account_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_analytics_account_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -765,9 +663,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def create_analytics_account_link(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.CreateAnalyticsAccountLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.CreateAnalyticsAccountLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         analytics_account_link: Optional[resources.AnalyticsAccountLink] = None,
@@ -853,20 +749,13 @@ class MarketingplatformAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, analytics_account_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, marketingplatform_admin.CreateAnalyticsAccountLinkRequest
-        ):
+        if not isinstance(request, marketingplatform_admin.CreateAnalyticsAccountLinkRequest):
             request = marketingplatform_admin.CreateAnalyticsAccountLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -878,15 +767,11 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_analytics_account_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_analytics_account_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -904,9 +789,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def delete_analytics_account_link(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.DeleteAnalyticsAccountLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.DeleteAnalyticsAccountLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -967,20 +850,13 @@ class MarketingplatformAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, marketingplatform_admin.DeleteAnalyticsAccountLinkRequest
-        ):
+        if not isinstance(request, marketingplatform_admin.DeleteAnalyticsAccountLinkRequest):
             request = marketingplatform_admin.DeleteAnalyticsAccountLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -990,15 +866,11 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_analytics_account_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_analytics_account_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1013,9 +885,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def set_property_service_level(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.SetPropertyServiceLevelRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.SetPropertyServiceLevelRequest, dict]] = None,
         *,
         analytics_account_link: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1082,20 +952,13 @@ class MarketingplatformAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [analytics_account_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, marketingplatform_admin.SetPropertyServiceLevelRequest
-        ):
+        if not isinstance(request, marketingplatform_admin.SetPropertyServiceLevelRequest):
             request = marketingplatform_admin.SetPropertyServiceLevelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1105,17 +968,11 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_property_service_level
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_property_service_level]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("analytics_account_link", request.analytics_account_link),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("analytics_account_link", request.analytics_account_link),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1133,9 +990,7 @@ class MarketingplatformAdminServiceAsyncClient:
 
     async def report_property_usage(
         self,
-        request: Optional[
-            Union[marketingplatform_admin.ReportPropertyUsageRequest, dict]
-        ] = None,
+        request: Optional[Union[marketingplatform_admin.ReportPropertyUsageRequest, dict]] = None,
         *,
         organization: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1213,14 +1068,9 @@ class MarketingplatformAdminServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [organization]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1234,17 +1084,11 @@ class MarketingplatformAdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.report_property_usage
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.report_property_usage]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("organization", request.organization),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("organization", request.organization),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1267,9 +1111,7 @@ class MarketingplatformAdminServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

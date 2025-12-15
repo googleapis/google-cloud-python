@@ -18,18 +18,10 @@ from google.cloud.iap import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.iap_v1.services.identity_aware_proxy_admin_service.async_client import (
-    IdentityAwareProxyAdminServiceAsyncClient,
-)
-from google.cloud.iap_v1.services.identity_aware_proxy_admin_service.client import (
-    IdentityAwareProxyAdminServiceClient,
-)
-from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service.async_client import (
-    IdentityAwareProxyOAuthServiceAsyncClient,
-)
-from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service.client import (
-    IdentityAwareProxyOAuthServiceClient,
-)
+from google.cloud.iap_v1.services.identity_aware_proxy_admin_service.async_client import IdentityAwareProxyAdminServiceAsyncClient
+from google.cloud.iap_v1.services.identity_aware_proxy_admin_service.client import IdentityAwareProxyAdminServiceClient
+from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service.async_client import IdentityAwareProxyOAuthServiceAsyncClient
+from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service.client import IdentityAwareProxyOAuthServiceClient
 from google.cloud.iap_v1.types.service import (
     AccessDeniedPageSettings,
     AccessSettings,

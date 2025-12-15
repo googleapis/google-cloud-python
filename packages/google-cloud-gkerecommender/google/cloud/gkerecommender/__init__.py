@@ -18,12 +18,8 @@ from google.cloud.gkerecommender import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.gkerecommender_v1.services.gke_inference_quickstart.async_client import (
-    GkeInferenceQuickstartAsyncClient,
-)
-from google.cloud.gkerecommender_v1.services.gke_inference_quickstart.client import (
-    GkeInferenceQuickstartClient,
-)
+from google.cloud.gkerecommender_v1.services.gke_inference_quickstart.async_client import GkeInferenceQuickstartAsyncClient
+from google.cloud.gkerecommender_v1.services.gke_inference_quickstart.client import GkeInferenceQuickstartClient
 from google.cloud.gkerecommender_v1.types.gkerecommender import (
     Amount,
     Cost,

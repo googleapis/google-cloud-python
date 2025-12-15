@@ -22,11 +22,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.discoveryengine_v1beta.types import (
-    completion_service,
-    import_config,
-    purge_config,
-)
+from google.cloud.discoveryengine_v1beta.types import completion_service, import_config, purge_config
 
 from .base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
 
@@ -77,20 +73,14 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAdvancedCompleteQuery:
@@ -101,11 +91,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -138,9 +124,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -151,11 +135,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -170,11 +150,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -204,11 +180,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCompletionServiceRestTransport._BaseCompleteQuery._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -221,11 +193,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -253,9 +221,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -266,11 +232,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -283,11 +245,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -307,9 +265,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = import_config.ImportSuggestionDenyListEntriesRequest.pb(
-                request
-            )
+            pb_request = import_config.ImportSuggestionDenyListEntriesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -317,9 +273,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -330,11 +284,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -347,11 +297,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -379,9 +325,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -392,11 +336,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -409,11 +349,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -441,9 +377,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -454,11 +388,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

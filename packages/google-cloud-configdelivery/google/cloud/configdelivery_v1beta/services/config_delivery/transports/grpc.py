@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,20 +319,13 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_resource_bundles(
-        self,
-    ) -> Callable[
-        [config_delivery.ListResourceBundlesRequest],
-        config_delivery.ListResourceBundlesResponse,
-    ]:
+    def list_resource_bundles(self) -> Callable[[config_delivery.ListResourceBundlesRequest], config_delivery.ListResourceBundlesResponse]:
         r"""Return a callable for the list resource bundles method over gRPC.
 
         Lists ResourceBundles in a given project and
@@ -372,11 +350,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["list_resource_bundles"]
 
     @property
-    def get_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.GetResourceBundleRequest], config_delivery.ResourceBundle
-    ]:
+    def get_resource_bundle(self) -> Callable[[config_delivery.GetResourceBundleRequest], config_delivery.ResourceBundle]:
         r"""Return a callable for the get resource bundle method over gRPC.
 
         Gets details of a single ResourceBundle.
@@ -400,11 +374,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["get_resource_bundle"]
 
     @property
-    def create_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.CreateResourceBundleRequest], operations_pb2.Operation
-    ]:
+    def create_resource_bundle(self) -> Callable[[config_delivery.CreateResourceBundleRequest], operations_pb2.Operation]:
         r"""Return a callable for the create resource bundle method over gRPC.
 
         Creates a new ResourceBundle in a given project and
@@ -429,11 +399,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["create_resource_bundle"]
 
     @property
-    def update_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.UpdateResourceBundleRequest], operations_pb2.Operation
-    ]:
+    def update_resource_bundle(self) -> Callable[[config_delivery.UpdateResourceBundleRequest], operations_pb2.Operation]:
         r"""Return a callable for the update resource bundle method over gRPC.
 
         Updates the parameters of a single ResourceBundle.
@@ -457,11 +423,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["update_resource_bundle"]
 
     @property
-    def delete_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.DeleteResourceBundleRequest], operations_pb2.Operation
-    ]:
+    def delete_resource_bundle(self) -> Callable[[config_delivery.DeleteResourceBundleRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete resource bundle method over gRPC.
 
         Deletes a single ResourceBundle.
@@ -485,12 +447,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["delete_resource_bundle"]
 
     @property
-    def list_fleet_packages(
-        self,
-    ) -> Callable[
-        [config_delivery.ListFleetPackagesRequest],
-        config_delivery.ListFleetPackagesResponse,
-    ]:
+    def list_fleet_packages(self) -> Callable[[config_delivery.ListFleetPackagesRequest], config_delivery.ListFleetPackagesResponse]:
         r"""Return a callable for the list fleet packages method over gRPC.
 
         Lists FleetPackages in a given project and location.
@@ -514,11 +471,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["list_fleet_packages"]
 
     @property
-    def get_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.GetFleetPackageRequest], config_delivery.FleetPackage
-    ]:
+    def get_fleet_package(self) -> Callable[[config_delivery.GetFleetPackageRequest], config_delivery.FleetPackage]:
         r"""Return a callable for the get fleet package method over gRPC.
 
         Gets details of a single FleetPackage.
@@ -542,11 +495,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["get_fleet_package"]
 
     @property
-    def create_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.CreateFleetPackageRequest], operations_pb2.Operation
-    ]:
+    def create_fleet_package(self) -> Callable[[config_delivery.CreateFleetPackageRequest], operations_pb2.Operation]:
         r"""Return a callable for the create fleet package method over gRPC.
 
         Creates a new FleetPackage in a given project and
@@ -571,11 +520,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["create_fleet_package"]
 
     @property
-    def update_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.UpdateFleetPackageRequest], operations_pb2.Operation
-    ]:
+    def update_fleet_package(self) -> Callable[[config_delivery.UpdateFleetPackageRequest], operations_pb2.Operation]:
         r"""Return a callable for the update fleet package method over gRPC.
 
         Updates the parameters of a single FleetPackage.
@@ -599,11 +544,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["update_fleet_package"]
 
     @property
-    def delete_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.DeleteFleetPackageRequest], operations_pb2.Operation
-    ]:
+    def delete_fleet_package(self) -> Callable[[config_delivery.DeleteFleetPackageRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete fleet package method over gRPC.
 
         Deletes a single FleetPackage.
@@ -627,11 +568,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["delete_fleet_package"]
 
     @property
-    def list_releases(
-        self,
-    ) -> Callable[
-        [config_delivery.ListReleasesRequest], config_delivery.ListReleasesResponse
-    ]:
+    def list_releases(self) -> Callable[[config_delivery.ListReleasesRequest], config_delivery.ListReleasesResponse]:
         r"""Return a callable for the list releases method over gRPC.
 
         Lists Releases in a given project and location.
@@ -655,9 +592,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["list_releases"]
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[[config_delivery.GetReleaseRequest], config_delivery.Release]:
+    def get_release(self) -> Callable[[config_delivery.GetReleaseRequest], config_delivery.Release]:
         r"""Return a callable for the get release method over gRPC.
 
         Gets details of a single Release.
@@ -681,9 +616,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["get_release"]
 
     @property
-    def create_release(
-        self,
-    ) -> Callable[[config_delivery.CreateReleaseRequest], operations_pb2.Operation]:
+    def create_release(self) -> Callable[[config_delivery.CreateReleaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the create release method over gRPC.
 
         Creates a new Release in a given project, location
@@ -708,9 +641,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["create_release"]
 
     @property
-    def update_release(
-        self,
-    ) -> Callable[[config_delivery.UpdateReleaseRequest], operations_pb2.Operation]:
+    def update_release(self) -> Callable[[config_delivery.UpdateReleaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the update release method over gRPC.
 
         Updates the parameters of a single Release.
@@ -734,9 +665,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["update_release"]
 
     @property
-    def delete_release(
-        self,
-    ) -> Callable[[config_delivery.DeleteReleaseRequest], operations_pb2.Operation]:
+    def delete_release(self) -> Callable[[config_delivery.DeleteReleaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete release method over gRPC.
 
         Deletes a single Release.
@@ -760,11 +689,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["delete_release"]
 
     @property
-    def list_variants(
-        self,
-    ) -> Callable[
-        [config_delivery.ListVariantsRequest], config_delivery.ListVariantsResponse
-    ]:
+    def list_variants(self) -> Callable[[config_delivery.ListVariantsRequest], config_delivery.ListVariantsResponse]:
         r"""Return a callable for the list variants method over gRPC.
 
         Lists Variants in a given project and location.
@@ -788,9 +713,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["list_variants"]
 
     @property
-    def get_variant(
-        self,
-    ) -> Callable[[config_delivery.GetVariantRequest], config_delivery.Variant]:
+    def get_variant(self) -> Callable[[config_delivery.GetVariantRequest], config_delivery.Variant]:
         r"""Return a callable for the get variant method over gRPC.
 
         Gets details of a single Variant.
@@ -814,9 +737,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["get_variant"]
 
     @property
-    def create_variant(
-        self,
-    ) -> Callable[[config_delivery.CreateVariantRequest], operations_pb2.Operation]:
+    def create_variant(self) -> Callable[[config_delivery.CreateVariantRequest], operations_pb2.Operation]:
         r"""Return a callable for the create variant method over gRPC.
 
         Creates a new Variant in a given project, location,
@@ -841,9 +762,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["create_variant"]
 
     @property
-    def update_variant(
-        self,
-    ) -> Callable[[config_delivery.UpdateVariantRequest], operations_pb2.Operation]:
+    def update_variant(self) -> Callable[[config_delivery.UpdateVariantRequest], operations_pb2.Operation]:
         r"""Return a callable for the update variant method over gRPC.
 
         Updates the parameters of a single Variant.
@@ -867,9 +786,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["update_variant"]
 
     @property
-    def delete_variant(
-        self,
-    ) -> Callable[[config_delivery.DeleteVariantRequest], operations_pb2.Operation]:
+    def delete_variant(self) -> Callable[[config_delivery.DeleteVariantRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete variant method over gRPC.
 
         Deletes a single Variant.
@@ -893,11 +810,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["delete_variant"]
 
     @property
-    def list_rollouts(
-        self,
-    ) -> Callable[
-        [config_delivery.ListRolloutsRequest], config_delivery.ListRolloutsResponse
-    ]:
+    def list_rollouts(self) -> Callable[[config_delivery.ListRolloutsRequest], config_delivery.ListRolloutsResponse]:
         r"""Return a callable for the list rollouts method over gRPC.
 
         Lists Rollouts in a given project, location, and
@@ -922,9 +835,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["list_rollouts"]
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[[config_delivery.GetRolloutRequest], config_delivery.Rollout]:
+    def get_rollout(self) -> Callable[[config_delivery.GetRolloutRequest], config_delivery.Rollout]:
         r"""Return a callable for the get rollout method over gRPC.
 
         Gets details of a single Rollout.
@@ -948,9 +859,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["get_rollout"]
 
     @property
-    def suspend_rollout(
-        self,
-    ) -> Callable[[config_delivery.SuspendRolloutRequest], operations_pb2.Operation]:
+    def suspend_rollout(self) -> Callable[[config_delivery.SuspendRolloutRequest], operations_pb2.Operation]:
         r"""Return a callable for the suspend rollout method over gRPC.
 
         Suspend a Rollout.
@@ -974,9 +883,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["suspend_rollout"]
 
     @property
-    def resume_rollout(
-        self,
-    ) -> Callable[[config_delivery.ResumeRolloutRequest], operations_pb2.Operation]:
+    def resume_rollout(self) -> Callable[[config_delivery.ResumeRolloutRequest], operations_pb2.Operation]:
         r"""Return a callable for the resume rollout method over gRPC.
 
         Resume a Rollout.
@@ -1000,9 +907,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
         return self._stubs["resume_rollout"]
 
     @property
-    def abort_rollout(
-        self,
-    ) -> Callable[[config_delivery.AbortRolloutRequest], operations_pb2.Operation]:
+    def abort_rollout(self) -> Callable[[config_delivery.AbortRolloutRequest], operations_pb2.Operation]:
         r"""Return a callable for the abort rollout method over gRPC.
 
         Abort a Rollout.
@@ -1082,9 +987,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1101,9 +1004,7 @@ class ConfigDeliveryGrpcTransport(ConfigDeliveryTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

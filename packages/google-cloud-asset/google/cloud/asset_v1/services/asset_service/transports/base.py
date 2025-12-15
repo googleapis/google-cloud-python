@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.asset_v1 import gapic_version as package_version
 from google.cloud.asset_v1.types import asset_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class AssetServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -427,24 +417,13 @@ class AssetServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def export_assets(
-        self,
-    ) -> Callable[
-        [asset_service.ExportAssetsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_assets(self) -> Callable[[asset_service.ExportAssetsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_assets(
         self,
-    ) -> Callable[
-        [asset_service.ListAssetsRequest],
-        Union[
-            asset_service.ListAssetsResponse,
-            Awaitable[asset_service.ListAssetsResponse],
-        ],
-    ]:
+    ) -> Callable[[asset_service.ListAssetsRequest], Union[asset_service.ListAssetsResponse, Awaitable[asset_service.ListAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -452,58 +431,30 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.BatchGetAssetsHistoryRequest],
-        Union[
-            asset_service.BatchGetAssetsHistoryResponse,
-            Awaitable[asset_service.BatchGetAssetsHistoryResponse],
-        ],
+        Union[asset_service.BatchGetAssetsHistoryResponse, Awaitable[asset_service.BatchGetAssetsHistoryResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_feed(
-        self,
-    ) -> Callable[
-        [asset_service.CreateFeedRequest],
-        Union[asset_service.Feed, Awaitable[asset_service.Feed]],
-    ]:
+    def create_feed(self) -> Callable[[asset_service.CreateFeedRequest], Union[asset_service.Feed, Awaitable[asset_service.Feed]]]:
         raise NotImplementedError()
 
     @property
-    def get_feed(
-        self,
-    ) -> Callable[
-        [asset_service.GetFeedRequest],
-        Union[asset_service.Feed, Awaitable[asset_service.Feed]],
-    ]:
+    def get_feed(self) -> Callable[[asset_service.GetFeedRequest], Union[asset_service.Feed, Awaitable[asset_service.Feed]]]:
         raise NotImplementedError()
 
     @property
     def list_feeds(
         self,
-    ) -> Callable[
-        [asset_service.ListFeedsRequest],
-        Union[
-            asset_service.ListFeedsResponse, Awaitable[asset_service.ListFeedsResponse]
-        ],
-    ]:
+    ) -> Callable[[asset_service.ListFeedsRequest], Union[asset_service.ListFeedsResponse, Awaitable[asset_service.ListFeedsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_feed(
-        self,
-    ) -> Callable[
-        [asset_service.UpdateFeedRequest],
-        Union[asset_service.Feed, Awaitable[asset_service.Feed]],
-    ]:
+    def update_feed(self) -> Callable[[asset_service.UpdateFeedRequest], Union[asset_service.Feed, Awaitable[asset_service.Feed]]]:
         raise NotImplementedError()
 
     @property
-    def delete_feed(
-        self,
-    ) -> Callable[
-        [asset_service.DeleteFeedRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_feed(self) -> Callable[[asset_service.DeleteFeedRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -511,10 +462,7 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.SearchAllResourcesRequest],
-        Union[
-            asset_service.SearchAllResourcesResponse,
-            Awaitable[asset_service.SearchAllResourcesResponse],
-        ],
+        Union[asset_service.SearchAllResourcesResponse, Awaitable[asset_service.SearchAllResourcesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -523,10 +471,7 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.SearchAllIamPoliciesRequest],
-        Union[
-            asset_service.SearchAllIamPoliciesResponse,
-            Awaitable[asset_service.SearchAllIamPoliciesResponse],
-        ],
+        Union[asset_service.SearchAllIamPoliciesResponse, Awaitable[asset_service.SearchAllIamPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -534,93 +479,54 @@ class AssetServiceTransport(abc.ABC):
     def analyze_iam_policy(
         self,
     ) -> Callable[
-        [asset_service.AnalyzeIamPolicyRequest],
-        Union[
-            asset_service.AnalyzeIamPolicyResponse,
-            Awaitable[asset_service.AnalyzeIamPolicyResponse],
-        ],
+        [asset_service.AnalyzeIamPolicyRequest], Union[asset_service.AnalyzeIamPolicyResponse, Awaitable[asset_service.AnalyzeIamPolicyResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def analyze_iam_policy_longrunning(
         self,
-    ) -> Callable[
-        [asset_service.AnalyzeIamPolicyLongrunningRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[asset_service.AnalyzeIamPolicyLongrunningRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def analyze_move(
         self,
-    ) -> Callable[
-        [asset_service.AnalyzeMoveRequest],
-        Union[
-            asset_service.AnalyzeMoveResponse,
-            Awaitable[asset_service.AnalyzeMoveResponse],
-        ],
-    ]:
+    ) -> Callable[[asset_service.AnalyzeMoveRequest], Union[asset_service.AnalyzeMoveResponse, Awaitable[asset_service.AnalyzeMoveResponse]]]:
         raise NotImplementedError()
 
     @property
     def query_assets(
         self,
-    ) -> Callable[
-        [asset_service.QueryAssetsRequest],
-        Union[
-            asset_service.QueryAssetsResponse,
-            Awaitable[asset_service.QueryAssetsResponse],
-        ],
-    ]:
+    ) -> Callable[[asset_service.QueryAssetsRequest], Union[asset_service.QueryAssetsResponse, Awaitable[asset_service.QueryAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
     def create_saved_query(
         self,
-    ) -> Callable[
-        [asset_service.CreateSavedQueryRequest],
-        Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]],
-    ]:
+    ) -> Callable[[asset_service.CreateSavedQueryRequest], Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]]]:
         raise NotImplementedError()
 
     @property
-    def get_saved_query(
-        self,
-    ) -> Callable[
-        [asset_service.GetSavedQueryRequest],
-        Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]],
-    ]:
+    def get_saved_query(self) -> Callable[[asset_service.GetSavedQueryRequest], Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]]]:
         raise NotImplementedError()
 
     @property
     def list_saved_queries(
         self,
     ) -> Callable[
-        [asset_service.ListSavedQueriesRequest],
-        Union[
-            asset_service.ListSavedQueriesResponse,
-            Awaitable[asset_service.ListSavedQueriesResponse],
-        ],
+        [asset_service.ListSavedQueriesRequest], Union[asset_service.ListSavedQueriesResponse, Awaitable[asset_service.ListSavedQueriesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_saved_query(
         self,
-    ) -> Callable[
-        [asset_service.UpdateSavedQueryRequest],
-        Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]],
-    ]:
+    ) -> Callable[[asset_service.UpdateSavedQueryRequest], Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]]]:
         raise NotImplementedError()
 
     @property
-    def delete_saved_query(
-        self,
-    ) -> Callable[
-        [asset_service.DeleteSavedQueryRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_saved_query(self) -> Callable[[asset_service.DeleteSavedQueryRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -628,10 +534,7 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.BatchGetEffectiveIamPoliciesRequest],
-        Union[
-            asset_service.BatchGetEffectiveIamPoliciesResponse,
-            Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse],
-        ],
+        Union[asset_service.BatchGetEffectiveIamPoliciesResponse, Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -640,10 +543,7 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.AnalyzeOrgPoliciesRequest],
-        Union[
-            asset_service.AnalyzeOrgPoliciesResponse,
-            Awaitable[asset_service.AnalyzeOrgPoliciesResponse],
-        ],
+        Union[asset_service.AnalyzeOrgPoliciesResponse, Awaitable[asset_service.AnalyzeOrgPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -652,10 +552,7 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.AnalyzeOrgPolicyGovernedContainersRequest],
-        Union[
-            asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
-            Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse],
-        ],
+        Union[asset_service.AnalyzeOrgPolicyGovernedContainersResponse, Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]],
     ]:
         raise NotImplementedError()
 
@@ -664,20 +561,14 @@ class AssetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [asset_service.AnalyzeOrgPolicyGovernedAssetsRequest],
-        Union[
-            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
-            Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
-        ],
+        Union[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

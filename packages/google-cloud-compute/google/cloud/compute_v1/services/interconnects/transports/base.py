@@ -29,9 +29,7 @@ from google.cloud.compute_v1 import gapic_version as package_version
 from google.cloud.compute_v1.services import global_operations
 from google.cloud.compute_v1.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class InterconnectsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -190,21 +180,11 @@ class InterconnectsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteInterconnectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteInterconnectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetInterconnectRequest],
-        Union[compute.Interconnect, Awaitable[compute.Interconnect]],
-    ]:
+    def get(self) -> Callable[[compute.GetInterconnectRequest], Union[compute.Interconnect, Awaitable[compute.Interconnect]]]:
         raise NotImplementedError()
 
     @property
@@ -212,10 +192,7 @@ class InterconnectsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.GetDiagnosticsInterconnectRequest],
-        Union[
-            compute.InterconnectsGetDiagnosticsResponse,
-            Awaitable[compute.InterconnectsGetDiagnosticsResponse],
-        ],
+        Union[compute.InterconnectsGetDiagnosticsResponse, Awaitable[compute.InterconnectsGetDiagnosticsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -224,47 +201,24 @@ class InterconnectsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.GetMacsecConfigInterconnectRequest],
-        Union[
-            compute.InterconnectsGetMacsecConfigResponse,
-            Awaitable[compute.InterconnectsGetMacsecConfigResponse],
-        ],
+        Union[compute.InterconnectsGetMacsecConfigResponse, Awaitable[compute.InterconnectsGetMacsecConfigResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertInterconnectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertInterconnectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListInterconnectsRequest],
-        Union[compute.InterconnectList, Awaitable[compute.InterconnectList]],
-    ]:
+    def list(self) -> Callable[[compute.ListInterconnectsRequest], Union[compute.InterconnectList, Awaitable[compute.InterconnectList]]]:
         raise NotImplementedError()
 
     @property
-    def patch(
-        self,
-    ) -> Callable[
-        [compute.PatchInterconnectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch(self) -> Callable[[compute.PatchInterconnectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[
-        [compute.SetLabelsInterconnectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_labels(self) -> Callable[[compute.SetLabelsInterconnectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

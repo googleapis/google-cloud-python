@@ -18,9 +18,7 @@ from google.apps.chat import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.apps.chat_v1.services.chat_service.async_client import (
-    ChatServiceAsyncClient,
-)
+from google.apps.chat_v1.services.chat_service.async_client import ChatServiceAsyncClient
 from google.apps.chat_v1.services.chat_service.client import ChatServiceClient
 from google.apps.chat_v1.types.action_status import ActionStatus
 from google.apps.chat_v1.types.annotation import (
@@ -124,27 +122,15 @@ from google.apps.chat_v1.types.space import (
     Space,
     UpdateSpaceRequest,
 )
-from google.apps.chat_v1.types.space_event import (
-    GetSpaceEventRequest,
-    ListSpaceEventsRequest,
-    ListSpaceEventsResponse,
-    SpaceEvent,
-)
+from google.apps.chat_v1.types.space_event import GetSpaceEventRequest, ListSpaceEventsRequest, ListSpaceEventsResponse, SpaceEvent
 from google.apps.chat_v1.types.space_notification_setting import (
     GetSpaceNotificationSettingRequest,
     SpaceNotificationSetting,
     UpdateSpaceNotificationSettingRequest,
 )
-from google.apps.chat_v1.types.space_read_state import (
-    GetSpaceReadStateRequest,
-    SpaceReadState,
-    UpdateSpaceReadStateRequest,
-)
+from google.apps.chat_v1.types.space_read_state import GetSpaceReadStateRequest, SpaceReadState, UpdateSpaceReadStateRequest
 from google.apps.chat_v1.types.space_setup import SetUpSpaceRequest
-from google.apps.chat_v1.types.thread_read_state import (
-    GetThreadReadStateRequest,
-    ThreadReadState,
-)
+from google.apps.chat_v1.types.thread_read_state import GetThreadReadStateRequest, ThreadReadState
 from google.apps.chat_v1.types.user import User
 from google.apps.chat_v1.types.widgets import WidgetMarkup
 

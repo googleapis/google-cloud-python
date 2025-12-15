@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,19 +326,13 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [service.ListInstancesRequest], Awaitable[service.ListInstancesResponse]
-    ]:
+    def list_instances(self) -> Callable[[service.ListInstancesRequest], Awaitable[service.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists instances in a given project and location.
@@ -379,9 +356,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[service.GetInstanceRequest], Awaitable[instance.Instance]]:
+    def get_instance(self) -> Callable[[service.GetInstanceRequest], Awaitable[instance.Instance]]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets details of a single Instance.
@@ -405,9 +380,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[service.CreateInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def create_instance(self) -> Callable[[service.CreateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a new Instance in a given project and
@@ -432,9 +405,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["create_instance"]
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[service.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def update_instance(self) -> Callable[[service.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update instance method over gRPC.
 
         UpdateInstance updates an Instance.
@@ -458,9 +429,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["update_instance"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[service.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_instance(self) -> Callable[[service.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single Instance.
@@ -484,9 +453,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["delete_instance"]
 
     @property
-    def start_instance(
-        self,
-    ) -> Callable[[service.StartInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def start_instance(self) -> Callable[[service.StartInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start instance method over gRPC.
 
         Starts a notebook instance.
@@ -510,9 +477,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["start_instance"]
 
     @property
-    def stop_instance(
-        self,
-    ) -> Callable[[service.StopInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def stop_instance(self) -> Callable[[service.StopInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the stop instance method over gRPC.
 
         Stops a notebook instance.
@@ -536,9 +501,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["stop_instance"]
 
     @property
-    def reset_instance(
-        self,
-    ) -> Callable[[service.ResetInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def reset_instance(self) -> Callable[[service.ResetInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the reset instance method over gRPC.
 
         Resets a notebook instance.
@@ -564,10 +527,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
     @property
     def check_instance_upgradability(
         self,
-    ) -> Callable[
-        [service.CheckInstanceUpgradabilityRequest],
-        Awaitable[service.CheckInstanceUpgradabilityResponse],
-    ]:
+    ) -> Callable[[service.CheckInstanceUpgradabilityRequest], Awaitable[service.CheckInstanceUpgradabilityResponse]]:
         r"""Return a callable for the check instance upgradability method over gRPC.
 
         Checks whether a notebook instance is upgradable.
@@ -583,9 +543,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_instance_upgradability" not in self._stubs:
-            self._stubs[
-                "check_instance_upgradability"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["check_instance_upgradability"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v2.NotebookService/CheckInstanceUpgradability",
                 request_serializer=service.CheckInstanceUpgradabilityRequest.serialize,
                 response_deserializer=service.CheckInstanceUpgradabilityResponse.deserialize,
@@ -593,11 +551,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["check_instance_upgradability"]
 
     @property
-    def upgrade_instance(
-        self,
-    ) -> Callable[
-        [service.UpgradeInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def upgrade_instance(self) -> Callable[[service.UpgradeInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the upgrade instance method over gRPC.
 
         Upgrades a notebook instance to the latest version.
@@ -621,11 +575,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["upgrade_instance"]
 
     @property
-    def rollback_instance(
-        self,
-    ) -> Callable[
-        [service.RollbackInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def rollback_instance(self) -> Callable[[service.RollbackInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the rollback instance method over gRPC.
 
         Rollbacks a notebook instance to the previous
@@ -650,11 +600,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         return self._stubs["rollback_instance"]
 
     @property
-    def diagnose_instance(
-        self,
-    ) -> Callable[
-        [service.DiagnoseInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def diagnose_instance(self) -> Callable[[service.DiagnoseInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the diagnose instance method over gRPC.
 
         Creates a Diagnostic File and runs Diagnostic Tool
@@ -854,9 +800,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -873,9 +817,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -960,10 +902,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

@@ -113,13 +113,8 @@ class ApiHubDiscoveryRestInterceptor:
     """
 
     def pre_get_discovered_api_observation(
-        self,
-        request: discovery_service.GetDiscoveredApiObservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discovery_service.GetDiscoveredApiObservationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: discovery_service.GetDiscoveredApiObservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discovery_service.GetDiscoveredApiObservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_discovered_api_observation
 
         Override in a subclass to manipulate the request or metadata
@@ -127,9 +122,7 @@ class ApiHubDiscoveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_discovered_api_observation(
-        self, response: common_fields.DiscoveredApiObservation
-    ) -> common_fields.DiscoveredApiObservation:
+    def post_get_discovered_api_observation(self, response: common_fields.DiscoveredApiObservation) -> common_fields.DiscoveredApiObservation:
         """Post-rpc interceptor for get_discovered_api_observation
 
         DEPRECATED. Please use the `post_get_discovered_api_observation_with_metadata`
@@ -143,12 +136,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def post_get_discovered_api_observation_with_metadata(
-        self,
-        response: common_fields.DiscoveredApiObservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        common_fields.DiscoveredApiObservation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: common_fields.DiscoveredApiObservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[common_fields.DiscoveredApiObservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_discovered_api_observation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -164,13 +153,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response, metadata
 
     def pre_get_discovered_api_operation(
-        self,
-        request: discovery_service.GetDiscoveredApiOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discovery_service.GetDiscoveredApiOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: discovery_service.GetDiscoveredApiOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discovery_service.GetDiscoveredApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_discovered_api_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -178,9 +162,7 @@ class ApiHubDiscoveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_discovered_api_operation(
-        self, response: common_fields.DiscoveredApiOperation
-    ) -> common_fields.DiscoveredApiOperation:
+    def post_get_discovered_api_operation(self, response: common_fields.DiscoveredApiOperation) -> common_fields.DiscoveredApiOperation:
         """Post-rpc interceptor for get_discovered_api_operation
 
         DEPRECATED. Please use the `post_get_discovered_api_operation_with_metadata`
@@ -194,12 +176,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def post_get_discovered_api_operation_with_metadata(
-        self,
-        response: common_fields.DiscoveredApiOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        common_fields.DiscoveredApiOperation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: common_fields.DiscoveredApiOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[common_fields.DiscoveredApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_discovered_api_operation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -215,13 +193,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response, metadata
 
     def pre_list_discovered_api_observations(
-        self,
-        request: discovery_service.ListDiscoveredApiObservationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discovery_service.ListDiscoveredApiObservationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: discovery_service.ListDiscoveredApiObservationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discovery_service.ListDiscoveredApiObservationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_discovered_api_observations
 
         Override in a subclass to manipulate the request or metadata
@@ -245,13 +218,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def post_list_discovered_api_observations_with_metadata(
-        self,
-        response: discovery_service.ListDiscoveredApiObservationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discovery_service.ListDiscoveredApiObservationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: discovery_service.ListDiscoveredApiObservationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discovery_service.ListDiscoveredApiObservationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_discovered_api_observations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -267,13 +235,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response, metadata
 
     def pre_list_discovered_api_operations(
-        self,
-        request: discovery_service.ListDiscoveredApiOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discovery_service.ListDiscoveredApiOperationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: discovery_service.ListDiscoveredApiOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discovery_service.ListDiscoveredApiOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_discovered_api_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -297,13 +260,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def post_list_discovered_api_operations_with_metadata(
-        self,
-        response: discovery_service.ListDiscoveredApiOperationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discovery_service.ListDiscoveredApiOperationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: discovery_service.ListDiscoveredApiOperationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discovery_service.ListDiscoveredApiOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_discovered_api_operations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -319,12 +277,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -332,9 +286,7 @@ class ApiHubDiscoveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -344,12 +296,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +305,7 @@ class ApiHubDiscoveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -369,12 +315,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -392,12 +334,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -415,12 +353,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -428,9 +362,7 @@ class ApiHubDiscoveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -440,12 +372,8 @@ class ApiHubDiscoveryRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -453,9 +381,7 @@ class ApiHubDiscoveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -545,31 +471,18 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ApiHubDiscoveryRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetDiscoveredApiObservation(
-        _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation,
-        ApiHubDiscoveryRestStub,
-    ):
+    class _GetDiscoveredApiObservation(_BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.GetDiscoveredApiObservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -612,28 +525,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_discovered_api_observation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_discovered_api_observation(request, metadata)
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -656,15 +557,8 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 )
 
             # Send the request
-            response = (
-                ApiHubDiscoveryRestTransport._GetDiscoveredApiObservation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ApiHubDiscoveryRestTransport._GetDiscoveredApiObservation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -680,19 +574,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_get_discovered_api_observation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_discovered_api_observation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_discovered_api_observation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = common_fields.DiscoveredApiObservation.to_json(
-                        response
-                    )
+                    response_payload = common_fields.DiscoveredApiObservation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -711,23 +596,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 )
             return resp
 
-    class _GetDiscoveredApiOperation(
-        _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation,
-        ApiHubDiscoveryRestStub,
-    ):
+    class _GetDiscoveredApiOperation(_BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.GetDiscoveredApiOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -771,28 +645,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_discovered_api_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_discovered_api_operation(request, metadata)
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -815,15 +677,8 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 )
 
             # Send the request
-            response = (
-                ApiHubDiscoveryRestTransport._GetDiscoveredApiOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ApiHubDiscoveryRestTransport._GetDiscoveredApiOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -839,16 +694,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_get_discovered_api_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_discovered_api_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_discovered_api_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = common_fields.DiscoveredApiOperation.to_json(
-                        response
-                    )
+                    response_payload = common_fields.DiscoveredApiOperation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -867,23 +716,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 )
             return resp
 
-    class _ListDiscoveredApiObservations(
-        _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations,
-        ApiHubDiscoveryRestStub,
-    ):
+    class _ListDiscoveredApiObservations(_BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.ListDiscoveredApiObservations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -926,28 +764,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_discovered_api_observations(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_discovered_api_observations(request, metadata)
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -971,12 +797,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._ListDiscoveredApiObservations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -992,21 +813,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_list_discovered_api_observations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_discovered_api_observations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_discovered_api_observations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        discovery_service.ListDiscoveredApiObservationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = discovery_service.ListDiscoveredApiObservationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1025,23 +835,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 )
             return resp
 
-    class _ListDiscoveredApiOperations(
-        _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations,
-        ApiHubDiscoveryRestStub,
-    ):
+    class _ListDiscoveredApiOperations(_BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.ListDiscoveredApiOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1084,28 +883,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_discovered_api_operations(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_discovered_api_operations(request, metadata)
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1128,15 +915,8 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 )
 
             # Send the request
-            response = (
-                ApiHubDiscoveryRestTransport._ListDiscoveredApiOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ApiHubDiscoveryRestTransport._ListDiscoveredApiOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1152,21 +932,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_list_discovered_api_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_discovered_api_operations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_discovered_api_operations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        discovery_service.ListDiscoveredApiOperationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = discovery_service.ListDiscoveredApiOperationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1188,21 +957,13 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     @property
     def get_discovered_api_observation(
         self,
-    ) -> Callable[
-        [discovery_service.GetDiscoveredApiObservationRequest],
-        common_fields.DiscoveredApiObservation,
-    ]:
+    ) -> Callable[[discovery_service.GetDiscoveredApiObservationRequest], common_fields.DiscoveredApiObservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDiscoveredApiObservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_discovered_api_operation(
-        self,
-    ) -> Callable[
-        [discovery_service.GetDiscoveredApiOperationRequest],
-        common_fields.DiscoveredApiOperation,
-    ]:
+    def get_discovered_api_operation(self) -> Callable[[discovery_service.GetDiscoveredApiOperationRequest], common_fields.DiscoveredApiOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDiscoveredApiOperation(self._session, self._host, self._interceptor)  # type: ignore
@@ -1210,10 +971,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     @property
     def list_discovered_api_observations(
         self,
-    ) -> Callable[
-        [discovery_service.ListDiscoveredApiObservationsRequest],
-        discovery_service.ListDiscoveredApiObservationsResponse,
-    ]:
+    ) -> Callable[[discovery_service.ListDiscoveredApiObservationsRequest], discovery_service.ListDiscoveredApiObservationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDiscoveredApiObservations(self._session, self._host, self._interceptor)  # type: ignore
@@ -1221,10 +979,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     @property
     def list_discovered_api_operations(
         self,
-    ) -> Callable[
-        [discovery_service.ListDiscoveredApiOperationsRequest],
-        discovery_service.ListDiscoveredApiOperationsResponse,
-    ]:
+    ) -> Callable[[discovery_service.ListDiscoveredApiOperationsRequest], discovery_service.ListDiscoveredApiOperationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDiscoveredApiOperations(self._session, self._host, self._interceptor)  # type: ignore
@@ -1233,22 +988,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseApiHubDiscoveryRestTransport._BaseGetLocation, ApiHubDiscoveryRestStub
-    ):
+    class _GetLocation(_BaseApiHubDiscoveryRestTransport._BaseGetLocation, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1286,26 +1031,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1329,12 +1064,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1346,9 +1076,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1373,22 +1101,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseApiHubDiscoveryRestTransport._BaseListLocations, ApiHubDiscoveryRestStub
-    ):
+    class _ListLocations(_BaseApiHubDiscoveryRestTransport._BaseListLocations, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1426,26 +1144,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1469,12 +1177,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1486,9 +1189,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1513,22 +1214,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseApiHubDiscoveryRestTransport._BaseCancelOperation, ApiHubDiscoveryRestStub
-    ):
+    class _CancelOperation(_BaseApiHubDiscoveryRestTransport._BaseCancelOperation, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1564,32 +1255,18 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1613,13 +1290,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1633,22 +1304,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation, ApiHubDiscoveryRestStub
-    ):
+    class _DeleteOperation(_BaseApiHubDiscoveryRestTransport._BaseDeleteOperation, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1683,28 +1344,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1728,12 +1377,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1747,22 +1391,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseApiHubDiscoveryRestTransport._BaseGetOperation, ApiHubDiscoveryRestStub
-    ):
+    class _GetOperation(_BaseApiHubDiscoveryRestTransport._BaseGetOperation, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1800,26 +1434,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1843,12 +1467,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1860,9 +1479,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1887,22 +1504,12 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseApiHubDiscoveryRestTransport._BaseListOperations, ApiHubDiscoveryRestStub
-    ):
+    class _ListOperations(_BaseApiHubDiscoveryRestTransport._BaseListOperations, ApiHubDiscoveryRestStub):
         def __hash__(self):
             return hash("ApiHubDiscoveryRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1940,26 +1547,16 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1983,12 +1580,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             # Send the request
             response = ApiHubDiscoveryRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2000,9 +1592,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

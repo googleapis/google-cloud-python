@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -268,18 +257,14 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -315,9 +300,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -340,20 +323,13 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def run_funnel_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunFunnelReportRequest],
-        Awaitable[analytics_data_api.RunFunnelReportResponse],
-    ]:
+    def run_funnel_report(self) -> Callable[[analytics_data_api.RunFunnelReportRequest], Awaitable[analytics_data_api.RunFunnelReportResponse]]:
         r"""Return a callable for the run funnel report method over gRPC.
 
         Returns a customized funnel report of your Google Analytics
@@ -394,12 +370,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["run_funnel_report"]
 
     @property
-    def create_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CreateAudienceListRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_audience_list(self) -> Callable[[analytics_data_api.CreateAudienceListRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create audience list method over gRPC.
 
         Creates an audience list for later retrieval. This method
@@ -448,12 +419,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["create_audience_list"]
 
     @property
-    def query_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.QueryAudienceListRequest],
-        Awaitable[analytics_data_api.QueryAudienceListResponse],
-    ]:
+    def query_audience_list(self) -> Callable[[analytics_data_api.QueryAudienceListRequest], Awaitable[analytics_data_api.QueryAudienceListResponse]]:
         r"""Return a callable for the query audience list method over gRPC.
 
         Retrieves an audience list of users. After creating an audience,
@@ -497,10 +463,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     @property
     def sheet_export_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.SheetExportAudienceListRequest],
-        Awaitable[analytics_data_api.SheetExportAudienceListResponse],
-    ]:
+    ) -> Callable[[analytics_data_api.SheetExportAudienceListRequest], Awaitable[analytics_data_api.SheetExportAudienceListResponse]]:
         r"""Return a callable for the sheet export audience list method over gRPC.
 
         Exports an audience list of users to a Google Sheet. After
@@ -535,9 +498,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "sheet_export_audience_list" not in self._stubs:
-            self._stubs[
-                "sheet_export_audience_list"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["sheet_export_audience_list"] = self._logged_channel.unary_unary(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
                 request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
                 response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
@@ -545,12 +506,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["sheet_export_audience_list"]
 
     @property
-    def get_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetAudienceListRequest],
-        Awaitable[analytics_data_api.AudienceList],
-    ]:
+    def get_audience_list(self) -> Callable[[analytics_data_api.GetAudienceListRequest], Awaitable[analytics_data_api.AudienceList]]:
         r"""Return a callable for the get audience list method over gRPC.
 
         Gets configuration metadata about a specific audience list. This
@@ -586,12 +542,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["get_audience_list"]
 
     @property
-    def list_audience_lists(
-        self,
-    ) -> Callable[
-        [analytics_data_api.ListAudienceListsRequest],
-        Awaitable[analytics_data_api.ListAudienceListsResponse],
-    ]:
+    def list_audience_lists(self) -> Callable[[analytics_data_api.ListAudienceListsRequest], Awaitable[analytics_data_api.ListAudienceListsResponse]]:
         r"""Return a callable for the list audience lists method over gRPC.
 
         Lists all audience lists for a property. This method can be used
@@ -631,10 +582,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     @property
     def create_recurring_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.CreateRecurringAudienceListRequest],
-        Awaitable[analytics_data_api.RecurringAudienceList],
-    ]:
+    ) -> Callable[[analytics_data_api.CreateRecurringAudienceListRequest], Awaitable[analytics_data_api.RecurringAudienceList]]:
         r"""Return a callable for the create recurring audience list method over gRPC.
 
         Creates a recurring audience list. Recurring audience lists
@@ -668,9 +616,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_recurring_audience_list" not in self._stubs:
-            self._stubs[
-                "create_recurring_audience_list"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_recurring_audience_list"] = self._logged_channel.unary_unary(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
                 request_serializer=analytics_data_api.CreateRecurringAudienceListRequest.serialize,
                 response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
@@ -680,10 +626,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     @property
     def get_recurring_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetRecurringAudienceListRequest],
-        Awaitable[analytics_data_api.RecurringAudienceList],
-    ]:
+    ) -> Callable[[analytics_data_api.GetRecurringAudienceListRequest], Awaitable[analytics_data_api.RecurringAudienceList]]:
         r"""Return a callable for the get recurring audience list method over gRPC.
 
         Gets configuration metadata about a specific recurring audience
@@ -710,9 +653,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_recurring_audience_list" not in self._stubs:
-            self._stubs[
-                "get_recurring_audience_list"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_recurring_audience_list"] = self._logged_channel.unary_unary(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
                 request_serializer=analytics_data_api.GetRecurringAudienceListRequest.serialize,
                 response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
@@ -722,10 +663,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     @property
     def list_recurring_audience_lists(
         self,
-    ) -> Callable[
-        [analytics_data_api.ListRecurringAudienceListsRequest],
-        Awaitable[analytics_data_api.ListRecurringAudienceListsResponse],
-    ]:
+    ) -> Callable[[analytics_data_api.ListRecurringAudienceListsRequest], Awaitable[analytics_data_api.ListRecurringAudienceListsResponse]]:
         r"""Return a callable for the list recurring audience lists method over gRPC.
 
         Lists all recurring audience lists for a property. This method
@@ -753,9 +691,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_recurring_audience_lists" not in self._stubs:
-            self._stubs[
-                "list_recurring_audience_lists"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_recurring_audience_lists"] = self._logged_channel.unary_unary(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
                 request_serializer=analytics_data_api.ListRecurringAudienceListsRequest.serialize,
                 response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
@@ -765,10 +701,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     @property
     def get_property_quotas_snapshot(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetPropertyQuotasSnapshotRequest],
-        Awaitable[analytics_data_api.PropertyQuotasSnapshot],
-    ]:
+    ) -> Callable[[analytics_data_api.GetPropertyQuotasSnapshotRequest], Awaitable[analytics_data_api.PropertyQuotasSnapshot]]:
         r"""Return a callable for the get property quotas snapshot method over gRPC.
 
         Get all property quotas organized by quota category
@@ -786,9 +719,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_property_quotas_snapshot" not in self._stubs:
-            self._stubs[
-                "get_property_quotas_snapshot"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_property_quotas_snapshot"] = self._logged_channel.unary_unary(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
                 request_serializer=analytics_data_api.GetPropertyQuotasSnapshotRequest.serialize,
                 response_deserializer=analytics_data_api.PropertyQuotasSnapshot.deserialize,
@@ -796,12 +727,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["get_property_quotas_snapshot"]
 
     @property
-    def create_report_task(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CreateReportTaskRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_report_task(self) -> Callable[[analytics_data_api.CreateReportTaskRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create report task method over gRPC.
 
         Initiates the creation of a report task. This method
@@ -834,12 +760,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["create_report_task"]
 
     @property
-    def query_report_task(
-        self,
-    ) -> Callable[
-        [analytics_data_api.QueryReportTaskRequest],
-        Awaitable[analytics_data_api.QueryReportTaskResponse],
-    ]:
+    def query_report_task(self) -> Callable[[analytics_data_api.QueryReportTaskRequest], Awaitable[analytics_data_api.QueryReportTaskResponse]]:
         r"""Return a callable for the query report task method over gRPC.
 
         Retrieves a report task's content. After requesting the
@@ -868,12 +789,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["query_report_task"]
 
     @property
-    def get_report_task(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetReportTaskRequest],
-        Awaitable[analytics_data_api.ReportTask],
-    ]:
+    def get_report_task(self) -> Callable[[analytics_data_api.GetReportTaskRequest], Awaitable[analytics_data_api.ReportTask]]:
         r"""Return a callable for the get report task method over gRPC.
 
         Gets report metadata about a specific report task.
@@ -899,12 +815,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["get_report_task"]
 
     @property
-    def list_report_tasks(
-        self,
-    ) -> Callable[
-        [analytics_data_api.ListReportTasksRequest],
-        Awaitable[analytics_data_api.ListReportTasksResponse],
-    ]:
+    def list_report_tasks(self) -> Callable[[analytics_data_api.ListReportTasksRequest], Awaitable[analytics_data_api.ListReportTasksResponse]]:
         r"""Return a callable for the list report tasks method over gRPC.
 
         Lists all report tasks for a property.

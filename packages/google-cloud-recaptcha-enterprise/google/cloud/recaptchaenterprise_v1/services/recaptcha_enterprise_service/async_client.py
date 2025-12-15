@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -47,9 +36,7 @@ except AttributeError:  # pragma: NO COVER
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service import (
-    pagers,
-)
+from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service import pagers
 from google.cloud.recaptchaenterprise_v1.types import recaptchaenterprise
 
 from .client import RecaptchaEnterpriseServiceClient
@@ -75,69 +62,31 @@ class RecaptchaEnterpriseServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = RecaptchaEnterpriseServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = RecaptchaEnterpriseServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        RecaptchaEnterpriseServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = RecaptchaEnterpriseServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = RecaptchaEnterpriseServiceClient._DEFAULT_UNIVERSE
 
     assessment_path = staticmethod(RecaptchaEnterpriseServiceClient.assessment_path)
-    parse_assessment_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_assessment_path
-    )
-    firewall_policy_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.firewall_policy_path
-    )
-    parse_firewall_policy_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_firewall_policy_path
-    )
+    parse_assessment_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_assessment_path)
+    firewall_policy_path = staticmethod(RecaptchaEnterpriseServiceClient.firewall_policy_path)
+    parse_firewall_policy_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_firewall_policy_path)
     key_path = staticmethod(RecaptchaEnterpriseServiceClient.key_path)
     parse_key_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_key_path)
     metrics_path = staticmethod(RecaptchaEnterpriseServiceClient.metrics_path)
-    parse_metrics_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_metrics_path
-    )
-    related_account_group_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.related_account_group_path
-    )
-    parse_related_account_group_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_related_account_group_path
-    )
-    related_account_group_membership_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.related_account_group_membership_path
-    )
-    parse_related_account_group_membership_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_related_account_group_membership_path
-    )
-    common_billing_account_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        RecaptchaEnterpriseServiceClient.parse_common_location_path
-    )
+    parse_metrics_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_metrics_path)
+    related_account_group_path = staticmethod(RecaptchaEnterpriseServiceClient.related_account_group_path)
+    parse_related_account_group_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_related_account_group_path)
+    related_account_group_membership_path = staticmethod(RecaptchaEnterpriseServiceClient.related_account_group_membership_path)
+    parse_related_account_group_membership_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_related_account_group_membership_path)
+    common_billing_account_path = staticmethod(RecaptchaEnterpriseServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(RecaptchaEnterpriseServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(RecaptchaEnterpriseServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(RecaptchaEnterpriseServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(RecaptchaEnterpriseServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -173,9 +122,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -242,13 +189,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                RecaptchaEnterpriseServiceTransport,
-                Callable[..., RecaptchaEnterpriseServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, RecaptchaEnterpriseServiceTransport, Callable[..., RecaptchaEnterpriseServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -308,20 +249,14 @@ class RecaptchaEnterpriseServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -332,9 +267,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def create_assessment(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.CreateAssessmentRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.CreateAssessmentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         assessment: Optional[recaptchaenterprise.Assessment] = None,
@@ -406,14 +339,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, assessment]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -429,15 +357,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_assessment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_assessment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -455,14 +379,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def annotate_assessment(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.AnnotateAssessmentRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.AnnotateAssessmentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
-        annotation: Optional[
-            recaptchaenterprise.AnnotateAssessmentRequest.Annotation
-        ] = None,
+        annotation: Optional[recaptchaenterprise.AnnotateAssessmentRequest.Annotation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -536,14 +456,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, annotation]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -559,15 +474,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.annotate_assessment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.annotate_assessment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -662,14 +573,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, key]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -685,15 +591,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -779,14 +681,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -800,15 +697,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_keys
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_keys]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -837,9 +730,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def retrieve_legacy_secret_key(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.RetrieveLegacySecretKeyRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.RetrieveLegacySecretKeyRequest, dict]] = None,
         *,
         key: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -907,14 +798,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [key]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -928,15 +814,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.retrieve_legacy_secret_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.retrieve_legacy_secret_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("key", request.key),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("key", request.key),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1018,14 +900,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1043,9 +920,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1139,14 +1014,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [key, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1162,15 +1032,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("key.name", request.key.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("key.name", request.key.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1242,14 +1108,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1263,15 +1124,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1352,15 +1209,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.migrate_key
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.migrate_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1457,14 +1310,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, ip_override_data]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1480,15 +1328,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.add_ip_override
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.add_ip_override]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1506,9 +1350,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def remove_ip_override(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.RemoveIpOverrideRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.RemoveIpOverrideRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         ip_override_data: Optional[recaptchaenterprise.IpOverrideData] = None,
@@ -1590,14 +1432,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, ip_override_data]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1613,15 +1450,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.remove_ip_override
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.remove_ip_override]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1639,9 +1472,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def list_ip_overrides(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.ListIpOverridesRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.ListIpOverridesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1708,14 +1539,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1729,15 +1555,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_ip_overrides
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_ip_overrides]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1828,14 +1650,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1849,15 +1666,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_metrics
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1875,9 +1688,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def create_firewall_policy(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.CreateFirewallPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.CreateFirewallPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         firewall_policy: Optional[recaptchaenterprise.FirewallPolicy] = None,
@@ -1952,14 +1763,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, firewall_policy]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1975,15 +1781,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_firewall_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_firewall_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2001,9 +1803,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def list_firewall_policies(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.ListFirewallPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.ListFirewallPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2072,14 +1872,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2093,15 +1888,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_firewall_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_firewall_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2130,9 +1921,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def get_firewall_policy(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.GetFirewallPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.GetFirewallPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2198,14 +1987,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2219,15 +2003,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_firewall_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_firewall_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2245,9 +2025,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def update_firewall_policy(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.UpdateFirewallPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.UpdateFirewallPolicyRequest, dict]] = None,
         *,
         firewall_policy: Optional[recaptchaenterprise.FirewallPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2319,14 +2097,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [firewall_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2342,17 +2115,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_firewall_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_firewall_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("firewall_policy.name", request.firewall_policy.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("firewall_policy.name", request.firewall_policy.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2370,9 +2137,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def delete_firewall_policy(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.DeleteFirewallPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.DeleteFirewallPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2428,14 +2193,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2449,15 +2209,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_firewall_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_firewall_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2472,9 +2228,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def reorder_firewall_policies(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.ReorderFirewallPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.ReorderFirewallPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         names: Optional[MutableSequence[str]] = None,
@@ -2548,14 +2302,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, names]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2571,15 +2320,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reorder_firewall_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reorder_firewall_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2597,9 +2342,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def list_related_account_groups(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.ListRelatedAccountGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.ListRelatedAccountGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2667,14 +2410,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2688,15 +2426,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_related_account_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_related_account_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2725,9 +2459,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def list_related_account_group_memberships(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2796,23 +2528,14 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest
-        ):
-            request = recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest(
-                request
-            )
+        if not isinstance(request, recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest):
+            request = recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2821,15 +2544,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_related_account_group_memberships
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_related_account_group_memberships]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2858,9 +2577,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
     async def search_related_account_group_memberships(
         self,
-        request: Optional[
-            Union[recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest, dict]
-        ] = None,
+        request: Optional[Union[recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         hashed_account_id: Optional[bytes] = None,
@@ -2942,23 +2659,14 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, hashed_account_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest
-        ):
-            request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(
-                request
-            )
+        if not isinstance(request, recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest):
+            request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2969,15 +2677,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_related_account_group_memberships
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_related_account_group_memberships]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3011,9 +2715,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

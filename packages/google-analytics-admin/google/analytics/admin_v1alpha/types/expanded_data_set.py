@@ -204,9 +204,7 @@ class ExpandedDataSetFilterExpressionList(proto.Message):
             A list of ExpandedDataSet filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "ExpandedDataSetFilterExpression"
-    ] = proto.RepeatedField(
+    filter_expressions: MutableSequence["ExpandedDataSetFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ExpandedDataSetFilterExpression",

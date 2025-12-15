@@ -22,9 +22,7 @@ from .grpc_asyncio import BusinessInfoServiceGrpcAsyncIOTransport
 from .rest import BusinessInfoServiceRestInterceptor, BusinessInfoServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[BusinessInfoServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[BusinessInfoServiceTransport]]
 _transport_registry["grpc"] = BusinessInfoServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = BusinessInfoServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = BusinessInfoServiceRestTransport

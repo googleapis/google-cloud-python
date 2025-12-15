@@ -32,15 +32,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1p1beta1.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v1p1beta1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1p1beta1.types import (
-    security_marks as gcs_security_marks,
-)
+from google.cloud.securitycenter_v1p1beta1.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v1p1beta1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1p1beta1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1p1beta1.types import finding
 from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1p1beta1.types import notification_config
@@ -63,9 +57,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -75,10 +67,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -97,11 +86,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -236,18 +221,14 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -281,9 +262,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -350,17 +329,13 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
+    def create_source(self) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
         r"""Return a callable for the create source method over gRPC.
 
         Creates a source.
@@ -384,9 +359,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["create_source"]
 
     @property
-    def create_finding(
-        self,
-    ) -> Callable[[securitycenter_service.CreateFindingRequest], gcs_finding.Finding]:
+    def create_finding(self) -> Callable[[securitycenter_service.CreateFindingRequest], gcs_finding.Finding]:
         r"""Return a callable for the create finding method over gRPC.
 
         Creates a finding. The corresponding source must
@@ -413,10 +386,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     @property
     def create_notification_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.CreateNotificationConfigRequest],
-        gcs_notification_config.NotificationConfig,
-    ]:
+    ) -> Callable[[securitycenter_service.CreateNotificationConfigRequest], gcs_notification_config.NotificationConfig]:
         r"""Return a callable for the create notification config method over gRPC.
 
         Creates a notification config.
@@ -432,9 +402,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_notification_config" not in self._stubs:
-            self._stubs[
-                "create_notification_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_notification_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v1p1beta1.SecurityCenter/CreateNotificationConfig",
                 request_serializer=securitycenter_service.CreateNotificationConfigRequest.serialize,
                 response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
@@ -442,11 +410,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["create_notification_config"]
 
     @property
-    def delete_notification_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.DeleteNotificationConfigRequest], empty_pb2.Empty
-    ]:
+    def delete_notification_config(self) -> Callable[[securitycenter_service.DeleteNotificationConfigRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete notification config method over gRPC.
 
         Deletes a notification config.
@@ -462,9 +426,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_notification_config" not in self._stubs:
-            self._stubs[
-                "delete_notification_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_notification_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v1p1beta1.SecurityCenter/DeleteNotificationConfig",
                 request_serializer=securitycenter_service.DeleteNotificationConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -472,9 +434,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["delete_notification_config"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy on the specified
@@ -499,12 +459,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def get_notification_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetNotificationConfigRequest],
-        notification_config.NotificationConfig,
-    ]:
+    def get_notification_config(self) -> Callable[[securitycenter_service.GetNotificationConfigRequest], notification_config.NotificationConfig]:
         r"""Return a callable for the get notification config method over gRPC.
 
         Gets a notification config.
@@ -530,10 +485,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     @property
     def get_organization_settings(
         self,
-    ) -> Callable[
-        [securitycenter_service.GetOrganizationSettingsRequest],
-        organization_settings.OrganizationSettings,
-    ]:
+    ) -> Callable[[securitycenter_service.GetOrganizationSettingsRequest], organization_settings.OrganizationSettings]:
         r"""Return a callable for the get organization settings method over gRPC.
 
         Gets the settings for an organization.
@@ -557,9 +509,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["get_organization_settings"]
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[securitycenter_service.GetSourceRequest], source.Source]:
+    def get_source(self) -> Callable[[securitycenter_service.GetSourceRequest], source.Source]:
         r"""Return a callable for the get source method over gRPC.
 
         Gets a source.
@@ -583,12 +533,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["get_source"]
 
     @property
-    def group_assets(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GroupAssetsRequest],
-        securitycenter_service.GroupAssetsResponse,
-    ]:
+    def group_assets(self) -> Callable[[securitycenter_service.GroupAssetsRequest], securitycenter_service.GroupAssetsResponse]:
         r"""Return a callable for the group assets method over gRPC.
 
         Filters an organization's assets and  groups them by
@@ -613,12 +558,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["group_assets"]
 
     @property
-    def group_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GroupFindingsRequest],
-        securitycenter_service.GroupFindingsResponse,
-    ]:
+    def group_findings(self) -> Callable[[securitycenter_service.GroupFindingsRequest], securitycenter_service.GroupFindingsResponse]:
         r"""Return a callable for the group findings method over gRPC.
 
         Filters an organization or source's findings and groups them by
@@ -648,12 +588,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["group_findings"]
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListAssetsRequest],
-        securitycenter_service.ListAssetsResponse,
-    ]:
+    def list_assets(self) -> Callable[[securitycenter_service.ListAssetsRequest], securitycenter_service.ListAssetsResponse]:
         r"""Return a callable for the list assets method over gRPC.
 
         Lists an organization's assets.
@@ -677,12 +612,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["list_assets"]
 
     @property
-    def list_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListFindingsRequest],
-        securitycenter_service.ListFindingsResponse,
-    ]:
+    def list_findings(self) -> Callable[[securitycenter_service.ListFindingsRequest], securitycenter_service.ListFindingsResponse]:
         r"""Return a callable for the list findings method over gRPC.
 
         Lists an organization or source's findings.
@@ -712,10 +642,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     @property
     def list_notification_configs(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListNotificationConfigsRequest],
-        securitycenter_service.ListNotificationConfigsResponse,
-    ]:
+    ) -> Callable[[securitycenter_service.ListNotificationConfigsRequest], securitycenter_service.ListNotificationConfigsResponse]:
         r"""Return a callable for the list notification configs method over gRPC.
 
         Lists notification configs.
@@ -739,12 +666,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["list_notification_configs"]
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListSourcesRequest],
-        securitycenter_service.ListSourcesResponse,
-    ]:
+    def list_sources(self) -> Callable[[securitycenter_service.ListSourcesRequest], securitycenter_service.ListSourcesResponse]:
         r"""Return a callable for the list sources method over gRPC.
 
         Lists all sources belonging to an organization.
@@ -768,11 +690,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["list_sources"]
 
     @property
-    def run_asset_discovery(
-        self,
-    ) -> Callable[
-        [securitycenter_service.RunAssetDiscoveryRequest], operations_pb2.Operation
-    ]:
+    def run_asset_discovery(self) -> Callable[[securitycenter_service.RunAssetDiscoveryRequest], operations_pb2.Operation]:
         r"""Return a callable for the run asset discovery method over gRPC.
 
         Runs asset discovery. The discovery is tracked with a
@@ -801,9 +719,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["run_asset_discovery"]
 
     @property
-    def set_finding_state(
-        self,
-    ) -> Callable[[securitycenter_service.SetFindingStateRequest], finding.Finding]:
+    def set_finding_state(self) -> Callable[[securitycenter_service.SetFindingStateRequest], finding.Finding]:
         r"""Return a callable for the set finding state method over gRPC.
 
         Updates the state of a finding.
@@ -827,9 +743,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["set_finding_state"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on the specified
@@ -854,12 +768,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns the permissions that a caller has on the
@@ -884,9 +793,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["test_iam_permissions"]
 
     @property
-    def update_finding(
-        self,
-    ) -> Callable[[securitycenter_service.UpdateFindingRequest], gcs_finding.Finding]:
+    def update_finding(self) -> Callable[[securitycenter_service.UpdateFindingRequest], gcs_finding.Finding]:
         r"""Return a callable for the update finding method over gRPC.
 
         Creates or updates a finding. The corresponding
@@ -913,10 +820,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     @property
     def update_notification_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.UpdateNotificationConfigRequest],
-        gcs_notification_config.NotificationConfig,
-    ]:
+    ) -> Callable[[securitycenter_service.UpdateNotificationConfigRequest], gcs_notification_config.NotificationConfig]:
         r"""Return a callable for the update notification config method over gRPC.
 
         Updates a notification config. The following update fields are
@@ -933,9 +837,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_notification_config" not in self._stubs:
-            self._stubs[
-                "update_notification_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_notification_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v1p1beta1.SecurityCenter/UpdateNotificationConfig",
                 request_serializer=securitycenter_service.UpdateNotificationConfigRequest.serialize,
                 response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
@@ -945,10 +847,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
     @property
     def update_organization_settings(
         self,
-    ) -> Callable[
-        [securitycenter_service.UpdateOrganizationSettingsRequest],
-        gcs_organization_settings.OrganizationSettings,
-    ]:
+    ) -> Callable[[securitycenter_service.UpdateOrganizationSettingsRequest], gcs_organization_settings.OrganizationSettings]:
         r"""Return a callable for the update organization settings method over gRPC.
 
         Updates an organization's settings.
@@ -964,9 +863,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_organization_settings" not in self._stubs:
-            self._stubs[
-                "update_organization_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_organization_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v1p1beta1.SecurityCenter/UpdateOrganizationSettings",
                 request_serializer=securitycenter_service.UpdateOrganizationSettingsRequest.serialize,
                 response_deserializer=gcs_organization_settings.OrganizationSettings.deserialize,
@@ -974,9 +871,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["update_organization_settings"]
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[[securitycenter_service.UpdateSourceRequest], gcs_source.Source]:
+    def update_source(self) -> Callable[[securitycenter_service.UpdateSourceRequest], gcs_source.Source]:
         r"""Return a callable for the update source method over gRPC.
 
         Updates a source.
@@ -1000,12 +895,7 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["update_source"]
 
     @property
-    def update_security_marks(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateSecurityMarksRequest],
-        gcs_security_marks.SecurityMarks,
-    ]:
+    def update_security_marks(self) -> Callable[[securitycenter_service.UpdateSecurityMarksRequest], gcs_security_marks.SecurityMarks]:
         r"""Return a callable for the update security marks method over gRPC.
 
         Updates security marks.

@@ -32,9 +32,7 @@ from google.cloud.dialogflow_v2.types import conversation
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
 from google.cloud.dialogflow_v2.types import participant
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class ConversationsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -234,40 +224,27 @@ class ConversationsTransport(abc.ABC):
     @property
     def create_conversation(
         self,
-    ) -> Callable[
-        [gcd_conversation.CreateConversationRequest],
-        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
-    ]:
+    ) -> Callable[[gcd_conversation.CreateConversationRequest], Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]]]:
         raise NotImplementedError()
 
     @property
     def list_conversations(
         self,
     ) -> Callable[
-        [conversation.ListConversationsRequest],
-        Union[
-            conversation.ListConversationsResponse,
-            Awaitable[conversation.ListConversationsResponse],
-        ],
+        [conversation.ListConversationsRequest], Union[conversation.ListConversationsResponse, Awaitable[conversation.ListConversationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_conversation(
         self,
-    ) -> Callable[
-        [conversation.GetConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
-    ]:
+    ) -> Callable[[conversation.GetConversationRequest], Union[conversation.Conversation, Awaitable[conversation.Conversation]]]:
         raise NotImplementedError()
 
     @property
     def complete_conversation(
         self,
-    ) -> Callable[
-        [conversation.CompleteConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
-    ]:
+    ) -> Callable[[conversation.CompleteConversationRequest], Union[conversation.Conversation, Awaitable[conversation.Conversation]]]:
         raise NotImplementedError()
 
     @property
@@ -275,23 +252,14 @@ class ConversationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [gcd_conversation.IngestContextReferencesRequest],
-        Union[
-            gcd_conversation.IngestContextReferencesResponse,
-            Awaitable[gcd_conversation.IngestContextReferencesResponse],
-        ],
+        Union[gcd_conversation.IngestContextReferencesResponse, Awaitable[gcd_conversation.IngestContextReferencesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_messages(
         self,
-    ) -> Callable[
-        [conversation.ListMessagesRequest],
-        Union[
-            conversation.ListMessagesResponse,
-            Awaitable[conversation.ListMessagesResponse],
-        ],
-    ]:
+    ) -> Callable[[conversation.ListMessagesRequest], Union[conversation.ListMessagesResponse, Awaitable[conversation.ListMessagesResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -299,10 +267,7 @@ class ConversationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [gcd_conversation.SuggestConversationSummaryRequest],
-        Union[
-            gcd_conversation.SuggestConversationSummaryResponse,
-            Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
-        ],
+        Union[gcd_conversation.SuggestConversationSummaryResponse, Awaitable[gcd_conversation.SuggestConversationSummaryResponse]],
     ]:
         raise NotImplementedError()
 
@@ -311,10 +276,7 @@ class ConversationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [conversation.GenerateStatelessSummaryRequest],
-        Union[
-            conversation.GenerateStatelessSummaryResponse,
-            Awaitable[conversation.GenerateStatelessSummaryResponse],
-        ],
+        Union[conversation.GenerateStatelessSummaryResponse, Awaitable[conversation.GenerateStatelessSummaryResponse]],
     ]:
         raise NotImplementedError()
 
@@ -323,10 +285,7 @@ class ConversationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [conversation.GenerateStatelessSuggestionRequest],
-        Union[
-            conversation.GenerateStatelessSuggestionResponse,
-            Awaitable[conversation.GenerateStatelessSuggestionResponse],
-        ],
+        Union[conversation.GenerateStatelessSuggestionResponse, Awaitable[conversation.GenerateStatelessSuggestionResponse]],
     ]:
         raise NotImplementedError()
 
@@ -334,11 +293,7 @@ class ConversationsTransport(abc.ABC):
     def search_knowledge(
         self,
     ) -> Callable[
-        [conversation.SearchKnowledgeRequest],
-        Union[
-            conversation.SearchKnowledgeResponse,
-            Awaitable[conversation.SearchKnowledgeResponse],
-        ],
+        [conversation.SearchKnowledgeRequest], Union[conversation.SearchKnowledgeResponse, Awaitable[conversation.SearchKnowledgeResponse]]
     ]:
         raise NotImplementedError()
 
@@ -347,10 +302,7 @@ class ConversationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [gcd_conversation.GenerateSuggestionsRequest],
-        Union[
-            participant.GenerateSuggestionsResponse,
-            Awaitable[participant.GenerateSuggestionsResponse],
-        ],
+        Union[participant.GenerateSuggestionsResponse, Awaitable[participant.GenerateSuggestionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -359,20 +311,14 @@ class ConversationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -384,22 +330,13 @@ class ConversationsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

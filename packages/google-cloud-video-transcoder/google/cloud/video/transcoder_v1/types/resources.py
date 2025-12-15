@@ -762,12 +762,10 @@ class Manifest(proto.Message):
             SEGMENT_LIST = 1
             SEGMENT_TEMPLATE_NUMBER = 2
 
-        segment_reference_scheme: "Manifest.DashConfig.SegmentReferenceScheme" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="Manifest.DashConfig.SegmentReferenceScheme",
-            )
+        segment_reference_scheme: "Manifest.DashConfig.SegmentReferenceScheme" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Manifest.DashConfig.SegmentReferenceScheme",
         )
 
     file_name: str = proto.Field(
@@ -1838,12 +1836,10 @@ class VideoStream(proto.Message):
             proto.DOUBLE,
             number=3,
         )
-        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = (
-            proto.Field(
-                proto.ENUM,
-                number=23,
-                enum="VideoStream.FrameRateConversionStrategy",
-            )
+        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = proto.Field(
+            proto.ENUM,
+            number=23,
+            enum="VideoStream.FrameRateConversionStrategy",
         )
         bitrate_bps: int = proto.Field(
             proto.INT32,
@@ -2134,12 +2130,10 @@ class VideoStream(proto.Message):
             proto.DOUBLE,
             number=3,
         )
-        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = (
-            proto.Field(
-                proto.ENUM,
-                number=23,
-                enum="VideoStream.FrameRateConversionStrategy",
-            )
+        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = proto.Field(
+            proto.ENUM,
+            number=23,
+            enum="VideoStream.FrameRateConversionStrategy",
         )
         bitrate_bps: int = proto.Field(
             proto.INT32,
@@ -2359,12 +2353,10 @@ class VideoStream(proto.Message):
             proto.DOUBLE,
             number=3,
         )
-        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = (
-            proto.Field(
-                proto.ENUM,
-                number=13,
-                enum="VideoStream.FrameRateConversionStrategy",
-            )
+        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = proto.Field(
+            proto.ENUM,
+            number=13,
+            enum="VideoStream.FrameRateConversionStrategy",
         )
         bitrate_bps: int = proto.Field(
             proto.INT32,

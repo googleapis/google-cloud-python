@@ -34,9 +34,7 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.certificate_manager_v1.types import certificate_issuance_config
-from google.cloud.certificate_manager_v1.types import (
-    certificate_issuance_config as gcc_certificate_issuance_config,
-)
+from google.cloud.certificate_manager_v1.types import certificate_issuance_config as gcc_certificate_issuance_config
 from google.cloud.certificate_manager_v1.types import trust_config as gcc_trust_config
 from google.cloud.certificate_manager_v1.types import certificate_manager
 from google.cloud.certificate_manager_v1.types import trust_config
@@ -54,13 +52,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -70,10 +64,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -92,11 +83,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -302,18 +289,14 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -349,9 +332,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -374,20 +355,13 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_certificates(
-        self,
-    ) -> Callable[
-        [certificate_manager.ListCertificatesRequest],
-        Awaitable[certificate_manager.ListCertificatesResponse],
-    ]:
+    def list_certificates(self) -> Callable[[certificate_manager.ListCertificatesRequest], Awaitable[certificate_manager.ListCertificatesResponse]]:
         r"""Return a callable for the list certificates method over gRPC.
 
         Lists Certificates in a given project and location.
@@ -411,12 +385,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["list_certificates"]
 
     @property
-    def get_certificate(
-        self,
-    ) -> Callable[
-        [certificate_manager.GetCertificateRequest],
-        Awaitable[certificate_manager.Certificate],
-    ]:
+    def get_certificate(self) -> Callable[[certificate_manager.GetCertificateRequest], Awaitable[certificate_manager.Certificate]]:
         r"""Return a callable for the get certificate method over gRPC.
 
         Gets details of a single Certificate.
@@ -440,12 +409,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["get_certificate"]
 
     @property
-    def create_certificate(
-        self,
-    ) -> Callable[
-        [certificate_manager.CreateCertificateRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_certificate(self) -> Callable[[certificate_manager.CreateCertificateRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create certificate method over gRPC.
 
         Creates a new Certificate in a given project and
@@ -470,12 +434,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["create_certificate"]
 
     @property
-    def update_certificate(
-        self,
-    ) -> Callable[
-        [certificate_manager.UpdateCertificateRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_certificate(self) -> Callable[[certificate_manager.UpdateCertificateRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update certificate method over gRPC.
 
         Updates a Certificate.
@@ -499,12 +458,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["update_certificate"]
 
     @property
-    def delete_certificate(
-        self,
-    ) -> Callable[
-        [certificate_manager.DeleteCertificateRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_certificate(self) -> Callable[[certificate_manager.DeleteCertificateRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete certificate method over gRPC.
 
         Deletes a single Certificate.
@@ -530,10 +484,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def list_certificate_maps(
         self,
-    ) -> Callable[
-        [certificate_manager.ListCertificateMapsRequest],
-        Awaitable[certificate_manager.ListCertificateMapsResponse],
-    ]:
+    ) -> Callable[[certificate_manager.ListCertificateMapsRequest], Awaitable[certificate_manager.ListCertificateMapsResponse]]:
         r"""Return a callable for the list certificate maps method over gRPC.
 
         Lists CertificateMaps in a given project and
@@ -558,12 +509,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["list_certificate_maps"]
 
     @property
-    def get_certificate_map(
-        self,
-    ) -> Callable[
-        [certificate_manager.GetCertificateMapRequest],
-        Awaitable[certificate_manager.CertificateMap],
-    ]:
+    def get_certificate_map(self) -> Callable[[certificate_manager.GetCertificateMapRequest], Awaitable[certificate_manager.CertificateMap]]:
         r"""Return a callable for the get certificate map method over gRPC.
 
         Gets details of a single CertificateMap.
@@ -587,12 +533,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["get_certificate_map"]
 
     @property
-    def create_certificate_map(
-        self,
-    ) -> Callable[
-        [certificate_manager.CreateCertificateMapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_certificate_map(self) -> Callable[[certificate_manager.CreateCertificateMapRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create certificate map method over gRPC.
 
         Creates a new CertificateMap in a given project and
@@ -617,12 +558,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["create_certificate_map"]
 
     @property
-    def update_certificate_map(
-        self,
-    ) -> Callable[
-        [certificate_manager.UpdateCertificateMapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_certificate_map(self) -> Callable[[certificate_manager.UpdateCertificateMapRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update certificate map method over gRPC.
 
         Updates a CertificateMap.
@@ -646,12 +582,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["update_certificate_map"]
 
     @property
-    def delete_certificate_map(
-        self,
-    ) -> Callable[
-        [certificate_manager.DeleteCertificateMapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_certificate_map(self) -> Callable[[certificate_manager.DeleteCertificateMapRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete certificate map method over gRPC.
 
         Deletes a single CertificateMap. A Certificate Map
@@ -680,10 +611,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def list_certificate_map_entries(
         self,
-    ) -> Callable[
-        [certificate_manager.ListCertificateMapEntriesRequest],
-        Awaitable[certificate_manager.ListCertificateMapEntriesResponse],
-    ]:
+    ) -> Callable[[certificate_manager.ListCertificateMapEntriesRequest], Awaitable[certificate_manager.ListCertificateMapEntriesResponse]]:
         r"""Return a callable for the list certificate map entries method over gRPC.
 
         Lists CertificateMapEntries in a given project and
@@ -700,9 +628,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_certificate_map_entries" not in self._stubs:
-            self._stubs[
-                "list_certificate_map_entries"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_certificate_map_entries"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateMapEntries",
                 request_serializer=certificate_manager.ListCertificateMapEntriesRequest.serialize,
                 response_deserializer=certificate_manager.ListCertificateMapEntriesResponse.deserialize,
@@ -712,10 +638,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def get_certificate_map_entry(
         self,
-    ) -> Callable[
-        [certificate_manager.GetCertificateMapEntryRequest],
-        Awaitable[certificate_manager.CertificateMapEntry],
-    ]:
+    ) -> Callable[[certificate_manager.GetCertificateMapEntryRequest], Awaitable[certificate_manager.CertificateMapEntry]]:
         r"""Return a callable for the get certificate map entry method over gRPC.
 
         Gets details of a single CertificateMapEntry.
@@ -739,12 +662,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["get_certificate_map_entry"]
 
     @property
-    def create_certificate_map_entry(
-        self,
-    ) -> Callable[
-        [certificate_manager.CreateCertificateMapEntryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_certificate_map_entry(self) -> Callable[[certificate_manager.CreateCertificateMapEntryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create certificate map entry method over gRPC.
 
         Creates a new CertificateMapEntry in a given project
@@ -761,9 +679,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_certificate_map_entry" not in self._stubs:
-            self._stubs[
-                "create_certificate_map_entry"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_certificate_map_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateMapEntry",
                 request_serializer=certificate_manager.CreateCertificateMapEntryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -771,12 +687,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["create_certificate_map_entry"]
 
     @property
-    def update_certificate_map_entry(
-        self,
-    ) -> Callable[
-        [certificate_manager.UpdateCertificateMapEntryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_certificate_map_entry(self) -> Callable[[certificate_manager.UpdateCertificateMapEntryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update certificate map entry method over gRPC.
 
         Updates a CertificateMapEntry.
@@ -792,9 +703,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_certificate_map_entry" not in self._stubs:
-            self._stubs[
-                "update_certificate_map_entry"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_certificate_map_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/UpdateCertificateMapEntry",
                 request_serializer=certificate_manager.UpdateCertificateMapEntryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -802,12 +711,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["update_certificate_map_entry"]
 
     @property
-    def delete_certificate_map_entry(
-        self,
-    ) -> Callable[
-        [certificate_manager.DeleteCertificateMapEntryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_certificate_map_entry(self) -> Callable[[certificate_manager.DeleteCertificateMapEntryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete certificate map entry method over gRPC.
 
         Deletes a single CertificateMapEntry.
@@ -823,9 +727,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_certificate_map_entry" not in self._stubs:
-            self._stubs[
-                "delete_certificate_map_entry"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_certificate_map_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateMapEntry",
                 request_serializer=certificate_manager.DeleteCertificateMapEntryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -835,10 +737,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def list_dns_authorizations(
         self,
-    ) -> Callable[
-        [certificate_manager.ListDnsAuthorizationsRequest],
-        Awaitable[certificate_manager.ListDnsAuthorizationsResponse],
-    ]:
+    ) -> Callable[[certificate_manager.ListDnsAuthorizationsRequest], Awaitable[certificate_manager.ListDnsAuthorizationsResponse]]:
         r"""Return a callable for the list dns authorizations method over gRPC.
 
         Lists DnsAuthorizations in a given project and
@@ -863,12 +762,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["list_dns_authorizations"]
 
     @property
-    def get_dns_authorization(
-        self,
-    ) -> Callable[
-        [certificate_manager.GetDnsAuthorizationRequest],
-        Awaitable[certificate_manager.DnsAuthorization],
-    ]:
+    def get_dns_authorization(self) -> Callable[[certificate_manager.GetDnsAuthorizationRequest], Awaitable[certificate_manager.DnsAuthorization]]:
         r"""Return a callable for the get dns authorization method over gRPC.
 
         Gets details of a single DnsAuthorization.
@@ -892,12 +786,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["get_dns_authorization"]
 
     @property
-    def create_dns_authorization(
-        self,
-    ) -> Callable[
-        [certificate_manager.CreateDnsAuthorizationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_dns_authorization(self) -> Callable[[certificate_manager.CreateDnsAuthorizationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create dns authorization method over gRPC.
 
         Creates a new DnsAuthorization in a given project and
@@ -922,12 +811,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["create_dns_authorization"]
 
     @property
-    def update_dns_authorization(
-        self,
-    ) -> Callable[
-        [certificate_manager.UpdateDnsAuthorizationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_dns_authorization(self) -> Callable[[certificate_manager.UpdateDnsAuthorizationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update dns authorization method over gRPC.
 
         Updates a DnsAuthorization.
@@ -951,12 +835,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["update_dns_authorization"]
 
     @property
-    def delete_dns_authorization(
-        self,
-    ) -> Callable[
-        [certificate_manager.DeleteDnsAuthorizationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_dns_authorization(self) -> Callable[[certificate_manager.DeleteDnsAuthorizationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete dns authorization method over gRPC.
 
         Deletes a single DnsAuthorization.
@@ -1003,9 +882,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_certificate_issuance_configs" not in self._stubs:
-            self._stubs[
-                "list_certificate_issuance_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_certificate_issuance_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateIssuanceConfigs",
                 request_serializer=certificate_issuance_config.ListCertificateIssuanceConfigsRequest.serialize,
                 response_deserializer=certificate_issuance_config.ListCertificateIssuanceConfigsResponse.deserialize,
@@ -1016,8 +893,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     def get_certificate_issuance_config(
         self,
     ) -> Callable[
-        [certificate_issuance_config.GetCertificateIssuanceConfigRequest],
-        Awaitable[certificate_issuance_config.CertificateIssuanceConfig],
+        [certificate_issuance_config.GetCertificateIssuanceConfigRequest], Awaitable[certificate_issuance_config.CertificateIssuanceConfig]
     ]:
         r"""Return a callable for the get certificate issuance
         config method over gRPC.
@@ -1035,9 +911,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_certificate_issuance_config" not in self._stubs:
-            self._stubs[
-                "get_certificate_issuance_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_certificate_issuance_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificateIssuanceConfig",
                 request_serializer=certificate_issuance_config.GetCertificateIssuanceConfigRequest.serialize,
                 response_deserializer=certificate_issuance_config.CertificateIssuanceConfig.deserialize,
@@ -1047,10 +921,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def create_certificate_issuance_config(
         self,
-    ) -> Callable[
-        [gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create certificate issuance
         config method over gRPC.
 
@@ -1068,9 +939,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_certificate_issuance_config" not in self._stubs:
-            self._stubs[
-                "create_certificate_issuance_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_certificate_issuance_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateIssuanceConfig",
                 request_serializer=gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1080,10 +949,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def delete_certificate_issuance_config(
         self,
-    ) -> Callable[
-        [certificate_issuance_config.DeleteCertificateIssuanceConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[certificate_issuance_config.DeleteCertificateIssuanceConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete certificate issuance
         config method over gRPC.
 
@@ -1100,9 +966,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_certificate_issuance_config" not in self._stubs:
-            self._stubs[
-                "delete_certificate_issuance_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_certificate_issuance_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateIssuanceConfig",
                 request_serializer=certificate_issuance_config.DeleteCertificateIssuanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1110,12 +974,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["delete_certificate_issuance_config"]
 
     @property
-    def list_trust_configs(
-        self,
-    ) -> Callable[
-        [trust_config.ListTrustConfigsRequest],
-        Awaitable[trust_config.ListTrustConfigsResponse],
-    ]:
+    def list_trust_configs(self) -> Callable[[trust_config.ListTrustConfigsRequest], Awaitable[trust_config.ListTrustConfigsResponse]]:
         r"""Return a callable for the list trust configs method over gRPC.
 
         Lists TrustConfigs in a given project and location.
@@ -1139,11 +998,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["list_trust_configs"]
 
     @property
-    def get_trust_config(
-        self,
-    ) -> Callable[
-        [trust_config.GetTrustConfigRequest], Awaitable[trust_config.TrustConfig]
-    ]:
+    def get_trust_config(self) -> Callable[[trust_config.GetTrustConfigRequest], Awaitable[trust_config.TrustConfig]]:
         r"""Return a callable for the get trust config method over gRPC.
 
         Gets details of a single TrustConfig.
@@ -1167,11 +1022,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["get_trust_config"]
 
     @property
-    def create_trust_config(
-        self,
-    ) -> Callable[
-        [gcc_trust_config.CreateTrustConfigRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_trust_config(self) -> Callable[[gcc_trust_config.CreateTrustConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create trust config method over gRPC.
 
         Creates a new TrustConfig in a given project and
@@ -1196,11 +1047,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["create_trust_config"]
 
     @property
-    def update_trust_config(
-        self,
-    ) -> Callable[
-        [gcc_trust_config.UpdateTrustConfigRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_trust_config(self) -> Callable[[gcc_trust_config.UpdateTrustConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update trust config method over gRPC.
 
         Updates a TrustConfig.
@@ -1224,11 +1071,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
         return self._stubs["update_trust_config"]
 
     @property
-    def delete_trust_config(
-        self,
-    ) -> Callable[
-        [trust_config.DeleteTrustConfigRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_trust_config(self) -> Callable[[trust_config.DeleteTrustConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete trust config method over gRPC.
 
         Deletes a single TrustConfig.
@@ -1713,9 +1556,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1732,9 +1573,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

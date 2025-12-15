@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,17 +319,13 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_azure_client(
-        self,
-    ) -> Callable[[azure_service.CreateAzureClientRequest], operations_pb2.Operation]:
+    def create_azure_client(self) -> Callable[[azure_service.CreateAzureClientRequest], operations_pb2.Operation]:
         r"""Return a callable for the create azure client method over gRPC.
 
         Creates a new
@@ -378,9 +359,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["create_azure_client"]
 
     @property
-    def get_azure_client(
-        self,
-    ) -> Callable[[azure_service.GetAzureClientRequest], azure_resources.AzureClient]:
+    def get_azure_client(self) -> Callable[[azure_service.GetAzureClientRequest], azure_resources.AzureClient]:
         r"""Return a callable for the get azure client method over gRPC.
 
         Describes a specific
@@ -406,11 +385,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["get_azure_client"]
 
     @property
-    def list_azure_clients(
-        self,
-    ) -> Callable[
-        [azure_service.ListAzureClientsRequest], azure_service.ListAzureClientsResponse
-    ]:
+    def list_azure_clients(self) -> Callable[[azure_service.ListAzureClientsRequest], azure_service.ListAzureClientsResponse]:
         r"""Return a callable for the list azure clients method over gRPC.
 
         Lists all
@@ -436,9 +411,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["list_azure_clients"]
 
     @property
-    def delete_azure_client(
-        self,
-    ) -> Callable[[azure_service.DeleteAzureClientRequest], operations_pb2.Operation]:
+    def delete_azure_client(self) -> Callable[[azure_service.DeleteAzureClientRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete azure client method over gRPC.
 
         Deletes a specific
@@ -471,9 +444,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["delete_azure_client"]
 
     @property
-    def create_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.CreateAzureClusterRequest], operations_pb2.Operation]:
+    def create_azure_cluster(self) -> Callable[[azure_service.CreateAzureClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create azure cluster method over gRPC.
 
         Creates a new
@@ -503,9 +474,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["create_azure_cluster"]
 
     @property
-    def update_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.UpdateAzureClusterRequest], operations_pb2.Operation]:
+    def update_azure_cluster(self) -> Callable[[azure_service.UpdateAzureClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update azure cluster method over gRPC.
 
         Updates an
@@ -530,9 +499,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["update_azure_cluster"]
 
     @property
-    def get_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.GetAzureClusterRequest], azure_resources.AzureCluster]:
+    def get_azure_cluster(self) -> Callable[[azure_service.GetAzureClusterRequest], azure_resources.AzureCluster]:
         r"""Return a callable for the get azure cluster method over gRPC.
 
         Describes a specific
@@ -558,12 +525,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["get_azure_cluster"]
 
     @property
-    def list_azure_clusters(
-        self,
-    ) -> Callable[
-        [azure_service.ListAzureClustersRequest],
-        azure_service.ListAzureClustersResponse,
-    ]:
+    def list_azure_clusters(self) -> Callable[[azure_service.ListAzureClustersRequest], azure_service.ListAzureClustersResponse]:
         r"""Return a callable for the list azure clusters method over gRPC.
 
         Lists all
@@ -589,9 +551,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["list_azure_clusters"]
 
     @property
-    def delete_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.DeleteAzureClusterRequest], operations_pb2.Operation]:
+    def delete_azure_cluster(self) -> Callable[[azure_service.DeleteAzureClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete azure cluster method over gRPC.
 
         Deletes a specific
@@ -627,10 +587,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
     @property
     def generate_azure_cluster_agent_token(
         self,
-    ) -> Callable[
-        [azure_service.GenerateAzureClusterAgentTokenRequest],
-        azure_service.GenerateAzureClusterAgentTokenResponse,
-    ]:
+    ) -> Callable[[azure_service.GenerateAzureClusterAgentTokenRequest], azure_service.GenerateAzureClusterAgentTokenResponse]:
         r"""Return a callable for the generate azure cluster agent
         token method over gRPC.
 
@@ -647,9 +604,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_azure_cluster_agent_token" not in self._stubs:
-            self._stubs[
-                "generate_azure_cluster_agent_token"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_azure_cluster_agent_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken",
                 request_serializer=azure_service.GenerateAzureClusterAgentTokenRequest.serialize,
                 response_deserializer=azure_service.GenerateAzureClusterAgentTokenResponse.deserialize,
@@ -659,10 +614,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
     @property
     def generate_azure_access_token(
         self,
-    ) -> Callable[
-        [azure_service.GenerateAzureAccessTokenRequest],
-        azure_service.GenerateAzureAccessTokenResponse,
-    ]:
+    ) -> Callable[[azure_service.GenerateAzureAccessTokenRequest], azure_service.GenerateAzureAccessTokenResponse]:
         r"""Return a callable for the generate azure access token method over gRPC.
 
         Generates a short-lived access token to authenticate to a given
@@ -680,9 +632,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_azure_access_token" not in self._stubs:
-            self._stubs[
-                "generate_azure_access_token"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_azure_access_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureAccessToken",
                 request_serializer=azure_service.GenerateAzureAccessTokenRequest.serialize,
                 response_deserializer=azure_service.GenerateAzureAccessTokenResponse.deserialize,
@@ -690,9 +640,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["generate_azure_access_token"]
 
     @property
-    def create_azure_node_pool(
-        self,
-    ) -> Callable[[azure_service.CreateAzureNodePoolRequest], operations_pb2.Operation]:
+    def create_azure_node_pool(self) -> Callable[[azure_service.CreateAzureNodePoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the create azure node pool method over gRPC.
 
         Creates a new
@@ -723,9 +671,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["create_azure_node_pool"]
 
     @property
-    def update_azure_node_pool(
-        self,
-    ) -> Callable[[azure_service.UpdateAzureNodePoolRequest], operations_pb2.Operation]:
+    def update_azure_node_pool(self) -> Callable[[azure_service.UpdateAzureNodePoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the update azure node pool method over gRPC.
 
         Updates an
@@ -750,11 +696,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["update_azure_node_pool"]
 
     @property
-    def get_azure_node_pool(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureNodePoolRequest], azure_resources.AzureNodePool
-    ]:
+    def get_azure_node_pool(self) -> Callable[[azure_service.GetAzureNodePoolRequest], azure_resources.AzureNodePool]:
         r"""Return a callable for the get azure node pool method over gRPC.
 
         Describes a specific
@@ -780,12 +722,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["get_azure_node_pool"]
 
     @property
-    def list_azure_node_pools(
-        self,
-    ) -> Callable[
-        [azure_service.ListAzureNodePoolsRequest],
-        azure_service.ListAzureNodePoolsResponse,
-    ]:
+    def list_azure_node_pools(self) -> Callable[[azure_service.ListAzureNodePoolsRequest], azure_service.ListAzureNodePoolsResponse]:
         r"""Return a callable for the list azure node pools method over gRPC.
 
         Lists all
@@ -812,9 +749,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["list_azure_node_pools"]
 
     @property
-    def delete_azure_node_pool(
-        self,
-    ) -> Callable[[azure_service.DeleteAzureNodePoolRequest], operations_pb2.Operation]:
+    def delete_azure_node_pool(self) -> Callable[[azure_service.DeleteAzureNodePoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete azure node pool method over gRPC.
 
         Deletes a specific
@@ -844,11 +779,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["delete_azure_node_pool"]
 
     @property
-    def get_azure_open_id_config(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureOpenIdConfigRequest], azure_resources.AzureOpenIdConfig
-    ]:
+    def get_azure_open_id_config(self) -> Callable[[azure_service.GetAzureOpenIdConfigRequest], azure_resources.AzureOpenIdConfig]:
         r"""Return a callable for the get azure open id config method over gRPC.
 
         Gets the OIDC discovery document for the cluster. See the
@@ -875,11 +806,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["get_azure_open_id_config"]
 
     @property
-    def get_azure_json_web_keys(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureJsonWebKeysRequest], azure_resources.AzureJsonWebKeys
-    ]:
+    def get_azure_json_web_keys(self) -> Callable[[azure_service.GetAzureJsonWebKeysRequest], azure_resources.AzureJsonWebKeys]:
         r"""Return a callable for the get azure json web keys method over gRPC.
 
         Gets the public component of the cluster signing keys
@@ -904,11 +831,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         return self._stubs["get_azure_json_web_keys"]
 
     @property
-    def get_azure_server_config(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureServerConfigRequest], azure_resources.AzureServerConfig
-    ]:
+    def get_azure_server_config(self) -> Callable[[azure_service.GetAzureServerConfigRequest], azure_resources.AzureServerConfig]:
         r"""Return a callable for the get azure server config method over gRPC.
 
         Returns information, such as supported Azure regions
@@ -990,9 +913,7 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

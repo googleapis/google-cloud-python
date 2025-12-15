@@ -44,9 +44,7 @@ def sample_get_effective_event_threat_detection_custom_module():
     )
 
     # Make the request
-    response = client.get_effective_event_threat_detection_custom_module(
-        request=request
-    )
+    response = client.get_effective_event_threat_detection_custom_module(request=request)
 
     # Handle the response
     print(response)

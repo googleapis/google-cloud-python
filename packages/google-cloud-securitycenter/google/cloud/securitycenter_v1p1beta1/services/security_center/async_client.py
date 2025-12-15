@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -53,16 +42,10 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1p1beta1.services.security_center import pagers
-from google.cloud.securitycenter_v1p1beta1.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v1p1beta1.types import (
-    organization_settings as gcs_organization_settings,
-)
+from google.cloud.securitycenter_v1p1beta1.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v1p1beta1.types import organization_settings as gcs_organization_settings
 from google.cloud.securitycenter_v1p1beta1.types import run_asset_discovery_response
-from google.cloud.securitycenter_v1p1beta1.types import (
-    security_marks as gcs_security_marks,
-)
+from google.cloud.securitycenter_v1p1beta1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1p1beta1.types import finding
 from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1p1beta1.types import notification_config
@@ -102,50 +85,26 @@ class SecurityCenterAsyncClient:
     parse_asset_path = staticmethod(SecurityCenterClient.parse_asset_path)
     finding_path = staticmethod(SecurityCenterClient.finding_path)
     parse_finding_path = staticmethod(SecurityCenterClient.parse_finding_path)
-    notification_config_path = staticmethod(
-        SecurityCenterClient.notification_config_path
-    )
-    parse_notification_config_path = staticmethod(
-        SecurityCenterClient.parse_notification_config_path
-    )
-    organization_settings_path = staticmethod(
-        SecurityCenterClient.organization_settings_path
-    )
-    parse_organization_settings_path = staticmethod(
-        SecurityCenterClient.parse_organization_settings_path
-    )
+    notification_config_path = staticmethod(SecurityCenterClient.notification_config_path)
+    parse_notification_config_path = staticmethod(SecurityCenterClient.parse_notification_config_path)
+    organization_settings_path = staticmethod(SecurityCenterClient.organization_settings_path)
+    parse_organization_settings_path = staticmethod(SecurityCenterClient.parse_organization_settings_path)
     security_marks_path = staticmethod(SecurityCenterClient.security_marks_path)
-    parse_security_marks_path = staticmethod(
-        SecurityCenterClient.parse_security_marks_path
-    )
+    parse_security_marks_path = staticmethod(SecurityCenterClient.parse_security_marks_path)
     source_path = staticmethod(SecurityCenterClient.source_path)
     parse_source_path = staticmethod(SecurityCenterClient.parse_source_path)
     topic_path = staticmethod(SecurityCenterClient.topic_path)
     parse_topic_path = staticmethod(SecurityCenterClient.parse_topic_path)
-    common_billing_account_path = staticmethod(
-        SecurityCenterClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        SecurityCenterClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(SecurityCenterClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(SecurityCenterClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SecurityCenterClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        SecurityCenterClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        SecurityCenterClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        SecurityCenterClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(SecurityCenterClient.parse_common_folder_path)
+    common_organization_path = staticmethod(SecurityCenterClient.common_organization_path)
+    parse_common_organization_path = staticmethod(SecurityCenterClient.parse_common_organization_path)
     common_project_path = staticmethod(SecurityCenterClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        SecurityCenterClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(SecurityCenterClient.parse_common_project_path)
     common_location_path = staticmethod(SecurityCenterClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        SecurityCenterClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(SecurityCenterClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -181,9 +140,7 @@ class SecurityCenterAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -250,9 +207,7 @@ class SecurityCenterAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, SecurityCenterTransport, Callable[..., SecurityCenterTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, SecurityCenterTransport, Callable[..., SecurityCenterTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -312,20 +267,14 @@ class SecurityCenterAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.securitycenter_v1p1beta1.SecurityCenterAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -336,9 +285,7 @@ class SecurityCenterAsyncClient:
 
     async def create_source(
         self,
-        request: Optional[
-            Union[securitycenter_service.CreateSourceRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.CreateSourceRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         source: Optional[gcs_source.Source] = None,
@@ -415,14 +362,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, source]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -438,15 +380,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_source
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_source]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -464,9 +402,7 @@ class SecurityCenterAsyncClient:
 
     async def create_finding(
         self,
-        request: Optional[
-            Union[securitycenter_service.CreateFindingRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.CreateFindingRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         finding_id: Optional[str] = None,
@@ -558,14 +494,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, finding_id, finding]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -583,15 +514,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_finding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_finding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -609,15 +536,11 @@ class SecurityCenterAsyncClient:
 
     async def create_notification_config(
         self,
-        request: Optional[
-            Union[securitycenter_service.CreateNotificationConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.CreateNotificationConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         config_id: Optional[str] = None,
-        notification_config: Optional[
-            gcs_notification_config.NotificationConfig
-        ] = None,
+        notification_config: Optional[gcs_notification_config.NotificationConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -704,20 +627,13 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, config_id, notification_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, securitycenter_service.CreateNotificationConfigRequest
-        ):
+        if not isinstance(request, securitycenter_service.CreateNotificationConfigRequest):
             request = securitycenter_service.CreateNotificationConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -731,15 +647,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_notification_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_notification_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -757,9 +669,7 @@ class SecurityCenterAsyncClient:
 
     async def delete_notification_config(
         self,
-        request: Optional[
-            Union[securitycenter_service.DeleteNotificationConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.DeleteNotificationConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -815,20 +725,13 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, securitycenter_service.DeleteNotificationConfigRequest
-        ):
+        if not isinstance(request, securitycenter_service.DeleteNotificationConfigRequest):
             request = securitycenter_service.DeleteNotificationConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -838,15 +741,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_notification_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_notification_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -956,14 +855,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -974,15 +868,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1000,9 +890,7 @@ class SecurityCenterAsyncClient:
 
     async def get_notification_config(
         self,
-        request: Optional[
-            Union[securitycenter_service.GetNotificationConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.GetNotificationConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1072,14 +960,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1093,15 +976,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_notification_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_notification_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1119,9 +998,7 @@ class SecurityCenterAsyncClient:
 
     async def get_organization_settings(
         self,
-        request: Optional[
-            Union[securitycenter_service.GetOrganizationSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.GetOrganizationSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1187,20 +1064,13 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, securitycenter_service.GetOrganizationSettingsRequest
-        ):
+        if not isinstance(request, securitycenter_service.GetOrganizationSettingsRequest):
             request = securitycenter_service.GetOrganizationSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1210,15 +1080,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_organization_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_organization_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1304,14 +1170,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1325,15 +1186,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_source
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_source]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1351,9 +1208,7 @@ class SecurityCenterAsyncClient:
 
     async def group_assets(
         self,
-        request: Optional[
-            Union[securitycenter_service.GroupAssetsRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.GroupAssetsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1419,15 +1274,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.group_assets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.group_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1456,9 +1307,7 @@ class SecurityCenterAsyncClient:
 
     async def group_findings(
         self,
-        request: Optional[
-            Union[securitycenter_service.GroupFindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.GroupFindingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         group_by: Optional[str] = None,
@@ -1562,14 +1411,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, group_by]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1585,15 +1429,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.group_findings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.group_findings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1690,14 +1530,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1711,15 +1546,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_assets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1748,9 +1579,7 @@ class SecurityCenterAsyncClient:
 
     async def list_findings(
         self,
-        request: Optional[
-            Union[securitycenter_service.ListFindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.ListFindingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1828,14 +1657,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1849,15 +1673,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_findings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_findings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1886,9 +1706,7 @@ class SecurityCenterAsyncClient:
 
     async def list_notification_configs(
         self,
-        request: Optional[
-            Union[securitycenter_service.ListNotificationConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.ListNotificationConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1957,20 +1775,13 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, securitycenter_service.ListNotificationConfigsRequest
-        ):
+        if not isinstance(request, securitycenter_service.ListNotificationConfigsRequest):
             request = securitycenter_service.ListNotificationConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1980,15 +1791,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_notification_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_notification_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2017,9 +1824,7 @@ class SecurityCenterAsyncClient:
 
     async def list_sources(
         self,
-        request: Optional[
-            Union[securitycenter_service.ListSourcesRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.ListSourcesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2088,14 +1893,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2109,15 +1909,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_sources
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sources]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2146,9 +1942,7 @@ class SecurityCenterAsyncClient:
 
     async def run_asset_discovery(
         self,
-        request: Optional[
-            Union[securitycenter_service.RunAssetDiscoveryRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.RunAssetDiscoveryRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2225,14 +2019,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2246,15 +2035,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.run_asset_discovery
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.run_asset_discovery]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2280,9 +2065,7 @@ class SecurityCenterAsyncClient:
 
     async def set_finding_state(
         self,
-        request: Optional[
-            Union[securitycenter_service.SetFindingStateRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.SetFindingStateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         state: Optional[finding.Finding.State] = None,
@@ -2374,14 +2157,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, state, start_time]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2399,15 +2177,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_finding_state
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_finding_state]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2520,14 +2294,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -2538,15 +2307,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2640,35 +2405,24 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource, permissions]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
-            request = iam_policy_pb2.TestIamPermissionsRequest(
-                resource=resource, permissions=permissions
-            )
+            request = iam_policy_pb2.TestIamPermissionsRequest(resource=resource, permissions=permissions)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2686,9 +2440,7 @@ class SecurityCenterAsyncClient:
 
     async def update_finding(
         self,
-        request: Optional[
-            Union[securitycenter_service.UpdateFindingRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.UpdateFindingRequest, dict]] = None,
         *,
         finding: Optional[gcs_finding.Finding] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2780,14 +2532,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [finding, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2803,17 +2550,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_finding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_finding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("finding.name", request.finding.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("finding.name", request.finding.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2831,13 +2572,9 @@ class SecurityCenterAsyncClient:
 
     async def update_notification_config(
         self,
-        request: Optional[
-            Union[securitycenter_service.UpdateNotificationConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.UpdateNotificationConfigRequest, dict]] = None,
         *,
-        notification_config: Optional[
-            gcs_notification_config.NotificationConfig
-        ] = None,
+        notification_config: Optional[gcs_notification_config.NotificationConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2914,20 +2651,13 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [notification_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, securitycenter_service.UpdateNotificationConfigRequest
-        ):
+        if not isinstance(request, securitycenter_service.UpdateNotificationConfigRequest):
             request = securitycenter_service.UpdateNotificationConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2939,17 +2669,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_notification_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_notification_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("notification_config.name", request.notification_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("notification_config.name", request.notification_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2967,13 +2691,9 @@ class SecurityCenterAsyncClient:
 
     async def update_organization_settings(
         self,
-        request: Optional[
-            Union[securitycenter_service.UpdateOrganizationSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.UpdateOrganizationSettingsRequest, dict]] = None,
         *,
-        organization_settings: Optional[
-            gcs_organization_settings.OrganizationSettings
-        ] = None,
+        organization_settings: Optional[gcs_organization_settings.OrganizationSettings] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -3035,20 +2755,13 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [organization_settings]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, securitycenter_service.UpdateOrganizationSettingsRequest
-        ):
+        if not isinstance(request, securitycenter_service.UpdateOrganizationSettingsRequest):
             request = securitycenter_service.UpdateOrganizationSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -3058,16 +2771,12 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_organization_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_organization_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("organization_settings.name", request.organization_settings.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("organization_settings.name", request.organization_settings.name),)),
         )
 
         # Validate the universe domain.
@@ -3086,9 +2795,7 @@ class SecurityCenterAsyncClient:
 
     async def update_source(
         self,
-        request: Optional[
-            Union[securitycenter_service.UpdateSourceRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.UpdateSourceRequest, dict]] = None,
         *,
         source: Optional[gcs_source.Source] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3165,14 +2872,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [source, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3188,17 +2890,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_source
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_source]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("source.name", request.source.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("source.name", request.source.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3216,9 +2912,7 @@ class SecurityCenterAsyncClient:
 
     async def update_security_marks(
         self,
-        request: Optional[
-            Union[securitycenter_service.UpdateSecurityMarksRequest, dict]
-        ] = None,
+        request: Optional[Union[securitycenter_service.UpdateSecurityMarksRequest, dict]] = None,
         *,
         security_marks: Optional[gcs_security_marks.SecurityMarks] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3300,14 +2994,9 @@ class SecurityCenterAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [security_marks, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3323,17 +3012,11 @@ class SecurityCenterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_security_marks
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_security_marks]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("security_marks.name", request.security_marks.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("security_marks.name", request.security_marks.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3356,9 +3039,7 @@ class SecurityCenterAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

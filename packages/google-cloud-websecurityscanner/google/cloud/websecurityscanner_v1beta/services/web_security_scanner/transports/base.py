@@ -32,9 +32,7 @@ from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan
 from google.cloud.websecurityscanner_v1beta.types import finding
 from google.cloud.websecurityscanner_v1beta.types import scan_config
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class WebSecurityScannerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -306,28 +296,17 @@ class WebSecurityScannerTransport(abc.ABC):
     @property
     def create_scan_config(
         self,
-    ) -> Callable[
-        [web_security_scanner.CreateScanConfigRequest],
-        Union[gcw_scan_config.ScanConfig, Awaitable[gcw_scan_config.ScanConfig]],
-    ]:
+    ) -> Callable[[web_security_scanner.CreateScanConfigRequest], Union[gcw_scan_config.ScanConfig, Awaitable[gcw_scan_config.ScanConfig]]]:
         raise NotImplementedError()
 
     @property
-    def delete_scan_config(
-        self,
-    ) -> Callable[
-        [web_security_scanner.DeleteScanConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_scan_config(self) -> Callable[[web_security_scanner.DeleteScanConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_scan_config(
         self,
-    ) -> Callable[
-        [web_security_scanner.GetScanConfigRequest],
-        Union[scan_config.ScanConfig, Awaitable[scan_config.ScanConfig]],
-    ]:
+    ) -> Callable[[web_security_scanner.GetScanConfigRequest], Union[scan_config.ScanConfig, Awaitable[scan_config.ScanConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -335,38 +314,22 @@ class WebSecurityScannerTransport(abc.ABC):
         self,
     ) -> Callable[
         [web_security_scanner.ListScanConfigsRequest],
-        Union[
-            web_security_scanner.ListScanConfigsResponse,
-            Awaitable[web_security_scanner.ListScanConfigsResponse],
-        ],
+        Union[web_security_scanner.ListScanConfigsResponse, Awaitable[web_security_scanner.ListScanConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_scan_config(
         self,
-    ) -> Callable[
-        [web_security_scanner.UpdateScanConfigRequest],
-        Union[gcw_scan_config.ScanConfig, Awaitable[gcw_scan_config.ScanConfig]],
-    ]:
+    ) -> Callable[[web_security_scanner.UpdateScanConfigRequest], Union[gcw_scan_config.ScanConfig, Awaitable[gcw_scan_config.ScanConfig]]]:
         raise NotImplementedError()
 
     @property
-    def start_scan_run(
-        self,
-    ) -> Callable[
-        [web_security_scanner.StartScanRunRequest],
-        Union[scan_run.ScanRun, Awaitable[scan_run.ScanRun]],
-    ]:
+    def start_scan_run(self) -> Callable[[web_security_scanner.StartScanRunRequest], Union[scan_run.ScanRun, Awaitable[scan_run.ScanRun]]]:
         raise NotImplementedError()
 
     @property
-    def get_scan_run(
-        self,
-    ) -> Callable[
-        [web_security_scanner.GetScanRunRequest],
-        Union[scan_run.ScanRun, Awaitable[scan_run.ScanRun]],
-    ]:
+    def get_scan_run(self) -> Callable[[web_security_scanner.GetScanRunRequest], Union[scan_run.ScanRun, Awaitable[scan_run.ScanRun]]]:
         raise NotImplementedError()
 
     @property
@@ -374,20 +337,12 @@ class WebSecurityScannerTransport(abc.ABC):
         self,
     ) -> Callable[
         [web_security_scanner.ListScanRunsRequest],
-        Union[
-            web_security_scanner.ListScanRunsResponse,
-            Awaitable[web_security_scanner.ListScanRunsResponse],
-        ],
+        Union[web_security_scanner.ListScanRunsResponse, Awaitable[web_security_scanner.ListScanRunsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def stop_scan_run(
-        self,
-    ) -> Callable[
-        [web_security_scanner.StopScanRunRequest],
-        Union[scan_run.ScanRun, Awaitable[scan_run.ScanRun]],
-    ]:
+    def stop_scan_run(self) -> Callable[[web_security_scanner.StopScanRunRequest], Union[scan_run.ScanRun, Awaitable[scan_run.ScanRun]]]:
         raise NotImplementedError()
 
     @property
@@ -395,20 +350,12 @@ class WebSecurityScannerTransport(abc.ABC):
         self,
     ) -> Callable[
         [web_security_scanner.ListCrawledUrlsRequest],
-        Union[
-            web_security_scanner.ListCrawledUrlsResponse,
-            Awaitable[web_security_scanner.ListCrawledUrlsResponse],
-        ],
+        Union[web_security_scanner.ListCrawledUrlsResponse, Awaitable[web_security_scanner.ListCrawledUrlsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_finding(
-        self,
-    ) -> Callable[
-        [web_security_scanner.GetFindingRequest],
-        Union[finding.Finding, Awaitable[finding.Finding]],
-    ]:
+    def get_finding(self) -> Callable[[web_security_scanner.GetFindingRequest], Union[finding.Finding, Awaitable[finding.Finding]]]:
         raise NotImplementedError()
 
     @property
@@ -416,10 +363,7 @@ class WebSecurityScannerTransport(abc.ABC):
         self,
     ) -> Callable[
         [web_security_scanner.ListFindingsRequest],
-        Union[
-            web_security_scanner.ListFindingsResponse,
-            Awaitable[web_security_scanner.ListFindingsResponse],
-        ],
+        Union[web_security_scanner.ListFindingsResponse, Awaitable[web_security_scanner.ListFindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -428,10 +372,7 @@ class WebSecurityScannerTransport(abc.ABC):
         self,
     ) -> Callable[
         [web_security_scanner.ListFindingTypeStatsRequest],
-        Union[
-            web_security_scanner.ListFindingTypeStatsResponse,
-            Awaitable[web_security_scanner.ListFindingTypeStatsResponse],
-        ],
+        Union[web_security_scanner.ListFindingTypeStatsResponse, Awaitable[web_security_scanner.ListFindingTypeStatsResponse]],
     ]:
         raise NotImplementedError()
 

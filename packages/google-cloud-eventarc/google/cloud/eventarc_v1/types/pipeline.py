@@ -568,21 +568,17 @@ class Pipeline(proto.Message):
                     number=2,
                 )
 
-            google_oidc: "Pipeline.Destination.AuthenticationConfig.OidcToken" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    oneof="authentication_method_descriptor",
-                    message="Pipeline.Destination.AuthenticationConfig.OidcToken",
-                )
+            google_oidc: "Pipeline.Destination.AuthenticationConfig.OidcToken" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="authentication_method_descriptor",
+                message="Pipeline.Destination.AuthenticationConfig.OidcToken",
             )
-            oauth_token: "Pipeline.Destination.AuthenticationConfig.OAuthToken" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    oneof="authentication_method_descriptor",
-                    message="Pipeline.Destination.AuthenticationConfig.OAuthToken",
-                )
+            oauth_token: "Pipeline.Destination.AuthenticationConfig.OAuthToken" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="authentication_method_descriptor",
+                message="Pipeline.Destination.AuthenticationConfig.OAuthToken",
             )
 
         network_config: "Pipeline.Destination.NetworkConfig" = proto.Field(
@@ -611,12 +607,10 @@ class Pipeline(proto.Message):
             number=8,
             oneof="destination_descriptor",
         )
-        authentication_config: "Pipeline.Destination.AuthenticationConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                message="Pipeline.Destination.AuthenticationConfig",
-            )
+        authentication_config: "Pipeline.Destination.AuthenticationConfig" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="Pipeline.Destination.AuthenticationConfig",
         )
         output_payload_format: "Pipeline.MessagePayloadFormat" = proto.Field(
             proto.MESSAGE,

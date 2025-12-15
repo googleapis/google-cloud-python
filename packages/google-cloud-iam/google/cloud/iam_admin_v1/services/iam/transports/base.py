@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.iam_admin_v1 import gapic_version as package_version
 from google.cloud.iam_admin_v1.types import iam
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class IAMTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -375,187 +365,91 @@ class IAMTransport(abc.ABC):
     @property
     def list_service_accounts(
         self,
-    ) -> Callable[
-        [iam.ListServiceAccountsRequest],
-        Union[
-            iam.ListServiceAccountsResponse, Awaitable[iam.ListServiceAccountsResponse]
-        ],
-    ]:
+    ) -> Callable[[iam.ListServiceAccountsRequest], Union[iam.ListServiceAccountsResponse, Awaitable[iam.ListServiceAccountsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_service_account(
-        self,
-    ) -> Callable[
-        [iam.GetServiceAccountRequest],
-        Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]],
-    ]:
+    def get_service_account(self) -> Callable[[iam.GetServiceAccountRequest], Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]]]:
         raise NotImplementedError()
 
     @property
-    def create_service_account(
-        self,
-    ) -> Callable[
-        [iam.CreateServiceAccountRequest],
-        Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]],
-    ]:
+    def create_service_account(self) -> Callable[[iam.CreateServiceAccountRequest], Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]]]:
         raise NotImplementedError()
 
     @property
-    def update_service_account(
-        self,
-    ) -> Callable[
-        [iam.ServiceAccount], Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]]
-    ]:
+    def update_service_account(self) -> Callable[[iam.ServiceAccount], Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]]]:
         raise NotImplementedError()
 
     @property
-    def patch_service_account(
-        self,
-    ) -> Callable[
-        [iam.PatchServiceAccountRequest],
-        Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]],
-    ]:
+    def patch_service_account(self) -> Callable[[iam.PatchServiceAccountRequest], Union[iam.ServiceAccount, Awaitable[iam.ServiceAccount]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service_account(
-        self,
-    ) -> Callable[
-        [iam.DeleteServiceAccountRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_service_account(self) -> Callable[[iam.DeleteServiceAccountRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def undelete_service_account(
         self,
-    ) -> Callable[
-        [iam.UndeleteServiceAccountRequest],
-        Union[
-            iam.UndeleteServiceAccountResponse,
-            Awaitable[iam.UndeleteServiceAccountResponse],
-        ],
-    ]:
+    ) -> Callable[[iam.UndeleteServiceAccountRequest], Union[iam.UndeleteServiceAccountResponse, Awaitable[iam.UndeleteServiceAccountResponse]]]:
         raise NotImplementedError()
 
     @property
-    def enable_service_account(
-        self,
-    ) -> Callable[
-        [iam.EnableServiceAccountRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def enable_service_account(self) -> Callable[[iam.EnableServiceAccountRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def disable_service_account(
-        self,
-    ) -> Callable[
-        [iam.DisableServiceAccountRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def disable_service_account(self) -> Callable[[iam.DisableServiceAccountRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_service_account_keys(
         self,
-    ) -> Callable[
-        [iam.ListServiceAccountKeysRequest],
-        Union[
-            iam.ListServiceAccountKeysResponse,
-            Awaitable[iam.ListServiceAccountKeysResponse],
-        ],
-    ]:
+    ) -> Callable[[iam.ListServiceAccountKeysRequest], Union[iam.ListServiceAccountKeysResponse, Awaitable[iam.ListServiceAccountKeysResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_service_account_key(
-        self,
-    ) -> Callable[
-        [iam.GetServiceAccountKeyRequest],
-        Union[iam.ServiceAccountKey, Awaitable[iam.ServiceAccountKey]],
-    ]:
+    def get_service_account_key(self) -> Callable[[iam.GetServiceAccountKeyRequest], Union[iam.ServiceAccountKey, Awaitable[iam.ServiceAccountKey]]]:
         raise NotImplementedError()
 
     @property
     def create_service_account_key(
         self,
-    ) -> Callable[
-        [iam.CreateServiceAccountKeyRequest],
-        Union[iam.ServiceAccountKey, Awaitable[iam.ServiceAccountKey]],
-    ]:
+    ) -> Callable[[iam.CreateServiceAccountKeyRequest], Union[iam.ServiceAccountKey, Awaitable[iam.ServiceAccountKey]]]:
         raise NotImplementedError()
 
     @property
     def upload_service_account_key(
         self,
-    ) -> Callable[
-        [iam.UploadServiceAccountKeyRequest],
-        Union[iam.ServiceAccountKey, Awaitable[iam.ServiceAccountKey]],
-    ]:
+    ) -> Callable[[iam.UploadServiceAccountKeyRequest], Union[iam.ServiceAccountKey, Awaitable[iam.ServiceAccountKey]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service_account_key(
-        self,
-    ) -> Callable[
-        [iam.DeleteServiceAccountKeyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_service_account_key(self) -> Callable[[iam.DeleteServiceAccountKeyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def disable_service_account_key(
-        self,
-    ) -> Callable[
-        [iam.DisableServiceAccountKeyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def disable_service_account_key(self) -> Callable[[iam.DisableServiceAccountKeyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def enable_service_account_key(
-        self,
-    ) -> Callable[
-        [iam.EnableServiceAccountKeyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def enable_service_account_key(self) -> Callable[[iam.EnableServiceAccountKeyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def sign_blob(
-        self,
-    ) -> Callable[
-        [iam.SignBlobRequest],
-        Union[iam.SignBlobResponse, Awaitable[iam.SignBlobResponse]],
-    ]:
+    def sign_blob(self) -> Callable[[iam.SignBlobRequest], Union[iam.SignBlobResponse, Awaitable[iam.SignBlobResponse]]]:
         raise NotImplementedError()
 
     @property
-    def sign_jwt(
-        self,
-    ) -> Callable[
-        [iam.SignJwtRequest], Union[iam.SignJwtResponse, Awaitable[iam.SignJwtResponse]]
-    ]:
+    def sign_jwt(self) -> Callable[[iam.SignJwtRequest], Union[iam.SignJwtResponse, Awaitable[iam.SignJwtResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -563,94 +457,56 @@ class IAMTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def query_grantable_roles(
         self,
-    ) -> Callable[
-        [iam.QueryGrantableRolesRequest],
-        Union[
-            iam.QueryGrantableRolesResponse, Awaitable[iam.QueryGrantableRolesResponse]
-        ],
-    ]:
+    ) -> Callable[[iam.QueryGrantableRolesRequest], Union[iam.QueryGrantableRolesResponse, Awaitable[iam.QueryGrantableRolesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_roles(
-        self,
-    ) -> Callable[
-        [iam.ListRolesRequest],
-        Union[iam.ListRolesResponse, Awaitable[iam.ListRolesResponse]],
-    ]:
+    def list_roles(self) -> Callable[[iam.ListRolesRequest], Union[iam.ListRolesResponse, Awaitable[iam.ListRolesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_role(
-        self,
-    ) -> Callable[[iam.GetRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
+    def get_role(self) -> Callable[[iam.GetRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
         raise NotImplementedError()
 
     @property
-    def create_role(
-        self,
-    ) -> Callable[[iam.CreateRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
+    def create_role(self) -> Callable[[iam.CreateRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
         raise NotImplementedError()
 
     @property
-    def update_role(
-        self,
-    ) -> Callable[[iam.UpdateRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
+    def update_role(self) -> Callable[[iam.UpdateRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
         raise NotImplementedError()
 
     @property
-    def delete_role(
-        self,
-    ) -> Callable[[iam.DeleteRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
+    def delete_role(self) -> Callable[[iam.DeleteRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
         raise NotImplementedError()
 
     @property
-    def undelete_role(
-        self,
-    ) -> Callable[[iam.UndeleteRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
+    def undelete_role(self) -> Callable[[iam.UndeleteRoleRequest], Union[iam.Role, Awaitable[iam.Role]]]:
         raise NotImplementedError()
 
     @property
     def query_testable_permissions(
         self,
     ) -> Callable[
-        [iam.QueryTestablePermissionsRequest],
-        Union[
-            iam.QueryTestablePermissionsResponse,
-            Awaitable[iam.QueryTestablePermissionsResponse],
-        ],
+        [iam.QueryTestablePermissionsRequest], Union[iam.QueryTestablePermissionsResponse, Awaitable[iam.QueryTestablePermissionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def query_auditable_services(
         self,
-    ) -> Callable[
-        [iam.QueryAuditableServicesRequest],
-        Union[
-            iam.QueryAuditableServicesResponse,
-            Awaitable[iam.QueryAuditableServicesResponse],
-        ],
-    ]:
+    ) -> Callable[[iam.QueryAuditableServicesRequest], Union[iam.QueryAuditableServicesResponse, Awaitable[iam.QueryAuditableServicesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def lint_policy(
-        self,
-    ) -> Callable[
-        [iam.LintPolicyRequest],
-        Union[iam.LintPolicyResponse, Awaitable[iam.LintPolicyResponse]],
-    ]:
+    def lint_policy(self) -> Callable[[iam.LintPolicyRequest], Union[iam.LintPolicyResponse, Awaitable[iam.LintPolicyResponse]]]:
         raise NotImplementedError()
 
     @property

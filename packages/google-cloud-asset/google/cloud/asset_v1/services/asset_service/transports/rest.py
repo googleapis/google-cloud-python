@@ -257,12 +257,8 @@ class AssetServiceRestInterceptor:
     """
 
     def pre_analyze_iam_policy(
-        self,
-        request: asset_service.AnalyzeIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.AnalyzeIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -270,9 +266,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_iam_policy(
-        self, response: asset_service.AnalyzeIamPolicyResponse
-    ) -> asset_service.AnalyzeIamPolicyResponse:
+    def post_analyze_iam_policy(self, response: asset_service.AnalyzeIamPolicyResponse) -> asset_service.AnalyzeIamPolicyResponse:
         """Post-rpc interceptor for analyze_iam_policy
 
         DEPRECATED. Please use the `post_analyze_iam_policy_with_metadata`
@@ -286,12 +280,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_analyze_iam_policy_with_metadata(
-        self,
-        response: asset_service.AnalyzeIamPolicyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: asset_service.AnalyzeIamPolicyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_iam_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -307,13 +297,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_analyze_iam_policy_longrunning(
-        self,
-        request: asset_service.AnalyzeIamPolicyLongrunningRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeIamPolicyLongrunningRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.AnalyzeIamPolicyLongrunningRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeIamPolicyLongrunningRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_iam_policy_longrunning
 
         Override in a subclass to manipulate the request or metadata
@@ -321,9 +306,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_iam_policy_longrunning(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_analyze_iam_policy_longrunning(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for analyze_iam_policy_longrunning
 
         DEPRECATED. Please use the `post_analyze_iam_policy_longrunning_with_metadata`
@@ -337,9 +320,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_analyze_iam_policy_longrunning_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_iam_policy_longrunning
 
@@ -356,12 +337,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_analyze_move(
-        self,
-        request: asset_service.AnalyzeMoveRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.AnalyzeMoveRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_move
 
         Override in a subclass to manipulate the request or metadata
@@ -369,9 +346,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_move(
-        self, response: asset_service.AnalyzeMoveResponse
-    ) -> asset_service.AnalyzeMoveResponse:
+    def post_analyze_move(self, response: asset_service.AnalyzeMoveResponse) -> asset_service.AnalyzeMoveResponse:
         """Post-rpc interceptor for analyze_move
 
         DEPRECATED. Please use the `post_analyze_move_with_metadata`
@@ -385,12 +360,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_analyze_move_with_metadata(
-        self,
-        response: asset_service.AnalyzeMoveResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeMoveResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: asset_service.AnalyzeMoveResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeMoveResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_move
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -406,12 +377,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_analyze_org_policies(
-        self,
-        request: asset_service.AnalyzeOrgPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.AnalyzeOrgPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -419,9 +386,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_org_policies(
-        self, response: asset_service.AnalyzeOrgPoliciesResponse
-    ) -> asset_service.AnalyzeOrgPoliciesResponse:
+    def post_analyze_org_policies(self, response: asset_service.AnalyzeOrgPoliciesResponse) -> asset_service.AnalyzeOrgPoliciesResponse:
         """Post-rpc interceptor for analyze_org_policies
 
         DEPRECATED. Please use the `post_analyze_org_policies_with_metadata`
@@ -435,13 +400,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_analyze_org_policies_with_metadata(
-        self,
-        response: asset_service.AnalyzeOrgPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeOrgPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.AnalyzeOrgPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeOrgPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_org_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -457,13 +417,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_analyze_org_policy_governed_assets(
-        self,
-        request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -487,13 +442,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_analyze_org_policy_governed_assets_with_metadata(
-        self,
-        response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_org_policy_governed_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -509,13 +459,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_analyze_org_policy_governed_containers(
-        self,
-        request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_containers
 
         Override in a subclass to manipulate the request or metadata
@@ -539,13 +484,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_analyze_org_policy_governed_containers_with_metadata(
-        self,
-        response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_org_policy_governed_containers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -561,13 +501,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_get_assets_history(
-        self,
-        request: asset_service.BatchGetAssetsHistoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.BatchGetAssetsHistoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.BatchGetAssetsHistoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.BatchGetAssetsHistoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_get_assets_history
 
         Override in a subclass to manipulate the request or metadata
@@ -575,9 +510,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_get_assets_history(
-        self, response: asset_service.BatchGetAssetsHistoryResponse
-    ) -> asset_service.BatchGetAssetsHistoryResponse:
+    def post_batch_get_assets_history(self, response: asset_service.BatchGetAssetsHistoryResponse) -> asset_service.BatchGetAssetsHistoryResponse:
         """Post-rpc interceptor for batch_get_assets_history
 
         DEPRECATED. Please use the `post_batch_get_assets_history_with_metadata`
@@ -591,13 +524,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_batch_get_assets_history_with_metadata(
-        self,
-        response: asset_service.BatchGetAssetsHistoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.BatchGetAssetsHistoryResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.BatchGetAssetsHistoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.BatchGetAssetsHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_get_assets_history
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -613,13 +541,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_get_effective_iam_policies(
-        self,
-        request: asset_service.BatchGetEffectiveIamPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.BatchGetEffectiveIamPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.BatchGetEffectiveIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_get_effective_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -643,13 +566,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_batch_get_effective_iam_policies_with_metadata(
-        self,
-        response: asset_service.BatchGetEffectiveIamPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.BatchGetEffectiveIamPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.BatchGetEffectiveIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_get_effective_iam_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -665,12 +583,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_create_feed(
-        self,
-        request: asset_service.CreateFeedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.CreateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.CreateFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.CreateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -692,9 +606,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_create_feed_with_metadata(
-        self,
-        response: asset_service.Feed,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_feed
 
@@ -711,12 +623,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_create_saved_query(
-        self,
-        request: asset_service.CreateSavedQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.CreateSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -724,9 +632,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_saved_query(
-        self, response: asset_service.SavedQuery
-    ) -> asset_service.SavedQuery:
+    def post_create_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for create_saved_query
 
         DEPRECATED. Please use the `post_create_saved_query_with_metadata`
@@ -740,9 +646,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_create_saved_query_with_metadata(
-        self,
-        response: asset_service.SavedQuery,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_saved_query
 
@@ -759,12 +663,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_feed(
-        self,
-        request: asset_service.DeleteFeedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.DeleteFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.DeleteFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.DeleteFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -773,12 +673,8 @@ class AssetServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_saved_query(
-        self,
-        request: asset_service.DeleteSavedQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.DeleteSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.DeleteSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.DeleteSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -787,12 +683,8 @@ class AssetServiceRestInterceptor:
         return request, metadata
 
     def pre_export_assets(
-        self,
-        request: asset_service.ExportAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.ExportAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.ExportAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.ExportAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -800,9 +692,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_export_assets(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_assets(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_assets
 
         DEPRECATED. Please use the `post_export_assets_with_metadata`
@@ -816,9 +706,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_export_assets_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_assets
 
@@ -835,9 +723,7 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_get_feed(
-        self,
-        request: asset_service.GetFeedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: asset_service.GetFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.GetFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_feed
 
@@ -860,9 +746,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_get_feed_with_metadata(
-        self,
-        response: asset_service.Feed,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_feed
 
@@ -879,12 +763,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_get_saved_query(
-        self,
-        request: asset_service.GetSavedQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.GetSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.GetSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.GetSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -892,9 +772,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_saved_query(
-        self, response: asset_service.SavedQuery
-    ) -> asset_service.SavedQuery:
+    def post_get_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for get_saved_query
 
         DEPRECATED. Please use the `post_get_saved_query_with_metadata`
@@ -908,9 +786,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_get_saved_query_with_metadata(
-        self,
-        response: asset_service.SavedQuery,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_saved_query
 
@@ -927,12 +803,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_list_assets(
-        self,
-        request: asset_service.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -940,9 +812,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assets(
-        self, response: asset_service.ListAssetsResponse
-    ) -> asset_service.ListAssetsResponse:
+    def post_list_assets(self, response: asset_service.ListAssetsResponse) -> asset_service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
         DEPRECATED. Please use the `post_list_assets_with_metadata`
@@ -956,12 +826,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_list_assets_with_metadata(
-        self,
-        response: asset_service.ListAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: asset_service.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -977,9 +843,7 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_list_feeds(
-        self,
-        request: asset_service.ListFeedsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: asset_service.ListFeedsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.ListFeedsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_feeds
 
@@ -988,9 +852,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_feeds(
-        self, response: asset_service.ListFeedsResponse
-    ) -> asset_service.ListFeedsResponse:
+    def post_list_feeds(self, response: asset_service.ListFeedsResponse) -> asset_service.ListFeedsResponse:
         """Post-rpc interceptor for list_feeds
 
         DEPRECATED. Please use the `post_list_feeds_with_metadata`
@@ -1004,12 +866,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_list_feeds_with_metadata(
-        self,
-        response: asset_service.ListFeedsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.ListFeedsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: asset_service.ListFeedsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.ListFeedsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_feeds
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1025,12 +883,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_list_saved_queries(
-        self,
-        request: asset_service.ListSavedQueriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.ListSavedQueriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_saved_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -1038,9 +892,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_saved_queries(
-        self, response: asset_service.ListSavedQueriesResponse
-    ) -> asset_service.ListSavedQueriesResponse:
+    def post_list_saved_queries(self, response: asset_service.ListSavedQueriesResponse) -> asset_service.ListSavedQueriesResponse:
         """Post-rpc interceptor for list_saved_queries
 
         DEPRECATED. Please use the `post_list_saved_queries_with_metadata`
@@ -1054,12 +906,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_list_saved_queries_with_metadata(
-        self,
-        response: asset_service.ListSavedQueriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.ListSavedQueriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: asset_service.ListSavedQueriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.ListSavedQueriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_saved_queries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1075,12 +923,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_query_assets(
-        self,
-        request: asset_service.QueryAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.QueryAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.QueryAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.QueryAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -1088,9 +932,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_query_assets(
-        self, response: asset_service.QueryAssetsResponse
-    ) -> asset_service.QueryAssetsResponse:
+    def post_query_assets(self, response: asset_service.QueryAssetsResponse) -> asset_service.QueryAssetsResponse:
         """Post-rpc interceptor for query_assets
 
         DEPRECATED. Please use the `post_query_assets_with_metadata`
@@ -1104,12 +946,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_query_assets_with_metadata(
-        self,
-        response: asset_service.QueryAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.QueryAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: asset_service.QueryAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.QueryAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1125,13 +963,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_search_all_iam_policies(
-        self,
-        request: asset_service.SearchAllIamPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllIamPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -1139,9 +972,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_all_iam_policies(
-        self, response: asset_service.SearchAllIamPoliciesResponse
-    ) -> asset_service.SearchAllIamPoliciesResponse:
+    def post_search_all_iam_policies(self, response: asset_service.SearchAllIamPoliciesResponse) -> asset_service.SearchAllIamPoliciesResponse:
         """Post-rpc interceptor for search_all_iam_policies
 
         DEPRECATED. Please use the `post_search_all_iam_policies_with_metadata`
@@ -1155,13 +986,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_search_all_iam_policies_with_metadata(
-        self,
-        response: asset_service.SearchAllIamPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllIamPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.SearchAllIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_iam_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1177,12 +1003,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_search_all_resources(
-        self,
-        request: asset_service.SearchAllResourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -1190,9 +1012,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_all_resources(
-        self, response: asset_service.SearchAllResourcesResponse
-    ) -> asset_service.SearchAllResourcesResponse:
+    def post_search_all_resources(self, response: asset_service.SearchAllResourcesResponse) -> asset_service.SearchAllResourcesResponse:
         """Post-rpc interceptor for search_all_resources
 
         DEPRECATED. Please use the `post_search_all_resources_with_metadata`
@@ -1206,13 +1026,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_search_all_resources_with_metadata(
-        self,
-        response: asset_service.SearchAllResourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllResourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.SearchAllResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_resources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1228,12 +1043,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_update_feed(
-        self,
-        request: asset_service.UpdateFeedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.UpdateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.UpdateFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.UpdateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -1255,9 +1066,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_update_feed_with_metadata(
-        self,
-        response: asset_service.Feed,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_feed
 
@@ -1274,12 +1083,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_update_saved_query(
-        self,
-        request: asset_service.UpdateSavedQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.UpdateSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -1287,9 +1092,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_saved_query(
-        self, response: asset_service.SavedQuery
-    ) -> asset_service.SavedQuery:
+    def post_update_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for update_saved_query
 
         DEPRECATED. Please use the `post_update_saved_query_with_metadata`
@@ -1303,9 +1106,7 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_update_saved_query_with_metadata(
-        self,
-        response: asset_service.SavedQuery,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_saved_query
 
@@ -1322,12 +1123,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1335,9 +1132,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1426,9 +1221,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1462,29 +1255,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AnalyzeIamPolicy(
-        _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy, AssetServiceRestStub
-    ):
+    class _AnalyzeIamPolicy(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1526,28 +1307,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_analyze_iam_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1571,12 +1340,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1592,16 +1356,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1620,23 +1378,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _AnalyzeIamPolicyLongrunning(
-        _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning,
-        AssetServiceRestStub,
-    ):
+    class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeIamPolicyLongrunning")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1681,32 +1428,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
 
-            request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_transcoded_request(http_options, request)
 
-            body = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1729,16 +1462,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                AssetServiceRestTransport._AnalyzeIamPolicyLongrunning._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AssetServiceRestTransport._AnalyzeIamPolicyLongrunning._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1752,15 +1477,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_analyze_iam_policy_longrunning_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_iam_policy_longrunning_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1781,22 +1499,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _AnalyzeMove(
-        _BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub
-    ):
+    class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeMove")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1838,30 +1546,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_move(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1885,12 +1579,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeMove._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1906,16 +1595,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_move(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_move_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_move_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeMoveResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.AnalyzeMoveResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1934,22 +1617,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _AnalyzeOrgPolicies(
-        _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub
-    ):
+    class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeOrgPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1991,28 +1664,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_analyze_org_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2036,12 +1697,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeOrgPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2057,16 +1713,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_org_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_org_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_org_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2085,23 +1735,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _AnalyzeOrgPolicyGovernedAssets(
-        _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets,
-        AssetServiceRestStub,
-    ):
+    class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeOrgPolicyGovernedAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2144,31 +1783,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_analyze_org_policy_governed_assets(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2191,15 +1815,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                AssetServiceRestTransport._AnalyzeOrgPolicyGovernedAssets._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedAssets._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2215,21 +1832,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_analyze_org_policy_governed_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_org_policy_governed_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2248,23 +1854,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _AnalyzeOrgPolicyGovernedContainers(
-        _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers,
-        AssetServiceRestStub,
-    ):
+    class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeOrgPolicyGovernedContainers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2307,31 +1902,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_analyze_org_policy_governed_containers(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2355,12 +1935,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedContainers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2376,19 +1951,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_analyze_org_policy_governed_containers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_org_policy_governed_containers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2407,22 +1973,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _BatchGetAssetsHistory(
-        _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub
-    ):
+    class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.BatchGetAssetsHistory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2461,28 +2017,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Batch get assets history response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_get_assets_history(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2506,12 +2050,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._BatchGetAssetsHistory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2527,16 +2066,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_batch_get_assets_history(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_get_assets_history_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_get_assets_history_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        asset_service.BatchGetAssetsHistoryResponse.to_json(response)
-                    )
+                    response_payload = asset_service.BatchGetAssetsHistoryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2555,23 +2088,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _BatchGetEffectiveIamPolicies(
-        _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies,
-        AssetServiceRestStub,
-    ):
+    class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.BatchGetEffectiveIamPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2614,28 +2136,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2658,15 +2168,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                AssetServiceRestTransport._BatchGetEffectiveIamPolicies._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AssetServiceRestTransport._BatchGetEffectiveIamPolicies._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2682,21 +2185,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_get_effective_iam_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_get_effective_iam_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2715,22 +2207,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _CreateFeed(
-        _BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub
-    ):
+    class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.CreateFeed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2778,36 +2260,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_create_feed(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseCreateFeed._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateFeed._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAssetServiceRestTransport._BaseCreateFeed._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAssetServiceRestTransport._BaseCreateFeed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2831,13 +2295,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._CreateFeed._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2853,12 +2311,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_create_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_feed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.Feed.to_json(response)
                 except:
@@ -2879,22 +2333,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _CreateSavedQuery(
-        _BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub
-    ):
+    class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.CreateSavedQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2936,32 +2380,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_saved_query(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_saved_query(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_transcoded_request(http_options, request)
 
-            body = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2985,13 +2415,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._CreateSavedQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3007,12 +2431,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_create_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_saved_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_saved_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SavedQuery.to_json(response)
                 except:
@@ -3033,22 +2453,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _DeleteFeed(
-        _BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub
-    ):
+    class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.DeleteFeed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3083,30 +2493,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_feed(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseDeleteFeed._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3130,12 +2526,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._DeleteFeed._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3143,22 +2534,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSavedQuery(
-        _BaseAssetServiceRestTransport._BaseDeleteSavedQuery, AssetServiceRestStub
-    ):
+    class _DeleteSavedQuery(_BaseAssetServiceRestTransport._BaseDeleteSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.DeleteSavedQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3193,28 +2574,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_saved_query(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3238,12 +2607,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._DeleteSavedQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3251,22 +2615,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExportAssets(
-        _BaseAssetServiceRestTransport._BaseExportAssets, AssetServiceRestStub
-    ):
+    class _ExportAssets(_BaseAssetServiceRestTransport._BaseExportAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ExportAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3309,34 +2663,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_export_assets(request, metadata)
-            transcoded_request = _BaseAssetServiceRestTransport._BaseExportAssets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseExportAssets._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAssetServiceRestTransport._BaseExportAssets._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAssetServiceRestTransport._BaseExportAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3360,13 +2698,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._ExportAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3380,12 +2712,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_export_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3411,15 +2739,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return hash("AssetServiceRestTransport.GetFeed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3466,30 +2786,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_get_feed(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseGetFeed._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3513,12 +2819,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._GetFeed._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3534,12 +2835,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_get_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_feed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.Feed.to_json(response)
                 except:
@@ -3560,22 +2857,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _GetSavedQuery(
-        _BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub
-    ):
+    class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.GetSavedQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3616,26 +2903,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
-            transcoded_request = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3659,12 +2936,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._GetSavedQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3680,12 +2952,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_get_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_saved_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_saved_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SavedQuery.to_json(response)
                 except:
@@ -3706,22 +2974,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _ListAssets(
-        _BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub
-    ):
+    class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ListAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3760,30 +3018,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     ListAssets response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseListAssets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3807,12 +3051,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._ListAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3828,16 +3067,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.ListAssetsResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.ListAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3856,22 +3089,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _ListFeeds(
-        _BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub
-    ):
+    class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ListFeeds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3910,30 +3133,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
 
             request, metadata = self._interceptor.pre_list_feeds(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseListFeeds._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListFeeds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3957,12 +3166,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._ListFeeds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3978,12 +3182,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_list_feeds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_feeds_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_feeds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.ListFeedsResponse.to_json(response)
                 except:
@@ -4004,22 +3204,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _ListSavedQueries(
-        _BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub
-    ):
+    class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ListSavedQueries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4058,28 +3248,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Response of listing saved queries.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_saved_queries(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4103,12 +3281,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._ListSavedQueries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4124,16 +3297,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_list_saved_queries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_saved_queries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_saved_queries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.ListSavedQueriesResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.ListSavedQueriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4152,22 +3319,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _QueryAssets(
-        _BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub
-    ):
+    class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.QueryAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4207,36 +3364,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     QueryAssets response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_query_assets(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseQueryAssets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseQueryAssets._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAssetServiceRestTransport._BaseQueryAssets._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAssetServiceRestTransport._BaseQueryAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4260,13 +3399,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._QueryAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4282,16 +3415,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_query_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.QueryAssetsResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.QueryAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4310,22 +3437,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _SearchAllIamPolicies(
-        _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub
-    ):
+    class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.SearchAllIamPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4364,28 +3481,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Search all IAM policies response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_all_iam_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4409,12 +3514,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._SearchAllIamPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4430,16 +3530,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_search_all_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        asset_service.SearchAllIamPoliciesResponse.to_json(response)
-                    )
+                    response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4458,22 +3552,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _SearchAllResources(
-        _BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub
-    ):
+    class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.SearchAllResources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4512,28 +3596,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Search all resources response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_all_resources(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4557,12 +3629,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._SearchAllResources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4578,16 +3645,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_search_all_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_all_resources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_all_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SearchAllResourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.SearchAllResourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4606,22 +3667,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _UpdateFeed(
-        _BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub
-    ):
+    class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.UpdateFeed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4669,36 +3720,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_update_feed(request, metadata)
-            transcoded_request = (
-                _BaseAssetServiceRestTransport._BaseUpdateFeed._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAssetServiceRestTransport._BaseUpdateFeed._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4722,13 +3755,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._UpdateFeed._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4744,12 +3771,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_update_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_feed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.Feed.to_json(response)
                 except:
@@ -4770,22 +3793,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSavedQuery(
-        _BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub
-    ):
+    class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.UpdateSavedQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4827,32 +3840,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_saved_query(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_saved_query(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_transcoded_request(http_options, request)
 
-            body = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4876,13 +3875,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._UpdateSavedQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4898,12 +3891,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_update_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_saved_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_saved_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SavedQuery.to_json(response)
                 except:
@@ -4925,42 +3914,25 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     @property
-    def analyze_iam_policy(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeIamPolicyRequest], asset_service.AnalyzeIamPolicyResponse
-    ]:
+    def analyze_iam_policy(self) -> Callable[[asset_service.AnalyzeIamPolicyRequest], asset_service.AnalyzeIamPolicyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def analyze_iam_policy_longrunning(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeIamPolicyLongrunningRequest], operations_pb2.Operation
-    ]:
+    def analyze_iam_policy_longrunning(self) -> Callable[[asset_service.AnalyzeIamPolicyLongrunningRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeIamPolicyLongrunning(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def analyze_move(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeMoveRequest], asset_service.AnalyzeMoveResponse
-    ]:
+    def analyze_move(self) -> Callable[[asset_service.AnalyzeMoveRequest], asset_service.AnalyzeMoveResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeMove(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def analyze_org_policies(
-        self,
-    ) -> Callable[
-        [asset_service.AnalyzeOrgPoliciesRequest],
-        asset_service.AnalyzeOrgPoliciesResponse,
-    ]:
+    def analyze_org_policies(self) -> Callable[[asset_service.AnalyzeOrgPoliciesRequest], asset_service.AnalyzeOrgPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeOrgPolicies(self._session, self._host, self._interceptor)  # type: ignore
@@ -4968,10 +3940,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     @property
     def analyze_org_policy_governed_assets(
         self,
-    ) -> Callable[
-        [asset_service.AnalyzeOrgPolicyGovernedAssetsRequest],
-        asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
-    ]:
+    ) -> Callable[[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest], asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeOrgPolicyGovernedAssets(self._session, self._host, self._interceptor)  # type: ignore
@@ -4979,21 +3948,13 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     @property
     def analyze_org_policy_governed_containers(
         self,
-    ) -> Callable[
-        [asset_service.AnalyzeOrgPolicyGovernedContainersRequest],
-        asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
-    ]:
+    ) -> Callable[[asset_service.AnalyzeOrgPolicyGovernedContainersRequest], asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeOrgPolicyGovernedContainers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_get_assets_history(
-        self,
-    ) -> Callable[
-        [asset_service.BatchGetAssetsHistoryRequest],
-        asset_service.BatchGetAssetsHistoryResponse,
-    ]:
+    def batch_get_assets_history(self) -> Callable[[asset_service.BatchGetAssetsHistoryRequest], asset_service.BatchGetAssetsHistoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchGetAssetsHistory(self._session, self._host, self._interceptor)  # type: ignore
@@ -5001,50 +3962,37 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     @property
     def batch_get_effective_iam_policies(
         self,
-    ) -> Callable[
-        [asset_service.BatchGetEffectiveIamPoliciesRequest],
-        asset_service.BatchGetEffectiveIamPoliciesResponse,
-    ]:
+    ) -> Callable[[asset_service.BatchGetEffectiveIamPoliciesRequest], asset_service.BatchGetEffectiveIamPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchGetEffectiveIamPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_feed(
-        self,
-    ) -> Callable[[asset_service.CreateFeedRequest], asset_service.Feed]:
+    def create_feed(self) -> Callable[[asset_service.CreateFeedRequest], asset_service.Feed]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_saved_query(
-        self,
-    ) -> Callable[[asset_service.CreateSavedQueryRequest], asset_service.SavedQuery]:
+    def create_saved_query(self) -> Callable[[asset_service.CreateSavedQueryRequest], asset_service.SavedQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSavedQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_feed(
-        self,
-    ) -> Callable[[asset_service.DeleteFeedRequest], empty_pb2.Empty]:
+    def delete_feed(self) -> Callable[[asset_service.DeleteFeedRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_saved_query(
-        self,
-    ) -> Callable[[asset_service.DeleteSavedQueryRequest], empty_pb2.Empty]:
+    def delete_saved_query(self) -> Callable[[asset_service.DeleteSavedQueryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSavedQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_assets(
-        self,
-    ) -> Callable[[asset_service.ExportAssetsRequest], operations_pb2.Operation]:
+    def export_assets(self) -> Callable[[asset_service.ExportAssetsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportAssets(self._session, self._host, self._interceptor)  # type: ignore
@@ -5056,83 +4004,55 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
         return self._GetFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_saved_query(
-        self,
-    ) -> Callable[[asset_service.GetSavedQueryRequest], asset_service.SavedQuery]:
+    def get_saved_query(self) -> Callable[[asset_service.GetSavedQueryRequest], asset_service.SavedQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSavedQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[[asset_service.ListAssetsRequest], asset_service.ListAssetsResponse]:
+    def list_assets(self) -> Callable[[asset_service.ListAssetsRequest], asset_service.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_feeds(
-        self,
-    ) -> Callable[[asset_service.ListFeedsRequest], asset_service.ListFeedsResponse]:
+    def list_feeds(self) -> Callable[[asset_service.ListFeedsRequest], asset_service.ListFeedsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFeeds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_saved_queries(
-        self,
-    ) -> Callable[
-        [asset_service.ListSavedQueriesRequest], asset_service.ListSavedQueriesResponse
-    ]:
+    def list_saved_queries(self) -> Callable[[asset_service.ListSavedQueriesRequest], asset_service.ListSavedQueriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSavedQueries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_assets(
-        self,
-    ) -> Callable[
-        [asset_service.QueryAssetsRequest], asset_service.QueryAssetsResponse
-    ]:
+    def query_assets(self) -> Callable[[asset_service.QueryAssetsRequest], asset_service.QueryAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_all_iam_policies(
-        self,
-    ) -> Callable[
-        [asset_service.SearchAllIamPoliciesRequest],
-        asset_service.SearchAllIamPoliciesResponse,
-    ]:
+    def search_all_iam_policies(self) -> Callable[[asset_service.SearchAllIamPoliciesRequest], asset_service.SearchAllIamPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAllIamPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_all_resources(
-        self,
-    ) -> Callable[
-        [asset_service.SearchAllResourcesRequest],
-        asset_service.SearchAllResourcesResponse,
-    ]:
+    def search_all_resources(self) -> Callable[[asset_service.SearchAllResourcesRequest], asset_service.SearchAllResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAllResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_feed(
-        self,
-    ) -> Callable[[asset_service.UpdateFeedRequest], asset_service.Feed]:
+    def update_feed(self) -> Callable[[asset_service.UpdateFeedRequest], asset_service.Feed]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFeed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_saved_query(
-        self,
-    ) -> Callable[[asset_service.UpdateSavedQueryRequest], asset_service.SavedQuery]:
+    def update_saved_query(self) -> Callable[[asset_service.UpdateSavedQueryRequest], asset_service.SavedQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSavedQuery(self._session, self._host, self._interceptor)  # type: ignore
@@ -5141,22 +4061,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub
-    ):
+    class _GetOperation(_BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5194,28 +4104,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAssetServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5239,12 +4137,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5256,9 +4149,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.configdelivery_v1 import gapic_version as package_version
 from google.cloud.configdelivery_v1.types import config_delivery
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class ConfigDeliveryTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -401,49 +391,32 @@ class ConfigDeliveryTransport(abc.ABC):
         self,
     ) -> Callable[
         [config_delivery.ListResourceBundlesRequest],
-        Union[
-            config_delivery.ListResourceBundlesResponse,
-            Awaitable[config_delivery.ListResourceBundlesResponse],
-        ],
+        Union[config_delivery.ListResourceBundlesResponse, Awaitable[config_delivery.ListResourceBundlesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_resource_bundle(
         self,
-    ) -> Callable[
-        [config_delivery.GetResourceBundleRequest],
-        Union[
-            config_delivery.ResourceBundle, Awaitable[config_delivery.ResourceBundle]
-        ],
-    ]:
+    ) -> Callable[[config_delivery.GetResourceBundleRequest], Union[config_delivery.ResourceBundle, Awaitable[config_delivery.ResourceBundle]]]:
         raise NotImplementedError()
 
     @property
     def create_resource_bundle(
         self,
-    ) -> Callable[
-        [config_delivery.CreateResourceBundleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.CreateResourceBundleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_resource_bundle(
         self,
-    ) -> Callable[
-        [config_delivery.UpdateResourceBundleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.UpdateResourceBundleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_resource_bundle(
         self,
-    ) -> Callable[
-        [config_delivery.DeleteResourceBundleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.DeleteResourceBundleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -451,191 +424,120 @@ class ConfigDeliveryTransport(abc.ABC):
         self,
     ) -> Callable[
         [config_delivery.ListFleetPackagesRequest],
-        Union[
-            config_delivery.ListFleetPackagesResponse,
-            Awaitable[config_delivery.ListFleetPackagesResponse],
-        ],
+        Union[config_delivery.ListFleetPackagesResponse, Awaitable[config_delivery.ListFleetPackagesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_fleet_package(
         self,
-    ) -> Callable[
-        [config_delivery.GetFleetPackageRequest],
-        Union[config_delivery.FleetPackage, Awaitable[config_delivery.FleetPackage]],
-    ]:
+    ) -> Callable[[config_delivery.GetFleetPackageRequest], Union[config_delivery.FleetPackage, Awaitable[config_delivery.FleetPackage]]]:
         raise NotImplementedError()
 
     @property
     def create_fleet_package(
         self,
-    ) -> Callable[
-        [config_delivery.CreateFleetPackageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.CreateFleetPackageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_fleet_package(
         self,
-    ) -> Callable[
-        [config_delivery.UpdateFleetPackageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.UpdateFleetPackageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_fleet_package(
         self,
-    ) -> Callable[
-        [config_delivery.DeleteFleetPackageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.DeleteFleetPackageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_releases(
         self,
     ) -> Callable[
-        [config_delivery.ListReleasesRequest],
-        Union[
-            config_delivery.ListReleasesResponse,
-            Awaitable[config_delivery.ListReleasesResponse],
-        ],
+        [config_delivery.ListReleasesRequest], Union[config_delivery.ListReleasesResponse, Awaitable[config_delivery.ListReleasesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[
-        [config_delivery.GetReleaseRequest],
-        Union[config_delivery.Release, Awaitable[config_delivery.Release]],
-    ]:
+    def get_release(self) -> Callable[[config_delivery.GetReleaseRequest], Union[config_delivery.Release, Awaitable[config_delivery.Release]]]:
         raise NotImplementedError()
 
     @property
     def create_release(
         self,
-    ) -> Callable[
-        [config_delivery.CreateReleaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.CreateReleaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_release(
         self,
-    ) -> Callable[
-        [config_delivery.UpdateReleaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.UpdateReleaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_release(
         self,
-    ) -> Callable[
-        [config_delivery.DeleteReleaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.DeleteReleaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_variants(
         self,
     ) -> Callable[
-        [config_delivery.ListVariantsRequest],
-        Union[
-            config_delivery.ListVariantsResponse,
-            Awaitable[config_delivery.ListVariantsResponse],
-        ],
+        [config_delivery.ListVariantsRequest], Union[config_delivery.ListVariantsResponse, Awaitable[config_delivery.ListVariantsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_variant(
-        self,
-    ) -> Callable[
-        [config_delivery.GetVariantRequest],
-        Union[config_delivery.Variant, Awaitable[config_delivery.Variant]],
-    ]:
+    def get_variant(self) -> Callable[[config_delivery.GetVariantRequest], Union[config_delivery.Variant, Awaitable[config_delivery.Variant]]]:
         raise NotImplementedError()
 
     @property
     def create_variant(
         self,
-    ) -> Callable[
-        [config_delivery.CreateVariantRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.CreateVariantRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_variant(
         self,
-    ) -> Callable[
-        [config_delivery.UpdateVariantRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.UpdateVariantRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_variant(
         self,
-    ) -> Callable[
-        [config_delivery.DeleteVariantRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.DeleteVariantRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_rollouts(
         self,
     ) -> Callable[
-        [config_delivery.ListRolloutsRequest],
-        Union[
-            config_delivery.ListRolloutsResponse,
-            Awaitable[config_delivery.ListRolloutsResponse],
-        ],
+        [config_delivery.ListRolloutsRequest], Union[config_delivery.ListRolloutsResponse, Awaitable[config_delivery.ListRolloutsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[
-        [config_delivery.GetRolloutRequest],
-        Union[config_delivery.Rollout, Awaitable[config_delivery.Rollout]],
-    ]:
+    def get_rollout(self) -> Callable[[config_delivery.GetRolloutRequest], Union[config_delivery.Rollout, Awaitable[config_delivery.Rollout]]]:
         raise NotImplementedError()
 
     @property
     def suspend_rollout(
         self,
-    ) -> Callable[
-        [config_delivery.SuspendRolloutRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.SuspendRolloutRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def resume_rollout(
         self,
-    ) -> Callable[
-        [config_delivery.ResumeRolloutRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[config_delivery.ResumeRolloutRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def abort_rollout(
-        self,
-    ) -> Callable[
-        [config_delivery.AbortRolloutRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def abort_rollout(self) -> Callable[[config_delivery.AbortRolloutRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -643,20 +545,14 @@ class ConfigDeliveryTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -674,22 +570,13 @@ class ConfigDeliveryTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

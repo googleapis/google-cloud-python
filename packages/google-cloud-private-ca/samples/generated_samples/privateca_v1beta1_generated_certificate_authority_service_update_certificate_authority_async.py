@@ -42,9 +42,7 @@ async def sample_update_certificate_authority():
     certificate_authority = privateca_v1beta1.CertificateAuthority()
     certificate_authority.type_ = "SUBORDINATE"
     certificate_authority.tier = "DEVOPS"
-    certificate_authority.config.reusable_config.reusable_config = (
-        "reusable_config_value"
-    )
+    certificate_authority.config.reusable_config.reusable_config = "reusable_config_value"
     certificate_authority.key_spec.cloud_kms_key_version = "cloud_kms_key_version_value"
 
     request = privateca_v1beta1.UpdateCertificateAuthorityRequest(

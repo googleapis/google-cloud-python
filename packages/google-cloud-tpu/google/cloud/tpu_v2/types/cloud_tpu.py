@@ -767,13 +767,11 @@ class QueuedResource(proto.Message):
                 number=2,
                 oneof="name_strategy",
             )
-            multislice_params: "QueuedResource.Tpu.NodeSpec.MultisliceParams" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=3,
-                    oneof="name_strategy",
-                    message="QueuedResource.Tpu.NodeSpec.MultisliceParams",
-                )
+            multislice_params: "QueuedResource.Tpu.NodeSpec.MultisliceParams" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="name_strategy",
+                message="QueuedResource.Tpu.NodeSpec.MultisliceParams",
             )
             node: "Node" = proto.Field(
                 proto.MESSAGE,

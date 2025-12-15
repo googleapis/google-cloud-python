@@ -32,15 +32,9 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.network_security_v1.types import (
-    authorization_policy as gcn_authorization_policy,
-)
-from google.cloud.network_security_v1.types import (
-    client_tls_policy as gcn_client_tls_policy,
-)
-from google.cloud.network_security_v1.types import (
-    server_tls_policy as gcn_server_tls_policy,
-)
+from google.cloud.network_security_v1.types import authorization_policy as gcn_authorization_policy
+from google.cloud.network_security_v1.types import client_tls_policy as gcn_client_tls_policy
+from google.cloud.network_security_v1.types import server_tls_policy as gcn_server_tls_policy
 from google.cloud.network_security_v1.types import authorization_policy
 from google.cloud.network_security_v1.types import client_tls_policy
 from google.cloud.network_security_v1.types import server_tls_policy
@@ -214,13 +208,8 @@ class NetworkSecurityRestInterceptor:
     """
 
     def pre_create_authorization_policy(
-        self,
-        request: gcn_authorization_policy.CreateAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_authorization_policy.CreateAuthorizationPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_authorization_policy.CreateAuthorizationPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_authorization_policy.CreateAuthorizationPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_authorization_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -228,9 +217,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_create_authorization_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_authorization_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_authorization_policy
 
         DEPRECATED. Please use the `post_create_authorization_policy_with_metadata`
@@ -244,9 +231,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_create_authorization_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_authorization_policy
 
@@ -263,13 +248,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_create_client_tls_policy(
-        self,
-        request: gcn_client_tls_policy.CreateClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_client_tls_policy.CreateClientTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_client_tls_policy.CreateClientTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_client_tls_policy.CreateClientTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_client_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +257,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_create_client_tls_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_client_tls_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_client_tls_policy
 
         DEPRECATED. Please use the `post_create_client_tls_policy_with_metadata`
@@ -293,9 +271,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_create_client_tls_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_client_tls_policy
 
@@ -312,13 +288,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_create_server_tls_policy(
-        self,
-        request: gcn_server_tls_policy.CreateServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_server_tls_policy.CreateServerTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_server_tls_policy.CreateServerTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_server_tls_policy.CreateServerTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_server_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -326,9 +297,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_create_server_tls_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_server_tls_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_server_tls_policy
 
         DEPRECATED. Please use the `post_create_server_tls_policy_with_metadata`
@@ -342,9 +311,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_create_server_tls_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_server_tls_policy
 
@@ -361,13 +328,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_delete_authorization_policy(
-        self,
-        request: authorization_policy.DeleteAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        authorization_policy.DeleteAuthorizationPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: authorization_policy.DeleteAuthorizationPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[authorization_policy.DeleteAuthorizationPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_authorization_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -375,9 +337,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_authorization_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_authorization_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_authorization_policy
 
         DEPRECATED. Please use the `post_delete_authorization_policy_with_metadata`
@@ -391,9 +351,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_delete_authorization_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_authorization_policy
 
@@ -410,13 +368,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_delete_client_tls_policy(
-        self,
-        request: client_tls_policy.DeleteClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_tls_policy.DeleteClientTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_tls_policy.DeleteClientTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_tls_policy.DeleteClientTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_client_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -424,9 +377,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_client_tls_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_client_tls_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_client_tls_policy
 
         DEPRECATED. Please use the `post_delete_client_tls_policy_with_metadata`
@@ -440,9 +391,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_delete_client_tls_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_client_tls_policy
 
@@ -459,13 +408,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_delete_server_tls_policy(
-        self,
-        request: server_tls_policy.DeleteServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        server_tls_policy.DeleteServerTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: server_tls_policy.DeleteServerTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[server_tls_policy.DeleteServerTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_server_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -473,9 +417,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_server_tls_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_server_tls_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_server_tls_policy
 
         DEPRECATED. Please use the `post_delete_server_tls_policy_with_metadata`
@@ -489,9 +431,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_delete_server_tls_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_server_tls_policy
 
@@ -508,13 +448,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_get_authorization_policy(
-        self,
-        request: authorization_policy.GetAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        authorization_policy.GetAuthorizationPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: authorization_policy.GetAuthorizationPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[authorization_policy.GetAuthorizationPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_authorization_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -522,9 +457,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_get_authorization_policy(
-        self, response: authorization_policy.AuthorizationPolicy
-    ) -> authorization_policy.AuthorizationPolicy:
+    def post_get_authorization_policy(self, response: authorization_policy.AuthorizationPolicy) -> authorization_policy.AuthorizationPolicy:
         """Post-rpc interceptor for get_authorization_policy
 
         DEPRECATED. Please use the `post_get_authorization_policy_with_metadata`
@@ -538,13 +471,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_get_authorization_policy_with_metadata(
-        self,
-        response: authorization_policy.AuthorizationPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        authorization_policy.AuthorizationPolicy,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: authorization_policy.AuthorizationPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[authorization_policy.AuthorizationPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_authorization_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -560,13 +488,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_get_client_tls_policy(
-        self,
-        request: client_tls_policy.GetClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_tls_policy.GetClientTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_tls_policy.GetClientTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_tls_policy.GetClientTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_client_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -574,9 +497,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_get_client_tls_policy(
-        self, response: client_tls_policy.ClientTlsPolicy
-    ) -> client_tls_policy.ClientTlsPolicy:
+    def post_get_client_tls_policy(self, response: client_tls_policy.ClientTlsPolicy) -> client_tls_policy.ClientTlsPolicy:
         """Post-rpc interceptor for get_client_tls_policy
 
         DEPRECATED. Please use the `post_get_client_tls_policy_with_metadata`
@@ -590,12 +511,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_get_client_tls_policy_with_metadata(
-        self,
-        response: client_tls_policy.ClientTlsPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_tls_policy.ClientTlsPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: client_tls_policy.ClientTlsPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_tls_policy.ClientTlsPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_client_tls_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -611,13 +528,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_get_server_tls_policy(
-        self,
-        request: server_tls_policy.GetServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        server_tls_policy.GetServerTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: server_tls_policy.GetServerTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[server_tls_policy.GetServerTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_server_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -625,9 +537,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_get_server_tls_policy(
-        self, response: server_tls_policy.ServerTlsPolicy
-    ) -> server_tls_policy.ServerTlsPolicy:
+    def post_get_server_tls_policy(self, response: server_tls_policy.ServerTlsPolicy) -> server_tls_policy.ServerTlsPolicy:
         """Post-rpc interceptor for get_server_tls_policy
 
         DEPRECATED. Please use the `post_get_server_tls_policy_with_metadata`
@@ -641,12 +551,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_get_server_tls_policy_with_metadata(
-        self,
-        response: server_tls_policy.ServerTlsPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        server_tls_policy.ServerTlsPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: server_tls_policy.ServerTlsPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[server_tls_policy.ServerTlsPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_server_tls_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -662,13 +568,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_list_authorization_policies(
-        self,
-        request: authorization_policy.ListAuthorizationPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        authorization_policy.ListAuthorizationPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: authorization_policy.ListAuthorizationPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[authorization_policy.ListAuthorizationPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_authorization_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -692,13 +593,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_list_authorization_policies_with_metadata(
-        self,
-        response: authorization_policy.ListAuthorizationPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        authorization_policy.ListAuthorizationPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: authorization_policy.ListAuthorizationPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[authorization_policy.ListAuthorizationPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_authorization_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -714,13 +610,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_list_client_tls_policies(
-        self,
-        request: client_tls_policy.ListClientTlsPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_tls_policy.ListClientTlsPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_tls_policy.ListClientTlsPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_tls_policy.ListClientTlsPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_client_tls_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -744,13 +635,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_list_client_tls_policies_with_metadata(
-        self,
-        response: client_tls_policy.ListClientTlsPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_tls_policy.ListClientTlsPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: client_tls_policy.ListClientTlsPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_tls_policy.ListClientTlsPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_client_tls_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -766,13 +652,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_list_server_tls_policies(
-        self,
-        request: server_tls_policy.ListServerTlsPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        server_tls_policy.ListServerTlsPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: server_tls_policy.ListServerTlsPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[server_tls_policy.ListServerTlsPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_server_tls_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -796,13 +677,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_list_server_tls_policies_with_metadata(
-        self,
-        response: server_tls_policy.ListServerTlsPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        server_tls_policy.ListServerTlsPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: server_tls_policy.ListServerTlsPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[server_tls_policy.ListServerTlsPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_server_tls_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -818,13 +694,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_update_authorization_policy(
-        self,
-        request: gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_authorization_policy.UpdateAuthorizationPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_authorization_policy.UpdateAuthorizationPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_authorization_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -832,9 +703,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_update_authorization_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_authorization_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_authorization_policy
 
         DEPRECATED. Please use the `post_update_authorization_policy_with_metadata`
@@ -848,9 +717,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_update_authorization_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_authorization_policy
 
@@ -867,13 +734,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_update_client_tls_policy(
-        self,
-        request: gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_client_tls_policy.UpdateClientTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_client_tls_policy.UpdateClientTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_client_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -881,9 +743,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_update_client_tls_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_client_tls_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_client_tls_policy
 
         DEPRECATED. Please use the `post_update_client_tls_policy_with_metadata`
@@ -897,9 +757,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_update_client_tls_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_client_tls_policy
 
@@ -916,13 +774,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_update_server_tls_policy(
-        self,
-        request: gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_server_tls_policy.UpdateServerTlsPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_server_tls_policy.UpdateServerTlsPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_server_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -930,9 +783,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_update_server_tls_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_server_tls_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_server_tls_policy
 
         DEPRECATED. Please use the `post_update_server_tls_policy_with_metadata`
@@ -946,9 +797,7 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def post_update_server_tls_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_server_tls_policy
 
@@ -965,12 +814,8 @@ class NetworkSecurityRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -978,9 +823,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -990,12 +833,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1003,9 +842,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1015,12 +852,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1038,12 +871,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1061,13 +890,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1075,9 +899,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1087,12 +909,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1110,12 +928,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1133,12 +947,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1146,9 +956,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1158,12 +966,8 @@ class NetworkSecurityRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1171,9 +975,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1264,9 +1066,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1336,30 +1136,17 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAuthorizationPolicy(
-        _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _CreateAuthorizationPolicy(_BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.CreateAuthorizationPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1404,32 +1191,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_authorization_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_authorization_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1452,16 +1225,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._CreateAuthorizationPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NetworkSecurityRestTransport._CreateAuthorizationPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1475,12 +1240,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_create_authorization_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_authorization_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_authorization_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1501,23 +1262,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _CreateClientTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _CreateClientTlsPolicy(_BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.CreateClientTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1561,32 +1311,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_client_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_client_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1609,16 +1345,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._CreateClientTlsPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NetworkSecurityRestTransport._CreateClientTlsPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1632,12 +1360,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_create_client_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_client_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_client_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1658,23 +1382,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _CreateServerTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _CreateServerTlsPolicy(_BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.CreateServerTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1718,32 +1431,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_server_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_server_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1766,16 +1465,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._CreateServerTlsPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NetworkSecurityRestTransport._CreateServerTlsPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1789,12 +1480,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_create_server_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_server_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_server_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1815,23 +1502,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _DeleteAuthorizationPolicy(
-        _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _DeleteAuthorizationPolicy(_BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.DeleteAuthorizationPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1875,28 +1551,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_authorization_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_authorization_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1919,15 +1583,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._DeleteAuthorizationPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._DeleteAuthorizationPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1941,12 +1598,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_delete_authorization_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_authorization_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_authorization_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1967,23 +1620,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _DeleteClientTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _DeleteClientTlsPolicy(_BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.DeleteClientTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2026,28 +1668,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_client_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_client_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2070,15 +1700,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._DeleteClientTlsPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._DeleteClientTlsPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2092,12 +1715,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_delete_client_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_client_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_client_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2118,23 +1737,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _DeleteServerTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _DeleteServerTlsPolicy(_BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.DeleteServerTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2177,28 +1785,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_server_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_server_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2221,15 +1817,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._DeleteServerTlsPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._DeleteServerTlsPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2243,12 +1832,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_delete_server_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_server_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_server_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2269,23 +1854,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _GetAuthorizationPolicy(
-        _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _GetAuthorizationPolicy(_BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.GetAuthorizationPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2332,28 +1906,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_authorization_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_authorization_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2376,15 +1938,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._GetAuthorizationPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._GetAuthorizationPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2400,16 +1955,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_get_authorization_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_authorization_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_authorization_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = authorization_policy.AuthorizationPolicy.to_json(
-                        response
-                    )
+                    response_payload = authorization_policy.AuthorizationPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2428,23 +1977,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _GetClientTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _GetClientTlsPolicy(_BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.GetClientTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2490,28 +2028,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_client_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_client_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2535,12 +2061,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._GetClientTlsPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2556,16 +2077,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_get_client_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_client_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_client_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = client_tls_policy.ClientTlsPolicy.to_json(
-                        response
-                    )
+                    response_payload = client_tls_policy.ClientTlsPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2584,23 +2099,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _GetServerTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _GetServerTlsPolicy(_BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.GetServerTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2647,28 +2151,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_server_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_server_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2692,12 +2184,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._GetServerTlsPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2713,16 +2200,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_get_server_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_server_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_server_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = server_tls_policy.ServerTlsPolicy.to_json(
-                        response
-                    )
+                    response_payload = server_tls_policy.ServerTlsPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2741,23 +2222,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _ListAuthorizationPolicies(
-        _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies,
-        NetworkSecurityRestStub,
-    ):
+    class _ListAuthorizationPolicies(_BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.ListAuthorizationPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2800,28 +2270,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_authorization_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_authorization_policies(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2844,15 +2302,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._ListAuthorizationPolicies._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._ListAuthorizationPolicies._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2868,18 +2319,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_list_authorization_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_authorization_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_authorization_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        authorization_policy.ListAuthorizationPoliciesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = authorization_policy.ListAuthorizationPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2898,23 +2341,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _ListClientTlsPolicies(
-        _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies,
-        NetworkSecurityRestStub,
-    ):
+    class _ListClientTlsPolicies(_BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.ListClientTlsPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2956,28 +2388,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_client_tls_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_client_tls_policies(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3000,15 +2420,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._ListClientTlsPolicies._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._ListClientTlsPolicies._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3024,18 +2437,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_list_client_tls_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_client_tls_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_client_tls_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        client_tls_policy.ListClientTlsPoliciesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = client_tls_policy.ListClientTlsPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3054,23 +2459,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _ListServerTlsPolicies(
-        _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies,
-        NetworkSecurityRestStub,
-    ):
+    class _ListServerTlsPolicies(_BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.ListServerTlsPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3112,28 +2506,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_server_tls_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_server_tls_policies(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3156,15 +2538,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._ListServerTlsPolicies._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NetworkSecurityRestTransport._ListServerTlsPolicies._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3180,18 +2555,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_list_server_tls_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_server_tls_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_server_tls_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        server_tls_policy.ListServerTlsPoliciesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = server_tls_policy.ListServerTlsPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3210,23 +2577,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _UpdateAuthorizationPolicy(
-        _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _UpdateAuthorizationPolicy(_BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.UpdateAuthorizationPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3271,32 +2627,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_authorization_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_authorization_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3319,16 +2661,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._UpdateAuthorizationPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NetworkSecurityRestTransport._UpdateAuthorizationPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3342,12 +2676,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_update_authorization_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_authorization_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_authorization_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3368,23 +2698,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _UpdateClientTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _UpdateClientTlsPolicy(_BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.UpdateClientTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3428,32 +2747,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_client_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_client_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3476,16 +2781,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._UpdateClientTlsPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NetworkSecurityRestTransport._UpdateClientTlsPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3499,12 +2796,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_update_client_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_client_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_client_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3525,23 +2818,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
             return resp
 
-    class _UpdateServerTlsPolicy(
-        _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy,
-        NetworkSecurityRestStub,
-    ):
+    class _UpdateServerTlsPolicy(_BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.UpdateServerTlsPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3585,32 +2867,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_server_tls_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_server_tls_policy(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3633,16 +2901,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 )
 
             # Send the request
-            response = (
-                NetworkSecurityRestTransport._UpdateServerTlsPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NetworkSecurityRestTransport._UpdateServerTlsPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3656,12 +2916,8 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_update_server_tls_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_server_tls_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_server_tls_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3683,94 +2939,55 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             return resp
 
     @property
-    def create_authorization_policy(
-        self,
-    ) -> Callable[
-        [gcn_authorization_policy.CreateAuthorizationPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_authorization_policy(self) -> Callable[[gcn_authorization_policy.CreateAuthorizationPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_client_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_client_tls_policy.CreateClientTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_client_tls_policy(self) -> Callable[[gcn_client_tls_policy.CreateClientTlsPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateClientTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_server_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_server_tls_policy.CreateServerTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_server_tls_policy(self) -> Callable[[gcn_server_tls_policy.CreateServerTlsPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateServerTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_authorization_policy(
-        self,
-    ) -> Callable[
-        [authorization_policy.DeleteAuthorizationPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_authorization_policy(self) -> Callable[[authorization_policy.DeleteAuthorizationPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_client_tls_policy(
-        self,
-    ) -> Callable[
-        [client_tls_policy.DeleteClientTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def delete_client_tls_policy(self) -> Callable[[client_tls_policy.DeleteClientTlsPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteClientTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_server_tls_policy(
-        self,
-    ) -> Callable[
-        [server_tls_policy.DeleteServerTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def delete_server_tls_policy(self) -> Callable[[server_tls_policy.DeleteServerTlsPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteServerTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_authorization_policy(
-        self,
-    ) -> Callable[
-        [authorization_policy.GetAuthorizationPolicyRequest],
-        authorization_policy.AuthorizationPolicy,
-    ]:
+    def get_authorization_policy(self) -> Callable[[authorization_policy.GetAuthorizationPolicyRequest], authorization_policy.AuthorizationPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_client_tls_policy(
-        self,
-    ) -> Callable[
-        [client_tls_policy.GetClientTlsPolicyRequest], client_tls_policy.ClientTlsPolicy
-    ]:
+    def get_client_tls_policy(self) -> Callable[[client_tls_policy.GetClientTlsPolicyRequest], client_tls_policy.ClientTlsPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetClientTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_server_tls_policy(
-        self,
-    ) -> Callable[
-        [server_tls_policy.GetServerTlsPolicyRequest], server_tls_policy.ServerTlsPolicy
-    ]:
+    def get_server_tls_policy(self) -> Callable[[server_tls_policy.GetServerTlsPolicyRequest], server_tls_policy.ServerTlsPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetServerTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3778,63 +2995,37 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     @property
     def list_authorization_policies(
         self,
-    ) -> Callable[
-        [authorization_policy.ListAuthorizationPoliciesRequest],
-        authorization_policy.ListAuthorizationPoliciesResponse,
-    ]:
+    ) -> Callable[[authorization_policy.ListAuthorizationPoliciesRequest], authorization_policy.ListAuthorizationPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAuthorizationPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_client_tls_policies(
-        self,
-    ) -> Callable[
-        [client_tls_policy.ListClientTlsPoliciesRequest],
-        client_tls_policy.ListClientTlsPoliciesResponse,
-    ]:
+    def list_client_tls_policies(self) -> Callable[[client_tls_policy.ListClientTlsPoliciesRequest], client_tls_policy.ListClientTlsPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClientTlsPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_server_tls_policies(
-        self,
-    ) -> Callable[
-        [server_tls_policy.ListServerTlsPoliciesRequest],
-        server_tls_policy.ListServerTlsPoliciesResponse,
-    ]:
+    def list_server_tls_policies(self) -> Callable[[server_tls_policy.ListServerTlsPoliciesRequest], server_tls_policy.ListServerTlsPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListServerTlsPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_authorization_policy(
-        self,
-    ) -> Callable[
-        [gcn_authorization_policy.UpdateAuthorizationPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_authorization_policy(self) -> Callable[[gcn_authorization_policy.UpdateAuthorizationPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_client_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_client_tls_policy.UpdateClientTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_client_tls_policy(self) -> Callable[[gcn_client_tls_policy.UpdateClientTlsPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateClientTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_server_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_server_tls_policy.UpdateServerTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_server_tls_policy(self) -> Callable[[gcn_server_tls_policy.UpdateServerTlsPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateServerTlsPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3843,22 +3034,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseNetworkSecurityRestTransport._BaseGetLocation, NetworkSecurityRestStub
-    ):
+    class _GetLocation(_BaseNetworkSecurityRestTransport._BaseGetLocation, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3896,26 +3077,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3939,12 +3110,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3956,9 +3122,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3983,22 +3147,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseNetworkSecurityRestTransport._BaseListLocations, NetworkSecurityRestStub
-    ):
+    class _ListLocations(_BaseNetworkSecurityRestTransport._BaseListLocations, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4036,26 +3190,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4079,12 +3223,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4096,9 +3235,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4123,22 +3260,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseNetworkSecurityRestTransport._BaseGetIamPolicy, NetworkSecurityRestStub
-    ):
+    class _GetIamPolicy(_BaseNetworkSecurityRestTransport._BaseGetIamPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4176,26 +3303,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4219,12 +3336,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4236,9 +3348,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4263,22 +3373,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseNetworkSecurityRestTransport._BaseSetIamPolicy, NetworkSecurityRestStub
-    ):
+    class _SetIamPolicy(_BaseNetworkSecurityRestTransport._BaseSetIamPolicy, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4317,30 +3417,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4364,13 +3452,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4382,9 +3464,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4409,23 +3489,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseNetworkSecurityRestTransport._BaseTestIamPermissions,
-        NetworkSecurityRestStub,
-    ):
+    class _TestIamPermissions(_BaseNetworkSecurityRestTransport._BaseTestIamPermissions, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4464,32 +3533,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4513,13 +3568,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4531,9 +3580,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4558,22 +3605,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseNetworkSecurityRestTransport._BaseCancelOperation, NetworkSecurityRestStub
-    ):
+    class _CancelOperation(_BaseNetworkSecurityRestTransport._BaseCancelOperation, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4609,32 +3646,18 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4658,13 +3681,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4678,22 +3695,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseNetworkSecurityRestTransport._BaseDeleteOperation, NetworkSecurityRestStub
-    ):
+    class _DeleteOperation(_BaseNetworkSecurityRestTransport._BaseDeleteOperation, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4728,28 +3735,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4773,12 +3768,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4792,22 +3782,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseNetworkSecurityRestTransport._BaseGetOperation, NetworkSecurityRestStub
-    ):
+    class _GetOperation(_BaseNetworkSecurityRestTransport._BaseGetOperation, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4845,26 +3825,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4888,12 +3858,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4905,9 +3870,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4932,22 +3895,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseNetworkSecurityRestTransport._BaseListOperations, NetworkSecurityRestStub
-    ):
+    class _ListOperations(_BaseNetworkSecurityRestTransport._BaseListOperations, NetworkSecurityRestStub):
         def __hash__(self):
             return hash("NetworkSecurityRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4985,26 +3938,16 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetworkSecurityRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5028,12 +3971,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             # Send the request
             response = NetworkSecurityRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5045,9 +3983,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

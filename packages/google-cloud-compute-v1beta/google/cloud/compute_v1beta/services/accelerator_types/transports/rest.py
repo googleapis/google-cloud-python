@@ -103,13 +103,8 @@ class AcceleratorTypesRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListAcceleratorTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListAcceleratorTypesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListAcceleratorTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListAcceleratorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -117,9 +112,7 @@ class AcceleratorTypesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.AcceleratorTypeAggregatedList
-    ) -> compute.AcceleratorTypeAggregatedList:
+    def post_aggregated_list(self, response: compute.AcceleratorTypeAggregatedList) -> compute.AcceleratorTypeAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -133,12 +126,8 @@ class AcceleratorTypesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.AcceleratorTypeAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AcceleratorTypeAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.AcceleratorTypeAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AcceleratorTypeAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -154,12 +143,8 @@ class AcceleratorTypesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetAcceleratorTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetAcceleratorTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetAcceleratorTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetAcceleratorTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +166,7 @@ class AcceleratorTypesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.AcceleratorType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.AcceleratorType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.AcceleratorType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -200,12 +183,8 @@ class AcceleratorTypesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListAcceleratorTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListAcceleratorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListAcceleratorTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListAcceleratorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -213,9 +192,7 @@ class AcceleratorTypesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.AcceleratorTypeList
-    ) -> compute.AcceleratorTypeList:
+    def post_list(self, response: compute.AcceleratorTypeList) -> compute.AcceleratorTypeList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -229,9 +206,7 @@ class AcceleratorTypesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.AcceleratorTypeList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.AcceleratorTypeList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.AcceleratorTypeList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -333,30 +308,18 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AcceleratorTypesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseAcceleratorTypesRestTransport._BaseAggregatedList, AcceleratorTypesRestStub
-    ):
+    class _AggregatedList(_BaseAcceleratorTypesRestTransport._BaseAggregatedList, AcceleratorTypesRestStub):
         def __hash__(self):
             return hash("AcceleratorTypesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -397,26 +360,16 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
 
             """
 
-            http_options = (
-                _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -440,12 +393,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
 
             # Send the request
             response = AcceleratorTypesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -461,16 +409,10 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.AcceleratorTypeAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.AcceleratorTypeAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -494,15 +436,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             return hash("AcceleratorTypesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -551,30 +485,16 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
 
             """
 
-            http_options = (
-                _BaseAcceleratorTypesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseAcceleratorTypesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseAcceleratorTypesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAcceleratorTypesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAcceleratorTypesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAcceleratorTypesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -598,12 +518,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
 
             # Send the request
             response = AcceleratorTypesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -620,9 +535,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.AcceleratorType.to_json(response)
                 except:
@@ -648,15 +561,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             return hash("AcceleratorTypesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -697,30 +602,16 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
                     Contains a list of accelerator types.
             """
 
-            http_options = (
-                _BaseAcceleratorTypesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseAcceleratorTypesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseAcceleratorTypesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAcceleratorTypesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAcceleratorTypesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAcceleratorTypesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -744,12 +635,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
 
             # Send the request
             response = AcceleratorTypesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -766,9 +652,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.AcceleratorTypeList.to_json(response)
                 except:
@@ -790,28 +674,19 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListAcceleratorTypesRequest],
-        compute.AcceleratorTypeAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListAcceleratorTypesRequest], compute.AcceleratorTypeAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetAcceleratorTypeRequest], compute.AcceleratorType]:
+    def get(self) -> Callable[[compute.GetAcceleratorTypeRequest], compute.AcceleratorType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListAcceleratorTypesRequest], compute.AcceleratorTypeList]:
+    def list(self) -> Callable[[compute.ListAcceleratorTypesRequest], compute.AcceleratorTypeList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore

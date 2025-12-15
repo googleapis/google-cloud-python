@@ -445,9 +445,7 @@ class HumanAgentAssistantConfig(proto.Message):
                 execution of tools.
         """
 
-        feature_configs: MutableSequence[
-            "HumanAgentAssistantConfig.SuggestionFeatureConfig"
-        ] = proto.RepeatedField(
+        feature_configs: MutableSequence["HumanAgentAssistantConfig.SuggestionFeatureConfig"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="HumanAgentAssistantConfig.SuggestionFeatureConfig",
@@ -709,9 +707,7 @@ class HumanAgentAssistantConfig(proto.Message):
                 CUSTOMER_SATISFACTION = 5
                 ENTITIES = 6
 
-            section_types: MutableSequence[
-                "HumanAgentAssistantConfig.SuggestionQueryConfig.Sections.SectionType"
-            ] = proto.RepeatedField(
+            section_types: MutableSequence["HumanAgentAssistantConfig.SuggestionQueryConfig.Sections.SectionType"] = proto.RepeatedField(
                 proto.ENUM,
                 number=1,
                 enum="HumanAgentAssistantConfig.SuggestionQueryConfig.Sections.SectionType",
@@ -748,12 +744,10 @@ class HumanAgentAssistantConfig(proto.Message):
             number=7,
             message="HumanAgentAssistantConfig.SuggestionQueryConfig.ContextFilterSettings",
         )
-        sections: "HumanAgentAssistantConfig.SuggestionQueryConfig.Sections" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=8,
-                message="HumanAgentAssistantConfig.SuggestionQueryConfig.Sections",
-            )
+        sections: "HumanAgentAssistantConfig.SuggestionQueryConfig.Sections" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="HumanAgentAssistantConfig.SuggestionQueryConfig.Sections",
         )
         context_size: int = proto.Field(
             proto.INT32,
@@ -1212,12 +1206,10 @@ class SetSuggestionFeatureConfigRequest(proto.Message):
         number=2,
         enum=participant.Participant.Role,
     )
-    suggestion_feature_config: "HumanAgentAssistantConfig.SuggestionFeatureConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="HumanAgentAssistantConfig.SuggestionFeatureConfig",
-        )
+    suggestion_feature_config: "HumanAgentAssistantConfig.SuggestionFeatureConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="HumanAgentAssistantConfig.SuggestionFeatureConfig",
     )
 
 

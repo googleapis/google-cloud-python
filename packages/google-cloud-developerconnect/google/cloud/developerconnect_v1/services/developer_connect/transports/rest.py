@@ -273,13 +273,8 @@ class DeveloperConnectRestInterceptor:
     """
 
     def pre_create_account_connector(
-        self,
-        request: developer_connect.CreateAccountConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.CreateAccountConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.CreateAccountConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.CreateAccountConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_account_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -287,9 +282,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_create_account_connector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_account_connector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_account_connector
 
         DEPRECATED. Please use the `post_create_account_connector_with_metadata`
@@ -303,9 +296,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_create_account_connector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_account_connector
 
@@ -322,13 +313,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_create_connection(
-        self,
-        request: developer_connect.CreateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.CreateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.CreateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -336,9 +322,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_create_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connection
 
         DEPRECATED. Please use the `post_create_connection_with_metadata`
@@ -352,9 +336,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_create_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connection
 
@@ -371,13 +353,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_create_git_repository_link(
-        self,
-        request: developer_connect.CreateGitRepositoryLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.CreateGitRepositoryLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.CreateGitRepositoryLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.CreateGitRepositoryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_git_repository_link
 
         Override in a subclass to manipulate the request or metadata
@@ -385,9 +362,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_create_git_repository_link(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_git_repository_link(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_git_repository_link
 
         DEPRECATED. Please use the `post_create_git_repository_link_with_metadata`
@@ -401,9 +376,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_create_git_repository_link_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_git_repository_link
 
@@ -420,13 +393,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_account_connector(
-        self,
-        request: developer_connect.DeleteAccountConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.DeleteAccountConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.DeleteAccountConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.DeleteAccountConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_account_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -434,9 +402,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_account_connector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_account_connector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_account_connector
 
         DEPRECATED. Please use the `post_delete_account_connector_with_metadata`
@@ -450,9 +416,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_delete_account_connector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_account_connector
 
@@ -469,13 +433,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_connection(
-        self,
-        request: developer_connect.DeleteConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.DeleteConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.DeleteConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -483,9 +442,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connection
 
         DEPRECATED. Please use the `post_delete_connection_with_metadata`
@@ -499,9 +456,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_delete_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_connection
 
@@ -518,13 +473,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_git_repository_link(
-        self,
-        request: developer_connect.DeleteGitRepositoryLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.DeleteGitRepositoryLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.DeleteGitRepositoryLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.DeleteGitRepositoryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_git_repository_link
 
         Override in a subclass to manipulate the request or metadata
@@ -532,9 +482,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_git_repository_link(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_git_repository_link(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_git_repository_link
 
         DEPRECATED. Please use the `post_delete_git_repository_link_with_metadata`
@@ -548,9 +496,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_delete_git_repository_link_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_git_repository_link
 
@@ -567,12 +513,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_self(
-        self,
-        request: developer_connect.DeleteSelfRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.DeleteSelfRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.DeleteSelfRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.DeleteSelfRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_self
 
         Override in a subclass to manipulate the request or metadata
@@ -580,9 +522,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_self(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_self(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_self
 
         DEPRECATED. Please use the `post_delete_self_with_metadata`
@@ -596,9 +536,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_delete_self_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_self
 
@@ -615,12 +553,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_user(
-        self,
-        request: developer_connect.DeleteUserRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.DeleteUserRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.DeleteUserRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.DeleteUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_user
 
         Override in a subclass to manipulate the request or metadata
@@ -628,9 +562,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_user(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_user(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_user
 
         DEPRECATED. Please use the `post_delete_user_with_metadata`
@@ -644,9 +576,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_delete_user_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_user
 
@@ -663,13 +593,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_access_token(
-        self,
-        request: developer_connect.FetchAccessTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchAccessTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.FetchAccessTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -677,9 +602,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_access_token(
-        self, response: developer_connect.FetchAccessTokenResponse
-    ) -> developer_connect.FetchAccessTokenResponse:
+    def post_fetch_access_token(self, response: developer_connect.FetchAccessTokenResponse) -> developer_connect.FetchAccessTokenResponse:
         """Post-rpc interceptor for fetch_access_token
 
         DEPRECATED. Please use the `post_fetch_access_token_with_metadata`
@@ -693,13 +616,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_access_token_with_metadata(
-        self,
-        response: developer_connect.FetchAccessTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchAccessTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.FetchAccessTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_access_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -715,13 +633,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_git_hub_installations(
-        self,
-        request: developer_connect.FetchGitHubInstallationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchGitHubInstallationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.FetchGitHubInstallationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchGitHubInstallationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_git_hub_installations
 
         Override in a subclass to manipulate the request or metadata
@@ -745,13 +658,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_git_hub_installations_with_metadata(
-        self,
-        response: developer_connect.FetchGitHubInstallationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchGitHubInstallationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.FetchGitHubInstallationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchGitHubInstallationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_git_hub_installations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -767,12 +675,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_git_refs(
-        self,
-        request: developer_connect.FetchGitRefsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchGitRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.FetchGitRefsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchGitRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_git_refs
 
         Override in a subclass to manipulate the request or metadata
@@ -780,9 +684,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_git_refs(
-        self, response: developer_connect.FetchGitRefsResponse
-    ) -> developer_connect.FetchGitRefsResponse:
+    def post_fetch_git_refs(self, response: developer_connect.FetchGitRefsResponse) -> developer_connect.FetchGitRefsResponse:
         """Post-rpc interceptor for fetch_git_refs
 
         DEPRECATED. Please use the `post_fetch_git_refs_with_metadata`
@@ -796,12 +698,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_git_refs_with_metadata(
-        self,
-        response: developer_connect.FetchGitRefsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchGitRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: developer_connect.FetchGitRefsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchGitRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_git_refs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -817,13 +715,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_linkable_git_repositories(
-        self,
-        request: developer_connect.FetchLinkableGitRepositoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchLinkableGitRepositoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.FetchLinkableGitRepositoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchLinkableGitRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_linkable_git_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -847,13 +740,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_linkable_git_repositories_with_metadata(
-        self,
-        response: developer_connect.FetchLinkableGitRepositoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchLinkableGitRepositoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.FetchLinkableGitRepositoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchLinkableGitRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_linkable_git_repositories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -869,12 +757,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_read_token(
-        self,
-        request: developer_connect.FetchReadTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchReadTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.FetchReadTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchReadTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_read_token
 
         Override in a subclass to manipulate the request or metadata
@@ -882,9 +766,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_read_token(
-        self, response: developer_connect.FetchReadTokenResponse
-    ) -> developer_connect.FetchReadTokenResponse:
+    def post_fetch_read_token(self, response: developer_connect.FetchReadTokenResponse) -> developer_connect.FetchReadTokenResponse:
         """Post-rpc interceptor for fetch_read_token
 
         DEPRECATED. Please use the `post_fetch_read_token_with_metadata`
@@ -898,13 +780,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_read_token_with_metadata(
-        self,
-        response: developer_connect.FetchReadTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchReadTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.FetchReadTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchReadTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_read_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -920,13 +797,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_read_write_token(
-        self,
-        request: developer_connect.FetchReadWriteTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchReadWriteTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.FetchReadWriteTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchReadWriteTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_read_write_token
 
         Override in a subclass to manipulate the request or metadata
@@ -934,9 +806,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_read_write_token(
-        self, response: developer_connect.FetchReadWriteTokenResponse
-    ) -> developer_connect.FetchReadWriteTokenResponse:
+    def post_fetch_read_write_token(self, response: developer_connect.FetchReadWriteTokenResponse) -> developer_connect.FetchReadWriteTokenResponse:
         """Post-rpc interceptor for fetch_read_write_token
 
         DEPRECATED. Please use the `post_fetch_read_write_token_with_metadata`
@@ -950,13 +820,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_read_write_token_with_metadata(
-        self,
-        response: developer_connect.FetchReadWriteTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchReadWriteTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.FetchReadWriteTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchReadWriteTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_read_write_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -972,12 +837,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_fetch_self(
-        self,
-        request: developer_connect.FetchSelfRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.FetchSelfRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.FetchSelfRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.FetchSelfRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_self
 
         Override in a subclass to manipulate the request or metadata
@@ -985,9 +846,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_self(
-        self, response: developer_connect.User
-    ) -> developer_connect.User:
+    def post_fetch_self(self, response: developer_connect.User) -> developer_connect.User:
         """Post-rpc interceptor for fetch_self
 
         DEPRECATED. Please use the `post_fetch_self_with_metadata`
@@ -1001,9 +860,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_fetch_self_with_metadata(
-        self,
-        response: developer_connect.User,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: developer_connect.User, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[developer_connect.User, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_self
 
@@ -1020,13 +877,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_get_account_connector(
-        self,
-        request: developer_connect.GetAccountConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.GetAccountConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.GetAccountConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.GetAccountConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -1034,9 +886,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_account_connector(
-        self, response: developer_connect.AccountConnector
-    ) -> developer_connect.AccountConnector:
+    def post_get_account_connector(self, response: developer_connect.AccountConnector) -> developer_connect.AccountConnector:
         """Post-rpc interceptor for get_account_connector
 
         DEPRECATED. Please use the `post_get_account_connector_with_metadata`
@@ -1050,12 +900,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_get_account_connector_with_metadata(
-        self,
-        response: developer_connect.AccountConnector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.AccountConnector, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: developer_connect.AccountConnector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.AccountConnector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_account_connector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1071,12 +917,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_get_connection(
-        self,
-        request: developer_connect.GetConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.GetConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1084,9 +926,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_connection(
-        self, response: developer_connect.Connection
-    ) -> developer_connect.Connection:
+    def post_get_connection(self, response: developer_connect.Connection) -> developer_connect.Connection:
         """Post-rpc interceptor for get_connection
 
         DEPRECATED. Please use the `post_get_connection_with_metadata`
@@ -1100,9 +940,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_get_connection_with_metadata(
-        self,
-        response: developer_connect.Connection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: developer_connect.Connection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[developer_connect.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connection
 
@@ -1119,13 +957,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_get_git_repository_link(
-        self,
-        request: developer_connect.GetGitRepositoryLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.GetGitRepositoryLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.GetGitRepositoryLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.GetGitRepositoryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_git_repository_link
 
         Override in a subclass to manipulate the request or metadata
@@ -1133,9 +966,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_git_repository_link(
-        self, response: developer_connect.GitRepositoryLink
-    ) -> developer_connect.GitRepositoryLink:
+    def post_get_git_repository_link(self, response: developer_connect.GitRepositoryLink) -> developer_connect.GitRepositoryLink:
         """Post-rpc interceptor for get_git_repository_link
 
         DEPRECATED. Please use the `post_get_git_repository_link_with_metadata`
@@ -1149,12 +980,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_get_git_repository_link_with_metadata(
-        self,
-        response: developer_connect.GitRepositoryLink,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.GitRepositoryLink, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: developer_connect.GitRepositoryLink, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.GitRepositoryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_git_repository_link
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1170,13 +997,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_list_account_connectors(
-        self,
-        request: developer_connect.ListAccountConnectorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListAccountConnectorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.ListAccountConnectorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListAccountConnectorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_account_connectors
 
         Override in a subclass to manipulate the request or metadata
@@ -1200,13 +1022,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_list_account_connectors_with_metadata(
-        self,
-        response: developer_connect.ListAccountConnectorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListAccountConnectorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.ListAccountConnectorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListAccountConnectorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_account_connectors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1222,13 +1039,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_list_connections(
-        self,
-        request: developer_connect.ListConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListConnectionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.ListConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -1236,9 +1048,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_connections(
-        self, response: developer_connect.ListConnectionsResponse
-    ) -> developer_connect.ListConnectionsResponse:
+    def post_list_connections(self, response: developer_connect.ListConnectionsResponse) -> developer_connect.ListConnectionsResponse:
         """Post-rpc interceptor for list_connections
 
         DEPRECATED. Please use the `post_list_connections_with_metadata`
@@ -1252,13 +1062,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_list_connections_with_metadata(
-        self,
-        response: developer_connect.ListConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListConnectionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.ListConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1274,13 +1079,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_list_git_repository_links(
-        self,
-        request: developer_connect.ListGitRepositoryLinksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListGitRepositoryLinksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.ListGitRepositoryLinksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListGitRepositoryLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_git_repository_links
 
         Override in a subclass to manipulate the request or metadata
@@ -1304,13 +1104,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_list_git_repository_links_with_metadata(
-        self,
-        response: developer_connect.ListGitRepositoryLinksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListGitRepositoryLinksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developer_connect.ListGitRepositoryLinksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListGitRepositoryLinksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_git_repository_links
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1326,12 +1121,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_list_users(
-        self,
-        request: developer_connect.ListUsersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListUsersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: developer_connect.ListUsersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListUsersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_users
 
         Override in a subclass to manipulate the request or metadata
@@ -1339,9 +1130,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_users(
-        self, response: developer_connect.ListUsersResponse
-    ) -> developer_connect.ListUsersResponse:
+    def post_list_users(self, response: developer_connect.ListUsersResponse) -> developer_connect.ListUsersResponse:
         """Post-rpc interceptor for list_users
 
         DEPRECATED. Please use the `post_list_users_with_metadata`
@@ -1355,12 +1144,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_list_users_with_metadata(
-        self,
-        response: developer_connect.ListUsersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.ListUsersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: developer_connect.ListUsersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.ListUsersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_users
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1376,13 +1161,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_update_account_connector(
-        self,
-        request: developer_connect.UpdateAccountConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.UpdateAccountConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.UpdateAccountConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.UpdateAccountConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_account_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -1390,9 +1170,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_update_account_connector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_account_connector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_account_connector
 
         DEPRECATED. Please use the `post_update_account_connector_with_metadata`
@@ -1406,9 +1184,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_update_account_connector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_account_connector
 
@@ -1425,13 +1201,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_update_connection(
-        self,
-        request: developer_connect.UpdateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developer_connect.UpdateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developer_connect.UpdateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developer_connect.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1439,9 +1210,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_update_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connection
 
         DEPRECATED. Please use the `post_update_connection_with_metadata`
@@ -1455,9 +1224,7 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def post_update_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connection
 
@@ -1474,12 +1241,8 @@ class DeveloperConnectRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1487,9 +1250,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1499,12 +1260,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1512,9 +1269,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1524,12 +1279,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1547,12 +1298,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1570,12 +1317,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1583,9 +1326,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1595,12 +1336,8 @@ class DeveloperConnectRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1608,9 +1345,7 @@ class DeveloperConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1699,9 +1434,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1754,30 +1487,17 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAccountConnector(
-        _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector,
-        DeveloperConnectRestStub,
-    ):
+    class _CreateAccountConnector(_BaseDeveloperConnectRestTransport._BaseCreateAccountConnector, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.CreateAccountConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1820,32 +1540,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_account_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_account_connector(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1868,16 +1574,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._CreateAccountConnector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeveloperConnectRestTransport._CreateAccountConnector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1891,12 +1589,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_create_account_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_account_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_account_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1917,23 +1611,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _CreateConnection(
-        _BaseDeveloperConnectRestTransport._BaseCreateConnection,
-        DeveloperConnectRestStub,
-    ):
+    class _CreateConnection(_BaseDeveloperConnectRestTransport._BaseCreateConnection, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.CreateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1976,32 +1659,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connection(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2025,13 +1694,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._CreateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2045,12 +1708,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_create_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2071,23 +1730,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _CreateGitRepositoryLink(
-        _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink,
-        DeveloperConnectRestStub,
-    ):
+    class _CreateGitRepositoryLink(_BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.CreateGitRepositoryLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2132,32 +1780,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_git_repository_link(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_git_repository_link(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2180,16 +1814,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._CreateGitRepositoryLink._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeveloperConnectRestTransport._CreateGitRepositoryLink._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2203,12 +1829,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_create_git_repository_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_git_repository_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_git_repository_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2229,23 +1851,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _DeleteAccountConnector(
-        _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector,
-        DeveloperConnectRestStub,
-    ):
+    class _DeleteAccountConnector(_BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.DeleteAccountConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2288,28 +1899,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_account_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_account_connector(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2332,15 +1931,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._DeleteAccountConnector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeveloperConnectRestTransport._DeleteAccountConnector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2354,12 +1946,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_delete_account_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_account_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_account_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2380,23 +1968,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _DeleteConnection(
-        _BaseDeveloperConnectRestTransport._BaseDeleteConnection,
-        DeveloperConnectRestStub,
-    ):
+    class _DeleteConnection(_BaseDeveloperConnectRestTransport._BaseDeleteConnection, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.DeleteConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2438,28 +2015,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connection(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2483,12 +2048,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._DeleteConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2502,12 +2062,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_delete_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2528,23 +2084,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _DeleteGitRepositoryLink(
-        _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink,
-        DeveloperConnectRestStub,
-    ):
+    class _DeleteGitRepositoryLink(_BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.DeleteGitRepositoryLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2588,28 +2133,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_git_repository_link(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_git_repository_link(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2632,15 +2165,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._DeleteGitRepositoryLink._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeveloperConnectRestTransport._DeleteGitRepositoryLink._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2654,12 +2180,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_delete_git_repository_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_git_repository_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_git_repository_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2680,22 +2202,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _DeleteSelf(
-        _BaseDeveloperConnectRestTransport._BaseDeleteSelf, DeveloperConnectRestStub
-    ):
+    class _DeleteSelf(_BaseDeveloperConnectRestTransport._BaseDeleteSelf, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.DeleteSelf")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2738,26 +2250,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_self(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2781,12 +2283,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._DeleteSelf._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2800,12 +2297,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_delete_self(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_self_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_self_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2826,22 +2319,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _DeleteUser(
-        _BaseDeveloperConnectRestTransport._BaseDeleteUser, DeveloperConnectRestStub
-    ):
+    class _DeleteUser(_BaseDeveloperConnectRestTransport._BaseDeleteUser, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.DeleteUser")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2883,26 +2366,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_user(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2926,12 +2399,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._DeleteUser._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2945,12 +2413,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_delete_user(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_user_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_user_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2971,23 +2435,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchAccessToken(
-        _BaseDeveloperConnectRestTransport._BaseFetchAccessToken,
-        DeveloperConnectRestStub,
-    ):
+    class _FetchAccessToken(_BaseDeveloperConnectRestTransport._BaseFetchAccessToken, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchAccessToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3030,32 +2483,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_access_token(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_access_token(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3079,13 +2518,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchAccessToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3101,16 +2534,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_access_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_access_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_access_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.FetchAccessTokenResponse.to_json(response)
-                    )
+                    response_payload = developer_connect.FetchAccessTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3129,23 +2556,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchGitHubInstallations(
-        _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations,
-        DeveloperConnectRestStub,
-    ):
+    class _FetchGitHubInstallations(_BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchGitHubInstallations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3188,28 +2604,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_git_hub_installations(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_git_hub_installations(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3232,15 +2636,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._FetchGitHubInstallations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeveloperConnectRestTransport._FetchGitHubInstallations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3256,18 +2653,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_git_hub_installations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_git_hub_installations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_git_hub_installations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.FetchGitHubInstallationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = developer_connect.FetchGitHubInstallationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3286,22 +2675,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchGitRefs(
-        _BaseDeveloperConnectRestTransport._BaseFetchGitRefs, DeveloperConnectRestStub
-    ):
+    class _FetchGitRefs(_BaseDeveloperConnectRestTransport._BaseFetchGitRefs, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchGitRefs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3340,26 +2719,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     Response for fetching git refs.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_git_refs(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3383,12 +2752,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchGitRefs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3404,16 +2768,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_git_refs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_git_refs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_git_refs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = developer_connect.FetchGitRefsResponse.to_json(
-                        response
-                    )
+                    response_payload = developer_connect.FetchGitRefsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3432,23 +2790,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchLinkableGitRepositories(
-        _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories,
-        DeveloperConnectRestStub,
-    ):
+    class _FetchLinkableGitRepositories(_BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchLinkableGitRepositories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3491,28 +2838,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_linkable_git_repositories(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_linkable_git_repositories(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3536,12 +2871,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchLinkableGitRepositories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3557,21 +2887,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_linkable_git_repositories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_linkable_git_repositories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_linkable_git_repositories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.FetchLinkableGitRepositoriesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = developer_connect.FetchLinkableGitRepositoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3590,22 +2909,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchReadToken(
-        _BaseDeveloperConnectRestTransport._BaseFetchReadToken, DeveloperConnectRestStub
-    ):
+    class _FetchReadToken(_BaseDeveloperConnectRestTransport._BaseFetchReadToken, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchReadToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3647,32 +2956,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_read_token(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_read_token(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3696,13 +2991,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchReadToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3718,16 +3007,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_read_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_read_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_read_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = developer_connect.FetchReadTokenResponse.to_json(
-                        response
-                    )
+                    response_payload = developer_connect.FetchReadTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3746,23 +3029,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchReadWriteToken(
-        _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken,
-        DeveloperConnectRestStub,
-    ):
+    class _FetchReadWriteToken(_BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchReadWriteToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3805,32 +3077,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_read_write_token(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_read_write_token(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3854,13 +3112,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchReadWriteToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3876,16 +3128,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_read_write_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_read_write_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_read_write_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.FetchReadWriteTokenResponse.to_json(response)
-                    )
+                    response_payload = developer_connect.FetchReadWriteTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3904,22 +3150,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _FetchSelf(
-        _BaseDeveloperConnectRestTransport._BaseFetchSelf, DeveloperConnectRestStub
-    ):
+    class _FetchSelf(_BaseDeveloperConnectRestTransport._BaseFetchSelf, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.FetchSelf")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3962,26 +3198,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_self(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4005,12 +3231,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchSelf._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4026,12 +3247,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_self(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_self_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_self_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = developer_connect.User.to_json(response)
                 except:
@@ -4052,23 +3269,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _GetAccountConnector(
-        _BaseDeveloperConnectRestTransport._BaseGetAccountConnector,
-        DeveloperConnectRestStub,
-    ):
+    class _GetAccountConnector(_BaseDeveloperConnectRestTransport._BaseGetAccountConnector, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.GetAccountConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4115,28 +3321,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_account_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_account_connector(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4160,12 +3354,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._GetAccountConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4181,16 +3370,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_get_account_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_account_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_account_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = developer_connect.AccountConnector.to_json(
-                        response
-                    )
+                    response_payload = developer_connect.AccountConnector.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4209,22 +3392,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _GetConnection(
-        _BaseDeveloperConnectRestTransport._BaseGetConnection, DeveloperConnectRestStub
-    ):
+    class _GetConnection(_BaseDeveloperConnectRestTransport._BaseGetConnection, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.GetConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4263,26 +3436,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     Message describing Connection object
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4306,12 +3469,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._GetConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4327,12 +3485,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_get_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = developer_connect.Connection.to_json(response)
                 except:
@@ -4353,23 +3507,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _GetGitRepositoryLink(
-        _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink,
-        DeveloperConnectRestStub,
-    ):
+    class _GetGitRepositoryLink(_BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.GetGitRepositoryLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4411,28 +3554,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_git_repository_link(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_git_repository_link(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4455,15 +3586,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._GetGitRepositoryLink._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeveloperConnectRestTransport._GetGitRepositoryLink._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4479,16 +3603,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_get_git_repository_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_git_repository_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_git_repository_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = developer_connect.GitRepositoryLink.to_json(
-                        response
-                    )
+                    response_payload = developer_connect.GitRepositoryLink.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4507,23 +3625,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _ListAccountConnectors(
-        _BaseDeveloperConnectRestTransport._BaseListAccountConnectors,
-        DeveloperConnectRestStub,
-    ):
+    class _ListAccountConnectors(_BaseDeveloperConnectRestTransport._BaseListAccountConnectors, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.ListAccountConnectors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4565,28 +3672,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_account_connectors(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_account_connectors(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4609,15 +3704,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._ListAccountConnectors._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeveloperConnectRestTransport._ListAccountConnectors._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4633,18 +3721,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_list_account_connectors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_account_connectors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_account_connectors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.ListAccountConnectorsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = developer_connect.ListAccountConnectorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4663,23 +3743,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _ListConnections(
-        _BaseDeveloperConnectRestTransport._BaseListConnections,
-        DeveloperConnectRestStub,
-    ):
+    class _ListConnections(_BaseDeveloperConnectRestTransport._BaseListConnections, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.ListConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4721,28 +3790,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListConnections._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_connections(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseListConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4766,12 +3823,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._ListConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4787,16 +3839,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_list_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.ListConnectionsResponse.to_json(response)
-                    )
+                    response_payload = developer_connect.ListConnectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4815,23 +3861,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _ListGitRepositoryLinks(
-        _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks,
-        DeveloperConnectRestStub,
-    ):
+    class _ListGitRepositoryLinks(_BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.ListGitRepositoryLinks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4873,28 +3908,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_git_repository_links(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_git_repository_links(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4917,15 +3940,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._ListGitRepositoryLinks._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeveloperConnectRestTransport._ListGitRepositoryLinks._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4941,18 +3957,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_list_git_repository_links(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_git_repository_links_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_git_repository_links_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developer_connect.ListGitRepositoryLinksResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = developer_connect.ListGitRepositoryLinksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4971,22 +3979,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _ListUsers(
-        _BaseDeveloperConnectRestTransport._BaseListUsers, DeveloperConnectRestStub
-    ):
+    class _ListUsers(_BaseDeveloperConnectRestTransport._BaseListUsers, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.ListUsers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5026,26 +4024,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     Message for response to listing Users
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListUsers._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListUsers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_users(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListUsers._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListUsers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListUsers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseListUsers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5069,12 +4057,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._ListUsers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5090,16 +4073,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_list_users(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_users_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_users_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = developer_connect.ListUsersResponse.to_json(
-                        response
-                    )
+                    response_payload = developer_connect.ListUsersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5118,23 +4095,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _UpdateAccountConnector(
-        _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector,
-        DeveloperConnectRestStub,
-    ):
+    class _UpdateAccountConnector(_BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.UpdateAccountConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5178,32 +4144,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_account_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_account_connector(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5226,16 +4178,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeveloperConnectRestTransport._UpdateAccountConnector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeveloperConnectRestTransport._UpdateAccountConnector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5249,12 +4193,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_update_account_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_account_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_account_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5275,23 +4215,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
-    class _UpdateConnection(
-        _BaseDeveloperConnectRestTransport._BaseUpdateConnection,
-        DeveloperConnectRestStub,
-    ):
+    class _UpdateConnection(_BaseDeveloperConnectRestTransport._BaseUpdateConnection, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.UpdateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5334,32 +4263,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connection(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5383,13 +4298,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._UpdateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5403,12 +4312,8 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_update_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5430,88 +4335,55 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             return resp
 
     @property
-    def create_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.CreateAccountConnectorRequest], operations_pb2.Operation
-    ]:
+    def create_account_connector(self) -> Callable[[developer_connect.CreateAccountConnectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.CreateConnectionRequest], operations_pb2.Operation
-    ]:
+    def create_connection(self) -> Callable[[developer_connect.CreateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_git_repository_link(
-        self,
-    ) -> Callable[
-        [developer_connect.CreateGitRepositoryLinkRequest], operations_pb2.Operation
-    ]:
+    def create_git_repository_link(self) -> Callable[[developer_connect.CreateGitRepositoryLinkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteAccountConnectorRequest], operations_pb2.Operation
-    ]:
+    def delete_account_connector(self) -> Callable[[developer_connect.DeleteAccountConnectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteConnectionRequest], operations_pb2.Operation
-    ]:
+    def delete_connection(self) -> Callable[[developer_connect.DeleteConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_git_repository_link(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteGitRepositoryLinkRequest], operations_pb2.Operation
-    ]:
+    def delete_git_repository_link(self) -> Callable[[developer_connect.DeleteGitRepositoryLinkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_self(
-        self,
-    ) -> Callable[[developer_connect.DeleteSelfRequest], operations_pb2.Operation]:
+    def delete_self(self) -> Callable[[developer_connect.DeleteSelfRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSelf(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_user(
-        self,
-    ) -> Callable[[developer_connect.DeleteUserRequest], operations_pb2.Operation]:
+    def delete_user(self) -> Callable[[developer_connect.DeleteUserRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_access_token(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchAccessTokenRequest],
-        developer_connect.FetchAccessTokenResponse,
-    ]:
+    def fetch_access_token(self) -> Callable[[developer_connect.FetchAccessTokenRequest], developer_connect.FetchAccessTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchAccessToken(self._session, self._host, self._interceptor)  # type: ignore
@@ -5519,20 +4391,13 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     @property
     def fetch_git_hub_installations(
         self,
-    ) -> Callable[
-        [developer_connect.FetchGitHubInstallationsRequest],
-        developer_connect.FetchGitHubInstallationsResponse,
-    ]:
+    ) -> Callable[[developer_connect.FetchGitHubInstallationsRequest], developer_connect.FetchGitHubInstallationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchGitHubInstallations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_git_refs(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchGitRefsRequest], developer_connect.FetchGitRefsResponse
-    ]:
+    def fetch_git_refs(self) -> Callable[[developer_connect.FetchGitRefsRequest], developer_connect.FetchGitRefsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchGitRefs(self._session, self._host, self._interceptor)  # type: ignore
@@ -5540,94 +4405,55 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     @property
     def fetch_linkable_git_repositories(
         self,
-    ) -> Callable[
-        [developer_connect.FetchLinkableGitRepositoriesRequest],
-        developer_connect.FetchLinkableGitRepositoriesResponse,
-    ]:
+    ) -> Callable[[developer_connect.FetchLinkableGitRepositoriesRequest], developer_connect.FetchLinkableGitRepositoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchLinkableGitRepositories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_read_token(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchReadTokenRequest],
-        developer_connect.FetchReadTokenResponse,
-    ]:
+    def fetch_read_token(self) -> Callable[[developer_connect.FetchReadTokenRequest], developer_connect.FetchReadTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchReadToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_read_write_token(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchReadWriteTokenRequest],
-        developer_connect.FetchReadWriteTokenResponse,
-    ]:
+    def fetch_read_write_token(self) -> Callable[[developer_connect.FetchReadWriteTokenRequest], developer_connect.FetchReadWriteTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchReadWriteToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_self(
-        self,
-    ) -> Callable[[developer_connect.FetchSelfRequest], developer_connect.User]:
+    def fetch_self(self) -> Callable[[developer_connect.FetchSelfRequest], developer_connect.User]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchSelf(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.GetAccountConnectorRequest],
-        developer_connect.AccountConnector,
-    ]:
+    def get_account_connector(self) -> Callable[[developer_connect.GetAccountConnectorRequest], developer_connect.AccountConnector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.GetConnectionRequest], developer_connect.Connection
-    ]:
+    def get_connection(self) -> Callable[[developer_connect.GetConnectionRequest], developer_connect.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_git_repository_link(
-        self,
-    ) -> Callable[
-        [developer_connect.GetGitRepositoryLinkRequest],
-        developer_connect.GitRepositoryLink,
-    ]:
+    def get_git_repository_link(self) -> Callable[[developer_connect.GetGitRepositoryLinkRequest], developer_connect.GitRepositoryLink]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_account_connectors(
-        self,
-    ) -> Callable[
-        [developer_connect.ListAccountConnectorsRequest],
-        developer_connect.ListAccountConnectorsResponse,
-    ]:
+    def list_account_connectors(self) -> Callable[[developer_connect.ListAccountConnectorsRequest], developer_connect.ListAccountConnectorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccountConnectors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[
-        [developer_connect.ListConnectionsRequest],
-        developer_connect.ListConnectionsResponse,
-    ]:
+    def list_connections(self) -> Callable[[developer_connect.ListConnectionsRequest], developer_connect.ListConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnections(self._session, self._host, self._interceptor)  # type: ignore
@@ -5635,40 +4461,25 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     @property
     def list_git_repository_links(
         self,
-    ) -> Callable[
-        [developer_connect.ListGitRepositoryLinksRequest],
-        developer_connect.ListGitRepositoryLinksResponse,
-    ]:
+    ) -> Callable[[developer_connect.ListGitRepositoryLinksRequest], developer_connect.ListGitRepositoryLinksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGitRepositoryLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_users(
-        self,
-    ) -> Callable[
-        [developer_connect.ListUsersRequest], developer_connect.ListUsersResponse
-    ]:
+    def list_users(self) -> Callable[[developer_connect.ListUsersRequest], developer_connect.ListUsersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUsers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.UpdateAccountConnectorRequest], operations_pb2.Operation
-    ]:
+    def update_account_connector(self) -> Callable[[developer_connect.UpdateAccountConnectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.UpdateConnectionRequest], operations_pb2.Operation
-    ]:
+    def update_connection(self) -> Callable[[developer_connect.UpdateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnection(self._session, self._host, self._interceptor)  # type: ignore
@@ -5677,22 +4488,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDeveloperConnectRestTransport._BaseGetLocation, DeveloperConnectRestStub
-    ):
+    class _GetLocation(_BaseDeveloperConnectRestTransport._BaseGetLocation, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5730,26 +4531,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5773,12 +4564,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5790,9 +4576,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5817,22 +4601,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDeveloperConnectRestTransport._BaseListLocations, DeveloperConnectRestStub
-    ):
+    class _ListLocations(_BaseDeveloperConnectRestTransport._BaseListLocations, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5870,26 +4644,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5913,12 +4677,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5930,9 +4689,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5957,23 +4714,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDeveloperConnectRestTransport._BaseCancelOperation,
-        DeveloperConnectRestStub,
-    ):
+    class _CancelOperation(_BaseDeveloperConnectRestTransport._BaseCancelOperation, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6009,32 +4755,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6058,13 +4790,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6078,23 +4804,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDeveloperConnectRestTransport._BaseDeleteOperation,
-        DeveloperConnectRestStub,
-    ):
+    class _DeleteOperation(_BaseDeveloperConnectRestTransport._BaseDeleteOperation, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6129,28 +4844,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6174,12 +4877,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6193,22 +4891,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDeveloperConnectRestTransport._BaseGetOperation, DeveloperConnectRestStub
-    ):
+    class _GetOperation(_BaseDeveloperConnectRestTransport._BaseGetOperation, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6246,26 +4934,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6289,12 +4967,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6306,9 +4979,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6333,22 +5004,12 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDeveloperConnectRestTransport._BaseListOperations, DeveloperConnectRestStub
-    ):
+    class _ListOperations(_BaseDeveloperConnectRestTransport._BaseListOperations, DeveloperConnectRestStub):
         def __hash__(self):
             return hash("DeveloperConnectRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6386,26 +5047,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperConnectRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6429,12 +5080,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             # Send the request
             response = DeveloperConnectRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6446,9 +5092,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

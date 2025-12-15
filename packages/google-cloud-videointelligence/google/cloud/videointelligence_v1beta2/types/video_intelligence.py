@@ -571,9 +571,7 @@ class FaceFrame(proto.Message):
             location.
     """
 
-    normalized_bounding_boxes: MutableSequence[
-        "NormalizedBoundingBox"
-    ] = proto.RepeatedField(
+    normalized_bounding_boxes: MutableSequence["NormalizedBoundingBox"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="NormalizedBoundingBox",
@@ -753,9 +751,7 @@ class AnnotateVideoProgress(proto.Message):
             ``AnnotateVideoRequest``.
     """
 
-    annotation_progress: MutableSequence[
-        "VideoAnnotationProgress"
-    ] = proto.RepeatedField(
+    annotation_progress: MutableSequence["VideoAnnotationProgress"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="VideoAnnotationProgress",

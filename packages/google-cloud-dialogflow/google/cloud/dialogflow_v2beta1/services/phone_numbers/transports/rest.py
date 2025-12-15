@@ -114,12 +114,8 @@ class PhoneNumbersRestInterceptor:
     """
 
     def pre_delete_phone_number(
-        self,
-        request: phone_number.DeletePhoneNumberRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        phone_number.DeletePhoneNumberRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: phone_number.DeletePhoneNumberRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[phone_number.DeletePhoneNumberRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_phone_number
 
         Override in a subclass to manipulate the request or metadata
@@ -127,9 +123,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_phone_number(
-        self, response: phone_number.PhoneNumber
-    ) -> phone_number.PhoneNumber:
+    def post_delete_phone_number(self, response: phone_number.PhoneNumber) -> phone_number.PhoneNumber:
         """Post-rpc interceptor for delete_phone_number
 
         DEPRECATED. Please use the `post_delete_phone_number_with_metadata`
@@ -143,9 +137,7 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def post_delete_phone_number_with_metadata(
-        self,
-        response: phone_number.PhoneNumber,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: phone_number.PhoneNumber, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[phone_number.PhoneNumber, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_phone_number
 
@@ -162,12 +154,8 @@ class PhoneNumbersRestInterceptor:
         return response, metadata
 
     def pre_list_phone_numbers(
-        self,
-        request: phone_number.ListPhoneNumbersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        phone_number.ListPhoneNumbersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: phone_number.ListPhoneNumbersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[phone_number.ListPhoneNumbersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_phone_numbers
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +163,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_phone_numbers(
-        self, response: phone_number.ListPhoneNumbersResponse
-    ) -> phone_number.ListPhoneNumbersResponse:
+    def post_list_phone_numbers(self, response: phone_number.ListPhoneNumbersResponse) -> phone_number.ListPhoneNumbersResponse:
         """Post-rpc interceptor for list_phone_numbers
 
         DEPRECATED. Please use the `post_list_phone_numbers_with_metadata`
@@ -191,12 +177,8 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def post_list_phone_numbers_with_metadata(
-        self,
-        response: phone_number.ListPhoneNumbersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        phone_number.ListPhoneNumbersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: phone_number.ListPhoneNumbersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[phone_number.ListPhoneNumbersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_phone_numbers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -212,12 +194,8 @@ class PhoneNumbersRestInterceptor:
         return response, metadata
 
     def pre_undelete_phone_number(
-        self,
-        request: phone_number.UndeletePhoneNumberRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        phone_number.UndeletePhoneNumberRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: phone_number.UndeletePhoneNumberRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[phone_number.UndeletePhoneNumberRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_phone_number
 
         Override in a subclass to manipulate the request or metadata
@@ -225,9 +203,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_phone_number(
-        self, response: phone_number.PhoneNumber
-    ) -> phone_number.PhoneNumber:
+    def post_undelete_phone_number(self, response: phone_number.PhoneNumber) -> phone_number.PhoneNumber:
         """Post-rpc interceptor for undelete_phone_number
 
         DEPRECATED. Please use the `post_undelete_phone_number_with_metadata`
@@ -241,9 +217,7 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def post_undelete_phone_number_with_metadata(
-        self,
-        response: phone_number.PhoneNumber,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: phone_number.PhoneNumber, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[phone_number.PhoneNumber, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_phone_number
 
@@ -260,13 +234,8 @@ class PhoneNumbersRestInterceptor:
         return response, metadata
 
     def pre_update_phone_number(
-        self,
-        request: gcd_phone_number.UpdatePhoneNumberRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_phone_number.UpdatePhoneNumberRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_phone_number.UpdatePhoneNumberRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_phone_number.UpdatePhoneNumberRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_phone_number
 
         Override in a subclass to manipulate the request or metadata
@@ -274,9 +243,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_phone_number(
-        self, response: gcd_phone_number.PhoneNumber
-    ) -> gcd_phone_number.PhoneNumber:
+    def post_update_phone_number(self, response: gcd_phone_number.PhoneNumber) -> gcd_phone_number.PhoneNumber:
         """Post-rpc interceptor for update_phone_number
 
         DEPRECATED. Please use the `post_update_phone_number_with_metadata`
@@ -290,9 +257,7 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def post_update_phone_number_with_metadata(
-        self,
-        response: gcd_phone_number.PhoneNumber,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_phone_number.PhoneNumber, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_phone_number.PhoneNumber, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_phone_number
 
@@ -309,12 +274,8 @@ class PhoneNumbersRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -322,9 +283,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -334,12 +293,8 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -347,9 +302,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -359,12 +312,8 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -382,12 +331,8 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -395,9 +340,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -407,12 +350,8 @@ class PhoneNumbersRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -420,9 +359,7 @@ class PhoneNumbersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -512,30 +449,18 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PhoneNumbersRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeletePhoneNumber(
-        _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber, PhoneNumbersRestStub
-    ):
+    class _DeletePhoneNumber(_BasePhoneNumbersRestTransport._BaseDeletePhoneNumber, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.DeletePhoneNumber")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -579,28 +504,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_phone_number(
-                request, metadata
-            )
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_phone_number(request, metadata)
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseDeletePhoneNumber._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -624,12 +537,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._DeletePhoneNumber._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -645,12 +553,8 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             resp = self._interceptor.post_delete_phone_number(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_phone_number_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_phone_number_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = phone_number.PhoneNumber.to_json(response)
                 except:
@@ -671,22 +575,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 )
             return resp
 
-    class _ListPhoneNumbers(
-        _BasePhoneNumbersRestTransport._BaseListPhoneNumbers, PhoneNumbersRestStub
-    ):
+    class _ListPhoneNumbers(_BasePhoneNumbersRestTransport._BaseListPhoneNumbers, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.ListPhoneNumbers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -728,28 +622,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseListPhoneNumbers._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseListPhoneNumbers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_phone_numbers(
-                request, metadata
-            )
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseListPhoneNumbers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_phone_numbers(request, metadata)
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseListPhoneNumbers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseListPhoneNumbers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseListPhoneNumbers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -773,12 +655,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._ListPhoneNumbers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -794,16 +671,10 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             resp = self._interceptor.post_list_phone_numbers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_phone_numbers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_phone_numbers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = phone_number.ListPhoneNumbersResponse.to_json(
-                        response
-                    )
+                    response_payload = phone_number.ListPhoneNumbersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -822,22 +693,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 )
             return resp
 
-    class _UndeletePhoneNumber(
-        _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber, PhoneNumbersRestStub
-    ):
+    class _UndeletePhoneNumber(_BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.UndeletePhoneNumber")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -882,32 +743,18 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_phone_number(
-                request, metadata
-            )
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undelete_phone_number(request, metadata)
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_transcoded_request(http_options, request)
 
-            body = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseUndeletePhoneNumber._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -931,13 +778,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._UndeletePhoneNumber._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -953,12 +794,8 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             resp = self._interceptor.post_undelete_phone_number(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_phone_number_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_phone_number_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = phone_number.PhoneNumber.to_json(response)
                 except:
@@ -979,22 +816,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 )
             return resp
 
-    class _UpdatePhoneNumber(
-        _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber, PhoneNumbersRestStub
-    ):
+    class _UpdatePhoneNumber(_BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.UpdatePhoneNumber")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1039,32 +866,18 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_phone_number(
-                request, metadata
-            )
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_phone_number(request, metadata)
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_transcoded_request(http_options, request)
 
-            body = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseUpdatePhoneNumber._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1088,13 +901,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._UpdatePhoneNumber._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1110,12 +917,8 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             resp = self._interceptor.post_update_phone_number(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_phone_number_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_phone_number_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_phone_number.PhoneNumber.to_json(response)
                 except:
@@ -1137,37 +940,25 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
             return resp
 
     @property
-    def delete_phone_number(
-        self,
-    ) -> Callable[[phone_number.DeletePhoneNumberRequest], phone_number.PhoneNumber]:
+    def delete_phone_number(self) -> Callable[[phone_number.DeletePhoneNumberRequest], phone_number.PhoneNumber]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePhoneNumber(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_phone_numbers(
-        self,
-    ) -> Callable[
-        [phone_number.ListPhoneNumbersRequest], phone_number.ListPhoneNumbersResponse
-    ]:
+    def list_phone_numbers(self) -> Callable[[phone_number.ListPhoneNumbersRequest], phone_number.ListPhoneNumbersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPhoneNumbers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_phone_number(
-        self,
-    ) -> Callable[[phone_number.UndeletePhoneNumberRequest], phone_number.PhoneNumber]:
+    def undelete_phone_number(self) -> Callable[[phone_number.UndeletePhoneNumberRequest], phone_number.PhoneNumber]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeletePhoneNumber(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_phone_number(
-        self,
-    ) -> Callable[
-        [gcd_phone_number.UpdatePhoneNumberRequest], gcd_phone_number.PhoneNumber
-    ]:
+    def update_phone_number(self) -> Callable[[gcd_phone_number.UpdatePhoneNumberRequest], gcd_phone_number.PhoneNumber]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePhoneNumber(self._session, self._host, self._interceptor)  # type: ignore
@@ -1176,22 +967,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BasePhoneNumbersRestTransport._BaseGetLocation, PhoneNumbersRestStub
-    ):
+    class _GetLocation(_BasePhoneNumbersRestTransport._BaseGetLocation, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1229,30 +1010,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BasePhoneNumbersRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePhoneNumbersRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1276,12 +1043,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1293,9 +1055,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1320,22 +1080,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BasePhoneNumbersRestTransport._BaseListLocations, PhoneNumbersRestStub
-    ):
+    class _ListLocations(_BasePhoneNumbersRestTransport._BaseListLocations, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1373,26 +1123,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1416,12 +1156,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1433,9 +1168,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1460,22 +1193,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BasePhoneNumbersRestTransport._BaseCancelOperation, PhoneNumbersRestStub
-    ):
+    class _CancelOperation(_BasePhoneNumbersRestTransport._BaseCancelOperation, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1510,28 +1233,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1555,12 +1266,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1574,22 +1280,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePhoneNumbersRestTransport._BaseGetOperation, PhoneNumbersRestStub
-    ):
+    class _GetOperation(_BasePhoneNumbersRestTransport._BaseGetOperation, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1627,28 +1323,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePhoneNumbersRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1672,12 +1356,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1689,9 +1368,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1716,22 +1393,12 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BasePhoneNumbersRestTransport._BaseListOperations, PhoneNumbersRestStub
-    ):
+    class _ListOperations(_BasePhoneNumbersRestTransport._BaseListOperations, PhoneNumbersRestStub):
         def __hash__(self):
             return hash("PhoneNumbersRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1769,26 +1436,16 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePhoneNumbersRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePhoneNumbersRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BasePhoneNumbersRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePhoneNumbersRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePhoneNumbersRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhoneNumbersRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1812,12 +1469,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
 
             # Send the request
             response = PhoneNumbersRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1829,9 +1481,7 @@ class PhoneNumbersRestTransport(_BasePhoneNumbersRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

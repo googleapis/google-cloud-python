@@ -18,18 +18,10 @@ from google.cloud.geminidataanalytics import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service.async_client import (
-    DataAgentServiceAsyncClient,
-)
-from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service.client import (
-    DataAgentServiceClient,
-)
-from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.async_client import (
-    DataChatServiceAsyncClient,
-)
-from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.client import (
-    DataChatServiceClient,
-)
+from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service.async_client import DataAgentServiceAsyncClient
+from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service.client import DataAgentServiceClient
+from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.async_client import DataChatServiceAsyncClient
+from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.client import DataChatServiceClient
 from google.cloud.geminidataanalytics_v1alpha.types.context import (
     AnalysisOptions,
     ChartOptions,
@@ -48,10 +40,7 @@ from google.cloud.geminidataanalytics_v1alpha.types.conversation import (
     ListConversationsRequest,
     ListConversationsResponse,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.credentials import (
-    Credentials,
-    OAuthCredentials,
-)
+from google.cloud.geminidataanalytics_v1alpha.types.credentials import Credentials, OAuthCredentials
 from google.cloud.geminidataanalytics_v1alpha.types.data_agent import DataAgent
 from google.cloud.geminidataanalytics_v1alpha.types.data_agent_service import (
     CreateDataAgentRequest,
@@ -64,9 +53,7 @@ from google.cloud.geminidataanalytics_v1alpha.types.data_agent_service import (
     OperationMetadata,
     UpdateDataAgentRequest,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.data_analytics_agent import (
-    DataAnalyticsAgent,
-)
+from google.cloud.geminidataanalytics_v1alpha.types.data_analytics_agent import DataAnalyticsAgent
 from google.cloud.geminidataanalytics_v1alpha.types.data_chat_service import (
     AnalysisEvent,
     AnalysisMessage,

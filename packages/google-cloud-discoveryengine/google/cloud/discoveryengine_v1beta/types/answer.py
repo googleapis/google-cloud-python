@@ -273,9 +273,7 @@ class Answer(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            chunk_contents: MutableSequence[
-                "Answer.Reference.UnstructuredDocumentInfo.ChunkContent"
-            ] = proto.RepeatedField(
+            chunk_contents: MutableSequence["Answer.Reference.UnstructuredDocumentInfo.ChunkContent"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Answer.Reference.UnstructuredDocumentInfo.ChunkContent",
@@ -362,12 +360,10 @@ class Answer(proto.Message):
                 number=3,
                 optional=True,
             )
-            document_metadata: "Answer.Reference.ChunkInfo.DocumentMetadata" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=4,
-                    message="Answer.Reference.ChunkInfo.DocumentMetadata",
-                )
+            document_metadata: "Answer.Reference.ChunkInfo.DocumentMetadata" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="Answer.Reference.ChunkInfo.DocumentMetadata",
             )
 
         class StructuredDocumentInfo(proto.Message):
@@ -390,13 +386,11 @@ class Answer(proto.Message):
                 message=struct_pb2.Struct,
             )
 
-        unstructured_document_info: "Answer.Reference.UnstructuredDocumentInfo" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="content",
-                message="Answer.Reference.UnstructuredDocumentInfo",
-            )
+        unstructured_document_info: "Answer.Reference.UnstructuredDocumentInfo" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="content",
+            message="Answer.Reference.UnstructuredDocumentInfo",
         )
         chunk_info: "Answer.Reference.ChunkInfo" = proto.Field(
             proto.MESSAGE,
@@ -404,13 +398,11 @@ class Answer(proto.Message):
             oneof="content",
             message="Answer.Reference.ChunkInfo",
         )
-        structured_document_info: "Answer.Reference.StructuredDocumentInfo" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="content",
-                message="Answer.Reference.StructuredDocumentInfo",
-            )
+        structured_document_info: "Answer.Reference.StructuredDocumentInfo" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="content",
+            message="Answer.Reference.StructuredDocumentInfo",
         )
 
     class Step(proto.Message):
@@ -572,16 +564,12 @@ class Answer(proto.Message):
                         proto.STRING,
                         number=3,
                     )
-                    snippet_info: MutableSequence[
-                        "Answer.Step.Action.Observation.SearchResult.SnippetInfo"
-                    ] = proto.RepeatedField(
+                    snippet_info: MutableSequence["Answer.Step.Action.Observation.SearchResult.SnippetInfo"] = proto.RepeatedField(
                         proto.MESSAGE,
                         number=4,
                         message="Answer.Step.Action.Observation.SearchResult.SnippetInfo",
                     )
-                    chunk_info: MutableSequence[
-                        "Answer.Step.Action.Observation.SearchResult.ChunkInfo"
-                    ] = proto.RepeatedField(
+                    chunk_info: MutableSequence["Answer.Step.Action.Observation.SearchResult.ChunkInfo"] = proto.RepeatedField(
                         proto.MESSAGE,
                         number=5,
                         message="Answer.Step.Action.Observation.SearchResult.ChunkInfo",
@@ -592,9 +580,7 @@ class Answer(proto.Message):
                         message=struct_pb2.Struct,
                     )
 
-                search_results: MutableSequence[
-                    "Answer.Step.Action.Observation.SearchResult"
-                ] = proto.RepeatedField(
+                search_results: MutableSequence["Answer.Step.Action.Observation.SearchResult"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=2,
                     message="Answer.Step.Action.Observation.SearchResult",
@@ -672,21 +658,17 @@ class Answer(proto.Message):
                 JAIL_BREAKING_QUERY = 3
                 NON_ANSWER_SEEKING_QUERY_V2 = 4
 
-            type_: "Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type",
-                )
+            type_: "Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type",
             )
             positive: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
 
-        query_classification_info: MutableSequence[
-            "Answer.QueryUnderstandingInfo.QueryClassificationInfo"
-        ] = proto.RepeatedField(
+        query_classification_info: MutableSequence["Answer.QueryUnderstandingInfo.QueryClassificationInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Answer.QueryUnderstandingInfo.QueryClassificationInfo",

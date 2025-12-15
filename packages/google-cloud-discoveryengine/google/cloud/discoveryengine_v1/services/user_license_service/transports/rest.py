@@ -97,13 +97,8 @@ class UserLicenseServiceRestInterceptor:
     """
 
     def pre_batch_update_user_licenses(
-        self,
-        request: user_license_service.BatchUpdateUserLicensesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_license_service.BatchUpdateUserLicensesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: user_license_service.BatchUpdateUserLicensesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_license_service.BatchUpdateUserLicensesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_user_licenses
 
         Override in a subclass to manipulate the request or metadata
@@ -111,9 +106,7 @@ class UserLicenseServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_user_licenses(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_update_user_licenses(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_update_user_licenses
 
         DEPRECATED. Please use the `post_batch_update_user_licenses_with_metadata`
@@ -127,9 +120,7 @@ class UserLicenseServiceRestInterceptor:
         return response
 
     def post_batch_update_user_licenses_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_user_licenses
 
@@ -146,13 +137,8 @@ class UserLicenseServiceRestInterceptor:
         return response, metadata
 
     def pre_list_user_licenses(
-        self,
-        request: user_license_service.ListUserLicensesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_license_service.ListUserLicensesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: user_license_service.ListUserLicensesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_license_service.ListUserLicensesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_user_licenses
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +146,7 @@ class UserLicenseServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_user_licenses(
-        self, response: user_license_service.ListUserLicensesResponse
-    ) -> user_license_service.ListUserLicensesResponse:
+    def post_list_user_licenses(self, response: user_license_service.ListUserLicensesResponse) -> user_license_service.ListUserLicensesResponse:
         """Post-rpc interceptor for list_user_licenses
 
         DEPRECATED. Please use the `post_list_user_licenses_with_metadata`
@@ -176,13 +160,8 @@ class UserLicenseServiceRestInterceptor:
         return response
 
     def post_list_user_licenses_with_metadata(
-        self,
-        response: user_license_service.ListUserLicensesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_license_service.ListUserLicensesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: user_license_service.ListUserLicensesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_license_service.ListUserLicensesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_user_licenses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -198,12 +177,8 @@ class UserLicenseServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -221,12 +196,8 @@ class UserLicenseServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +205,7 @@ class UserLicenseServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -246,12 +215,8 @@ class UserLicenseServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -259,9 +224,7 @@ class UserLicenseServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -350,9 +313,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -534,30 +495,17 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchUpdateUserLicenses(
-        _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses,
-        UserLicenseServiceRestStub,
-    ):
+    class _BatchUpdateUserLicenses(_BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses, UserLicenseServiceRestStub):
         def __hash__(self):
             return hash("UserLicenseServiceRestTransport.BatchUpdateUserLicenses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -603,32 +551,18 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_http_options()
-            )
+            http_options = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_user_licenses(
-                request, metadata
-            )
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_user_licenses(request, metadata)
+            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_transcoded_request(http_options, request)
 
-            body = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -651,16 +585,8 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                UserLicenseServiceRestTransport._BatchUpdateUserLicenses._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = UserLicenseServiceRestTransport._BatchUpdateUserLicenses._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -674,12 +600,8 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_user_licenses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_user_licenses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_user_licenses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -700,23 +622,12 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                 )
             return resp
 
-    class _ListUserLicenses(
-        _BaseUserLicenseServiceRestTransport._BaseListUserLicenses,
-        UserLicenseServiceRestStub,
-    ):
+    class _ListUserLicenses(_BaseUserLicenseServiceRestTransport._BaseListUserLicenses, UserLicenseServiceRestStub):
         def __hash__(self):
             return hash("UserLicenseServiceRestTransport.ListUserLicenses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -758,28 +669,16 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_http_options()
-            )
+            http_options = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_user_licenses(
-                request, metadata
-            )
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_user_licenses(request, metadata)
+            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -803,12 +702,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             # Send the request
             response = UserLicenseServiceRestTransport._ListUserLicenses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -824,16 +718,10 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             resp = self._interceptor.post_list_user_licenses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_user_licenses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_user_licenses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        user_license_service.ListUserLicensesResponse.to_json(response)
-                    )
+                    response_payload = user_license_service.ListUserLicensesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -853,22 +741,13 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             return resp
 
     @property
-    def batch_update_user_licenses(
-        self,
-    ) -> Callable[
-        [user_license_service.BatchUpdateUserLicensesRequest], operations_pb2.Operation
-    ]:
+    def batch_update_user_licenses(self) -> Callable[[user_license_service.BatchUpdateUserLicensesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateUserLicenses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_user_licenses(
-        self,
-    ) -> Callable[
-        [user_license_service.ListUserLicensesRequest],
-        user_license_service.ListUserLicensesResponse,
-    ]:
+    def list_user_licenses(self) -> Callable[[user_license_service.ListUserLicensesRequest], user_license_service.ListUserLicensesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUserLicenses(self._session, self._host, self._interceptor)  # type: ignore
@@ -877,23 +756,12 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseUserLicenseServiceRestTransport._BaseCancelOperation,
-        UserLicenseServiceRestStub,
-    ):
+    class _CancelOperation(_BaseUserLicenseServiceRestTransport._BaseCancelOperation, UserLicenseServiceRestStub):
         def __hash__(self):
             return hash("UserLicenseServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -929,32 +797,18 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -978,13 +832,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             # Send the request
             response = UserLicenseServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -998,23 +846,12 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseUserLicenseServiceRestTransport._BaseGetOperation,
-        UserLicenseServiceRestStub,
-    ):
+    class _GetOperation(_BaseUserLicenseServiceRestTransport._BaseGetOperation, UserLicenseServiceRestStub):
         def __hash__(self):
             return hash("UserLicenseServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1052,26 +889,16 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1095,12 +922,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             # Send the request
             response = UserLicenseServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1112,9 +934,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1139,23 +959,12 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseUserLicenseServiceRestTransport._BaseListOperations,
-        UserLicenseServiceRestStub,
-    ):
+    class _ListOperations(_BaseUserLicenseServiceRestTransport._BaseListOperations, UserLicenseServiceRestStub):
         def __hash__(self):
             return hash("UserLicenseServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1193,26 +1002,16 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseUserLicenseServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1236,12 +1035,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
 
             # Send the request
             response = UserLicenseServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1253,9 +1047,7 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

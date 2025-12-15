@@ -49,13 +49,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -65,10 +61,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -87,11 +80,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -270,18 +259,14 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -317,9 +302,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -334,11 +317,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._grpc_channel
 
     @property
-    def list_frameworks(
-        self,
-    ) -> Callable[
-        [config.ListFrameworksRequest], Awaitable[config.ListFrameworksResponse]
-    ]:
+    def list_frameworks(self) -> Callable[[config.ListFrameworksRequest], Awaitable[config.ListFrameworksResponse]]:
         r"""Return a callable for the list frameworks method over gRPC.
 
         Lists the frameworks (both built-in and custom) that
@@ -365,9 +344,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_frameworks"]
 
     @property
-    def get_framework(
-        self,
-    ) -> Callable[[config.GetFrameworkRequest], Awaitable[common.Framework]]:
+    def get_framework(self) -> Callable[[config.GetFrameworkRequest], Awaitable[common.Framework]]:
         r"""Return a callable for the get framework method over gRPC.
 
         Gets details about a framework. This method retrieves the latest
@@ -395,9 +372,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_framework"]
 
     @property
-    def create_framework(
-        self,
-    ) -> Callable[[config.CreateFrameworkRequest], Awaitable[common.Framework]]:
+    def create_framework(self) -> Callable[[config.CreateFrameworkRequest], Awaitable[common.Framework]]:
         r"""Return a callable for the create framework method over gRPC.
 
         Creates a custom framework in a given parent
@@ -423,9 +398,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["create_framework"]
 
     @property
-    def update_framework(
-        self,
-    ) -> Callable[[config.UpdateFrameworkRequest], Awaitable[common.Framework]]:
+    def update_framework(self) -> Callable[[config.UpdateFrameworkRequest], Awaitable[common.Framework]]:
         r"""Return a callable for the update framework method over gRPC.
 
         Updates a custom framework. This method allows for partial
@@ -460,9 +433,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["update_framework"]
 
     @property
-    def delete_framework(
-        self,
-    ) -> Callable[[config.DeleteFrameworkRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_framework(self) -> Callable[[config.DeleteFrameworkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete framework method over gRPC.
 
         Deletes a custom framework, including all its major and minor
@@ -493,11 +464,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["delete_framework"]
 
     @property
-    def list_cloud_controls(
-        self,
-    ) -> Callable[
-        [config.ListCloudControlsRequest], Awaitable[config.ListCloudControlsResponse]
-    ]:
+    def list_cloud_controls(self) -> Callable[[config.ListCloudControlsRequest], Awaitable[config.ListCloudControlsResponse]]:
         r"""Return a callable for the list cloud controls method over gRPC.
 
         Lists the cloud controls (both built-in and custom)
@@ -524,9 +491,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_cloud_controls"]
 
     @property
-    def get_cloud_control(
-        self,
-    ) -> Callable[[config.GetCloudControlRequest], Awaitable[common.CloudControl]]:
+    def get_cloud_control(self) -> Callable[[config.GetCloudControlRequest], Awaitable[common.CloudControl]]:
         r"""Return a callable for the get cloud control method over gRPC.
 
         Gets details about a cloud control. This method retrieves the
@@ -556,9 +521,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_cloud_control"]
 
     @property
-    def create_cloud_control(
-        self,
-    ) -> Callable[[config.CreateCloudControlRequest], Awaitable[common.CloudControl]]:
+    def create_cloud_control(self) -> Callable[[config.CreateCloudControlRequest], Awaitable[common.CloudControl]]:
         r"""Return a callable for the create cloud control method over gRPC.
 
         Creates a custom cloud control in a given parent
@@ -585,9 +548,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["create_cloud_control"]
 
     @property
-    def update_cloud_control(
-        self,
-    ) -> Callable[[config.UpdateCloudControlRequest], Awaitable[common.CloudControl]]:
+    def update_cloud_control(self) -> Callable[[config.UpdateCloudControlRequest], Awaitable[common.CloudControl]]:
         r"""Return a callable for the update cloud control method over gRPC.
 
         Updates a custom cloud control. This method allows for partial
@@ -622,9 +583,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["update_cloud_control"]
 
     @property
-    def delete_cloud_control(
-        self,
-    ) -> Callable[[config.DeleteCloudControlRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_cloud_control(self) -> Callable[[config.DeleteCloudControlRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete cloud control method over gRPC.
 
         Deletes a custom cloud control, including all its major and
@@ -842,9 +801,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -861,9 +818,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

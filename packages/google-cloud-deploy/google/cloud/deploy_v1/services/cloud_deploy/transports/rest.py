@@ -443,12 +443,8 @@ class CloudDeployRestInterceptor:
     """
 
     def pre_abandon_release(
-        self,
-        request: cloud_deploy.AbandonReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.AbandonReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.AbandonReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.AbandonReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for abandon_release
 
         Override in a subclass to manipulate the request or metadata
@@ -456,9 +452,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_abandon_release(
-        self, response: cloud_deploy.AbandonReleaseResponse
-    ) -> cloud_deploy.AbandonReleaseResponse:
+    def post_abandon_release(self, response: cloud_deploy.AbandonReleaseResponse) -> cloud_deploy.AbandonReleaseResponse:
         """Post-rpc interceptor for abandon_release
 
         DEPRECATED. Please use the `post_abandon_release_with_metadata`
@@ -472,12 +466,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_abandon_release_with_metadata(
-        self,
-        response: cloud_deploy.AbandonReleaseResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.AbandonReleaseResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.AbandonReleaseResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.AbandonReleaseResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for abandon_release
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -493,12 +483,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_advance_rollout(
-        self,
-        request: cloud_deploy.AdvanceRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.AdvanceRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.AdvanceRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.AdvanceRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for advance_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -506,9 +492,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_advance_rollout(
-        self, response: cloud_deploy.AdvanceRolloutResponse
-    ) -> cloud_deploy.AdvanceRolloutResponse:
+    def post_advance_rollout(self, response: cloud_deploy.AdvanceRolloutResponse) -> cloud_deploy.AdvanceRolloutResponse:
         """Post-rpc interceptor for advance_rollout
 
         DEPRECATED. Please use the `post_advance_rollout_with_metadata`
@@ -522,12 +506,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_advance_rollout_with_metadata(
-        self,
-        response: cloud_deploy.AdvanceRolloutResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.AdvanceRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.AdvanceRolloutResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.AdvanceRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for advance_rollout
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -543,12 +523,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_approve_rollout(
-        self,
-        request: cloud_deploy.ApproveRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ApproveRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ApproveRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ApproveRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -556,9 +532,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_approve_rollout(
-        self, response: cloud_deploy.ApproveRolloutResponse
-    ) -> cloud_deploy.ApproveRolloutResponse:
+    def post_approve_rollout(self, response: cloud_deploy.ApproveRolloutResponse) -> cloud_deploy.ApproveRolloutResponse:
         """Post-rpc interceptor for approve_rollout
 
         DEPRECATED. Please use the `post_approve_rollout_with_metadata`
@@ -572,12 +546,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_approve_rollout_with_metadata(
-        self,
-        response: cloud_deploy.ApproveRolloutResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ApproveRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ApproveRolloutResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ApproveRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for approve_rollout
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -593,12 +563,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_cancel_automation_run(
-        self,
-        request: cloud_deploy.CancelAutomationRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CancelAutomationRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CancelAutomationRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CancelAutomationRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_automation_run
 
         Override in a subclass to manipulate the request or metadata
@@ -606,9 +572,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_automation_run(
-        self, response: cloud_deploy.CancelAutomationRunResponse
-    ) -> cloud_deploy.CancelAutomationRunResponse:
+    def post_cancel_automation_run(self, response: cloud_deploy.CancelAutomationRunResponse) -> cloud_deploy.CancelAutomationRunResponse:
         """Post-rpc interceptor for cancel_automation_run
 
         DEPRECATED. Please use the `post_cancel_automation_run_with_metadata`
@@ -622,13 +586,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_cancel_automation_run_with_metadata(
-        self,
-        response: cloud_deploy.CancelAutomationRunResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CancelAutomationRunResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_deploy.CancelAutomationRunResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CancelAutomationRunResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_automation_run
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -644,12 +603,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_cancel_rollout(
-        self,
-        request: cloud_deploy.CancelRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CancelRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CancelRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CancelRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -657,9 +612,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_rollout(
-        self, response: cloud_deploy.CancelRolloutResponse
-    ) -> cloud_deploy.CancelRolloutResponse:
+    def post_cancel_rollout(self, response: cloud_deploy.CancelRolloutResponse) -> cloud_deploy.CancelRolloutResponse:
         """Post-rpc interceptor for cancel_rollout
 
         DEPRECATED. Please use the `post_cancel_rollout_with_metadata`
@@ -673,12 +626,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_cancel_rollout_with_metadata(
-        self,
-        response: cloud_deploy.CancelRolloutResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CancelRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.CancelRolloutResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CancelRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_rollout
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -694,12 +643,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_automation(
-        self,
-        request: cloud_deploy.CreateAutomationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CreateAutomationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -707,9 +652,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_automation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_automation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_automation
 
         DEPRECATED. Please use the `post_create_automation_with_metadata`
@@ -723,9 +666,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_automation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_automation
 
@@ -742,13 +683,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_custom_target_type(
-        self,
-        request: cloud_deploy.CreateCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateCustomTargetTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.CreateCustomTargetTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateCustomTargetTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -756,9 +692,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_custom_target_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_custom_target_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_custom_target_type
 
         DEPRECATED. Please use the `post_create_custom_target_type_with_metadata`
@@ -772,9 +706,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_custom_target_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_custom_target_type
 
@@ -791,13 +723,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_delivery_pipeline(
-        self,
-        request: cloud_deploy.CreateDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateDeliveryPipelineRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.CreateDeliveryPipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateDeliveryPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -805,9 +732,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_delivery_pipeline(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_delivery_pipeline(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_delivery_pipeline
 
         DEPRECATED. Please use the `post_create_delivery_pipeline_with_metadata`
@@ -821,9 +746,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_delivery_pipeline_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_delivery_pipeline
 
@@ -840,12 +763,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_deploy_policy(
-        self,
-        request: cloud_deploy.CreateDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CreateDeployPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -853,9 +772,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_deploy_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_deploy_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_deploy_policy
 
         DEPRECATED. Please use the `post_create_deploy_policy_with_metadata`
@@ -869,9 +786,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_deploy_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_deploy_policy
 
@@ -888,12 +803,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_release(
-        self,
-        request: cloud_deploy.CreateReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CreateReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_release
 
         Override in a subclass to manipulate the request or metadata
@@ -901,9 +812,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_release(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_release(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_release
 
         DEPRECATED. Please use the `post_create_release_with_metadata`
@@ -917,9 +826,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_release_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_release
 
@@ -936,12 +843,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_rollout(
-        self,
-        request: cloud_deploy.CreateRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CreateRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -949,9 +852,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_rollout(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_rollout(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_rollout
 
         DEPRECATED. Please use the `post_create_rollout_with_metadata`
@@ -965,9 +866,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_rollout_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_rollout
 
@@ -984,12 +883,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_create_target(
-        self,
-        request: cloud_deploy.CreateTargetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.CreateTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.CreateTargetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.CreateTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_target
 
         Override in a subclass to manipulate the request or metadata
@@ -997,9 +892,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_create_target(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_target(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_target
 
         DEPRECATED. Please use the `post_create_target_with_metadata`
@@ -1013,9 +906,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_create_target_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_target
 
@@ -1032,12 +923,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_delete_automation(
-        self,
-        request: cloud_deploy.DeleteAutomationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.DeleteAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.DeleteAutomationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.DeleteAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -1045,9 +932,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_automation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_automation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_automation
 
         DEPRECATED. Please use the `post_delete_automation_with_metadata`
@@ -1061,9 +946,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_delete_automation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_automation
 
@@ -1080,13 +963,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_delete_custom_target_type(
-        self,
-        request: cloud_deploy.DeleteCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.DeleteCustomTargetTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.DeleteCustomTargetTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.DeleteCustomTargetTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1094,9 +972,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_custom_target_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_custom_target_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_custom_target_type
 
         DEPRECATED. Please use the `post_delete_custom_target_type_with_metadata`
@@ -1110,9 +986,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_delete_custom_target_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_custom_target_type
 
@@ -1129,13 +1003,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_delete_delivery_pipeline(
-        self,
-        request: cloud_deploy.DeleteDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.DeleteDeliveryPipelineRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.DeleteDeliveryPipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.DeleteDeliveryPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -1143,9 +1012,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_delivery_pipeline(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_delivery_pipeline(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_delivery_pipeline
 
         DEPRECATED. Please use the `post_delete_delivery_pipeline_with_metadata`
@@ -1159,9 +1026,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_delete_delivery_pipeline_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_delivery_pipeline
 
@@ -1178,12 +1043,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_delete_deploy_policy(
-        self,
-        request: cloud_deploy.DeleteDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.DeleteDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.DeleteDeployPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.DeleteDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1191,9 +1052,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_deploy_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_deploy_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_deploy_policy
 
         DEPRECATED. Please use the `post_delete_deploy_policy_with_metadata`
@@ -1207,9 +1066,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_delete_deploy_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_deploy_policy
 
@@ -1226,12 +1083,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_delete_target(
-        self,
-        request: cloud_deploy.DeleteTargetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.DeleteTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.DeleteTargetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.DeleteTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_target
 
         Override in a subclass to manipulate the request or metadata
@@ -1239,9 +1092,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_target(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_target(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target
 
         DEPRECATED. Please use the `post_delete_target_with_metadata`
@@ -1255,9 +1106,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_delete_target_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_target
 
@@ -1274,12 +1123,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_automation(
-        self,
-        request: cloud_deploy.GetAutomationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.GetAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.GetAutomationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.GetAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -1287,9 +1132,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_automation(
-        self, response: cloud_deploy.Automation
-    ) -> cloud_deploy.Automation:
+    def post_get_automation(self, response: cloud_deploy.Automation) -> cloud_deploy.Automation:
         """Post-rpc interceptor for get_automation
 
         DEPRECATED. Please use the `post_get_automation_with_metadata`
@@ -1303,9 +1146,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_automation_with_metadata(
-        self,
-        response: cloud_deploy.Automation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.Automation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.Automation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_automation
 
@@ -1322,12 +1163,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_automation_run(
-        self,
-        request: cloud_deploy.GetAutomationRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.GetAutomationRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.GetAutomationRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.GetAutomationRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_automation_run
 
         Override in a subclass to manipulate the request or metadata
@@ -1335,9 +1172,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_automation_run(
-        self, response: cloud_deploy.AutomationRun
-    ) -> cloud_deploy.AutomationRun:
+    def post_get_automation_run(self, response: cloud_deploy.AutomationRun) -> cloud_deploy.AutomationRun:
         """Post-rpc interceptor for get_automation_run
 
         DEPRECATED. Please use the `post_get_automation_run_with_metadata`
@@ -1351,9 +1186,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_automation_run_with_metadata(
-        self,
-        response: cloud_deploy.AutomationRun,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.AutomationRun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.AutomationRun, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_automation_run
 
@@ -1370,9 +1203,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_config(
-        self,
-        request: cloud_deploy.GetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.GetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.GetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_config
 
@@ -1395,9 +1226,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_config_with_metadata(
-        self,
-        response: cloud_deploy.Config,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.Config, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_config
 
@@ -1414,12 +1243,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_custom_target_type(
-        self,
-        request: cloud_deploy.GetCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.GetCustomTargetTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.GetCustomTargetTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.GetCustomTargetTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1427,9 +1252,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_custom_target_type(
-        self, response: cloud_deploy.CustomTargetType
-    ) -> cloud_deploy.CustomTargetType:
+    def post_get_custom_target_type(self, response: cloud_deploy.CustomTargetType) -> cloud_deploy.CustomTargetType:
         """Post-rpc interceptor for get_custom_target_type
 
         DEPRECATED. Please use the `post_get_custom_target_type_with_metadata`
@@ -1443,9 +1266,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_custom_target_type_with_metadata(
-        self,
-        response: cloud_deploy.CustomTargetType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.CustomTargetType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.CustomTargetType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_custom_target_type
 
@@ -1462,12 +1283,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_delivery_pipeline(
-        self,
-        request: cloud_deploy.GetDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.GetDeliveryPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.GetDeliveryPipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.GetDeliveryPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -1475,9 +1292,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_delivery_pipeline(
-        self, response: cloud_deploy.DeliveryPipeline
-    ) -> cloud_deploy.DeliveryPipeline:
+    def post_get_delivery_pipeline(self, response: cloud_deploy.DeliveryPipeline) -> cloud_deploy.DeliveryPipeline:
         """Post-rpc interceptor for get_delivery_pipeline
 
         DEPRECATED. Please use the `post_get_delivery_pipeline_with_metadata`
@@ -1491,9 +1306,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_delivery_pipeline_with_metadata(
-        self,
-        response: cloud_deploy.DeliveryPipeline,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.DeliveryPipeline, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.DeliveryPipeline, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_delivery_pipeline
 
@@ -1510,12 +1323,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_deploy_policy(
-        self,
-        request: cloud_deploy.GetDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.GetDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.GetDeployPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.GetDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1523,9 +1332,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_deploy_policy(
-        self, response: cloud_deploy.DeployPolicy
-    ) -> cloud_deploy.DeployPolicy:
+    def post_get_deploy_policy(self, response: cloud_deploy.DeployPolicy) -> cloud_deploy.DeployPolicy:
         """Post-rpc interceptor for get_deploy_policy
 
         DEPRECATED. Please use the `post_get_deploy_policy_with_metadata`
@@ -1539,9 +1346,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_deploy_policy_with_metadata(
-        self,
-        response: cloud_deploy.DeployPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.DeployPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.DeployPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_deploy_policy
 
@@ -1558,9 +1363,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_job_run(
-        self,
-        request: cloud_deploy.GetJobRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.GetJobRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.GetJobRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_run
 
@@ -1583,9 +1386,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_job_run_with_metadata(
-        self,
-        response: cloud_deploy.JobRun,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.JobRun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.JobRun, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_job_run
 
@@ -1602,9 +1403,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_release(
-        self,
-        request: cloud_deploy.GetReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.GetReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.GetReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_release
 
@@ -1627,9 +1426,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_release_with_metadata(
-        self,
-        response: cloud_deploy.Release,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.Release, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.Release, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_release
 
@@ -1646,9 +1443,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_rollout(
-        self,
-        request: cloud_deploy.GetRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.GetRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.GetRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rollout
 
@@ -1671,9 +1466,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_rollout_with_metadata(
-        self,
-        response: cloud_deploy.Rollout,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.Rollout, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.Rollout, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_rollout
 
@@ -1690,9 +1483,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_target(
-        self,
-        request: cloud_deploy.GetTargetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.GetTargetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.GetTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_target
 
@@ -1715,9 +1506,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_get_target_with_metadata(
-        self,
-        response: cloud_deploy.Target,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.Target, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.Target, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_target
 
@@ -1734,9 +1523,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_ignore_job(
-        self,
-        request: cloud_deploy.IgnoreJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.IgnoreJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.IgnoreJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for ignore_job
 
@@ -1745,9 +1532,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_ignore_job(
-        self, response: cloud_deploy.IgnoreJobResponse
-    ) -> cloud_deploy.IgnoreJobResponse:
+    def post_ignore_job(self, response: cloud_deploy.IgnoreJobResponse) -> cloud_deploy.IgnoreJobResponse:
         """Post-rpc interceptor for ignore_job
 
         DEPRECATED. Please use the `post_ignore_job_with_metadata`
@@ -1761,9 +1546,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_ignore_job_with_metadata(
-        self,
-        response: cloud_deploy.IgnoreJobResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.IgnoreJobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.IgnoreJobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for ignore_job
 
@@ -1780,12 +1563,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_automation_runs(
-        self,
-        request: cloud_deploy.ListAutomationRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListAutomationRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListAutomationRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListAutomationRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_automation_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -1793,9 +1572,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_automation_runs(
-        self, response: cloud_deploy.ListAutomationRunsResponse
-    ) -> cloud_deploy.ListAutomationRunsResponse:
+    def post_list_automation_runs(self, response: cloud_deploy.ListAutomationRunsResponse) -> cloud_deploy.ListAutomationRunsResponse:
         """Post-rpc interceptor for list_automation_runs
 
         DEPRECATED. Please use the `post_list_automation_runs_with_metadata`
@@ -1809,12 +1586,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_automation_runs_with_metadata(
-        self,
-        response: cloud_deploy.ListAutomationRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListAutomationRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListAutomationRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListAutomationRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_automation_runs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1830,12 +1603,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_automations(
-        self,
-        request: cloud_deploy.ListAutomationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListAutomationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListAutomationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListAutomationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_automations
 
         Override in a subclass to manipulate the request or metadata
@@ -1843,9 +1612,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_automations(
-        self, response: cloud_deploy.ListAutomationsResponse
-    ) -> cloud_deploy.ListAutomationsResponse:
+    def post_list_automations(self, response: cloud_deploy.ListAutomationsResponse) -> cloud_deploy.ListAutomationsResponse:
         """Post-rpc interceptor for list_automations
 
         DEPRECATED. Please use the `post_list_automations_with_metadata`
@@ -1859,12 +1626,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_automations_with_metadata(
-        self,
-        response: cloud_deploy.ListAutomationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListAutomationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListAutomationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListAutomationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_automations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1880,13 +1643,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_custom_target_types(
-        self,
-        request: cloud_deploy.ListCustomTargetTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListCustomTargetTypesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.ListCustomTargetTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListCustomTargetTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_custom_target_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1894,9 +1652,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_custom_target_types(
-        self, response: cloud_deploy.ListCustomTargetTypesResponse
-    ) -> cloud_deploy.ListCustomTargetTypesResponse:
+    def post_list_custom_target_types(self, response: cloud_deploy.ListCustomTargetTypesResponse) -> cloud_deploy.ListCustomTargetTypesResponse:
         """Post-rpc interceptor for list_custom_target_types
 
         DEPRECATED. Please use the `post_list_custom_target_types_with_metadata`
@@ -1910,13 +1666,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_custom_target_types_with_metadata(
-        self,
-        response: cloud_deploy.ListCustomTargetTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListCustomTargetTypesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_deploy.ListCustomTargetTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListCustomTargetTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_custom_target_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1932,13 +1683,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_delivery_pipelines(
-        self,
-        request: cloud_deploy.ListDeliveryPipelinesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListDeliveryPipelinesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.ListDeliveryPipelinesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListDeliveryPipelinesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_delivery_pipelines
 
         Override in a subclass to manipulate the request or metadata
@@ -1946,9 +1692,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_delivery_pipelines(
-        self, response: cloud_deploy.ListDeliveryPipelinesResponse
-    ) -> cloud_deploy.ListDeliveryPipelinesResponse:
+    def post_list_delivery_pipelines(self, response: cloud_deploy.ListDeliveryPipelinesResponse) -> cloud_deploy.ListDeliveryPipelinesResponse:
         """Post-rpc interceptor for list_delivery_pipelines
 
         DEPRECATED. Please use the `post_list_delivery_pipelines_with_metadata`
@@ -1962,13 +1706,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_delivery_pipelines_with_metadata(
-        self,
-        response: cloud_deploy.ListDeliveryPipelinesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListDeliveryPipelinesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_deploy.ListDeliveryPipelinesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListDeliveryPipelinesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_delivery_pipelines
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1984,12 +1723,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_deploy_policies(
-        self,
-        request: cloud_deploy.ListDeployPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListDeployPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListDeployPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListDeployPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_deploy_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -1997,9 +1732,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_deploy_policies(
-        self, response: cloud_deploy.ListDeployPoliciesResponse
-    ) -> cloud_deploy.ListDeployPoliciesResponse:
+    def post_list_deploy_policies(self, response: cloud_deploy.ListDeployPoliciesResponse) -> cloud_deploy.ListDeployPoliciesResponse:
         """Post-rpc interceptor for list_deploy_policies
 
         DEPRECATED. Please use the `post_list_deploy_policies_with_metadata`
@@ -2013,12 +1746,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_deploy_policies_with_metadata(
-        self,
-        response: cloud_deploy.ListDeployPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListDeployPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListDeployPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListDeployPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_deploy_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2034,12 +1763,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_job_runs(
-        self,
-        request: cloud_deploy.ListJobRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListJobRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListJobRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListJobRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_job_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -2047,9 +1772,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_job_runs(
-        self, response: cloud_deploy.ListJobRunsResponse
-    ) -> cloud_deploy.ListJobRunsResponse:
+    def post_list_job_runs(self, response: cloud_deploy.ListJobRunsResponse) -> cloud_deploy.ListJobRunsResponse:
         """Post-rpc interceptor for list_job_runs
 
         DEPRECATED. Please use the `post_list_job_runs_with_metadata`
@@ -2063,12 +1786,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_job_runs_with_metadata(
-        self,
-        response: cloud_deploy.ListJobRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListJobRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListJobRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListJobRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_job_runs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2084,12 +1803,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_releases(
-        self,
-        request: cloud_deploy.ListReleasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListReleasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_releases
 
         Override in a subclass to manipulate the request or metadata
@@ -2097,9 +1812,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_releases(
-        self, response: cloud_deploy.ListReleasesResponse
-    ) -> cloud_deploy.ListReleasesResponse:
+    def post_list_releases(self, response: cloud_deploy.ListReleasesResponse) -> cloud_deploy.ListReleasesResponse:
         """Post-rpc interceptor for list_releases
 
         DEPRECATED. Please use the `post_list_releases_with_metadata`
@@ -2113,12 +1826,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_releases_with_metadata(
-        self,
-        response: cloud_deploy.ListReleasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListReleasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListReleasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListReleasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_releases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2134,12 +1843,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_rollouts(
-        self,
-        request: cloud_deploy.ListRolloutsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListRolloutsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_rollouts
 
         Override in a subclass to manipulate the request or metadata
@@ -2147,9 +1852,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_rollouts(
-        self, response: cloud_deploy.ListRolloutsResponse
-    ) -> cloud_deploy.ListRolloutsResponse:
+    def post_list_rollouts(self, response: cloud_deploy.ListRolloutsResponse) -> cloud_deploy.ListRolloutsResponse:
         """Post-rpc interceptor for list_rollouts
 
         DEPRECATED. Please use the `post_list_rollouts_with_metadata`
@@ -2163,12 +1866,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_rollouts_with_metadata(
-        self,
-        response: cloud_deploy.ListRolloutsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListRolloutsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_rollouts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2184,12 +1883,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_list_targets(
-        self,
-        request: cloud_deploy.ListTargetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListTargetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.ListTargetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListTargetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_targets
 
         Override in a subclass to manipulate the request or metadata
@@ -2197,9 +1892,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_targets(
-        self, response: cloud_deploy.ListTargetsResponse
-    ) -> cloud_deploy.ListTargetsResponse:
+    def post_list_targets(self, response: cloud_deploy.ListTargetsResponse) -> cloud_deploy.ListTargetsResponse:
         """Post-rpc interceptor for list_targets
 
         DEPRECATED. Please use the `post_list_targets_with_metadata`
@@ -2213,12 +1906,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_list_targets_with_metadata(
-        self,
-        response: cloud_deploy.ListTargetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.ListTargetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.ListTargetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.ListTargetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_targets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2234,9 +1923,7 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_retry_job(
-        self,
-        request: cloud_deploy.RetryJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_deploy.RetryJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.RetryJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retry_job
 
@@ -2245,9 +1932,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_retry_job(
-        self, response: cloud_deploy.RetryJobResponse
-    ) -> cloud_deploy.RetryJobResponse:
+    def post_retry_job(self, response: cloud_deploy.RetryJobResponse) -> cloud_deploy.RetryJobResponse:
         """Post-rpc interceptor for retry_job
 
         DEPRECATED. Please use the `post_retry_job_with_metadata`
@@ -2261,9 +1946,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_retry_job_with_metadata(
-        self,
-        response: cloud_deploy.RetryJobResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_deploy.RetryJobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_deploy.RetryJobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retry_job
 
@@ -2280,12 +1963,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_rollback_target(
-        self,
-        request: cloud_deploy.RollbackTargetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.RollbackTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.RollbackTargetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.RollbackTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback_target
 
         Override in a subclass to manipulate the request or metadata
@@ -2293,9 +1972,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_rollback_target(
-        self, response: cloud_deploy.RollbackTargetResponse
-    ) -> cloud_deploy.RollbackTargetResponse:
+    def post_rollback_target(self, response: cloud_deploy.RollbackTargetResponse) -> cloud_deploy.RollbackTargetResponse:
         """Post-rpc interceptor for rollback_target
 
         DEPRECATED. Please use the `post_rollback_target_with_metadata`
@@ -2309,12 +1986,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_rollback_target_with_metadata(
-        self,
-        response: cloud_deploy.RollbackTargetResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.RollbackTargetResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.RollbackTargetResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.RollbackTargetResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rollback_target
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2330,12 +2003,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_terminate_job_run(
-        self,
-        request: cloud_deploy.TerminateJobRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.TerminateJobRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.TerminateJobRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.TerminateJobRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for terminate_job_run
 
         Override in a subclass to manipulate the request or metadata
@@ -2343,9 +2012,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_terminate_job_run(
-        self, response: cloud_deploy.TerminateJobRunResponse
-    ) -> cloud_deploy.TerminateJobRunResponse:
+    def post_terminate_job_run(self, response: cloud_deploy.TerminateJobRunResponse) -> cloud_deploy.TerminateJobRunResponse:
         """Post-rpc interceptor for terminate_job_run
 
         DEPRECATED. Please use the `post_terminate_job_run_with_metadata`
@@ -2359,12 +2026,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_terminate_job_run_with_metadata(
-        self,
-        response: cloud_deploy.TerminateJobRunResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.TerminateJobRunResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_deploy.TerminateJobRunResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.TerminateJobRunResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for terminate_job_run
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2380,12 +2043,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_update_automation(
-        self,
-        request: cloud_deploy.UpdateAutomationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.UpdateAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.UpdateAutomationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.UpdateAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -2393,9 +2052,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_update_automation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_automation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_automation
 
         DEPRECATED. Please use the `post_update_automation_with_metadata`
@@ -2409,9 +2066,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_update_automation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_automation
 
@@ -2428,13 +2083,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_update_custom_target_type(
-        self,
-        request: cloud_deploy.UpdateCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.UpdateCustomTargetTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.UpdateCustomTargetTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.UpdateCustomTargetTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -2442,9 +2092,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_update_custom_target_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_custom_target_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_custom_target_type
 
         DEPRECATED. Please use the `post_update_custom_target_type_with_metadata`
@@ -2458,9 +2106,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_update_custom_target_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_custom_target_type
 
@@ -2477,13 +2123,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_update_delivery_pipeline(
-        self,
-        request: cloud_deploy.UpdateDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.UpdateDeliveryPipelineRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_deploy.UpdateDeliveryPipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.UpdateDeliveryPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -2491,9 +2132,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_update_delivery_pipeline(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_delivery_pipeline(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_delivery_pipeline
 
         DEPRECATED. Please use the `post_update_delivery_pipeline_with_metadata`
@@ -2507,9 +2146,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_update_delivery_pipeline_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_delivery_pipeline
 
@@ -2526,12 +2163,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_update_deploy_policy(
-        self,
-        request: cloud_deploy.UpdateDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.UpdateDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.UpdateDeployPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.UpdateDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2539,9 +2172,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_update_deploy_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_deploy_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_deploy_policy
 
         DEPRECATED. Please use the `post_update_deploy_policy_with_metadata`
@@ -2555,9 +2186,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_update_deploy_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_deploy_policy
 
@@ -2574,12 +2203,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_update_target(
-        self,
-        request: cloud_deploy.UpdateTargetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_deploy.UpdateTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_deploy.UpdateTargetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_deploy.UpdateTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_target
 
         Override in a subclass to manipulate the request or metadata
@@ -2587,9 +2212,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_update_target(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_target(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_target
 
         DEPRECATED. Please use the `post_update_target_with_metadata`
@@ -2603,9 +2226,7 @@ class CloudDeployRestInterceptor:
         return response
 
     def post_update_target_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_target
 
@@ -2622,12 +2243,8 @@ class CloudDeployRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2635,9 +2252,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2647,12 +2262,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2660,9 +2271,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2672,12 +2281,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2695,12 +2300,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2718,13 +2319,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -2732,9 +2328,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -2744,12 +2338,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2767,12 +2357,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2790,12 +2376,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2803,9 +2385,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2815,12 +2395,8 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2828,9 +2404,7 @@ class CloudDeployRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2921,9 +2495,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2976,29 +2548,17 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AbandonRelease(
-        _BaseCloudDeployRestTransport._BaseAbandonRelease, CloudDeployRestStub
-    ):
+    class _AbandonRelease(_BaseCloudDeployRestTransport._BaseAbandonRelease, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.AbandonRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3038,30 +2598,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object for ``AbandonRelease``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseAbandonRelease._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_abandon_release(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3085,13 +2633,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._AbandonRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3107,16 +2649,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_abandon_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_abandon_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_abandon_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.AbandonReleaseResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.AbandonReleaseResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3135,22 +2671,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _AdvanceRollout(
-        _BaseCloudDeployRestTransport._BaseAdvanceRollout, CloudDeployRestStub
-    ):
+    class _AdvanceRollout(_BaseCloudDeployRestTransport._BaseAdvanceRollout, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.AdvanceRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3190,30 +2716,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``AdvanceRollout``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_advance_rollout(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3237,13 +2751,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._AdvanceRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3259,16 +2767,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_advance_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_advance_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_advance_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.AdvanceRolloutResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.AdvanceRolloutResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3287,22 +2789,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ApproveRollout(
-        _BaseCloudDeployRestTransport._BaseApproveRollout, CloudDeployRestStub
-    ):
+    class _ApproveRollout(_BaseCloudDeployRestTransport._BaseApproveRollout, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ApproveRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3342,30 +2834,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ApproveRollout``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseApproveRollout._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseApproveRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_approve_rollout(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseApproveRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseApproveRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseApproveRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseApproveRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseApproveRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseApproveRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3389,13 +2869,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ApproveRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3411,16 +2885,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_approve_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_approve_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_approve_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ApproveRolloutResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ApproveRolloutResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3439,22 +2907,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CancelAutomationRun(
-        _BaseCloudDeployRestTransport._BaseCancelAutomationRun, CloudDeployRestStub
-    ):
+    class _CancelAutomationRun(_BaseCloudDeployRestTransport._BaseCancelAutomationRun, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CancelAutomationRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3494,32 +2952,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``CancelAutomationRun``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_automation_run(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_automation_run(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3543,13 +2987,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CancelAutomationRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3565,16 +3003,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_cancel_automation_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_automation_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_automation_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.CancelAutomationRunResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.CancelAutomationRunResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3593,22 +3025,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CancelRollout(
-        _BaseCloudDeployRestTransport._BaseCancelRollout, CloudDeployRestStub
-    ):
+    class _CancelRollout(_BaseCloudDeployRestTransport._BaseCancelRollout, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CancelRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3648,34 +3070,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``CancelRollout``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCancelRollout._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCancelRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_rollout(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCancelRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCancelRollout._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudDeployRestTransport._BaseCancelRollout._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudDeployRestTransport._BaseCancelRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseCancelRollout._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCancelRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3699,13 +3105,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CancelRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3721,16 +3121,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_cancel_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.CancelRolloutResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.CancelRolloutResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3749,22 +3143,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateAutomation(
-        _BaseCloudDeployRestTransport._BaseCreateAutomation, CloudDeployRestStub
-    ):
+    class _CreateAutomation(_BaseCloudDeployRestTransport._BaseCreateAutomation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateAutomation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3807,32 +3191,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateAutomation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_automation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_automation(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3856,13 +3226,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateAutomation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3876,12 +3240,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_automation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_automation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_automation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3902,22 +3262,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateCustomTargetType(
-        _BaseCloudDeployRestTransport._BaseCreateCustomTargetType, CloudDeployRestStub
-    ):
+    class _CreateCustomTargetType(_BaseCloudDeployRestTransport._BaseCreateCustomTargetType, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateCustomTargetType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3960,32 +3310,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_custom_target_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_custom_target_type(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4009,13 +3345,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateCustomTargetType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4029,12 +3359,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_custom_target_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_custom_target_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_custom_target_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4055,22 +3381,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateDeliveryPipeline(
-        _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline, CloudDeployRestStub
-    ):
+    class _CreateDeliveryPipeline(_BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateDeliveryPipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4113,32 +3429,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_delivery_pipeline(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_delivery_pipeline(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4162,13 +3464,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateDeliveryPipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4182,12 +3478,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_delivery_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_delivery_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_delivery_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4208,22 +3500,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateDeployPolicy(
-        _BaseCloudDeployRestTransport._BaseCreateDeployPolicy, CloudDeployRestStub
-    ):
+    class _CreateDeployPolicy(_BaseCloudDeployRestTransport._BaseCreateDeployPolicy, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateDeployPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4266,32 +3548,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_deploy_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_deploy_policy(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4315,13 +3583,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateDeployPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4335,12 +3597,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_deploy_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_deploy_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_deploy_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4361,22 +3619,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateRelease(
-        _BaseCloudDeployRestTransport._BaseCreateRelease, CloudDeployRestStub
-    ):
+    class _CreateRelease(_BaseCloudDeployRestTransport._BaseCreateRelease, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4419,34 +3667,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateRelease._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_create_release(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateRelease._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudDeployRestTransport._BaseCreateRelease._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateRelease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseCreateRelease._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4470,13 +3702,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4490,12 +3716,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4516,22 +3738,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateRollout(
-        _BaseCloudDeployRestTransport._BaseCreateRollout, CloudDeployRestStub
-    ):
+    class _CreateRollout(_BaseCloudDeployRestTransport._BaseCreateRollout, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4575,34 +3787,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateRollout._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_create_rollout(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateRollout._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudDeployRestTransport._BaseCreateRollout._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseCreateRollout._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4626,13 +3822,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4646,12 +3836,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4672,22 +3858,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _CreateTarget(
-        _BaseCloudDeployRestTransport._BaseCreateTarget, CloudDeployRestStub
-    ):
+    class _CreateTarget(_BaseCloudDeployRestTransport._BaseCreateTarget, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CreateTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4730,36 +3906,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateTarget._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_create_target(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseCreateTarget._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCreateTarget._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudDeployRestTransport._BaseCreateTarget._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudDeployRestTransport._BaseCreateTarget._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseCreateTarget._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCreateTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4783,13 +3941,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CreateTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4803,12 +3955,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_create_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4829,22 +3977,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _DeleteAutomation(
-        _BaseCloudDeployRestTransport._BaseDeleteAutomation, CloudDeployRestStub
-    ):
+    class _DeleteAutomation(_BaseCloudDeployRestTransport._BaseDeleteAutomation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.DeleteAutomation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4886,28 +4024,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_automation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_automation(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4931,12 +4057,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._DeleteAutomation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4950,12 +4071,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_delete_automation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_automation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_automation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4976,22 +4093,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _DeleteCustomTargetType(
-        _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType, CloudDeployRestStub
-    ):
+    class _DeleteCustomTargetType(_BaseCloudDeployRestTransport._BaseDeleteCustomTargetType, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.DeleteCustomTargetType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5033,28 +4140,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_custom_target_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_custom_target_type(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5078,12 +4173,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._DeleteCustomTargetType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5097,12 +4187,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_delete_custom_target_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_custom_target_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_custom_target_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5123,22 +4209,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _DeleteDeliveryPipeline(
-        _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline, CloudDeployRestStub
-    ):
+    class _DeleteDeliveryPipeline(_BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.DeleteDeliveryPipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5180,28 +4256,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_delivery_pipeline(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_delivery_pipeline(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5225,12 +4289,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._DeleteDeliveryPipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5244,12 +4303,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_delete_delivery_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_delivery_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_delivery_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5270,22 +4325,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _DeleteDeployPolicy(
-        _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy, CloudDeployRestStub
-    ):
+    class _DeleteDeployPolicy(_BaseCloudDeployRestTransport._BaseDeleteDeployPolicy, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.DeleteDeployPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5327,28 +4372,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_deploy_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_deploy_policy(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5372,12 +4405,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._DeleteDeployPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5391,12 +4419,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_delete_deploy_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_deploy_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_deploy_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5417,22 +4441,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _DeleteTarget(
-        _BaseCloudDeployRestTransport._BaseDeleteTarget, CloudDeployRestStub
-    ):
+    class _DeleteTarget(_BaseCloudDeployRestTransport._BaseDeleteTarget, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.DeleteTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5474,30 +4488,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteTarget._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_target(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseDeleteTarget._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteTarget._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseDeleteTarget._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseDeleteTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5521,12 +4521,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._DeleteTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5540,12 +4535,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_delete_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5566,22 +4557,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetAutomation(
-        _BaseCloudDeployRestTransport._BaseGetAutomation, CloudDeployRestStub
-    ):
+    class _GetAutomation(_BaseCloudDeployRestTransport._BaseGetAutomation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetAutomation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5628,28 +4609,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetAutomation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetAutomation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_automation(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseGetAutomation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetAutomation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetAutomation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetAutomation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5673,12 +4642,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetAutomation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5694,12 +4658,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_automation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_automation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_automation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Automation.to_json(response)
                 except:
@@ -5720,22 +4680,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetAutomationRun(
-        _BaseCloudDeployRestTransport._BaseGetAutomationRun, CloudDeployRestStub
-    ):
+    class _GetAutomationRun(_BaseCloudDeployRestTransport._BaseGetAutomationRun, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetAutomationRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5778,28 +4728,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_automation_run(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_automation_run(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5823,12 +4761,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetAutomationRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5844,12 +4777,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_automation_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_automation_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_automation_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.AutomationRun.to_json(response)
                 except:
@@ -5875,15 +4804,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             return hash("CloudDeployRestTransport.GetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5922,30 +4843,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     Service-wide configuration.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetConfig._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_config(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5969,12 +4876,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5990,12 +4892,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Config.to_json(response)
                 except:
@@ -6016,22 +4914,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetCustomTargetType(
-        _BaseCloudDeployRestTransport._BaseGetCustomTargetType, CloudDeployRestStub
-    ):
+    class _GetCustomTargetType(_BaseCloudDeployRestTransport._BaseGetCustomTargetType, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetCustomTargetType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6076,28 +4964,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_custom_target_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_custom_target_type(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6121,12 +4997,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetCustomTargetType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6142,12 +5013,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_custom_target_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_custom_target_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_custom_target_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.CustomTargetType.to_json(response)
                 except:
@@ -6168,22 +5035,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetDeliveryPipeline(
-        _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline, CloudDeployRestStub
-    ):
+    class _GetDeliveryPipeline(_BaseCloudDeployRestTransport._BaseGetDeliveryPipeline, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetDeliveryPipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6226,28 +5083,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_delivery_pipeline(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_delivery_pipeline(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6271,12 +5116,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetDeliveryPipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6292,12 +5132,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_delivery_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_delivery_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_delivery_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.DeliveryPipeline.to_json(response)
                 except:
@@ -6318,22 +5154,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetDeployPolicy(
-        _BaseCloudDeployRestTransport._BaseGetDeployPolicy, CloudDeployRestStub
-    ):
+    class _GetDeployPolicy(_BaseCloudDeployRestTransport._BaseGetDeployPolicy, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetDeployPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6376,28 +5202,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_deploy_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_deploy_policy(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6421,12 +5235,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetDeployPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6442,12 +5251,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_deploy_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_deploy_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_deploy_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.DeployPolicy.to_json(response)
                 except:
@@ -6473,15 +5278,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             return hash("CloudDeployRestTransport.GetJobRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6525,30 +5322,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetJobRun._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetJobRun._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job_run(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetJobRun._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetJobRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetJobRun._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetJobRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6572,12 +5355,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetJobRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6593,12 +5371,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_job_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.JobRun.to_json(response)
                 except:
@@ -6619,22 +5393,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetRelease(
-        _BaseCloudDeployRestTransport._BaseGetRelease, CloudDeployRestStub
-    ):
+    class _GetRelease(_BaseCloudDeployRestTransport._BaseGetRelease, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6677,30 +5441,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetRelease._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_get_release(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetRelease._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetRelease._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetRelease._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6724,12 +5474,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6745,12 +5490,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Release.to_json(response)
                 except:
@@ -6771,22 +5512,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _GetRollout(
-        _BaseCloudDeployRestTransport._BaseGetRollout, CloudDeployRestStub
-    ):
+    class _GetRollout(_BaseCloudDeployRestTransport._BaseGetRollout, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6830,30 +5561,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetRollout._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rollout(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetRollout._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetRollout._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetRollout._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6877,12 +5594,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6898,12 +5610,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Rollout.to_json(response)
                 except:
@@ -6929,15 +5637,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             return hash("CloudDeployRestTransport.GetTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6980,30 +5680,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetTarget._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_get_target(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetTarget._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetTarget._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetTarget._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7027,12 +5713,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7048,12 +5729,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_get_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Target.to_json(response)
                 except:
@@ -7079,15 +5756,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             return hash("CloudDeployRestTransport.IgnoreJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7127,34 +5796,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``IgnoreJob``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseIgnoreJob._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseIgnoreJob._get_http_options()
 
             request, metadata = self._interceptor.pre_ignore_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseIgnoreJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseIgnoreJob._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseIgnoreJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseIgnoreJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseIgnoreJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseIgnoreJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7178,13 +5831,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._IgnoreJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7200,12 +5847,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_ignore_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_ignore_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_ignore_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.IgnoreJobResponse.to_json(response)
                 except:
@@ -7226,22 +5869,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListAutomationRuns(
-        _BaseCloudDeployRestTransport._BaseListAutomationRuns, CloudDeployRestStub
-    ):
+    class _ListAutomationRuns(_BaseCloudDeployRestTransport._BaseListAutomationRuns, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListAutomationRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7280,28 +5913,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListAutomationRuns``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_automation_runs(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_automation_runs(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7325,12 +5946,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListAutomationRuns._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7346,16 +5962,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_automation_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_automation_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_automation_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListAutomationRunsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListAutomationRunsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7374,22 +5984,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListAutomations(
-        _BaseCloudDeployRestTransport._BaseListAutomations, CloudDeployRestStub
-    ):
+    class _ListAutomations(_BaseCloudDeployRestTransport._BaseListAutomations, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListAutomations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7428,28 +6028,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListAutomations``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListAutomations._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListAutomations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_automations(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListAutomations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_automations(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListAutomations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseListAutomations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListAutomations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7473,12 +6061,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListAutomations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7494,16 +6077,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_automations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_automations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_automations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListAutomationsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListAutomationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7522,22 +6099,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListCustomTargetTypes(
-        _BaseCloudDeployRestTransport._BaseListCustomTargetTypes, CloudDeployRestStub
-    ):
+    class _ListCustomTargetTypes(_BaseCloudDeployRestTransport._BaseListCustomTargetTypes, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListCustomTargetTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7576,28 +6143,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListCustomTargetTypes.``
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_custom_target_types(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_custom_target_types(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7621,12 +6176,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListCustomTargetTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7642,16 +6192,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_custom_target_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_custom_target_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_custom_target_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_deploy.ListCustomTargetTypesResponse.to_json(response)
-                    )
+                    response_payload = cloud_deploy.ListCustomTargetTypesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7670,22 +6214,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListDeliveryPipelines(
-        _BaseCloudDeployRestTransport._BaseListDeliveryPipelines, CloudDeployRestStub
-    ):
+    class _ListDeliveryPipelines(_BaseCloudDeployRestTransport._BaseListDeliveryPipelines, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListDeliveryPipelines")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7724,28 +6258,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListDeliveryPipelines``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_delivery_pipelines(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_delivery_pipelines(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7769,12 +6291,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListDeliveryPipelines._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7790,16 +6307,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_delivery_pipelines(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_delivery_pipelines_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_delivery_pipelines_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_deploy.ListDeliveryPipelinesResponse.to_json(response)
-                    )
+                    response_payload = cloud_deploy.ListDeliveryPipelinesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7818,22 +6329,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListDeployPolicies(
-        _BaseCloudDeployRestTransport._BaseListDeployPolicies, CloudDeployRestStub
-    ):
+    class _ListDeployPolicies(_BaseCloudDeployRestTransport._BaseListDeployPolicies, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListDeployPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7872,28 +6373,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListDeployPolicies``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_deploy_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_deploy_policies(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7917,12 +6406,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListDeployPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7938,16 +6422,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_deploy_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_deploy_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_deploy_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListDeployPoliciesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListDeployPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7966,22 +6444,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListJobRuns(
-        _BaseCloudDeployRestTransport._BaseListJobRuns, CloudDeployRestStub
-    ):
+    class _ListJobRuns(_BaseCloudDeployRestTransport._BaseListJobRuns, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListJobRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8023,30 +6491,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListJobRuns._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListJobRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_list_job_runs(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseListJobRuns._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListJobRuns._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseListJobRuns._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListJobRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8070,12 +6524,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListJobRuns._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8091,16 +6540,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_job_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_job_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_job_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListJobRunsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListJobRunsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8119,22 +6562,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListReleases(
-        _BaseCloudDeployRestTransport._BaseListReleases, CloudDeployRestStub
-    ):
+    class _ListReleases(_BaseCloudDeployRestTransport._BaseListReleases, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListReleases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8173,30 +6606,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListReleases``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListReleases._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListReleases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_releases(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseListReleases._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListReleases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseListReleases._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListReleases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8220,12 +6639,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListReleases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8241,16 +6655,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_releases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_releases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_releases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListReleasesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListReleasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8269,22 +6677,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListRollouts(
-        _BaseCloudDeployRestTransport._BaseListRollouts, CloudDeployRestStub
-    ):
+    class _ListRollouts(_BaseCloudDeployRestTransport._BaseListRollouts, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListRollouts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8326,30 +6724,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListRollouts._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListRollouts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_rollouts(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseListRollouts._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListRollouts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseListRollouts._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListRollouts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8373,12 +6757,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListRollouts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8394,16 +6773,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_rollouts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_rollouts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_rollouts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListRolloutsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListRolloutsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8422,22 +6795,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _ListTargets(
-        _BaseCloudDeployRestTransport._BaseListTargets, CloudDeployRestStub
-    ):
+    class _ListTargets(_BaseCloudDeployRestTransport._BaseListTargets, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListTargets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8476,30 +6839,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListTargets``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListTargets._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListTargets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_targets(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseListTargets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListTargets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseListTargets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListTargets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8523,12 +6872,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListTargets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8544,16 +6888,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_list_targets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_targets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_targets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.ListTargetsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.ListTargetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8577,15 +6915,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             return hash("CloudDeployRestTransport.RetryJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8626,34 +6956,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from 'RetryJob'.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseRetryJob._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseRetryJob._get_http_options()
 
             request, metadata = self._interceptor.pre_retry_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseRetryJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseRetryJob._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseRetryJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseRetryJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseRetryJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseRetryJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8677,13 +6991,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._RetryJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8699,12 +7007,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_retry_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_retry_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retry_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.RetryJobResponse.to_json(response)
                 except:
@@ -8725,22 +7029,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _RollbackTarget(
-        _BaseCloudDeployRestTransport._BaseRollbackTarget, CloudDeployRestStub
-    ):
+    class _RollbackTarget(_BaseCloudDeployRestTransport._BaseRollbackTarget, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.RollbackTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8780,30 +7074,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``RollbackTarget``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseRollbackTarget._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_rollback_target(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8827,13 +7109,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._RollbackTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8849,16 +7125,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_rollback_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rollback_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rollback_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.RollbackTargetResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.RollbackTargetResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8877,22 +7147,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _TerminateJobRun(
-        _BaseCloudDeployRestTransport._BaseTerminateJobRun, CloudDeployRestStub
-    ):
+    class _TerminateJobRun(_BaseCloudDeployRestTransport._BaseTerminateJobRun, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.TerminateJobRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8932,32 +7192,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``TerminateJobRun``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_http_options()
 
-            request, metadata = self._interceptor.pre_terminate_job_run(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_terminate_job_run(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8981,13 +7227,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._TerminateJobRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9003,16 +7243,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_terminate_job_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_terminate_job_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_terminate_job_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_deploy.TerminateJobRunResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_deploy.TerminateJobRunResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9031,22 +7265,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _UpdateAutomation(
-        _BaseCloudDeployRestTransport._BaseUpdateAutomation, CloudDeployRestStub
-    ):
+    class _UpdateAutomation(_BaseCloudDeployRestTransport._BaseUpdateAutomation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.UpdateAutomation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9089,32 +7313,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_automation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_automation(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9138,13 +7348,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._UpdateAutomation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9158,12 +7362,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_update_automation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_automation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_automation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9184,22 +7384,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _UpdateCustomTargetType(
-        _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType, CloudDeployRestStub
-    ):
+    class _UpdateCustomTargetType(_BaseCloudDeployRestTransport._BaseUpdateCustomTargetType, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.UpdateCustomTargetType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9242,32 +7432,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_custom_target_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_custom_target_type(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9291,13 +7467,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._UpdateCustomTargetType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9311,12 +7481,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_update_custom_target_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_custom_target_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_custom_target_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9337,22 +7503,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _UpdateDeliveryPipeline(
-        _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline, CloudDeployRestStub
-    ):
+    class _UpdateDeliveryPipeline(_BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.UpdateDeliveryPipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9395,32 +7551,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_delivery_pipeline(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_delivery_pipeline(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9444,13 +7586,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._UpdateDeliveryPipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9464,12 +7600,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_update_delivery_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_delivery_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_delivery_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9490,22 +7622,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _UpdateDeployPolicy(
-        _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy, CloudDeployRestStub
-    ):
+    class _UpdateDeployPolicy(_BaseCloudDeployRestTransport._BaseUpdateDeployPolicy, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.UpdateDeployPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9548,32 +7670,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_deploy_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_deploy_policy(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9597,13 +7705,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._UpdateDeployPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9617,12 +7719,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_update_deploy_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_deploy_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_deploy_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9643,22 +7741,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             return resp
 
-    class _UpdateTarget(
-        _BaseCloudDeployRestTransport._BaseUpdateTarget, CloudDeployRestStub
-    ):
+    class _UpdateTarget(_BaseCloudDeployRestTransport._BaseUpdateTarget, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.UpdateTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9701,36 +7789,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateTarget._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_update_target(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseUpdateTarget._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseUpdateTarget._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudDeployRestTransport._BaseUpdateTarget._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudDeployRestTransport._BaseUpdateTarget._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseUpdateTarget._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseUpdateTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9754,13 +7824,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._UpdateTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9774,12 +7838,8 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             resp = self._interceptor.post_update_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9801,410 +7861,271 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             return resp
 
     @property
-    def abandon_release(
-        self,
-    ) -> Callable[
-        [cloud_deploy.AbandonReleaseRequest], cloud_deploy.AbandonReleaseResponse
-    ]:
+    def abandon_release(self) -> Callable[[cloud_deploy.AbandonReleaseRequest], cloud_deploy.AbandonReleaseResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AbandonRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def advance_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.AdvanceRolloutRequest], cloud_deploy.AdvanceRolloutResponse
-    ]:
+    def advance_rollout(self) -> Callable[[cloud_deploy.AdvanceRolloutRequest], cloud_deploy.AdvanceRolloutResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AdvanceRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def approve_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ApproveRolloutRequest], cloud_deploy.ApproveRolloutResponse
-    ]:
+    def approve_rollout(self) -> Callable[[cloud_deploy.ApproveRolloutRequest], cloud_deploy.ApproveRolloutResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_automation_run(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CancelAutomationRunRequest],
-        cloud_deploy.CancelAutomationRunResponse,
-    ]:
+    def cancel_automation_run(self) -> Callable[[cloud_deploy.CancelAutomationRunRequest], cloud_deploy.CancelAutomationRunResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelAutomationRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CancelRolloutRequest], cloud_deploy.CancelRolloutResponse
-    ]:
+    def cancel_rollout(self) -> Callable[[cloud_deploy.CancelRolloutRequest], cloud_deploy.CancelRolloutResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_automation(
-        self,
-    ) -> Callable[[cloud_deploy.CreateAutomationRequest], operations_pb2.Operation]:
+    def create_automation(self) -> Callable[[cloud_deploy.CreateAutomationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateCustomTargetTypeRequest], operations_pb2.Operation
-    ]:
+    def create_custom_target_type(self) -> Callable[[cloud_deploy.CreateCustomTargetTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateDeliveryPipelineRequest], operations_pb2.Operation
-    ]:
+    def create_delivery_pipeline(self) -> Callable[[cloud_deploy.CreateDeliveryPipelineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.CreateDeployPolicyRequest], operations_pb2.Operation]:
+    def create_deploy_policy(self) -> Callable[[cloud_deploy.CreateDeployPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_release(
-        self,
-    ) -> Callable[[cloud_deploy.CreateReleaseRequest], operations_pb2.Operation]:
+    def create_release(self) -> Callable[[cloud_deploy.CreateReleaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_rollout(
-        self,
-    ) -> Callable[[cloud_deploy.CreateRolloutRequest], operations_pb2.Operation]:
+    def create_rollout(self) -> Callable[[cloud_deploy.CreateRolloutRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_target(
-        self,
-    ) -> Callable[[cloud_deploy.CreateTargetRequest], operations_pb2.Operation]:
+    def create_target(self) -> Callable[[cloud_deploy.CreateTargetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_automation(
-        self,
-    ) -> Callable[[cloud_deploy.DeleteAutomationRequest], operations_pb2.Operation]:
+    def delete_automation(self) -> Callable[[cloud_deploy.DeleteAutomationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.DeleteCustomTargetTypeRequest], operations_pb2.Operation
-    ]:
+    def delete_custom_target_type(self) -> Callable[[cloud_deploy.DeleteCustomTargetTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.DeleteDeliveryPipelineRequest], operations_pb2.Operation
-    ]:
+    def delete_delivery_pipeline(self) -> Callable[[cloud_deploy.DeleteDeliveryPipelineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.DeleteDeployPolicyRequest], operations_pb2.Operation]:
+    def delete_deploy_policy(self) -> Callable[[cloud_deploy.DeleteDeployPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_target(
-        self,
-    ) -> Callable[[cloud_deploy.DeleteTargetRequest], operations_pb2.Operation]:
+    def delete_target(self) -> Callable[[cloud_deploy.DeleteTargetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_automation(
-        self,
-    ) -> Callable[[cloud_deploy.GetAutomationRequest], cloud_deploy.Automation]:
+    def get_automation(self) -> Callable[[cloud_deploy.GetAutomationRequest], cloud_deploy.Automation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_automation_run(
-        self,
-    ) -> Callable[[cloud_deploy.GetAutomationRunRequest], cloud_deploy.AutomationRun]:
+    def get_automation_run(self) -> Callable[[cloud_deploy.GetAutomationRunRequest], cloud_deploy.AutomationRun]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAutomationRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[[cloud_deploy.GetConfigRequest], cloud_deploy.Config]:
+    def get_config(self) -> Callable[[cloud_deploy.GetConfigRequest], cloud_deploy.Config]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetCustomTargetTypeRequest], cloud_deploy.CustomTargetType
-    ]:
+    def get_custom_target_type(self) -> Callable[[cloud_deploy.GetCustomTargetTypeRequest], cloud_deploy.CustomTargetType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetDeliveryPipelineRequest], cloud_deploy.DeliveryPipeline
-    ]:
+    def get_delivery_pipeline(self) -> Callable[[cloud_deploy.GetDeliveryPipelineRequest], cloud_deploy.DeliveryPipeline]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.GetDeployPolicyRequest], cloud_deploy.DeployPolicy]:
+    def get_deploy_policy(self) -> Callable[[cloud_deploy.GetDeployPolicyRequest], cloud_deploy.DeployPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_job_run(
-        self,
-    ) -> Callable[[cloud_deploy.GetJobRunRequest], cloud_deploy.JobRun]:
+    def get_job_run(self) -> Callable[[cloud_deploy.GetJobRunRequest], cloud_deploy.JobRun]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetJobRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[[cloud_deploy.GetReleaseRequest], cloud_deploy.Release]:
+    def get_release(self) -> Callable[[cloud_deploy.GetReleaseRequest], cloud_deploy.Release]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[[cloud_deploy.GetRolloutRequest], cloud_deploy.Rollout]:
+    def get_rollout(self) -> Callable[[cloud_deploy.GetRolloutRequest], cloud_deploy.Rollout]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_target(
-        self,
-    ) -> Callable[[cloud_deploy.GetTargetRequest], cloud_deploy.Target]:
+    def get_target(self) -> Callable[[cloud_deploy.GetTargetRequest], cloud_deploy.Target]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def ignore_job(
-        self,
-    ) -> Callable[[cloud_deploy.IgnoreJobRequest], cloud_deploy.IgnoreJobResponse]:
+    def ignore_job(self) -> Callable[[cloud_deploy.IgnoreJobRequest], cloud_deploy.IgnoreJobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IgnoreJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_automation_runs(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListAutomationRunsRequest],
-        cloud_deploy.ListAutomationRunsResponse,
-    ]:
+    def list_automation_runs(self) -> Callable[[cloud_deploy.ListAutomationRunsRequest], cloud_deploy.ListAutomationRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutomationRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_automations(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListAutomationsRequest], cloud_deploy.ListAutomationsResponse
-    ]:
+    def list_automations(self) -> Callable[[cloud_deploy.ListAutomationsRequest], cloud_deploy.ListAutomationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutomations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_custom_target_types(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListCustomTargetTypesRequest],
-        cloud_deploy.ListCustomTargetTypesResponse,
-    ]:
+    def list_custom_target_types(self) -> Callable[[cloud_deploy.ListCustomTargetTypesRequest], cloud_deploy.ListCustomTargetTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomTargetTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_delivery_pipelines(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListDeliveryPipelinesRequest],
-        cloud_deploy.ListDeliveryPipelinesResponse,
-    ]:
+    def list_delivery_pipelines(self) -> Callable[[cloud_deploy.ListDeliveryPipelinesRequest], cloud_deploy.ListDeliveryPipelinesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeliveryPipelines(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_deploy_policies(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListDeployPoliciesRequest],
-        cloud_deploy.ListDeployPoliciesResponse,
-    ]:
+    def list_deploy_policies(self) -> Callable[[cloud_deploy.ListDeployPoliciesRequest], cloud_deploy.ListDeployPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeployPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_job_runs(
-        self,
-    ) -> Callable[[cloud_deploy.ListJobRunsRequest], cloud_deploy.ListJobRunsResponse]:
+    def list_job_runs(self) -> Callable[[cloud_deploy.ListJobRunsRequest], cloud_deploy.ListJobRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_releases(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListReleasesRequest], cloud_deploy.ListReleasesResponse
-    ]:
+    def list_releases(self) -> Callable[[cloud_deploy.ListReleasesRequest], cloud_deploy.ListReleasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReleases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_rollouts(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListRolloutsRequest], cloud_deploy.ListRolloutsResponse
-    ]:
+    def list_rollouts(self) -> Callable[[cloud_deploy.ListRolloutsRequest], cloud_deploy.ListRolloutsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRollouts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_targets(
-        self,
-    ) -> Callable[[cloud_deploy.ListTargetsRequest], cloud_deploy.ListTargetsResponse]:
+    def list_targets(self) -> Callable[[cloud_deploy.ListTargetsRequest], cloud_deploy.ListTargetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTargets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retry_job(
-        self,
-    ) -> Callable[[cloud_deploy.RetryJobRequest], cloud_deploy.RetryJobResponse]:
+    def retry_job(self) -> Callable[[cloud_deploy.RetryJobRequest], cloud_deploy.RetryJobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetryJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rollback_target(
-        self,
-    ) -> Callable[
-        [cloud_deploy.RollbackTargetRequest], cloud_deploy.RollbackTargetResponse
-    ]:
+    def rollback_target(self) -> Callable[[cloud_deploy.RollbackTargetRequest], cloud_deploy.RollbackTargetResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RollbackTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def terminate_job_run(
-        self,
-    ) -> Callable[
-        [cloud_deploy.TerminateJobRunRequest], cloud_deploy.TerminateJobRunResponse
-    ]:
+    def terminate_job_run(self) -> Callable[[cloud_deploy.TerminateJobRunRequest], cloud_deploy.TerminateJobRunResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TerminateJobRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_automation(
-        self,
-    ) -> Callable[[cloud_deploy.UpdateAutomationRequest], operations_pb2.Operation]:
+    def update_automation(self) -> Callable[[cloud_deploy.UpdateAutomationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.UpdateCustomTargetTypeRequest], operations_pb2.Operation
-    ]:
+    def update_custom_target_type(self) -> Callable[[cloud_deploy.UpdateCustomTargetTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.UpdateDeliveryPipelineRequest], operations_pb2.Operation
-    ]:
+    def update_delivery_pipeline(self) -> Callable[[cloud_deploy.UpdateDeliveryPipelineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.UpdateDeployPolicyRequest], operations_pb2.Operation]:
+    def update_deploy_policy(self) -> Callable[[cloud_deploy.UpdateDeployPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_target(
-        self,
-    ) -> Callable[[cloud_deploy.UpdateTargetRequest], operations_pb2.Operation]:
+    def update_target(self) -> Callable[[cloud_deploy.UpdateTargetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTarget(self._session, self._host, self._interceptor)  # type: ignore
@@ -10213,22 +8134,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCloudDeployRestTransport._BaseGetLocation, CloudDeployRestStub
-    ):
+    class _GetLocation(_BaseCloudDeployRestTransport._BaseGetLocation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10266,30 +8177,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10313,12 +8210,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10330,9 +8222,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10357,22 +8247,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCloudDeployRestTransport._BaseListLocations, CloudDeployRestStub
-    ):
+    class _ListLocations(_BaseCloudDeployRestTransport._BaseListLocations, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10410,28 +8290,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10455,12 +8323,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10472,9 +8335,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10499,22 +8360,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseCloudDeployRestTransport._BaseGetIamPolicy, CloudDeployRestStub
-    ):
+    class _GetIamPolicy(_BaseCloudDeployRestTransport._BaseGetIamPolicy, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10552,30 +8403,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10599,12 +8436,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10616,9 +8448,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10643,22 +8473,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseCloudDeployRestTransport._BaseSetIamPolicy, CloudDeployRestStub
-    ):
+    class _SetIamPolicy(_BaseCloudDeployRestTransport._BaseSetIamPolicy, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10697,36 +8517,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10750,13 +8552,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10768,9 +8564,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10795,22 +8589,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseCloudDeployRestTransport._BaseTestIamPermissions, CloudDeployRestStub
-    ):
+    class _TestIamPermissions(_BaseCloudDeployRestTransport._BaseTestIamPermissions, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10849,32 +8633,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10898,13 +8668,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10916,9 +8680,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10943,22 +8705,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseCloudDeployRestTransport._BaseCancelOperation, CloudDeployRestStub
-    ):
+    class _CancelOperation(_BaseCloudDeployRestTransport._BaseCancelOperation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10994,32 +8746,18 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudDeployRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudDeployRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11043,13 +8781,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11063,22 +8795,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseCloudDeployRestTransport._BaseDeleteOperation, CloudDeployRestStub
-    ):
+    class _DeleteOperation(_BaseCloudDeployRestTransport._BaseDeleteOperation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11113,28 +8835,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseCloudDeployRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11158,12 +8868,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11177,22 +8882,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCloudDeployRestTransport._BaseGetOperation, CloudDeployRestStub
-    ):
+    class _GetOperation(_BaseCloudDeployRestTransport._BaseGetOperation, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11230,30 +8925,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseCloudDeployRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudDeployRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11277,12 +8958,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11294,9 +8970,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11321,22 +8995,12 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCloudDeployRestTransport._BaseListOperations, CloudDeployRestStub
-    ):
+    class _ListOperations(_BaseCloudDeployRestTransport._BaseListOperations, CloudDeployRestStub):
         def __hash__(self):
             return hash("CloudDeployRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11374,26 +9038,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCloudDeployRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudDeployRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudDeployRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudDeployRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11417,12 +9071,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             # Send the request
             response = CloudDeployRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11434,9 +9083,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

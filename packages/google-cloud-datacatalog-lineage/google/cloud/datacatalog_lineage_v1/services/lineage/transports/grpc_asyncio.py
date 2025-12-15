@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -273,18 +262,14 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +305,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -345,9 +328,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -355,10 +336,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
     @property
     def process_open_lineage_run_event(
         self,
-    ) -> Callable[
-        [lineage.ProcessOpenLineageRunEventRequest],
-        Awaitable[lineage.ProcessOpenLineageRunEventResponse],
-    ]:
+    ) -> Callable[[lineage.ProcessOpenLineageRunEventRequest], Awaitable[lineage.ProcessOpenLineageRunEventResponse]]:
         r"""Return a callable for the process open lineage run event method over gRPC.
 
         Creates new lineage events together with their
@@ -379,9 +357,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "process_open_lineage_run_event" not in self._stubs:
-            self._stubs[
-                "process_open_lineage_run_event"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["process_open_lineage_run_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ProcessOpenLineageRunEvent",
                 request_serializer=lineage.ProcessOpenLineageRunEventRequest.serialize,
                 response_deserializer=lineage.ProcessOpenLineageRunEventResponse.deserialize,
@@ -389,9 +365,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["process_open_lineage_run_event"]
 
     @property
-    def create_process(
-        self,
-    ) -> Callable[[lineage.CreateProcessRequest], Awaitable[lineage.Process]]:
+    def create_process(self) -> Callable[[lineage.CreateProcessRequest], Awaitable[lineage.Process]]:
         r"""Return a callable for the create process method over gRPC.
 
         Creates a new process.
@@ -415,9 +389,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["create_process"]
 
     @property
-    def update_process(
-        self,
-    ) -> Callable[[lineage.UpdateProcessRequest], Awaitable[lineage.Process]]:
+    def update_process(self) -> Callable[[lineage.UpdateProcessRequest], Awaitable[lineage.Process]]:
         r"""Return a callable for the update process method over gRPC.
 
         Updates a process.
@@ -441,9 +413,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["update_process"]
 
     @property
-    def get_process(
-        self,
-    ) -> Callable[[lineage.GetProcessRequest], Awaitable[lineage.Process]]:
+    def get_process(self) -> Callable[[lineage.GetProcessRequest], Awaitable[lineage.Process]]:
         r"""Return a callable for the get process method over gRPC.
 
         Gets the details of the specified process.
@@ -467,11 +437,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["get_process"]
 
     @property
-    def list_processes(
-        self,
-    ) -> Callable[
-        [lineage.ListProcessesRequest], Awaitable[lineage.ListProcessesResponse]
-    ]:
+    def list_processes(self) -> Callable[[lineage.ListProcessesRequest], Awaitable[lineage.ListProcessesResponse]]:
         r"""Return a callable for the list processes method over gRPC.
 
         List processes in the given project and location.
@@ -496,9 +462,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["list_processes"]
 
     @property
-    def delete_process(
-        self,
-    ) -> Callable[[lineage.DeleteProcessRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_process(self) -> Callable[[lineage.DeleteProcessRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete process method over gRPC.
 
         Deletes the process with the specified name.
@@ -522,9 +486,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["delete_process"]
 
     @property
-    def create_run(
-        self,
-    ) -> Callable[[lineage.CreateRunRequest], Awaitable[lineage.Run]]:
+    def create_run(self) -> Callable[[lineage.CreateRunRequest], Awaitable[lineage.Run]]:
         r"""Return a callable for the create run method over gRPC.
 
         Creates a new run.
@@ -548,9 +510,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["create_run"]
 
     @property
-    def update_run(
-        self,
-    ) -> Callable[[lineage.UpdateRunRequest], Awaitable[lineage.Run]]:
+    def update_run(self) -> Callable[[lineage.UpdateRunRequest], Awaitable[lineage.Run]]:
         r"""Return a callable for the update run method over gRPC.
 
         Updates a run.
@@ -598,9 +558,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["get_run"]
 
     @property
-    def list_runs(
-        self,
-    ) -> Callable[[lineage.ListRunsRequest], Awaitable[lineage.ListRunsResponse]]:
+    def list_runs(self) -> Callable[[lineage.ListRunsRequest], Awaitable[lineage.ListRunsResponse]]:
         r"""Return a callable for the list runs method over gRPC.
 
         Lists runs in the given project and location. List order is
@@ -625,9 +583,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["list_runs"]
 
     @property
-    def delete_run(
-        self,
-    ) -> Callable[[lineage.DeleteRunRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_run(self) -> Callable[[lineage.DeleteRunRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete run method over gRPC.
 
         Deletes the run with the specified name.
@@ -651,9 +607,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["delete_run"]
 
     @property
-    def create_lineage_event(
-        self,
-    ) -> Callable[[lineage.CreateLineageEventRequest], Awaitable[lineage.LineageEvent]]:
+    def create_lineage_event(self) -> Callable[[lineage.CreateLineageEventRequest], Awaitable[lineage.LineageEvent]]:
         r"""Return a callable for the create lineage event method over gRPC.
 
         Creates a new lineage event.
@@ -677,9 +631,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["create_lineage_event"]
 
     @property
-    def get_lineage_event(
-        self,
-    ) -> Callable[[lineage.GetLineageEventRequest], Awaitable[lineage.LineageEvent]]:
+    def get_lineage_event(self) -> Callable[[lineage.GetLineageEventRequest], Awaitable[lineage.LineageEvent]]:
         r"""Return a callable for the get lineage event method over gRPC.
 
         Gets details of a specified lineage event.
@@ -703,11 +655,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["get_lineage_event"]
 
     @property
-    def list_lineage_events(
-        self,
-    ) -> Callable[
-        [lineage.ListLineageEventsRequest], Awaitable[lineage.ListLineageEventsResponse]
-    ]:
+    def list_lineage_events(self) -> Callable[[lineage.ListLineageEventsRequest], Awaitable[lineage.ListLineageEventsResponse]]:
         r"""Return a callable for the list lineage events method over gRPC.
 
         Lists lineage events in the given project and
@@ -732,9 +680,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["list_lineage_events"]
 
     @property
-    def delete_lineage_event(
-        self,
-    ) -> Callable[[lineage.DeleteLineageEventRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_lineage_event(self) -> Callable[[lineage.DeleteLineageEventRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete lineage event method over gRPC.
 
         Deletes the lineage event with the specified name.
@@ -758,9 +704,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["delete_lineage_event"]
 
     @property
-    def search_links(
-        self,
-    ) -> Callable[[lineage.SearchLinksRequest], Awaitable[lineage.SearchLinksResponse]]:
+    def search_links(self) -> Callable[[lineage.SearchLinksRequest], Awaitable[lineage.SearchLinksResponse]]:
         r"""Return a callable for the search links method over gRPC.
 
         Retrieve a list of links connected to a specific asset. Links
@@ -792,12 +736,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._stubs["search_links"]
 
     @property
-    def batch_search_link_processes(
-        self,
-    ) -> Callable[
-        [lineage.BatchSearchLinkProcessesRequest],
-        Awaitable[lineage.BatchSearchLinkProcessesResponse],
-    ]:
+    def batch_search_link_processes(self) -> Callable[[lineage.BatchSearchLinkProcessesRequest], Awaitable[lineage.BatchSearchLinkProcessesResponse]]:
         r"""Return a callable for the batch search link processes method over gRPC.
 
         Retrieve information about LineageProcesses associated with
@@ -826,9 +765,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_search_link_processes" not in self._stubs:
-            self._stubs[
-                "batch_search_link_processes"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_search_link_processes"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/BatchSearchLinkProcesses",
                 request_serializer=lineage.BatchSearchLinkProcessesRequest.serialize,
                 response_deserializer=lineage.BatchSearchLinkProcessesResponse.deserialize,
@@ -1011,9 +948,7 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

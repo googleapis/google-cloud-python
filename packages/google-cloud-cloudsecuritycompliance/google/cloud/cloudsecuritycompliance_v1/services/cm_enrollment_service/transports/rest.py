@@ -97,13 +97,8 @@ class CmEnrollmentServiceRestInterceptor:
     """
 
     def pre_calculate_effective_cm_enrollment(
-        self,
-        request: cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for calculate_effective_cm_enrollment
 
         Override in a subclass to manipulate the request or metadata
@@ -127,13 +122,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def post_calculate_effective_cm_enrollment_with_metadata(
-        self,
-        response: cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for calculate_effective_cm_enrollment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -149,13 +139,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response, metadata
 
     def pre_update_cm_enrollment(
-        self,
-        request: cm_enrollment_service.UpdateCmEnrollmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cm_enrollment_service.UpdateCmEnrollmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cm_enrollment_service.UpdateCmEnrollmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cm_enrollment_service.UpdateCmEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cm_enrollment
 
         Override in a subclass to manipulate the request or metadata
@@ -163,9 +148,7 @@ class CmEnrollmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cm_enrollment(
-        self, response: cm_enrollment_service.CmEnrollment
-    ) -> cm_enrollment_service.CmEnrollment:
+    def post_update_cm_enrollment(self, response: cm_enrollment_service.CmEnrollment) -> cm_enrollment_service.CmEnrollment:
         """Post-rpc interceptor for update_cm_enrollment
 
         DEPRECATED. Please use the `post_update_cm_enrollment_with_metadata`
@@ -179,12 +162,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def post_update_cm_enrollment_with_metadata(
-        self,
-        response: cm_enrollment_service.CmEnrollment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cm_enrollment_service.CmEnrollment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cm_enrollment_service.CmEnrollment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cm_enrollment_service.CmEnrollment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cm_enrollment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -200,12 +179,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -213,9 +188,7 @@ class CmEnrollmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -225,12 +198,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -238,9 +207,7 @@ class CmEnrollmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -250,12 +217,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -273,12 +236,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -296,12 +255,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +264,7 @@ class CmEnrollmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -321,12 +274,8 @@ class CmEnrollmentServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -334,9 +283,7 @@ class CmEnrollmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -426,33 +373,18 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CmEnrollmentServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CalculateEffectiveCmEnrollment(
-        _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _CalculateEffectiveCmEnrollment(_BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment, CmEnrollmentServiceRestStub):
         def __hash__(self):
-            return hash(
-                "CmEnrollmentServiceRestTransport.CalculateEffectiveCmEnrollment"
-            )
+            return hash("CmEnrollmentServiceRestTransport.CalculateEffectiveCmEnrollment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -495,28 +427,18 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_http_options()
 
-            request, metadata = self._interceptor.pre_calculate_effective_cm_enrollment(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_calculate_effective_cm_enrollment(request, metadata)
             transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -540,12 +462,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._CalculateEffectiveCmEnrollment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -555,27 +472,16 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Return the response
             resp = cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse()
-            pb_resp = cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse.pb(
-                resp
-            )
+            pb_resp = cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_calculate_effective_cm_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_calculate_effective_cm_enrollment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_calculate_effective_cm_enrollment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse.to_json(
-                        response
-                    )
+                    response_payload = cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -594,23 +500,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCmEnrollment(
-        _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _UpdateCmEnrollment(_BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.UpdateCmEnrollment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -652,32 +547,18 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_cm_enrollment(
-                request, metadata
-            )
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_cm_enrollment(request, metadata)
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_transcoded_request(http_options, request)
 
-            body = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -700,16 +581,8 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                CmEnrollmentServiceRestTransport._UpdateCmEnrollment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CmEnrollmentServiceRestTransport._UpdateCmEnrollment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -725,16 +598,10 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             resp = self._interceptor.post_update_cm_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cm_enrollment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cm_enrollment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cm_enrollment_service.CmEnrollment.to_json(
-                        response
-                    )
+                    response_payload = cm_enrollment_service.CmEnrollment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -756,21 +623,13 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     @property
     def calculate_effective_cm_enrollment(
         self,
-    ) -> Callable[
-        [cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest],
-        cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse,
-    ]:
+    ) -> Callable[[cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest], cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CalculateEffectiveCmEnrollment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cm_enrollment(
-        self,
-    ) -> Callable[
-        [cm_enrollment_service.UpdateCmEnrollmentRequest],
-        cm_enrollment_service.CmEnrollment,
-    ]:
+    def update_cm_enrollment(self) -> Callable[[cm_enrollment_service.UpdateCmEnrollmentRequest], cm_enrollment_service.CmEnrollment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCmEnrollment(self._session, self._host, self._interceptor)  # type: ignore
@@ -779,23 +638,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCmEnrollmentServiceRestTransport._BaseGetLocation,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _GetLocation(_BaseCmEnrollmentServiceRestTransport._BaseGetLocation, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -833,26 +681,16 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -876,12 +714,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -893,9 +726,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -920,23 +751,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCmEnrollmentServiceRestTransport._BaseListLocations,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _ListLocations(_BaseCmEnrollmentServiceRestTransport._BaseListLocations, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -974,26 +794,16 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1017,12 +827,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1034,9 +839,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1061,23 +864,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _CancelOperation(_BaseCmEnrollmentServiceRestTransport._BaseCancelOperation, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1113,32 +905,18 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1162,13 +940,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1182,23 +954,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1233,28 +994,16 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1278,12 +1027,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1297,23 +1041,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCmEnrollmentServiceRestTransport._BaseGetOperation,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _GetOperation(_BaseCmEnrollmentServiceRestTransport._BaseGetOperation, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1351,26 +1084,16 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1394,12 +1117,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1411,9 +1129,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1438,23 +1154,12 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCmEnrollmentServiceRestTransport._BaseListOperations,
-        CmEnrollmentServiceRestStub,
-    ):
+    class _ListOperations(_BaseCmEnrollmentServiceRestTransport._BaseListOperations, CmEnrollmentServiceRestStub):
         def __hash__(self):
             return hash("CmEnrollmentServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1492,26 +1197,16 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1535,12 +1230,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             # Send the request
             response = CmEnrollmentServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1552,9 +1242,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

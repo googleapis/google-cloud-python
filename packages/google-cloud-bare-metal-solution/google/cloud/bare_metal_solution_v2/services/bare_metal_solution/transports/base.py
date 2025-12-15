@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.bare_metal_solution_v2 import gapic_version as package_version
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
-from google.cloud.bare_metal_solution_v2.types import (
-    volume_snapshot as gcb_volume_snapshot,
-)
+from google.cloud.bare_metal_solution_v2.types import volume_snapshot as gcb_volume_snapshot
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
@@ -48,9 +46,7 @@ from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -112,23 +108,15 @@ class BareMetalSolutionTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -402,251 +390,125 @@ class BareMetalSolutionTransport(abc.ABC):
     @property
     def list_instances(
         self,
-    ) -> Callable[
-        [instance.ListInstancesRequest],
-        Union[
-            instance.ListInstancesResponse, Awaitable[instance.ListInstancesResponse]
-        ],
-    ]:
+    ) -> Callable[[instance.ListInstancesRequest], Union[instance.ListInstancesResponse, Awaitable[instance.ListInstancesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [instance.GetInstanceRequest],
-        Union[instance.Instance, Awaitable[instance.Instance]],
-    ]:
+    def get_instance(self) -> Callable[[instance.GetInstanceRequest], Union[instance.Instance, Awaitable[instance.Instance]]]:
         raise NotImplementedError()
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [gcb_instance.UpdateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_instance(self) -> Callable[[gcb_instance.UpdateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def rename_instance(
-        self,
-    ) -> Callable[
-        [instance.RenameInstanceRequest],
-        Union[instance.Instance, Awaitable[instance.Instance]],
-    ]:
+    def rename_instance(self) -> Callable[[instance.RenameInstanceRequest], Union[instance.Instance, Awaitable[instance.Instance]]]:
         raise NotImplementedError()
 
     @property
-    def reset_instance(
-        self,
-    ) -> Callable[
-        [instance.ResetInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def reset_instance(self) -> Callable[[instance.ResetInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def start_instance(
-        self,
-    ) -> Callable[
-        [instance.StartInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def start_instance(self) -> Callable[[instance.StartInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop_instance(
-        self,
-    ) -> Callable[
-        [instance.StopInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def stop_instance(self) -> Callable[[instance.StopInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def enable_interactive_serial_console(
         self,
-    ) -> Callable[
-        [instance.EnableInteractiveSerialConsoleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[instance.EnableInteractiveSerialConsoleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def disable_interactive_serial_console(
         self,
-    ) -> Callable[
-        [instance.DisableInteractiveSerialConsoleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[instance.DisableInteractiveSerialConsoleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def detach_lun(
-        self,
-    ) -> Callable[
-        [gcb_instance.DetachLunRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def detach_lun(self) -> Callable[[gcb_instance.DetachLunRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_ssh_keys(
-        self,
-    ) -> Callable[
-        [ssh_key.ListSSHKeysRequest],
-        Union[ssh_key.ListSSHKeysResponse, Awaitable[ssh_key.ListSSHKeysResponse]],
-    ]:
+    def list_ssh_keys(self) -> Callable[[ssh_key.ListSSHKeysRequest], Union[ssh_key.ListSSHKeysResponse, Awaitable[ssh_key.ListSSHKeysResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_ssh_key(
-        self,
-    ) -> Callable[
-        [gcb_ssh_key.CreateSSHKeyRequest],
-        Union[gcb_ssh_key.SSHKey, Awaitable[gcb_ssh_key.SSHKey]],
-    ]:
+    def create_ssh_key(self) -> Callable[[gcb_ssh_key.CreateSSHKeyRequest], Union[gcb_ssh_key.SSHKey, Awaitable[gcb_ssh_key.SSHKey]]]:
         raise NotImplementedError()
 
     @property
-    def delete_ssh_key(
-        self,
-    ) -> Callable[
-        [ssh_key.DeleteSSHKeyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_ssh_key(self) -> Callable[[ssh_key.DeleteSSHKeyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def list_volumes(
-        self,
-    ) -> Callable[
-        [volume.ListVolumesRequest],
-        Union[volume.ListVolumesResponse, Awaitable[volume.ListVolumesResponse]],
-    ]:
+    def list_volumes(self) -> Callable[[volume.ListVolumesRequest], Union[volume.ListVolumesResponse, Awaitable[volume.ListVolumesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_volume(
-        self,
-    ) -> Callable[
-        [volume.GetVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]
-    ]:
+    def get_volume(self) -> Callable[[volume.GetVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]]:
         raise NotImplementedError()
 
     @property
-    def update_volume(
-        self,
-    ) -> Callable[
-        [gcb_volume.UpdateVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_volume(self) -> Callable[[gcb_volume.UpdateVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def rename_volume(
-        self,
-    ) -> Callable[
-        [volume.RenameVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]
-    ]:
+    def rename_volume(self) -> Callable[[volume.RenameVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]]:
         raise NotImplementedError()
 
     @property
-    def evict_volume(
-        self,
-    ) -> Callable[
-        [volume.EvictVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def evict_volume(self) -> Callable[[volume.EvictVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def resize_volume(
-        self,
-    ) -> Callable[
-        [gcb_volume.ResizeVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def resize_volume(self) -> Callable[[gcb_volume.ResizeVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_networks(
-        self,
-    ) -> Callable[
-        [network.ListNetworksRequest],
-        Union[network.ListNetworksResponse, Awaitable[network.ListNetworksResponse]],
-    ]:
+    def list_networks(self) -> Callable[[network.ListNetworksRequest], Union[network.ListNetworksResponse, Awaitable[network.ListNetworksResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_network_usage(
         self,
-    ) -> Callable[
-        [network.ListNetworkUsageRequest],
-        Union[
-            network.ListNetworkUsageResponse,
-            Awaitable[network.ListNetworkUsageResponse],
-        ],
-    ]:
+    ) -> Callable[[network.ListNetworkUsageRequest], Union[network.ListNetworkUsageResponse, Awaitable[network.ListNetworkUsageResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_network(
-        self,
-    ) -> Callable[
-        [network.GetNetworkRequest], Union[network.Network, Awaitable[network.Network]]
-    ]:
+    def get_network(self) -> Callable[[network.GetNetworkRequest], Union[network.Network, Awaitable[network.Network]]]:
         raise NotImplementedError()
 
     @property
-    def update_network(
-        self,
-    ) -> Callable[
-        [gcb_network.UpdateNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_network(self) -> Callable[[gcb_network.UpdateNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_volume_snapshot(
         self,
     ) -> Callable[
-        [gcb_volume_snapshot.CreateVolumeSnapshotRequest],
-        Union[
-            gcb_volume_snapshot.VolumeSnapshot,
-            Awaitable[gcb_volume_snapshot.VolumeSnapshot],
-        ],
+        [gcb_volume_snapshot.CreateVolumeSnapshotRequest], Union[gcb_volume_snapshot.VolumeSnapshot, Awaitable[gcb_volume_snapshot.VolumeSnapshot]]
     ]:
         raise NotImplementedError()
 
     @property
     def restore_volume_snapshot(
         self,
-    ) -> Callable[
-        [gcb_volume_snapshot.RestoreVolumeSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcb_volume_snapshot.RestoreVolumeSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_volume_snapshot(
-        self,
-    ) -> Callable[
-        [volume_snapshot.DeleteVolumeSnapshotRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_volume_snapshot(self) -> Callable[[volume_snapshot.DeleteVolumeSnapshotRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_volume_snapshot(
         self,
-    ) -> Callable[
-        [volume_snapshot.GetVolumeSnapshotRequest],
-        Union[
-            volume_snapshot.VolumeSnapshot, Awaitable[volume_snapshot.VolumeSnapshot]
-        ],
-    ]:
+    ) -> Callable[[volume_snapshot.GetVolumeSnapshotRequest], Union[volume_snapshot.VolumeSnapshot, Awaitable[volume_snapshot.VolumeSnapshot]]]:
         raise NotImplementedError()
 
     @property
@@ -654,91 +516,50 @@ class BareMetalSolutionTransport(abc.ABC):
         self,
     ) -> Callable[
         [volume_snapshot.ListVolumeSnapshotsRequest],
-        Union[
-            volume_snapshot.ListVolumeSnapshotsResponse,
-            Awaitable[volume_snapshot.ListVolumeSnapshotsResponse],
-        ],
+        Union[volume_snapshot.ListVolumeSnapshotsResponse, Awaitable[volume_snapshot.ListVolumeSnapshotsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_lun(
-        self,
-    ) -> Callable[[lun.GetLunRequest], Union[lun.Lun, Awaitable[lun.Lun]]]:
+    def get_lun(self) -> Callable[[lun.GetLunRequest], Union[lun.Lun, Awaitable[lun.Lun]]]:
         raise NotImplementedError()
 
     @property
-    def list_luns(
-        self,
-    ) -> Callable[
-        [lun.ListLunsRequest],
-        Union[lun.ListLunsResponse, Awaitable[lun.ListLunsResponse]],
-    ]:
+    def list_luns(self) -> Callable[[lun.ListLunsRequest], Union[lun.ListLunsResponse, Awaitable[lun.ListLunsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def evict_lun(
-        self,
-    ) -> Callable[
-        [lun.EvictLunRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def evict_lun(self) -> Callable[[lun.EvictLunRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_nfs_share(
-        self,
-    ) -> Callable[
-        [nfs_share.GetNfsShareRequest],
-        Union[nfs_share.NfsShare, Awaitable[nfs_share.NfsShare]],
-    ]:
+    def get_nfs_share(self) -> Callable[[nfs_share.GetNfsShareRequest], Union[nfs_share.NfsShare, Awaitable[nfs_share.NfsShare]]]:
         raise NotImplementedError()
 
     @property
     def list_nfs_shares(
         self,
-    ) -> Callable[
-        [nfs_share.ListNfsSharesRequest],
-        Union[
-            nfs_share.ListNfsSharesResponse, Awaitable[nfs_share.ListNfsSharesResponse]
-        ],
-    ]:
+    ) -> Callable[[nfs_share.ListNfsSharesRequest], Union[nfs_share.ListNfsSharesResponse, Awaitable[nfs_share.ListNfsSharesResponse]]]:
         raise NotImplementedError()
 
     @property
     def update_nfs_share(
         self,
-    ) -> Callable[
-        [gcb_nfs_share.UpdateNfsShareRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcb_nfs_share.UpdateNfsShareRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_nfs_share(
         self,
-    ) -> Callable[
-        [gcb_nfs_share.CreateNfsShareRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcb_nfs_share.CreateNfsShareRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def rename_nfs_share(
-        self,
-    ) -> Callable[
-        [nfs_share.RenameNfsShareRequest],
-        Union[nfs_share.NfsShare, Awaitable[nfs_share.NfsShare]],
-    ]:
+    def rename_nfs_share(self) -> Callable[[nfs_share.RenameNfsShareRequest], Union[nfs_share.NfsShare, Awaitable[nfs_share.NfsShare]]]:
         raise NotImplementedError()
 
     @property
-    def delete_nfs_share(
-        self,
-    ) -> Callable[
-        [nfs_share.DeleteNfsShareRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_nfs_share(self) -> Callable[[nfs_share.DeleteNfsShareRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -746,10 +567,7 @@ class BareMetalSolutionTransport(abc.ABC):
         self,
     ) -> Callable[
         [provisioning.ListProvisioningQuotasRequest],
-        Union[
-            provisioning.ListProvisioningQuotasResponse,
-            Awaitable[provisioning.ListProvisioningQuotasResponse],
-        ],
+        Union[provisioning.ListProvisioningQuotasResponse, Awaitable[provisioning.ListProvisioningQuotasResponse]],
     ]:
         raise NotImplementedError()
 
@@ -758,83 +576,46 @@ class BareMetalSolutionTransport(abc.ABC):
         self,
     ) -> Callable[
         [provisioning.SubmitProvisioningConfigRequest],
-        Union[
-            provisioning.SubmitProvisioningConfigResponse,
-            Awaitable[provisioning.SubmitProvisioningConfigResponse],
-        ],
+        Union[provisioning.SubmitProvisioningConfigResponse, Awaitable[provisioning.SubmitProvisioningConfigResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_provisioning_config(
         self,
-    ) -> Callable[
-        [provisioning.GetProvisioningConfigRequest],
-        Union[
-            provisioning.ProvisioningConfig, Awaitable[provisioning.ProvisioningConfig]
-        ],
-    ]:
+    ) -> Callable[[provisioning.GetProvisioningConfigRequest], Union[provisioning.ProvisioningConfig, Awaitable[provisioning.ProvisioningConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_provisioning_config(
         self,
-    ) -> Callable[
-        [provisioning.CreateProvisioningConfigRequest],
-        Union[
-            provisioning.ProvisioningConfig, Awaitable[provisioning.ProvisioningConfig]
-        ],
-    ]:
+    ) -> Callable[[provisioning.CreateProvisioningConfigRequest], Union[provisioning.ProvisioningConfig, Awaitable[provisioning.ProvisioningConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_provisioning_config(
         self,
-    ) -> Callable[
-        [provisioning.UpdateProvisioningConfigRequest],
-        Union[
-            provisioning.ProvisioningConfig, Awaitable[provisioning.ProvisioningConfig]
-        ],
-    ]:
+    ) -> Callable[[provisioning.UpdateProvisioningConfigRequest], Union[provisioning.ProvisioningConfig, Awaitable[provisioning.ProvisioningConfig]]]:
         raise NotImplementedError()
 
     @property
-    def rename_network(
-        self,
-    ) -> Callable[
-        [network.RenameNetworkRequest],
-        Union[network.Network, Awaitable[network.Network]],
-    ]:
+    def rename_network(self) -> Callable[[network.RenameNetworkRequest], Union[network.Network, Awaitable[network.Network]]]:
         raise NotImplementedError()
 
     @property
-    def list_os_images(
-        self,
-    ) -> Callable[
-        [osimage.ListOSImagesRequest],
-        Union[osimage.ListOSImagesResponse, Awaitable[osimage.ListOSImagesResponse]],
-    ]:
+    def list_os_images(self) -> Callable[[osimage.ListOSImagesRequest], Union[osimage.ListOSImagesResponse, Awaitable[osimage.ListOSImagesResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -221,18 +212,14 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -266,9 +253,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -335,19 +320,13 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_private_clouds(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListPrivateCloudsRequest], vmwareengine.ListPrivateCloudsResponse
-    ]:
+    def list_private_clouds(self) -> Callable[[vmwareengine.ListPrivateCloudsRequest], vmwareengine.ListPrivateCloudsResponse]:
         r"""Return a callable for the list private clouds method over gRPC.
 
         Lists ``PrivateCloud`` resources in a given project and
@@ -372,11 +351,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_private_clouds"]
 
     @property
-    def get_private_cloud(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetPrivateCloudRequest], vmwareengine_resources.PrivateCloud
-    ]:
+    def get_private_cloud(self) -> Callable[[vmwareengine.GetPrivateCloudRequest], vmwareengine_resources.PrivateCloud]:
         r"""Return a callable for the get private cloud method over gRPC.
 
         Retrieves a ``PrivateCloud`` resource by its resource name.
@@ -400,9 +375,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_private_cloud"]
 
     @property
-    def create_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.CreatePrivateCloudRequest], operations_pb2.Operation]:
+    def create_private_cloud(self) -> Callable[[vmwareengine.CreatePrivateCloudRequest], operations_pb2.Operation]:
         r"""Return a callable for the create private cloud method over gRPC.
 
         Creates a new ``PrivateCloud`` resource in a given project and
@@ -432,9 +405,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_private_cloud"]
 
     @property
-    def update_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.UpdatePrivateCloudRequest], operations_pb2.Operation]:
+    def update_private_cloud(self) -> Callable[[vmwareengine.UpdatePrivateCloudRequest], operations_pb2.Operation]:
         r"""Return a callable for the update private cloud method over gRPC.
 
         Modifies a ``PrivateCloud`` resource. Only the following fields
@@ -465,9 +436,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_private_cloud"]
 
     @property
-    def delete_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.DeletePrivateCloudRequest], operations_pb2.Operation]:
+    def delete_private_cloud(self) -> Callable[[vmwareengine.DeletePrivateCloudRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete private cloud method over gRPC.
 
         Schedules a ``PrivateCloud`` resource for deletion.
@@ -508,9 +477,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_private_cloud"]
 
     @property
-    def undelete_private_cloud(
-        self,
-    ) -> Callable[[vmwareengine.UndeletePrivateCloudRequest], operations_pb2.Operation]:
+    def undelete_private_cloud(self) -> Callable[[vmwareengine.UndeletePrivateCloudRequest], operations_pb2.Operation]:
         r"""Return a callable for the undelete private cloud method over gRPC.
 
         Restores a private cloud that was previously scheduled for
@@ -538,11 +505,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["undelete_private_cloud"]
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListClustersRequest], vmwareengine.ListClustersResponse
-    ]:
+    def list_clusters(self) -> Callable[[vmwareengine.ListClustersRequest], vmwareengine.ListClustersResponse]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists ``Cluster`` resources in a given private cloud.
@@ -566,9 +529,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_clusters"]
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine_resources.Cluster]:
+    def get_cluster(self) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine_resources.Cluster]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Retrieves a ``Cluster`` resource by its resource name.
@@ -592,9 +553,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[vmwareengine.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[vmwareengine.CreateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a new cluster in a given private cloud. Creating a new
@@ -621,9 +580,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[vmwareengine.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[vmwareengine.UpdateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Modifies a ``Cluster`` resource. Only fields specified in
@@ -653,9 +610,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[vmwareengine.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[vmwareengine.DeleteClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes a ``Cluster`` resource. To avoid unintended data loss,
@@ -682,9 +637,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def list_nodes(
-        self,
-    ) -> Callable[[vmwareengine.ListNodesRequest], vmwareengine.ListNodesResponse]:
+    def list_nodes(self) -> Callable[[vmwareengine.ListNodesRequest], vmwareengine.ListNodesResponse]:
         r"""Return a callable for the list nodes method over gRPC.
 
         Lists nodes in a given cluster.
@@ -708,9 +661,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_nodes"]
 
     @property
-    def get_node(
-        self,
-    ) -> Callable[[vmwareengine.GetNodeRequest], vmwareengine_resources.Node]:
+    def get_node(self) -> Callable[[vmwareengine.GetNodeRequest], vmwareengine_resources.Node]:
         r"""Return a callable for the get node method over gRPC.
 
         Gets details of a single node.
@@ -734,12 +685,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_node"]
 
     @property
-    def list_external_addresses(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListExternalAddressesRequest],
-        vmwareengine.ListExternalAddressesResponse,
-    ]:
+    def list_external_addresses(self) -> Callable[[vmwareengine.ListExternalAddressesRequest], vmwareengine.ListExternalAddressesResponse]:
         r"""Return a callable for the list external addresses method over gRPC.
 
         Lists external IP addresses assigned to VMware
@@ -766,10 +712,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def fetch_network_policy_external_addresses(
         self,
-    ) -> Callable[
-        [vmwareengine.FetchNetworkPolicyExternalAddressesRequest],
-        vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
-    ]:
+    ) -> Callable[[vmwareengine.FetchNetworkPolicyExternalAddressesRequest], vmwareengine.FetchNetworkPolicyExternalAddressesResponse]:
         r"""Return a callable for the fetch network policy external
         addresses method over gRPC.
 
@@ -788,9 +731,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_network_policy_external_addresses" not in self._stubs:
-            self._stubs[
-                "fetch_network_policy_external_addresses"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_network_policy_external_addresses"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/FetchNetworkPolicyExternalAddresses",
                 request_serializer=vmwareengine.FetchNetworkPolicyExternalAddressesRequest.serialize,
                 response_deserializer=vmwareengine.FetchNetworkPolicyExternalAddressesResponse.deserialize,
@@ -798,11 +739,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["fetch_network_policy_external_addresses"]
 
     @property
-    def get_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetExternalAddressRequest], vmwareengine_resources.ExternalAddress
-    ]:
+    def get_external_address(self) -> Callable[[vmwareengine.GetExternalAddressRequest], vmwareengine_resources.ExternalAddress]:
         r"""Return a callable for the get external address method over gRPC.
 
         Gets details of a single external IP address.
@@ -826,11 +763,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_external_address"]
 
     @property
-    def create_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateExternalAddressRequest], operations_pb2.Operation
-    ]:
+    def create_external_address(self) -> Callable[[vmwareengine.CreateExternalAddressRequest], operations_pb2.Operation]:
         r"""Return a callable for the create external address method over gRPC.
 
         Creates a new ``ExternalAddress`` resource in a given private
@@ -857,11 +790,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_external_address"]
 
     @property
-    def update_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateExternalAddressRequest], operations_pb2.Operation
-    ]:
+    def update_external_address(self) -> Callable[[vmwareengine.UpdateExternalAddressRequest], operations_pb2.Operation]:
         r"""Return a callable for the update external address method over gRPC.
 
         Updates the parameters of a single external IP address. Only
@@ -891,11 +820,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_external_address"]
 
     @property
-    def delete_external_address(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteExternalAddressRequest], operations_pb2.Operation
-    ]:
+    def delete_external_address(self) -> Callable[[vmwareengine.DeleteExternalAddressRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete external address method over gRPC.
 
         Deletes a single external IP address. When you delete
@@ -922,9 +847,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_external_address"]
 
     @property
-    def list_subnets(
-        self,
-    ) -> Callable[[vmwareengine.ListSubnetsRequest], vmwareengine.ListSubnetsResponse]:
+    def list_subnets(self) -> Callable[[vmwareengine.ListSubnetsRequest], vmwareengine.ListSubnetsResponse]:
         r"""Return a callable for the list subnets method over gRPC.
 
         Lists subnets in a given private cloud.
@@ -948,9 +871,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_subnets"]
 
     @property
-    def get_subnet(
-        self,
-    ) -> Callable[[vmwareengine.GetSubnetRequest], vmwareengine_resources.Subnet]:
+    def get_subnet(self) -> Callable[[vmwareengine.GetSubnetRequest], vmwareengine_resources.Subnet]:
         r"""Return a callable for the get subnet method over gRPC.
 
         Gets details of a single subnet.
@@ -974,9 +895,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_subnet"]
 
     @property
-    def update_subnet(
-        self,
-    ) -> Callable[[vmwareengine.UpdateSubnetRequest], operations_pb2.Operation]:
+    def update_subnet(self) -> Callable[[vmwareengine.UpdateSubnetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update subnet method over gRPC.
 
         Updates the parameters of a single subnet. Only fields specified
@@ -1005,12 +924,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_subnet"]
 
     @property
-    def list_external_access_rules(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListExternalAccessRulesRequest],
-        vmwareengine.ListExternalAccessRulesResponse,
-    ]:
+    def list_external_access_rules(self) -> Callable[[vmwareengine.ListExternalAccessRulesRequest], vmwareengine.ListExternalAccessRulesResponse]:
         r"""Return a callable for the list external access rules method over gRPC.
 
         Lists ``ExternalAccessRule`` resources in the specified network
@@ -1027,9 +941,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_external_access_rules" not in self._stubs:
-            self._stubs[
-                "list_external_access_rules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_external_access_rules"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListExternalAccessRules",
                 request_serializer=vmwareengine.ListExternalAccessRulesRequest.serialize,
                 response_deserializer=vmwareengine.ListExternalAccessRulesResponse.deserialize,
@@ -1037,12 +949,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_external_access_rules"]
 
     @property
-    def get_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetExternalAccessRuleRequest],
-        vmwareengine_resources.ExternalAccessRule,
-    ]:
+    def get_external_access_rule(self) -> Callable[[vmwareengine.GetExternalAccessRuleRequest], vmwareengine_resources.ExternalAccessRule]:
         r"""Return a callable for the get external access rule method over gRPC.
 
         Gets details of a single external access rule.
@@ -1066,11 +973,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_external_access_rule"]
 
     @property
-    def create_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateExternalAccessRuleRequest], operations_pb2.Operation
-    ]:
+    def create_external_access_rule(self) -> Callable[[vmwareengine.CreateExternalAccessRuleRequest], operations_pb2.Operation]:
         r"""Return a callable for the create external access rule method over gRPC.
 
         Creates a new external access rule in a given network
@@ -1087,9 +990,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_external_access_rule" not in self._stubs:
-            self._stubs[
-                "create_external_access_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_external_access_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateExternalAccessRule",
                 request_serializer=vmwareengine.CreateExternalAccessRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1097,11 +998,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_external_access_rule"]
 
     @property
-    def update_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateExternalAccessRuleRequest], operations_pb2.Operation
-    ]:
+    def update_external_access_rule(self) -> Callable[[vmwareengine.UpdateExternalAccessRuleRequest], operations_pb2.Operation]:
         r"""Return a callable for the update external access rule method over gRPC.
 
         Updates the parameters of a single external access rule. Only
@@ -1118,9 +1015,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_external_access_rule" not in self._stubs:
-            self._stubs[
-                "update_external_access_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_external_access_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateExternalAccessRule",
                 request_serializer=vmwareengine.UpdateExternalAccessRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1128,11 +1023,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_external_access_rule"]
 
     @property
-    def delete_external_access_rule(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteExternalAccessRuleRequest], operations_pb2.Operation
-    ]:
+    def delete_external_access_rule(self) -> Callable[[vmwareengine.DeleteExternalAccessRuleRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete external access rule method over gRPC.
 
         Deletes a single external access rule.
@@ -1148,9 +1039,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_external_access_rule" not in self._stubs:
-            self._stubs[
-                "delete_external_access_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_external_access_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteExternalAccessRule",
                 request_serializer=vmwareengine.DeleteExternalAccessRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1158,12 +1047,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_external_access_rule"]
 
     @property
-    def list_logging_servers(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListLoggingServersRequest],
-        vmwareengine.ListLoggingServersResponse,
-    ]:
+    def list_logging_servers(self) -> Callable[[vmwareengine.ListLoggingServersRequest], vmwareengine.ListLoggingServersResponse]:
         r"""Return a callable for the list logging servers method over gRPC.
 
         Lists logging servers configured for a given private
@@ -1188,11 +1072,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_logging_servers"]
 
     @property
-    def get_logging_server(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetLoggingServerRequest], vmwareengine_resources.LoggingServer
-    ]:
+    def get_logging_server(self) -> Callable[[vmwareengine.GetLoggingServerRequest], vmwareengine_resources.LoggingServer]:
         r"""Return a callable for the get logging server method over gRPC.
 
         Gets details of a logging server.
@@ -1216,9 +1096,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_logging_server"]
 
     @property
-    def create_logging_server(
-        self,
-    ) -> Callable[[vmwareengine.CreateLoggingServerRequest], operations_pb2.Operation]:
+    def create_logging_server(self) -> Callable[[vmwareengine.CreateLoggingServerRequest], operations_pb2.Operation]:
         r"""Return a callable for the create logging server method over gRPC.
 
         Create a new logging server for a given private
@@ -1243,9 +1121,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_logging_server"]
 
     @property
-    def update_logging_server(
-        self,
-    ) -> Callable[[vmwareengine.UpdateLoggingServerRequest], operations_pb2.Operation]:
+    def update_logging_server(self) -> Callable[[vmwareengine.UpdateLoggingServerRequest], operations_pb2.Operation]:
         r"""Return a callable for the update logging server method over gRPC.
 
         Updates the parameters of a single logging server. Only fields
@@ -1270,9 +1146,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_logging_server"]
 
     @property
-    def delete_logging_server(
-        self,
-    ) -> Callable[[vmwareengine.DeleteLoggingServerRequest], operations_pb2.Operation]:
+    def delete_logging_server(self) -> Callable[[vmwareengine.DeleteLoggingServerRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete logging server method over gRPC.
 
         Deletes a single logging server.
@@ -1296,11 +1170,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_logging_server"]
 
     @property
-    def list_node_types(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListNodeTypesRequest], vmwareengine.ListNodeTypesResponse
-    ]:
+    def list_node_types(self) -> Callable[[vmwareengine.ListNodeTypesRequest], vmwareengine.ListNodeTypesResponse]:
         r"""Return a callable for the list node types method over gRPC.
 
         Lists node types
@@ -1324,9 +1194,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_node_types"]
 
     @property
-    def get_node_type(
-        self,
-    ) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine_resources.NodeType]:
+    def get_node_type(self) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine_resources.NodeType]:
         r"""Return a callable for the get node type method over gRPC.
 
         Gets details of a single ``NodeType``.
@@ -1350,11 +1218,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_node_type"]
 
     @property
-    def show_nsx_credentials(
-        self,
-    ) -> Callable[
-        [vmwareengine.ShowNsxCredentialsRequest], vmwareengine_resources.Credentials
-    ]:
+    def show_nsx_credentials(self) -> Callable[[vmwareengine.ShowNsxCredentialsRequest], vmwareengine_resources.Credentials]:
         r"""Return a callable for the show nsx credentials method over gRPC.
 
         Gets details of credentials for NSX appliance.
@@ -1378,11 +1242,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["show_nsx_credentials"]
 
     @property
-    def show_vcenter_credentials(
-        self,
-    ) -> Callable[
-        [vmwareengine.ShowVcenterCredentialsRequest], vmwareengine_resources.Credentials
-    ]:
+    def show_vcenter_credentials(self) -> Callable[[vmwareengine.ShowVcenterCredentialsRequest], vmwareengine_resources.Credentials]:
         r"""Return a callable for the show vcenter credentials method over gRPC.
 
         Gets details of credentials for Vcenter appliance.
@@ -1406,9 +1266,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["show_vcenter_credentials"]
 
     @property
-    def reset_nsx_credentials(
-        self,
-    ) -> Callable[[vmwareengine.ResetNsxCredentialsRequest], operations_pb2.Operation]:
+    def reset_nsx_credentials(self) -> Callable[[vmwareengine.ResetNsxCredentialsRequest], operations_pb2.Operation]:
         r"""Return a callable for the reset nsx credentials method over gRPC.
 
         Resets credentials of the NSX appliance.
@@ -1432,11 +1290,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["reset_nsx_credentials"]
 
     @property
-    def reset_vcenter_credentials(
-        self,
-    ) -> Callable[
-        [vmwareengine.ResetVcenterCredentialsRequest], operations_pb2.Operation
-    ]:
+    def reset_vcenter_credentials(self) -> Callable[[vmwareengine.ResetVcenterCredentialsRequest], operations_pb2.Operation]:
         r"""Return a callable for the reset vcenter credentials method over gRPC.
 
         Resets credentials of the Vcenter appliance.
@@ -1460,11 +1314,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["reset_vcenter_credentials"]
 
     @property
-    def get_dns_forwarding(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetDnsForwardingRequest], vmwareengine_resources.DnsForwarding
-    ]:
+    def get_dns_forwarding(self) -> Callable[[vmwareengine.GetDnsForwardingRequest], vmwareengine_resources.DnsForwarding]:
         r"""Return a callable for the get dns forwarding method over gRPC.
 
         Gets details of the ``DnsForwarding`` config.
@@ -1488,9 +1338,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_dns_forwarding"]
 
     @property
-    def update_dns_forwarding(
-        self,
-    ) -> Callable[[vmwareengine.UpdateDnsForwardingRequest], operations_pb2.Operation]:
+    def update_dns_forwarding(self) -> Callable[[vmwareengine.UpdateDnsForwardingRequest], operations_pb2.Operation]:
         r"""Return a callable for the update dns forwarding method over gRPC.
 
         Updates the parameters of the ``DnsForwarding`` config, like
@@ -1516,11 +1364,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_dns_forwarding"]
 
     @property
-    def get_network_peering(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetNetworkPeeringRequest], vmwareengine_resources.NetworkPeering
-    ]:
+    def get_network_peering(self) -> Callable[[vmwareengine.GetNetworkPeeringRequest], vmwareengine_resources.NetworkPeering]:
         r"""Return a callable for the get network peering method over gRPC.
 
         Retrieves a ``NetworkPeering`` resource by its resource name.
@@ -1548,12 +1392,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_network_peering"]
 
     @property
-    def list_network_peerings(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListNetworkPeeringsRequest],
-        vmwareengine.ListNetworkPeeringsResponse,
-    ]:
+    def list_network_peerings(self) -> Callable[[vmwareengine.ListNetworkPeeringsRequest], vmwareengine.ListNetworkPeeringsResponse]:
         r"""Return a callable for the list network peerings method over gRPC.
 
         Lists ``NetworkPeering`` resources in a given project.
@@ -1579,9 +1418,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_network_peerings"]
 
     @property
-    def create_network_peering(
-        self,
-    ) -> Callable[[vmwareengine.CreateNetworkPeeringRequest], operations_pb2.Operation]:
+    def create_network_peering(self) -> Callable[[vmwareengine.CreateNetworkPeeringRequest], operations_pb2.Operation]:
         r"""Return a callable for the create network peering method over gRPC.
 
         Creates a new network peering between the peer network and
@@ -1608,9 +1445,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_network_peering"]
 
     @property
-    def delete_network_peering(
-        self,
-    ) -> Callable[[vmwareengine.DeleteNetworkPeeringRequest], operations_pb2.Operation]:
+    def delete_network_peering(self) -> Callable[[vmwareengine.DeleteNetworkPeeringRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete network peering method over gRPC.
 
         Deletes a ``NetworkPeering`` resource. When a network peering is
@@ -1637,9 +1472,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_network_peering"]
 
     @property
-    def update_network_peering(
-        self,
-    ) -> Callable[[vmwareengine.UpdateNetworkPeeringRequest], operations_pb2.Operation]:
+    def update_network_peering(self) -> Callable[[vmwareengine.UpdateNetworkPeeringRequest], operations_pb2.Operation]:
         r"""Return a callable for the update network peering method over gRPC.
 
         Modifies a ``NetworkPeering`` resource. Only the ``description``
@@ -1666,11 +1499,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_network_peering"]
 
     @property
-    def list_peering_routes(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListPeeringRoutesRequest], vmwareengine.ListPeeringRoutesResponse
-    ]:
+    def list_peering_routes(self) -> Callable[[vmwareengine.ListPeeringRoutesRequest], vmwareengine.ListPeeringRoutesResponse]:
         r"""Return a callable for the list peering routes method over gRPC.
 
         Lists the network peering routes exchanged over a
@@ -1696,11 +1525,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_peering_routes"]
 
     @property
-    def create_hcx_activation_key(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateHcxActivationKeyRequest], operations_pb2.Operation
-    ]:
+    def create_hcx_activation_key(self) -> Callable[[vmwareengine.CreateHcxActivationKeyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create hcx activation key method over gRPC.
 
         Creates a new HCX activation key in a given private
@@ -1725,12 +1550,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_hcx_activation_key"]
 
     @property
-    def list_hcx_activation_keys(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListHcxActivationKeysRequest],
-        vmwareengine.ListHcxActivationKeysResponse,
-    ]:
+    def list_hcx_activation_keys(self) -> Callable[[vmwareengine.ListHcxActivationKeysRequest], vmwareengine.ListHcxActivationKeysResponse]:
         r"""Return a callable for the list hcx activation keys method over gRPC.
 
         Lists ``HcxActivationKey`` resources in a given private cloud.
@@ -1754,12 +1574,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_hcx_activation_keys"]
 
     @property
-    def get_hcx_activation_key(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetHcxActivationKeyRequest],
-        vmwareengine_resources.HcxActivationKey,
-    ]:
+    def get_hcx_activation_key(self) -> Callable[[vmwareengine.GetHcxActivationKeyRequest], vmwareengine_resources.HcxActivationKey]:
         r"""Return a callable for the get hcx activation key method over gRPC.
 
         Retrieves a ``HcxActivationKey`` resource by its resource name.
@@ -1783,11 +1598,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_hcx_activation_key"]
 
     @property
-    def get_network_policy(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetNetworkPolicyRequest], vmwareengine_resources.NetworkPolicy
-    ]:
+    def get_network_policy(self) -> Callable[[vmwareengine.GetNetworkPolicyRequest], vmwareengine_resources.NetworkPolicy]:
         r"""Return a callable for the get network policy method over gRPC.
 
         Retrieves a ``NetworkPolicy`` resource by its resource name.
@@ -1811,12 +1622,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_network_policy"]
 
     @property
-    def list_network_policies(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListNetworkPoliciesRequest],
-        vmwareengine.ListNetworkPoliciesResponse,
-    ]:
+    def list_network_policies(self) -> Callable[[vmwareengine.ListNetworkPoliciesRequest], vmwareengine.ListNetworkPoliciesResponse]:
         r"""Return a callable for the list network policies method over gRPC.
 
         Lists ``NetworkPolicy`` resources in a specified project and
@@ -1841,9 +1647,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_network_policies"]
 
     @property
-    def create_network_policy(
-        self,
-    ) -> Callable[[vmwareengine.CreateNetworkPolicyRequest], operations_pb2.Operation]:
+    def create_network_policy(self) -> Callable[[vmwareengine.CreateNetworkPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create network policy method over gRPC.
 
         Creates a new network policy in a given VMware Engine
@@ -1870,9 +1674,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_network_policy"]
 
     @property
-    def update_network_policy(
-        self,
-    ) -> Callable[[vmwareengine.UpdateNetworkPolicyRequest], operations_pb2.Operation]:
+    def update_network_policy(self) -> Callable[[vmwareengine.UpdateNetworkPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update network policy method over gRPC.
 
         Modifies a ``NetworkPolicy`` resource. Only the following fields
@@ -1908,9 +1710,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_network_policy"]
 
     @property
-    def delete_network_policy(
-        self,
-    ) -> Callable[[vmwareengine.DeleteNetworkPolicyRequest], operations_pb2.Operation]:
+    def delete_network_policy(self) -> Callable[[vmwareengine.DeleteNetworkPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete network policy method over gRPC.
 
         Deletes a ``NetworkPolicy`` resource. A network policy cannot be
@@ -1938,10 +1738,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def list_management_dns_zone_bindings(
         self,
-    ) -> Callable[
-        [vmwareengine.ListManagementDnsZoneBindingsRequest],
-        vmwareengine.ListManagementDnsZoneBindingsResponse,
-    ]:
+    ) -> Callable[[vmwareengine.ListManagementDnsZoneBindingsRequest], vmwareengine.ListManagementDnsZoneBindingsResponse]:
         r"""Return a callable for the list management dns zone
         bindings method over gRPC.
 
@@ -1959,9 +1756,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_management_dns_zone_bindings" not in self._stubs:
-            self._stubs[
-                "list_management_dns_zone_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_management_dns_zone_bindings"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListManagementDnsZoneBindings",
                 request_serializer=vmwareengine.ListManagementDnsZoneBindingsRequest.serialize,
                 response_deserializer=vmwareengine.ListManagementDnsZoneBindingsResponse.deserialize,
@@ -1971,10 +1766,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def get_management_dns_zone_binding(
         self,
-    ) -> Callable[
-        [vmwareengine.GetManagementDnsZoneBindingRequest],
-        vmwareengine_resources.ManagementDnsZoneBinding,
-    ]:
+    ) -> Callable[[vmwareengine.GetManagementDnsZoneBindingRequest], vmwareengine_resources.ManagementDnsZoneBinding]:
         r"""Return a callable for the get management dns zone
         binding method over gRPC.
 
@@ -1992,9 +1784,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_management_dns_zone_binding" not in self._stubs:
-            self._stubs[
-                "get_management_dns_zone_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_management_dns_zone_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetManagementDnsZoneBinding",
                 request_serializer=vmwareengine.GetManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=vmwareengine_resources.ManagementDnsZoneBinding.deserialize,
@@ -2002,11 +1792,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_management_dns_zone_binding"]
 
     @property
-    def create_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def create_management_dns_zone_binding(self) -> Callable[[vmwareengine.CreateManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the create management dns zone
         binding method over gRPC.
 
@@ -2030,9 +1816,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_management_dns_zone_binding" not in self._stubs:
-            self._stubs[
-                "create_management_dns_zone_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_management_dns_zone_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateManagementDnsZoneBinding",
                 request_serializer=vmwareengine.CreateManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2040,11 +1824,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_management_dns_zone_binding"]
 
     @property
-    def update_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def update_management_dns_zone_binding(self) -> Callable[[vmwareengine.UpdateManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the update management dns zone
         binding method over gRPC.
 
@@ -2062,9 +1842,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_management_dns_zone_binding" not in self._stubs:
-            self._stubs[
-                "update_management_dns_zone_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_management_dns_zone_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateManagementDnsZoneBinding",
                 request_serializer=vmwareengine.UpdateManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2072,11 +1850,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_management_dns_zone_binding"]
 
     @property
-    def delete_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_management_dns_zone_binding(self) -> Callable[[vmwareengine.DeleteManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete management dns zone
         binding method over gRPC.
 
@@ -2096,9 +1870,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_management_dns_zone_binding" not in self._stubs:
-            self._stubs[
-                "delete_management_dns_zone_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_management_dns_zone_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteManagementDnsZoneBinding",
                 request_serializer=vmwareengine.DeleteManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2106,11 +1878,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_management_dns_zone_binding"]
 
     @property
-    def repair_management_dns_zone_binding(
-        self,
-    ) -> Callable[
-        [vmwareengine.RepairManagementDnsZoneBindingRequest], operations_pb2.Operation
-    ]:
+    def repair_management_dns_zone_binding(self) -> Callable[[vmwareengine.RepairManagementDnsZoneBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the repair management dns zone
         binding method over gRPC.
 
@@ -2128,9 +1896,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "repair_management_dns_zone_binding" not in self._stubs:
-            self._stubs[
-                "repair_management_dns_zone_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["repair_management_dns_zone_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/RepairManagementDnsZoneBinding",
                 request_serializer=vmwareengine.RepairManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2138,11 +1904,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["repair_management_dns_zone_binding"]
 
     @property
-    def create_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateVmwareEngineNetworkRequest], operations_pb2.Operation
-    ]:
+    def create_vmware_engine_network(self) -> Callable[[vmwareengine.CreateVmwareEngineNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the create vmware engine network method over gRPC.
 
         Creates a new VMware Engine network that can be used
@@ -2159,9 +1921,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_vmware_engine_network" not in self._stubs:
-            self._stubs[
-                "create_vmware_engine_network"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_vmware_engine_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateVmwareEngineNetwork",
                 request_serializer=vmwareengine.CreateVmwareEngineNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2169,11 +1929,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_vmware_engine_network"]
 
     @property
-    def update_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateVmwareEngineNetworkRequest], operations_pb2.Operation
-    ]:
+    def update_vmware_engine_network(self) -> Callable[[vmwareengine.UpdateVmwareEngineNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the update vmware engine network method over gRPC.
 
         Modifies a VMware Engine network resource. Only the following
@@ -2191,9 +1947,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_vmware_engine_network" not in self._stubs:
-            self._stubs[
-                "update_vmware_engine_network"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_vmware_engine_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateVmwareEngineNetwork",
                 request_serializer=vmwareengine.UpdateVmwareEngineNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2201,11 +1955,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_vmware_engine_network"]
 
     @property
-    def delete_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteVmwareEngineNetworkRequest], operations_pb2.Operation
-    ]:
+    def delete_vmware_engine_network(self) -> Callable[[vmwareengine.DeleteVmwareEngineNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete vmware engine network method over gRPC.
 
         Deletes a ``VmwareEngineNetwork`` resource. You can only delete
@@ -2224,9 +1974,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_vmware_engine_network" not in self._stubs:
-            self._stubs[
-                "delete_vmware_engine_network"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_vmware_engine_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteVmwareEngineNetwork",
                 request_serializer=vmwareengine.DeleteVmwareEngineNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2234,12 +1982,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["delete_vmware_engine_network"]
 
     @property
-    def get_vmware_engine_network(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetVmwareEngineNetworkRequest],
-        vmwareengine_resources.VmwareEngineNetwork,
-    ]:
+    def get_vmware_engine_network(self) -> Callable[[vmwareengine.GetVmwareEngineNetworkRequest], vmwareengine_resources.VmwareEngineNetwork]:
         r"""Return a callable for the get vmware engine network method over gRPC.
 
         Retrieves a ``VmwareEngineNetwork`` resource by its resource
@@ -2267,12 +2010,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_vmware_engine_network"]
 
     @property
-    def list_vmware_engine_networks(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListVmwareEngineNetworksRequest],
-        vmwareengine.ListVmwareEngineNetworksResponse,
-    ]:
+    def list_vmware_engine_networks(self) -> Callable[[vmwareengine.ListVmwareEngineNetworksRequest], vmwareengine.ListVmwareEngineNetworksResponse]:
         r"""Return a callable for the list vmware engine networks method over gRPC.
 
         Lists ``VmwareEngineNetwork`` resources in a given project and
@@ -2289,9 +2027,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vmware_engine_networks" not in self._stubs:
-            self._stubs[
-                "list_vmware_engine_networks"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_vmware_engine_networks"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListVmwareEngineNetworks",
                 request_serializer=vmwareengine.ListVmwareEngineNetworksRequest.serialize,
                 response_deserializer=vmwareengine.ListVmwareEngineNetworksResponse.deserialize,
@@ -2299,11 +2035,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_vmware_engine_networks"]
 
     @property
-    def create_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreatePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def create_private_connection(self) -> Callable[[vmwareengine.CreatePrivateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create private connection method over gRPC.
 
         Creates a new private connection that can be used for
@@ -2328,12 +2060,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["create_private_connection"]
 
     @property
-    def get_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetPrivateConnectionRequest],
-        vmwareengine_resources.PrivateConnection,
-    ]:
+    def get_private_connection(self) -> Callable[[vmwareengine.GetPrivateConnectionRequest], vmwareengine_resources.PrivateConnection]:
         r"""Return a callable for the get private connection method over gRPC.
 
         Retrieves a ``PrivateConnection`` resource by its resource name.
@@ -2359,12 +2086,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_private_connection"]
 
     @property
-    def list_private_connections(
-        self,
-    ) -> Callable[
-        [vmwareengine.ListPrivateConnectionsRequest],
-        vmwareengine.ListPrivateConnectionsResponse,
-    ]:
+    def list_private_connections(self) -> Callable[[vmwareengine.ListPrivateConnectionsRequest], vmwareengine.ListPrivateConnectionsResponse]:
         r"""Return a callable for the list private connections method over gRPC.
 
         Lists ``PrivateConnection`` resources in a given project and
@@ -2389,11 +2111,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_private_connections"]
 
     @property
-    def update_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdatePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def update_private_connection(self) -> Callable[[vmwareengine.UpdatePrivateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the update private connection method over gRPC.
 
         Modifies a ``PrivateConnection`` resource. Only ``description``
@@ -2419,11 +2137,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["update_private_connection"]
 
     @property
-    def delete_private_connection(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeletePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def delete_private_connection(self) -> Callable[[vmwareengine.DeletePrivateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete private connection method over gRPC.
 
         Deletes a ``PrivateConnection`` resource. When a private
@@ -2451,10 +2165,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def list_private_connection_peering_routes(
         self,
-    ) -> Callable[
-        [vmwareengine.ListPrivateConnectionPeeringRoutesRequest],
-        vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
-    ]:
+    ) -> Callable[[vmwareengine.ListPrivateConnectionPeeringRoutesRequest], vmwareengine.ListPrivateConnectionPeeringRoutesResponse]:
         r"""Return a callable for the list private connection
         peering routes method over gRPC.
 
@@ -2472,9 +2183,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_private_connection_peering_routes" not in self._stubs:
-            self._stubs[
-                "list_private_connection_peering_routes"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_private_connection_peering_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnectionPeeringRoutes",
                 request_serializer=vmwareengine.ListPrivateConnectionPeeringRoutesRequest.serialize,
                 response_deserializer=vmwareengine.ListPrivateConnectionPeeringRoutesResponse.deserialize,
@@ -2482,11 +2191,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_private_connection_peering_routes"]
 
     @property
-    def grant_dns_bind_permission(
-        self,
-    ) -> Callable[
-        [vmwareengine.GrantDnsBindPermissionRequest], operations_pb2.Operation
-    ]:
+    def grant_dns_bind_permission(self) -> Callable[[vmwareengine.GrantDnsBindPermissionRequest], operations_pb2.Operation]:
         r"""Return a callable for the grant dns bind permission method over gRPC.
 
         Grants the bind permission to the customer provided
@@ -2514,12 +2219,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["grant_dns_bind_permission"]
 
     @property
-    def get_dns_bind_permission(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetDnsBindPermissionRequest],
-        vmwareengine_resources.DnsBindPermission,
-    ]:
+    def get_dns_bind_permission(self) -> Callable[[vmwareengine.GetDnsBindPermissionRequest], vmwareengine_resources.DnsBindPermission]:
         r"""Return a callable for the get dns bind permission method over gRPC.
 
         Gets all the principals having bind permission on the
@@ -2546,11 +2246,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["get_dns_bind_permission"]
 
     @property
-    def revoke_dns_bind_permission(
-        self,
-    ) -> Callable[
-        [vmwareengine.RevokeDnsBindPermissionRequest], operations_pb2.Operation
-    ]:
+    def revoke_dns_bind_permission(self) -> Callable[[vmwareengine.RevokeDnsBindPermissionRequest], operations_pb2.Operation]:
         r"""Return a callable for the revoke dns bind permission method over gRPC.
 
         Revokes the bind permission from the customer
@@ -2570,9 +2266,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "revoke_dns_bind_permission" not in self._stubs:
-            self._stubs[
-                "revoke_dns_bind_permission"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["revoke_dns_bind_permission"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/RevokeDnsBindPermission",
                 request_serializer=vmwareengine.RevokeDnsBindPermissionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2619,9 +2313,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2638,9 +2330,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2725,10 +2415,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

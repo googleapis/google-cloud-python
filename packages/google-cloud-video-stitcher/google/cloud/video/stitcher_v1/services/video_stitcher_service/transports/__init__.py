@@ -22,9 +22,7 @@ from .grpc_asyncio import VideoStitcherServiceGrpcAsyncIOTransport
 from .rest import VideoStitcherServiceRestInterceptor, VideoStitcherServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[VideoStitcherServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[VideoStitcherServiceTransport]]
 _transport_registry["grpc"] = VideoStitcherServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = VideoStitcherServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = VideoStitcherServiceRestTransport

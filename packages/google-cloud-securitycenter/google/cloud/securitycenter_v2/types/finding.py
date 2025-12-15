@@ -30,35 +30,18 @@ from google.cloud.securitycenter_v2.types import (
     data_flow_event,
     data_retention_deletion_event,
 )
-from google.cloud.securitycenter_v2.types import (
-    external_system,
-    file,
-    group_membership,
-    iam_binding,
-)
-from google.cloud.securitycenter_v2.types import (
-    affected_resources as gcs_affected_resources,
-)
+from google.cloud.securitycenter_v2.types import external_system, file, group_membership, iam_binding
+from google.cloud.securitycenter_v2.types import affected_resources as gcs_affected_resources
 from google.cloud.securitycenter_v2.types import attack_exposure as gcs_attack_exposure
-from google.cloud.securitycenter_v2.types import (
-    backup_disaster_recovery as gcs_backup_disaster_recovery,
-)
-from google.cloud.securitycenter_v2.types import (
-    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
-)
-from google.cloud.securitycenter_v2.types import (
-    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
-)
+from google.cloud.securitycenter_v2.types import backup_disaster_recovery as gcs_backup_disaster_recovery
+from google.cloud.securitycenter_v2.types import cloud_dlp_data_profile as gcs_cloud_dlp_data_profile
+from google.cloud.securitycenter_v2.types import cloud_dlp_inspection as gcs_cloud_dlp_inspection
 from google.cloud.securitycenter_v2.types import exfiltration as gcs_exfiltration
 from google.cloud.securitycenter_v2.types import kernel_rootkit as gcs_kernel_rootkit
 from google.cloud.securitycenter_v2.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import (
-    security_posture as gcs_security_posture,
-)
-from google.cloud.securitycenter_v2.types import (
-    toxic_combination as gcs_toxic_combination,
-)
+from google.cloud.securitycenter_v2.types import security_posture as gcs_security_posture
+from google.cloud.securitycenter_v2.types import toxic_combination as gcs_toxic_combination
 from google.cloud.securitycenter_v2.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v2.types import access as gcs_access
 from google.cloud.securitycenter_v2.types import ai_model as gcs_ai_model
@@ -620,9 +603,7 @@ class Finding(proto.Message):
             number=1,
             message="Finding.MuteInfo.StaticMute",
         )
-        dynamic_mute_records: MutableSequence[
-            "Finding.MuteInfo.DynamicMuteRecord"
-        ] = proto.RepeatedField(
+        dynamic_mute_records: MutableSequence["Finding.MuteInfo.DynamicMuteRecord"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Finding.MuteInfo.DynamicMuteRecord",
@@ -713,9 +694,7 @@ class Finding(proto.Message):
         number=19,
         message=timestamp_pb2.Timestamp,
     )
-    external_systems: MutableMapping[
-        str, external_system.ExternalSystem
-    ] = proto.MapField(
+    external_systems: MutableMapping[str, external_system.ExternalSystem] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=20,
@@ -812,12 +791,10 @@ class Finding(proto.Message):
         number=40,
         message=gcs_cloud_dlp_inspection.CloudDlpInspection,
     )
-    cloud_dlp_data_profile: gcs_cloud_dlp_data_profile.CloudDlpDataProfile = (
-        proto.Field(
-            proto.MESSAGE,
-            number=41,
-            message=gcs_cloud_dlp_data_profile.CloudDlpDataProfile,
-        )
+    cloud_dlp_data_profile: gcs_cloud_dlp_data_profile.CloudDlpDataProfile = proto.Field(
+        proto.MESSAGE,
+        number=41,
+        message=gcs_cloud_dlp_data_profile.CloudDlpDataProfile,
     )
     kernel_rootkit: gcs_kernel_rootkit.KernelRootkit = proto.Field(
         proto.MESSAGE,
@@ -844,12 +821,10 @@ class Finding(proto.Message):
         number=46,
         message=gcs_ip_rules.IpRules,
     )
-    backup_disaster_recovery: gcs_backup_disaster_recovery.BackupDisasterRecovery = (
-        proto.Field(
-            proto.MESSAGE,
-            number=47,
-            message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
-        )
+    backup_disaster_recovery: gcs_backup_disaster_recovery.BackupDisasterRecovery = proto.Field(
+        proto.MESSAGE,
+        number=47,
+        message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
     )
     security_posture: gcs_security_posture.SecurityPosture = proto.Field(
         proto.MESSAGE,
@@ -881,9 +856,7 @@ class Finding(proto.Message):
         number=56,
         message=gcs_toxic_combination.ToxicCombination,
     )
-    group_memberships: MutableSequence[
-        group_membership.GroupMembership
-    ] = proto.RepeatedField(
+    group_memberships: MutableSequence[group_membership.GroupMembership] = proto.RepeatedField(
         proto.MESSAGE,
         number=57,
         message=group_membership.GroupMembership,
@@ -893,16 +866,12 @@ class Finding(proto.Message):
         number=58,
         message=gcs_disk.Disk,
     )
-    data_access_events: MutableSequence[
-        data_access_event.DataAccessEvent
-    ] = proto.RepeatedField(
+    data_access_events: MutableSequence[data_access_event.DataAccessEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=61,
         message=data_access_event.DataAccessEvent,
     )
-    data_flow_events: MutableSequence[
-        data_flow_event.DataFlowEvent
-    ] = proto.RepeatedField(
+    data_flow_events: MutableSequence[data_flow_event.DataFlowEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=62,
         message=data_flow_event.DataFlowEvent,
@@ -912,9 +881,7 @@ class Finding(proto.Message):
         number=63,
         message=network.Network,
     )
-    data_retention_deletion_events: MutableSequence[
-        data_retention_deletion_event.DataRetentionDeletionEvent
-    ] = proto.RepeatedField(
+    data_retention_deletion_events: MutableSequence[data_retention_deletion_event.DataRetentionDeletionEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=64,
         message=data_retention_deletion_event.DataRetentionDeletionEvent,

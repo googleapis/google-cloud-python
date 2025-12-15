@@ -28,13 +28,7 @@ from .marketingplatform_admin import (
     SetPropertyServiceLevelRequest,
     SetPropertyServiceLevelResponse,
 )
-from .resources import (
-    AnalyticsAccountLink,
-    AnalyticsPropertyType,
-    AnalyticsServiceLevel,
-    LinkVerificationState,
-    Organization,
-)
+from .resources import AnalyticsAccountLink, AnalyticsPropertyType, AnalyticsServiceLevel, LinkVerificationState, Organization
 
 __all__ = (
     "CreateAnalyticsAccountLinkRequest",

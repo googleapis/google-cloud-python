@@ -24,13 +24,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.backupdr_v1.types import (
-    backupdr,
-    backupplan,
-    backupplanassociation,
-    backupvault,
-    datasourcereference,
-)
+from google.cloud.backupdr_v1.types import backupdr, backupplan, backupplanassociation, backupvault, datasourcereference
 
 from .base import DEFAULT_CLIENT_INFO, BackupDRTransport
 
@@ -81,20 +75,14 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateBackupPlan:
@@ -107,11 +95,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -134,9 +118,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -147,11 +129,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseCreateBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -166,11 +144,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -185,9 +159,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = backupplanassociation.CreateBackupPlanAssociationRequest.pb(
-                request
-            )
+            pb_request = backupplanassociation.CreateBackupPlanAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -195,9 +167,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -208,11 +178,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -227,11 +193,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -254,9 +216,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -267,11 +227,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseCreateBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseCreateBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -286,11 +242,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -313,9 +265,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -326,11 +276,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseCreateManagementServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseCreateManagementServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -343,11 +289,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -373,11 +315,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseDeleteBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseDeleteBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -390,11 +328,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -420,11 +354,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -437,11 +367,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -455,9 +381,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = backupplanassociation.DeleteBackupPlanAssociationRequest.pb(
-                request
-            )
+            pb_request = backupplanassociation.DeleteBackupPlanAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -469,11 +393,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -486,11 +406,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -516,11 +432,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseDeleteBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -533,11 +445,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -563,11 +471,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseDeleteManagementServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -582,11 +486,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -600,9 +500,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest.pb(
-                request
-            )
+            pb_request = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -614,11 +512,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -633,11 +527,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -663,11 +553,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -682,11 +568,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -700,11 +582,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                datasourcereference.FetchDataSourceReferencesForResourceTypeRequest.pb(
-                    request
-                )
-            )
+            pb_request = datasourcereference.FetchDataSourceReferencesForResourceTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -716,11 +594,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -733,11 +607,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -763,11 +633,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -780,11 +646,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -810,11 +672,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -827,11 +685,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -857,11 +711,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -874,11 +724,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -892,9 +738,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = backupplanassociation.GetBackupPlanAssociationRequest.pb(
-                request
-            )
+            pb_request = backupplanassociation.GetBackupPlanAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -906,11 +750,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -923,11 +763,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -953,11 +789,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -970,11 +802,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1000,11 +828,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1017,11 +841,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1047,11 +867,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetDataSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetDataSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1064,11 +880,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1094,11 +906,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetDataSourceReference._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1111,11 +919,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1141,11 +945,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseGetManagementServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseGetManagementServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1158,11 +958,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1185,9 +981,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1198,11 +992,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseInitializeService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseInitializeService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1215,11 +1005,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1233,9 +1019,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = backupplanassociation.ListBackupPlanAssociationsRequest.pb(
-                request
-            )
+            pb_request = backupplanassociation.ListBackupPlanAssociationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1247,11 +1031,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1264,11 +1044,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1294,11 +1070,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1311,11 +1083,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1341,11 +1109,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListBackupPlans._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListBackupPlans._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1358,11 +1122,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1388,11 +1148,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListBackups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListBackups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1405,11 +1161,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1435,11 +1187,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListBackupVaults._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListBackupVaults._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1452,11 +1200,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1482,11 +1226,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListDataSourceReferences._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1499,11 +1239,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1529,11 +1265,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListDataSources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListDataSources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1546,11 +1278,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1576,11 +1304,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseListManagementServers._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseListManagementServers._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1593,11 +1317,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1620,9 +1340,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1633,11 +1351,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseRestoreBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseRestoreBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1650,11 +1364,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1677,9 +1387,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1690,11 +1398,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseTriggerBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseTriggerBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1709,11 +1413,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1736,9 +1436,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1749,11 +1447,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseUpdateBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseUpdateBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1768,11 +1462,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1795,9 +1485,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1808,11 +1496,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1827,11 +1511,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1846,9 +1526,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = backupplanassociation.UpdateBackupPlanAssociationRequest.pb(
-                request
-            )
+            pb_request = backupplanassociation.UpdateBackupPlanAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1856,9 +1534,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1869,11 +1545,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1888,11 +1560,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1915,9 +1583,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1928,11 +1594,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseUpdateBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1947,11 +1609,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1974,9 +1632,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1987,11 +1643,7 @@ class _BaseBackupDRRestTransport(BackupDRTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseBackupDRRestTransport._BaseUpdateDataSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseBackupDRRestTransport._BaseUpdateDataSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

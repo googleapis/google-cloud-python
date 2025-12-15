@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    programmatic_buyer_messages,
-    programmatic_buyer_service,
-)
+from google.ads.admanager_v1.types import programmatic_buyer_messages, programmatic_buyer_service
 
 
 class ListProgrammaticBuyersPager:
@@ -64,9 +49,7 @@ class ListProgrammaticBuyersPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., programmatic_buyer_service.ListProgrammaticBuyersResponse
-        ],
+        method: Callable[..., programmatic_buyer_service.ListProgrammaticBuyersResponse],
         request: programmatic_buyer_service.ListProgrammaticBuyersRequest,
         response: programmatic_buyer_service.ListProgrammaticBuyersResponse,
         *,
@@ -92,9 +75,7 @@ class ListProgrammaticBuyersPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = programmatic_buyer_service.ListProgrammaticBuyersRequest(
-            request
-        )
+        self._request = programmatic_buyer_service.ListProgrammaticBuyersRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,18 +85,11 @@ class ListProgrammaticBuyersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[programmatic_buyer_service.ListProgrammaticBuyersResponse]:
+    def pages(self) -> Iterator[programmatic_buyer_service.ListProgrammaticBuyersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[programmatic_buyer_messages.ProgrammaticBuyer]:

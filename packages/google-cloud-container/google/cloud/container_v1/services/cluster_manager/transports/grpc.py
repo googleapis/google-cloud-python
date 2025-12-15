@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -217,18 +208,14 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -262,9 +249,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -323,11 +308,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._grpc_channel
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [cluster_service.ListClustersRequest], cluster_service.ListClustersResponse
-    ]:
+    def list_clusters(self) -> Callable[[cluster_service.ListClustersRequest], cluster_service.ListClustersResponse]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists all clusters owned by a project in either the
@@ -352,9 +333,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["list_clusters"]
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[cluster_service.GetClusterRequest], cluster_service.Cluster]:
+    def get_cluster(self) -> Callable[[cluster_service.GetClusterRequest], cluster_service.Cluster]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Gets the details of a specific cluster.
@@ -378,9 +357,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[cluster_service.CreateClusterRequest], cluster_service.Operation]:
+    def create_cluster(self) -> Callable[[cluster_service.CreateClusterRequest], cluster_service.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a cluster, consisting of the specified number and type
@@ -416,9 +393,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["create_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[cluster_service.UpdateClusterRequest], cluster_service.Operation]:
+    def update_cluster(self) -> Callable[[cluster_service.UpdateClusterRequest], cluster_service.Operation]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Updates the settings of a specific cluster.
@@ -442,9 +417,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def update_node_pool(
-        self,
-    ) -> Callable[[cluster_service.UpdateNodePoolRequest], cluster_service.Operation]:
+    def update_node_pool(self) -> Callable[[cluster_service.UpdateNodePoolRequest], cluster_service.Operation]:
         r"""Return a callable for the update node pool method over gRPC.
 
         Updates the version and/or image type for the
@@ -469,11 +442,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["update_node_pool"]
 
     @property
-    def set_node_pool_autoscaling(
-        self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolAutoscalingRequest], cluster_service.Operation
-    ]:
+    def set_node_pool_autoscaling(self) -> Callable[[cluster_service.SetNodePoolAutoscalingRequest], cluster_service.Operation]:
         r"""Return a callable for the set node pool autoscaling method over gRPC.
 
         Sets the autoscaling settings for the specified node
@@ -498,11 +467,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_node_pool_autoscaling"]
 
     @property
-    def set_logging_service(
-        self,
-    ) -> Callable[
-        [cluster_service.SetLoggingServiceRequest], cluster_service.Operation
-    ]:
+    def set_logging_service(self) -> Callable[[cluster_service.SetLoggingServiceRequest], cluster_service.Operation]:
         r"""Return a callable for the set logging service method over gRPC.
 
         Sets the logging service for a specific cluster.
@@ -526,11 +491,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_logging_service"]
 
     @property
-    def set_monitoring_service(
-        self,
-    ) -> Callable[
-        [cluster_service.SetMonitoringServiceRequest], cluster_service.Operation
-    ]:
+    def set_monitoring_service(self) -> Callable[[cluster_service.SetMonitoringServiceRequest], cluster_service.Operation]:
         r"""Return a callable for the set monitoring service method over gRPC.
 
         Sets the monitoring service for a specific cluster.
@@ -554,9 +515,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_monitoring_service"]
 
     @property
-    def set_addons_config(
-        self,
-    ) -> Callable[[cluster_service.SetAddonsConfigRequest], cluster_service.Operation]:
+    def set_addons_config(self) -> Callable[[cluster_service.SetAddonsConfigRequest], cluster_service.Operation]:
         r"""Return a callable for the set addons config method over gRPC.
 
         Sets the addons for a specific cluster.
@@ -580,9 +539,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_addons_config"]
 
     @property
-    def set_locations(
-        self,
-    ) -> Callable[[cluster_service.SetLocationsRequest], cluster_service.Operation]:
+    def set_locations(self) -> Callable[[cluster_service.SetLocationsRequest], cluster_service.Operation]:
         r"""Return a callable for the set locations method over gRPC.
 
         Sets the locations for a specific cluster. Deprecated. Use
@@ -608,9 +565,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_locations"]
 
     @property
-    def update_master(
-        self,
-    ) -> Callable[[cluster_service.UpdateMasterRequest], cluster_service.Operation]:
+    def update_master(self) -> Callable[[cluster_service.UpdateMasterRequest], cluster_service.Operation]:
         r"""Return a callable for the update master method over gRPC.
 
         Updates the master for a specific cluster.
@@ -634,9 +589,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["update_master"]
 
     @property
-    def set_master_auth(
-        self,
-    ) -> Callable[[cluster_service.SetMasterAuthRequest], cluster_service.Operation]:
+    def set_master_auth(self) -> Callable[[cluster_service.SetMasterAuthRequest], cluster_service.Operation]:
         r"""Return a callable for the set master auth method over gRPC.
 
         Sets master auth materials. Currently supports
@@ -663,9 +616,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_master_auth"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[cluster_service.DeleteClusterRequest], cluster_service.Operation]:
+    def delete_cluster(self) -> Callable[[cluster_service.DeleteClusterRequest], cluster_service.Operation]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes the cluster, including the Kubernetes
@@ -698,11 +649,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def list_operations(
-        self,
-    ) -> Callable[
-        [cluster_service.ListOperationsRequest], cluster_service.ListOperationsResponse
-    ]:
+    def list_operations(self) -> Callable[[cluster_service.ListOperationsRequest], cluster_service.ListOperationsResponse]:
         r"""Return a callable for the list operations method over gRPC.
 
         Lists all operations in a project in a specific zone
@@ -727,9 +674,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["list_operations"]
 
     @property
-    def get_operation(
-        self,
-    ) -> Callable[[cluster_service.GetOperationRequest], cluster_service.Operation]:
+    def get_operation(self) -> Callable[[cluster_service.GetOperationRequest], cluster_service.Operation]:
         r"""Return a callable for the get operation method over gRPC.
 
         Gets the specified operation.
@@ -753,9 +698,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["get_operation"]
 
     @property
-    def cancel_operation(
-        self,
-    ) -> Callable[[cluster_service.CancelOperationRequest], empty_pb2.Empty]:
+    def cancel_operation(self) -> Callable[[cluster_service.CancelOperationRequest], empty_pb2.Empty]:
         r"""Return a callable for the cancel operation method over gRPC.
 
         Cancels the specified operation.
@@ -779,11 +722,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["cancel_operation"]
 
     @property
-    def get_server_config(
-        self,
-    ) -> Callable[
-        [cluster_service.GetServerConfigRequest], cluster_service.ServerConfig
-    ]:
+    def get_server_config(self) -> Callable[[cluster_service.GetServerConfigRequest], cluster_service.ServerConfig]:
         r"""Return a callable for the get server config method over gRPC.
 
         Returns configuration info about the Google
@@ -808,11 +747,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["get_server_config"]
 
     @property
-    def get_json_web_keys(
-        self,
-    ) -> Callable[
-        [cluster_service.GetJSONWebKeysRequest], cluster_service.GetJSONWebKeysResponse
-    ]:
+    def get_json_web_keys(self) -> Callable[[cluster_service.GetJSONWebKeysRequest], cluster_service.GetJSONWebKeysResponse]:
         r"""Return a callable for the get json web keys method over gRPC.
 
         Gets the public component of the cluster signing keys
@@ -837,11 +772,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["get_json_web_keys"]
 
     @property
-    def list_node_pools(
-        self,
-    ) -> Callable[
-        [cluster_service.ListNodePoolsRequest], cluster_service.ListNodePoolsResponse
-    ]:
+    def list_node_pools(self) -> Callable[[cluster_service.ListNodePoolsRequest], cluster_service.ListNodePoolsResponse]:
         r"""Return a callable for the list node pools method over gRPC.
 
         Lists the node pools for a cluster.
@@ -865,9 +796,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["list_node_pools"]
 
     @property
-    def get_node_pool(
-        self,
-    ) -> Callable[[cluster_service.GetNodePoolRequest], cluster_service.NodePool]:
+    def get_node_pool(self) -> Callable[[cluster_service.GetNodePoolRequest], cluster_service.NodePool]:
         r"""Return a callable for the get node pool method over gRPC.
 
         Retrieves the requested node pool.
@@ -891,9 +820,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["get_node_pool"]
 
     @property
-    def create_node_pool(
-        self,
-    ) -> Callable[[cluster_service.CreateNodePoolRequest], cluster_service.Operation]:
+    def create_node_pool(self) -> Callable[[cluster_service.CreateNodePoolRequest], cluster_service.Operation]:
         r"""Return a callable for the create node pool method over gRPC.
 
         Creates a node pool for a cluster.
@@ -917,9 +844,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["create_node_pool"]
 
     @property
-    def delete_node_pool(
-        self,
-    ) -> Callable[[cluster_service.DeleteNodePoolRequest], cluster_service.Operation]:
+    def delete_node_pool(self) -> Callable[[cluster_service.DeleteNodePoolRequest], cluster_service.Operation]:
         r"""Return a callable for the delete node pool method over gRPC.
 
         Deletes a node pool from a cluster.
@@ -943,9 +868,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["delete_node_pool"]
 
     @property
-    def complete_node_pool_upgrade(
-        self,
-    ) -> Callable[[cluster_service.CompleteNodePoolUpgradeRequest], empty_pb2.Empty]:
+    def complete_node_pool_upgrade(self) -> Callable[[cluster_service.CompleteNodePoolUpgradeRequest], empty_pb2.Empty]:
         r"""Return a callable for the complete node pool upgrade method over gRPC.
 
         CompleteNodePoolUpgrade will signal an on-going node
@@ -962,9 +885,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_node_pool_upgrade" not in self._stubs:
-            self._stubs[
-                "complete_node_pool_upgrade"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["complete_node_pool_upgrade"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CompleteNodePoolUpgrade",
                 request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -972,11 +893,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["complete_node_pool_upgrade"]
 
     @property
-    def rollback_node_pool_upgrade(
-        self,
-    ) -> Callable[
-        [cluster_service.RollbackNodePoolUpgradeRequest], cluster_service.Operation
-    ]:
+    def rollback_node_pool_upgrade(self) -> Callable[[cluster_service.RollbackNodePoolUpgradeRequest], cluster_service.Operation]:
         r"""Return a callable for the rollback node pool upgrade method over gRPC.
 
         Rolls back a previously Aborted or Failed NodePool
@@ -994,9 +911,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_node_pool_upgrade" not in self._stubs:
-            self._stubs[
-                "rollback_node_pool_upgrade"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["rollback_node_pool_upgrade"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/RollbackNodePoolUpgrade",
                 request_serializer=cluster_service.RollbackNodePoolUpgradeRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1004,11 +919,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["rollback_node_pool_upgrade"]
 
     @property
-    def set_node_pool_management(
-        self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolManagementRequest], cluster_service.Operation
-    ]:
+    def set_node_pool_management(self) -> Callable[[cluster_service.SetNodePoolManagementRequest], cluster_service.Operation]:
         r"""Return a callable for the set node pool management method over gRPC.
 
         Sets the NodeManagement options for a node pool.
@@ -1032,9 +943,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_node_pool_management"]
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[cluster_service.SetLabelsRequest], cluster_service.Operation]:
+    def set_labels(self) -> Callable[[cluster_service.SetLabelsRequest], cluster_service.Operation]:
         r"""Return a callable for the set labels method over gRPC.
 
         Sets labels on a cluster.
@@ -1058,9 +967,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_labels"]
 
     @property
-    def set_legacy_abac(
-        self,
-    ) -> Callable[[cluster_service.SetLegacyAbacRequest], cluster_service.Operation]:
+    def set_legacy_abac(self) -> Callable[[cluster_service.SetLegacyAbacRequest], cluster_service.Operation]:
         r"""Return a callable for the set legacy abac method over gRPC.
 
         Enables or disables the ABAC authorization mechanism
@@ -1085,9 +992,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_legacy_abac"]
 
     @property
-    def start_ip_rotation(
-        self,
-    ) -> Callable[[cluster_service.StartIPRotationRequest], cluster_service.Operation]:
+    def start_ip_rotation(self) -> Callable[[cluster_service.StartIPRotationRequest], cluster_service.Operation]:
         r"""Return a callable for the start ip rotation method over gRPC.
 
         Starts master IP rotation.
@@ -1111,11 +1016,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["start_ip_rotation"]
 
     @property
-    def complete_ip_rotation(
-        self,
-    ) -> Callable[
-        [cluster_service.CompleteIPRotationRequest], cluster_service.Operation
-    ]:
+    def complete_ip_rotation(self) -> Callable[[cluster_service.CompleteIPRotationRequest], cluster_service.Operation]:
         r"""Return a callable for the complete ip rotation method over gRPC.
 
         Completes master IP rotation.
@@ -1139,9 +1040,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["complete_ip_rotation"]
 
     @property
-    def set_node_pool_size(
-        self,
-    ) -> Callable[[cluster_service.SetNodePoolSizeRequest], cluster_service.Operation]:
+    def set_node_pool_size(self) -> Callable[[cluster_service.SetNodePoolSizeRequest], cluster_service.Operation]:
         r"""Return a callable for the set node pool size method over gRPC.
 
         Sets the size for a specific node pool. The new size will be
@@ -1168,9 +1067,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_node_pool_size"]
 
     @property
-    def set_network_policy(
-        self,
-    ) -> Callable[[cluster_service.SetNetworkPolicyRequest], cluster_service.Operation]:
+    def set_network_policy(self) -> Callable[[cluster_service.SetNetworkPolicyRequest], cluster_service.Operation]:
         r"""Return a callable for the set network policy method over gRPC.
 
         Enables or disables Network Policy for a cluster.
@@ -1194,11 +1091,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_network_policy"]
 
     @property
-    def set_maintenance_policy(
-        self,
-    ) -> Callable[
-        [cluster_service.SetMaintenancePolicyRequest], cluster_service.Operation
-    ]:
+    def set_maintenance_policy(self) -> Callable[[cluster_service.SetMaintenancePolicyRequest], cluster_service.Operation]:
         r"""Return a callable for the set maintenance policy method over gRPC.
 
         Sets the maintenance policy for a cluster.
@@ -1222,12 +1115,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["set_maintenance_policy"]
 
     @property
-    def list_usable_subnetworks(
-        self,
-    ) -> Callable[
-        [cluster_service.ListUsableSubnetworksRequest],
-        cluster_service.ListUsableSubnetworksResponse,
-    ]:
+    def list_usable_subnetworks(self) -> Callable[[cluster_service.ListUsableSubnetworksRequest], cluster_service.ListUsableSubnetworksResponse]:
         r"""Return a callable for the list usable subnetworks method over gRPC.
 
         Lists subnetworks that are usable for creating
@@ -1254,10 +1142,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
     @property
     def check_autopilot_compatibility(
         self,
-    ) -> Callable[
-        [cluster_service.CheckAutopilotCompatibilityRequest],
-        cluster_service.CheckAutopilotCompatibilityResponse,
-    ]:
+    ) -> Callable[[cluster_service.CheckAutopilotCompatibilityRequest], cluster_service.CheckAutopilotCompatibilityResponse]:
         r"""Return a callable for the check autopilot compatibility method over gRPC.
 
         Checks the cluster compatibility with Autopilot mode,
@@ -1274,9 +1159,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_autopilot_compatibility" not in self._stubs:
-            self._stubs[
-                "check_autopilot_compatibility"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["check_autopilot_compatibility"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CheckAutopilotCompatibility",
                 request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
                 response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
@@ -1284,12 +1167,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["check_autopilot_compatibility"]
 
     @property
-    def fetch_cluster_upgrade_info(
-        self,
-    ) -> Callable[
-        [cluster_service.FetchClusterUpgradeInfoRequest],
-        cluster_service.ClusterUpgradeInfo,
-    ]:
+    def fetch_cluster_upgrade_info(self) -> Callable[[cluster_service.FetchClusterUpgradeInfoRequest], cluster_service.ClusterUpgradeInfo]:
         r"""Return a callable for the fetch cluster upgrade info method over gRPC.
 
         Fetch upgrade information of a specific cluster.
@@ -1305,9 +1183,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_cluster_upgrade_info" not in self._stubs:
-            self._stubs[
-                "fetch_cluster_upgrade_info"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_cluster_upgrade_info"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/FetchClusterUpgradeInfo",
                 request_serializer=cluster_service.FetchClusterUpgradeInfoRequest.serialize,
                 response_deserializer=cluster_service.ClusterUpgradeInfo.deserialize,
@@ -1315,12 +1191,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["fetch_cluster_upgrade_info"]
 
     @property
-    def fetch_node_pool_upgrade_info(
-        self,
-    ) -> Callable[
-        [cluster_service.FetchNodePoolUpgradeInfoRequest],
-        cluster_service.NodePoolUpgradeInfo,
-    ]:
+    def fetch_node_pool_upgrade_info(self) -> Callable[[cluster_service.FetchNodePoolUpgradeInfoRequest], cluster_service.NodePoolUpgradeInfo]:
         r"""Return a callable for the fetch node pool upgrade info method over gRPC.
 
         Fetch upgrade information of a specific nodepool.
@@ -1336,9 +1207,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_node_pool_upgrade_info" not in self._stubs:
-            self._stubs[
-                "fetch_node_pool_upgrade_info"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_node_pool_upgrade_info"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/FetchNodePoolUpgradeInfo",
                 request_serializer=cluster_service.FetchNodePoolUpgradeInfoRequest.serialize,
                 response_deserializer=cluster_service.NodePoolUpgradeInfo.deserialize,

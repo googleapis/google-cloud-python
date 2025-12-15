@@ -525,9 +525,7 @@ class Instance(proto.Message):
             proto.INT64,
             number=4,
         )
-        guest_os_features: MutableSequence[
-            "Instance.Disk.GuestOsFeature"
-        ] = proto.RepeatedField(
+        guest_os_features: MutableSequence["Instance.Disk.GuestOsFeature"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="Instance.Disk.GuestOsFeature",

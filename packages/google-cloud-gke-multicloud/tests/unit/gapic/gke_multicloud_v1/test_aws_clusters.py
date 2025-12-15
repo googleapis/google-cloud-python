@@ -43,15 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -65,17 +57,8 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.gke_multicloud_v1.services.aws_clusters import (
-    AwsClustersAsyncClient,
-    AwsClustersClient,
-    pagers,
-    transports,
-)
-from google.cloud.gke_multicloud_v1.types import (
-    aws_resources,
-    aws_service,
-    common_resources,
-)
+from google.cloud.gke_multicloud_v1.services.aws_clusters import AwsClustersAsyncClient, AwsClustersClient, pagers, transports
+from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service, common_resources
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -107,22 +90,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -133,21 +108,10 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert AwsClustersClient._get_default_mtls_endpoint(None) is None
-    assert (
-        AwsClustersClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        AwsClustersClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        AwsClustersClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        AwsClustersClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert AwsClustersClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert AwsClustersClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert AwsClustersClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert AwsClustersClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert AwsClustersClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -160,25 +124,23 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert AwsClustersClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            AwsClustersClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                AwsClustersClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert AwsClustersClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert AwsClustersClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert AwsClustersClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert AwsClustersClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
         assert AwsClustersClient._read_environment_variables() == (False, "auto", None)
@@ -186,17 +148,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             AwsClustersClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert AwsClustersClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert AwsClustersClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert AwsClustersClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert AwsClustersClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert AwsClustersClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert AwsClustersClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert AwsClustersClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert AwsClustersClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert AwsClustersClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert AwsClustersClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert AwsClustersClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                AwsClustersClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert AwsClustersClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert AwsClustersClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -204,119 +244,45 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert AwsClustersClient._get_client_cert_source(None, False) is None
-    assert (
-        AwsClustersClient._get_client_cert_source(mock_provided_cert_source, False)
-        is None
-    )
-    assert (
-        AwsClustersClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert AwsClustersClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert AwsClustersClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                AwsClustersClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                AwsClustersClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert AwsClustersClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert AwsClustersClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    AwsClustersClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersClient),
-)
-@mock.patch.object(
-    AwsClustersAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersAsyncClient),
-)
+@mock.patch.object(AwsClustersClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersClient))
+@mock.patch.object(AwsClustersAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = AwsClustersClient._DEFAULT_UNIVERSE
-    default_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        AwsClustersClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        AwsClustersClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == AwsClustersClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AwsClustersClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        AwsClustersClient._get_api_endpoint(None, None, default_universe, "always")
-        == AwsClustersClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AwsClustersClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == AwsClustersClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AwsClustersClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        AwsClustersClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert AwsClustersClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert AwsClustersClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == AwsClustersClient.DEFAULT_MTLS_ENDPOINT
+    assert AwsClustersClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert AwsClustersClient._get_api_endpoint(None, None, default_universe, "always") == AwsClustersClient.DEFAULT_MTLS_ENDPOINT
+    assert AwsClustersClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == AwsClustersClient.DEFAULT_MTLS_ENDPOINT
+    assert AwsClustersClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert AwsClustersClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        AwsClustersClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        AwsClustersClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        AwsClustersClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        AwsClustersClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        AwsClustersClient._get_universe_domain(None, None)
-        == AwsClustersClient._DEFAULT_UNIVERSE
-    )
+    assert AwsClustersClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert AwsClustersClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert AwsClustersClient._get_universe_domain(None, None) == AwsClustersClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         AwsClustersClient._get_universe_domain("", None)
@@ -376,9 +342,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_aws_clusters_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -386,9 +350,7 @@ def test_aws_clusters_client_from_service_account_info(client_class, transport_n
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "gkemulticloud.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://gkemulticloud.googleapis.com"
+            "gkemulticloud.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://gkemulticloud.googleapis.com"
         )
 
 
@@ -400,19 +362,13 @@ def test_aws_clusters_client_from_service_account_info(client_class, transport_n
         (transports.AwsClustersRestTransport, "rest"),
     ],
 )
-def test_aws_clusters_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_aws_clusters_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -428,26 +384,18 @@ def test_aws_clusters_client_service_account_always_use_jwt(
 )
 def test_aws_clusters_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "gkemulticloud.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://gkemulticloud.googleapis.com"
+            "gkemulticloud.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://gkemulticloud.googleapis.com"
         )
 
 
@@ -467,27 +415,13 @@ def test_aws_clusters_client_get_transport_class():
     "client_class,transport_class,transport_name",
     [
         (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc"),
-        (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio"),
         (AwsClustersClient, transports.AwsClustersRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    AwsClustersClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersClient),
-)
-@mock.patch.object(
-    AwsClustersAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersAsyncClient),
-)
-def test_aws_clusters_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(AwsClustersClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersClient))
+@mock.patch.object(AwsClustersAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersAsyncClient))
+def test_aws_clusters_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(AwsClustersClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -525,9 +459,7 @@ def test_aws_clusters_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -559,21 +491,7 @@ def test_aws_clusters_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -583,9 +501,7 @@ def test_aws_clusters_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -594,18 +510,14 @@ def test_aws_clusters_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -619,57 +531,31 @@ def test_aws_clusters_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", "true"),
-        (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
+        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio", "true"),
         (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", "false"),
-        (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
+        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio", "false"),
         (AwsClustersClient, transports.AwsClustersRestTransport, "rest", "true"),
         (AwsClustersClient, transports.AwsClustersRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    AwsClustersClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersClient),
-)
-@mock.patch.object(
-    AwsClustersAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersAsyncClient),
-)
+@mock.patch.object(AwsClustersClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersClient))
+@mock.patch.object(AwsClustersAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_aws_clusters_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_aws_clusters_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -688,22 +574,12 @@ def test_aws_clusters_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -724,22 +600,15 @@ def test_aws_clusters_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -750,26 +619,16 @@ def test_aws_clusters_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [AwsClustersClient, AwsClustersAsyncClient])
-@mock.patch.object(
-    AwsClustersClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AwsClustersClient)
-)
-@mock.patch.object(
-    AwsClustersAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AwsClustersAsyncClient),
-)
+@mock.patch.object(AwsClustersClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AwsClustersClient))
+@mock.patch.object(AwsClustersAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AwsClustersAsyncClient))
 def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -777,14 +636,106 @@ def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -800,28 +751,16 @@ def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -831,60 +770,26 @@ def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [AwsClustersClient, AwsClustersAsyncClient])
-@mock.patch.object(
-    AwsClustersClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersClient),
-)
-@mock.patch.object(
-    AwsClustersAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AwsClustersAsyncClient),
-)
+@mock.patch.object(AwsClustersClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersClient))
+@mock.patch.object(AwsClustersAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AwsClustersAsyncClient))
 def test_aws_clusters_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = AwsClustersClient._DEFAULT_UNIVERSE
-    default_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = AwsClustersClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -907,19 +812,11 @@ def test_aws_clusters_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -927,9 +824,7 @@ def test_aws_clusters_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -937,17 +832,11 @@ def test_aws_clusters_client_client_api_endpoint(client_class):
     "client_class,transport_class,transport_name",
     [
         (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc"),
-        (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio"),
         (AwsClustersClient, transports.AwsClustersRestTransport, "rest"),
     ],
 )
-def test_aws_clusters_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_aws_clusters_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -958,9 +847,7 @@ def test_aws_clusters_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -974,18 +861,11 @@ def test_aws_clusters_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", grpc_helpers),
-        (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
         (AwsClustersClient, transports.AwsClustersRestTransport, "rest", None),
     ],
 )
-def test_aws_clusters_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_aws_clusters_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -995,9 +875,7 @@ def test_aws_clusters_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1008,9 +886,7 @@ def test_aws_clusters_client_client_options_credentials_file(
 
 
 def test_aws_clusters_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
         client = AwsClustersClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
@@ -1030,17 +906,10 @@ def test_aws_clusters_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (AwsClustersClient, transports.AwsClustersGrpcTransport, "grpc", grpc_helpers),
-        (
-            AwsClustersAsyncClient,
-            transports.AwsClustersGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (AwsClustersAsyncClient, transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_aws_clusters_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_aws_clusters_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1050,9 +919,7 @@ def test_aws_clusters_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1062,13 +929,9 @@ def test_aws_clusters_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1108,9 +971,7 @@ def test_create_aws_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_aws_cluster(request)
@@ -1142,12 +1003,8 @@ def test_create_aws_cluster_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1171,18 +1028,12 @@ def test_create_aws_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_aws_cluster in client._transport._wrapped_methods
-        )
+        assert client._transport.create_aws_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_aws_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_aws_cluster] = mock_rpc
         request = {}
         client.create_aws_cluster(request)
 
@@ -1202,9 +1053,7 @@ def test_create_aws_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_aws_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1218,17 +1067,12 @@ async def test_create_aws_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_aws_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_aws_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_aws_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_aws_cluster] = mock_rpc
 
         request = {}
         await client.create_aws_cluster(request)
@@ -1249,9 +1093,7 @@ async def test_create_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsClusterRequest
-):
+async def test_create_aws_cluster_async(transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsClusterRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1262,13 +1104,9 @@ async def test_create_aws_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1298,9 +1136,7 @@ def test_create_aws_cluster_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_aws_cluster(request)
 
@@ -1330,12 +1166,8 @@ async def test_create_aws_cluster_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1357,9 +1189,7 @@ def test_create_aws_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -1408,15 +1238,11 @@ async def test_create_aws_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_aws_cluster(
@@ -1475,9 +1301,7 @@ def test_update_aws_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.update_aws_cluster(request)
@@ -1506,12 +1330,8 @@ def test_update_aws_cluster_non_empty_request_with_auto_populated_field():
     request = aws_service.UpdateAwsClusterRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1532,18 +1352,12 @@ def test_update_aws_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_aws_cluster in client._transport._wrapped_methods
-        )
+        assert client._transport.update_aws_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_aws_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_aws_cluster] = mock_rpc
         request = {}
         client.update_aws_cluster(request)
 
@@ -1563,9 +1377,7 @@ def test_update_aws_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_aws_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1579,17 +1391,12 @@ async def test_update_aws_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_aws_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_aws_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_aws_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_aws_cluster] = mock_rpc
 
         request = {}
         await client.update_aws_cluster(request)
@@ -1610,9 +1417,7 @@ async def test_update_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsClusterRequest
-):
+async def test_update_aws_cluster_async(transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsClusterRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1623,13 +1428,9 @@ async def test_update_aws_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1659,9 +1460,7 @@ def test_update_aws_cluster_field_headers():
     request.aws_cluster.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_aws_cluster(request)
 
@@ -1691,12 +1490,8 @@ async def test_update_aws_cluster_field_headers_async():
     request.aws_cluster.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1718,9 +1513,7 @@ def test_update_aws_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -1764,15 +1557,11 @@ async def test_update_aws_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_aws_cluster(
@@ -1877,9 +1666,7 @@ def test_get_aws_cluster_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1906,9 +1693,7 @@ def test_get_aws_cluster_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_aws_cluster] = mock_rpc
         request = {}
         client.get_aws_cluster(request)
@@ -1924,9 +1709,7 @@ def test_get_aws_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_aws_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1940,17 +1723,12 @@ async def test_get_aws_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_aws_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_aws_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_aws_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_aws_cluster] = mock_rpc
 
         request = {}
         await client.get_aws_cluster(request)
@@ -1966,9 +1744,7 @@ async def test_get_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsClusterRequest
-):
+async def test_get_aws_cluster_async(transport: str = "grpc_asyncio", request_type=aws_service.GetAwsClusterRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2063,9 +1839,7 @@ async def test_get_aws_cluster_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsCluster()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsCluster())
         await client.get_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2130,9 +1904,7 @@ async def test_get_aws_cluster_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsCluster()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsCluster()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsCluster())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_aws_cluster(
@@ -2181,9 +1953,7 @@ def test_list_aws_clusters(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.ListAwsClustersResponse(
             next_page_token="next_page_token_value",
@@ -2218,12 +1988,8 @@ def test_list_aws_clusters_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_aws_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2251,12 +2017,8 @@ def test_list_aws_clusters_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_aws_clusters
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_aws_clusters] = mock_rpc
         request = {}
         client.list_aws_clusters(request)
 
@@ -2271,9 +2033,7 @@ def test_list_aws_clusters_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_aws_clusters_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_aws_clusters_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2287,17 +2047,12 @@ async def test_list_aws_clusters_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_aws_clusters
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_aws_clusters in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_aws_clusters
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_aws_clusters] = mock_rpc
 
         request = {}
         await client.list_aws_clusters(request)
@@ -2313,9 +2068,7 @@ async def test_list_aws_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_aws_clusters_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.ListAwsClustersRequest
-):
+async def test_list_aws_clusters_async(transport: str = "grpc_asyncio", request_type=aws_service.ListAwsClustersRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2326,9 +2079,7 @@ async def test_list_aws_clusters_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.ListAwsClustersResponse(
@@ -2365,9 +2116,7 @@ def test_list_aws_clusters_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         call.return_value = aws_service.ListAwsClustersResponse()
         client.list_aws_clusters(request)
 
@@ -2397,12 +2146,8 @@ async def test_list_aws_clusters_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsClustersResponse()
-        )
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_service.ListAwsClustersResponse())
         await client.list_aws_clusters(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2424,9 +2169,7 @@ def test_list_aws_clusters_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.ListAwsClustersResponse()
         # Call the method with a truthy value for each flattened field,
@@ -2465,15 +2208,11 @@ async def test_list_aws_clusters_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.ListAwsClustersResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsClustersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_service.ListAwsClustersResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_aws_clusters(
@@ -2511,9 +2250,7 @@ def test_list_aws_clusters_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsClustersResponse(
@@ -2546,9 +2283,7 @@ def test_list_aws_clusters_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_aws_clusters(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -2567,9 +2302,7 @@ def test_list_aws_clusters_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsClustersResponse(
@@ -2610,11 +2343,7 @@ async def test_list_aws_clusters_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsClustersResponse(
@@ -2662,11 +2391,7 @@ async def test_list_aws_clusters_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsClustersResponse(
@@ -2698,9 +2423,7 @@ async def test_list_aws_clusters_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_aws_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_aws_clusters(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2724,9 +2447,7 @@ def test_delete_aws_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_aws_cluster(request)
@@ -2758,12 +2479,8 @@ def test_delete_aws_cluster_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2787,18 +2504,12 @@ def test_delete_aws_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_aws_cluster in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_aws_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_aws_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_aws_cluster] = mock_rpc
         request = {}
         client.delete_aws_cluster(request)
 
@@ -2818,9 +2529,7 @@ def test_delete_aws_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_aws_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2834,17 +2543,12 @@ async def test_delete_aws_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_aws_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_aws_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_aws_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_aws_cluster] = mock_rpc
 
         request = {}
         await client.delete_aws_cluster(request)
@@ -2865,9 +2569,7 @@ async def test_delete_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsClusterRequest
-):
+async def test_delete_aws_cluster_async(transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsClusterRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2878,13 +2580,9 @@ async def test_delete_aws_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2914,9 +2612,7 @@ def test_delete_aws_cluster_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_aws_cluster(request)
 
@@ -2946,12 +2642,8 @@ async def test_delete_aws_cluster_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_aws_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2973,9 +2665,7 @@ def test_delete_aws_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -3014,15 +2704,11 @@ async def test_delete_aws_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_aws_cluster(
@@ -3071,9 +2757,7 @@ def test_generate_aws_cluster_agent_token(request_type, transport: str = "grpc")
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.GenerateAwsClusterAgentTokenResponse(
             access_token="access_token_value",
@@ -3120,12 +2804,8 @@ def test_generate_aws_cluster_agent_token_non_empty_request_with_auto_populated_
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.generate_aws_cluster_agent_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3157,19 +2837,12 @@ def test_generate_aws_cluster_agent_token_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_aws_cluster_agent_token
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_aws_cluster_agent_token in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_aws_cluster_agent_token
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_aws_cluster_agent_token] = mock_rpc
         request = {}
         client.generate_aws_cluster_agent_token(request)
 
@@ -3184,9 +2857,7 @@ def test_generate_aws_cluster_agent_token_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_aws_cluster_agent_token_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_generate_aws_cluster_agent_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3200,17 +2871,12 @@ async def test_generate_aws_cluster_agent_token_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.generate_aws_cluster_agent_token
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.generate_aws_cluster_agent_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.generate_aws_cluster_agent_token
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.generate_aws_cluster_agent_token] = mock_rpc
 
         request = {}
         await client.generate_aws_cluster_agent_token(request)
@@ -3226,10 +2892,7 @@ async def test_generate_aws_cluster_agent_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_aws_cluster_agent_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
-):
+async def test_generate_aws_cluster_agent_token_async(transport: str = "grpc_asyncio", request_type=aws_service.GenerateAwsClusterAgentTokenRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3240,9 +2903,7 @@ async def test_generate_aws_cluster_agent_token_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.GenerateAwsClusterAgentTokenResponse(
@@ -3283,9 +2944,7 @@ def test_generate_aws_cluster_agent_token_field_headers():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
         call.return_value = aws_service.GenerateAwsClusterAgentTokenResponse()
         client.generate_aws_cluster_agent_token(request)
 
@@ -3315,12 +2974,8 @@ async def test_generate_aws_cluster_agent_token_field_headers_async():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.GenerateAwsClusterAgentTokenResponse()
-        )
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_service.GenerateAwsClusterAgentTokenResponse())
         await client.generate_aws_cluster_agent_token(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3354,9 +3009,7 @@ def test_generate_aws_access_token(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.GenerateAwsAccessTokenResponse(
             access_token="access_token_value",
@@ -3390,12 +3043,8 @@ def test_generate_aws_access_token_non_empty_request_with_auto_populated_field()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.generate_aws_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3418,19 +3067,12 @@ def test_generate_aws_access_token_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_aws_access_token
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_aws_access_token in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_aws_access_token
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_aws_access_token] = mock_rpc
         request = {}
         client.generate_aws_access_token(request)
 
@@ -3445,9 +3087,7 @@ def test_generate_aws_access_token_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_aws_access_token_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_generate_aws_access_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3461,17 +3101,12 @@ async def test_generate_aws_access_token_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.generate_aws_access_token
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.generate_aws_access_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.generate_aws_access_token
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.generate_aws_access_token] = mock_rpc
 
         request = {}
         await client.generate_aws_access_token(request)
@@ -3487,10 +3122,7 @@ async def test_generate_aws_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_aws_access_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=aws_service.GenerateAwsAccessTokenRequest,
-):
+async def test_generate_aws_access_token_async(transport: str = "grpc_asyncio", request_type=aws_service.GenerateAwsAccessTokenRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3501,9 +3133,7 @@ async def test_generate_aws_access_token_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.GenerateAwsAccessTokenResponse(
@@ -3540,9 +3170,7 @@ def test_generate_aws_access_token_field_headers():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
         call.return_value = aws_service.GenerateAwsAccessTokenResponse()
         client.generate_aws_access_token(request)
 
@@ -3572,12 +3200,8 @@ async def test_generate_aws_access_token_field_headers_async():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.GenerateAwsAccessTokenResponse()
-        )
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_service.GenerateAwsAccessTokenResponse())
         await client.generate_aws_access_token(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3611,9 +3235,7 @@ def test_create_aws_node_pool(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_aws_node_pool(request)
@@ -3645,12 +3267,8 @@ def test_create_aws_node_pool_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3674,18 +3292,12 @@ def test_create_aws_node_pool_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_aws_node_pool in client._transport._wrapped_methods
-        )
+        assert client._transport.create_aws_node_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_aws_node_pool] = mock_rpc
         request = {}
         client.create_aws_node_pool(request)
 
@@ -3705,9 +3317,7 @@ def test_create_aws_node_pool_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_aws_node_pool_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_aws_node_pool_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3721,17 +3331,12 @@ async def test_create_aws_node_pool_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_aws_node_pool
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_aws_node_pool in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_aws_node_pool
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_aws_node_pool] = mock_rpc
 
         request = {}
         await client.create_aws_node_pool(request)
@@ -3752,9 +3357,7 @@ async def test_create_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsNodePoolRequest
-):
+async def test_create_aws_node_pool_async(transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsNodePoolRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3765,13 +3368,9 @@ async def test_create_aws_node_pool_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3801,9 +3400,7 @@ def test_create_aws_node_pool_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_aws_node_pool(request)
 
@@ -3833,12 +3430,8 @@ async def test_create_aws_node_pool_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3860,9 +3453,7 @@ def test_create_aws_node_pool_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -3911,15 +3502,11 @@ async def test_create_aws_node_pool_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_aws_node_pool(
@@ -3978,9 +3565,7 @@ def test_update_aws_node_pool(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.update_aws_node_pool(request)
@@ -4009,12 +3594,8 @@ def test_update_aws_node_pool_non_empty_request_with_auto_populated_field():
     request = aws_service.UpdateAwsNodePoolRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4035,18 +3616,12 @@ def test_update_aws_node_pool_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_aws_node_pool in client._transport._wrapped_methods
-        )
+        assert client._transport.update_aws_node_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_aws_node_pool] = mock_rpc
         request = {}
         client.update_aws_node_pool(request)
 
@@ -4066,9 +3641,7 @@ def test_update_aws_node_pool_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_aws_node_pool_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_aws_node_pool_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4082,17 +3655,12 @@ async def test_update_aws_node_pool_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_aws_node_pool
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_aws_node_pool in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_aws_node_pool
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_aws_node_pool] = mock_rpc
 
         request = {}
         await client.update_aws_node_pool(request)
@@ -4113,9 +3681,7 @@ async def test_update_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsNodePoolRequest
-):
+async def test_update_aws_node_pool_async(transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsNodePoolRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4126,13 +3692,9 @@ async def test_update_aws_node_pool_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4162,9 +3724,7 @@ def test_update_aws_node_pool_field_headers():
     request.aws_node_pool.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_aws_node_pool(request)
 
@@ -4194,12 +3754,8 @@ async def test_update_aws_node_pool_field_headers_async():
     request.aws_node_pool.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4221,9 +3777,7 @@ def test_update_aws_node_pool_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -4267,15 +3821,11 @@ async def test_update_aws_node_pool_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_aws_node_pool(
@@ -4329,9 +3879,7 @@ def test_rollback_aws_node_pool_update(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.rollback_aws_node_pool_update(request)
@@ -4362,12 +3910,8 @@ def test_rollback_aws_node_pool_update_non_empty_request_with_auto_populated_fie
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.rollback_aws_node_pool_update(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4390,19 +3934,12 @@ def test_rollback_aws_node_pool_update_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.rollback_aws_node_pool_update
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.rollback_aws_node_pool_update in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.rollback_aws_node_pool_update
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.rollback_aws_node_pool_update] = mock_rpc
         request = {}
         client.rollback_aws_node_pool_update(request)
 
@@ -4422,9 +3959,7 @@ def test_rollback_aws_node_pool_update_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_rollback_aws_node_pool_update_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_rollback_aws_node_pool_update_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4438,17 +3973,12 @@ async def test_rollback_aws_node_pool_update_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.rollback_aws_node_pool_update
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.rollback_aws_node_pool_update in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.rollback_aws_node_pool_update
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.rollback_aws_node_pool_update] = mock_rpc
 
         request = {}
         await client.rollback_aws_node_pool_update(request)
@@ -4469,10 +3999,7 @@ async def test_rollback_aws_node_pool_update_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rollback_aws_node_pool_update_async(
-    transport: str = "grpc_asyncio",
-    request_type=aws_service.RollbackAwsNodePoolUpdateRequest,
-):
+async def test_rollback_aws_node_pool_update_async(transport: str = "grpc_asyncio", request_type=aws_service.RollbackAwsNodePoolUpdateRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4483,13 +4010,9 @@ async def test_rollback_aws_node_pool_update_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.rollback_aws_node_pool_update(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4519,9 +4042,7 @@ def test_rollback_aws_node_pool_update_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.rollback_aws_node_pool_update(request)
 
@@ -4551,12 +4072,8 @@ async def test_rollback_aws_node_pool_update_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.rollback_aws_node_pool_update(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4578,9 +4095,7 @@ def test_rollback_aws_node_pool_update_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -4619,15 +4134,11 @@ async def test_rollback_aws_node_pool_update_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.rollback_aws_node_pool_update(
@@ -4676,9 +4187,7 @@ def test_get_aws_node_pool(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsNodePool(
             name="name_value",
@@ -4724,12 +4233,8 @@ def test_get_aws_node_pool_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4756,12 +4261,8 @@ def test_get_aws_node_pool_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_node_pool] = mock_rpc
         request = {}
         client.get_aws_node_pool(request)
 
@@ -4776,9 +4277,7 @@ def test_get_aws_node_pool_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_node_pool_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_aws_node_pool_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4792,17 +4291,12 @@ async def test_get_aws_node_pool_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_aws_node_pool
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_aws_node_pool in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_aws_node_pool
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_aws_node_pool] = mock_rpc
 
         request = {}
         await client.get_aws_node_pool(request)
@@ -4818,9 +4312,7 @@ async def test_get_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsNodePoolRequest
-):
+async def test_get_aws_node_pool_async(transport: str = "grpc_asyncio", request_type=aws_service.GetAwsNodePoolRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4831,9 +4323,7 @@ async def test_get_aws_node_pool_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_resources.AwsNodePool(
@@ -4882,9 +4372,7 @@ def test_get_aws_node_pool_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         call.return_value = aws_resources.AwsNodePool()
         client.get_aws_node_pool(request)
 
@@ -4914,12 +4402,8 @@ async def test_get_aws_node_pool_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsNodePool()
-        )
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsNodePool())
         await client.get_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4941,9 +4425,7 @@ def test_get_aws_node_pool_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsNodePool()
         # Call the method with a truthy value for each flattened field,
@@ -4982,15 +4464,11 @@ async def test_get_aws_node_pool_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsNodePool()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsNodePool()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsNodePool())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_aws_node_pool(
@@ -5039,9 +4517,7 @@ def test_list_aws_node_pools(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.ListAwsNodePoolsResponse(
             next_page_token="next_page_token_value",
@@ -5076,12 +4552,8 @@ def test_list_aws_node_pools_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_aws_node_pools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5105,18 +4577,12 @@ def test_list_aws_node_pools_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_aws_node_pools in client._transport._wrapped_methods
-        )
+        assert client._transport.list_aws_node_pools in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_aws_node_pools
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_aws_node_pools] = mock_rpc
         request = {}
         client.list_aws_node_pools(request)
 
@@ -5131,9 +4597,7 @@ def test_list_aws_node_pools_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_aws_node_pools_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5147,17 +4611,12 @@ async def test_list_aws_node_pools_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_aws_node_pools
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_aws_node_pools in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_aws_node_pools
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_aws_node_pools] = mock_rpc
 
         request = {}
         await client.list_aws_node_pools(request)
@@ -5173,9 +4632,7 @@ async def test_list_aws_node_pools_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.ListAwsNodePoolsRequest
-):
+async def test_list_aws_node_pools_async(transport: str = "grpc_asyncio", request_type=aws_service.ListAwsNodePoolsRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5186,9 +4643,7 @@ async def test_list_aws_node_pools_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.ListAwsNodePoolsResponse(
@@ -5225,9 +4680,7 @@ def test_list_aws_node_pools_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         call.return_value = aws_service.ListAwsNodePoolsResponse()
         client.list_aws_node_pools(request)
 
@@ -5257,12 +4710,8 @@ async def test_list_aws_node_pools_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsNodePoolsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_service.ListAwsNodePoolsResponse())
         await client.list_aws_node_pools(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5284,9 +4733,7 @@ def test_list_aws_node_pools_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.ListAwsNodePoolsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -5325,15 +4772,11 @@ async def test_list_aws_node_pools_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_service.ListAwsNodePoolsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_service.ListAwsNodePoolsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_service.ListAwsNodePoolsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_aws_node_pools(
@@ -5371,9 +4814,7 @@ def test_list_aws_node_pools_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsNodePoolsResponse(
@@ -5406,9 +4847,7 @@ def test_list_aws_node_pools_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_aws_node_pools(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -5427,9 +4866,7 @@ def test_list_aws_node_pools_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsNodePoolsResponse(
@@ -5470,11 +4907,7 @@ async def test_list_aws_node_pools_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsNodePoolsResponse(
@@ -5522,11 +4955,7 @@ async def test_list_aws_node_pools_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             aws_service.ListAwsNodePoolsResponse(
@@ -5558,9 +4987,7 @@ async def test_list_aws_node_pools_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_aws_node_pools(request={})
-        ).pages:
+        async for page_ in (await client.list_aws_node_pools(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5584,9 +5011,7 @@ def test_delete_aws_node_pool(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_aws_node_pool(request)
@@ -5618,12 +5043,8 @@ def test_delete_aws_node_pool_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5647,18 +5068,12 @@ def test_delete_aws_node_pool_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_aws_node_pool in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_aws_node_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_aws_node_pool] = mock_rpc
         request = {}
         client.delete_aws_node_pool(request)
 
@@ -5678,9 +5093,7 @@ def test_delete_aws_node_pool_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_aws_node_pool_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5694,17 +5107,12 @@ async def test_delete_aws_node_pool_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_aws_node_pool
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_aws_node_pool in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_aws_node_pool
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_aws_node_pool] = mock_rpc
 
         request = {}
         await client.delete_aws_node_pool(request)
@@ -5725,9 +5133,7 @@ async def test_delete_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsNodePoolRequest
-):
+async def test_delete_aws_node_pool_async(transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsNodePoolRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5738,13 +5144,9 @@ async def test_delete_aws_node_pool_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5774,9 +5176,7 @@ def test_delete_aws_node_pool_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_aws_node_pool(request)
 
@@ -5806,12 +5206,8 @@ async def test_delete_aws_node_pool_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_aws_node_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5833,9 +5229,7 @@ def test_delete_aws_node_pool_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -5874,15 +5268,11 @@ async def test_delete_aws_node_pool_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_aws_node_pool(
@@ -5931,18 +5321,14 @@ def test_get_aws_open_id_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsOpenIdConfig(
             issuer="issuer_value",
             jwks_uri="jwks_uri_value",
             response_types_supported=["response_types_supported_value"],
             subject_types_supported=["subject_types_supported_value"],
-            id_token_signing_alg_values_supported=[
-                "id_token_signing_alg_values_supported_value"
-            ],
+            id_token_signing_alg_values_supported=["id_token_signing_alg_values_supported_value"],
             claims_supported=["claims_supported_value"],
             grant_types=["grant_types_value"],
         )
@@ -5960,9 +5346,7 @@ def test_get_aws_open_id_config(request_type, transport: str = "grpc"):
     assert response.jwks_uri == "jwks_uri_value"
     assert response.response_types_supported == ["response_types_supported_value"]
     assert response.subject_types_supported == ["subject_types_supported_value"]
-    assert response.id_token_signing_alg_values_supported == [
-        "id_token_signing_alg_values_supported_value"
-    ]
+    assert response.id_token_signing_alg_values_supported == ["id_token_signing_alg_values_supported_value"]
     assert response.claims_supported == ["claims_supported_value"]
     assert response.grant_types == ["grant_types_value"]
 
@@ -5983,12 +5367,8 @@ def test_get_aws_open_id_config_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_aws_open_id_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6011,19 +5391,12 @@ def test_get_aws_open_id_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_aws_open_id_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_aws_open_id_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_open_id_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_open_id_config] = mock_rpc
         request = {}
         client.get_aws_open_id_config(request)
 
@@ -6038,9 +5411,7 @@ def test_get_aws_open_id_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_open_id_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_aws_open_id_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6054,17 +5425,12 @@ async def test_get_aws_open_id_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_aws_open_id_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_aws_open_id_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_aws_open_id_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_aws_open_id_config] = mock_rpc
 
         request = {}
         await client.get_aws_open_id_config(request)
@@ -6080,9 +5446,7 @@ async def test_get_aws_open_id_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_open_id_config_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsOpenIdConfigRequest
-):
+async def test_get_aws_open_id_config_async(transport: str = "grpc_asyncio", request_type=aws_service.GetAwsOpenIdConfigRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6093,9 +5457,7 @@ async def test_get_aws_open_id_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_resources.AwsOpenIdConfig(
@@ -6103,9 +5465,7 @@ async def test_get_aws_open_id_config_async(
                 jwks_uri="jwks_uri_value",
                 response_types_supported=["response_types_supported_value"],
                 subject_types_supported=["subject_types_supported_value"],
-                id_token_signing_alg_values_supported=[
-                    "id_token_signing_alg_values_supported_value"
-                ],
+                id_token_signing_alg_values_supported=["id_token_signing_alg_values_supported_value"],
                 claims_supported=["claims_supported_value"],
                 grant_types=["grant_types_value"],
             )
@@ -6124,9 +5484,7 @@ async def test_get_aws_open_id_config_async(
     assert response.jwks_uri == "jwks_uri_value"
     assert response.response_types_supported == ["response_types_supported_value"]
     assert response.subject_types_supported == ["subject_types_supported_value"]
-    assert response.id_token_signing_alg_values_supported == [
-        "id_token_signing_alg_values_supported_value"
-    ]
+    assert response.id_token_signing_alg_values_supported == ["id_token_signing_alg_values_supported_value"]
     assert response.claims_supported == ["claims_supported_value"]
     assert response.grant_types == ["grant_types_value"]
 
@@ -6148,9 +5506,7 @@ def test_get_aws_open_id_config_field_headers():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
         call.return_value = aws_resources.AwsOpenIdConfig()
         client.get_aws_open_id_config(request)
 
@@ -6180,12 +5536,8 @@ async def test_get_aws_open_id_config_field_headers_async():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsOpenIdConfig()
-        )
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsOpenIdConfig())
         await client.get_aws_open_id_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6219,9 +5571,7 @@ def test_get_aws_json_web_keys(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsJsonWebKeys()
         response = client.get_aws_json_web_keys(request)
@@ -6252,12 +5602,8 @@ def test_get_aws_json_web_keys_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_aws_json_web_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6280,19 +5626,12 @@ def test_get_aws_json_web_keys_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_aws_json_web_keys
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_aws_json_web_keys in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_json_web_keys
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_json_web_keys] = mock_rpc
         request = {}
         client.get_aws_json_web_keys(request)
 
@@ -6307,9 +5646,7 @@ def test_get_aws_json_web_keys_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_json_web_keys_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_aws_json_web_keys_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6323,17 +5660,12 @@ async def test_get_aws_json_web_keys_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_aws_json_web_keys
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_aws_json_web_keys in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_aws_json_web_keys
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_aws_json_web_keys] = mock_rpc
 
         request = {}
         await client.get_aws_json_web_keys(request)
@@ -6349,9 +5681,7 @@ async def test_get_aws_json_web_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_json_web_keys_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsJsonWebKeysRequest
-):
+async def test_get_aws_json_web_keys_async(transport: str = "grpc_asyncio", request_type=aws_service.GetAwsJsonWebKeysRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6362,13 +5692,9 @@ async def test_get_aws_json_web_keys_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsJsonWebKeys()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsJsonWebKeys())
         response = await client.get_aws_json_web_keys(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6398,9 +5724,7 @@ def test_get_aws_json_web_keys_field_headers():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
         call.return_value = aws_resources.AwsJsonWebKeys()
         client.get_aws_json_web_keys(request)
 
@@ -6430,12 +5754,8 @@ async def test_get_aws_json_web_keys_field_headers_async():
     request.aws_cluster = "aws_cluster_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsJsonWebKeys()
-        )
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsJsonWebKeys())
         await client.get_aws_json_web_keys(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6469,9 +5789,7 @@ def test_get_aws_server_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsServerConfig(
             name="name_value",
@@ -6507,12 +5825,8 @@ def test_get_aws_server_config_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_aws_server_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6535,19 +5849,12 @@ def test_get_aws_server_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_aws_server_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_aws_server_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_server_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_server_config] = mock_rpc
         request = {}
         client.get_aws_server_config(request)
 
@@ -6562,9 +5869,7 @@ def test_get_aws_server_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_aws_server_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6578,17 +5883,12 @@ async def test_get_aws_server_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_aws_server_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_aws_server_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_aws_server_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_aws_server_config] = mock_rpc
 
         request = {}
         await client.get_aws_server_config(request)
@@ -6604,9 +5904,7 @@ async def test_get_aws_server_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_server_config_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsServerConfigRequest
-):
+async def test_get_aws_server_config_async(transport: str = "grpc_asyncio", request_type=aws_service.GetAwsServerConfigRequest):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6617,9 +5915,7 @@ async def test_get_aws_server_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_resources.AwsServerConfig(
@@ -6658,9 +5954,7 @@ def test_get_aws_server_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         call.return_value = aws_resources.AwsServerConfig()
         client.get_aws_server_config(request)
 
@@ -6690,12 +5984,8 @@ async def test_get_aws_server_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsServerConfig()
-        )
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsServerConfig())
         await client.get_aws_server_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6717,9 +6007,7 @@ def test_get_aws_server_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsServerConfig()
         # Call the method with a truthy value for each flattened field,
@@ -6758,15 +6046,11 @@ async def test_get_aws_server_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = aws_resources.AwsServerConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsServerConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsServerConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_aws_server_config(
@@ -6811,18 +6095,12 @@ def test_create_aws_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_aws_cluster in client._transport._wrapped_methods
-        )
+        assert client._transport.create_aws_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_aws_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_aws_cluster] = mock_rpc
 
         request = {}
         client.create_aws_cluster(request)
@@ -6841,9 +6119,7 @@ def test_create_aws_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_aws_cluster_rest_required_fields(
-    request_type=aws_service.CreateAwsClusterRequest,
-):
+def test_create_aws_cluster_rest_required_fields(request_type=aws_service.CreateAwsClusterRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
@@ -6851,16 +6127,12 @@ def test_create_aws_cluster_rest_required_fields(
     request_init["aws_cluster_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "awsClusterId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_aws_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -6870,9 +6142,7 @@ def test_create_aws_cluster_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["awsClusterId"] = "aws_cluster_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_aws_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -6934,9 +6204,7 @@ def test_create_aws_cluster_rest_required_fields(
 
 
 def test_create_aws_cluster_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_aws_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -6992,11 +6260,7 @@ def test_create_aws_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/awsClusters"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/awsClusters" % client.transport._host, args[1])
 
 
 def test_create_aws_cluster_rest_flattened_error(transport: str = "rest"):
@@ -7030,18 +6294,12 @@ def test_update_aws_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_aws_cluster in client._transport._wrapped_methods
-        )
+        assert client._transport.update_aws_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_aws_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_aws_cluster] = mock_rpc
 
         request = {}
         client.update_aws_cluster(request)
@@ -7060,30 +6318,22 @@ def test_update_aws_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_aws_cluster_rest_required_fields(
-    request_type=aws_service.UpdateAwsClusterRequest,
-):
+def test_update_aws_cluster_rest_required_fields(request_type=aws_service.UpdateAwsClusterRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_aws_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_aws_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -7136,9 +6386,7 @@ def test_update_aws_cluster_rest_required_fields(
 
 
 def test_update_aws_cluster_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_aws_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -7169,11 +6417,7 @@ def test_update_aws_cluster_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "aws_cluster": {
-                "name": "projects/sample1/locations/sample2/awsClusters/sample3"
-            }
-        }
+        sample_request = {"aws_cluster": {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -7196,11 +6440,7 @@ def test_update_aws_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{aws_cluster.name=projects/*/locations/*/awsClusters/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{aws_cluster.name=projects/*/locations/*/awsClusters/*}" % client.transport._host, args[1])
 
 
 def test_update_aws_cluster_rest_flattened_error(transport: str = "rest"):
@@ -7237,9 +6477,7 @@ def test_get_aws_cluster_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_aws_cluster] = mock_rpc
 
         request = {}
@@ -7255,33 +6493,25 @@ def test_get_aws_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_aws_cluster_rest_required_fields(
-    request_type=aws_service.GetAwsClusterRequest,
-):
+def test_get_aws_cluster_rest_required_fields(request_type=aws_service.GetAwsClusterRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7331,9 +6561,7 @@ def test_get_aws_cluster_rest_required_fields(
 
 
 def test_get_aws_cluster_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_aws_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -7351,9 +6579,7 @@ def test_get_aws_cluster_rest_flattened():
         return_value = aws_resources.AwsCluster()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -7377,11 +6603,7 @@ def test_get_aws_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/awsClusters/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/awsClusters/*}" % client.transport._host, args[1])
 
 
 def test_get_aws_cluster_rest_flattened_error(transport: str = "rest"):
@@ -7417,12 +6639,8 @@ def test_list_aws_clusters_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_aws_clusters
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_aws_clusters] = mock_rpc
 
         request = {}
         client.list_aws_clusters(request)
@@ -7437,33 +6655,25 @@ def test_list_aws_clusters_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_aws_clusters_rest_required_fields(
-    request_type=aws_service.ListAwsClustersRequest,
-):
+def test_list_aws_clusters_rest_required_fields(request_type=aws_service.ListAwsClustersRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_aws_clusters._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_aws_clusters._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_aws_clusters._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_aws_clusters._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -7520,9 +6730,7 @@ def test_list_aws_clusters_rest_required_fields(
 
 
 def test_list_aws_clusters_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_aws_clusters._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -7572,11 +6780,7 @@ def test_list_aws_clusters_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/awsClusters"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/awsClusters" % client.transport._host, args[1])
 
 
 def test_list_aws_clusters_rest_flattened_error(transport: str = "rest"):
@@ -7635,9 +6839,7 @@ def test_list_aws_clusters_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            aws_service.ListAwsClustersResponse.to_json(x) for x in response
-        )
+        response = tuple(aws_service.ListAwsClustersResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -7671,18 +6873,12 @@ def test_delete_aws_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_aws_cluster in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_aws_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_aws_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_aws_cluster] = mock_rpc
 
         request = {}
         client.delete_aws_cluster(request)
@@ -7701,33 +6897,25 @@ def test_delete_aws_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_aws_cluster_rest_required_fields(
-    request_type=aws_service.DeleteAwsClusterRequest,
-):
+def test_delete_aws_cluster_rest_required_fields(request_type=aws_service.DeleteAwsClusterRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_aws_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_aws_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_aws_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -7783,9 +6971,7 @@ def test_delete_aws_cluster_rest_required_fields(
 
 
 def test_delete_aws_cluster_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_aws_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -7813,9 +6999,7 @@ def test_delete_aws_cluster_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -7837,11 +7021,7 @@ def test_delete_aws_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/awsClusters/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/awsClusters/*}" % client.transport._host, args[1])
 
 
 def test_delete_aws_cluster_rest_flattened_error(transport: str = "rest"):
@@ -7873,19 +7053,12 @@ def test_generate_aws_cluster_agent_token_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_aws_cluster_agent_token
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_aws_cluster_agent_token in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_aws_cluster_agent_token
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_aws_cluster_agent_token] = mock_rpc
 
         request = {}
         client.generate_aws_cluster_agent_token(request)
@@ -7900,9 +7073,7 @@ def test_generate_aws_cluster_agent_token_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_generate_aws_cluster_agent_token_rest_required_fields(
-    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
-):
+def test_generate_aws_cluster_agent_token_rest_required_fields(request_type=aws_service.GenerateAwsClusterAgentTokenRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
@@ -7912,15 +7083,13 @@ def test_generate_aws_cluster_agent_token_rest_required_fields(
     request_init["version"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_aws_cluster_agent_token._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_aws_cluster_agent_token._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -7930,9 +7099,9 @@ def test_generate_aws_cluster_agent_token_rest_required_fields(
     jsonified_request["subjectTokenType"] = "subject_token_type_value"
     jsonified_request["version"] = "version_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_aws_cluster_agent_token._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_aws_cluster_agent_token._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7974,9 +7143,7 @@ def test_generate_aws_cluster_agent_token_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = aws_service.GenerateAwsClusterAgentTokenResponse.pb(
-                return_value
-            )
+            return_value = aws_service.GenerateAwsClusterAgentTokenResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -7991,13 +7158,9 @@ def test_generate_aws_cluster_agent_token_rest_required_fields(
 
 
 def test_generate_aws_cluster_agent_token_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = (
-        transport.generate_aws_cluster_agent_token._get_unset_required_fields({})
-    )
+    unset_fields = transport.generate_aws_cluster_agent_token._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
         & set(
@@ -8025,19 +7188,12 @@ def test_generate_aws_access_token_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_aws_access_token
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_aws_access_token in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_aws_access_token
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_aws_access_token] = mock_rpc
 
         request = {}
         client.generate_aws_access_token(request)
@@ -8052,33 +7208,29 @@ def test_generate_aws_access_token_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_generate_aws_access_token_rest_required_fields(
-    request_type=aws_service.GenerateAwsAccessTokenRequest,
-):
+def test_generate_aws_access_token_rest_required_fields(request_type=aws_service.GenerateAwsAccessTokenRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["aws_cluster"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_aws_access_token._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_aws_access_token._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["awsCluster"] = "aws_cluster_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_aws_access_token._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_aws_access_token._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8128,9 +7280,7 @@ def test_generate_aws_access_token_rest_required_fields(
 
 
 def test_generate_aws_access_token_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.generate_aws_access_token._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("awsCluster",)))
@@ -8150,18 +7300,12 @@ def test_create_aws_node_pool_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_aws_node_pool in client._transport._wrapped_methods
-        )
+        assert client._transport.create_aws_node_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_aws_node_pool] = mock_rpc
 
         request = {}
         client.create_aws_node_pool(request)
@@ -8180,9 +7324,7 @@ def test_create_aws_node_pool_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_aws_node_pool_rest_required_fields(
-    request_type=aws_service.CreateAwsNodePoolRequest,
-):
+def test_create_aws_node_pool_rest_required_fields(request_type=aws_service.CreateAwsNodePoolRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
@@ -8190,16 +7332,14 @@ def test_create_aws_node_pool_rest_required_fields(
     request_init["aws_node_pool_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "awsNodePoolId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_aws_node_pool._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -8209,9 +7349,9 @@ def test_create_aws_node_pool_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["awsNodePoolId"] = "aws_node_pool_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_aws_node_pool._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -8273,9 +7413,7 @@ def test_create_aws_node_pool_rest_required_fields(
 
 
 def test_create_aws_node_pool_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_aws_node_pool._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -8307,9 +7445,7 @@ def test_create_aws_node_pool_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -8333,11 +7469,7 @@ def test_create_aws_node_pool_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools" % client.transport._host, args[1])
 
 
 def test_create_aws_node_pool_rest_flattened_error(transport: str = "rest"):
@@ -8371,18 +7503,12 @@ def test_update_aws_node_pool_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_aws_node_pool in client._transport._wrapped_methods
-        )
+        assert client._transport.update_aws_node_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_aws_node_pool] = mock_rpc
 
         request = {}
         client.update_aws_node_pool(request)
@@ -8401,30 +7527,26 @@ def test_update_aws_node_pool_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_aws_node_pool_rest_required_fields(
-    request_type=aws_service.UpdateAwsNodePoolRequest,
-):
+def test_update_aws_node_pool_rest_required_fields(request_type=aws_service.UpdateAwsNodePoolRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_aws_node_pool._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_aws_node_pool._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -8477,9 +7599,7 @@ def test_update_aws_node_pool_rest_required_fields(
 
 
 def test_update_aws_node_pool_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_aws_node_pool._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -8510,11 +7630,7 @@ def test_update_aws_node_pool_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "aws_node_pool": {
-                "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-            }
-        }
+        sample_request = {"aws_node_pool": {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -8538,9 +7654,7 @@ def test_update_aws_node_pool_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{aws_node_pool.name=projects/*/locations/*/awsClusters/*/awsNodePools/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{aws_node_pool.name=projects/*/locations/*/awsClusters/*/awsNodePools/*}" % client.transport._host, args[1]
         )
 
 
@@ -8574,19 +7688,12 @@ def test_rollback_aws_node_pool_update_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.rollback_aws_node_pool_update
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.rollback_aws_node_pool_update in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.rollback_aws_node_pool_update
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.rollback_aws_node_pool_update] = mock_rpc
 
         request = {}
         client.rollback_aws_node_pool_update(request)
@@ -8605,33 +7712,29 @@ def test_rollback_aws_node_pool_update_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_rollback_aws_node_pool_update_rest_required_fields(
-    request_type=aws_service.RollbackAwsNodePoolUpdateRequest,
-):
+def test_rollback_aws_node_pool_update_rest_required_fields(request_type=aws_service.RollbackAwsNodePoolUpdateRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).rollback_aws_node_pool_update._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).rollback_aws_node_pool_update._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).rollback_aws_node_pool_update._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).rollback_aws_node_pool_update._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8679,13 +7782,9 @@ def test_rollback_aws_node_pool_update_rest_required_fields(
 
 
 def test_rollback_aws_node_pool_update_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.rollback_aws_node_pool_update._get_unset_required_fields(
-        {}
-    )
+    unset_fields = transport.rollback_aws_node_pool_update._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
@@ -8701,9 +7800,7 @@ def test_rollback_aws_node_pool_update_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -8725,11 +7822,7 @@ def test_rollback_aws_node_pool_update_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}:rollback"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}:rollback" % client.transport._host, args[1])
 
 
 def test_rollback_aws_node_pool_update_rest_flattened_error(transport: str = "rest"):
@@ -8765,12 +7858,8 @@ def test_get_aws_node_pool_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_node_pool] = mock_rpc
 
         request = {}
         client.get_aws_node_pool(request)
@@ -8785,33 +7874,25 @@ def test_get_aws_node_pool_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_aws_node_pool_rest_required_fields(
-    request_type=aws_service.GetAwsNodePoolRequest,
-):
+def test_get_aws_node_pool_rest_required_fields(request_type=aws_service.GetAwsNodePoolRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_node_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_node_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8861,9 +7942,7 @@ def test_get_aws_node_pool_rest_required_fields(
 
 
 def test_get_aws_node_pool_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_aws_node_pool._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -8881,9 +7960,7 @@ def test_get_aws_node_pool_rest_flattened():
         return_value = aws_resources.AwsNodePool()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -8907,11 +7984,7 @@ def test_get_aws_node_pool_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}" % client.transport._host, args[1])
 
 
 def test_get_aws_node_pool_rest_flattened_error(transport: str = "rest"):
@@ -8943,18 +8016,12 @@ def test_list_aws_node_pools_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_aws_node_pools in client._transport._wrapped_methods
-        )
+        assert client._transport.list_aws_node_pools in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_aws_node_pools
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_aws_node_pools] = mock_rpc
 
         request = {}
         client.list_aws_node_pools(request)
@@ -8969,33 +8036,29 @@ def test_list_aws_node_pools_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_aws_node_pools_rest_required_fields(
-    request_type=aws_service.ListAwsNodePoolsRequest,
-):
+def test_list_aws_node_pools_rest_required_fields(request_type=aws_service.ListAwsNodePoolsRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_aws_node_pools._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_aws_node_pools._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_aws_node_pools._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_aws_node_pools._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -9052,9 +8115,7 @@ def test_list_aws_node_pools_rest_required_fields(
 
 
 def test_list_aws_node_pools_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_aws_node_pools._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -9080,9 +8141,7 @@ def test_list_aws_node_pools_rest_flattened():
         return_value = aws_service.ListAwsNodePoolsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -9106,11 +8165,7 @@ def test_list_aws_node_pools_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools" % client.transport._host, args[1])
 
 
 def test_list_aws_node_pools_rest_flattened_error(transport: str = "rest"):
@@ -9169,18 +8224,14 @@ def test_list_aws_node_pools_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            aws_service.ListAwsNodePoolsResponse.to_json(x) for x in response
-        )
+        response = tuple(aws_service.ListAwsNodePoolsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
 
         pager = client.list_aws_node_pools(request=sample_request)
 
@@ -9207,18 +8258,12 @@ def test_delete_aws_node_pool_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_aws_node_pool in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_aws_node_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_aws_node_pool
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_aws_node_pool] = mock_rpc
 
         request = {}
         client.delete_aws_node_pool(request)
@@ -9237,33 +8282,29 @@ def test_delete_aws_node_pool_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_aws_node_pool_rest_required_fields(
-    request_type=aws_service.DeleteAwsNodePoolRequest,
-):
+def test_delete_aws_node_pool_rest_required_fields(request_type=aws_service.DeleteAwsNodePoolRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_aws_node_pool._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_aws_node_pool._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_aws_node_pool._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -9319,9 +8360,7 @@ def test_delete_aws_node_pool_rest_required_fields(
 
 
 def test_delete_aws_node_pool_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_aws_node_pool._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -9349,9 +8388,7 @@ def test_delete_aws_node_pool_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -9373,11 +8410,7 @@ def test_delete_aws_node_pool_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}" % client.transport._host, args[1])
 
 
 def test_delete_aws_node_pool_rest_flattened_error(transport: str = "rest"):
@@ -9409,19 +8442,12 @@ def test_get_aws_open_id_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_aws_open_id_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_aws_open_id_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_open_id_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_open_id_config] = mock_rpc
 
         request = {}
         client.get_aws_open_id_config(request)
@@ -9436,33 +8462,29 @@ def test_get_aws_open_id_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_aws_open_id_config_rest_required_fields(
-    request_type=aws_service.GetAwsOpenIdConfigRequest,
-):
+def test_get_aws_open_id_config_rest_required_fields(request_type=aws_service.GetAwsOpenIdConfigRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["aws_cluster"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_open_id_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_open_id_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["awsCluster"] = "aws_cluster_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_open_id_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_open_id_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9512,9 +8534,7 @@ def test_get_aws_open_id_config_rest_required_fields(
 
 
 def test_get_aws_open_id_config_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_aws_open_id_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("awsCluster",)))
@@ -9534,19 +8554,12 @@ def test_get_aws_json_web_keys_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_aws_json_web_keys
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_aws_json_web_keys in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_json_web_keys
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_json_web_keys] = mock_rpc
 
         request = {}
         client.get_aws_json_web_keys(request)
@@ -9561,33 +8574,29 @@ def test_get_aws_json_web_keys_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_aws_json_web_keys_rest_required_fields(
-    request_type=aws_service.GetAwsJsonWebKeysRequest,
-):
+def test_get_aws_json_web_keys_rest_required_fields(request_type=aws_service.GetAwsJsonWebKeysRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["aws_cluster"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_json_web_keys._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_json_web_keys._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["awsCluster"] = "aws_cluster_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_json_web_keys._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_json_web_keys._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9637,9 +8646,7 @@ def test_get_aws_json_web_keys_rest_required_fields(
 
 
 def test_get_aws_json_web_keys_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_aws_json_web_keys._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("awsCluster",)))
@@ -9659,19 +8666,12 @@ def test_get_aws_server_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_aws_server_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_aws_server_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_aws_server_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_aws_server_config] = mock_rpc
 
         request = {}
         client.get_aws_server_config(request)
@@ -9686,33 +8686,29 @@ def test_get_aws_server_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_aws_server_config_rest_required_fields(
-    request_type=aws_service.GetAwsServerConfigRequest,
-):
+def test_get_aws_server_config_rest_required_fields(request_type=aws_service.GetAwsServerConfigRequest):
     transport_class = transports.AwsClustersRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_server_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_server_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_aws_server_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_aws_server_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9762,9 +8758,7 @@ def test_get_aws_server_config_rest_required_fields(
 
 
 def test_get_aws_server_config_rest_unset_required_fields():
-    transport = transports.AwsClustersRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AwsClustersRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_aws_server_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -9806,11 +8800,7 @@ def test_get_aws_server_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/awsServerConfig}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/awsServerConfig}" % client.transport._host, args[1])
 
 
 def test_get_aws_server_config_rest_flattened_error(transport: str = "rest"):
@@ -9865,9 +8855,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AwsClustersClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = AwsClustersClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.AwsClustersGrpcTransport(
@@ -9921,16 +8909,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = AwsClustersClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = AwsClustersClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -9943,9 +8927,7 @@ def test_create_aws_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_aws_cluster(request=None)
 
@@ -9966,9 +8948,7 @@ def test_update_aws_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_aws_cluster(request=None)
 
@@ -10010,9 +8990,7 @@ def test_list_aws_clusters_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         call.return_value = aws_service.ListAwsClustersResponse()
         client.list_aws_clusters(request=None)
 
@@ -10033,9 +9011,7 @@ def test_delete_aws_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_aws_cluster(request=None)
 
@@ -10056,9 +9032,7 @@ def test_generate_aws_cluster_agent_token_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
         call.return_value = aws_service.GenerateAwsClusterAgentTokenResponse()
         client.generate_aws_cluster_agent_token(request=None)
 
@@ -10079,9 +9053,7 @@ def test_generate_aws_access_token_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
         call.return_value = aws_service.GenerateAwsAccessTokenResponse()
         client.generate_aws_access_token(request=None)
 
@@ -10102,9 +9074,7 @@ def test_create_aws_node_pool_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_aws_node_pool(request=None)
 
@@ -10125,9 +9095,7 @@ def test_update_aws_node_pool_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_aws_node_pool(request=None)
 
@@ -10148,9 +9116,7 @@ def test_rollback_aws_node_pool_update_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.rollback_aws_node_pool_update(request=None)
 
@@ -10171,9 +9137,7 @@ def test_get_aws_node_pool_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         call.return_value = aws_resources.AwsNodePool()
         client.get_aws_node_pool(request=None)
 
@@ -10194,9 +9158,7 @@ def test_list_aws_node_pools_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         call.return_value = aws_service.ListAwsNodePoolsResponse()
         client.list_aws_node_pools(request=None)
 
@@ -10217,9 +9179,7 @@ def test_delete_aws_node_pool_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_aws_node_pool(request=None)
 
@@ -10240,9 +9200,7 @@ def test_get_aws_open_id_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
         call.return_value = aws_resources.AwsOpenIdConfig()
         client.get_aws_open_id_config(request=None)
 
@@ -10263,9 +9221,7 @@ def test_get_aws_json_web_keys_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
         call.return_value = aws_resources.AwsJsonWebKeys()
         client.get_aws_json_web_keys(request=None)
 
@@ -10286,9 +9242,7 @@ def test_get_aws_server_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         call.return_value = aws_resources.AwsServerConfig()
         client.get_aws_server_config(request=None)
 
@@ -10301,16 +9255,12 @@ def test_get_aws_server_config_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = AwsClustersAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = AwsClustersAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = AwsClustersAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = AwsClustersAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -10324,13 +9274,9 @@ async def test_create_aws_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_aws_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10351,13 +9297,9 @@ async def test_update_aws_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_aws_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10413,9 +9355,7 @@ async def test_list_aws_clusters_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.ListAwsClustersResponse(
@@ -10442,13 +9382,9 @@ async def test_delete_aws_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_aws_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10469,9 +9405,7 @@ async def test_generate_aws_cluster_agent_token_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.GenerateAwsClusterAgentTokenResponse(
@@ -10500,9 +9434,7 @@ async def test_generate_aws_access_token_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.GenerateAwsAccessTokenResponse(
@@ -10529,13 +9461,9 @@ async def test_create_aws_node_pool_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10556,13 +9484,9 @@ async def test_update_aws_node_pool_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10583,13 +9507,9 @@ async def test_rollback_aws_node_pool_update_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.rollback_aws_node_pool_update(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10610,9 +9530,7 @@ async def test_get_aws_node_pool_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_resources.AwsNodePool(
@@ -10645,9 +9563,7 @@ async def test_list_aws_node_pools_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_service.ListAwsNodePoolsResponse(
@@ -10674,13 +9590,9 @@ async def test_delete_aws_node_pool_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10701,9 +9613,7 @@ async def test_get_aws_open_id_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_resources.AwsOpenIdConfig(
@@ -10711,9 +9621,7 @@ async def test_get_aws_open_id_config_empty_call_grpc_asyncio():
                 jwks_uri="jwks_uri_value",
                 response_types_supported=["response_types_supported_value"],
                 subject_types_supported=["subject_types_supported_value"],
-                id_token_signing_alg_values_supported=[
-                    "id_token_signing_alg_values_supported_value"
-                ],
+                id_token_signing_alg_values_supported=["id_token_signing_alg_values_supported_value"],
                 claims_supported=["claims_supported_value"],
                 grant_types=["grant_types_value"],
             )
@@ -10738,13 +9646,9 @@ async def test_get_aws_json_web_keys_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            aws_resources.AwsJsonWebKeys()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(aws_resources.AwsJsonWebKeys())
         await client.get_aws_json_web_keys(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10765,9 +9669,7 @@ async def test_get_aws_server_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             aws_resources.AwsServerConfig(
@@ -10786,26 +9688,18 @@ async def test_get_aws_server_config_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = AwsClustersClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = AwsClustersClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
-def test_create_aws_cluster_rest_bad_request(
-    request_type=aws_service.CreateAwsClusterRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_aws_cluster_rest_bad_request(request_type=aws_service.CreateAwsClusterRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -10825,9 +9719,7 @@ def test_create_aws_cluster_rest_bad_request(
     ],
 )
 def test_create_aws_cluster_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -10836,14 +9728,8 @@ def test_create_aws_cluster_rest_call_success(request_type):
         "description": "description_value",
         "networking": {
             "vpc_id": "vpc_id_value",
-            "pod_address_cidr_blocks": [
-                "pod_address_cidr_blocks_value1",
-                "pod_address_cidr_blocks_value2",
-            ],
-            "service_address_cidr_blocks": [
-                "service_address_cidr_blocks_value1",
-                "service_address_cidr_blocks_value2",
-            ],
+            "pod_address_cidr_blocks": ["pod_address_cidr_blocks_value1", "pod_address_cidr_blocks_value2"],
+            "service_address_cidr_blocks": ["service_address_cidr_blocks_value1", "service_address_cidr_blocks_value2"],
             "per_node_pool_sg_rules_disabled": True,
         },
         "aws_region": "aws_region_value",
@@ -10852,36 +9738,18 @@ def test_create_aws_cluster_rest_call_success(request_type):
             "instance_type": "instance_type_value",
             "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
             "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
+            "security_group_ids": ["security_group_ids_value1", "security_group_ids_value2"],
             "iam_instance_profile": "iam_instance_profile_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "throughput": 1114,
-                "kms_key_arn": "kms_key_arn_value",
-            },
+            "root_volume": {"size_gib": 844, "volume_type": 1, "iops": 443, "throughput": 1114, "kms_key_arn": "kms_key_arn_value"},
             "main_volume": {},
             "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "tags": {},
-            "aws_services_authentication": {
-                "role_arn": "role_arn_value",
-                "role_session_name": "role_session_name_value",
-            },
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
+            "aws_services_authentication": {"role_arn": "role_arn_value", "role_session_name": "role_session_name_value"},
+            "proxy_config": {"secret_arn": "secret_arn_value", "secret_version": "secret_version_value"},
             "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "instance_placement": {"tenancy": 1},
         },
-        "authorization": {
-            "admin_users": [{"username": "username_value"}],
-            "admin_groups": [{"group": "group_value"}],
-        },
+        "authorization": {"admin_users": [{"username": "username_value"}], "admin_groups": [{"group": "group_value"}]},
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -10899,10 +9767,7 @@ def test_create_aws_cluster_rest_call_success(request_type):
         "fleet": {"project": "project_value", "membership": "membership_value"},
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
-        "monitoring_config": {
-            "managed_prometheus_config": {"enabled": True},
-            "cloud_monitoring_config": {"enabled": True},
-        },
+        "monitoring_config": {"managed_prometheus_config": {"enabled": True}, "cloud_monitoring_config": {"enabled": True}},
         "binary_authorization": {"evaluation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -10929,9 +9794,7 @@ def test_create_aws_cluster_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -10952,13 +9815,7 @@ def test_create_aws_cluster_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -10996,19 +9853,13 @@ def test_create_aws_cluster_rest_call_success(request_type):
 def test_create_aws_cluster_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_create_aws_cluster"
     ) as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_create_aws_cluster_with_metadata"
@@ -11018,9 +9869,7 @@ def test_create_aws_cluster_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.CreateAwsClusterRequest.pb(
-            aws_service.CreateAwsClusterRequest()
-        )
+        pb_message = aws_service.CreateAwsClusterRequest.pb(aws_service.CreateAwsClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11056,24 +9905,14 @@ def test_create_aws_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_aws_cluster_rest_bad_request(
-    request_type=aws_service.UpdateAwsClusterRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_aws_cluster_rest_bad_request(request_type=aws_service.UpdateAwsClusterRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
-    }
+    request_init = {"aws_cluster": {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -11093,29 +9932,17 @@ def test_update_aws_cluster_rest_bad_request(
     ],
 )
 def test_update_aws_cluster_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
-        }
-    }
+    request_init = {"aws_cluster": {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}}
     request_init["aws_cluster"] = {
         "name": "projects/sample1/locations/sample2/awsClusters/sample3",
         "description": "description_value",
         "networking": {
             "vpc_id": "vpc_id_value",
-            "pod_address_cidr_blocks": [
-                "pod_address_cidr_blocks_value1",
-                "pod_address_cidr_blocks_value2",
-            ],
-            "service_address_cidr_blocks": [
-                "service_address_cidr_blocks_value1",
-                "service_address_cidr_blocks_value2",
-            ],
+            "pod_address_cidr_blocks": ["pod_address_cidr_blocks_value1", "pod_address_cidr_blocks_value2"],
+            "service_address_cidr_blocks": ["service_address_cidr_blocks_value1", "service_address_cidr_blocks_value2"],
             "per_node_pool_sg_rules_disabled": True,
         },
         "aws_region": "aws_region_value",
@@ -11124,36 +9951,18 @@ def test_update_aws_cluster_rest_call_success(request_type):
             "instance_type": "instance_type_value",
             "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
             "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
+            "security_group_ids": ["security_group_ids_value1", "security_group_ids_value2"],
             "iam_instance_profile": "iam_instance_profile_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "throughput": 1114,
-                "kms_key_arn": "kms_key_arn_value",
-            },
+            "root_volume": {"size_gib": 844, "volume_type": 1, "iops": 443, "throughput": 1114, "kms_key_arn": "kms_key_arn_value"},
             "main_volume": {},
             "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "tags": {},
-            "aws_services_authentication": {
-                "role_arn": "role_arn_value",
-                "role_session_name": "role_session_name_value",
-            },
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
+            "aws_services_authentication": {"role_arn": "role_arn_value", "role_session_name": "role_session_name_value"},
+            "proxy_config": {"secret_arn": "secret_arn_value", "secret_version": "secret_version_value"},
             "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "instance_placement": {"tenancy": 1},
         },
-        "authorization": {
-            "admin_users": [{"username": "username_value"}],
-            "admin_groups": [{"group": "group_value"}],
-        },
+        "authorization": {"admin_users": [{"username": "username_value"}], "admin_groups": [{"group": "group_value"}]},
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -11171,10 +9980,7 @@ def test_update_aws_cluster_rest_call_success(request_type):
         "fleet": {"project": "project_value", "membership": "membership_value"},
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
-        "monitoring_config": {
-            "managed_prometheus_config": {"enabled": True},
-            "cloud_monitoring_config": {"enabled": True},
-        },
+        "monitoring_config": {"managed_prometheus_config": {"enabled": True}, "cloud_monitoring_config": {"enabled": True}},
         "binary_authorization": {"evaluation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -11201,9 +10007,7 @@ def test_update_aws_cluster_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -11224,13 +10028,7 @@ def test_update_aws_cluster_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -11268,19 +10066,13 @@ def test_update_aws_cluster_rest_call_success(request_type):
 def test_update_aws_cluster_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_update_aws_cluster"
     ) as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_update_aws_cluster_with_metadata"
@@ -11290,9 +10082,7 @@ def test_update_aws_cluster_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.UpdateAwsClusterRequest.pb(
-            aws_service.UpdateAwsClusterRequest()
-        )
+        pb_message = aws_service.UpdateAwsClusterRequest.pb(aws_service.UpdateAwsClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11328,20 +10118,14 @@ def test_update_aws_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_aws_cluster_rest_bad_request(
-    request_type=aws_service.GetAwsClusterRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_aws_cluster_rest_bad_request(request_type=aws_service.GetAwsClusterRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -11361,9 +10145,7 @@ def test_get_aws_cluster_rest_bad_request(
     ],
 )
 def test_get_aws_cluster_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
@@ -11413,19 +10195,13 @@ def test_get_aws_cluster_rest_call_success(request_type):
 def test_get_aws_cluster_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_get_aws_cluster"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_get_aws_cluster") as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_get_aws_cluster_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_get_aws_cluster"
@@ -11433,9 +10209,7 @@ def test_get_aws_cluster_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GetAwsClusterRequest.pb(
-            aws_service.GetAwsClusterRequest()
-        )
+        pb_message = aws_service.GetAwsClusterRequest.pb(aws_service.GetAwsClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11471,20 +10245,14 @@ def test_get_aws_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_aws_clusters_rest_bad_request(
-    request_type=aws_service.ListAwsClustersRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_aws_clusters_rest_bad_request(request_type=aws_service.ListAwsClustersRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -11504,9 +10272,7 @@ def test_list_aws_clusters_rest_bad_request(
     ],
 )
 def test_list_aws_clusters_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -11540,19 +10306,13 @@ def test_list_aws_clusters_rest_call_success(request_type):
 def test_list_aws_clusters_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_list_aws_clusters"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_list_aws_clusters") as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_list_aws_clusters_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_list_aws_clusters"
@@ -11560,9 +10320,7 @@ def test_list_aws_clusters_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.ListAwsClustersRequest.pb(
-            aws_service.ListAwsClustersRequest()
-        )
+        pb_message = aws_service.ListAwsClustersRequest.pb(aws_service.ListAwsClustersRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11573,9 +10331,7 @@ def test_list_aws_clusters_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_service.ListAwsClustersResponse.to_json(
-            aws_service.ListAwsClustersResponse()
-        )
+        return_value = aws_service.ListAwsClustersResponse.to_json(aws_service.ListAwsClustersResponse())
         req.return_value.content = return_value
 
         request = aws_service.ListAwsClustersRequest()
@@ -11585,10 +10341,7 @@ def test_list_aws_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = aws_service.ListAwsClustersResponse()
-        post_with_metadata.return_value = (
-            aws_service.ListAwsClustersResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = aws_service.ListAwsClustersResponse(), metadata
 
         client.list_aws_clusters(
             request,
@@ -11603,20 +10356,14 @@ def test_list_aws_clusters_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_aws_cluster_rest_bad_request(
-    request_type=aws_service.DeleteAwsClusterRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_aws_cluster_rest_bad_request(request_type=aws_service.DeleteAwsClusterRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -11636,9 +10383,7 @@ def test_delete_aws_cluster_rest_bad_request(
     ],
 )
 def test_delete_aws_cluster_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
@@ -11666,19 +10411,13 @@ def test_delete_aws_cluster_rest_call_success(request_type):
 def test_delete_aws_cluster_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_delete_aws_cluster"
     ) as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_delete_aws_cluster_with_metadata"
@@ -11688,9 +10427,7 @@ def test_delete_aws_cluster_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.DeleteAwsClusterRequest.pb(
-            aws_service.DeleteAwsClusterRequest()
-        )
+        pb_message = aws_service.DeleteAwsClusterRequest.pb(aws_service.DeleteAwsClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11726,22 +10463,14 @@ def test_delete_aws_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_generate_aws_cluster_agent_token_rest_bad_request(
-    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_generate_aws_cluster_agent_token_rest_bad_request(request_type=aws_service.GenerateAwsClusterAgentTokenRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -11761,14 +10490,10 @@ def test_generate_aws_cluster_agent_token_rest_bad_request(
     ],
 )
 def test_generate_aws_cluster_agent_token_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11803,30 +10528,21 @@ def test_generate_aws_cluster_agent_token_rest_call_success(request_type):
 def test_generate_aws_cluster_agent_token_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_generate_aws_cluster_agent_token"
-    ) as post, mock.patch.object(
-        transports.AwsClustersRestInterceptor,
-        "post_generate_aws_cluster_agent_token_with_metadata",
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_generate_aws_cluster_agent_token") as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_generate_aws_cluster_agent_token_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_generate_aws_cluster_agent_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GenerateAwsClusterAgentTokenRequest.pb(
-            aws_service.GenerateAwsClusterAgentTokenRequest()
-        )
+        pb_message = aws_service.GenerateAwsClusterAgentTokenRequest.pb(aws_service.GenerateAwsClusterAgentTokenRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11837,9 +10553,7 @@ def test_generate_aws_cluster_agent_token_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_service.GenerateAwsClusterAgentTokenResponse.to_json(
-            aws_service.GenerateAwsClusterAgentTokenResponse()
-        )
+        return_value = aws_service.GenerateAwsClusterAgentTokenResponse.to_json(aws_service.GenerateAwsClusterAgentTokenResponse())
         req.return_value.content = return_value
 
         request = aws_service.GenerateAwsClusterAgentTokenRequest()
@@ -11849,10 +10563,7 @@ def test_generate_aws_cluster_agent_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = aws_service.GenerateAwsClusterAgentTokenResponse()
-        post_with_metadata.return_value = (
-            aws_service.GenerateAwsClusterAgentTokenResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = aws_service.GenerateAwsClusterAgentTokenResponse(), metadata
 
         client.generate_aws_cluster_agent_token(
             request,
@@ -11867,22 +10578,14 @@ def test_generate_aws_cluster_agent_token_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_generate_aws_access_token_rest_bad_request(
-    request_type=aws_service.GenerateAwsAccessTokenRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_generate_aws_access_token_rest_bad_request(request_type=aws_service.GenerateAwsAccessTokenRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -11902,14 +10605,10 @@ def test_generate_aws_access_token_rest_bad_request(
     ],
 )
 def test_generate_aws_access_token_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11940,30 +10639,21 @@ def test_generate_aws_access_token_rest_call_success(request_type):
 def test_generate_aws_access_token_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_generate_aws_access_token"
-    ) as post, mock.patch.object(
-        transports.AwsClustersRestInterceptor,
-        "post_generate_aws_access_token_with_metadata",
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_generate_aws_access_token") as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_generate_aws_access_token_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_generate_aws_access_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GenerateAwsAccessTokenRequest.pb(
-            aws_service.GenerateAwsAccessTokenRequest()
-        )
+        pb_message = aws_service.GenerateAwsAccessTokenRequest.pb(aws_service.GenerateAwsAccessTokenRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -11974,9 +10664,7 @@ def test_generate_aws_access_token_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_service.GenerateAwsAccessTokenResponse.to_json(
-            aws_service.GenerateAwsAccessTokenResponse()
-        )
+        return_value = aws_service.GenerateAwsAccessTokenResponse.to_json(aws_service.GenerateAwsAccessTokenResponse())
         req.return_value.content = return_value
 
         request = aws_service.GenerateAwsAccessTokenRequest()
@@ -11986,10 +10674,7 @@ def test_generate_aws_access_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = aws_service.GenerateAwsAccessTokenResponse()
-        post_with_metadata.return_value = (
-            aws_service.GenerateAwsAccessTokenResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = aws_service.GenerateAwsAccessTokenResponse(), metadata
 
         client.generate_aws_access_token(
             request,
@@ -12004,20 +10689,14 @@ def test_generate_aws_access_token_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_aws_node_pool_rest_bad_request(
-    request_type=aws_service.CreateAwsNodePoolRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_aws_node_pool_rest_bad_request(request_type=aws_service.CreateAwsNodePoolRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -12037,9 +10716,7 @@ def test_create_aws_node_pool_rest_bad_request(
     ],
 )
 def test_create_aws_node_pool_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
@@ -12048,36 +10725,19 @@ def test_create_aws_node_pool_rest_call_success(request_type):
         "version": "version_value",
         "config": {
             "instance_type": "instance_type_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "throughput": 1114,
-                "kms_key_arn": "kms_key_arn_value",
-            },
+            "root_volume": {"size_gib": 844, "volume_type": 1, "iops": 443, "throughput": 1114, "kms_key_arn": "kms_key_arn_value"},
             "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
             "labels": {},
             "tags": {},
             "iam_instance_profile": "iam_instance_profile_value",
             "image_type": "image_type_value",
             "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
+            "security_group_ids": ["security_group_ids_value1", "security_group_ids_value2"],
+            "proxy_config": {"secret_arn": "secret_arn_value", "secret_version": "secret_version_value"},
             "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "instance_placement": {"tenancy": 1},
-            "autoscaling_metrics_collection": {
-                "granularity": "granularity_value",
-                "metrics": ["metrics_value1", "metrics_value2"],
-            },
-            "spot_config": {
-                "instance_types": ["instance_types_value1", "instance_types_value2"]
-            },
+            "autoscaling_metrics_collection": {"granularity": "granularity_value", "metrics": ["metrics_value1", "metrics_value2"]},
+            "spot_config": {"instance_types": ["instance_types_value1", "instance_types_value2"]},
         },
         "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
         "subnet_id": "subnet_id_value",
@@ -12098,9 +10758,7 @@ def test_create_aws_node_pool_rest_call_success(request_type):
             "cpu_cfs_quota_period": "cpu_cfs_quota_period_value",
             "pod_pids_limit": 1488,
         },
-        "update_settings": {
-            "surge_settings": {"max_surge": 971, "max_unavailable": 1577}
-        },
+        "update_settings": {"surge_settings": {"max_surge": 971, "max_unavailable": 1577}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -12126,9 +10784,7 @@ def test_create_aws_node_pool_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -12149,13 +10805,7 @@ def test_create_aws_node_pool_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -12193,19 +10843,13 @@ def test_create_aws_node_pool_rest_call_success(request_type):
 def test_create_aws_node_pool_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_create_aws_node_pool"
     ) as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_create_aws_node_pool_with_metadata"
@@ -12215,9 +10859,7 @@ def test_create_aws_node_pool_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.CreateAwsNodePoolRequest.pb(
-            aws_service.CreateAwsNodePoolRequest()
-        )
+        pb_message = aws_service.CreateAwsNodePoolRequest.pb(aws_service.CreateAwsNodePoolRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -12253,24 +10895,14 @@ def test_create_aws_node_pool_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_aws_node_pool_rest_bad_request(
-    request_type=aws_service.UpdateAwsNodePoolRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_aws_node_pool_rest_bad_request(request_type=aws_service.UpdateAwsNodePoolRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_node_pool": {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-        }
-    }
+    request_init = {"aws_node_pool": {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -12290,51 +10922,28 @@ def test_update_aws_node_pool_rest_bad_request(
     ],
 )
 def test_update_aws_node_pool_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_node_pool": {
-            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-        }
-    }
+    request_init = {"aws_node_pool": {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}}
     request_init["aws_node_pool"] = {
         "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4",
         "version": "version_value",
         "config": {
             "instance_type": "instance_type_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "throughput": 1114,
-                "kms_key_arn": "kms_key_arn_value",
-            },
+            "root_volume": {"size_gib": 844, "volume_type": 1, "iops": 443, "throughput": 1114, "kms_key_arn": "kms_key_arn_value"},
             "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
             "labels": {},
             "tags": {},
             "iam_instance_profile": "iam_instance_profile_value",
             "image_type": "image_type_value",
             "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
+            "security_group_ids": ["security_group_ids_value1", "security_group_ids_value2"],
+            "proxy_config": {"secret_arn": "secret_arn_value", "secret_version": "secret_version_value"},
             "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "instance_placement": {"tenancy": 1},
-            "autoscaling_metrics_collection": {
-                "granularity": "granularity_value",
-                "metrics": ["metrics_value1", "metrics_value2"],
-            },
-            "spot_config": {
-                "instance_types": ["instance_types_value1", "instance_types_value2"]
-            },
+            "autoscaling_metrics_collection": {"granularity": "granularity_value", "metrics": ["metrics_value1", "metrics_value2"]},
+            "spot_config": {"instance_types": ["instance_types_value1", "instance_types_value2"]},
         },
         "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
         "subnet_id": "subnet_id_value",
@@ -12355,9 +10964,7 @@ def test_update_aws_node_pool_rest_call_success(request_type):
             "cpu_cfs_quota_period": "cpu_cfs_quota_period_value",
             "pod_pids_limit": 1488,
         },
-        "update_settings": {
-            "surge_settings": {"max_surge": 971, "max_unavailable": 1577}
-        },
+        "update_settings": {"surge_settings": {"max_surge": 971, "max_unavailable": 1577}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -12383,9 +10990,7 @@ def test_update_aws_node_pool_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -12406,13 +11011,7 @@ def test_update_aws_node_pool_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -12450,19 +11049,13 @@ def test_update_aws_node_pool_rest_call_success(request_type):
 def test_update_aws_node_pool_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_update_aws_node_pool"
     ) as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_update_aws_node_pool_with_metadata"
@@ -12472,9 +11065,7 @@ def test_update_aws_node_pool_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.UpdateAwsNodePoolRequest.pb(
-            aws_service.UpdateAwsNodePoolRequest()
-        )
+        pb_message = aws_service.UpdateAwsNodePoolRequest.pb(aws_service.UpdateAwsNodePoolRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -12510,22 +11101,14 @@ def test_update_aws_node_pool_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_rollback_aws_node_pool_update_rest_bad_request(
-    request_type=aws_service.RollbackAwsNodePoolUpdateRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_rollback_aws_node_pool_update_rest_bad_request(request_type=aws_service.RollbackAwsNodePoolUpdateRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -12545,14 +11128,10 @@ def test_rollback_aws_node_pool_update_rest_bad_request(
     ],
 )
 def test_rollback_aws_node_pool_update_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12577,32 +11156,23 @@ def test_rollback_aws_node_pool_update_rest_call_success(request_type):
 def test_rollback_aws_node_pool_update_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_rollback_aws_node_pool_update"
     ) as post, mock.patch.object(
-        transports.AwsClustersRestInterceptor,
-        "post_rollback_aws_node_pool_update_with_metadata",
+        transports.AwsClustersRestInterceptor, "post_rollback_aws_node_pool_update_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_rollback_aws_node_pool_update"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.RollbackAwsNodePoolUpdateRequest.pb(
-            aws_service.RollbackAwsNodePoolUpdateRequest()
-        )
+        pb_message = aws_service.RollbackAwsNodePoolUpdateRequest.pb(aws_service.RollbackAwsNodePoolUpdateRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -12638,22 +11208,14 @@ def test_rollback_aws_node_pool_update_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_aws_node_pool_rest_bad_request(
-    request_type=aws_service.GetAwsNodePoolRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_aws_node_pool_rest_bad_request(request_type=aws_service.GetAwsNodePoolRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -12673,14 +11235,10 @@ def test_get_aws_node_pool_rest_bad_request(
     ],
 )
 def test_get_aws_node_pool_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12723,19 +11281,13 @@ def test_get_aws_node_pool_rest_call_success(request_type):
 def test_get_aws_node_pool_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_get_aws_node_pool"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_get_aws_node_pool") as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_get_aws_node_pool_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_get_aws_node_pool"
@@ -12743,9 +11295,7 @@ def test_get_aws_node_pool_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GetAwsNodePoolRequest.pb(
-            aws_service.GetAwsNodePoolRequest()
-        )
+        pb_message = aws_service.GetAwsNodePoolRequest.pb(aws_service.GetAwsNodePoolRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -12781,20 +11331,14 @@ def test_get_aws_node_pool_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_aws_node_pools_rest_bad_request(
-    request_type=aws_service.ListAwsNodePoolsRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_aws_node_pools_rest_bad_request(request_type=aws_service.ListAwsNodePoolsRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -12814,9 +11358,7 @@ def test_list_aws_node_pools_rest_bad_request(
     ],
 )
 def test_list_aws_node_pools_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
@@ -12850,19 +11392,13 @@ def test_list_aws_node_pools_rest_call_success(request_type):
 def test_list_aws_node_pools_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_list_aws_node_pools"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_list_aws_node_pools") as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_list_aws_node_pools_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_list_aws_node_pools"
@@ -12870,9 +11406,7 @@ def test_list_aws_node_pools_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.ListAwsNodePoolsRequest.pb(
-            aws_service.ListAwsNodePoolsRequest()
-        )
+        pb_message = aws_service.ListAwsNodePoolsRequest.pb(aws_service.ListAwsNodePoolsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -12883,9 +11417,7 @@ def test_list_aws_node_pools_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_service.ListAwsNodePoolsResponse.to_json(
-            aws_service.ListAwsNodePoolsResponse()
-        )
+        return_value = aws_service.ListAwsNodePoolsResponse.to_json(aws_service.ListAwsNodePoolsResponse())
         req.return_value.content = return_value
 
         request = aws_service.ListAwsNodePoolsRequest()
@@ -12895,10 +11427,7 @@ def test_list_aws_node_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = aws_service.ListAwsNodePoolsResponse()
-        post_with_metadata.return_value = (
-            aws_service.ListAwsNodePoolsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = aws_service.ListAwsNodePoolsResponse(), metadata
 
         client.list_aws_node_pools(
             request,
@@ -12913,22 +11442,14 @@ def test_list_aws_node_pools_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_aws_node_pool_rest_bad_request(
-    request_type=aws_service.DeleteAwsNodePoolRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_aws_node_pool_rest_bad_request(request_type=aws_service.DeleteAwsNodePoolRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -12948,14 +11469,10 @@ def test_delete_aws_node_pool_rest_bad_request(
     ],
 )
 def test_delete_aws_node_pool_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12980,19 +11497,13 @@ def test_delete_aws_node_pool_rest_call_success(request_type):
 def test_delete_aws_node_pool_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_delete_aws_node_pool"
     ) as post, mock.patch.object(
         transports.AwsClustersRestInterceptor, "post_delete_aws_node_pool_with_metadata"
@@ -13002,9 +11513,7 @@ def test_delete_aws_node_pool_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.DeleteAwsNodePoolRequest.pb(
-            aws_service.DeleteAwsNodePoolRequest()
-        )
+        pb_message = aws_service.DeleteAwsNodePoolRequest.pb(aws_service.DeleteAwsNodePoolRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -13040,22 +11549,14 @@ def test_delete_aws_node_pool_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_aws_open_id_config_rest_bad_request(
-    request_type=aws_service.GetAwsOpenIdConfigRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_aws_open_id_config_rest_bad_request(request_type=aws_service.GetAwsOpenIdConfigRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -13075,14 +11576,10 @@ def test_get_aws_open_id_config_rest_bad_request(
     ],
 )
 def test_get_aws_open_id_config_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -13093,9 +11590,7 @@ def test_get_aws_open_id_config_rest_call_success(request_type):
             jwks_uri="jwks_uri_value",
             response_types_supported=["response_types_supported_value"],
             subject_types_supported=["subject_types_supported_value"],
-            id_token_signing_alg_values_supported=[
-                "id_token_signing_alg_values_supported_value"
-            ],
+            id_token_signing_alg_values_supported=["id_token_signing_alg_values_supported_value"],
             claims_supported=["claims_supported_value"],
             grant_types=["grant_types_value"],
         )
@@ -13118,9 +11613,7 @@ def test_get_aws_open_id_config_rest_call_success(request_type):
     assert response.jwks_uri == "jwks_uri_value"
     assert response.response_types_supported == ["response_types_supported_value"]
     assert response.subject_types_supported == ["subject_types_supported_value"]
-    assert response.id_token_signing_alg_values_supported == [
-        "id_token_signing_alg_values_supported_value"
-    ]
+    assert response.id_token_signing_alg_values_supported == ["id_token_signing_alg_values_supported_value"]
     assert response.claims_supported == ["claims_supported_value"]
     assert response.grant_types == ["grant_types_value"]
 
@@ -13129,30 +11622,21 @@ def test_get_aws_open_id_config_rest_call_success(request_type):
 def test_get_aws_open_id_config_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_get_aws_open_id_config"
-    ) as post, mock.patch.object(
-        transports.AwsClustersRestInterceptor,
-        "post_get_aws_open_id_config_with_metadata",
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_get_aws_open_id_config") as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_open_id_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_get_aws_open_id_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GetAwsOpenIdConfigRequest.pb(
-            aws_service.GetAwsOpenIdConfigRequest()
-        )
+        pb_message = aws_service.GetAwsOpenIdConfigRequest.pb(aws_service.GetAwsOpenIdConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -13163,9 +11647,7 @@ def test_get_aws_open_id_config_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_resources.AwsOpenIdConfig.to_json(
-            aws_resources.AwsOpenIdConfig()
-        )
+        return_value = aws_resources.AwsOpenIdConfig.to_json(aws_resources.AwsOpenIdConfig())
         req.return_value.content = return_value
 
         request = aws_service.GetAwsOpenIdConfigRequest()
@@ -13190,22 +11672,14 @@ def test_get_aws_open_id_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_aws_json_web_keys_rest_bad_request(
-    request_type=aws_service.GetAwsJsonWebKeysRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_aws_json_web_keys_rest_bad_request(request_type=aws_service.GetAwsJsonWebKeysRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -13225,14 +11699,10 @@ def test_get_aws_json_web_keys_rest_bad_request(
     ],
 )
 def test_get_aws_json_web_keys_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
-    }
+    request_init = {"aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -13260,30 +11730,21 @@ def test_get_aws_json_web_keys_rest_call_success(request_type):
 def test_get_aws_json_web_keys_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_get_aws_json_web_keys"
-    ) as post, mock.patch.object(
-        transports.AwsClustersRestInterceptor,
-        "post_get_aws_json_web_keys_with_metadata",
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_get_aws_json_web_keys") as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_json_web_keys_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_get_aws_json_web_keys"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GetAwsJsonWebKeysRequest.pb(
-            aws_service.GetAwsJsonWebKeysRequest()
-        )
+        pb_message = aws_service.GetAwsJsonWebKeysRequest.pb(aws_service.GetAwsJsonWebKeysRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -13294,9 +11755,7 @@ def test_get_aws_json_web_keys_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_resources.AwsJsonWebKeys.to_json(
-            aws_resources.AwsJsonWebKeys()
-        )
+        return_value = aws_resources.AwsJsonWebKeys.to_json(aws_resources.AwsJsonWebKeys())
         req.return_value.content = return_value
 
         request = aws_service.GetAwsJsonWebKeysRequest()
@@ -13321,20 +11780,14 @@ def test_get_aws_json_web_keys_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_aws_server_config_rest_bad_request(
-    request_type=aws_service.GetAwsServerConfigRequest,
-):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_aws_server_config_rest_bad_request(request_type=aws_service.GetAwsServerConfigRequest):
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/awsServerConfig"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -13354,9 +11807,7 @@ def test_get_aws_server_config_rest_bad_request(
     ],
 )
 def test_get_aws_server_config_rest_call_success(request_type):
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/awsServerConfig"}
@@ -13392,30 +11843,21 @@ def test_get_aws_server_config_rest_call_success(request_type):
 def test_get_aws_server_config_rest_interceptors(null_interceptor):
     transport = transports.AwsClustersRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AwsClustersRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AwsClustersRestInterceptor(),
     )
     client = AwsClustersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AwsClustersRestInterceptor, "post_get_aws_server_config"
-    ) as post, mock.patch.object(
-        transports.AwsClustersRestInterceptor,
-        "post_get_aws_server_config_with_metadata",
+    ) as transcode, mock.patch.object(transports.AwsClustersRestInterceptor, "post_get_aws_server_config") as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_server_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.AwsClustersRestInterceptor, "pre_get_aws_server_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = aws_service.GetAwsServerConfigRequest.pb(
-            aws_service.GetAwsServerConfigRequest()
-        )
+        pb_message = aws_service.GetAwsServerConfigRequest.pb(aws_service.GetAwsServerConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -13426,9 +11868,7 @@ def test_get_aws_server_config_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = aws_resources.AwsServerConfig.to_json(
-            aws_resources.AwsServerConfig()
-        )
+        return_value = aws_resources.AwsServerConfig.to_json(aws_resources.AwsServerConfig())
         req.return_value.content = return_value
 
         request = aws_service.GetAwsServerConfigRequest()
@@ -13453,22 +11893,16 @@ def test_get_aws_server_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -13515,22 +11949,16 @@ def test_cancel_operation_rest(request_type):
     assert response is None
 
 
-def test_delete_operation_rest_bad_request(
-    request_type=operations_pb2.DeleteOperationRequest,
-):
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -13577,22 +12005,16 @@ def test_delete_operation_rest(request_type):
     assert response is None
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -13639,22 +12061,16 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -13702,9 +12118,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -13717,9 +12131,7 @@ def test_create_aws_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_cluster), "__call__") as call:
         client.create_aws_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13739,9 +12151,7 @@ def test_update_aws_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_cluster), "__call__") as call:
         client.update_aws_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13781,9 +12191,7 @@ def test_list_aws_clusters_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_clusters), "__call__") as call:
         client.list_aws_clusters(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13803,9 +12211,7 @@ def test_delete_aws_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_cluster), "__call__") as call:
         client.delete_aws_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13825,9 +12231,7 @@ def test_generate_aws_cluster_agent_token_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_cluster_agent_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_cluster_agent_token), "__call__") as call:
         client.generate_aws_cluster_agent_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13847,9 +12251,7 @@ def test_generate_aws_access_token_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_aws_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_aws_access_token), "__call__") as call:
         client.generate_aws_access_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13869,9 +12271,7 @@ def test_create_aws_node_pool_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_aws_node_pool), "__call__") as call:
         client.create_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13891,9 +12291,7 @@ def test_update_aws_node_pool_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_aws_node_pool), "__call__") as call:
         client.update_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13913,9 +12311,7 @@ def test_rollback_aws_node_pool_update_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_aws_node_pool_update), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback_aws_node_pool_update), "__call__") as call:
         client.rollback_aws_node_pool_update(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13935,9 +12331,7 @@ def test_get_aws_node_pool_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_node_pool), "__call__") as call:
         client.get_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13957,9 +12351,7 @@ def test_list_aws_node_pools_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aws_node_pools), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_aws_node_pools), "__call__") as call:
         client.list_aws_node_pools(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13979,9 +12371,7 @@ def test_delete_aws_node_pool_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aws_node_pool), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_aws_node_pool), "__call__") as call:
         client.delete_aws_node_pool(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14001,9 +12391,7 @@ def test_get_aws_open_id_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_open_id_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_open_id_config), "__call__") as call:
         client.get_aws_open_id_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14023,9 +12411,7 @@ def test_get_aws_json_web_keys_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_json_web_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_json_web_keys), "__call__") as call:
         client.get_aws_json_web_keys(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14045,9 +12431,7 @@ def test_get_aws_server_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_aws_server_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_aws_server_config), "__call__") as call:
         client.get_aws_server_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14089,17 +12473,12 @@ def test_transport_grpc_default():
 def test_aws_clusters_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.AwsClustersTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.AwsClustersTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_aws_clusters_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.AwsClustersTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -14152,9 +12531,7 @@ def test_aws_clusters_base_transport():
 
 def test_aws_clusters_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.gke_multicloud_v1.services.aws_clusters.transports.AwsClustersTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -14229,9 +12606,7 @@ def test_aws_clusters_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -14239,17 +12614,12 @@ def test_aws_clusters_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.AwsClustersGrpcTransport, grpc_helpers),
-        (transports.AwsClustersGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.AwsClustersGrpcTransport, grpc_helpers), (transports.AwsClustersGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_aws_clusters_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -14272,21 +12642,14 @@ def test_aws_clusters_transport_create_channel(transport_class, grpc_helpers):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport])
 def test_aws_clusters_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -14304,24 +12667,15 @@ def test_aws_clusters_grpc_transport_client_cert_source_for_mtls(transport_class
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_aws_clusters_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.AwsClustersRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.AwsClustersRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -14336,15 +12690,11 @@ def test_aws_clusters_http_transport_client_cert_source_for_mtls():
 def test_aws_clusters_host_no_port(transport_name):
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="gkemulticloud.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="gkemulticloud.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "gkemulticloud.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://gkemulticloud.googleapis.com"
+        "gkemulticloud.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://gkemulticloud.googleapis.com"
     )
 
 
@@ -14359,15 +12709,11 @@ def test_aws_clusters_host_no_port(transport_name):
 def test_aws_clusters_host_with_port(transport_name):
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="gkemulticloud.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="gkemulticloud.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "gkemulticloud.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://gkemulticloud.googleapis.com:8000"
+        "gkemulticloud.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://gkemulticloud.googleapis.com:8000"
     )
 
 
@@ -14466,17 +12812,11 @@ def test_aws_clusters_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport],
-)
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport])
 def test_aws_clusters_transport_channel_mtls_with_client_cert_source(transport_class):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -14494,9 +12834,7 @@ def test_aws_clusters_transport_channel_mtls_with_client_cert_source(transport_c
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -14515,10 +12853,7 @@ def test_aws_clusters_transport_channel_mtls_with_client_cert_source(transport_c
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.AwsClustersGrpcTransport, transports.AwsClustersGrpcAsyncIOTransport])
 def test_aws_clusters_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -14526,9 +12861,7 @@ def test_aws_clusters_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -14594,12 +12927,10 @@ def test_aws_cluster_path():
     project = "squid"
     location = "clam"
     aws_cluster = "whelk"
-    expected = (
-        "projects/{project}/locations/{location}/awsClusters/{aws_cluster}".format(
-            project=project,
-            location=location,
-            aws_cluster=aws_cluster,
-        )
+    expected = "projects/{project}/locations/{location}/awsClusters/{aws_cluster}".format(
+        project=project,
+        location=location,
+        aws_cluster=aws_cluster,
     )
     actual = AwsClustersClient.aws_cluster_path(project, location, aws_cluster)
     assert expected == actual
@@ -14629,9 +12960,7 @@ def test_aws_node_pool_path():
         aws_cluster=aws_cluster,
         aws_node_pool=aws_node_pool,
     )
-    actual = AwsClustersClient.aws_node_pool_path(
-        project, location, aws_cluster, aws_node_pool
-    )
+    actual = AwsClustersClient.aws_node_pool_path(project, location, aws_cluster, aws_node_pool)
     assert expected == actual
 
 
@@ -14778,18 +13107,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.AwsClustersTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.AwsClustersTransport, "_prep_wrapped_messages") as prep:
         client = AwsClustersClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.AwsClustersTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.AwsClustersTransport, "_prep_wrapped_messages") as prep:
         transport_class = AwsClustersClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -15114,9 +13439,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -15168,9 +13491,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -15210,9 +13531,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -15259,9 +13578,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -15313,9 +13630,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -15355,9 +13670,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -15367,12 +13680,8 @@ async def test_list_operations_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -15380,24 +13689,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = AwsClustersAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = AwsClustersAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = AwsClustersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -15409,9 +13710,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = AwsClustersClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = AwsClustersClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -15428,9 +13727,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -15441,9 +13738,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

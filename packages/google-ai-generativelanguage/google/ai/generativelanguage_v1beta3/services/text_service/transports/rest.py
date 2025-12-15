@@ -112,12 +112,8 @@ class TextServiceRestInterceptor:
     """
 
     def pre_batch_embed_text(
-        self,
-        request: text_service.BatchEmbedTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        text_service.BatchEmbedTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: text_service.BatchEmbedTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[text_service.BatchEmbedTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_embed_text
 
         Override in a subclass to manipulate the request or metadata
@@ -125,9 +121,7 @@ class TextServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_embed_text(
-        self, response: text_service.BatchEmbedTextResponse
-    ) -> text_service.BatchEmbedTextResponse:
+    def post_batch_embed_text(self, response: text_service.BatchEmbedTextResponse) -> text_service.BatchEmbedTextResponse:
         """Post-rpc interceptor for batch_embed_text
 
         DEPRECATED. Please use the `post_batch_embed_text_with_metadata`
@@ -141,12 +135,8 @@ class TextServiceRestInterceptor:
         return response
 
     def post_batch_embed_text_with_metadata(
-        self,
-        response: text_service.BatchEmbedTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        text_service.BatchEmbedTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: text_service.BatchEmbedTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[text_service.BatchEmbedTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_embed_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -162,12 +152,8 @@ class TextServiceRestInterceptor:
         return response, metadata
 
     def pre_count_text_tokens(
-        self,
-        request: text_service.CountTextTokensRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        text_service.CountTextTokensRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: text_service.CountTextTokensRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[text_service.CountTextTokensRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for count_text_tokens
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +161,7 @@ class TextServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_count_text_tokens(
-        self, response: text_service.CountTextTokensResponse
-    ) -> text_service.CountTextTokensResponse:
+    def post_count_text_tokens(self, response: text_service.CountTextTokensResponse) -> text_service.CountTextTokensResponse:
         """Post-rpc interceptor for count_text_tokens
 
         DEPRECATED. Please use the `post_count_text_tokens_with_metadata`
@@ -191,12 +175,8 @@ class TextServiceRestInterceptor:
         return response
 
     def post_count_text_tokens_with_metadata(
-        self,
-        response: text_service.CountTextTokensResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        text_service.CountTextTokensResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: text_service.CountTextTokensResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[text_service.CountTextTokensResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for count_text_tokens
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -212,9 +192,7 @@ class TextServiceRestInterceptor:
         return response, metadata
 
     def pre_embed_text(
-        self,
-        request: text_service.EmbedTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: text_service.EmbedTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[text_service.EmbedTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for embed_text
 
@@ -223,9 +201,7 @@ class TextServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_embed_text(
-        self, response: text_service.EmbedTextResponse
-    ) -> text_service.EmbedTextResponse:
+    def post_embed_text(self, response: text_service.EmbedTextResponse) -> text_service.EmbedTextResponse:
         """Post-rpc interceptor for embed_text
 
         DEPRECATED. Please use the `post_embed_text_with_metadata`
@@ -239,9 +215,7 @@ class TextServiceRestInterceptor:
         return response
 
     def post_embed_text_with_metadata(
-        self,
-        response: text_service.EmbedTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: text_service.EmbedTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[text_service.EmbedTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for embed_text
 
@@ -258,12 +232,8 @@ class TextServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_text(
-        self,
-        request: text_service.GenerateTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        text_service.GenerateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: text_service.GenerateTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[text_service.GenerateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -271,9 +241,7 @@ class TextServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_text(
-        self, response: text_service.GenerateTextResponse
-    ) -> text_service.GenerateTextResponse:
+    def post_generate_text(self, response: text_service.GenerateTextResponse) -> text_service.GenerateTextResponse:
         """Post-rpc interceptor for generate_text
 
         DEPRECATED. Please use the `post_generate_text_with_metadata`
@@ -287,12 +255,8 @@ class TextServiceRestInterceptor:
         return response
 
     def post_generate_text_with_metadata(
-        self,
-        response: text_service.GenerateTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        text_service.GenerateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: text_service.GenerateTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[text_service.GenerateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -390,30 +354,18 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TextServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchEmbedText(
-        _BaseTextServiceRestTransport._BaseBatchEmbedText, TextServiceRestStub
-    ):
+    class _BatchEmbedText(_BaseTextServiceRestTransport._BaseBatchEmbedText, TextServiceRestStub):
         def __hash__(self):
             return hash("TextServiceRestTransport.BatchEmbedText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -454,32 +406,18 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                     The response to a EmbedTextRequest.
             """
 
-            http_options = (
-                _BaseTextServiceRestTransport._BaseBatchEmbedText._get_http_options()
-            )
+            http_options = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_embed_text(
-                request, metadata
-            )
-            transcoded_request = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_embed_text(request, metadata)
+            transcoded_request = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_transcoded_request(http_options, request)
 
-            body = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTextServiceRestTransport._BaseBatchEmbedText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -503,13 +441,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             # Send the request
             response = TextServiceRestTransport._BatchEmbedText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -525,16 +457,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             resp = self._interceptor.post_batch_embed_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_embed_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_embed_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = text_service.BatchEmbedTextResponse.to_json(
-                        response
-                    )
+                    response_payload = text_service.BatchEmbedTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -553,22 +479,12 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 )
             return resp
 
-    class _CountTextTokens(
-        _BaseTextServiceRestTransport._BaseCountTextTokens, TextServiceRestStub
-    ):
+    class _CountTextTokens(_BaseTextServiceRestTransport._BaseCountTextTokens, TextServiceRestStub):
         def __hash__(self):
             return hash("TextServiceRestTransport.CountTextTokens")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -616,32 +532,18 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTextServiceRestTransport._BaseCountTextTokens._get_http_options()
-            )
+            http_options = _BaseTextServiceRestTransport._BaseCountTextTokens._get_http_options()
 
-            request, metadata = self._interceptor.pre_count_text_tokens(
-                request, metadata
-            )
-            transcoded_request = _BaseTextServiceRestTransport._BaseCountTextTokens._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_count_text_tokens(request, metadata)
+            transcoded_request = _BaseTextServiceRestTransport._BaseCountTextTokens._get_transcoded_request(http_options, request)
 
-            body = _BaseTextServiceRestTransport._BaseCountTextTokens._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTextServiceRestTransport._BaseCountTextTokens._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTextServiceRestTransport._BaseCountTextTokens._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTextServiceRestTransport._BaseCountTextTokens._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -665,13 +567,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             # Send the request
             response = TextServiceRestTransport._CountTextTokens._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -687,16 +583,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             resp = self._interceptor.post_count_text_tokens(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_count_text_tokens_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_count_text_tokens_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = text_service.CountTextTokensResponse.to_json(
-                        response
-                    )
+                    response_payload = text_service.CountTextTokensResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -720,15 +610,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             return hash("TextServiceRestTransport.EmbedText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -769,34 +651,18 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                     The response to a EmbedTextRequest.
             """
 
-            http_options = (
-                _BaseTextServiceRestTransport._BaseEmbedText._get_http_options()
-            )
+            http_options = _BaseTextServiceRestTransport._BaseEmbedText._get_http_options()
 
             request, metadata = self._interceptor.pre_embed_text(request, metadata)
-            transcoded_request = (
-                _BaseTextServiceRestTransport._BaseEmbedText._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTextServiceRestTransport._BaseEmbedText._get_transcoded_request(http_options, request)
 
-            body = _BaseTextServiceRestTransport._BaseEmbedText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTextServiceRestTransport._BaseEmbedText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTextServiceRestTransport._BaseEmbedText._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTextServiceRestTransport._BaseEmbedText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -820,13 +686,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             # Send the request
             response = TextServiceRestTransport._EmbedText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -842,12 +702,8 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             resp = self._interceptor.post_embed_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_embed_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_embed_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = text_service.EmbedTextResponse.to_json(response)
                 except:
@@ -868,22 +724,12 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 )
             return resp
 
-    class _GenerateText(
-        _BaseTextServiceRestTransport._BaseGenerateText, TextServiceRestStub
-    ):
+    class _GenerateText(_BaseTextServiceRestTransport._BaseGenerateText, TextServiceRestStub):
         def __hash__(self):
             return hash("TextServiceRestTransport.GenerateText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -926,36 +772,18 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTextServiceRestTransport._BaseGenerateText._get_http_options()
-            )
+            http_options = _BaseTextServiceRestTransport._BaseGenerateText._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_text(request, metadata)
-            transcoded_request = (
-                _BaseTextServiceRestTransport._BaseGenerateText._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTextServiceRestTransport._BaseGenerateText._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTextServiceRestTransport._BaseGenerateText._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTextServiceRestTransport._BaseGenerateText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTextServiceRestTransport._BaseGenerateText._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTextServiceRestTransport._BaseGenerateText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -979,13 +807,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             # Send the request
             response = TextServiceRestTransport._GenerateText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1001,16 +823,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
 
             resp = self._interceptor.post_generate_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = text_service.GenerateTextResponse.to_json(
-                        response
-                    )
+                    response_payload = text_service.GenerateTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1030,39 +846,25 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             return resp
 
     @property
-    def batch_embed_text(
-        self,
-    ) -> Callable[
-        [text_service.BatchEmbedTextRequest], text_service.BatchEmbedTextResponse
-    ]:
+    def batch_embed_text(self) -> Callable[[text_service.BatchEmbedTextRequest], text_service.BatchEmbedTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchEmbedText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def count_text_tokens(
-        self,
-    ) -> Callable[
-        [text_service.CountTextTokensRequest], text_service.CountTextTokensResponse
-    ]:
+    def count_text_tokens(self) -> Callable[[text_service.CountTextTokensRequest], text_service.CountTextTokensResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CountTextTokens(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def embed_text(
-        self,
-    ) -> Callable[[text_service.EmbedTextRequest], text_service.EmbedTextResponse]:
+    def embed_text(self) -> Callable[[text_service.EmbedTextRequest], text_service.EmbedTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EmbedText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_text(
-        self,
-    ) -> Callable[
-        [text_service.GenerateTextRequest], text_service.GenerateTextResponse
-    ]:
+    def generate_text(self) -> Callable[[text_service.GenerateTextRequest], text_service.GenerateTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateText(self._session, self._host, self._interceptor)  # type: ignore

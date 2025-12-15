@@ -18,12 +18,8 @@ from google.cloud.video.transcoder import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.video.transcoder_v1.services.transcoder_service.async_client import (
-    TranscoderServiceAsyncClient,
-)
-from google.cloud.video.transcoder_v1.services.transcoder_service.client import (
-    TranscoderServiceClient,
-)
+from google.cloud.video.transcoder_v1.services.transcoder_service.async_client import TranscoderServiceAsyncClient
+from google.cloud.video.transcoder_v1.services.transcoder_service.client import TranscoderServiceClient
 from google.cloud.video.transcoder_v1.types.resources import (
     AdBreak,
     AudioStream,

@@ -171,12 +171,8 @@ class CloudControlsPartnerCoreRestInterceptor:
     """
 
     def pre_create_customer(
-        self,
-        request: customers.CreateCustomerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customers.CreateCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: customers.CreateCustomerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customers.CreateCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_customer
 
         Override in a subclass to manipulate the request or metadata
@@ -198,9 +194,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_create_customer_with_metadata(
-        self,
-        response: customers.Customer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: customers.Customer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[customers.Customer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_customer
 
@@ -217,12 +211,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_delete_customer(
-        self,
-        request: customers.DeleteCustomerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customers.DeleteCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: customers.DeleteCustomerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customers.DeleteCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_customer
 
         Override in a subclass to manipulate the request or metadata
@@ -231,9 +221,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return request, metadata
 
     def pre_get_customer(
-        self,
-        request: customers.GetCustomerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: customers.GetCustomerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[customers.GetCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_customer
 
@@ -256,9 +244,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_get_customer_with_metadata(
-        self,
-        response: customers.Customer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: customers.Customer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[customers.Customer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_customer
 
@@ -275,13 +261,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_get_ekm_connections(
-        self,
-        request: ekm_connections.GetEkmConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_connections.GetEkmConnectionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ekm_connections.GetEkmConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_connections.GetEkmConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_ekm_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +270,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_ekm_connections(
-        self, response: ekm_connections.EkmConnections
-    ) -> ekm_connections.EkmConnections:
+    def post_get_ekm_connections(self, response: ekm_connections.EkmConnections) -> ekm_connections.EkmConnections:
         """Post-rpc interceptor for get_ekm_connections
 
         DEPRECATED. Please use the `post_get_ekm_connections_with_metadata`
@@ -305,9 +284,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_get_ekm_connections_with_metadata(
-        self,
-        response: ekm_connections.EkmConnections,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ekm_connections.EkmConnections, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ekm_connections.EkmConnections, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_ekm_connections
 
@@ -324,9 +301,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_get_partner(
-        self,
-        request: partners.GetPartnerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: partners.GetPartnerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[partners.GetPartnerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_partner
 
@@ -349,9 +324,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_get_partner_with_metadata(
-        self,
-        response: partners.Partner,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: partners.Partner, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[partners.Partner, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_partner
 
@@ -368,13 +341,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_get_partner_permissions(
-        self,
-        request: partner_permissions.GetPartnerPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        partner_permissions.GetPartnerPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: partner_permissions.GetPartnerPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[partner_permissions.GetPartnerPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_partner_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -382,9 +350,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_partner_permissions(
-        self, response: partner_permissions.PartnerPermissions
-    ) -> partner_permissions.PartnerPermissions:
+    def post_get_partner_permissions(self, response: partner_permissions.PartnerPermissions) -> partner_permissions.PartnerPermissions:
         """Post-rpc interceptor for get_partner_permissions
 
         DEPRECATED. Please use the `post_get_partner_permissions_with_metadata`
@@ -398,12 +364,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_get_partner_permissions_with_metadata(
-        self,
-        response: partner_permissions.PartnerPermissions,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        partner_permissions.PartnerPermissions, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: partner_permissions.PartnerPermissions, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[partner_permissions.PartnerPermissions, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_partner_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -419,12 +381,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_get_workload(
-        self,
-        request: customer_workloads.GetWorkloadRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customer_workloads.GetWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: customer_workloads.GetWorkloadRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customer_workloads.GetWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -432,9 +390,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_workload(
-        self, response: customer_workloads.Workload
-    ) -> customer_workloads.Workload:
+    def post_get_workload(self, response: customer_workloads.Workload) -> customer_workloads.Workload:
         """Post-rpc interceptor for get_workload
 
         DEPRECATED. Please use the `post_get_workload_with_metadata`
@@ -448,9 +404,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_get_workload_with_metadata(
-        self,
-        response: customer_workloads.Workload,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: customer_workloads.Workload, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[customer_workloads.Workload, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_workload
 
@@ -467,13 +421,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_list_access_approval_requests(
-        self,
-        request: access_approval_requests.ListAccessApprovalRequestsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        access_approval_requests.ListAccessApprovalRequestsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: access_approval_requests.ListAccessApprovalRequestsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[access_approval_requests.ListAccessApprovalRequestsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_access_approval_requests
 
         Override in a subclass to manipulate the request or metadata
@@ -497,13 +446,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_list_access_approval_requests_with_metadata(
-        self,
-        response: access_approval_requests.ListAccessApprovalRequestsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        access_approval_requests.ListAccessApprovalRequestsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: access_approval_requests.ListAccessApprovalRequestsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[access_approval_requests.ListAccessApprovalRequestsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_access_approval_requests
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -519,9 +463,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_list_customers(
-        self,
-        request: customers.ListCustomersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: customers.ListCustomersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[customers.ListCustomersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_customers
 
@@ -530,9 +472,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_customers(
-        self, response: customers.ListCustomersResponse
-    ) -> customers.ListCustomersResponse:
+    def post_list_customers(self, response: customers.ListCustomersResponse) -> customers.ListCustomersResponse:
         """Post-rpc interceptor for list_customers
 
         DEPRECATED. Please use the `post_list_customers_with_metadata`
@@ -546,12 +486,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_list_customers_with_metadata(
-        self,
-        response: customers.ListCustomersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customers.ListCustomersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: customers.ListCustomersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customers.ListCustomersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_customers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -567,12 +503,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_list_workloads(
-        self,
-        request: customer_workloads.ListWorkloadsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customer_workloads.ListWorkloadsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: customer_workloads.ListWorkloadsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customer_workloads.ListWorkloadsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workloads
 
         Override in a subclass to manipulate the request or metadata
@@ -580,9 +512,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_workloads(
-        self, response: customer_workloads.ListWorkloadsResponse
-    ) -> customer_workloads.ListWorkloadsResponse:
+    def post_list_workloads(self, response: customer_workloads.ListWorkloadsResponse) -> customer_workloads.ListWorkloadsResponse:
         """Post-rpc interceptor for list_workloads
 
         DEPRECATED. Please use the `post_list_workloads_with_metadata`
@@ -596,13 +526,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_list_workloads_with_metadata(
-        self,
-        response: customer_workloads.ListWorkloadsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customer_workloads.ListWorkloadsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: customer_workloads.ListWorkloadsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customer_workloads.ListWorkloadsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_workloads
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -618,12 +543,8 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response, metadata
 
     def pre_update_customer(
-        self,
-        request: customers.UpdateCustomerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        customers.UpdateCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: customers.UpdateCustomerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[customers.UpdateCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_customer
 
         Override in a subclass to manipulate the request or metadata
@@ -645,9 +566,7 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def post_update_customer_with_metadata(
-        self,
-        response: customers.Customer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: customers.Customer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[customers.Customer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_customer
 
@@ -743,31 +662,18 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CloudControlsPartnerCoreRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateCustomer(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _CreateCustomer(_BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.CreateCustomer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -809,30 +715,18 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_create_customer(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -855,16 +749,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerCoreRestTransport._CreateCustomer._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CloudControlsPartnerCoreRestTransport._CreateCustomer._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -880,12 +766,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_create_customer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_customer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_customer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = customers.Customer.to_json(response)
                 except:
@@ -906,23 +788,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _DeleteCustomer(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _DeleteCustomer(_BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.DeleteCustomer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -957,26 +828,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_customer(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -999,15 +860,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerCoreRestTransport._DeleteCustomer._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudControlsPartnerCoreRestTransport._DeleteCustomer._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1015,23 +869,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetCustomer(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _GetCustomer(_BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.GetCustomer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1072,26 +915,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_get_customer(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1115,12 +948,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetCustomer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1136,12 +964,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_get_customer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_customer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_customer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = customers.Customer.to_json(response)
                 except:
@@ -1162,23 +986,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _GetEkmConnections(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _GetEkmConnections(_BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.GetEkmConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1220,28 +1033,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_ekm_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_ekm_connections(request, metadata)
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1264,15 +1065,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerCoreRestTransport._GetEkmConnections._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudControlsPartnerCoreRestTransport._GetEkmConnections._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1288,12 +1082,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_get_ekm_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_ekm_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_ekm_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ekm_connections.EkmConnections.to_json(response)
                 except:
@@ -1314,23 +1104,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _GetPartner(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _GetPartner(_BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.GetPartner")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1369,26 +1148,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     Message describing Partner resource
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_http_options()
 
             request, metadata = self._interceptor.pre_get_partner(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1412,12 +1181,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetPartner._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1433,12 +1197,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_get_partner(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_partner_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_partner_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = partners.Partner.to_json(response)
                 except:
@@ -1459,23 +1219,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _GetPartnerPermissions(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _GetPartnerPermissions(_BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.GetPartnerPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1517,28 +1266,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_partner_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_partner_permissions(request, metadata)
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1562,12 +1299,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetPartnerPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1583,16 +1315,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_get_partner_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_partner_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_partner_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = partner_permissions.PartnerPermissions.to_json(
-                        response
-                    )
+                    response_payload = partner_permissions.PartnerPermissions.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1611,23 +1337,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _GetWorkload(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _GetWorkload(_BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.GetWorkload")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1670,26 +1385,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workload(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1713,12 +1418,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetWorkload._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1734,12 +1434,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_get_workload(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_workload_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_workload_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = customer_workloads.Workload.to_json(response)
                 except:
@@ -1760,25 +1456,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _ListAccessApprovalRequests(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _ListAccessApprovalRequests(_BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
-            return hash(
-                "CloudControlsPartnerCoreRestTransport.ListAccessApprovalRequests"
-            )
+            return hash("CloudControlsPartnerCoreRestTransport.ListAccessApprovalRequests")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1821,28 +1504,18 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_access_approval_requests(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_access_approval_requests(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1866,12 +1539,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._ListAccessApprovalRequests._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1881,27 +1549,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             # Return the response
             resp = access_approval_requests.ListAccessApprovalRequestsResponse()
-            pb_resp = access_approval_requests.ListAccessApprovalRequestsResponse.pb(
-                resp
-            )
+            pb_resp = access_approval_requests.ListAccessApprovalRequestsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_access_approval_requests(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_access_approval_requests_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_access_approval_requests_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = access_approval_requests.ListAccessApprovalRequestsResponse.to_json(
-                        response
-                    )
+                    response_payload = access_approval_requests.ListAccessApprovalRequestsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1920,23 +1577,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _ListCustomers(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _ListCustomers(_BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.ListCustomers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1977,26 +1623,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_customers(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2019,15 +1655,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerCoreRestTransport._ListCustomers._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudControlsPartnerCoreRestTransport._ListCustomers._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2043,12 +1672,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_list_customers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_customers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_customers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = customers.ListCustomersResponse.to_json(response)
                 except:
@@ -2069,23 +1694,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _ListWorkloads(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _ListWorkloads(_BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.ListWorkloads")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2126,26 +1740,16 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workloads(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2168,15 +1772,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerCoreRestTransport._ListWorkloads._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudControlsPartnerCoreRestTransport._ListWorkloads._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2192,16 +1789,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_list_workloads(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_workloads_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_workloads_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = customer_workloads.ListWorkloadsResponse.to_json(
-                        response
-                    )
+                    response_payload = customer_workloads.ListWorkloadsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2220,23 +1811,12 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
             return resp
 
-    class _UpdateCustomer(
-        _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer,
-        CloudControlsPartnerCoreRestStub,
-    ):
+    class _UpdateCustomer(_BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer, CloudControlsPartnerCoreRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerCoreRestTransport.UpdateCustomer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2278,30 +1858,18 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_update_customer(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2324,16 +1892,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerCoreRestTransport._UpdateCustomer._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CloudControlsPartnerCoreRestTransport._UpdateCustomer._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2349,12 +1909,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_update_customer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_customer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_customer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = customers.Customer.to_json(response)
                 except:
@@ -2376,35 +1932,25 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             return resp
 
     @property
-    def create_customer(
-        self,
-    ) -> Callable[[customers.CreateCustomerRequest], customers.Customer]:
+    def create_customer(self) -> Callable[[customers.CreateCustomerRequest], customers.Customer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCustomer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_customer(
-        self,
-    ) -> Callable[[customers.DeleteCustomerRequest], empty_pb2.Empty]:
+    def delete_customer(self) -> Callable[[customers.DeleteCustomerRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCustomer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_customer(
-        self,
-    ) -> Callable[[customers.GetCustomerRequest], customers.Customer]:
+    def get_customer(self) -> Callable[[customers.GetCustomerRequest], customers.Customer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_ekm_connections(
-        self,
-    ) -> Callable[
-        [ekm_connections.GetEkmConnectionsRequest], ekm_connections.EkmConnections
-    ]:
+    def get_ekm_connections(self) -> Callable[[ekm_connections.GetEkmConnectionsRequest], ekm_connections.EkmConnections]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEkmConnections(self._session, self._host, self._interceptor)  # type: ignore
@@ -2416,20 +1962,13 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
         return self._GetPartner(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_partner_permissions(
-        self,
-    ) -> Callable[
-        [partner_permissions.GetPartnerPermissionsRequest],
-        partner_permissions.PartnerPermissions,
-    ]:
+    def get_partner_permissions(self) -> Callable[[partner_permissions.GetPartnerPermissionsRequest], partner_permissions.PartnerPermissions]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPartnerPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_workload(
-        self,
-    ) -> Callable[[customer_workloads.GetWorkloadRequest], customer_workloads.Workload]:
+    def get_workload(self) -> Callable[[customer_workloads.GetWorkloadRequest], customer_workloads.Workload]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkload(self._session, self._host, self._interceptor)  # type: ignore
@@ -2437,37 +1976,25 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
     @property
     def list_access_approval_requests(
         self,
-    ) -> Callable[
-        [access_approval_requests.ListAccessApprovalRequestsRequest],
-        access_approval_requests.ListAccessApprovalRequestsResponse,
-    ]:
+    ) -> Callable[[access_approval_requests.ListAccessApprovalRequestsRequest], access_approval_requests.ListAccessApprovalRequestsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccessApprovalRequests(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_customers(
-        self,
-    ) -> Callable[[customers.ListCustomersRequest], customers.ListCustomersResponse]:
+    def list_customers(self) -> Callable[[customers.ListCustomersRequest], customers.ListCustomersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_workloads(
-        self,
-    ) -> Callable[
-        [customer_workloads.ListWorkloadsRequest],
-        customer_workloads.ListWorkloadsResponse,
-    ]:
+    def list_workloads(self) -> Callable[[customer_workloads.ListWorkloadsRequest], customer_workloads.ListWorkloadsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkloads(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_customer(
-        self,
-    ) -> Callable[[customers.UpdateCustomerRequest], customers.Customer]:
+    def update_customer(self) -> Callable[[customers.UpdateCustomerRequest], customers.Customer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCustomer(self._session, self._host, self._interceptor)  # type: ignore

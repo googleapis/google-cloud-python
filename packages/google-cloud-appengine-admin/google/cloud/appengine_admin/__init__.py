@@ -18,45 +18,21 @@ from google.cloud.appengine_admin import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.appengine_admin_v1.services.applications.async_client import (
-    ApplicationsAsyncClient,
-)
-from google.cloud.appengine_admin_v1.services.applications.client import (
-    ApplicationsClient,
-)
-from google.cloud.appengine_admin_v1.services.authorized_certificates.async_client import (
-    AuthorizedCertificatesAsyncClient,
-)
-from google.cloud.appengine_admin_v1.services.authorized_certificates.client import (
-    AuthorizedCertificatesClient,
-)
-from google.cloud.appengine_admin_v1.services.authorized_domains.async_client import (
-    AuthorizedDomainsAsyncClient,
-)
-from google.cloud.appengine_admin_v1.services.authorized_domains.client import (
-    AuthorizedDomainsClient,
-)
-from google.cloud.appengine_admin_v1.services.domain_mappings.async_client import (
-    DomainMappingsAsyncClient,
-)
-from google.cloud.appengine_admin_v1.services.domain_mappings.client import (
-    DomainMappingsClient,
-)
-from google.cloud.appengine_admin_v1.services.firewall.async_client import (
-    FirewallAsyncClient,
-)
+from google.cloud.appengine_admin_v1.services.applications.async_client import ApplicationsAsyncClient
+from google.cloud.appengine_admin_v1.services.applications.client import ApplicationsClient
+from google.cloud.appengine_admin_v1.services.authorized_certificates.async_client import AuthorizedCertificatesAsyncClient
+from google.cloud.appengine_admin_v1.services.authorized_certificates.client import AuthorizedCertificatesClient
+from google.cloud.appengine_admin_v1.services.authorized_domains.async_client import AuthorizedDomainsAsyncClient
+from google.cloud.appengine_admin_v1.services.authorized_domains.client import AuthorizedDomainsClient
+from google.cloud.appengine_admin_v1.services.domain_mappings.async_client import DomainMappingsAsyncClient
+from google.cloud.appengine_admin_v1.services.domain_mappings.client import DomainMappingsClient
+from google.cloud.appengine_admin_v1.services.firewall.async_client import FirewallAsyncClient
 from google.cloud.appengine_admin_v1.services.firewall.client import FirewallClient
-from google.cloud.appengine_admin_v1.services.instances.async_client import (
-    InstancesAsyncClient,
-)
+from google.cloud.appengine_admin_v1.services.instances.async_client import InstancesAsyncClient
 from google.cloud.appengine_admin_v1.services.instances.client import InstancesClient
-from google.cloud.appengine_admin_v1.services.services.async_client import (
-    ServicesAsyncClient,
-)
+from google.cloud.appengine_admin_v1.services.services.async_client import ServicesAsyncClient
 from google.cloud.appengine_admin_v1.services.services.client import ServicesClient
-from google.cloud.appengine_admin_v1.services.versions.async_client import (
-    VersionsAsyncClient,
-)
+from google.cloud.appengine_admin_v1.services.versions.async_client import VersionsAsyncClient
 from google.cloud.appengine_admin_v1.services.versions.client import VersionsClient
 from google.cloud.appengine_admin_v1.types.app_yaml import (
     ApiConfigHandler,
@@ -120,42 +96,17 @@ from google.cloud.appengine_admin_v1.types.appengine import (
     UpdateVersionRequest,
     VersionView,
 )
-from google.cloud.appengine_admin_v1.types.application import (
-    Application,
-    UrlDispatchRule,
-)
-from google.cloud.appengine_admin_v1.types.audit_data import (
-    AuditData,
-    CreateVersionMethod,
-    UpdateServiceMethod,
-)
-from google.cloud.appengine_admin_v1.types.certificate import (
-    AuthorizedCertificate,
-    CertificateRawData,
-    ManagedCertificate,
-    ManagementStatus,
-)
-from google.cloud.appengine_admin_v1.types.deploy import (
-    CloudBuildOptions,
-    ContainerInfo,
-    Deployment,
-    FileInfo,
-    ZipInfo,
-)
+from google.cloud.appengine_admin_v1.types.application import Application, UrlDispatchRule
+from google.cloud.appengine_admin_v1.types.audit_data import AuditData, CreateVersionMethod, UpdateServiceMethod
+from google.cloud.appengine_admin_v1.types.certificate import AuthorizedCertificate, CertificateRawData, ManagedCertificate, ManagementStatus
+from google.cloud.appengine_admin_v1.types.deploy import CloudBuildOptions, ContainerInfo, Deployment, FileInfo, ZipInfo
 from google.cloud.appengine_admin_v1.types.domain import AuthorizedDomain
-from google.cloud.appengine_admin_v1.types.domain_mapping import (
-    DomainMapping,
-    ResourceRecord,
-    SslSettings,
-)
+from google.cloud.appengine_admin_v1.types.domain_mapping import DomainMapping, ResourceRecord, SslSettings
 from google.cloud.appengine_admin_v1.types.firewall import FirewallRule
 from google.cloud.appengine_admin_v1.types.instance import Instance
 from google.cloud.appengine_admin_v1.types.location import LocationMetadata
 from google.cloud.appengine_admin_v1.types.network_settings import NetworkSettings
-from google.cloud.appengine_admin_v1.types.operation import (
-    CreateVersionMetadataV1,
-    OperationMetadataV1,
-)
+from google.cloud.appengine_admin_v1.types.operation import CreateVersionMetadataV1, OperationMetadataV1
 from google.cloud.appengine_admin_v1.types.service import Service, TrafficSplit
 from google.cloud.appengine_admin_v1.types.version import (
     AutomaticScaling,

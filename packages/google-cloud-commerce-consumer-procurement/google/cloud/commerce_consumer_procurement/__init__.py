@@ -18,18 +18,10 @@ from google.cloud.commerce_consumer_procurement import gapic_version as package_
 __version__ = package_version.__version__
 
 
-from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service.async_client import (
-    ConsumerProcurementServiceAsyncClient,
-)
-from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service.client import (
-    ConsumerProcurementServiceClient,
-)
-from google.cloud.commerce_consumer_procurement_v1.services.license_management_service.async_client import (
-    LicenseManagementServiceAsyncClient,
-)
-from google.cloud.commerce_consumer_procurement_v1.services.license_management_service.client import (
-    LicenseManagementServiceClient,
-)
+from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service.async_client import ConsumerProcurementServiceAsyncClient
+from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service.client import ConsumerProcurementServiceClient
+from google.cloud.commerce_consumer_procurement_v1.services.license_management_service.async_client import LicenseManagementServiceAsyncClient
+from google.cloud.commerce_consumer_procurement_v1.services.license_management_service.client import LicenseManagementServiceClient
 from google.cloud.commerce_consumer_procurement_v1.types.license_management_service import (
     AssignmentProtocol,
     AssignRequest,

@@ -18,12 +18,8 @@ from google.cloud.securitycentermanagement import gapic_version as package_versi
 __version__ = package_version.__version__
 
 
-from google.cloud.securitycentermanagement_v1.services.security_center_management.async_client import (
-    SecurityCenterManagementAsyncClient,
-)
-from google.cloud.securitycentermanagement_v1.services.security_center_management.client import (
-    SecurityCenterManagementClient,
-)
+from google.cloud.securitycentermanagement_v1.services.security_center_management.async_client import SecurityCenterManagementAsyncClient
+from google.cloud.securitycentermanagement_v1.services.security_center_management.client import SecurityCenterManagementClient
 from google.cloud.securitycentermanagement_v1.types.security_center_management import (
     CreateEventThreatDetectionCustomModuleRequest,
     CreateSecurityHealthAnalyticsCustomModuleRequest,

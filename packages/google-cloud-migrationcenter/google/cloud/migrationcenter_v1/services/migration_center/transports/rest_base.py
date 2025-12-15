@@ -74,20 +74,14 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAddAssetsToGroup:
@@ -98,11 +92,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -125,9 +115,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -138,11 +126,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -155,11 +139,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -182,9 +162,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -195,11 +173,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -212,11 +186,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -239,9 +209,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -252,11 +220,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -269,11 +233,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -296,9 +256,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -309,11 +267,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -328,11 +282,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -355,9 +305,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -368,11 +316,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreateGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreateGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -387,11 +331,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -414,9 +354,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -427,11 +365,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -446,11 +380,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -473,9 +403,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -486,11 +414,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreateImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -505,11 +429,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -532,9 +452,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -545,11 +463,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -564,11 +478,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -591,9 +501,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -604,11 +512,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreateReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreateReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -623,11 +527,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -650,9 +550,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -663,11 +561,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -682,11 +576,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -709,9 +599,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -722,11 +610,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseCreateSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseCreateSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -739,11 +623,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -769,11 +649,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteAsset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -786,11 +662,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -816,11 +688,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -833,11 +701,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -863,11 +727,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -880,11 +740,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -910,11 +766,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -927,11 +779,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -957,11 +805,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -974,11 +818,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1004,11 +844,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1021,11 +857,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1051,11 +883,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1068,11 +896,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1098,11 +922,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseDeleteSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseDeleteSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1115,11 +935,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1145,11 +961,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetAsset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetAsset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1162,11 +974,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1192,11 +1000,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1209,11 +1013,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1239,11 +1039,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1256,11 +1052,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1286,11 +1078,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1303,11 +1091,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1333,11 +1117,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1350,11 +1130,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1380,11 +1156,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1397,11 +1169,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1427,11 +1195,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1444,11 +1208,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1474,11 +1234,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetReportConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1491,11 +1247,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1521,11 +1273,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1538,11 +1286,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1568,11 +1312,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseGetSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseGetSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1585,11 +1325,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1615,11 +1351,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListAssets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListAssets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1632,11 +1364,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1662,11 +1390,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListErrorFrames._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1679,11 +1403,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1709,11 +1429,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListGroups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListGroups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1726,11 +1442,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1756,11 +1468,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1773,11 +1481,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1803,11 +1507,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListImportJobs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListImportJobs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1820,11 +1520,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1850,11 +1546,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1867,11 +1559,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1897,11 +1585,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListReportConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1914,11 +1598,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1944,11 +1624,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListReports._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListReports._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1961,11 +1637,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1991,11 +1663,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseListSources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseListSources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2008,11 +1676,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2035,9 +1699,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2048,11 +1710,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2067,11 +1725,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2094,9 +1748,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2107,11 +1759,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2124,11 +1772,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2151,9 +1795,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2164,11 +1806,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseRunImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseRunImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2183,11 +1821,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2210,9 +1844,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2223,11 +1855,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseUpdateAsset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2242,11 +1870,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2269,9 +1893,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2282,11 +1904,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseUpdateGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2301,11 +1919,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2328,9 +1942,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2341,11 +1953,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2360,11 +1968,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2387,9 +1991,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2400,11 +2002,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2419,11 +2017,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2446,9 +2040,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2459,11 +2051,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseUpdateSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2478,11 +2066,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2505,9 +2089,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2518,11 +2100,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseUpdateSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseUpdateSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2535,11 +2113,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2562,9 +2136,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2575,11 +2147,7 @@ class _BaseMigrationCenterRestTransport(MigrationCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMigrationCenterRestTransport._BaseValidateImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

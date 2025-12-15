@@ -18,12 +18,8 @@ from google.cloud.scheduler import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.scheduler_v1.services.cloud_scheduler.async_client import (
-    CloudSchedulerAsyncClient,
-)
-from google.cloud.scheduler_v1.services.cloud_scheduler.client import (
-    CloudSchedulerClient,
-)
+from google.cloud.scheduler_v1.services.cloud_scheduler.async_client import CloudSchedulerAsyncClient
+from google.cloud.scheduler_v1.services.cloud_scheduler.client import CloudSchedulerClient
 from google.cloud.scheduler_v1.types.cloudscheduler import (
     CreateJobRequest,
     DeleteJobRequest,
@@ -36,15 +32,7 @@ from google.cloud.scheduler_v1.types.cloudscheduler import (
     UpdateJobRequest,
 )
 from google.cloud.scheduler_v1.types.job import Job, RetryConfig
-from google.cloud.scheduler_v1.types.target import (
-    AppEngineHttpTarget,
-    AppEngineRouting,
-    HttpMethod,
-    HttpTarget,
-    OAuthToken,
-    OidcToken,
-    PubsubTarget,
-)
+from google.cloud.scheduler_v1.types.target import AppEngineHttpTarget, AppEngineRouting, HttpMethod, HttpTarget, OAuthToken, OidcToken, PubsubTarget
 
 __all__ = (
     "CloudSchedulerClient",

@@ -150,13 +150,11 @@ class DataSource(proto.Message):
         oneof="Type",
         message=datasourcetypes.PrimaryProductDataSource,
     )
-    supplemental_product_data_source: datasourcetypes.SupplementalProductDataSource = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="Type",
-            message=datasourcetypes.SupplementalProductDataSource,
-        )
+    supplemental_product_data_source: datasourcetypes.SupplementalProductDataSource = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="Type",
+        message=datasourcetypes.SupplementalProductDataSource,
     )
     local_inventory_data_source: datasourcetypes.LocalInventoryDataSource = proto.Field(
         proto.MESSAGE,
@@ -164,13 +162,11 @@ class DataSource(proto.Message):
         oneof="Type",
         message=datasourcetypes.LocalInventoryDataSource,
     )
-    regional_inventory_data_source: datasourcetypes.RegionalInventoryDataSource = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="Type",
-            message=datasourcetypes.RegionalInventoryDataSource,
-        )
+    regional_inventory_data_source: datasourcetypes.RegionalInventoryDataSource = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="Type",
+        message=datasourcetypes.RegionalInventoryDataSource,
     )
     promotion_data_source: datasourcetypes.PromotionDataSource = proto.Field(
         proto.MESSAGE,

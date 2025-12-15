@@ -302,12 +302,10 @@ class ManagementServer(proto.Message):
         number=11,
         message="ManagementURI",
     )
-    workforce_identity_based_management_uri: "WorkforceIdentityBasedManagementURI" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=16,
-            message="WorkforceIdentityBasedManagementURI",
-        )
+    workforce_identity_based_management_uri: "WorkforceIdentityBasedManagementURI" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="WorkforceIdentityBasedManagementURI",
     )
     state: InstanceState = proto.Field(
         proto.ENUM,

@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    cms_metadata_value_messages,
-    cms_metadata_value_service,
-)
+from google.ads.admanager_v1.types import cms_metadata_value_messages, cms_metadata_value_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseCmsMetadataValueServiceRestTransport
@@ -99,13 +96,8 @@ class CmsMetadataValueServiceRestInterceptor:
     """
 
     def pre_get_cms_metadata_value(
-        self,
-        request: cms_metadata_value_service.GetCmsMetadataValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cms_metadata_value_service.GetCmsMetadataValueRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cms_metadata_value_service.GetCmsMetadataValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cms_metadata_value_service.GetCmsMetadataValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cms_metadata_value
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class CmsMetadataValueServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cms_metadata_value(
-        self, response: cms_metadata_value_messages.CmsMetadataValue
-    ) -> cms_metadata_value_messages.CmsMetadataValue:
+    def post_get_cms_metadata_value(self, response: cms_metadata_value_messages.CmsMetadataValue) -> cms_metadata_value_messages.CmsMetadataValue:
         """Post-rpc interceptor for get_cms_metadata_value
 
         DEPRECATED. Please use the `post_get_cms_metadata_value_with_metadata`
@@ -129,13 +119,8 @@ class CmsMetadataValueServiceRestInterceptor:
         return response
 
     def post_get_cms_metadata_value_with_metadata(
-        self,
-        response: cms_metadata_value_messages.CmsMetadataValue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cms_metadata_value_messages.CmsMetadataValue,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cms_metadata_value_messages.CmsMetadataValue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cms_metadata_value_messages.CmsMetadataValue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cms_metadata_value
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +136,8 @@ class CmsMetadataValueServiceRestInterceptor:
         return response, metadata
 
     def pre_list_cms_metadata_values(
-        self,
-        request: cms_metadata_value_service.ListCmsMetadataValuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cms_metadata_value_service.ListCmsMetadataValuesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cms_metadata_value_service.ListCmsMetadataValuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cms_metadata_value_service.ListCmsMetadataValuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cms_metadata_values
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +161,8 @@ class CmsMetadataValueServiceRestInterceptor:
         return response
 
     def post_list_cms_metadata_values_with_metadata(
-        self,
-        response: cms_metadata_value_service.ListCmsMetadataValuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cms_metadata_value_service.ListCmsMetadataValuesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cms_metadata_value_service.ListCmsMetadataValuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cms_metadata_value_service.ListCmsMetadataValuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cms_metadata_values
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +178,8 @@ class CmsMetadataValueServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +187,7 @@ class CmsMetadataValueServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -307,31 +276,18 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CmsMetadataValueServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetCmsMetadataValue(
-        _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue,
-        CmsMetadataValueServiceRestStub,
-    ):
+    class _GetCmsMetadataValue(_BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue, CmsMetadataValueServiceRestStub):
         def __hash__(self):
             return hash("CmsMetadataValueServiceRestTransport.GetCmsMetadataValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -372,28 +328,16 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue._get_http_options()
-            )
+            http_options = _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_cms_metadata_value(
-                request, metadata
-            )
-            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_cms_metadata_value(request, metadata)
+            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -416,15 +360,8 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                CmsMetadataValueServiceRestTransport._GetCmsMetadataValue._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CmsMetadataValueServiceRestTransport._GetCmsMetadataValue._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -440,16 +377,10 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
 
             resp = self._interceptor.post_get_cms_metadata_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cms_metadata_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cms_metadata_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cms_metadata_value_messages.CmsMetadataValue.to_json(response)
-                    )
+                    response_payload = cms_metadata_value_messages.CmsMetadataValue.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -468,23 +399,12 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
                 )
             return resp
 
-    class _ListCmsMetadataValues(
-        _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues,
-        CmsMetadataValueServiceRestStub,
-    ):
+    class _ListCmsMetadataValues(_BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues, CmsMetadataValueServiceRestStub):
         def __hash__(self):
             return hash("CmsMetadataValueServiceRestTransport.ListCmsMetadataValues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -525,28 +445,16 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues._get_http_options()
-            )
+            http_options = _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cms_metadata_values(
-                request, metadata
-            )
-            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cms_metadata_values(request, metadata)
+            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseListCmsMetadataValues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -570,12 +478,7 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
 
             # Send the request
             response = CmsMetadataValueServiceRestTransport._ListCmsMetadataValues._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -591,16 +494,10 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
 
             resp = self._interceptor.post_list_cms_metadata_values(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cms_metadata_values_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cms_metadata_values_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cms_metadata_value_service.ListCmsMetadataValuesResponse.to_json(
-                        response
-                    )
+                    response_payload = cms_metadata_value_service.ListCmsMetadataValuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -622,10 +519,7 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
     @property
     def get_cms_metadata_value(
         self,
-    ) -> Callable[
-        [cms_metadata_value_service.GetCmsMetadataValueRequest],
-        cms_metadata_value_messages.CmsMetadataValue,
-    ]:
+    ) -> Callable[[cms_metadata_value_service.GetCmsMetadataValueRequest], cms_metadata_value_messages.CmsMetadataValue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCmsMetadataValue(self._session, self._host, self._interceptor)  # type: ignore
@@ -633,10 +527,7 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
     @property
     def list_cms_metadata_values(
         self,
-    ) -> Callable[
-        [cms_metadata_value_service.ListCmsMetadataValuesRequest],
-        cms_metadata_value_service.ListCmsMetadataValuesResponse,
-    ]:
+    ) -> Callable[[cms_metadata_value_service.ListCmsMetadataValuesRequest], cms_metadata_value_service.ListCmsMetadataValuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCmsMetadataValues(self._session, self._host, self._interceptor)  # type: ignore
@@ -645,23 +536,12 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation,
-        CmsMetadataValueServiceRestStub,
-    ):
+    class _GetOperation(_BaseCmsMetadataValueServiceRestTransport._BaseGetOperation, CmsMetadataValueServiceRestStub):
         def __hash__(self):
             return hash("CmsMetadataValueServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -699,26 +579,16 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -742,12 +612,7 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
 
             # Send the request
             response = CmsMetadataValueServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -759,9 +624,7 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

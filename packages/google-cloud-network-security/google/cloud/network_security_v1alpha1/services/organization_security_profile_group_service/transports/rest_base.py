@@ -24,17 +24,12 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group,
-    security_profile_group_service,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group, security_profile_group_service
 
 from .base import DEFAULT_CLIENT_INFO, OrganizationSecurityProfileGroupServiceTransport
 
 
-class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
-    OrganizationSecurityProfileGroupServiceTransport
-):
+class _BaseOrganizationSecurityProfileGroupServiceRestTransport(OrganizationSecurityProfileGroupServiceTransport):
     """Base REST backend transport for OrganizationSecurityProfileGroupService.
 
     Note: This class is not meant to be used directly. Use its sync and
@@ -80,20 +75,14 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateSecurityProfile:
@@ -106,11 +95,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -125,9 +110,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = security_profile_group_service.CreateSecurityProfileRequest.pb(
-                request
-            )
+            pb_request = security_profile_group_service.CreateSecurityProfileRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -135,9 +118,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -149,9 +130,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -167,11 +146,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -186,11 +161,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                security_profile_group_service.CreateSecurityProfileGroupRequest.pb(
-                    request
-                )
-            )
+            pb_request = security_profile_group_service.CreateSecurityProfileGroupRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -198,9 +169,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -212,9 +181,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -228,11 +195,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -246,9 +209,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = security_profile_group_service.DeleteSecurityProfileRequest.pb(
-                request
-            )
+            pb_request = security_profile_group_service.DeleteSecurityProfileRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -261,9 +222,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -277,11 +236,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -295,11 +250,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                security_profile_group_service.DeleteSecurityProfileGroupRequest.pb(
-                    request
-                )
-            )
+            pb_request = security_profile_group_service.DeleteSecurityProfileGroupRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -312,9 +263,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -328,11 +277,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -346,9 +291,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = security_profile_group_service.GetSecurityProfileRequest.pb(
-                request
-            )
+            pb_request = security_profile_group_service.GetSecurityProfileRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -361,9 +304,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -377,11 +318,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -395,11 +332,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                security_profile_group_service.GetSecurityProfileGroupRequest.pb(
-                    request
-                )
-            )
+            pb_request = security_profile_group_service.GetSecurityProfileGroupRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -412,9 +345,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -428,11 +359,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -446,11 +373,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                security_profile_group_service.ListSecurityProfileGroupsRequest.pb(
-                    request
-                )
-            )
+            pb_request = security_profile_group_service.ListSecurityProfileGroupsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -463,9 +386,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -479,11 +400,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -497,9 +414,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = security_profile_group_service.ListSecurityProfilesRequest.pb(
-                request
-            )
+            pb_request = security_profile_group_service.ListSecurityProfilesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -512,9 +427,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -530,11 +443,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -549,9 +458,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = security_profile_group_service.UpdateSecurityProfileRequest.pb(
-                request
-            )
+            pb_request = security_profile_group_service.UpdateSecurityProfileRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -559,9 +466,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -573,9 +478,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -591,11 +494,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -610,11 +509,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                security_profile_group_service.UpdateSecurityProfileGroupRequest.pb(
-                    request
-                )
-            )
+            pb_request = security_profile_group_service.UpdateSecurityProfileGroupRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -622,9 +517,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -636,9 +529,7 @@ class _BaseOrganizationSecurityProfileGroupServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"

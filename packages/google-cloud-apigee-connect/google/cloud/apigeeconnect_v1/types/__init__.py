@@ -13,25 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .connection import (
-    Cluster,
-    Connection,
-    ListConnectionsRequest,
-    ListConnectionsResponse,
-)
-from .tether import (
-    Action,
-    EgressRequest,
-    EgressResponse,
-    Header,
-    HttpRequest,
-    HttpResponse,
-    Payload,
-    Scheme,
-    StreamInfo,
-    TetherEndpoint,
-    Url,
-)
+from .connection import Cluster, Connection, ListConnectionsRequest, ListConnectionsResponse
+from .tether import Action, EgressRequest, EgressResponse, Header, HttpRequest, HttpResponse, Payload, Scheme, StreamInfo, TetherEndpoint, Url
 
 __all__ = (
     "Cluster",

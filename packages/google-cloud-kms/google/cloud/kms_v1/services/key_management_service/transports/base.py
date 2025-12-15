@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.kms_v1 import gapic_version as package_version
 from google.cloud.kms_v1.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class KeyManagementServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -567,306 +557,165 @@ class KeyManagementServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_key_rings(
-        self,
-    ) -> Callable[
-        [service.ListKeyRingsRequest],
-        Union[service.ListKeyRingsResponse, Awaitable[service.ListKeyRingsResponse]],
-    ]:
+    def list_key_rings(self) -> Callable[[service.ListKeyRingsRequest], Union[service.ListKeyRingsResponse, Awaitable[service.ListKeyRingsResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_crypto_keys(
         self,
-    ) -> Callable[
-        [service.ListCryptoKeysRequest],
-        Union[
-            service.ListCryptoKeysResponse, Awaitable[service.ListCryptoKeysResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListCryptoKeysRequest], Union[service.ListCryptoKeysResponse, Awaitable[service.ListCryptoKeysResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_crypto_key_versions(
         self,
     ) -> Callable[
-        [service.ListCryptoKeyVersionsRequest],
-        Union[
-            service.ListCryptoKeyVersionsResponse,
-            Awaitable[service.ListCryptoKeyVersionsResponse],
-        ],
+        [service.ListCryptoKeyVersionsRequest], Union[service.ListCryptoKeyVersionsResponse, Awaitable[service.ListCryptoKeyVersionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_import_jobs(
         self,
-    ) -> Callable[
-        [service.ListImportJobsRequest],
-        Union[
-            service.ListImportJobsResponse, Awaitable[service.ListImportJobsResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListImportJobsRequest], Union[service.ListImportJobsResponse, Awaitable[service.ListImportJobsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_key_ring(
-        self,
-    ) -> Callable[
-        [service.GetKeyRingRequest],
-        Union[resources.KeyRing, Awaitable[resources.KeyRing]],
-    ]:
+    def get_key_ring(self) -> Callable[[service.GetKeyRingRequest], Union[resources.KeyRing, Awaitable[resources.KeyRing]]]:
         raise NotImplementedError()
 
     @property
-    def get_crypto_key(
-        self,
-    ) -> Callable[
-        [service.GetCryptoKeyRequest],
-        Union[resources.CryptoKey, Awaitable[resources.CryptoKey]],
-    ]:
+    def get_crypto_key(self) -> Callable[[service.GetCryptoKeyRequest], Union[resources.CryptoKey, Awaitable[resources.CryptoKey]]]:
         raise NotImplementedError()
 
     @property
     def get_crypto_key_version(
         self,
-    ) -> Callable[
-        [service.GetCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
-    ]:
+    ) -> Callable[[service.GetCryptoKeyVersionRequest], Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]]]:
         raise NotImplementedError()
 
     @property
-    def get_public_key(
-        self,
-    ) -> Callable[
-        [service.GetPublicKeyRequest],
-        Union[resources.PublicKey, Awaitable[resources.PublicKey]],
-    ]:
+    def get_public_key(self) -> Callable[[service.GetPublicKeyRequest], Union[resources.PublicKey, Awaitable[resources.PublicKey]]]:
         raise NotImplementedError()
 
     @property
-    def get_import_job(
-        self,
-    ) -> Callable[
-        [service.GetImportJobRequest],
-        Union[resources.ImportJob, Awaitable[resources.ImportJob]],
-    ]:
+    def get_import_job(self) -> Callable[[service.GetImportJobRequest], Union[resources.ImportJob, Awaitable[resources.ImportJob]]]:
         raise NotImplementedError()
 
     @property
-    def create_key_ring(
-        self,
-    ) -> Callable[
-        [service.CreateKeyRingRequest],
-        Union[resources.KeyRing, Awaitable[resources.KeyRing]],
-    ]:
+    def create_key_ring(self) -> Callable[[service.CreateKeyRingRequest], Union[resources.KeyRing, Awaitable[resources.KeyRing]]]:
         raise NotImplementedError()
 
     @property
-    def create_crypto_key(
-        self,
-    ) -> Callable[
-        [service.CreateCryptoKeyRequest],
-        Union[resources.CryptoKey, Awaitable[resources.CryptoKey]],
-    ]:
+    def create_crypto_key(self) -> Callable[[service.CreateCryptoKeyRequest], Union[resources.CryptoKey, Awaitable[resources.CryptoKey]]]:
         raise NotImplementedError()
 
     @property
     def create_crypto_key_version(
         self,
-    ) -> Callable[
-        [service.CreateCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
-    ]:
+    ) -> Callable[[service.CreateCryptoKeyVersionRequest], Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]]]:
         raise NotImplementedError()
 
     @property
     def import_crypto_key_version(
         self,
-    ) -> Callable[
-        [service.ImportCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
-    ]:
+    ) -> Callable[[service.ImportCryptoKeyVersionRequest], Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]]]:
         raise NotImplementedError()
 
     @property
-    def create_import_job(
-        self,
-    ) -> Callable[
-        [service.CreateImportJobRequest],
-        Union[resources.ImportJob, Awaitable[resources.ImportJob]],
-    ]:
+    def create_import_job(self) -> Callable[[service.CreateImportJobRequest], Union[resources.ImportJob, Awaitable[resources.ImportJob]]]:
         raise NotImplementedError()
 
     @property
-    def update_crypto_key(
-        self,
-    ) -> Callable[
-        [service.UpdateCryptoKeyRequest],
-        Union[resources.CryptoKey, Awaitable[resources.CryptoKey]],
-    ]:
+    def update_crypto_key(self) -> Callable[[service.UpdateCryptoKeyRequest], Union[resources.CryptoKey, Awaitable[resources.CryptoKey]]]:
         raise NotImplementedError()
 
     @property
     def update_crypto_key_version(
         self,
-    ) -> Callable[
-        [service.UpdateCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
-    ]:
+    ) -> Callable[[service.UpdateCryptoKeyVersionRequest], Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]]]:
         raise NotImplementedError()
 
     @property
     def update_crypto_key_primary_version(
         self,
-    ) -> Callable[
-        [service.UpdateCryptoKeyPrimaryVersionRequest],
-        Union[resources.CryptoKey, Awaitable[resources.CryptoKey]],
-    ]:
+    ) -> Callable[[service.UpdateCryptoKeyPrimaryVersionRequest], Union[resources.CryptoKey, Awaitable[resources.CryptoKey]]]:
         raise NotImplementedError()
 
     @property
     def destroy_crypto_key_version(
         self,
-    ) -> Callable[
-        [service.DestroyCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
-    ]:
+    ) -> Callable[[service.DestroyCryptoKeyVersionRequest], Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]]]:
         raise NotImplementedError()
 
     @property
     def restore_crypto_key_version(
         self,
-    ) -> Callable[
-        [service.RestoreCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
-    ]:
+    ) -> Callable[[service.RestoreCryptoKeyVersionRequest], Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]]]:
         raise NotImplementedError()
 
     @property
-    def encrypt(
-        self,
-    ) -> Callable[
-        [service.EncryptRequest],
-        Union[service.EncryptResponse, Awaitable[service.EncryptResponse]],
-    ]:
+    def encrypt(self) -> Callable[[service.EncryptRequest], Union[service.EncryptResponse, Awaitable[service.EncryptResponse]]]:
         raise NotImplementedError()
 
     @property
-    def decrypt(
-        self,
-    ) -> Callable[
-        [service.DecryptRequest],
-        Union[service.DecryptResponse, Awaitable[service.DecryptResponse]],
-    ]:
+    def decrypt(self) -> Callable[[service.DecryptRequest], Union[service.DecryptResponse, Awaitable[service.DecryptResponse]]]:
         raise NotImplementedError()
 
     @property
-    def raw_encrypt(
-        self,
-    ) -> Callable[
-        [service.RawEncryptRequest],
-        Union[service.RawEncryptResponse, Awaitable[service.RawEncryptResponse]],
-    ]:
+    def raw_encrypt(self) -> Callable[[service.RawEncryptRequest], Union[service.RawEncryptResponse, Awaitable[service.RawEncryptResponse]]]:
         raise NotImplementedError()
 
     @property
-    def raw_decrypt(
-        self,
-    ) -> Callable[
-        [service.RawDecryptRequest],
-        Union[service.RawDecryptResponse, Awaitable[service.RawDecryptResponse]],
-    ]:
+    def raw_decrypt(self) -> Callable[[service.RawDecryptRequest], Union[service.RawDecryptResponse, Awaitable[service.RawDecryptResponse]]]:
         raise NotImplementedError()
 
     @property
     def asymmetric_sign(
         self,
-    ) -> Callable[
-        [service.AsymmetricSignRequest],
-        Union[
-            service.AsymmetricSignResponse, Awaitable[service.AsymmetricSignResponse]
-        ],
-    ]:
+    ) -> Callable[[service.AsymmetricSignRequest], Union[service.AsymmetricSignResponse, Awaitable[service.AsymmetricSignResponse]]]:
         raise NotImplementedError()
 
     @property
     def asymmetric_decrypt(
         self,
-    ) -> Callable[
-        [service.AsymmetricDecryptRequest],
-        Union[
-            service.AsymmetricDecryptResponse,
-            Awaitable[service.AsymmetricDecryptResponse],
-        ],
-    ]:
+    ) -> Callable[[service.AsymmetricDecryptRequest], Union[service.AsymmetricDecryptResponse, Awaitable[service.AsymmetricDecryptResponse]]]:
         raise NotImplementedError()
 
     @property
-    def mac_sign(
-        self,
-    ) -> Callable[
-        [service.MacSignRequest],
-        Union[service.MacSignResponse, Awaitable[service.MacSignResponse]],
-    ]:
+    def mac_sign(self) -> Callable[[service.MacSignRequest], Union[service.MacSignResponse, Awaitable[service.MacSignResponse]]]:
         raise NotImplementedError()
 
     @property
-    def mac_verify(
-        self,
-    ) -> Callable[
-        [service.MacVerifyRequest],
-        Union[service.MacVerifyResponse, Awaitable[service.MacVerifyResponse]],
-    ]:
+    def mac_verify(self) -> Callable[[service.MacVerifyRequest], Union[service.MacVerifyResponse, Awaitable[service.MacVerifyResponse]]]:
         raise NotImplementedError()
 
     @property
-    def decapsulate(
-        self,
-    ) -> Callable[
-        [service.DecapsulateRequest],
-        Union[service.DecapsulateResponse, Awaitable[service.DecapsulateResponse]],
-    ]:
+    def decapsulate(self) -> Callable[[service.DecapsulateRequest], Union[service.DecapsulateResponse, Awaitable[service.DecapsulateResponse]]]:
         raise NotImplementedError()
 
     @property
     def generate_random_bytes(
         self,
-    ) -> Callable[
-        [service.GenerateRandomBytesRequest],
-        Union[
-            service.GenerateRandomBytesResponse,
-            Awaitable[service.GenerateRandomBytesResponse],
-        ],
-    ]:
+    ) -> Callable[[service.GenerateRandomBytesRequest], Union[service.GenerateRandomBytesResponse, Awaitable[service.GenerateRandomBytesResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -884,22 +733,13 @@ class KeyManagementServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -27,14 +27,9 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.ads.marketingplatform_admin_v1alpha import gapic_version as package_version
-from google.ads.marketingplatform_admin_v1alpha.types import (
-    marketingplatform_admin,
-    resources,
-)
+from google.ads.marketingplatform_admin_v1alpha.types import marketingplatform_admin, resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +94,15 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -194,10 +181,7 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
     @property
     def get_organization(
         self,
-    ) -> Callable[
-        [marketingplatform_admin.GetOrganizationRequest],
-        Union[resources.Organization, Awaitable[resources.Organization]],
-    ]:
+    ) -> Callable[[marketingplatform_admin.GetOrganizationRequest], Union[resources.Organization, Awaitable[resources.Organization]]]:
         raise NotImplementedError()
 
     @property
@@ -205,10 +189,7 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [marketingplatform_admin.ListOrganizationsRequest],
-        Union[
-            marketingplatform_admin.ListOrganizationsResponse,
-            Awaitable[marketingplatform_admin.ListOrganizationsResponse],
-        ],
+        Union[marketingplatform_admin.ListOrganizationsResponse, Awaitable[marketingplatform_admin.ListOrganizationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -218,8 +199,7 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [marketingplatform_admin.FindSalesPartnerManagedClientsRequest],
         Union[
-            marketingplatform_admin.FindSalesPartnerManagedClientsResponse,
-            Awaitable[marketingplatform_admin.FindSalesPartnerManagedClientsResponse],
+            marketingplatform_admin.FindSalesPartnerManagedClientsResponse, Awaitable[marketingplatform_admin.FindSalesPartnerManagedClientsResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -229,10 +209,7 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [marketingplatform_admin.ListAnalyticsAccountLinksRequest],
-        Union[
-            marketingplatform_admin.ListAnalyticsAccountLinksResponse,
-            Awaitable[marketingplatform_admin.ListAnalyticsAccountLinksResponse],
-        ],
+        Union[marketingplatform_admin.ListAnalyticsAccountLinksResponse, Awaitable[marketingplatform_admin.ListAnalyticsAccountLinksResponse]],
     ]:
         raise NotImplementedError()
 
@@ -240,20 +217,14 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
     def create_analytics_account_link(
         self,
     ) -> Callable[
-        [marketingplatform_admin.CreateAnalyticsAccountLinkRequest],
-        Union[
-            resources.AnalyticsAccountLink, Awaitable[resources.AnalyticsAccountLink]
-        ],
+        [marketingplatform_admin.CreateAnalyticsAccountLinkRequest], Union[resources.AnalyticsAccountLink, Awaitable[resources.AnalyticsAccountLink]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_analytics_account_link(
         self,
-    ) -> Callable[
-        [marketingplatform_admin.DeleteAnalyticsAccountLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[marketingplatform_admin.DeleteAnalyticsAccountLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -261,10 +232,7 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [marketingplatform_admin.SetPropertyServiceLevelRequest],
-        Union[
-            marketingplatform_admin.SetPropertyServiceLevelResponse,
-            Awaitable[marketingplatform_admin.SetPropertyServiceLevelResponse],
-        ],
+        Union[marketingplatform_admin.SetPropertyServiceLevelResponse, Awaitable[marketingplatform_admin.SetPropertyServiceLevelResponse]],
     ]:
         raise NotImplementedError()
 
@@ -273,10 +241,7 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [marketingplatform_admin.ReportPropertyUsageRequest],
-        Union[
-            marketingplatform_admin.ReportPropertyUsageResponse,
-            Awaitable[marketingplatform_admin.ReportPropertyUsageResponse],
-        ],
+        Union[marketingplatform_admin.ReportPropertyUsageResponse, Awaitable[marketingplatform_admin.ReportPropertyUsageResponse]],
     ]:
         raise NotImplementedError()
 

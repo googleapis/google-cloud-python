@@ -230,9 +230,7 @@ class Replication(proto.Message):
                 number=1,
             )
 
-        replicas: MutableSequence[
-            "Replication.UserManaged.Replica"
-        ] = proto.RepeatedField(
+        replicas: MutableSequence["Replication.UserManaged.Replica"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Replication.UserManaged.Replica",

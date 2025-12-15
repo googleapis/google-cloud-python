@@ -18,12 +18,8 @@ from google.cloud.managedkafka_schemaregistry import gapic_version as package_ve
 __version__ = package_version.__version__
 
 
-from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.async_client import (
-    ManagedSchemaRegistryAsyncClient,
-)
-from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.client import (
-    ManagedSchemaRegistryClient,
-)
+from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.async_client import ManagedSchemaRegistryAsyncClient
+from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.client import ManagedSchemaRegistryClient
 from google.cloud.managedkafka_schemaregistry_v1.types.schema_registry import (
     CheckCompatibilityRequest,
     CheckCompatibilityResponse,

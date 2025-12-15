@@ -28,9 +28,7 @@ import google.protobuf
 from google.apps.meet_v2 import gapic_version as package_version
 from google.apps.meet_v2.types import resource, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class ConferenceRecordsServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -318,124 +308,72 @@ class ConferenceRecordsServiceTransport(abc.ABC):
     @property
     def get_conference_record(
         self,
-    ) -> Callable[
-        [service.GetConferenceRecordRequest],
-        Union[resource.ConferenceRecord, Awaitable[resource.ConferenceRecord]],
-    ]:
+    ) -> Callable[[service.GetConferenceRecordRequest], Union[resource.ConferenceRecord, Awaitable[resource.ConferenceRecord]]]:
         raise NotImplementedError()
 
     @property
     def list_conference_records(
         self,
     ) -> Callable[
-        [service.ListConferenceRecordsRequest],
-        Union[
-            service.ListConferenceRecordsResponse,
-            Awaitable[service.ListConferenceRecordsResponse],
-        ],
+        [service.ListConferenceRecordsRequest], Union[service.ListConferenceRecordsResponse, Awaitable[service.ListConferenceRecordsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_participant(
-        self,
-    ) -> Callable[
-        [service.GetParticipantRequest],
-        Union[resource.Participant, Awaitable[resource.Participant]],
-    ]:
+    def get_participant(self) -> Callable[[service.GetParticipantRequest], Union[resource.Participant, Awaitable[resource.Participant]]]:
         raise NotImplementedError()
 
     @property
     def list_participants(
         self,
-    ) -> Callable[
-        [service.ListParticipantsRequest],
-        Union[
-            service.ListParticipantsResponse,
-            Awaitable[service.ListParticipantsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListParticipantsRequest], Union[service.ListParticipantsResponse, Awaitable[service.ListParticipantsResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_participant_session(
         self,
-    ) -> Callable[
-        [service.GetParticipantSessionRequest],
-        Union[resource.ParticipantSession, Awaitable[resource.ParticipantSession]],
-    ]:
+    ) -> Callable[[service.GetParticipantSessionRequest], Union[resource.ParticipantSession, Awaitable[resource.ParticipantSession]]]:
         raise NotImplementedError()
 
     @property
     def list_participant_sessions(
         self,
     ) -> Callable[
-        [service.ListParticipantSessionsRequest],
-        Union[
-            service.ListParticipantSessionsResponse,
-            Awaitable[service.ListParticipantSessionsResponse],
-        ],
+        [service.ListParticipantSessionsRequest], Union[service.ListParticipantSessionsResponse, Awaitable[service.ListParticipantSessionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_recording(
-        self,
-    ) -> Callable[
-        [service.GetRecordingRequest],
-        Union[resource.Recording, Awaitable[resource.Recording]],
-    ]:
+    def get_recording(self) -> Callable[[service.GetRecordingRequest], Union[resource.Recording, Awaitable[resource.Recording]]]:
         raise NotImplementedError()
 
     @property
     def list_recordings(
         self,
-    ) -> Callable[
-        [service.ListRecordingsRequest],
-        Union[
-            service.ListRecordingsResponse, Awaitable[service.ListRecordingsResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListRecordingsRequest], Union[service.ListRecordingsResponse, Awaitable[service.ListRecordingsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_transcript(
-        self,
-    ) -> Callable[
-        [service.GetTranscriptRequest],
-        Union[resource.Transcript, Awaitable[resource.Transcript]],
-    ]:
+    def get_transcript(self) -> Callable[[service.GetTranscriptRequest], Union[resource.Transcript, Awaitable[resource.Transcript]]]:
         raise NotImplementedError()
 
     @property
     def list_transcripts(
         self,
-    ) -> Callable[
-        [service.ListTranscriptsRequest],
-        Union[
-            service.ListTranscriptsResponse, Awaitable[service.ListTranscriptsResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListTranscriptsRequest], Union[service.ListTranscriptsResponse, Awaitable[service.ListTranscriptsResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_transcript_entry(
         self,
-    ) -> Callable[
-        [service.GetTranscriptEntryRequest],
-        Union[resource.TranscriptEntry, Awaitable[resource.TranscriptEntry]],
-    ]:
+    ) -> Callable[[service.GetTranscriptEntryRequest], Union[resource.TranscriptEntry, Awaitable[resource.TranscriptEntry]]]:
         raise NotImplementedError()
 
     @property
     def list_transcript_entries(
         self,
     ) -> Callable[
-        [service.ListTranscriptEntriesRequest],
-        Union[
-            service.ListTranscriptEntriesResponse,
-            Awaitable[service.ListTranscriptEntriesResponse],
-        ],
+        [service.ListTranscriptEntriesRequest], Union[service.ListTranscriptEntriesResponse, Awaitable[service.ListTranscriptEntriesResponse]]
     ]:
         raise NotImplementedError()
 

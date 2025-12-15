@@ -34,9 +34,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
-from google.cloud.bare_metal_solution_v2.types import (
-    volume_snapshot as gcb_volume_snapshot,
-)
+from google.cloud.bare_metal_solution_v2.types import volume_snapshot as gcb_volume_snapshot
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
@@ -443,12 +441,8 @@ class BareMetalSolutionRestInterceptor:
     """
 
     def pre_create_nfs_share(
-        self,
-        request: gcb_nfs_share.CreateNfsShareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_nfs_share.CreateNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcb_nfs_share.CreateNfsShareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_nfs_share.CreateNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -456,9 +450,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_create_nfs_share(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_nfs_share(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_nfs_share
 
         DEPRECATED. Please use the `post_create_nfs_share_with_metadata`
@@ -472,9 +464,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_create_nfs_share_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_nfs_share
 
@@ -491,13 +481,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_create_provisioning_config(
-        self,
-        request: provisioning.CreateProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.CreateProvisioningConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: provisioning.CreateProvisioningConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.CreateProvisioningConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -505,9 +490,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_create_provisioning_config(
-        self, response: provisioning.ProvisioningConfig
-    ) -> provisioning.ProvisioningConfig:
+    def post_create_provisioning_config(self, response: provisioning.ProvisioningConfig) -> provisioning.ProvisioningConfig:
         """Post-rpc interceptor for create_provisioning_config
 
         DEPRECATED. Please use the `post_create_provisioning_config_with_metadata`
@@ -521,12 +504,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_create_provisioning_config_with_metadata(
-        self,
-        response: provisioning.ProvisioningConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: provisioning.ProvisioningConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_provisioning_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -542,12 +521,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_create_ssh_key(
-        self,
-        request: gcb_ssh_key.CreateSSHKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_ssh_key.CreateSSHKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcb_ssh_key.CreateSSHKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_ssh_key.CreateSSHKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_ssh_key
 
         Override in a subclass to manipulate the request or metadata
@@ -569,9 +544,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_create_ssh_key_with_metadata(
-        self,
-        response: gcb_ssh_key.SSHKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcb_ssh_key.SSHKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcb_ssh_key.SSHKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_ssh_key
 
@@ -588,13 +561,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_create_volume_snapshot(
-        self,
-        request: gcb_volume_snapshot.CreateVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_volume_snapshot.CreateVolumeSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcb_volume_snapshot.CreateVolumeSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_volume_snapshot.CreateVolumeSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_volume_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -602,9 +570,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_create_volume_snapshot(
-        self, response: gcb_volume_snapshot.VolumeSnapshot
-    ) -> gcb_volume_snapshot.VolumeSnapshot:
+    def post_create_volume_snapshot(self, response: gcb_volume_snapshot.VolumeSnapshot) -> gcb_volume_snapshot.VolumeSnapshot:
         """Post-rpc interceptor for create_volume_snapshot
 
         DEPRECATED. Please use the `post_create_volume_snapshot_with_metadata`
@@ -618,12 +584,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_create_volume_snapshot_with_metadata(
-        self,
-        response: gcb_volume_snapshot.VolumeSnapshot,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_volume_snapshot.VolumeSnapshot, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcb_volume_snapshot.VolumeSnapshot, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_volume_snapshot.VolumeSnapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_volume_snapshot
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -639,12 +601,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_delete_nfs_share(
-        self,
-        request: nfs_share.DeleteNfsShareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        nfs_share.DeleteNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: nfs_share.DeleteNfsShareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[nfs_share.DeleteNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -652,9 +610,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_nfs_share(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_nfs_share(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_nfs_share
 
         DEPRECATED. Please use the `post_delete_nfs_share_with_metadata`
@@ -668,9 +624,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_delete_nfs_share_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_nfs_share
 
@@ -687,9 +641,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_delete_ssh_key(
-        self,
-        request: ssh_key.DeleteSSHKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: ssh_key.DeleteSSHKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ssh_key.DeleteSSHKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_ssh_key
 
@@ -699,13 +651,8 @@ class BareMetalSolutionRestInterceptor:
         return request, metadata
 
     def pre_delete_volume_snapshot(
-        self,
-        request: volume_snapshot.DeleteVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        volume_snapshot.DeleteVolumeSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: volume_snapshot.DeleteVolumeSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[volume_snapshot.DeleteVolumeSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_volume_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -714,9 +661,7 @@ class BareMetalSolutionRestInterceptor:
         return request, metadata
 
     def pre_detach_lun(
-        self,
-        request: gcb_instance.DetachLunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcb_instance.DetachLunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcb_instance.DetachLunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for detach_lun
 
@@ -725,9 +670,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_detach_lun(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_detach_lun(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for detach_lun
 
         DEPRECATED. Please use the `post_detach_lun_with_metadata`
@@ -741,9 +684,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_detach_lun_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for detach_lun
 
@@ -760,13 +701,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_disable_interactive_serial_console(
-        self,
-        request: instance.DisableInteractiveSerialConsoleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        instance.DisableInteractiveSerialConsoleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: instance.DisableInteractiveSerialConsoleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[instance.DisableInteractiveSerialConsoleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_interactive_serial_console
 
         Override in a subclass to manipulate the request or metadata
@@ -774,9 +710,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_disable_interactive_serial_console(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_disable_interactive_serial_console(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_interactive_serial_console
 
         DEPRECATED. Please use the `post_disable_interactive_serial_console_with_metadata`
@@ -790,9 +724,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_disable_interactive_serial_console_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for disable_interactive_serial_console
 
@@ -809,13 +741,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_enable_interactive_serial_console(
-        self,
-        request: instance.EnableInteractiveSerialConsoleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        instance.EnableInteractiveSerialConsoleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: instance.EnableInteractiveSerialConsoleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[instance.EnableInteractiveSerialConsoleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_interactive_serial_console
 
         Override in a subclass to manipulate the request or metadata
@@ -823,9 +750,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_enable_interactive_serial_console(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_enable_interactive_serial_console(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_interactive_serial_console
 
         DEPRECATED. Please use the `post_enable_interactive_serial_console_with_metadata`
@@ -839,9 +764,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_enable_interactive_serial_console_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enable_interactive_serial_console
 
@@ -858,9 +781,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_evict_lun(
-        self,
-        request: lun.EvictLunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lun.EvictLunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lun.EvictLunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for evict_lun
 
@@ -869,9 +790,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_evict_lun(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_evict_lun(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for evict_lun
 
         DEPRECATED. Please use the `post_evict_lun_with_metadata`
@@ -885,9 +804,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_evict_lun_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for evict_lun
 
@@ -904,9 +821,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_evict_volume(
-        self,
-        request: volume.EvictVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.EvictVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.EvictVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for evict_volume
 
@@ -915,9 +830,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_evict_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_evict_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for evict_volume
 
         DEPRECATED. Please use the `post_evict_volume_with_metadata`
@@ -931,9 +844,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_evict_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for evict_volume
 
@@ -950,9 +861,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: instance.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -975,9 +884,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: instance.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: instance.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -994,9 +901,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_lun(
-        self,
-        request: lun.GetLunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lun.GetLunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lun.GetLunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lun
 
@@ -1036,9 +941,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_network(
-        self,
-        request: network.GetNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: network.GetNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[network.GetNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_network
 
@@ -1061,9 +964,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_get_network_with_metadata(
-        self,
-        response: network.Network,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: network.Network, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[network.Network, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_network
 
@@ -1080,9 +981,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_nfs_share(
-        self,
-        request: nfs_share.GetNfsShareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: nfs_share.GetNfsShareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[nfs_share.GetNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_nfs_share
 
@@ -1105,9 +1004,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_get_nfs_share_with_metadata(
-        self,
-        response: nfs_share.NfsShare,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: nfs_share.NfsShare, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[nfs_share.NfsShare, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_nfs_share
 
@@ -1124,13 +1021,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_provisioning_config(
-        self,
-        request: provisioning.GetProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.GetProvisioningConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: provisioning.GetProvisioningConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.GetProvisioningConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1138,9 +1030,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_get_provisioning_config(
-        self, response: provisioning.ProvisioningConfig
-    ) -> provisioning.ProvisioningConfig:
+    def post_get_provisioning_config(self, response: provisioning.ProvisioningConfig) -> provisioning.ProvisioningConfig:
         """Post-rpc interceptor for get_provisioning_config
 
         DEPRECATED. Please use the `post_get_provisioning_config_with_metadata`
@@ -1154,12 +1044,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_get_provisioning_config_with_metadata(
-        self,
-        response: provisioning.ProvisioningConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: provisioning.ProvisioningConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_provisioning_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1175,9 +1061,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_volume(
-        self,
-        request: volume.GetVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.GetVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume
 
@@ -1217,13 +1101,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_volume_snapshot(
-        self,
-        request: volume_snapshot.GetVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        volume_snapshot.GetVolumeSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: volume_snapshot.GetVolumeSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[volume_snapshot.GetVolumeSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -1231,9 +1110,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_get_volume_snapshot(
-        self, response: volume_snapshot.VolumeSnapshot
-    ) -> volume_snapshot.VolumeSnapshot:
+    def post_get_volume_snapshot(self, response: volume_snapshot.VolumeSnapshot) -> volume_snapshot.VolumeSnapshot:
         """Post-rpc interceptor for get_volume_snapshot
 
         DEPRECATED. Please use the `post_get_volume_snapshot_with_metadata`
@@ -1247,9 +1124,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_get_volume_snapshot_with_metadata(
-        self,
-        response: volume_snapshot.VolumeSnapshot,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: volume_snapshot.VolumeSnapshot, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume_snapshot.VolumeSnapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_volume_snapshot
 
@@ -1266,9 +1141,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: instance.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
@@ -1277,9 +1150,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: instance.ListInstancesResponse
-    ) -> instance.ListInstancesResponse:
+    def post_list_instances(self, response: instance.ListInstancesResponse) -> instance.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -1293,9 +1164,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: instance.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: instance.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
@@ -1312,9 +1181,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_luns(
-        self,
-        request: lun.ListLunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lun.ListLunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lun.ListLunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_luns
 
@@ -1337,9 +1204,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_luns_with_metadata(
-        self,
-        response: lun.ListLunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lun.ListLunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lun.ListLunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_luns
 
@@ -1356,9 +1221,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_networks(
-        self,
-        request: network.ListNetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: network.ListNetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[network.ListNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_networks
 
@@ -1367,9 +1230,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_networks(
-        self, response: network.ListNetworksResponse
-    ) -> network.ListNetworksResponse:
+    def post_list_networks(self, response: network.ListNetworksResponse) -> network.ListNetworksResponse:
         """Post-rpc interceptor for list_networks
 
         DEPRECATED. Please use the `post_list_networks_with_metadata`
@@ -1383,9 +1244,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_networks_with_metadata(
-        self,
-        response: network.ListNetworksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: network.ListNetworksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[network.ListNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_networks
 
@@ -1402,12 +1261,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_network_usage(
-        self,
-        request: network.ListNetworkUsageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        network.ListNetworkUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: network.ListNetworkUsageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[network.ListNetworkUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_network_usage
 
         Override in a subclass to manipulate the request or metadata
@@ -1415,9 +1270,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_network_usage(
-        self, response: network.ListNetworkUsageResponse
-    ) -> network.ListNetworkUsageResponse:
+    def post_list_network_usage(self, response: network.ListNetworkUsageResponse) -> network.ListNetworkUsageResponse:
         """Post-rpc interceptor for list_network_usage
 
         DEPRECATED. Please use the `post_list_network_usage_with_metadata`
@@ -1431,12 +1284,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_network_usage_with_metadata(
-        self,
-        response: network.ListNetworkUsageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        network.ListNetworkUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: network.ListNetworkUsageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[network.ListNetworkUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_network_usage
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1452,9 +1301,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_nfs_shares(
-        self,
-        request: nfs_share.ListNfsSharesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: nfs_share.ListNfsSharesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[nfs_share.ListNfsSharesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_nfs_shares
 
@@ -1463,9 +1310,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_nfs_shares(
-        self, response: nfs_share.ListNfsSharesResponse
-    ) -> nfs_share.ListNfsSharesResponse:
+    def post_list_nfs_shares(self, response: nfs_share.ListNfsSharesResponse) -> nfs_share.ListNfsSharesResponse:
         """Post-rpc interceptor for list_nfs_shares
 
         DEPRECATED. Please use the `post_list_nfs_shares_with_metadata`
@@ -1479,12 +1324,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_nfs_shares_with_metadata(
-        self,
-        response: nfs_share.ListNfsSharesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        nfs_share.ListNfsSharesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: nfs_share.ListNfsSharesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[nfs_share.ListNfsSharesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_nfs_shares
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1500,9 +1341,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_os_images(
-        self,
-        request: osimage.ListOSImagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: osimage.ListOSImagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[osimage.ListOSImagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_os_images
 
@@ -1511,9 +1350,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_os_images(
-        self, response: osimage.ListOSImagesResponse
-    ) -> osimage.ListOSImagesResponse:
+    def post_list_os_images(self, response: osimage.ListOSImagesResponse) -> osimage.ListOSImagesResponse:
         """Post-rpc interceptor for list_os_images
 
         DEPRECATED. Please use the `post_list_os_images_with_metadata`
@@ -1527,9 +1364,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_os_images_with_metadata(
-        self,
-        response: osimage.ListOSImagesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: osimage.ListOSImagesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[osimage.ListOSImagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_os_images
 
@@ -1546,13 +1381,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_provisioning_quotas(
-        self,
-        request: provisioning.ListProvisioningQuotasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.ListProvisioningQuotasRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: provisioning.ListProvisioningQuotasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.ListProvisioningQuotasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_provisioning_quotas
 
         Override in a subclass to manipulate the request or metadata
@@ -1560,9 +1390,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_provisioning_quotas(
-        self, response: provisioning.ListProvisioningQuotasResponse
-    ) -> provisioning.ListProvisioningQuotasResponse:
+    def post_list_provisioning_quotas(self, response: provisioning.ListProvisioningQuotasResponse) -> provisioning.ListProvisioningQuotasResponse:
         """Post-rpc interceptor for list_provisioning_quotas
 
         DEPRECATED. Please use the `post_list_provisioning_quotas_with_metadata`
@@ -1576,13 +1404,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_provisioning_quotas_with_metadata(
-        self,
-        response: provisioning.ListProvisioningQuotasResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.ListProvisioningQuotasResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: provisioning.ListProvisioningQuotasResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.ListProvisioningQuotasResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_provisioning_quotas
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1598,9 +1421,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_ssh_keys(
-        self,
-        request: ssh_key.ListSSHKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: ssh_key.ListSSHKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ssh_key.ListSSHKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_ssh_keys
 
@@ -1609,9 +1430,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_ssh_keys(
-        self, response: ssh_key.ListSSHKeysResponse
-    ) -> ssh_key.ListSSHKeysResponse:
+    def post_list_ssh_keys(self, response: ssh_key.ListSSHKeysResponse) -> ssh_key.ListSSHKeysResponse:
         """Post-rpc interceptor for list_ssh_keys
 
         DEPRECATED. Please use the `post_list_ssh_keys_with_metadata`
@@ -1625,9 +1444,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_ssh_keys_with_metadata(
-        self,
-        response: ssh_key.ListSSHKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ssh_key.ListSSHKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ssh_key.ListSSHKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_ssh_keys
 
@@ -1644,9 +1461,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_volumes(
-        self,
-        request: volume.ListVolumesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.ListVolumesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volumes
 
@@ -1655,9 +1470,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_volumes(
-        self, response: volume.ListVolumesResponse
-    ) -> volume.ListVolumesResponse:
+    def post_list_volumes(self, response: volume.ListVolumesResponse) -> volume.ListVolumesResponse:
         """Post-rpc interceptor for list_volumes
 
         DEPRECATED. Please use the `post_list_volumes_with_metadata`
@@ -1671,9 +1484,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_volumes_with_metadata(
-        self,
-        response: volume.ListVolumesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: volume.ListVolumesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.ListVolumesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_volumes
 
@@ -1690,13 +1501,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_list_volume_snapshots(
-        self,
-        request: volume_snapshot.ListVolumeSnapshotsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        volume_snapshot.ListVolumeSnapshotsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: volume_snapshot.ListVolumeSnapshotsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[volume_snapshot.ListVolumeSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volume_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -1704,9 +1510,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_volume_snapshots(
-        self, response: volume_snapshot.ListVolumeSnapshotsResponse
-    ) -> volume_snapshot.ListVolumeSnapshotsResponse:
+    def post_list_volume_snapshots(self, response: volume_snapshot.ListVolumeSnapshotsResponse) -> volume_snapshot.ListVolumeSnapshotsResponse:
         """Post-rpc interceptor for list_volume_snapshots
 
         DEPRECATED. Please use the `post_list_volume_snapshots_with_metadata`
@@ -1720,13 +1524,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_list_volume_snapshots_with_metadata(
-        self,
-        response: volume_snapshot.ListVolumeSnapshotsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        volume_snapshot.ListVolumeSnapshotsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: volume_snapshot.ListVolumeSnapshotsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[volume_snapshot.ListVolumeSnapshotsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_volume_snapshots
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1742,9 +1541,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_rename_instance(
-        self,
-        request: instance.RenameInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.RenameInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.RenameInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_instance
 
@@ -1767,9 +1564,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_rename_instance_with_metadata(
-        self,
-        response: instance.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: instance.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rename_instance
 
@@ -1786,9 +1581,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_rename_network(
-        self,
-        request: network.RenameNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: network.RenameNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[network.RenameNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_network
 
@@ -1811,9 +1604,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_rename_network_with_metadata(
-        self,
-        response: network.Network,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: network.Network, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[network.Network, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rename_network
 
@@ -1830,12 +1621,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_rename_nfs_share(
-        self,
-        request: nfs_share.RenameNfsShareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        nfs_share.RenameNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: nfs_share.RenameNfsShareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[nfs_share.RenameNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -1857,9 +1644,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_rename_nfs_share_with_metadata(
-        self,
-        response: nfs_share.NfsShare,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: nfs_share.NfsShare, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[nfs_share.NfsShare, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rename_nfs_share
 
@@ -1876,9 +1661,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_rename_volume(
-        self,
-        request: volume.RenameVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.RenameVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.RenameVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_volume
 
@@ -1918,9 +1701,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_reset_instance(
-        self,
-        request: instance.ResetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.ResetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.ResetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_instance
 
@@ -1929,9 +1710,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reset_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_instance
 
         DEPRECATED. Please use the `post_reset_instance_with_metadata`
@@ -1945,9 +1724,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_reset_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_instance
 
@@ -1964,9 +1741,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_resize_volume(
-        self,
-        request: gcb_volume.ResizeVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcb_volume.ResizeVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcb_volume.ResizeVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resize_volume
 
@@ -1975,9 +1750,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_resize_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_resize_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for resize_volume
 
         DEPRECATED. Please use the `post_resize_volume_with_metadata`
@@ -1991,9 +1764,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_resize_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resize_volume
 
@@ -2010,13 +1781,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_restore_volume_snapshot(
-        self,
-        request: gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcb_volume_snapshot.RestoreVolumeSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_volume_snapshot.RestoreVolumeSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_volume_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -2024,9 +1790,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_volume_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_volume_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_volume_snapshot
 
         DEPRECATED. Please use the `post_restore_volume_snapshot_with_metadata`
@@ -2040,9 +1804,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_restore_volume_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_volume_snapshot
 
@@ -2059,9 +1821,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_start_instance(
-        self,
-        request: instance.StartInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.StartInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.StartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_instance
 
@@ -2070,9 +1830,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_start_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_instance
 
         DEPRECATED. Please use the `post_start_instance_with_metadata`
@@ -2086,9 +1844,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_start_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_instance
 
@@ -2105,9 +1861,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_stop_instance(
-        self,
-        request: instance.StopInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.StopInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.StopInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_instance
 
@@ -2116,9 +1870,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_instance
 
         DEPRECATED. Please use the `post_stop_instance_with_metadata`
@@ -2132,9 +1884,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_stop_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_instance
 
@@ -2151,13 +1901,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_submit_provisioning_config(
-        self,
-        request: provisioning.SubmitProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.SubmitProvisioningConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: provisioning.SubmitProvisioningConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.SubmitProvisioningConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2181,13 +1926,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_submit_provisioning_config_with_metadata(
-        self,
-        response: provisioning.SubmitProvisioningConfigResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.SubmitProvisioningConfigResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: provisioning.SubmitProvisioningConfigResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.SubmitProvisioningConfigResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for submit_provisioning_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2203,12 +1943,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: gcb_instance.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_instance.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcb_instance.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_instance.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -2216,9 +1952,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -2232,9 +1966,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -2251,12 +1983,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_update_network(
-        self,
-        request: gcb_network.UpdateNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_network.UpdateNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcb_network.UpdateNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_network.UpdateNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_network
 
         Override in a subclass to manipulate the request or metadata
@@ -2264,9 +1992,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_update_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_network
 
         DEPRECATED. Please use the `post_update_network_with_metadata`
@@ -2280,9 +2006,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_update_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_network
 
@@ -2299,12 +2023,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_update_nfs_share(
-        self,
-        request: gcb_nfs_share.UpdateNfsShareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcb_nfs_share.UpdateNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcb_nfs_share.UpdateNfsShareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_nfs_share.UpdateNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -2312,9 +2032,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_update_nfs_share(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_nfs_share(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_nfs_share
 
         DEPRECATED. Please use the `post_update_nfs_share_with_metadata`
@@ -2328,9 +2046,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_update_nfs_share_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_nfs_share
 
@@ -2347,13 +2063,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_update_provisioning_config(
-        self,
-        request: provisioning.UpdateProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.UpdateProvisioningConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: provisioning.UpdateProvisioningConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.UpdateProvisioningConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2361,9 +2072,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_update_provisioning_config(
-        self, response: provisioning.ProvisioningConfig
-    ) -> provisioning.ProvisioningConfig:
+    def post_update_provisioning_config(self, response: provisioning.ProvisioningConfig) -> provisioning.ProvisioningConfig:
         """Post-rpc interceptor for update_provisioning_config
 
         DEPRECATED. Please use the `post_update_provisioning_config_with_metadata`
@@ -2377,12 +2086,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_update_provisioning_config_with_metadata(
-        self,
-        response: provisioning.ProvisioningConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: provisioning.ProvisioningConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_provisioning_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2398,9 +2103,7 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_update_volume(
-        self,
-        request: gcb_volume.UpdateVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcb_volume.UpdateVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcb_volume.UpdateVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_volume
 
@@ -2409,9 +2112,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_update_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_volume
 
         DEPRECATED. Please use the `post_update_volume_with_metadata`
@@ -2425,9 +2126,7 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def post_update_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_volume
 
@@ -2444,12 +2143,8 @@ class BareMetalSolutionRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2457,9 +2152,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2469,12 +2162,8 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2482,9 +2171,7 @@ class BareMetalSolutionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2581,9 +2268,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2610,30 +2295,17 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateNfsShare(
-        _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare,
-        BareMetalSolutionRestStub,
-    ):
+    class _CreateNfsShare(_BaseBareMetalSolutionRestTransport._BaseCreateNfsShare, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.CreateNfsShare")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2676,32 +2348,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_nfs_share(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_nfs_share(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2725,13 +2383,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._CreateNfsShare._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2745,12 +2397,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_create_nfs_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_nfs_share_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_nfs_share_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2771,23 +2419,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _CreateProvisioningConfig(
-        _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig,
-        BareMetalSolutionRestStub,
-    ):
+    class _CreateProvisioningConfig(_BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.CreateProvisioningConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2828,32 +2465,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                         A provisioning configuration.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_provisioning_config(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_provisioning_config(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2876,16 +2499,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._CreateProvisioningConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BareMetalSolutionRestTransport._CreateProvisioningConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2901,12 +2516,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_create_provisioning_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_provisioning_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_provisioning_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = provisioning.ProvisioningConfig.to_json(response)
                 except:
@@ -2927,22 +2538,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _CreateSSHKey(
-        _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey, BareMetalSolutionRestStub
-    ):
+    class _CreateSSHKey(_BaseBareMetalSolutionRestTransport._BaseCreateSSHKey, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.CreateSSHKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2985,30 +2586,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_http_options()
 
             request, metadata = self._interceptor.pre_create_ssh_key(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3032,13 +2621,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._CreateSSHKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3054,12 +2637,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_create_ssh_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_ssh_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_ssh_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcb_ssh_key.SSHKey.to_json(response)
                 except:
@@ -3080,23 +2659,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _CreateVolumeSnapshot(
-        _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot,
-        BareMetalSolutionRestStub,
-    ):
+    class _CreateVolumeSnapshot(_BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.CreateVolumeSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3139,32 +2707,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_volume_snapshot(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_volume_snapshot(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3187,16 +2741,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._CreateVolumeSnapshot._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BareMetalSolutionRestTransport._CreateVolumeSnapshot._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3212,16 +2758,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_create_volume_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_volume_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_volume_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcb_volume_snapshot.VolumeSnapshot.to_json(
-                        response
-                    )
+                    response_payload = gcb_volume_snapshot.VolumeSnapshot.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3240,23 +2780,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _DeleteNfsShare(
-        _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare,
-        BareMetalSolutionRestStub,
-    ):
+    class _DeleteNfsShare(_BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.DeleteNfsShare")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3298,28 +2827,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_nfs_share(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_nfs_share(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3343,12 +2860,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._DeleteNfsShare._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3362,12 +2874,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_delete_nfs_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_nfs_share_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_nfs_share_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3388,22 +2896,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _DeleteSSHKey(
-        _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey, BareMetalSolutionRestStub
-    ):
+    class _DeleteSSHKey(_BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.DeleteSSHKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3439,26 +2937,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_ssh_key(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3482,12 +2970,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._DeleteSSHKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3495,23 +2978,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteVolumeSnapshot(
-        _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot,
-        BareMetalSolutionRestStub,
-    ):
+    class _DeleteVolumeSnapshot(_BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.DeleteVolumeSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3547,28 +3019,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_volume_snapshot(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_volume_snapshot(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3591,15 +3051,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._DeleteVolumeSnapshot._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BareMetalSolutionRestTransport._DeleteVolumeSnapshot._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3607,22 +3060,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DetachLun(
-        _BaseBareMetalSolutionRestTransport._BaseDetachLun, BareMetalSolutionRestStub
-    ):
+    class _DetachLun(_BaseBareMetalSolutionRestTransport._BaseDetachLun, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.DetachLun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3666,30 +3109,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_http_options()
 
             request, metadata = self._interceptor.pre_detach_lun(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3713,13 +3144,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._DetachLun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3733,12 +3158,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_detach_lun(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_detach_lun_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_detach_lun_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3759,25 +3180,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _DisableInteractiveSerialConsole(
-        _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole,
-        BareMetalSolutionRestStub,
-    ):
+    class _DisableInteractiveSerialConsole(_BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole, BareMetalSolutionRestStub):
         def __hash__(self):
-            return hash(
-                "BareMetalSolutionRestTransport.DisableInteractiveSerialConsole"
-            )
+            return hash("BareMetalSolutionRestTransport.DisableInteractiveSerialConsole")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3822,35 +3230,20 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_disable_interactive_serial_console(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_disable_interactive_serial_console(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3874,13 +3267,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._DisableInteractiveSerialConsole._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3894,15 +3281,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_disable_interactive_serial_console(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_disable_interactive_serial_console_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_disable_interactive_serial_console_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3923,23 +3303,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _EnableInteractiveSerialConsole(
-        _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole,
-        BareMetalSolutionRestStub,
-    ):
+    class _EnableInteractiveSerialConsole(_BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.EnableInteractiveSerialConsole")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3984,32 +3353,20 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_http_options()
 
-            request, metadata = self._interceptor.pre_enable_interactive_serial_console(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_enable_interactive_serial_console(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4033,13 +3390,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._EnableInteractiveSerialConsole._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4053,15 +3404,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_enable_interactive_serial_console(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_enable_interactive_serial_console_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enable_interactive_serial_console_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4082,22 +3426,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _EvictLun(
-        _BaseBareMetalSolutionRestTransport._BaseEvictLun, BareMetalSolutionRestStub
-    ):
+    class _EvictLun(_BaseBareMetalSolutionRestTransport._BaseEvictLun, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.EvictLun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4141,30 +3475,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_http_options()
 
             request, metadata = self._interceptor.pre_evict_lun(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4188,13 +3510,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._EvictLun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4208,12 +3524,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_evict_lun(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_evict_lun_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_evict_lun_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4234,22 +3546,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _EvictVolume(
-        _BaseBareMetalSolutionRestTransport._BaseEvictVolume, BareMetalSolutionRestStub
-    ):
+    class _EvictVolume(_BaseBareMetalSolutionRestTransport._BaseEvictVolume, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.EvictVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4293,30 +3595,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_evict_volume(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4340,13 +3630,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._EvictVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4360,12 +3644,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_evict_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_evict_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_evict_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4386,22 +3666,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseBareMetalSolutionRestTransport._BaseGetInstance, BareMetalSolutionRestStub
-    ):
+    class _GetInstance(_BaseBareMetalSolutionRestTransport._BaseGetInstance, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4441,26 +3711,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A server.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4484,12 +3744,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4505,12 +3760,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = instance.Instance.to_json(response)
                 except:
@@ -4531,22 +3782,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetLun(
-        _BaseBareMetalSolutionRestTransport._BaseGetLun, BareMetalSolutionRestStub
-    ):
+    class _GetLun(_BaseBareMetalSolutionRestTransport._BaseGetLun, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetLun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4588,30 +3829,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetLun._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetLun._get_http_options()
 
             request, metadata = self._interceptor.pre_get_lun(request, metadata)
-            transcoded_request = (
-                _BaseBareMetalSolutionRestTransport._BaseGetLun._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetLun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBareMetalSolutionRestTransport._BaseGetLun._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetLun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4635,12 +3862,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetLun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4656,12 +3878,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_lun(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lun_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lun_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lun.Lun.to_json(response)
                 except:
@@ -4682,22 +3900,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetNetwork(
-        _BaseBareMetalSolutionRestTransport._BaseGetNetwork, BareMetalSolutionRestStub
-    ):
+    class _GetNetwork(_BaseBareMetalSolutionRestTransport._BaseGetNetwork, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4737,26 +3945,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A Network.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_get_network(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4780,12 +3978,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4801,12 +3994,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = network.Network.to_json(response)
                 except:
@@ -4827,22 +4016,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetNfsShare(
-        _BaseBareMetalSolutionRestTransport._BaseGetNfsShare, BareMetalSolutionRestStub
-    ):
+    class _GetNfsShare(_BaseBareMetalSolutionRestTransport._BaseGetNfsShare, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetNfsShare")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4882,26 +4061,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     An NFS share.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_http_options()
 
             request, metadata = self._interceptor.pre_get_nfs_share(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4925,12 +4094,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetNfsShare._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4946,12 +4110,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_nfs_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_nfs_share_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_nfs_share_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = nfs_share.NfsShare.to_json(response)
                 except:
@@ -4972,23 +4132,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetProvisioningConfig(
-        _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig,
-        BareMetalSolutionRestStub,
-    ):
+    class _GetProvisioningConfig(_BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetProvisioningConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5027,28 +4176,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A provisioning configuration.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_provisioning_config(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_provisioning_config(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5071,15 +4208,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._GetProvisioningConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BareMetalSolutionRestTransport._GetProvisioningConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5095,12 +4225,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_provisioning_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_provisioning_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_provisioning_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = provisioning.ProvisioningConfig.to_json(response)
                 except:
@@ -5121,22 +4247,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetVolume(
-        _BaseBareMetalSolutionRestTransport._BaseGetVolume, BareMetalSolutionRestStub
-    ):
+    class _GetVolume(_BaseBareMetalSolutionRestTransport._BaseGetVolume, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5176,26 +4292,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A storage volume.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_get_volume(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5219,12 +4325,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5240,12 +4341,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.Volume.to_json(response)
                 except:
@@ -5266,23 +4363,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _GetVolumeSnapshot(
-        _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot,
-        BareMetalSolutionRestStub,
-    ):
+    class _GetVolumeSnapshot(_BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetVolumeSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5324,28 +4410,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_volume_snapshot(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_volume_snapshot(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5369,12 +4443,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetVolumeSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5390,12 +4459,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_get_volume_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_volume_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_volume_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume_snapshot.VolumeSnapshot.to_json(response)
                 except:
@@ -5416,23 +4481,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseBareMetalSolutionRestTransport._BaseListInstances,
-        BareMetalSolutionRestStub,
-    ):
+    class _ListInstances(_BaseBareMetalSolutionRestTransport._BaseListInstances, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5474,26 +4528,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5517,12 +4561,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5538,12 +4577,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = instance.ListInstancesResponse.to_json(response)
                 except:
@@ -5564,22 +4599,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListLuns(
-        _BaseBareMetalSolutionRestTransport._BaseListLuns, BareMetalSolutionRestStub
-    ):
+    class _ListLuns(_BaseBareMetalSolutionRestTransport._BaseListLuns, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListLuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5621,26 +4646,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListLuns._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_http_options()
 
             request, metadata = self._interceptor.pre_list_luns(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5664,12 +4679,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListLuns._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5685,12 +4695,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_luns(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_luns_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_luns_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lun.ListLunsResponse.to_json(response)
                 except:
@@ -5711,22 +4717,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListNetworks(
-        _BaseBareMetalSolutionRestTransport._BaseListNetworks, BareMetalSolutionRestStub
-    ):
+    class _ListNetworks(_BaseBareMetalSolutionRestTransport._BaseListNetworks, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListNetworks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5768,26 +4764,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_networks(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5811,12 +4797,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListNetworks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5832,12 +4813,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_networks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_networks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_networks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = network.ListNetworksResponse.to_json(response)
                 except:
@@ -5858,23 +4835,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListNetworkUsage(
-        _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage,
-        BareMetalSolutionRestStub,
-    ):
+    class _ListNetworkUsage(_BaseBareMetalSolutionRestTransport._BaseListNetworkUsage, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListNetworkUsage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5913,28 +4879,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     Response with Networks with IPs
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_network_usage(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_network_usage(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5958,12 +4912,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListNetworkUsage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5979,16 +4928,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_network_usage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_network_usage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_network_usage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = network.ListNetworkUsageResponse.to_json(
-                        response
-                    )
+                    response_payload = network.ListNetworkUsageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6007,23 +4950,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListNfsShares(
-        _BaseBareMetalSolutionRestTransport._BaseListNfsShares,
-        BareMetalSolutionRestStub,
-    ):
+    class _ListNfsShares(_BaseBareMetalSolutionRestTransport._BaseListNfsShares, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListNfsShares")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6065,26 +4997,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_http_options()
 
             request, metadata = self._interceptor.pre_list_nfs_shares(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6108,12 +5030,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListNfsShares._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6129,12 +5046,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_nfs_shares(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_nfs_shares_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_nfs_shares_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = nfs_share.ListNfsSharesResponse.to_json(response)
                 except:
@@ -6155,22 +5068,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListOSImages(
-        _BaseBareMetalSolutionRestTransport._BaseListOSImages, BareMetalSolutionRestStub
-    ):
+    class _ListOSImages(_BaseBareMetalSolutionRestTransport._BaseListOSImages, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListOSImages")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6212,26 +5115,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_os_images(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6255,12 +5148,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListOSImages._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6276,12 +5164,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_os_images(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_os_images_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_os_images_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = osimage.ListOSImagesResponse.to_json(response)
                 except:
@@ -6302,23 +5186,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListProvisioningQuotas(
-        _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas,
-        BareMetalSolutionRestStub,
-    ):
+    class _ListProvisioningQuotas(_BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListProvisioningQuotas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6360,28 +5233,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_provisioning_quotas(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_provisioning_quotas(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6404,15 +5265,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._ListProvisioningQuotas._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BareMetalSolutionRestTransport._ListProvisioningQuotas._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6428,16 +5282,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_provisioning_quotas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_provisioning_quotas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_provisioning_quotas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        provisioning.ListProvisioningQuotasResponse.to_json(response)
-                    )
+                    response_payload = provisioning.ListProvisioningQuotasResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6456,22 +5304,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListSSHKeys(
-        _BaseBareMetalSolutionRestTransport._BaseListSSHKeys, BareMetalSolutionRestStub
-    ):
+    class _ListSSHKeys(_BaseBareMetalSolutionRestTransport._BaseListSSHKeys, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListSSHKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6511,26 +5349,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     Message for response of ListSSHKeys.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_http_options()
 
             request, metadata = self._interceptor.pre_list_ssh_keys(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6554,12 +5382,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListSSHKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6575,12 +5398,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_ssh_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_ssh_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_ssh_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ssh_key.ListSSHKeysResponse.to_json(response)
                 except:
@@ -6601,22 +5420,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListVolumes(
-        _BaseBareMetalSolutionRestTransport._BaseListVolumes, BareMetalSolutionRestStub
-    ):
+    class _ListVolumes(_BaseBareMetalSolutionRestTransport._BaseListVolumes, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListVolumes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6658,26 +5467,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_volumes(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6701,12 +5500,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListVolumes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6722,12 +5516,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_volumes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_volumes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_volumes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.ListVolumesResponse.to_json(response)
                 except:
@@ -6748,23 +5538,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ListVolumeSnapshots(
-        _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots,
-        BareMetalSolutionRestStub,
-    ):
+    class _ListVolumeSnapshots(_BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListVolumeSnapshots")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6806,28 +5585,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_volume_snapshots(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_volume_snapshots(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6850,15 +5617,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._ListVolumeSnapshots._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BareMetalSolutionRestTransport._ListVolumeSnapshots._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6874,16 +5634,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_list_volume_snapshots(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_volume_snapshots_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_volume_snapshots_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        volume_snapshot.ListVolumeSnapshotsResponse.to_json(response)
-                    )
+                    response_payload = volume_snapshot.ListVolumeSnapshotsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6902,23 +5656,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _RenameInstance(
-        _BaseBareMetalSolutionRestTransport._BaseRenameInstance,
-        BareMetalSolutionRestStub,
-    ):
+    class _RenameInstance(_BaseBareMetalSolutionRestTransport._BaseRenameInstance, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.RenameInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6959,30 +5702,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A server.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_rename_instance(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7006,13 +5737,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7028,12 +5753,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_rename_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rename_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rename_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = instance.Instance.to_json(response)
                 except:
@@ -7054,23 +5775,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _RenameNetwork(
-        _BaseBareMetalSolutionRestTransport._BaseRenameNetwork,
-        BareMetalSolutionRestStub,
-    ):
+    class _RenameNetwork(_BaseBareMetalSolutionRestTransport._BaseRenameNetwork, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.RenameNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7111,30 +5821,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A Network.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_rename_network(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7158,13 +5856,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7180,12 +5872,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_rename_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rename_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rename_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = network.Network.to_json(response)
                 except:
@@ -7206,23 +5894,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _RenameNfsShare(
-        _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare,
-        BareMetalSolutionRestStub,
-    ):
+    class _RenameNfsShare(_BaseBareMetalSolutionRestTransport._BaseRenameNfsShare, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.RenameNfsShare")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7263,32 +5940,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     An NFS share.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_http_options()
 
-            request, metadata = self._interceptor.pre_rename_nfs_share(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_rename_nfs_share(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7312,13 +5975,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameNfsShare._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7334,12 +5991,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_rename_nfs_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rename_nfs_share_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rename_nfs_share_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = nfs_share.NfsShare.to_json(response)
                 except:
@@ -7360,22 +6013,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _RenameVolume(
-        _BaseBareMetalSolutionRestTransport._BaseRenameVolume, BareMetalSolutionRestStub
-    ):
+    class _RenameVolume(_BaseBareMetalSolutionRestTransport._BaseRenameVolume, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.RenameVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7416,30 +6059,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     A storage volume.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_rename_volume(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7463,13 +6094,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7485,12 +6110,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_rename_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rename_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rename_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.Volume.to_json(response)
                 except:
@@ -7511,23 +6132,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ResetInstance(
-        _BaseBareMetalSolutionRestTransport._BaseResetInstance,
-        BareMetalSolutionRestStub,
-    ):
+    class _ResetInstance(_BaseBareMetalSolutionRestTransport._BaseResetInstance, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ResetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7570,30 +6180,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_reset_instance(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7617,13 +6215,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ResetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7637,12 +6229,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_reset_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7663,22 +6251,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _ResizeVolume(
-        _BaseBareMetalSolutionRestTransport._BaseResizeVolume, BareMetalSolutionRestStub
-    ):
+    class _ResizeVolume(_BaseBareMetalSolutionRestTransport._BaseResizeVolume, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ResizeVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7721,30 +6299,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_resize_volume(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7768,13 +6334,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ResizeVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7788,12 +6348,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_resize_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resize_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resize_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7814,23 +6370,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _RestoreVolumeSnapshot(
-        _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot,
-        BareMetalSolutionRestStub,
-    ):
+    class _RestoreVolumeSnapshot(_BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.RestoreVolumeSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7874,32 +6419,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_volume_snapshot(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restore_volume_snapshot(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7922,16 +6453,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._RestoreVolumeSnapshot._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BareMetalSolutionRestTransport._RestoreVolumeSnapshot._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7945,12 +6468,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_restore_volume_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_volume_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_volume_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7971,23 +6490,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _StartInstance(
-        _BaseBareMetalSolutionRestTransport._BaseStartInstance,
-        BareMetalSolutionRestStub,
-    ):
+    class _StartInstance(_BaseBareMetalSolutionRestTransport._BaseStartInstance, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.StartInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8030,30 +6538,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_start_instance(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8077,13 +6573,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._StartInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8097,12 +6587,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_start_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8123,22 +6609,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _StopInstance(
-        _BaseBareMetalSolutionRestTransport._BaseStopInstance, BareMetalSolutionRestStub
-    ):
+    class _StopInstance(_BaseBareMetalSolutionRestTransport._BaseStopInstance, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.StopInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8181,30 +6657,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_instance(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8228,13 +6692,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._StopInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8248,12 +6706,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_stop_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8274,23 +6728,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _SubmitProvisioningConfig(
-        _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig,
-        BareMetalSolutionRestStub,
-    ):
+    class _SubmitProvisioningConfig(_BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.SubmitProvisioningConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8333,32 +6776,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_submit_provisioning_config(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_submit_provisioning_config(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8381,16 +6810,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._SubmitProvisioningConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BareMetalSolutionRestTransport._SubmitProvisioningConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8406,16 +6827,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_submit_provisioning_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_submit_provisioning_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_submit_provisioning_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        provisioning.SubmitProvisioningConfigResponse.to_json(response)
-                    )
+                    response_payload = provisioning.SubmitProvisioningConfigResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8434,23 +6849,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _UpdateInstance(
-        _BaseBareMetalSolutionRestTransport._BaseUpdateInstance,
-        BareMetalSolutionRestStub,
-    ):
+    class _UpdateInstance(_BaseBareMetalSolutionRestTransport._BaseUpdateInstance, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8494,30 +6898,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8541,13 +6933,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8561,12 +6947,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8587,23 +6969,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _UpdateNetwork(
-        _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork,
-        BareMetalSolutionRestStub,
-    ):
+    class _UpdateNetwork(_BaseBareMetalSolutionRestTransport._BaseUpdateNetwork, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.UpdateNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8647,30 +7018,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_update_network(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8694,13 +7053,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8714,12 +7067,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_update_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8740,23 +7089,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _UpdateNfsShare(
-        _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare,
-        BareMetalSolutionRestStub,
-    ):
+    class _UpdateNfsShare(_BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.UpdateNfsShare")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8800,32 +7138,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_nfs_share(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_nfs_share(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8849,13 +7173,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateNfsShare._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8869,12 +7187,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_update_nfs_share(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_nfs_share_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_nfs_share_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8895,23 +7209,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _UpdateProvisioningConfig(
-        _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig,
-        BareMetalSolutionRestStub,
-    ):
+    class _UpdateProvisioningConfig(_BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.UpdateProvisioningConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8953,32 +7256,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                         A provisioning configuration.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_provisioning_config(
-                request, metadata
-            )
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_provisioning_config(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9001,16 +7290,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
 
             # Send the request
-            response = (
-                BareMetalSolutionRestTransport._UpdateProvisioningConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BareMetalSolutionRestTransport._UpdateProvisioningConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9026,12 +7307,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_update_provisioning_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_provisioning_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_provisioning_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = provisioning.ProvisioningConfig.to_json(response)
                 except:
@@ -9052,22 +7329,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 )
             return resp
 
-    class _UpdateVolume(
-        _BaseBareMetalSolutionRestTransport._BaseUpdateVolume, BareMetalSolutionRestStub
-    ):
+    class _UpdateVolume(_BaseBareMetalSolutionRestTransport._BaseUpdateVolume, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.UpdateVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9110,30 +7377,18 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_update_volume(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9157,13 +7412,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9177,12 +7426,8 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             resp = self._interceptor.post_update_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9204,90 +7449,61 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             return resp
 
     @property
-    def create_nfs_share(
-        self,
-    ) -> Callable[[gcb_nfs_share.CreateNfsShareRequest], operations_pb2.Operation]:
+    def create_nfs_share(self) -> Callable[[gcb_nfs_share.CreateNfsShareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNfsShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.CreateProvisioningConfigRequest], provisioning.ProvisioningConfig
-    ]:
+    def create_provisioning_config(self) -> Callable[[provisioning.CreateProvisioningConfigRequest], provisioning.ProvisioningConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_ssh_key(
-        self,
-    ) -> Callable[[gcb_ssh_key.CreateSSHKeyRequest], gcb_ssh_key.SSHKey]:
+    def create_ssh_key(self) -> Callable[[gcb_ssh_key.CreateSSHKeyRequest], gcb_ssh_key.SSHKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSSHKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_volume_snapshot(
-        self,
-    ) -> Callable[
-        [gcb_volume_snapshot.CreateVolumeSnapshotRequest],
-        gcb_volume_snapshot.VolumeSnapshot,
-    ]:
+    def create_volume_snapshot(self) -> Callable[[gcb_volume_snapshot.CreateVolumeSnapshotRequest], gcb_volume_snapshot.VolumeSnapshot]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_nfs_share(
-        self,
-    ) -> Callable[[nfs_share.DeleteNfsShareRequest], operations_pb2.Operation]:
+    def delete_nfs_share(self) -> Callable[[nfs_share.DeleteNfsShareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNfsShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_ssh_key(
-        self,
-    ) -> Callable[[ssh_key.DeleteSSHKeyRequest], empty_pb2.Empty]:
+    def delete_ssh_key(self) -> Callable[[ssh_key.DeleteSSHKeyRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSSHKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_volume_snapshot(
-        self,
-    ) -> Callable[[volume_snapshot.DeleteVolumeSnapshotRequest], empty_pb2.Empty]:
+    def delete_volume_snapshot(self) -> Callable[[volume_snapshot.DeleteVolumeSnapshotRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def detach_lun(
-        self,
-    ) -> Callable[[gcb_instance.DetachLunRequest], operations_pb2.Operation]:
+    def detach_lun(self) -> Callable[[gcb_instance.DetachLunRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DetachLun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def disable_interactive_serial_console(
-        self,
-    ) -> Callable[
-        [instance.DisableInteractiveSerialConsoleRequest], operations_pb2.Operation
-    ]:
+    def disable_interactive_serial_console(self) -> Callable[[instance.DisableInteractiveSerialConsoleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableInteractiveSerialConsole(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enable_interactive_serial_console(
-        self,
-    ) -> Callable[
-        [instance.EnableInteractiveSerialConsoleRequest], operations_pb2.Operation
-    ]:
+    def enable_interactive_serial_console(self) -> Callable[[instance.EnableInteractiveSerialConsoleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnableInteractiveSerialConsole(self._session, self._host, self._interceptor)  # type: ignore
@@ -9299,17 +7515,13 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
         return self._EvictLun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def evict_volume(
-        self,
-    ) -> Callable[[volume.EvictVolumeRequest], operations_pb2.Operation]:
+    def evict_volume(self) -> Callable[[volume.EvictVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EvictVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
+    def get_instance(self) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -9327,19 +7539,13 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
         return self._GetNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_nfs_share(
-        self,
-    ) -> Callable[[nfs_share.GetNfsShareRequest], nfs_share.NfsShare]:
+    def get_nfs_share(self) -> Callable[[nfs_share.GetNfsShareRequest], nfs_share.NfsShare]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNfsShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.GetProvisioningConfigRequest], provisioning.ProvisioningConfig
-    ]:
+    def get_provisioning_config(self) -> Callable[[provisioning.GetProvisioningConfigRequest], provisioning.ProvisioningConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -9351,19 +7557,13 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
         return self._GetVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_volume_snapshot(
-        self,
-    ) -> Callable[
-        [volume_snapshot.GetVolumeSnapshotRequest], volume_snapshot.VolumeSnapshot
-    ]:
+    def get_volume_snapshot(self) -> Callable[[volume_snapshot.GetVolumeSnapshotRequest], volume_snapshot.VolumeSnapshot]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
@@ -9375,95 +7575,67 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
         return self._ListLuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_networks(
-        self,
-    ) -> Callable[[network.ListNetworksRequest], network.ListNetworksResponse]:
+    def list_networks(self) -> Callable[[network.ListNetworksRequest], network.ListNetworksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNetworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_network_usage(
-        self,
-    ) -> Callable[[network.ListNetworkUsageRequest], network.ListNetworkUsageResponse]:
+    def list_network_usage(self) -> Callable[[network.ListNetworkUsageRequest], network.ListNetworkUsageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNetworkUsage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_nfs_shares(
-        self,
-    ) -> Callable[[nfs_share.ListNfsSharesRequest], nfs_share.ListNfsSharesResponse]:
+    def list_nfs_shares(self) -> Callable[[nfs_share.ListNfsSharesRequest], nfs_share.ListNfsSharesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNfsShares(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_os_images(
-        self,
-    ) -> Callable[[osimage.ListOSImagesRequest], osimage.ListOSImagesResponse]:
+    def list_os_images(self) -> Callable[[osimage.ListOSImagesRequest], osimage.ListOSImagesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOSImages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_provisioning_quotas(
-        self,
-    ) -> Callable[
-        [provisioning.ListProvisioningQuotasRequest],
-        provisioning.ListProvisioningQuotasResponse,
-    ]:
+    def list_provisioning_quotas(self) -> Callable[[provisioning.ListProvisioningQuotasRequest], provisioning.ListProvisioningQuotasResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProvisioningQuotas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_ssh_keys(
-        self,
-    ) -> Callable[[ssh_key.ListSSHKeysRequest], ssh_key.ListSSHKeysResponse]:
+    def list_ssh_keys(self) -> Callable[[ssh_key.ListSSHKeysRequest], ssh_key.ListSSHKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSSHKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_volumes(
-        self,
-    ) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:
+    def list_volumes(self) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_volume_snapshots(
-        self,
-    ) -> Callable[
-        [volume_snapshot.ListVolumeSnapshotsRequest],
-        volume_snapshot.ListVolumeSnapshotsResponse,
-    ]:
+    def list_volume_snapshots(self) -> Callable[[volume_snapshot.ListVolumeSnapshotsRequest], volume_snapshot.ListVolumeSnapshotsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumeSnapshots(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rename_instance(
-        self,
-    ) -> Callable[[instance.RenameInstanceRequest], instance.Instance]:
+    def rename_instance(self) -> Callable[[instance.RenameInstanceRequest], instance.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenameInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rename_network(
-        self,
-    ) -> Callable[[network.RenameNetworkRequest], network.Network]:
+    def rename_network(self) -> Callable[[network.RenameNetworkRequest], network.Network]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenameNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rename_nfs_share(
-        self,
-    ) -> Callable[[nfs_share.RenameNfsShareRequest], nfs_share.NfsShare]:
+    def rename_nfs_share(self) -> Callable[[nfs_share.RenameNfsShareRequest], nfs_share.NfsShare]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenameNfsShare(self._session, self._host, self._interceptor)  # type: ignore
@@ -9475,96 +7647,67 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
         return self._RenameVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_instance(
-        self,
-    ) -> Callable[[instance.ResetInstanceRequest], operations_pb2.Operation]:
+    def reset_instance(self) -> Callable[[instance.ResetInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resize_volume(
-        self,
-    ) -> Callable[[gcb_volume.ResizeVolumeRequest], operations_pb2.Operation]:
+    def resize_volume(self) -> Callable[[gcb_volume.ResizeVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResizeVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_volume_snapshot(
-        self,
-    ) -> Callable[
-        [gcb_volume_snapshot.RestoreVolumeSnapshotRequest], operations_pb2.Operation
-    ]:
+    def restore_volume_snapshot(self) -> Callable[[gcb_volume_snapshot.RestoreVolumeSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_instance(
-        self,
-    ) -> Callable[[instance.StartInstanceRequest], operations_pb2.Operation]:
+    def start_instance(self) -> Callable[[instance.StartInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_instance(
-        self,
-    ) -> Callable[[instance.StopInstanceRequest], operations_pb2.Operation]:
+    def stop_instance(self) -> Callable[[instance.StopInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def submit_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.SubmitProvisioningConfigRequest],
-        provisioning.SubmitProvisioningConfigResponse,
-    ]:
+    def submit_provisioning_config(self) -> Callable[[provisioning.SubmitProvisioningConfigRequest], provisioning.SubmitProvisioningConfigResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SubmitProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[gcb_instance.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[gcb_instance.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_network(
-        self,
-    ) -> Callable[[gcb_network.UpdateNetworkRequest], operations_pb2.Operation]:
+    def update_network(self) -> Callable[[gcb_network.UpdateNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_nfs_share(
-        self,
-    ) -> Callable[[gcb_nfs_share.UpdateNfsShareRequest], operations_pb2.Operation]:
+    def update_nfs_share(self) -> Callable[[gcb_nfs_share.UpdateNfsShareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNfsShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.UpdateProvisioningConfigRequest], provisioning.ProvisioningConfig
-    ]:
+    def update_provisioning_config(self) -> Callable[[provisioning.UpdateProvisioningConfigRequest], provisioning.ProvisioningConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_volume(
-        self,
-    ) -> Callable[[gcb_volume.UpdateVolumeRequest], operations_pb2.Operation]:
+    def update_volume(self) -> Callable[[gcb_volume.UpdateVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVolume(self._session, self._host, self._interceptor)  # type: ignore
@@ -9573,22 +7716,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseBareMetalSolutionRestTransport._BaseGetLocation, BareMetalSolutionRestStub
-    ):
+    class _GetLocation(_BaseBareMetalSolutionRestTransport._BaseGetLocation, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9626,26 +7759,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9669,12 +7792,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9686,9 +7804,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9713,23 +7829,12 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseBareMetalSolutionRestTransport._BaseListLocations,
-        BareMetalSolutionRestStub,
-    ):
+    class _ListLocations(_BaseBareMetalSolutionRestTransport._BaseListLocations, BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("BareMetalSolutionRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9767,26 +7872,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseBareMetalSolutionRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9810,12 +7905,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9827,9 +7917,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -373,9 +373,7 @@ class ListBackupPlanAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence[
-        "BackupPlanAssociation"
-    ] = proto.RepeatedField(
+    backup_plan_associations: MutableSequence["BackupPlanAssociation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BackupPlanAssociation",
@@ -481,9 +479,7 @@ class FetchBackupPlanAssociationsForResourceTypeResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence[
-        "BackupPlanAssociation"
-    ] = proto.RepeatedField(
+    backup_plan_associations: MutableSequence["BackupPlanAssociation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BackupPlanAssociation",

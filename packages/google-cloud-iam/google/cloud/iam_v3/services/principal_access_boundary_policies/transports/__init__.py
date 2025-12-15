@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import PrincipalAccessBoundaryPoliciesTransport
 from .grpc import PrincipalAccessBoundaryPoliciesGrpcTransport
 from .grpc_asyncio import PrincipalAccessBoundaryPoliciesGrpcAsyncIOTransport
-from .rest import (
-    PrincipalAccessBoundaryPoliciesRestInterceptor,
-    PrincipalAccessBoundaryPoliciesRestTransport,
-)
+from .rest import PrincipalAccessBoundaryPoliciesRestInterceptor, PrincipalAccessBoundaryPoliciesRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PrincipalAccessBoundaryPoliciesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PrincipalAccessBoundaryPoliciesTransport]]
 _transport_registry["grpc"] = PrincipalAccessBoundaryPoliciesGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = PrincipalAccessBoundaryPoliciesGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = PrincipalAccessBoundaryPoliciesGrpcAsyncIOTransport
 _transport_registry["rest"] = PrincipalAccessBoundaryPoliciesRestTransport
 
 __all__ = (

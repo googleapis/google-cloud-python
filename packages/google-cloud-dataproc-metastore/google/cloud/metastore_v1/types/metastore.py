@@ -2051,9 +2051,7 @@ class LocationMetadata(proto.Message):
             number=2,
         )
 
-    supported_hive_metastore_versions: MutableSequence[
-        HiveMetastoreVersion
-    ] = proto.RepeatedField(
+    supported_hive_metastore_versions: MutableSequence[HiveMetastoreVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=HiveMetastoreVersion,

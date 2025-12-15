@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +214,14 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +255,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -337,17 +322,13 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_analyses(
-        self,
-    ) -> Callable[[lva_service.ListAnalysesRequest], lva_service.ListAnalysesResponse]:
+    def list_analyses(self) -> Callable[[lva_service.ListAnalysesRequest], lva_service.ListAnalysesResponse]:
         r"""Return a callable for the list analyses method over gRPC.
 
         Lists Analyses in a given project and location.
@@ -371,9 +352,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
         return self._stubs["list_analyses"]
 
     @property
-    def get_analysis(
-        self,
-    ) -> Callable[[lva_service.GetAnalysisRequest], lva_resources.Analysis]:
+    def get_analysis(self) -> Callable[[lva_service.GetAnalysisRequest], lva_resources.Analysis]:
         r"""Return a callable for the get analysis method over gRPC.
 
         Gets details of a single Analysis.
@@ -397,9 +376,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
         return self._stubs["get_analysis"]
 
     @property
-    def create_analysis(
-        self,
-    ) -> Callable[[lva_service.CreateAnalysisRequest], operations_pb2.Operation]:
+    def create_analysis(self) -> Callable[[lva_service.CreateAnalysisRequest], operations_pb2.Operation]:
         r"""Return a callable for the create analysis method over gRPC.
 
         Creates a new Analysis in a given project and
@@ -424,9 +401,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
         return self._stubs["create_analysis"]
 
     @property
-    def update_analysis(
-        self,
-    ) -> Callable[[lva_service.UpdateAnalysisRequest], operations_pb2.Operation]:
+    def update_analysis(self) -> Callable[[lva_service.UpdateAnalysisRequest], operations_pb2.Operation]:
         r"""Return a callable for the update analysis method over gRPC.
 
         Updates the parameters of a single Analysis.
@@ -450,9 +425,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
         return self._stubs["update_analysis"]
 
     @property
-    def delete_analysis(
-        self,
-    ) -> Callable[[lva_service.DeleteAnalysisRequest], operations_pb2.Operation]:
+    def delete_analysis(self) -> Callable[[lva_service.DeleteAnalysisRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete analysis method over gRPC.
 
         Deletes a single Analysis.
@@ -532,9 +505,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -551,9 +522,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -638,10 +607,7 @@ class LiveVideoAnalyticsGrpcTransport(LiveVideoAnalyticsTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

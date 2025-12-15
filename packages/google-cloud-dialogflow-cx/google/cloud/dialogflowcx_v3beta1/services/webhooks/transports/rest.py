@@ -119,12 +119,8 @@ class WebhooksRestInterceptor:
     """
 
     def pre_create_webhook(
-        self,
-        request: gcdc_webhook.CreateWebhookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_webhook.CreateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_webhook.CreateWebhookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_webhook.CreateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_webhook
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +128,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_create_webhook(
-        self, response: gcdc_webhook.Webhook
-    ) -> gcdc_webhook.Webhook:
+    def post_create_webhook(self, response: gcdc_webhook.Webhook) -> gcdc_webhook.Webhook:
         """Post-rpc interceptor for create_webhook
 
         DEPRECATED. Please use the `post_create_webhook_with_metadata`
@@ -148,9 +142,7 @@ class WebhooksRestInterceptor:
         return response
 
     def post_create_webhook_with_metadata(
-        self,
-        response: gcdc_webhook.Webhook,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_webhook.Webhook, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_webhook
 
@@ -167,9 +159,7 @@ class WebhooksRestInterceptor:
         return response, metadata
 
     def pre_delete_webhook(
-        self,
-        request: webhook.DeleteWebhookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webhook.DeleteWebhookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webhook.DeleteWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_webhook
 
@@ -179,9 +169,7 @@ class WebhooksRestInterceptor:
         return request, metadata
 
     def pre_get_webhook(
-        self,
-        request: webhook.GetWebhookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webhook.GetWebhookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webhook.GetWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_webhook
 
@@ -204,9 +192,7 @@ class WebhooksRestInterceptor:
         return response
 
     def post_get_webhook_with_metadata(
-        self,
-        response: webhook.Webhook,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webhook.Webhook, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_webhook
 
@@ -223,9 +209,7 @@ class WebhooksRestInterceptor:
         return response, metadata
 
     def pre_list_webhooks(
-        self,
-        request: webhook.ListWebhooksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webhook.ListWebhooksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webhook.ListWebhooksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_webhooks
 
@@ -234,9 +218,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_webhooks(
-        self, response: webhook.ListWebhooksResponse
-    ) -> webhook.ListWebhooksResponse:
+    def post_list_webhooks(self, response: webhook.ListWebhooksResponse) -> webhook.ListWebhooksResponse:
         """Post-rpc interceptor for list_webhooks
 
         DEPRECATED. Please use the `post_list_webhooks_with_metadata`
@@ -250,9 +232,7 @@ class WebhooksRestInterceptor:
         return response
 
     def post_list_webhooks_with_metadata(
-        self,
-        response: webhook.ListWebhooksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webhook.ListWebhooksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webhook.ListWebhooksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_webhooks
 
@@ -269,12 +249,8 @@ class WebhooksRestInterceptor:
         return response, metadata
 
     def pre_update_webhook(
-        self,
-        request: gcdc_webhook.UpdateWebhookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_webhook.UpdateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_webhook.UpdateWebhookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_webhook.UpdateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_webhook
 
         Override in a subclass to manipulate the request or metadata
@@ -282,9 +258,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_update_webhook(
-        self, response: gcdc_webhook.Webhook
-    ) -> gcdc_webhook.Webhook:
+    def post_update_webhook(self, response: gcdc_webhook.Webhook) -> gcdc_webhook.Webhook:
         """Post-rpc interceptor for update_webhook
 
         DEPRECATED. Please use the `post_update_webhook_with_metadata`
@@ -298,9 +272,7 @@ class WebhooksRestInterceptor:
         return response
 
     def post_update_webhook_with_metadata(
-        self,
-        response: gcdc_webhook.Webhook,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_webhook.Webhook, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_webhook
 
@@ -317,12 +289,8 @@ class WebhooksRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -330,9 +298,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -342,12 +308,8 @@ class WebhooksRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -355,9 +317,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -367,12 +327,8 @@ class WebhooksRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -390,12 +346,8 @@ class WebhooksRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -403,9 +355,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -415,12 +365,8 @@ class WebhooksRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -428,9 +374,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -520,30 +464,18 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or WebhooksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateWebhook(
-        _BaseWebhooksRestTransport._BaseCreateWebhook, WebhooksRestStub
-    ):
+    class _CreateWebhook(_BaseWebhooksRestTransport._BaseCreateWebhook, WebhooksRestStub):
         def __hash__(self):
             return hash("WebhooksRestTransport.CreateWebhook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -591,34 +523,18 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseCreateWebhook._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseCreateWebhook._get_http_options()
 
             request, metadata = self._interceptor.pre_create_webhook(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseCreateWebhook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseCreateWebhook._get_transcoded_request(http_options, request)
 
-            body = _BaseWebhooksRestTransport._BaseCreateWebhook._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebhooksRestTransport._BaseCreateWebhook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseCreateWebhook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseCreateWebhook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -642,13 +558,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._CreateWebhook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -664,12 +574,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             resp = self._interceptor.post_create_webhook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_webhook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_webhook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_webhook.Webhook.to_json(response)
                 except:
@@ -690,22 +596,12 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 )
             return resp
 
-    class _DeleteWebhook(
-        _BaseWebhooksRestTransport._BaseDeleteWebhook, WebhooksRestStub
-    ):
+    class _DeleteWebhook(_BaseWebhooksRestTransport._BaseDeleteWebhook, WebhooksRestStub):
         def __hash__(self):
             return hash("WebhooksRestTransport.DeleteWebhook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -741,30 +637,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseDeleteWebhook._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseDeleteWebhook._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_webhook(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseDeleteWebhook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseDeleteWebhook._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseDeleteWebhook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseDeleteWebhook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -788,12 +670,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._DeleteWebhook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -806,15 +683,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             return hash("WebhooksRestTransport.GetWebhook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -861,30 +730,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseGetWebhook._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseGetWebhook._get_http_options()
 
             request, metadata = self._interceptor.pre_get_webhook(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseGetWebhook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseGetWebhook._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseGetWebhook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseGetWebhook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -907,14 +762,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 )
 
             # Send the request
-            response = WebhooksRestTransport._GetWebhook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = WebhooksRestTransport._GetWebhook._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -929,12 +777,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             resp = self._interceptor.post_get_webhook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_webhook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_webhook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webhook.Webhook.to_json(response)
                 except:
@@ -960,15 +804,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             return hash("WebhooksRestTransport.ListWebhooks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1010,30 +846,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseListWebhooks._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseListWebhooks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_webhooks(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseListWebhooks._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseListWebhooks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseListWebhooks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseListWebhooks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1057,12 +879,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._ListWebhooks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1078,12 +895,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             resp = self._interceptor.post_list_webhooks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_webhooks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_webhooks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webhook.ListWebhooksResponse.to_json(response)
                 except:
@@ -1104,22 +917,12 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 )
             return resp
 
-    class _UpdateWebhook(
-        _BaseWebhooksRestTransport._BaseUpdateWebhook, WebhooksRestStub
-    ):
+    class _UpdateWebhook(_BaseWebhooksRestTransport._BaseUpdateWebhook, WebhooksRestStub):
         def __hash__(self):
             return hash("WebhooksRestTransport.UpdateWebhook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1167,34 +970,18 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseUpdateWebhook._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseUpdateWebhook._get_http_options()
 
             request, metadata = self._interceptor.pre_update_webhook(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseUpdateWebhook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseUpdateWebhook._get_transcoded_request(http_options, request)
 
-            body = _BaseWebhooksRestTransport._BaseUpdateWebhook._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebhooksRestTransport._BaseUpdateWebhook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseUpdateWebhook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseUpdateWebhook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1218,13 +1005,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._UpdateWebhook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1240,12 +1021,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             resp = self._interceptor.post_update_webhook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_webhook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_webhook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_webhook.Webhook.to_json(response)
                 except:
@@ -1267,17 +1044,13 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             return resp
 
     @property
-    def create_webhook(
-        self,
-    ) -> Callable[[gcdc_webhook.CreateWebhookRequest], gcdc_webhook.Webhook]:
+    def create_webhook(self) -> Callable[[gcdc_webhook.CreateWebhookRequest], gcdc_webhook.Webhook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWebhook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_webhook(
-        self,
-    ) -> Callable[[webhook.DeleteWebhookRequest], empty_pb2.Empty]:
+    def delete_webhook(self) -> Callable[[webhook.DeleteWebhookRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWebhook(self._session, self._host, self._interceptor)  # type: ignore
@@ -1289,17 +1062,13 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
         return self._GetWebhook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_webhooks(
-        self,
-    ) -> Callable[[webhook.ListWebhooksRequest], webhook.ListWebhooksResponse]:
+    def list_webhooks(self) -> Callable[[webhook.ListWebhooksRequest], webhook.ListWebhooksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWebhooks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_webhook(
-        self,
-    ) -> Callable[[gcdc_webhook.UpdateWebhookRequest], gcdc_webhook.Webhook]:
+    def update_webhook(self) -> Callable[[gcdc_webhook.UpdateWebhookRequest], gcdc_webhook.Webhook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWebhook(self._session, self._host, self._interceptor)  # type: ignore
@@ -1313,15 +1082,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             return hash("WebhooksRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1359,30 +1120,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1406,12 +1153,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1423,9 +1165,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1450,22 +1190,12 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseWebhooksRestTransport._BaseListLocations, WebhooksRestStub
-    ):
+    class _ListLocations(_BaseWebhooksRestTransport._BaseListLocations, WebhooksRestStub):
         def __hash__(self):
             return hash("WebhooksRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1503,30 +1233,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1550,12 +1266,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1567,9 +1278,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1594,22 +1303,12 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseWebhooksRestTransport._BaseCancelOperation, WebhooksRestStub
-    ):
+    class _CancelOperation(_BaseWebhooksRestTransport._BaseCancelOperation, WebhooksRestStub):
         def __hash__(self):
             return hash("WebhooksRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1644,32 +1343,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseWebhooksRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1693,12 +1376,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1717,15 +1395,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             return hash("WebhooksRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1763,30 +1433,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1810,12 +1466,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1827,9 +1478,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1854,22 +1503,12 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseWebhooksRestTransport._BaseListOperations, WebhooksRestStub
-    ):
+    class _ListOperations(_BaseWebhooksRestTransport._BaseListOperations, WebhooksRestStub):
         def __hash__(self):
             return hash("WebhooksRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1907,30 +1546,16 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseWebhooksRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseWebhooksRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseWebhooksRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebhooksRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebhooksRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebhooksRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1954,12 +1579,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
             # Send the request
             response = WebhooksRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1971,9 +1591,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

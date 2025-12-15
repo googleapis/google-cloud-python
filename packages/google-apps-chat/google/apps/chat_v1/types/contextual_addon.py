@@ -92,12 +92,10 @@ class ContextualAddOnMarkup(proto.Message):
                 proto.STRING,
                 number=2,
             )
-            image_style: "ContextualAddOnMarkup.Card.CardHeader.ImageStyle" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=3,
-                    enum="ContextualAddOnMarkup.Card.CardHeader.ImageStyle",
-                )
+            image_style: "ContextualAddOnMarkup.Card.CardHeader.ImageStyle" = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="ContextualAddOnMarkup.Card.CardHeader.ImageStyle",
             )
             image_url: str = proto.Field(
                 proto.STRING,
@@ -164,16 +162,12 @@ class ContextualAddOnMarkup(proto.Message):
             number=1,
             message="ContextualAddOnMarkup.Card.CardHeader",
         )
-        sections: MutableSequence[
-            "ContextualAddOnMarkup.Card.Section"
-        ] = proto.RepeatedField(
+        sections: MutableSequence["ContextualAddOnMarkup.Card.Section"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ContextualAddOnMarkup.Card.Section",
         )
-        card_actions: MutableSequence[
-            "ContextualAddOnMarkup.Card.CardAction"
-        ] = proto.RepeatedField(
+        card_actions: MutableSequence["ContextualAddOnMarkup.Card.CardAction"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="ContextualAddOnMarkup.Card.CardAction",

@@ -205,9 +205,7 @@ class ImportDocumentsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    batch_documents_import_configs: MutableSequence[
-        BatchDocumentsImportConfig
-    ] = proto.RepeatedField(
+    batch_documents_import_configs: MutableSequence[BatchDocumentsImportConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=BatchDocumentsImportConfig,
@@ -293,16 +291,12 @@ class ImportDocumentsMetadata(proto.Message):
         number=1,
         message=operation_metadata.CommonOperationMetadata,
     )
-    individual_import_statuses: MutableSequence[
-        IndividualImportStatus
-    ] = proto.RepeatedField(
+    individual_import_statuses: MutableSequence[IndividualImportStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=IndividualImportStatus,
     )
-    import_config_validation_results: MutableSequence[
-        ImportConfigValidationResult
-    ] = proto.RepeatedField(
+    import_config_validation_results: MutableSequence[ImportConfigValidationResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=ImportConfigValidationResult,
@@ -573,9 +567,7 @@ class BatchDeleteDocumentsMetadata(proto.Message):
         number=1,
         message=operation_metadata.CommonOperationMetadata,
     )
-    individual_batch_delete_statuses: MutableSequence[
-        IndividualBatchDeleteStatus
-    ] = proto.RepeatedField(
+    individual_batch_delete_statuses: MutableSequence[IndividualBatchDeleteStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=IndividualBatchDeleteStatus,

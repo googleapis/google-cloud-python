@@ -18,12 +18,8 @@ from google.maps.fleetengine_delivery import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.fleetengine_delivery_v1.services.delivery_service.async_client import (
-    DeliveryServiceAsyncClient,
-)
-from google.maps.fleetengine_delivery_v1.services.delivery_service.client import (
-    DeliveryServiceClient,
-)
+from google.maps.fleetengine_delivery_v1.services.delivery_service.async_client import DeliveryServiceAsyncClient
+from google.maps.fleetengine_delivery_v1.services.delivery_service.client import DeliveryServiceClient
 from google.maps.fleetengine_delivery_v1.types.common import (
     DeliveryVehicleAttribute,
     DeliveryVehicleLocation,
@@ -49,16 +45,9 @@ from google.maps.fleetengine_delivery_v1.types.delivery_api import (
     UpdateDeliveryVehicleRequest,
     UpdateTaskRequest,
 )
-from google.maps.fleetengine_delivery_v1.types.delivery_vehicles import (
-    DeliveryVehicle,
-    LocationInfo,
-    VehicleJourneySegment,
-    VehicleStop,
-)
+from google.maps.fleetengine_delivery_v1.types.delivery_vehicles import DeliveryVehicle, LocationInfo, VehicleJourneySegment, VehicleStop
 from google.maps.fleetengine_delivery_v1.types.header import DeliveryRequestHeader
-from google.maps.fleetengine_delivery_v1.types.task_tracking_info import (
-    TaskTrackingInfo,
-)
+from google.maps.fleetengine_delivery_v1.types.task_tracking_info import TaskTrackingInfo
 from google.maps.fleetengine_delivery_v1.types.tasks import Task, TaskTrackingViewConfig
 
 __all__ = (

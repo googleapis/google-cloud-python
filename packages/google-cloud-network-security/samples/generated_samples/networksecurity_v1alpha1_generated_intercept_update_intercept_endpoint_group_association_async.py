@@ -39,12 +39,8 @@ async def sample_update_intercept_endpoint_group_association():
     client = network_security_v1alpha1.InterceptAsyncClient()
 
     # Initialize request argument(s)
-    intercept_endpoint_group_association = (
-        network_security_v1alpha1.InterceptEndpointGroupAssociation()
-    )
-    intercept_endpoint_group_association.intercept_endpoint_group = (
-        "intercept_endpoint_group_value"
-    )
+    intercept_endpoint_group_association = network_security_v1alpha1.InterceptEndpointGroupAssociation()
+    intercept_endpoint_group_association.intercept_endpoint_group = "intercept_endpoint_group_value"
     intercept_endpoint_group_association.network = "network_value"
 
     request = network_security_v1alpha1.UpdateInterceptEndpointGroupAssociationRequest(

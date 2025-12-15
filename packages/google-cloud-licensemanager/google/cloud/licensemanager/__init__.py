@@ -18,12 +18,8 @@ from google.cloud.licensemanager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.licensemanager_v1.services.license_manager.async_client import (
-    LicenseManagerAsyncClient,
-)
-from google.cloud.licensemanager_v1.services.license_manager.client import (
-    LicenseManagerClient,
-)
+from google.cloud.licensemanager_v1.services.license_manager.async_client import LicenseManagerAsyncClient
+from google.cloud.licensemanager_v1.services.license_manager.client import LicenseManagerClient
 from google.cloud.licensemanager_v1.types.api_entities import (
     ActivationState,
     BillingInfo,

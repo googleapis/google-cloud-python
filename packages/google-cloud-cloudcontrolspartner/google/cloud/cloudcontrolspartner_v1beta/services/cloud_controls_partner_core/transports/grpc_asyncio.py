@@ -54,13 +54,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -70,10 +66,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -92,11 +85,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -274,18 +263,14 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -321,9 +306,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -338,11 +321,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._grpc_channel
 
     @property
-    def get_workload(
-        self,
-    ) -> Callable[
-        [customer_workloads.GetWorkloadRequest], Awaitable[customer_workloads.Workload]
-    ]:
+    def get_workload(self) -> Callable[[customer_workloads.GetWorkloadRequest], Awaitable[customer_workloads.Workload]]:
         r"""Return a callable for the get workload method over gRPC.
 
         Gets details of a single workload
@@ -366,12 +345,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["get_workload"]
 
     @property
-    def list_workloads(
-        self,
-    ) -> Callable[
-        [customer_workloads.ListWorkloadsRequest],
-        Awaitable[customer_workloads.ListWorkloadsResponse],
-    ]:
+    def list_workloads(self) -> Callable[[customer_workloads.ListWorkloadsRequest], Awaitable[customer_workloads.ListWorkloadsResponse]]:
         r"""Return a callable for the list workloads method over gRPC.
 
         Lists customer workloads for a given customer org id
@@ -395,9 +369,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["list_workloads"]
 
     @property
-    def get_customer(
-        self,
-    ) -> Callable[[customers.GetCustomerRequest], Awaitable[customers.Customer]]:
+    def get_customer(self) -> Callable[[customers.GetCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the get customer method over gRPC.
 
         Gets details of a single customer
@@ -421,11 +393,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["get_customer"]
 
     @property
-    def list_customers(
-        self,
-    ) -> Callable[
-        [customers.ListCustomersRequest], Awaitable[customers.ListCustomersResponse]
-    ]:
+    def list_customers(self) -> Callable[[customers.ListCustomersRequest], Awaitable[customers.ListCustomersResponse]]:
         r"""Return a callable for the list customers method over gRPC.
 
         Lists customers of a partner identified by its Google
@@ -450,12 +418,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["list_customers"]
 
     @property
-    def get_ekm_connections(
-        self,
-    ) -> Callable[
-        [ekm_connections.GetEkmConnectionsRequest],
-        Awaitable[ekm_connections.EkmConnections],
-    ]:
+    def get_ekm_connections(self) -> Callable[[ekm_connections.GetEkmConnectionsRequest], Awaitable[ekm_connections.EkmConnections]]:
         r"""Return a callable for the get ekm connections method over gRPC.
 
         Gets the EKM connections associated with a workload
@@ -481,10 +444,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
     @property
     def get_partner_permissions(
         self,
-    ) -> Callable[
-        [partner_permissions.GetPartnerPermissionsRequest],
-        Awaitable[partner_permissions.PartnerPermissions],
-    ]:
+    ) -> Callable[[partner_permissions.GetPartnerPermissionsRequest], Awaitable[partner_permissions.PartnerPermissions]]:
         r"""Return a callable for the get partner permissions method over gRPC.
 
         Gets the partner permissions granted for a workload
@@ -511,8 +471,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
     def list_access_approval_requests(
         self,
     ) -> Callable[
-        [access_approval_requests.ListAccessApprovalRequestsRequest],
-        Awaitable[access_approval_requests.ListAccessApprovalRequestsResponse],
+        [access_approval_requests.ListAccessApprovalRequestsRequest], Awaitable[access_approval_requests.ListAccessApprovalRequestsResponse]
     ]:
         r"""Return a callable for the list access approval requests method over gRPC.
 
@@ -530,9 +489,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_access_approval_requests" not in self._stubs:
-            self._stubs[
-                "list_access_approval_requests"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_access_approval_requests"] = self._logged_channel.unary_unary(
                 "/google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore/ListAccessApprovalRequests",
                 request_serializer=access_approval_requests.ListAccessApprovalRequestsRequest.serialize,
                 response_deserializer=access_approval_requests.ListAccessApprovalRequestsResponse.deserialize,
@@ -540,9 +497,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["list_access_approval_requests"]
 
     @property
-    def get_partner(
-        self,
-    ) -> Callable[[partners.GetPartnerRequest], Awaitable[partners.Partner]]:
+    def get_partner(self) -> Callable[[partners.GetPartnerRequest], Awaitable[partners.Partner]]:
         r"""Return a callable for the get partner method over gRPC.
 
         Get details of a Partner.
@@ -566,9 +521,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["get_partner"]
 
     @property
-    def create_customer(
-        self,
-    ) -> Callable[[customers.CreateCustomerRequest], Awaitable[customers.Customer]]:
+    def create_customer(self) -> Callable[[customers.CreateCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the create customer method over gRPC.
 
         Creates a new customer.
@@ -592,9 +545,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["create_customer"]
 
     @property
-    def update_customer(
-        self,
-    ) -> Callable[[customers.UpdateCustomerRequest], Awaitable[customers.Customer]]:
+    def update_customer(self) -> Callable[[customers.UpdateCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the update customer method over gRPC.
 
         Update details of a single customer
@@ -618,9 +569,7 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         return self._stubs["update_customer"]
 
     @property
-    def delete_customer(
-        self,
-    ) -> Callable[[customers.DeleteCustomerRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_customer(self) -> Callable[[customers.DeleteCustomerRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete customer method over gRPC.
 
         Delete details of a single customer

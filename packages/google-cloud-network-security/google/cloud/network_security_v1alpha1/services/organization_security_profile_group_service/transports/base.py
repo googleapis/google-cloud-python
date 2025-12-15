@@ -30,14 +30,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group,
-    security_profile_group_service,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group, security_profile_group_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +94,15 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -268,10 +255,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_profile_group_service.GetSecurityProfileGroupRequest],
-        Union[
-            security_profile_group.SecurityProfileGroup,
-            Awaitable[security_profile_group.SecurityProfileGroup],
-        ],
+        Union[security_profile_group.SecurityProfileGroup, Awaitable[security_profile_group.SecurityProfileGroup]],
     ]:
         raise NotImplementedError()
 
@@ -279,8 +263,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     def create_security_profile_group(
         self,
     ) -> Callable[
-        [security_profile_group_service.CreateSecurityProfileGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [security_profile_group_service.CreateSecurityProfileGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -288,8 +271,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     def update_security_profile_group(
         self,
     ) -> Callable[
-        [security_profile_group_service.UpdateSecurityProfileGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [security_profile_group_service.UpdateSecurityProfileGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -297,8 +279,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     def delete_security_profile_group(
         self,
     ) -> Callable[
-        [security_profile_group_service.DeleteSecurityProfileGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [security_profile_group_service.DeleteSecurityProfileGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -307,10 +288,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_profile_group_service.ListSecurityProfilesRequest],
-        Union[
-            security_profile_group_service.ListSecurityProfilesResponse,
-            Awaitable[security_profile_group_service.ListSecurityProfilesResponse],
-        ],
+        Union[security_profile_group_service.ListSecurityProfilesResponse, Awaitable[security_profile_group_service.ListSecurityProfilesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -319,10 +297,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_profile_group_service.GetSecurityProfileRequest],
-        Union[
-            security_profile_group.SecurityProfile,
-            Awaitable[security_profile_group.SecurityProfile],
-        ],
+        Union[security_profile_group.SecurityProfile, Awaitable[security_profile_group.SecurityProfile]],
     ]:
         raise NotImplementedError()
 
@@ -330,8 +305,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     def create_security_profile(
         self,
     ) -> Callable[
-        [security_profile_group_service.CreateSecurityProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [security_profile_group_service.CreateSecurityProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -339,8 +313,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     def update_security_profile(
         self,
     ) -> Callable[
-        [security_profile_group_service.UpdateSecurityProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [security_profile_group_service.UpdateSecurityProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -348,8 +321,7 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     def delete_security_profile(
         self,
     ) -> Callable[
-        [security_profile_group_service.DeleteSecurityProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [security_profile_group_service.DeleteSecurityProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -358,20 +330,14 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -389,19 +355,13 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -419,22 +379,13 @@ class OrganizationSecurityProfileGroupServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

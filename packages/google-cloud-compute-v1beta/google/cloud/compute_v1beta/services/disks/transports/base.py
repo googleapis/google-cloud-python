@@ -29,9 +29,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.services import zone_operations
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class DisksTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -245,174 +235,87 @@ class DisksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def add_resource_policies(
-        self,
-    ) -> Callable[
-        [compute.AddResourcePoliciesDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def add_resource_policies(self) -> Callable[[compute.AddResourcePoliciesDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def aggregated_list(
         self,
-    ) -> Callable[
-        [compute.AggregatedListDisksRequest],
-        Union[compute.DiskAggregatedList, Awaitable[compute.DiskAggregatedList]],
-    ]:
+    ) -> Callable[[compute.AggregatedListDisksRequest], Union[compute.DiskAggregatedList, Awaitable[compute.DiskAggregatedList]]]:
         raise NotImplementedError()
 
     @property
-    def bulk_insert(
-        self,
-    ) -> Callable[
-        [compute.BulkInsertDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def bulk_insert(self) -> Callable[[compute.BulkInsertDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def bulk_set_labels(
-        self,
-    ) -> Callable[
-        [compute.BulkSetLabelsDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def bulk_set_labels(self) -> Callable[[compute.BulkSetLabelsDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[
-        [compute.CreateSnapshotDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def create_snapshot(self) -> Callable[[compute.CreateSnapshotDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetDiskRequest], Union[compute.Disk, Awaitable[compute.Disk]]
-    ]:
+    def get(self) -> Callable[[compute.GetDiskRequest], Union[compute.Disk, Awaitable[compute.Disk]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.GetIamPolicyDiskRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyDiskRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListDisksRequest], Union[compute.DiskList, Awaitable[compute.DiskList]]
-    ]:
+    def list(self) -> Callable[[compute.ListDisksRequest], Union[compute.DiskList, Awaitable[compute.DiskList]]]:
         raise NotImplementedError()
 
     @property
     def remove_resource_policies(
         self,
-    ) -> Callable[
-        [compute.RemoveResourcePoliciesDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.RemoveResourcePoliciesDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def resize(
-        self,
-    ) -> Callable[
-        [compute.ResizeDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def resize(self) -> Callable[[compute.ResizeDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.SetIamPolicyDiskRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyDiskRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[
-        [compute.SetLabelsDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_labels(self) -> Callable[[compute.SetLabelsDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def start_async_replication(
-        self,
-    ) -> Callable[
-        [compute.StartAsyncReplicationDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def start_async_replication(self) -> Callable[[compute.StartAsyncReplicationDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop_async_replication(
-        self,
-    ) -> Callable[
-        [compute.StopAsyncReplicationDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def stop_async_replication(self) -> Callable[[compute.StopAsyncReplicationDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def stop_group_async_replication(
         self,
-    ) -> Callable[
-        [compute.StopGroupAsyncReplicationDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.StopGroupAsyncReplicationDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [compute.TestIamPermissionsDiskRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
-    ]:
+    ) -> Callable[[compute.TestIamPermissionsDiskRequest], Union[compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateDiskRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

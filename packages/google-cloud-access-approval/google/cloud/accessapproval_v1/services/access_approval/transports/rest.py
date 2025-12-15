@@ -148,13 +148,8 @@ class AccessApprovalRestInterceptor:
     """
 
     def pre_approve_approval_request(
-        self,
-        request: accessapproval.ApproveApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.ApproveApprovalRequestMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.ApproveApprovalRequestMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.ApproveApprovalRequestMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -162,9 +157,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_approve_approval_request(
-        self, response: accessapproval.ApprovalRequest
-    ) -> accessapproval.ApprovalRequest:
+    def post_approve_approval_request(self, response: accessapproval.ApprovalRequest) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for approve_approval_request
 
         DEPRECATED. Please use the `post_approve_approval_request_with_metadata`
@@ -178,9 +171,7 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_approve_approval_request_with_metadata(
-        self,
-        response: accessapproval.ApprovalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accessapproval.ApprovalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for approve_approval_request
 
@@ -197,13 +188,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_delete_access_approval_settings(
-        self,
-        request: accessapproval.DeleteAccessApprovalSettingsMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.DeleteAccessApprovalSettingsMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.DeleteAccessApprovalSettingsMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.DeleteAccessApprovalSettingsMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_access_approval_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -212,13 +198,8 @@ class AccessApprovalRestInterceptor:
         return request, metadata
 
     def pre_dismiss_approval_request(
-        self,
-        request: accessapproval.DismissApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.DismissApprovalRequestMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.DismissApprovalRequestMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.DismissApprovalRequestMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for dismiss_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +207,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_dismiss_approval_request(
-        self, response: accessapproval.ApprovalRequest
-    ) -> accessapproval.ApprovalRequest:
+    def post_dismiss_approval_request(self, response: accessapproval.ApprovalRequest) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for dismiss_approval_request
 
         DEPRECATED. Please use the `post_dismiss_approval_request_with_metadata`
@@ -242,9 +221,7 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_dismiss_approval_request_with_metadata(
-        self,
-        response: accessapproval.ApprovalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accessapproval.ApprovalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for dismiss_approval_request
 
@@ -261,13 +238,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_get_access_approval_service_account(
-        self,
-        request: accessapproval.GetAccessApprovalServiceAccountMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.GetAccessApprovalServiceAccountMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.GetAccessApprovalServiceAccountMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.GetAccessApprovalServiceAccountMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_access_approval_service_account
 
         Override in a subclass to manipulate the request or metadata
@@ -291,13 +263,8 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_get_access_approval_service_account_with_metadata(
-        self,
-        response: accessapproval.AccessApprovalServiceAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.AccessApprovalServiceAccount,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: accessapproval.AccessApprovalServiceAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.AccessApprovalServiceAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_access_approval_service_account
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -313,13 +280,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_get_access_approval_settings(
-        self,
-        request: accessapproval.GetAccessApprovalSettingsMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.GetAccessApprovalSettingsMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.GetAccessApprovalSettingsMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.GetAccessApprovalSettingsMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_access_approval_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -327,9 +289,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_get_access_approval_settings(
-        self, response: accessapproval.AccessApprovalSettings
-    ) -> accessapproval.AccessApprovalSettings:
+    def post_get_access_approval_settings(self, response: accessapproval.AccessApprovalSettings) -> accessapproval.AccessApprovalSettings:
         """Post-rpc interceptor for get_access_approval_settings
 
         DEPRECATED. Please use the `post_get_access_approval_settings_with_metadata`
@@ -343,12 +303,8 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_get_access_approval_settings_with_metadata(
-        self,
-        response: accessapproval.AccessApprovalSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.AccessApprovalSettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: accessapproval.AccessApprovalSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.AccessApprovalSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_access_approval_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -364,13 +320,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_get_approval_request(
-        self,
-        request: accessapproval.GetApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.GetApprovalRequestMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.GetApprovalRequestMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.GetApprovalRequestMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -378,9 +329,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_get_approval_request(
-        self, response: accessapproval.ApprovalRequest
-    ) -> accessapproval.ApprovalRequest:
+    def post_get_approval_request(self, response: accessapproval.ApprovalRequest) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for get_approval_request
 
         DEPRECATED. Please use the `post_get_approval_request_with_metadata`
@@ -394,9 +343,7 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_get_approval_request_with_metadata(
-        self,
-        response: accessapproval.ApprovalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accessapproval.ApprovalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_approval_request
 
@@ -413,13 +360,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_invalidate_approval_request(
-        self,
-        request: accessapproval.InvalidateApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.InvalidateApprovalRequestMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.InvalidateApprovalRequestMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.InvalidateApprovalRequestMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for invalidate_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -427,9 +369,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_invalidate_approval_request(
-        self, response: accessapproval.ApprovalRequest
-    ) -> accessapproval.ApprovalRequest:
+    def post_invalidate_approval_request(self, response: accessapproval.ApprovalRequest) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for invalidate_approval_request
 
         DEPRECATED. Please use the `post_invalidate_approval_request_with_metadata`
@@ -443,9 +383,7 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_invalidate_approval_request_with_metadata(
-        self,
-        response: accessapproval.ApprovalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accessapproval.ApprovalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for invalidate_approval_request
 
@@ -462,13 +400,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_list_approval_requests(
-        self,
-        request: accessapproval.ListApprovalRequestsMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.ListApprovalRequestsMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.ListApprovalRequestsMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.ListApprovalRequestsMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_approval_requests
 
         Override in a subclass to manipulate the request or metadata
@@ -476,9 +409,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_list_approval_requests(
-        self, response: accessapproval.ListApprovalRequestsResponse
-    ) -> accessapproval.ListApprovalRequestsResponse:
+    def post_list_approval_requests(self, response: accessapproval.ListApprovalRequestsResponse) -> accessapproval.ListApprovalRequestsResponse:
         """Post-rpc interceptor for list_approval_requests
 
         DEPRECATED. Please use the `post_list_approval_requests_with_metadata`
@@ -492,13 +423,8 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_list_approval_requests_with_metadata(
-        self,
-        response: accessapproval.ListApprovalRequestsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.ListApprovalRequestsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: accessapproval.ListApprovalRequestsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.ListApprovalRequestsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_approval_requests
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -514,13 +440,8 @@ class AccessApprovalRestInterceptor:
         return response, metadata
 
     def pre_update_access_approval_settings(
-        self,
-        request: accessapproval.UpdateAccessApprovalSettingsMessage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.UpdateAccessApprovalSettingsMessage,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accessapproval.UpdateAccessApprovalSettingsMessage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.UpdateAccessApprovalSettingsMessage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_access_approval_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -528,9 +449,7 @@ class AccessApprovalRestInterceptor:
         """
         return request, metadata
 
-    def post_update_access_approval_settings(
-        self, response: accessapproval.AccessApprovalSettings
-    ) -> accessapproval.AccessApprovalSettings:
+    def post_update_access_approval_settings(self, response: accessapproval.AccessApprovalSettings) -> accessapproval.AccessApprovalSettings:
         """Post-rpc interceptor for update_access_approval_settings
 
         DEPRECATED. Please use the `post_update_access_approval_settings_with_metadata`
@@ -544,12 +463,8 @@ class AccessApprovalRestInterceptor:
         return response
 
     def post_update_access_approval_settings_with_metadata(
-        self,
-        response: accessapproval.AccessApprovalSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accessapproval.AccessApprovalSettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: accessapproval.AccessApprovalSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accessapproval.AccessApprovalSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_access_approval_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -678,31 +593,18 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AccessApprovalRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ApproveApprovalRequest(
-        _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest,
-        AccessApprovalRestStub,
-    ):
+    class _ApproveApprovalRequest(_BaseAccessApprovalRestTransport._BaseApproveApprovalRequest, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.ApproveApprovalRequest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -745,32 +647,18 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_http_options()
 
-            request, metadata = self._interceptor.pre_approve_approval_request(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_approve_approval_request(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_transcoded_request(http_options, request)
 
-            body = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -793,16 +681,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccessApprovalRestTransport._ApproveApprovalRequest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AccessApprovalRestTransport._ApproveApprovalRequest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -818,12 +698,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_approve_approval_request(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_approve_approval_request_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_approve_approval_request_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accessapproval.ApprovalRequest.to_json(response)
                 except:
@@ -844,23 +720,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _DeleteAccessApprovalSettings(
-        _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings,
-        AccessApprovalRestStub,
-    ):
+    class _DeleteAccessApprovalSettings(_BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.DeleteAccessApprovalSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -897,28 +762,16 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_access_approval_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_access_approval_settings(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -941,15 +794,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccessApprovalRestTransport._DeleteAccessApprovalSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AccessApprovalRestTransport._DeleteAccessApprovalSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -957,23 +803,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DismissApprovalRequest(
-        _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest,
-        AccessApprovalRestStub,
-    ):
+    class _DismissApprovalRequest(_BaseAccessApprovalRestTransport._BaseDismissApprovalRequest, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.DismissApprovalRequest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1016,32 +851,18 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_http_options()
 
-            request, metadata = self._interceptor.pre_dismiss_approval_request(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_dismiss_approval_request(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_transcoded_request(http_options, request)
 
-            body = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1064,16 +885,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccessApprovalRestTransport._DismissApprovalRequest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AccessApprovalRestTransport._DismissApprovalRequest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1089,12 +902,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_dismiss_approval_request(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_dismiss_approval_request_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_dismiss_approval_request_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accessapproval.ApprovalRequest.to_json(response)
                 except:
@@ -1115,23 +924,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _GetAccessApprovalServiceAccount(
-        _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount,
-        AccessApprovalRestStub,
-    ):
+    class _GetAccessApprovalServiceAccount(_BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.GetAccessApprovalServiceAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1175,31 +973,16 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_access_approval_service_account(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_access_approval_service_account(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1223,12 +1006,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             # Send the request
             response = AccessApprovalRestTransport._GetAccessApprovalServiceAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1244,19 +1022,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_get_access_approval_service_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_access_approval_service_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_access_approval_service_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        accessapproval.AccessApprovalServiceAccount.to_json(response)
-                    )
+                    response_payload = accessapproval.AccessApprovalServiceAccount.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1275,23 +1044,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _GetAccessApprovalSettings(
-        _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings,
-        AccessApprovalRestStub,
-    ):
+    class _GetAccessApprovalSettings(_BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.GetAccessApprovalSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1335,28 +1093,16 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_access_approval_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_access_approval_settings(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1379,15 +1125,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccessApprovalRestTransport._GetAccessApprovalSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AccessApprovalRestTransport._GetAccessApprovalSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1403,16 +1142,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_get_access_approval_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_access_approval_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_access_approval_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = accessapproval.AccessApprovalSettings.to_json(
-                        response
-                    )
+                    response_payload = accessapproval.AccessApprovalSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1431,22 +1164,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _GetApprovalRequest(
-        _BaseAccessApprovalRestTransport._BaseGetApprovalRequest, AccessApprovalRestStub
-    ):
+    class _GetApprovalRequest(_BaseAccessApprovalRestTransport._BaseGetApprovalRequest, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.GetApprovalRequest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1487,28 +1210,16 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_approval_request(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_approval_request(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1532,12 +1243,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             # Send the request
             response = AccessApprovalRestTransport._GetApprovalRequest._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1553,12 +1259,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_get_approval_request(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_approval_request_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_approval_request_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accessapproval.ApprovalRequest.to_json(response)
                 except:
@@ -1579,23 +1281,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _InvalidateApprovalRequest(
-        _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest,
-        AccessApprovalRestStub,
-    ):
+    class _InvalidateApprovalRequest(_BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.InvalidateApprovalRequest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1639,32 +1330,18 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_http_options()
 
-            request, metadata = self._interceptor.pre_invalidate_approval_request(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_invalidate_approval_request(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_transcoded_request(http_options, request)
 
-            body = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1687,16 +1364,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccessApprovalRestTransport._InvalidateApprovalRequest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AccessApprovalRestTransport._InvalidateApprovalRequest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1712,12 +1381,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_invalidate_approval_request(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_invalidate_approval_request_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_invalidate_approval_request_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accessapproval.ApprovalRequest.to_json(response)
                 except:
@@ -1738,23 +1403,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _ListApprovalRequests(
-        _BaseAccessApprovalRestTransport._BaseListApprovalRequests,
-        AccessApprovalRestStub,
-    ):
+    class _ListApprovalRequests(_BaseAccessApprovalRestTransport._BaseListApprovalRequests, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.ListApprovalRequests")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1795,28 +1449,16 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_approval_requests(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_approval_requests(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1840,12 +1482,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             # Send the request
             response = AccessApprovalRestTransport._ListApprovalRequests._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1861,16 +1498,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_list_approval_requests(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_approval_requests_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_approval_requests_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        accessapproval.ListApprovalRequestsResponse.to_json(response)
-                    )
+                    response_payload = accessapproval.ListApprovalRequestsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1889,23 +1520,12 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
             return resp
 
-    class _UpdateAccessApprovalSettings(
-        _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings,
-        AccessApprovalRestStub,
-    ):
+    class _UpdateAccessApprovalSettings(_BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings, AccessApprovalRestStub):
         def __hash__(self):
             return hash("AccessApprovalRestTransport.UpdateAccessApprovalSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1950,32 +1570,18 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_http_options()
-            )
+            http_options = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_access_approval_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_access_approval_settings(request, metadata)
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1998,16 +1604,8 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccessApprovalRestTransport._UpdateAccessApprovalSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AccessApprovalRestTransport._UpdateAccessApprovalSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2023,19 +1621,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
 
             resp = self._interceptor.post_update_access_approval_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_access_approval_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_access_approval_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = accessapproval.AccessApprovalSettings.to_json(
-                        response
-                    )
+                    response_payload = accessapproval.AccessApprovalSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2055,31 +1644,19 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             return resp
 
     @property
-    def approve_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.ApproveApprovalRequestMessage], accessapproval.ApprovalRequest
-    ]:
+    def approve_approval_request(self) -> Callable[[accessapproval.ApproveApprovalRequestMessage], accessapproval.ApprovalRequest]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveApprovalRequest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_access_approval_settings(
-        self,
-    ) -> Callable[
-        [accessapproval.DeleteAccessApprovalSettingsMessage], empty_pb2.Empty
-    ]:
+    def delete_access_approval_settings(self) -> Callable[[accessapproval.DeleteAccessApprovalSettingsMessage], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAccessApprovalSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def dismiss_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.DismissApprovalRequestMessage], accessapproval.ApprovalRequest
-    ]:
+    def dismiss_approval_request(self) -> Callable[[accessapproval.DismissApprovalRequestMessage], accessapproval.ApprovalRequest]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DismissApprovalRequest(self._session, self._host, self._interceptor)  # type: ignore
@@ -2087,53 +1664,31 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
     @property
     def get_access_approval_service_account(
         self,
-    ) -> Callable[
-        [accessapproval.GetAccessApprovalServiceAccountMessage],
-        accessapproval.AccessApprovalServiceAccount,
-    ]:
+    ) -> Callable[[accessapproval.GetAccessApprovalServiceAccountMessage], accessapproval.AccessApprovalServiceAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccessApprovalServiceAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_access_approval_settings(
-        self,
-    ) -> Callable[
-        [accessapproval.GetAccessApprovalSettingsMessage],
-        accessapproval.AccessApprovalSettings,
-    ]:
+    def get_access_approval_settings(self) -> Callable[[accessapproval.GetAccessApprovalSettingsMessage], accessapproval.AccessApprovalSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccessApprovalSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.GetApprovalRequestMessage], accessapproval.ApprovalRequest
-    ]:
+    def get_approval_request(self) -> Callable[[accessapproval.GetApprovalRequestMessage], accessapproval.ApprovalRequest]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApprovalRequest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def invalidate_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.InvalidateApprovalRequestMessage],
-        accessapproval.ApprovalRequest,
-    ]:
+    def invalidate_approval_request(self) -> Callable[[accessapproval.InvalidateApprovalRequestMessage], accessapproval.ApprovalRequest]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InvalidateApprovalRequest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_approval_requests(
-        self,
-    ) -> Callable[
-        [accessapproval.ListApprovalRequestsMessage],
-        accessapproval.ListApprovalRequestsResponse,
-    ]:
+    def list_approval_requests(self) -> Callable[[accessapproval.ListApprovalRequestsMessage], accessapproval.ListApprovalRequestsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApprovalRequests(self._session, self._host, self._interceptor)  # type: ignore
@@ -2141,10 +1696,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
     @property
     def update_access_approval_settings(
         self,
-    ) -> Callable[
-        [accessapproval.UpdateAccessApprovalSettingsMessage],
-        accessapproval.AccessApprovalSettings,
-    ]:
+    ) -> Callable[[accessapproval.UpdateAccessApprovalSettingsMessage], accessapproval.AccessApprovalSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAccessApprovalSettings(self._session, self._host, self._interceptor)  # type: ignore

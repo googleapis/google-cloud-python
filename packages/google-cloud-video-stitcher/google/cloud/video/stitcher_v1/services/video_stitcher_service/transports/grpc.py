@@ -54,9 +54,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +64,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +83,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -231,18 +222,14 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -276,9 +263,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -345,19 +330,13 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateCdnKeyRequest], operations_pb2.Operation
-    ]:
+    def create_cdn_key(self) -> Callable[[video_stitcher_service.CreateCdnKeyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cdn key method over gRPC.
 
         Creates a new CDN key.
@@ -381,12 +360,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["create_cdn_key"]
 
     @property
-    def list_cdn_keys(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListCdnKeysRequest],
-        video_stitcher_service.ListCdnKeysResponse,
-    ]:
+    def list_cdn_keys(self) -> Callable[[video_stitcher_service.ListCdnKeysRequest], video_stitcher_service.ListCdnKeysResponse]:
         r"""Return a callable for the list cdn keys method over gRPC.
 
         Lists all CDN keys in the specified project and
@@ -411,9 +385,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_cdn_keys"]
 
     @property
-    def get_cdn_key(
-        self,
-    ) -> Callable[[video_stitcher_service.GetCdnKeyRequest], cdn_keys.CdnKey]:
+    def get_cdn_key(self) -> Callable[[video_stitcher_service.GetCdnKeyRequest], cdn_keys.CdnKey]:
         r"""Return a callable for the get cdn key method over gRPC.
 
         Returns the specified CDN key.
@@ -437,11 +409,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["get_cdn_key"]
 
     @property
-    def delete_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteCdnKeyRequest], operations_pb2.Operation
-    ]:
+    def delete_cdn_key(self) -> Callable[[video_stitcher_service.DeleteCdnKeyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cdn key method over gRPC.
 
         Deletes the specified CDN key.
@@ -465,11 +433,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["delete_cdn_key"]
 
     @property
-    def update_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateCdnKeyRequest], operations_pb2.Operation
-    ]:
+    def update_cdn_key(self) -> Callable[[video_stitcher_service.UpdateCdnKeyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update cdn key method over gRPC.
 
         Updates the specified CDN key. Only update fields
@@ -494,11 +458,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["update_cdn_key"]
 
     @property
-    def create_vod_session(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateVodSessionRequest], sessions.VodSession
-    ]:
+    def create_vod_session(self) -> Callable[[video_stitcher_service.CreateVodSessionRequest], sessions.VodSession]:
         r"""Return a callable for the create vod session method over gRPC.
 
         Creates a client side playback VOD session and
@@ -524,9 +484,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["create_vod_session"]
 
     @property
-    def get_vod_session(
-        self,
-    ) -> Callable[[video_stitcher_service.GetVodSessionRequest], sessions.VodSession]:
+    def get_vod_session(self) -> Callable[[video_stitcher_service.GetVodSessionRequest], sessions.VodSession]:
         r"""Return a callable for the get vod session method over gRPC.
 
         Returns the full tracking, playback metadata, and
@@ -553,10 +511,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
     @property
     def list_vod_stitch_details(
         self,
-    ) -> Callable[
-        [video_stitcher_service.ListVodStitchDetailsRequest],
-        video_stitcher_service.ListVodStitchDetailsResponse,
-    ]:
+    ) -> Callable[[video_stitcher_service.ListVodStitchDetailsRequest], video_stitcher_service.ListVodStitchDetailsResponse]:
         r"""Return a callable for the list vod stitch details method over gRPC.
 
         Returns a list of detailed stitching information of
@@ -581,12 +536,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_vod_stitch_details"]
 
     @property
-    def get_vod_stitch_detail(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodStitchDetailRequest],
-        stitch_details.VodStitchDetail,
-    ]:
+    def get_vod_stitch_detail(self) -> Callable[[video_stitcher_service.GetVodStitchDetailRequest], stitch_details.VodStitchDetail]:
         r"""Return a callable for the get vod stitch detail method over gRPC.
 
         Returns the specified stitching information for the
@@ -613,10 +563,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
     @property
     def list_vod_ad_tag_details(
         self,
-    ) -> Callable[
-        [video_stitcher_service.ListVodAdTagDetailsRequest],
-        video_stitcher_service.ListVodAdTagDetailsResponse,
-    ]:
+    ) -> Callable[[video_stitcher_service.ListVodAdTagDetailsRequest], video_stitcher_service.ListVodAdTagDetailsResponse]:
         r"""Return a callable for the list vod ad tag details method over gRPC.
 
         Return the list of ad tag details for the specified
@@ -641,11 +588,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_vod_ad_tag_details"]
 
     @property
-    def get_vod_ad_tag_detail(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodAdTagDetailRequest], ad_tag_details.VodAdTagDetail
-    ]:
+    def get_vod_ad_tag_detail(self) -> Callable[[video_stitcher_service.GetVodAdTagDetailRequest], ad_tag_details.VodAdTagDetail]:
         r"""Return a callable for the get vod ad tag detail method over gRPC.
 
         Returns the specified ad tag detail for the specified
@@ -672,10 +615,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
     @property
     def list_live_ad_tag_details(
         self,
-    ) -> Callable[
-        [video_stitcher_service.ListLiveAdTagDetailsRequest],
-        video_stitcher_service.ListLiveAdTagDetailsResponse,
-    ]:
+    ) -> Callable[[video_stitcher_service.ListLiveAdTagDetailsRequest], video_stitcher_service.ListLiveAdTagDetailsResponse]:
         r"""Return a callable for the list live ad tag details method over gRPC.
 
         Return the list of ad tag details for the specified
@@ -700,12 +640,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_live_ad_tag_details"]
 
     @property
-    def get_live_ad_tag_detail(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetLiveAdTagDetailRequest],
-        ad_tag_details.LiveAdTagDetail,
-    ]:
+    def get_live_ad_tag_detail(self) -> Callable[[video_stitcher_service.GetLiveAdTagDetailRequest], ad_tag_details.LiveAdTagDetail]:
         r"""Return a callable for the get live ad tag detail method over gRPC.
 
         Returns the specified ad tag detail for the specified
@@ -730,11 +665,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["get_live_ad_tag_detail"]
 
     @property
-    def create_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateSlateRequest], operations_pb2.Operation
-    ]:
+    def create_slate(self) -> Callable[[video_stitcher_service.CreateSlateRequest], operations_pb2.Operation]:
         r"""Return a callable for the create slate method over gRPC.
 
         Creates a slate.
@@ -758,12 +689,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["create_slate"]
 
     @property
-    def list_slates(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListSlatesRequest],
-        video_stitcher_service.ListSlatesResponse,
-    ]:
+    def list_slates(self) -> Callable[[video_stitcher_service.ListSlatesRequest], video_stitcher_service.ListSlatesResponse]:
         r"""Return a callable for the list slates method over gRPC.
 
         Lists all slates in the specified project and
@@ -788,9 +714,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_slates"]
 
     @property
-    def get_slate(
-        self,
-    ) -> Callable[[video_stitcher_service.GetSlateRequest], slates.Slate]:
+    def get_slate(self) -> Callable[[video_stitcher_service.GetSlateRequest], slates.Slate]:
         r"""Return a callable for the get slate method over gRPC.
 
         Returns the specified slate.
@@ -814,11 +738,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["get_slate"]
 
     @property
-    def update_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateSlateRequest], operations_pb2.Operation
-    ]:
+    def update_slate(self) -> Callable[[video_stitcher_service.UpdateSlateRequest], operations_pb2.Operation]:
         r"""Return a callable for the update slate method over gRPC.
 
         Updates the specified slate.
@@ -842,11 +762,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["update_slate"]
 
     @property
-    def delete_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteSlateRequest], operations_pb2.Operation
-    ]:
+    def delete_slate(self) -> Callable[[video_stitcher_service.DeleteSlateRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete slate method over gRPC.
 
         Deletes the specified slate.
@@ -870,11 +786,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["delete_slate"]
 
     @property
-    def create_live_session(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateLiveSessionRequest], sessions.LiveSession
-    ]:
+    def create_live_session(self) -> Callable[[video_stitcher_service.CreateLiveSessionRequest], sessions.LiveSession]:
         r"""Return a callable for the create live session method over gRPC.
 
         Creates a new live session.
@@ -898,9 +810,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["create_live_session"]
 
     @property
-    def get_live_session(
-        self,
-    ) -> Callable[[video_stitcher_service.GetLiveSessionRequest], sessions.LiveSession]:
+    def get_live_session(self) -> Callable[[video_stitcher_service.GetLiveSessionRequest], sessions.LiveSession]:
         r"""Return a callable for the get live session method over gRPC.
 
         Returns the details for the specified live session.
@@ -924,11 +834,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["get_live_session"]
 
     @property
-    def create_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateLiveConfigRequest], operations_pb2.Operation
-    ]:
+    def create_live_config(self) -> Callable[[video_stitcher_service.CreateLiveConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create live config method over gRPC.
 
         Registers the live config with the provided unique ID
@@ -953,12 +859,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["create_live_config"]
 
     @property
-    def list_live_configs(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListLiveConfigsRequest],
-        video_stitcher_service.ListLiveConfigsResponse,
-    ]:
+    def list_live_configs(self) -> Callable[[video_stitcher_service.ListLiveConfigsRequest], video_stitcher_service.ListLiveConfigsResponse]:
         r"""Return a callable for the list live configs method over gRPC.
 
         Lists all live configs managed by the Video Stitcher
@@ -983,11 +884,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_live_configs"]
 
     @property
-    def get_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetLiveConfigRequest], live_configs.LiveConfig
-    ]:
+    def get_live_config(self) -> Callable[[video_stitcher_service.GetLiveConfigRequest], live_configs.LiveConfig]:
         r"""Return a callable for the get live config method over gRPC.
 
         Returns the specified live config managed by the
@@ -1012,11 +909,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["get_live_config"]
 
     @property
-    def delete_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteLiveConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_live_config(self) -> Callable[[video_stitcher_service.DeleteLiveConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete live config method over gRPC.
 
         Deletes the specified live config.
@@ -1040,11 +933,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["delete_live_config"]
 
     @property
-    def update_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateLiveConfigRequest], operations_pb2.Operation
-    ]:
+    def update_live_config(self) -> Callable[[video_stitcher_service.UpdateLiveConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the update live config method over gRPC.
 
         Updates the specified LiveConfig. Only update fields
@@ -1069,11 +958,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["update_live_config"]
 
     @property
-    def create_vod_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateVodConfigRequest], operations_pb2.Operation
-    ]:
+    def create_vod_config(self) -> Callable[[video_stitcher_service.CreateVodConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create vod config method over gRPC.
 
         Registers the VOD config with the provided unique ID
@@ -1098,12 +983,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["create_vod_config"]
 
     @property
-    def list_vod_configs(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListVodConfigsRequest],
-        video_stitcher_service.ListVodConfigsResponse,
-    ]:
+    def list_vod_configs(self) -> Callable[[video_stitcher_service.ListVodConfigsRequest], video_stitcher_service.ListVodConfigsResponse]:
         r"""Return a callable for the list vod configs method over gRPC.
 
         Lists all VOD configs managed by the Video Stitcher
@@ -1128,9 +1008,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["list_vod_configs"]
 
     @property
-    def get_vod_config(
-        self,
-    ) -> Callable[[video_stitcher_service.GetVodConfigRequest], vod_configs.VodConfig]:
+    def get_vod_config(self) -> Callable[[video_stitcher_service.GetVodConfigRequest], vod_configs.VodConfig]:
         r"""Return a callable for the get vod config method over gRPC.
 
         Returns the specified VOD config managed by the Video
@@ -1155,11 +1033,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["get_vod_config"]
 
     @property
-    def delete_vod_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteVodConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_vod_config(self) -> Callable[[video_stitcher_service.DeleteVodConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete vod config method over gRPC.
 
         Deletes the specified VOD config.
@@ -1183,11 +1057,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["delete_vod_config"]
 
     @property
-    def update_vod_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateVodConfigRequest], operations_pb2.Operation
-    ]:
+    def update_vod_config(self) -> Callable[[video_stitcher_service.UpdateVodConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the update vod config method over gRPC.
 
         Updates the specified VOD config. Only update fields
@@ -1268,9 +1138,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

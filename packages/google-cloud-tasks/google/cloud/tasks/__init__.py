@@ -18,9 +18,7 @@ from google.cloud.tasks import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.tasks_v2.services.cloud_tasks.async_client import (
-    CloudTasksAsyncClient,
-)
+from google.cloud.tasks_v2.services.cloud_tasks.async_client import CloudTasksAsyncClient
 from google.cloud.tasks_v2.services.cloud_tasks.client import CloudTasksClient
 from google.cloud.tasks_v2.types.cloudtasks import (
     CreateQueueRequest,
@@ -39,20 +37,8 @@ from google.cloud.tasks_v2.types.cloudtasks import (
     RunTaskRequest,
     UpdateQueueRequest,
 )
-from google.cloud.tasks_v2.types.queue import (
-    Queue,
-    RateLimits,
-    RetryConfig,
-    StackdriverLoggingConfig,
-)
-from google.cloud.tasks_v2.types.target import (
-    AppEngineHttpRequest,
-    AppEngineRouting,
-    HttpMethod,
-    HttpRequest,
-    OAuthToken,
-    OidcToken,
-)
+from google.cloud.tasks_v2.types.queue import Queue, RateLimits, RetryConfig, StackdriverLoggingConfig
+from google.cloud.tasks_v2.types.target import AppEngineHttpRequest, AppEngineRouting, HttpMethod, HttpRequest, OAuthToken, OidcToken
 from google.cloud.tasks_v2.types.task import Attempt, Task
 
 __all__ = (

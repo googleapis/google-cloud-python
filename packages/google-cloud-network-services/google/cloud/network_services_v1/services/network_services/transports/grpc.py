@@ -32,15 +32,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.network_services_v1.types import (
-    endpoint_policy as gcn_endpoint_policy,
-)
-from google.cloud.network_services_v1.types import (
-    service_binding as gcn_service_binding,
-)
-from google.cloud.network_services_v1.types import (
-    service_lb_policy as gcn_service_lb_policy,
-)
+from google.cloud.network_services_v1.types import endpoint_policy as gcn_endpoint_policy
+from google.cloud.network_services_v1.types import service_binding as gcn_service_binding
+from google.cloud.network_services_v1.types import service_lb_policy as gcn_service_lb_policy
 from google.cloud.network_services_v1.types import endpoint_policy
 from google.cloud.network_services_v1.types import extensibility
 from google.cloud.network_services_v1.types import gateway
@@ -73,9 +67,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -85,10 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -107,11 +96,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -246,18 +231,14 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -291,9 +272,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -360,20 +339,13 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_endpoint_policies(
-        self,
-    ) -> Callable[
-        [endpoint_policy.ListEndpointPoliciesRequest],
-        endpoint_policy.ListEndpointPoliciesResponse,
-    ]:
+    def list_endpoint_policies(self) -> Callable[[endpoint_policy.ListEndpointPoliciesRequest], endpoint_policy.ListEndpointPoliciesResponse]:
         r"""Return a callable for the list endpoint policies method over gRPC.
 
         Lists EndpointPolicies in a given project and
@@ -398,11 +370,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_endpoint_policies"]
 
     @property
-    def get_endpoint_policy(
-        self,
-    ) -> Callable[
-        [endpoint_policy.GetEndpointPolicyRequest], endpoint_policy.EndpointPolicy
-    ]:
+    def get_endpoint_policy(self) -> Callable[[endpoint_policy.GetEndpointPolicyRequest], endpoint_policy.EndpointPolicy]:
         r"""Return a callable for the get endpoint policy method over gRPC.
 
         Gets details of a single EndpointPolicy.
@@ -426,11 +394,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_endpoint_policy"]
 
     @property
-    def create_endpoint_policy(
-        self,
-    ) -> Callable[
-        [gcn_endpoint_policy.CreateEndpointPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_endpoint_policy(self) -> Callable[[gcn_endpoint_policy.CreateEndpointPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create endpoint policy method over gRPC.
 
         Creates a new EndpointPolicy in a given project and
@@ -455,11 +419,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_endpoint_policy"]
 
     @property
-    def update_endpoint_policy(
-        self,
-    ) -> Callable[
-        [gcn_endpoint_policy.UpdateEndpointPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_endpoint_policy(self) -> Callable[[gcn_endpoint_policy.UpdateEndpointPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update endpoint policy method over gRPC.
 
         Updates the parameters of a single EndpointPolicy.
@@ -483,11 +443,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_endpoint_policy"]
 
     @property
-    def delete_endpoint_policy(
-        self,
-    ) -> Callable[
-        [endpoint_policy.DeleteEndpointPolicyRequest], operations_pb2.Operation
-    ]:
+    def delete_endpoint_policy(self) -> Callable[[endpoint_policy.DeleteEndpointPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete endpoint policy method over gRPC.
 
         Deletes a single EndpointPolicy.
@@ -511,12 +467,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_endpoint_policy"]
 
     @property
-    def list_wasm_plugin_versions(
-        self,
-    ) -> Callable[
-        [extensibility.ListWasmPluginVersionsRequest],
-        extensibility.ListWasmPluginVersionsResponse,
-    ]:
+    def list_wasm_plugin_versions(self) -> Callable[[extensibility.ListWasmPluginVersionsRequest], extensibility.ListWasmPluginVersionsResponse]:
         r"""Return a callable for the list wasm plugin versions method over gRPC.
 
         Lists ``WasmPluginVersion`` resources in a given project and
@@ -541,11 +492,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_wasm_plugin_versions"]
 
     @property
-    def get_wasm_plugin_version(
-        self,
-    ) -> Callable[
-        [extensibility.GetWasmPluginVersionRequest], extensibility.WasmPluginVersion
-    ]:
+    def get_wasm_plugin_version(self) -> Callable[[extensibility.GetWasmPluginVersionRequest], extensibility.WasmPluginVersion]:
         r"""Return a callable for the get wasm plugin version method over gRPC.
 
         Gets details of the specified ``WasmPluginVersion`` resource.
@@ -569,11 +516,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_wasm_plugin_version"]
 
     @property
-    def create_wasm_plugin_version(
-        self,
-    ) -> Callable[
-        [extensibility.CreateWasmPluginVersionRequest], operations_pb2.Operation
-    ]:
+    def create_wasm_plugin_version(self) -> Callable[[extensibility.CreateWasmPluginVersionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create wasm plugin version method over gRPC.
 
         Creates a new ``WasmPluginVersion`` resource in a given project
@@ -590,9 +533,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_wasm_plugin_version" not in self._stubs:
-            self._stubs[
-                "create_wasm_plugin_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_wasm_plugin_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion",
                 request_serializer=extensibility.CreateWasmPluginVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -600,11 +541,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_wasm_plugin_version"]
 
     @property
-    def delete_wasm_plugin_version(
-        self,
-    ) -> Callable[
-        [extensibility.DeleteWasmPluginVersionRequest], operations_pb2.Operation
-    ]:
+    def delete_wasm_plugin_version(self) -> Callable[[extensibility.DeleteWasmPluginVersionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete wasm plugin version method over gRPC.
 
         Deletes the specified ``WasmPluginVersion`` resource.
@@ -620,9 +557,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_wasm_plugin_version" not in self._stubs:
-            self._stubs[
-                "delete_wasm_plugin_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_wasm_plugin_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion",
                 request_serializer=extensibility.DeleteWasmPluginVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -630,11 +565,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_wasm_plugin_version"]
 
     @property
-    def list_wasm_plugins(
-        self,
-    ) -> Callable[
-        [extensibility.ListWasmPluginsRequest], extensibility.ListWasmPluginsResponse
-    ]:
+    def list_wasm_plugins(self) -> Callable[[extensibility.ListWasmPluginsRequest], extensibility.ListWasmPluginsResponse]:
         r"""Return a callable for the list wasm plugins method over gRPC.
 
         Lists ``WasmPlugin`` resources in a given project and location.
@@ -658,9 +589,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_wasm_plugins"]
 
     @property
-    def get_wasm_plugin(
-        self,
-    ) -> Callable[[extensibility.GetWasmPluginRequest], extensibility.WasmPlugin]:
+    def get_wasm_plugin(self) -> Callable[[extensibility.GetWasmPluginRequest], extensibility.WasmPlugin]:
         r"""Return a callable for the get wasm plugin method over gRPC.
 
         Gets details of the specified ``WasmPlugin`` resource.
@@ -684,9 +613,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_wasm_plugin"]
 
     @property
-    def create_wasm_plugin(
-        self,
-    ) -> Callable[[extensibility.CreateWasmPluginRequest], operations_pb2.Operation]:
+    def create_wasm_plugin(self) -> Callable[[extensibility.CreateWasmPluginRequest], operations_pb2.Operation]:
         r"""Return a callable for the create wasm plugin method over gRPC.
 
         Creates a new ``WasmPlugin`` resource in a given project and
@@ -711,9 +638,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_wasm_plugin"]
 
     @property
-    def update_wasm_plugin(
-        self,
-    ) -> Callable[[extensibility.UpdateWasmPluginRequest], operations_pb2.Operation]:
+    def update_wasm_plugin(self) -> Callable[[extensibility.UpdateWasmPluginRequest], operations_pb2.Operation]:
         r"""Return a callable for the update wasm plugin method over gRPC.
 
         Updates the parameters of the specified ``WasmPlugin`` resource.
@@ -737,9 +662,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_wasm_plugin"]
 
     @property
-    def delete_wasm_plugin(
-        self,
-    ) -> Callable[[extensibility.DeleteWasmPluginRequest], operations_pb2.Operation]:
+    def delete_wasm_plugin(self) -> Callable[[extensibility.DeleteWasmPluginRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete wasm plugin method over gRPC.
 
         Deletes the specified ``WasmPlugin`` resource.
@@ -763,9 +686,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_wasm_plugin"]
 
     @property
-    def list_gateways(
-        self,
-    ) -> Callable[[gateway.ListGatewaysRequest], gateway.ListGatewaysResponse]:
+    def list_gateways(self) -> Callable[[gateway.ListGatewaysRequest], gateway.ListGatewaysResponse]:
         r"""Return a callable for the list gateways method over gRPC.
 
         Lists Gateways in a given project and location.
@@ -813,9 +734,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_gateway"]
 
     @property
-    def create_gateway(
-        self,
-    ) -> Callable[[gcn_gateway.CreateGatewayRequest], operations_pb2.Operation]:
+    def create_gateway(self) -> Callable[[gcn_gateway.CreateGatewayRequest], operations_pb2.Operation]:
         r"""Return a callable for the create gateway method over gRPC.
 
         Creates a new Gateway in a given project and
@@ -840,9 +759,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_gateway"]
 
     @property
-    def update_gateway(
-        self,
-    ) -> Callable[[gcn_gateway.UpdateGatewayRequest], operations_pb2.Operation]:
+    def update_gateway(self) -> Callable[[gcn_gateway.UpdateGatewayRequest], operations_pb2.Operation]:
         r"""Return a callable for the update gateway method over gRPC.
 
         Updates the parameters of a single Gateway.
@@ -866,9 +783,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_gateway"]
 
     @property
-    def delete_gateway(
-        self,
-    ) -> Callable[[gateway.DeleteGatewayRequest], operations_pb2.Operation]:
+    def delete_gateway(self) -> Callable[[gateway.DeleteGatewayRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete gateway method over gRPC.
 
         Deletes a single Gateway.
@@ -892,11 +807,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_gateway"]
 
     @property
-    def list_grpc_routes(
-        self,
-    ) -> Callable[
-        [grpc_route.ListGrpcRoutesRequest], grpc_route.ListGrpcRoutesResponse
-    ]:
+    def list_grpc_routes(self) -> Callable[[grpc_route.ListGrpcRoutesRequest], grpc_route.ListGrpcRoutesResponse]:
         r"""Return a callable for the list grpc routes method over gRPC.
 
         Lists GrpcRoutes in a given project and location.
@@ -920,9 +831,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_grpc_routes"]
 
     @property
-    def get_grpc_route(
-        self,
-    ) -> Callable[[grpc_route.GetGrpcRouteRequest], grpc_route.GrpcRoute]:
+    def get_grpc_route(self) -> Callable[[grpc_route.GetGrpcRouteRequest], grpc_route.GrpcRoute]:
         r"""Return a callable for the get grpc route method over gRPC.
 
         Gets details of a single GrpcRoute.
@@ -946,9 +855,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_grpc_route"]
 
     @property
-    def create_grpc_route(
-        self,
-    ) -> Callable[[gcn_grpc_route.CreateGrpcRouteRequest], operations_pb2.Operation]:
+    def create_grpc_route(self) -> Callable[[gcn_grpc_route.CreateGrpcRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create grpc route method over gRPC.
 
         Creates a new GrpcRoute in a given project and
@@ -973,9 +880,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_grpc_route"]
 
     @property
-    def update_grpc_route(
-        self,
-    ) -> Callable[[gcn_grpc_route.UpdateGrpcRouteRequest], operations_pb2.Operation]:
+    def update_grpc_route(self) -> Callable[[gcn_grpc_route.UpdateGrpcRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the update grpc route method over gRPC.
 
         Updates the parameters of a single GrpcRoute.
@@ -999,9 +904,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_grpc_route"]
 
     @property
-    def delete_grpc_route(
-        self,
-    ) -> Callable[[grpc_route.DeleteGrpcRouteRequest], operations_pb2.Operation]:
+    def delete_grpc_route(self) -> Callable[[grpc_route.DeleteGrpcRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete grpc route method over gRPC.
 
         Deletes a single GrpcRoute.
@@ -1025,11 +928,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_grpc_route"]
 
     @property
-    def list_http_routes(
-        self,
-    ) -> Callable[
-        [http_route.ListHttpRoutesRequest], http_route.ListHttpRoutesResponse
-    ]:
+    def list_http_routes(self) -> Callable[[http_route.ListHttpRoutesRequest], http_route.ListHttpRoutesResponse]:
         r"""Return a callable for the list http routes method over gRPC.
 
         Lists HttpRoute in a given project and location.
@@ -1053,9 +952,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_http_routes"]
 
     @property
-    def get_http_route(
-        self,
-    ) -> Callable[[http_route.GetHttpRouteRequest], http_route.HttpRoute]:
+    def get_http_route(self) -> Callable[[http_route.GetHttpRouteRequest], http_route.HttpRoute]:
         r"""Return a callable for the get http route method over gRPC.
 
         Gets details of a single HttpRoute.
@@ -1079,9 +976,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_http_route"]
 
     @property
-    def create_http_route(
-        self,
-    ) -> Callable[[gcn_http_route.CreateHttpRouteRequest], operations_pb2.Operation]:
+    def create_http_route(self) -> Callable[[gcn_http_route.CreateHttpRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create http route method over gRPC.
 
         Creates a new HttpRoute in a given project and
@@ -1106,9 +1001,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_http_route"]
 
     @property
-    def update_http_route(
-        self,
-    ) -> Callable[[gcn_http_route.UpdateHttpRouteRequest], operations_pb2.Operation]:
+    def update_http_route(self) -> Callable[[gcn_http_route.UpdateHttpRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the update http route method over gRPC.
 
         Updates the parameters of a single HttpRoute.
@@ -1132,9 +1025,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_http_route"]
 
     @property
-    def delete_http_route(
-        self,
-    ) -> Callable[[http_route.DeleteHttpRouteRequest], operations_pb2.Operation]:
+    def delete_http_route(self) -> Callable[[http_route.DeleteHttpRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete http route method over gRPC.
 
         Deletes a single HttpRoute.
@@ -1158,9 +1049,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_http_route"]
 
     @property
-    def list_tcp_routes(
-        self,
-    ) -> Callable[[tcp_route.ListTcpRoutesRequest], tcp_route.ListTcpRoutesResponse]:
+    def list_tcp_routes(self) -> Callable[[tcp_route.ListTcpRoutesRequest], tcp_route.ListTcpRoutesResponse]:
         r"""Return a callable for the list tcp routes method over gRPC.
 
         Lists TcpRoute in a given project and location.
@@ -1184,9 +1073,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_tcp_routes"]
 
     @property
-    def get_tcp_route(
-        self,
-    ) -> Callable[[tcp_route.GetTcpRouteRequest], tcp_route.TcpRoute]:
+    def get_tcp_route(self) -> Callable[[tcp_route.GetTcpRouteRequest], tcp_route.TcpRoute]:
         r"""Return a callable for the get tcp route method over gRPC.
 
         Gets details of a single TcpRoute.
@@ -1210,9 +1097,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_tcp_route"]
 
     @property
-    def create_tcp_route(
-        self,
-    ) -> Callable[[gcn_tcp_route.CreateTcpRouteRequest], operations_pb2.Operation]:
+    def create_tcp_route(self) -> Callable[[gcn_tcp_route.CreateTcpRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create tcp route method over gRPC.
 
         Creates a new TcpRoute in a given project and
@@ -1237,9 +1122,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_tcp_route"]
 
     @property
-    def update_tcp_route(
-        self,
-    ) -> Callable[[gcn_tcp_route.UpdateTcpRouteRequest], operations_pb2.Operation]:
+    def update_tcp_route(self) -> Callable[[gcn_tcp_route.UpdateTcpRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the update tcp route method over gRPC.
 
         Updates the parameters of a single TcpRoute.
@@ -1263,9 +1146,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_tcp_route"]
 
     @property
-    def delete_tcp_route(
-        self,
-    ) -> Callable[[tcp_route.DeleteTcpRouteRequest], operations_pb2.Operation]:
+    def delete_tcp_route(self) -> Callable[[tcp_route.DeleteTcpRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete tcp route method over gRPC.
 
         Deletes a single TcpRoute.
@@ -1289,9 +1170,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_tcp_route"]
 
     @property
-    def list_tls_routes(
-        self,
-    ) -> Callable[[tls_route.ListTlsRoutesRequest], tls_route.ListTlsRoutesResponse]:
+    def list_tls_routes(self) -> Callable[[tls_route.ListTlsRoutesRequest], tls_route.ListTlsRoutesResponse]:
         r"""Return a callable for the list tls routes method over gRPC.
 
         Lists TlsRoute in a given project and location.
@@ -1315,9 +1194,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_tls_routes"]
 
     @property
-    def get_tls_route(
-        self,
-    ) -> Callable[[tls_route.GetTlsRouteRequest], tls_route.TlsRoute]:
+    def get_tls_route(self) -> Callable[[tls_route.GetTlsRouteRequest], tls_route.TlsRoute]:
         r"""Return a callable for the get tls route method over gRPC.
 
         Gets details of a single TlsRoute.
@@ -1341,9 +1218,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_tls_route"]
 
     @property
-    def create_tls_route(
-        self,
-    ) -> Callable[[gcn_tls_route.CreateTlsRouteRequest], operations_pb2.Operation]:
+    def create_tls_route(self) -> Callable[[gcn_tls_route.CreateTlsRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create tls route method over gRPC.
 
         Creates a new TlsRoute in a given project and
@@ -1368,9 +1243,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_tls_route"]
 
     @property
-    def update_tls_route(
-        self,
-    ) -> Callable[[gcn_tls_route.UpdateTlsRouteRequest], operations_pb2.Operation]:
+    def update_tls_route(self) -> Callable[[gcn_tls_route.UpdateTlsRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the update tls route method over gRPC.
 
         Updates the parameters of a single TlsRoute.
@@ -1394,9 +1267,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_tls_route"]
 
     @property
-    def delete_tls_route(
-        self,
-    ) -> Callable[[tls_route.DeleteTlsRouteRequest], operations_pb2.Operation]:
+    def delete_tls_route(self) -> Callable[[tls_route.DeleteTlsRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete tls route method over gRPC.
 
         Deletes a single TlsRoute.
@@ -1420,12 +1291,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_tls_route"]
 
     @property
-    def list_service_bindings(
-        self,
-    ) -> Callable[
-        [service_binding.ListServiceBindingsRequest],
-        service_binding.ListServiceBindingsResponse,
-    ]:
+    def list_service_bindings(self) -> Callable[[service_binding.ListServiceBindingsRequest], service_binding.ListServiceBindingsResponse]:
         r"""Return a callable for the list service bindings method over gRPC.
 
         Lists ServiceBinding in a given project and location.
@@ -1449,11 +1315,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_service_bindings"]
 
     @property
-    def get_service_binding(
-        self,
-    ) -> Callable[
-        [service_binding.GetServiceBindingRequest], service_binding.ServiceBinding
-    ]:
+    def get_service_binding(self) -> Callable[[service_binding.GetServiceBindingRequest], service_binding.ServiceBinding]:
         r"""Return a callable for the get service binding method over gRPC.
 
         Gets details of a single ServiceBinding.
@@ -1477,11 +1339,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_service_binding"]
 
     @property
-    def create_service_binding(
-        self,
-    ) -> Callable[
-        [gcn_service_binding.CreateServiceBindingRequest], operations_pb2.Operation
-    ]:
+    def create_service_binding(self) -> Callable[[gcn_service_binding.CreateServiceBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the create service binding method over gRPC.
 
         Creates a new ServiceBinding in a given project and
@@ -1506,11 +1364,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_service_binding"]
 
     @property
-    def update_service_binding(
-        self,
-    ) -> Callable[
-        [gcn_service_binding.UpdateServiceBindingRequest], operations_pb2.Operation
-    ]:
+    def update_service_binding(self) -> Callable[[gcn_service_binding.UpdateServiceBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the update service binding method over gRPC.
 
         Updates the parameters of a single ServiceBinding.
@@ -1534,11 +1388,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_service_binding"]
 
     @property
-    def delete_service_binding(
-        self,
-    ) -> Callable[
-        [service_binding.DeleteServiceBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_service_binding(self) -> Callable[[service_binding.DeleteServiceBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete service binding method over gRPC.
 
         Deletes a single ServiceBinding.
@@ -1562,9 +1412,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_service_binding"]
 
     @property
-    def list_meshes(
-        self,
-    ) -> Callable[[mesh.ListMeshesRequest], mesh.ListMeshesResponse]:
+    def list_meshes(self) -> Callable[[mesh.ListMeshesRequest], mesh.ListMeshesResponse]:
         r"""Return a callable for the list meshes method over gRPC.
 
         Lists Meshes in a given project and location.
@@ -1612,9 +1460,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_mesh"]
 
     @property
-    def create_mesh(
-        self,
-    ) -> Callable[[gcn_mesh.CreateMeshRequest], operations_pb2.Operation]:
+    def create_mesh(self) -> Callable[[gcn_mesh.CreateMeshRequest], operations_pb2.Operation]:
         r"""Return a callable for the create mesh method over gRPC.
 
         Creates a new Mesh in a given project and location.
@@ -1638,9 +1484,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_mesh"]
 
     @property
-    def update_mesh(
-        self,
-    ) -> Callable[[gcn_mesh.UpdateMeshRequest], operations_pb2.Operation]:
+    def update_mesh(self) -> Callable[[gcn_mesh.UpdateMeshRequest], operations_pb2.Operation]:
         r"""Return a callable for the update mesh method over gRPC.
 
         Updates the parameters of a single Mesh.
@@ -1664,9 +1508,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_mesh"]
 
     @property
-    def delete_mesh(
-        self,
-    ) -> Callable[[mesh.DeleteMeshRequest], operations_pb2.Operation]:
+    def delete_mesh(self) -> Callable[[mesh.DeleteMeshRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete mesh method over gRPC.
 
         Deletes a single Mesh.
@@ -1690,12 +1532,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_mesh"]
 
     @property
-    def list_service_lb_policies(
-        self,
-    ) -> Callable[
-        [service_lb_policy.ListServiceLbPoliciesRequest],
-        service_lb_policy.ListServiceLbPoliciesResponse,
-    ]:
+    def list_service_lb_policies(self) -> Callable[[service_lb_policy.ListServiceLbPoliciesRequest], service_lb_policy.ListServiceLbPoliciesResponse]:
         r"""Return a callable for the list service lb policies method over gRPC.
 
         Lists ServiceLbPolicies in a given project and
@@ -1720,11 +1557,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_service_lb_policies"]
 
     @property
-    def get_service_lb_policy(
-        self,
-    ) -> Callable[
-        [service_lb_policy.GetServiceLbPolicyRequest], service_lb_policy.ServiceLbPolicy
-    ]:
+    def get_service_lb_policy(self) -> Callable[[service_lb_policy.GetServiceLbPolicyRequest], service_lb_policy.ServiceLbPolicy]:
         r"""Return a callable for the get service lb policy method over gRPC.
 
         Gets details of a single ServiceLbPolicy.
@@ -1748,11 +1581,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_service_lb_policy"]
 
     @property
-    def create_service_lb_policy(
-        self,
-    ) -> Callable[
-        [gcn_service_lb_policy.CreateServiceLbPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_service_lb_policy(self) -> Callable[[gcn_service_lb_policy.CreateServiceLbPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create service lb policy method over gRPC.
 
         Creates a new ServiceLbPolicy in a given project and
@@ -1777,11 +1606,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["create_service_lb_policy"]
 
     @property
-    def update_service_lb_policy(
-        self,
-    ) -> Callable[
-        [gcn_service_lb_policy.UpdateServiceLbPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_service_lb_policy(self) -> Callable[[gcn_service_lb_policy.UpdateServiceLbPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update service lb policy method over gRPC.
 
         Updates the parameters of a single ServiceLbPolicy.
@@ -1805,11 +1630,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["update_service_lb_policy"]
 
     @property
-    def delete_service_lb_policy(
-        self,
-    ) -> Callable[
-        [service_lb_policy.DeleteServiceLbPolicyRequest], operations_pb2.Operation
-    ]:
+    def delete_service_lb_policy(self) -> Callable[[service_lb_policy.DeleteServiceLbPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete service lb policy method over gRPC.
 
         Deletes a single ServiceLbPolicy.
@@ -1833,9 +1654,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["delete_service_lb_policy"]
 
     @property
-    def get_gateway_route_view(
-        self,
-    ) -> Callable[[route_view.GetGatewayRouteViewRequest], route_view.GatewayRouteView]:
+    def get_gateway_route_view(self) -> Callable[[route_view.GetGatewayRouteViewRequest], route_view.GatewayRouteView]:
         r"""Return a callable for the get gateway route view method over gRPC.
 
         Get a single RouteView of a Gateway.
@@ -1859,9 +1678,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_gateway_route_view"]
 
     @property
-    def get_mesh_route_view(
-        self,
-    ) -> Callable[[route_view.GetMeshRouteViewRequest], route_view.MeshRouteView]:
+    def get_mesh_route_view(self) -> Callable[[route_view.GetMeshRouteViewRequest], route_view.MeshRouteView]:
         r"""Return a callable for the get mesh route view method over gRPC.
 
         Get a single RouteView of a Mesh.
@@ -1885,12 +1702,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["get_mesh_route_view"]
 
     @property
-    def list_gateway_route_views(
-        self,
-    ) -> Callable[
-        [route_view.ListGatewayRouteViewsRequest],
-        route_view.ListGatewayRouteViewsResponse,
-    ]:
+    def list_gateway_route_views(self) -> Callable[[route_view.ListGatewayRouteViewsRequest], route_view.ListGatewayRouteViewsResponse]:
         r"""Return a callable for the list gateway route views method over gRPC.
 
         Lists RouteViews
@@ -1914,11 +1726,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         return self._stubs["list_gateway_route_views"]
 
     @property
-    def list_mesh_route_views(
-        self,
-    ) -> Callable[
-        [route_view.ListMeshRouteViewsRequest], route_view.ListMeshRouteViewsResponse
-    ]:
+    def list_mesh_route_views(self) -> Callable[[route_view.ListMeshRouteViewsRequest], route_view.ListMeshRouteViewsResponse]:
         r"""Return a callable for the list mesh route views method over gRPC.
 
         Lists RouteViews
@@ -1998,9 +1806,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2017,9 +1823,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2104,10 +1908,7 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

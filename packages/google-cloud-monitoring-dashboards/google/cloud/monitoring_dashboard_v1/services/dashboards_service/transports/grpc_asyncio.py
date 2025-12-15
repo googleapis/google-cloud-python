@@ -49,13 +49,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -65,10 +61,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -87,11 +80,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -270,18 +259,14 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -317,9 +302,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -334,11 +317,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_dashboard(
-        self,
-    ) -> Callable[
-        [dashboards_service.CreateDashboardRequest], Awaitable[gmd_dashboard.Dashboard]
-    ]:
+    def create_dashboard(self) -> Callable[[dashboards_service.CreateDashboardRequest], Awaitable[gmd_dashboard.Dashboard]]:
         r"""Return a callable for the create dashboard method over gRPC.
 
         Creates a new custom dashboard. For examples on how you can use
@@ -368,12 +347,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         return self._stubs["create_dashboard"]
 
     @property
-    def list_dashboards(
-        self,
-    ) -> Callable[
-        [dashboards_service.ListDashboardsRequest],
-        Awaitable[dashboards_service.ListDashboardsResponse],
-    ]:
+    def list_dashboards(self) -> Callable[[dashboards_service.ListDashboardsRequest], Awaitable[dashboards_service.ListDashboardsResponse]]:
         r"""Return a callable for the list dashboards method over gRPC.
 
         Lists the existing dashboards.
@@ -402,11 +376,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         return self._stubs["list_dashboards"]
 
     @property
-    def get_dashboard(
-        self,
-    ) -> Callable[
-        [dashboards_service.GetDashboardRequest], Awaitable[dashboard.Dashboard]
-    ]:
+    def get_dashboard(self) -> Callable[[dashboards_service.GetDashboardRequest], Awaitable[dashboard.Dashboard]]:
         r"""Return a callable for the get dashboard method over gRPC.
 
         Fetches a specific dashboard.
@@ -435,11 +405,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         return self._stubs["get_dashboard"]
 
     @property
-    def delete_dashboard(
-        self,
-    ) -> Callable[
-        [dashboards_service.DeleteDashboardRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_dashboard(self) -> Callable[[dashboards_service.DeleteDashboardRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete dashboard method over gRPC.
 
         Deletes an existing custom dashboard.
@@ -468,11 +434,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         return self._stubs["delete_dashboard"]
 
     @property
-    def update_dashboard(
-        self,
-    ) -> Callable[
-        [dashboards_service.UpdateDashboardRequest], Awaitable[dashboard.Dashboard]
-    ]:
+    def update_dashboard(self) -> Callable[[dashboards_service.UpdateDashboardRequest], Awaitable[dashboard.Dashboard]]:
         r"""Return a callable for the update dashboard method over gRPC.
 
         Replaces an existing custom dashboard with a new definition.

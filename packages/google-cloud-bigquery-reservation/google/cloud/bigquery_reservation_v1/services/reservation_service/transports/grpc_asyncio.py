@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -285,18 +274,14 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -332,9 +317,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -349,12 +332,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_reservation(
-        self,
-    ) -> Callable[
-        [gcbr_reservation.CreateReservationRequest],
-        Awaitable[gcbr_reservation.Reservation],
-    ]:
+    def create_reservation(self) -> Callable[[gcbr_reservation.CreateReservationRequest], Awaitable[gcbr_reservation.Reservation]]:
         r"""Return a callable for the create reservation method over gRPC.
 
         Creates a new reservation resource.
@@ -378,12 +356,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["create_reservation"]
 
     @property
-    def list_reservations(
-        self,
-    ) -> Callable[
-        [reservation.ListReservationsRequest],
-        Awaitable[reservation.ListReservationsResponse],
-    ]:
+    def list_reservations(self) -> Callable[[reservation.ListReservationsRequest], Awaitable[reservation.ListReservationsResponse]]:
         r"""Return a callable for the list reservations method over gRPC.
 
         Lists all the reservations for the project in the
@@ -408,11 +381,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["list_reservations"]
 
     @property
-    def get_reservation(
-        self,
-    ) -> Callable[
-        [reservation.GetReservationRequest], Awaitable[reservation.Reservation]
-    ]:
+    def get_reservation(self) -> Callable[[reservation.GetReservationRequest], Awaitable[reservation.Reservation]]:
         r"""Return a callable for the get reservation method over gRPC.
 
         Returns information about the reservation.
@@ -436,9 +405,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["get_reservation"]
 
     @property
-    def delete_reservation(
-        self,
-    ) -> Callable[[reservation.DeleteReservationRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_reservation(self) -> Callable[[reservation.DeleteReservationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete reservation method over gRPC.
 
         Deletes a reservation. Returns
@@ -464,12 +431,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["delete_reservation"]
 
     @property
-    def update_reservation(
-        self,
-    ) -> Callable[
-        [gcbr_reservation.UpdateReservationRequest],
-        Awaitable[gcbr_reservation.Reservation],
-    ]:
+    def update_reservation(self) -> Callable[[gcbr_reservation.UpdateReservationRequest], Awaitable[gcbr_reservation.Reservation]]:
         r"""Return a callable for the update reservation method over gRPC.
 
         Updates an existing reservation resource.
@@ -493,11 +455,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["update_reservation"]
 
     @property
-    def failover_reservation(
-        self,
-    ) -> Callable[
-        [reservation.FailoverReservationRequest], Awaitable[reservation.Reservation]
-    ]:
+    def failover_reservation(self) -> Callable[[reservation.FailoverReservationRequest], Awaitable[reservation.Reservation]]:
         r"""Return a callable for the failover reservation method over gRPC.
 
         Fail over a reservation to the secondary location. The operation
@@ -526,12 +484,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["failover_reservation"]
 
     @property
-    def create_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.CreateCapacityCommitmentRequest],
-        Awaitable[reservation.CapacityCommitment],
-    ]:
+    def create_capacity_commitment(self) -> Callable[[reservation.CreateCapacityCommitmentRequest], Awaitable[reservation.CapacityCommitment]]:
         r"""Return a callable for the create capacity commitment method over gRPC.
 
         Creates a new capacity commitment resource.
@@ -547,9 +500,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_capacity_commitment" not in self._stubs:
-            self._stubs[
-                "create_capacity_commitment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_capacity_commitment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateCapacityCommitment",
                 request_serializer=reservation.CreateCapacityCommitmentRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -559,10 +510,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
     @property
     def list_capacity_commitments(
         self,
-    ) -> Callable[
-        [reservation.ListCapacityCommitmentsRequest],
-        Awaitable[reservation.ListCapacityCommitmentsResponse],
-    ]:
+    ) -> Callable[[reservation.ListCapacityCommitmentsRequest], Awaitable[reservation.ListCapacityCommitmentsResponse]]:
         r"""Return a callable for the list capacity commitments method over gRPC.
 
         Lists all the capacity commitments for the admin
@@ -587,12 +535,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["list_capacity_commitments"]
 
     @property
-    def get_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.GetCapacityCommitmentRequest],
-        Awaitable[reservation.CapacityCommitment],
-    ]:
+    def get_capacity_commitment(self) -> Callable[[reservation.GetCapacityCommitmentRequest], Awaitable[reservation.CapacityCommitment]]:
         r"""Return a callable for the get capacity commitment method over gRPC.
 
         Returns information about the capacity commitment.
@@ -616,11 +559,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["get_capacity_commitment"]
 
     @property
-    def delete_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.DeleteCapacityCommitmentRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_capacity_commitment(self) -> Callable[[reservation.DeleteCapacityCommitmentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete capacity commitment method over gRPC.
 
         Deletes a capacity commitment. Attempting to delete capacity
@@ -638,9 +577,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_capacity_commitment" not in self._stubs:
-            self._stubs[
-                "delete_capacity_commitment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_capacity_commitment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteCapacityCommitment",
                 request_serializer=reservation.DeleteCapacityCommitmentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -648,12 +585,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["delete_capacity_commitment"]
 
     @property
-    def update_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.UpdateCapacityCommitmentRequest],
-        Awaitable[reservation.CapacityCommitment],
-    ]:
+    def update_capacity_commitment(self) -> Callable[[reservation.UpdateCapacityCommitmentRequest], Awaitable[reservation.CapacityCommitment]]:
         r"""Return a callable for the update capacity commitment method over gRPC.
 
         Updates an existing capacity commitment.
@@ -676,9 +608,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_capacity_commitment" not in self._stubs:
-            self._stubs[
-                "update_capacity_commitment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_capacity_commitment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateCapacityCommitment",
                 request_serializer=reservation.UpdateCapacityCommitmentRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -688,10 +618,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
     @property
     def split_capacity_commitment(
         self,
-    ) -> Callable[
-        [reservation.SplitCapacityCommitmentRequest],
-        Awaitable[reservation.SplitCapacityCommitmentResponse],
-    ]:
+    ) -> Callable[[reservation.SplitCapacityCommitmentRequest], Awaitable[reservation.SplitCapacityCommitmentResponse]]:
         r"""Return a callable for the split capacity commitment method over gRPC.
 
         Splits capacity commitment to two commitments of the same plan
@@ -723,12 +650,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["split_capacity_commitment"]
 
     @property
-    def merge_capacity_commitments(
-        self,
-    ) -> Callable[
-        [reservation.MergeCapacityCommitmentsRequest],
-        Awaitable[reservation.CapacityCommitment],
-    ]:
+    def merge_capacity_commitments(self) -> Callable[[reservation.MergeCapacityCommitmentsRequest], Awaitable[reservation.CapacityCommitment]]:
         r"""Return a callable for the merge capacity commitments method over gRPC.
 
         Merges capacity commitments of the same plan into a single
@@ -753,9 +675,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "merge_capacity_commitments" not in self._stubs:
-            self._stubs[
-                "merge_capacity_commitments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["merge_capacity_commitments"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/MergeCapacityCommitments",
                 request_serializer=reservation.MergeCapacityCommitmentsRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -763,11 +683,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["merge_capacity_commitments"]
 
     @property
-    def create_assignment(
-        self,
-    ) -> Callable[
-        [reservation.CreateAssignmentRequest], Awaitable[reservation.Assignment]
-    ]:
+    def create_assignment(self) -> Callable[[reservation.CreateAssignmentRequest], Awaitable[reservation.Assignment]]:
         r"""Return a callable for the create assignment method over gRPC.
 
         Creates an assignment object which allows the given project to
@@ -828,12 +744,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["create_assignment"]
 
     @property
-    def list_assignments(
-        self,
-    ) -> Callable[
-        [reservation.ListAssignmentsRequest],
-        Awaitable[reservation.ListAssignmentsResponse],
-    ]:
+    def list_assignments(self) -> Callable[[reservation.ListAssignmentsRequest], Awaitable[reservation.ListAssignmentsResponse]]:
         r"""Return a callable for the list assignments method over gRPC.
 
         Lists assignments.
@@ -878,9 +789,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["list_assignments"]
 
     @property
-    def delete_assignment(
-        self,
-    ) -> Callable[[reservation.DeleteAssignmentRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_assignment(self) -> Callable[[reservation.DeleteAssignmentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete assignment method over gRPC.
 
         Deletes a assignment. No expansion will happen.
@@ -919,12 +828,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["delete_assignment"]
 
     @property
-    def search_assignments(
-        self,
-    ) -> Callable[
-        [reservation.SearchAssignmentsRequest],
-        Awaitable[reservation.SearchAssignmentsResponse],
-    ]:
+    def search_assignments(self) -> Callable[[reservation.SearchAssignmentsRequest], Awaitable[reservation.SearchAssignmentsResponse]]:
         r"""Return a callable for the search assignments method over gRPC.
 
         Deprecated: Looks up assignments for a specified resource for a
@@ -972,12 +876,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["search_assignments"]
 
     @property
-    def search_all_assignments(
-        self,
-    ) -> Callable[
-        [reservation.SearchAllAssignmentsRequest],
-        Awaitable[reservation.SearchAllAssignmentsResponse],
-    ]:
+    def search_all_assignments(self) -> Callable[[reservation.SearchAllAssignmentsRequest], Awaitable[reservation.SearchAllAssignmentsResponse]]:
         r"""Return a callable for the search all assignments method over gRPC.
 
         Looks up assignments for a specified resource for a particular
@@ -1023,11 +922,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["search_all_assignments"]
 
     @property
-    def move_assignment(
-        self,
-    ) -> Callable[
-        [reservation.MoveAssignmentRequest], Awaitable[reservation.Assignment]
-    ]:
+    def move_assignment(self) -> Callable[[reservation.MoveAssignmentRequest], Awaitable[reservation.Assignment]]:
         r"""Return a callable for the move assignment method over gRPC.
 
         Moves an assignment under a new reservation.
@@ -1056,11 +951,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["move_assignment"]
 
     @property
-    def update_assignment(
-        self,
-    ) -> Callable[
-        [reservation.UpdateAssignmentRequest], Awaitable[reservation.Assignment]
-    ]:
+    def update_assignment(self) -> Callable[[reservation.UpdateAssignmentRequest], Awaitable[reservation.Assignment]]:
         r"""Return a callable for the update assignment method over gRPC.
 
         Updates an existing assignment.
@@ -1086,11 +977,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["update_assignment"]
 
     @property
-    def get_bi_reservation(
-        self,
-    ) -> Callable[
-        [reservation.GetBiReservationRequest], Awaitable[reservation.BiReservation]
-    ]:
+    def get_bi_reservation(self) -> Callable[[reservation.GetBiReservationRequest], Awaitable[reservation.BiReservation]]:
         r"""Return a callable for the get bi reservation method over gRPC.
 
         Retrieves a BI reservation.
@@ -1114,11 +1001,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["get_bi_reservation"]
 
     @property
-    def update_bi_reservation(
-        self,
-    ) -> Callable[
-        [reservation.UpdateBiReservationRequest], Awaitable[reservation.BiReservation]
-    ]:
+    def update_bi_reservation(self) -> Callable[[reservation.UpdateBiReservationRequest], Awaitable[reservation.BiReservation]]:
         r"""Return a callable for the update bi reservation method over gRPC.
 
         Updates a BI reservation.
@@ -1149,9 +1032,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["update_bi_reservation"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a resource. May return:
@@ -1191,9 +1072,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets an access control policy for a resource. Replaces any
@@ -1228,12 +1107,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Gets your permissions on a resource. Returns an empty
@@ -1265,12 +1139,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["test_iam_permissions"]
 
     @property
-    def create_reservation_group(
-        self,
-    ) -> Callable[
-        [reservation.CreateReservationGroupRequest],
-        Awaitable[reservation.ReservationGroup],
-    ]:
+    def create_reservation_group(self) -> Callable[[reservation.CreateReservationGroupRequest], Awaitable[reservation.ReservationGroup]]:
         r"""Return a callable for the create reservation group method over gRPC.
 
         Creates a new reservation group.
@@ -1294,12 +1163,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["create_reservation_group"]
 
     @property
-    def get_reservation_group(
-        self,
-    ) -> Callable[
-        [reservation.GetReservationGroupRequest],
-        Awaitable[reservation.ReservationGroup],
-    ]:
+    def get_reservation_group(self) -> Callable[[reservation.GetReservationGroupRequest], Awaitable[reservation.ReservationGroup]]:
         r"""Return a callable for the get reservation group method over gRPC.
 
         Returns information about the reservation group.
@@ -1323,11 +1187,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["get_reservation_group"]
 
     @property
-    def delete_reservation_group(
-        self,
-    ) -> Callable[
-        [reservation.DeleteReservationGroupRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_reservation_group(self) -> Callable[[reservation.DeleteReservationGroupRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete reservation group method over gRPC.
 
         Deletes a reservation. Returns
@@ -1353,12 +1213,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return self._stubs["delete_reservation_group"]
 
     @property
-    def list_reservation_groups(
-        self,
-    ) -> Callable[
-        [reservation.ListReservationGroupsRequest],
-        Awaitable[reservation.ListReservationGroupsResponse],
-    ]:
+    def list_reservation_groups(self) -> Callable[[reservation.ListReservationGroupsRequest], Awaitable[reservation.ListReservationGroupsResponse]]:
         r"""Return a callable for the list reservation groups method over gRPC.
 
         Lists all the reservation groups for the project in

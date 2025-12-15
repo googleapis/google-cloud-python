@@ -113,13 +113,8 @@ class EvaluationServiceRestInterceptor:
     """
 
     def pre_create_evaluation(
-        self,
-        request: evaluation_service.CreateEvaluationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        evaluation_service.CreateEvaluationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: evaluation_service.CreateEvaluationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[evaluation_service.CreateEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_evaluation
 
         Override in a subclass to manipulate the request or metadata
@@ -127,9 +122,7 @@ class EvaluationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_evaluation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_evaluation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_evaluation
 
         DEPRECATED. Please use the `post_create_evaluation_with_metadata`
@@ -143,9 +136,7 @@ class EvaluationServiceRestInterceptor:
         return response
 
     def post_create_evaluation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_evaluation
 
@@ -162,12 +153,8 @@ class EvaluationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_evaluation(
-        self,
-        request: evaluation_service.GetEvaluationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        evaluation_service.GetEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: evaluation_service.GetEvaluationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[evaluation_service.GetEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_evaluation
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +162,7 @@ class EvaluationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_evaluation(
-        self, response: evaluation.Evaluation
-    ) -> evaluation.Evaluation:
+    def post_get_evaluation(self, response: evaluation.Evaluation) -> evaluation.Evaluation:
         """Post-rpc interceptor for get_evaluation
 
         DEPRECATED. Please use the `post_get_evaluation_with_metadata`
@@ -191,9 +176,7 @@ class EvaluationServiceRestInterceptor:
         return response
 
     def post_get_evaluation_with_metadata(
-        self,
-        response: evaluation.Evaluation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: evaluation.Evaluation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[evaluation.Evaluation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_evaluation
 
@@ -210,13 +193,8 @@ class EvaluationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_evaluation_results(
-        self,
-        request: evaluation_service.ListEvaluationResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        evaluation_service.ListEvaluationResultsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: evaluation_service.ListEvaluationResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[evaluation_service.ListEvaluationResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_evaluation_results
 
         Override in a subclass to manipulate the request or metadata
@@ -240,13 +218,8 @@ class EvaluationServiceRestInterceptor:
         return response
 
     def post_list_evaluation_results_with_metadata(
-        self,
-        response: evaluation_service.ListEvaluationResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        evaluation_service.ListEvaluationResultsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: evaluation_service.ListEvaluationResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[evaluation_service.ListEvaluationResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_evaluation_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -262,13 +235,8 @@ class EvaluationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_evaluations(
-        self,
-        request: evaluation_service.ListEvaluationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        evaluation_service.ListEvaluationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: evaluation_service.ListEvaluationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[evaluation_service.ListEvaluationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_evaluations
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +244,7 @@ class EvaluationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_evaluations(
-        self, response: evaluation_service.ListEvaluationsResponse
-    ) -> evaluation_service.ListEvaluationsResponse:
+    def post_list_evaluations(self, response: evaluation_service.ListEvaluationsResponse) -> evaluation_service.ListEvaluationsResponse:
         """Post-rpc interceptor for list_evaluations
 
         DEPRECATED. Please use the `post_list_evaluations_with_metadata`
@@ -292,13 +258,8 @@ class EvaluationServiceRestInterceptor:
         return response
 
     def post_list_evaluations_with_metadata(
-        self,
-        response: evaluation_service.ListEvaluationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        evaluation_service.ListEvaluationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: evaluation_service.ListEvaluationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[evaluation_service.ListEvaluationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_evaluations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -314,12 +275,8 @@ class EvaluationServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -337,12 +294,8 @@ class EvaluationServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -350,9 +303,7 @@ class EvaluationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -362,12 +313,8 @@ class EvaluationServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -375,9 +322,7 @@ class EvaluationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -467,9 +412,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -641,30 +584,17 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateEvaluation(
-        _BaseEvaluationServiceRestTransport._BaseCreateEvaluation,
-        EvaluationServiceRestStub,
-    ):
+    class _CreateEvaluation(_BaseEvaluationServiceRestTransport._BaseCreateEvaluation, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.CreateEvaluation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -709,32 +639,18 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_evaluation(
-                request, metadata
-            )
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_evaluation(request, metadata)
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_transcoded_request(http_options, request)
 
-            body = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseCreateEvaluation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -758,13 +674,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             # Send the request
             response = EvaluationServiceRestTransport._CreateEvaluation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -778,12 +688,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             resp = self._interceptor.post_create_evaluation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_evaluation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_evaluation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -804,23 +710,12 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 )
             return resp
 
-    class _GetEvaluation(
-        _BaseEvaluationServiceRestTransport._BaseGetEvaluation,
-        EvaluationServiceRestStub,
-    ):
+    class _GetEvaluation(_BaseEvaluationServiceRestTransport._BaseGetEvaluation, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.GetEvaluation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -865,26 +760,16 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseGetEvaluation._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseGetEvaluation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_evaluation(request, metadata)
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseGetEvaluation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseGetEvaluation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseGetEvaluation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseGetEvaluation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -908,12 +793,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             # Send the request
             response = EvaluationServiceRestTransport._GetEvaluation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -929,12 +809,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             resp = self._interceptor.post_get_evaluation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_evaluation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_evaluation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = evaluation.Evaluation.to_json(response)
                 except:
@@ -955,23 +831,12 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 )
             return resp
 
-    class _ListEvaluationResults(
-        _BaseEvaluationServiceRestTransport._BaseListEvaluationResults,
-        EvaluationServiceRestStub,
-    ):
+    class _ListEvaluationResults(_BaseEvaluationServiceRestTransport._BaseListEvaluationResults, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.ListEvaluationResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1015,28 +880,16 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseListEvaluationResults._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseListEvaluationResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_evaluation_results(
-                request, metadata
-            )
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseListEvaluationResults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_evaluation_results(request, metadata)
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseListEvaluationResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseListEvaluationResults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseListEvaluationResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1059,15 +912,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                EvaluationServiceRestTransport._ListEvaluationResults._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EvaluationServiceRestTransport._ListEvaluationResults._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1083,18 +929,10 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             resp = self._interceptor.post_list_evaluation_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_evaluation_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_evaluation_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        evaluation_service.ListEvaluationResultsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = evaluation_service.ListEvaluationResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1113,23 +951,12 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 )
             return resp
 
-    class _ListEvaluations(
-        _BaseEvaluationServiceRestTransport._BaseListEvaluations,
-        EvaluationServiceRestStub,
-    ):
+    class _ListEvaluations(_BaseEvaluationServiceRestTransport._BaseListEvaluations, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.ListEvaluations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1173,28 +1000,16 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseListEvaluations._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseListEvaluations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_evaluations(
-                request, metadata
-            )
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseListEvaluations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_evaluations(request, metadata)
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseListEvaluations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseListEvaluations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseListEvaluations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1218,12 +1033,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             # Send the request
             response = EvaluationServiceRestTransport._ListEvaluations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1239,16 +1049,10 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             resp = self._interceptor.post_list_evaluations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_evaluations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_evaluations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        evaluation_service.ListEvaluationsResponse.to_json(response)
-                    )
+                    response_payload = evaluation_service.ListEvaluationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1268,19 +1072,13 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             return resp
 
     @property
-    def create_evaluation(
-        self,
-    ) -> Callable[
-        [evaluation_service.CreateEvaluationRequest], operations_pb2.Operation
-    ]:
+    def create_evaluation(self) -> Callable[[evaluation_service.CreateEvaluationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEvaluation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_evaluation(
-        self,
-    ) -> Callable[[evaluation_service.GetEvaluationRequest], evaluation.Evaluation]:
+    def get_evaluation(self) -> Callable[[evaluation_service.GetEvaluationRequest], evaluation.Evaluation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEvaluation(self._session, self._host, self._interceptor)  # type: ignore
@@ -1288,21 +1086,13 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
     @property
     def list_evaluation_results(
         self,
-    ) -> Callable[
-        [evaluation_service.ListEvaluationResultsRequest],
-        evaluation_service.ListEvaluationResultsResponse,
-    ]:
+    ) -> Callable[[evaluation_service.ListEvaluationResultsRequest], evaluation_service.ListEvaluationResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEvaluationResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_evaluations(
-        self,
-    ) -> Callable[
-        [evaluation_service.ListEvaluationsRequest],
-        evaluation_service.ListEvaluationsResponse,
-    ]:
+    def list_evaluations(self) -> Callable[[evaluation_service.ListEvaluationsRequest], evaluation_service.ListEvaluationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEvaluations(self._session, self._host, self._interceptor)  # type: ignore
@@ -1311,23 +1101,12 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEvaluationServiceRestTransport._BaseCancelOperation,
-        EvaluationServiceRestStub,
-    ):
+    class _CancelOperation(_BaseEvaluationServiceRestTransport._BaseCancelOperation, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1363,32 +1142,18 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1412,13 +1177,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             # Send the request
             response = EvaluationServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1432,22 +1191,12 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEvaluationServiceRestTransport._BaseGetOperation, EvaluationServiceRestStub
-    ):
+    class _GetOperation(_BaseEvaluationServiceRestTransport._BaseGetOperation, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1485,26 +1234,16 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1528,12 +1267,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             # Send the request
             response = EvaluationServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1545,9 +1279,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1572,23 +1304,12 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEvaluationServiceRestTransport._BaseListOperations,
-        EvaluationServiceRestStub,
-    ):
+    class _ListOperations(_BaseEvaluationServiceRestTransport._BaseListOperations, EvaluationServiceRestStub):
         def __hash__(self):
             return hash("EvaluationServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1626,26 +1347,16 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEvaluationServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEvaluationServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEvaluationServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEvaluationServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEvaluationServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1669,12 +1380,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
 
             # Send the request
             response = EvaluationServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1686,9 +1392,7 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

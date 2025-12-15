@@ -350,9 +350,7 @@ class OrderTrackingSignal(proto.Message):
         number=4,
         message=LineItemDetails,
     )
-    shipment_line_item_mapping: MutableSequence[
-        ShipmentLineItemMapping
-    ] = proto.RepeatedField(
+    shipment_line_item_mapping: MutableSequence[ShipmentLineItemMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ShipmentLineItemMapping,

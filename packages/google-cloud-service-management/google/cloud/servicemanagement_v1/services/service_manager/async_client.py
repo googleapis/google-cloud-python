@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -106,30 +95,16 @@ class ServiceManagerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ServiceManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ServiceManagerClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(
-        ServiceManagerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ServiceManagerClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ServiceManagerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ServiceManagerClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ServiceManagerClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ServiceManagerClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ServiceManagerClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ServiceManagerClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ServiceManagerClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ServiceManagerClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ServiceManagerClient.parse_common_organization_path)
     common_project_path = staticmethod(ServiceManagerClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ServiceManagerClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ServiceManagerClient.parse_common_project_path)
     common_location_path = staticmethod(ServiceManagerClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ServiceManagerClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ServiceManagerClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -165,9 +140,7 @@ class ServiceManagerAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -234,9 +207,7 @@ class ServiceManagerAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, ServiceManagerTransport, Callable[..., ServiceManagerTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ServiceManagerTransport, Callable[..., ServiceManagerTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -296,20 +267,14 @@ class ServiceManagerAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.api.servicemanagement_v1.ServiceManagerAsyncClient`.",
                 extra={
                     "serviceName": "google.api.servicemanagement.v1.ServiceManager",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -401,14 +366,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [producer_project_id, consumer_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -424,9 +384,7 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_services
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_services]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -521,14 +479,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -542,17 +495,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -650,14 +597,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -671,9 +613,7 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_service]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -786,14 +726,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -807,17 +742,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -922,14 +851,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -943,17 +867,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.undelete_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.undelete_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1050,14 +968,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1071,17 +984,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_service_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_service_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1224,14 +1131,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name, config_id, view]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1249,9 +1151,7 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1280,9 +1180,7 @@ class ServiceManagerAsyncClient:
 
     async def create_service_config(
         self,
-        request: Optional[
-            Union[servicemanager.CreateServiceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[servicemanager.CreateServiceConfigRequest, dict]] = None,
         *,
         service_name: Optional[str] = None,
         service_config: Optional[service_pb2.Service] = None,
@@ -1391,14 +1289,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name, service_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1414,17 +1307,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_service_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_service_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1545,14 +1432,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name, config_source, validate_only]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1570,17 +1452,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.submit_config_source
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.submit_config_source]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1606,9 +1482,7 @@ class ServiceManagerAsyncClient:
 
     async def list_service_rollouts(
         self,
-        request: Optional[
-            Union[servicemanager.ListServiceRolloutsRequest, dict]
-        ] = None,
+        request: Optional[Union[servicemanager.ListServiceRolloutsRequest, dict]] = None,
         *,
         service_name: Optional[str] = None,
         filter: Optional[str] = None,
@@ -1697,14 +1571,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name, filter]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1720,17 +1589,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_service_rollouts
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_service_rollouts]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1839,14 +1702,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name, rollout_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1862,9 +1720,7 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service_rollout
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service_rollout]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1893,9 +1749,7 @@ class ServiceManagerAsyncClient:
 
     async def create_service_rollout(
         self,
-        request: Optional[
-            Union[servicemanager.CreateServiceRolloutRequest, dict]
-        ] = None,
+        request: Optional[Union[servicemanager.CreateServiceRolloutRequest, dict]] = None,
         *,
         service_name: Optional[str] = None,
         rollout: Optional[resources.Rollout] = None,
@@ -1993,14 +1847,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_name, rollout]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2016,17 +1865,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_service_rollout
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_service_rollout]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_name", request.service_name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_name", request.service_name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2052,9 +1895,7 @@ class ServiceManagerAsyncClient:
 
     async def generate_config_report(
         self,
-        request: Optional[
-            Union[servicemanager.GenerateConfigReportRequest, dict]
-        ] = None,
+        request: Optional[Union[servicemanager.GenerateConfigReportRequest, dict]] = None,
         *,
         new_config: Optional[any_pb2.Any] = None,
         old_config: Optional[any_pb2.Any] = None,
@@ -2144,14 +1985,9 @@ class ServiceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [new_config, old_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2167,9 +2003,7 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_config_report
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_config_report]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2222,9 +2056,7 @@ class ServiceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2343,9 +2175,7 @@ class ServiceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2465,9 +2295,7 @@ class ServiceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2521,15 +2349,11 @@ class ServiceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2552,9 +2376,7 @@ class ServiceManagerAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

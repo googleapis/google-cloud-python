@@ -119,13 +119,8 @@ class KnowledgeBasesRestInterceptor:
     """
 
     def pre_create_knowledge_base(
-        self,
-        request: gcd_knowledge_base.CreateKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_knowledge_base.CreateKnowledgeBaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_knowledge_base.CreateKnowledgeBaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_knowledge_base.CreateKnowledgeBaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_knowledge_base
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_knowledge_base(
-        self, response: gcd_knowledge_base.KnowledgeBase
-    ) -> gcd_knowledge_base.KnowledgeBase:
+    def post_create_knowledge_base(self, response: gcd_knowledge_base.KnowledgeBase) -> gcd_knowledge_base.KnowledgeBase:
         """Post-rpc interceptor for create_knowledge_base
 
         DEPRECATED. Please use the `post_create_knowledge_base_with_metadata`
@@ -149,12 +142,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def post_create_knowledge_base_with_metadata(
-        self,
-        response: gcd_knowledge_base.KnowledgeBase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_knowledge_base.KnowledgeBase, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcd_knowledge_base.KnowledgeBase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_knowledge_base.KnowledgeBase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_knowledge_base
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,13 +159,8 @@ class KnowledgeBasesRestInterceptor:
         return response, metadata
 
     def pre_delete_knowledge_base(
-        self,
-        request: knowledge_base.DeleteKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        knowledge_base.DeleteKnowledgeBaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: knowledge_base.DeleteKnowledgeBaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[knowledge_base.DeleteKnowledgeBaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_knowledge_base
 
         Override in a subclass to manipulate the request or metadata
@@ -185,12 +169,8 @@ class KnowledgeBasesRestInterceptor:
         return request, metadata
 
     def pre_get_knowledge_base(
-        self,
-        request: knowledge_base.GetKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        knowledge_base.GetKnowledgeBaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: knowledge_base.GetKnowledgeBaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[knowledge_base.GetKnowledgeBaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_knowledge_base
 
         Override in a subclass to manipulate the request or metadata
@@ -198,9 +178,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_knowledge_base(
-        self, response: knowledge_base.KnowledgeBase
-    ) -> knowledge_base.KnowledgeBase:
+    def post_get_knowledge_base(self, response: knowledge_base.KnowledgeBase) -> knowledge_base.KnowledgeBase:
         """Post-rpc interceptor for get_knowledge_base
 
         DEPRECATED. Please use the `post_get_knowledge_base_with_metadata`
@@ -214,9 +192,7 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def post_get_knowledge_base_with_metadata(
-        self,
-        response: knowledge_base.KnowledgeBase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: knowledge_base.KnowledgeBase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[knowledge_base.KnowledgeBase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_knowledge_base
 
@@ -233,13 +209,8 @@ class KnowledgeBasesRestInterceptor:
         return response, metadata
 
     def pre_list_knowledge_bases(
-        self,
-        request: knowledge_base.ListKnowledgeBasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        knowledge_base.ListKnowledgeBasesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: knowledge_base.ListKnowledgeBasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[knowledge_base.ListKnowledgeBasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_knowledge_bases
 
         Override in a subclass to manipulate the request or metadata
@@ -247,9 +218,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_knowledge_bases(
-        self, response: knowledge_base.ListKnowledgeBasesResponse
-    ) -> knowledge_base.ListKnowledgeBasesResponse:
+    def post_list_knowledge_bases(self, response: knowledge_base.ListKnowledgeBasesResponse) -> knowledge_base.ListKnowledgeBasesResponse:
         """Post-rpc interceptor for list_knowledge_bases
 
         DEPRECATED. Please use the `post_list_knowledge_bases_with_metadata`
@@ -263,13 +232,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def post_list_knowledge_bases_with_metadata(
-        self,
-        response: knowledge_base.ListKnowledgeBasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        knowledge_base.ListKnowledgeBasesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: knowledge_base.ListKnowledgeBasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[knowledge_base.ListKnowledgeBasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_knowledge_bases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -285,13 +249,8 @@ class KnowledgeBasesRestInterceptor:
         return response, metadata
 
     def pre_update_knowledge_base(
-        self,
-        request: gcd_knowledge_base.UpdateKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_knowledge_base.UpdateKnowledgeBaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_knowledge_base.UpdateKnowledgeBaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_knowledge_base.UpdateKnowledgeBaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_knowledge_base
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +258,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_knowledge_base(
-        self, response: gcd_knowledge_base.KnowledgeBase
-    ) -> gcd_knowledge_base.KnowledgeBase:
+    def post_update_knowledge_base(self, response: gcd_knowledge_base.KnowledgeBase) -> gcd_knowledge_base.KnowledgeBase:
         """Post-rpc interceptor for update_knowledge_base
 
         DEPRECATED. Please use the `post_update_knowledge_base_with_metadata`
@@ -315,12 +272,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def post_update_knowledge_base_with_metadata(
-        self,
-        response: gcd_knowledge_base.KnowledgeBase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_knowledge_base.KnowledgeBase, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcd_knowledge_base.KnowledgeBase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_knowledge_base.KnowledgeBase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_knowledge_base
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -336,12 +289,8 @@ class KnowledgeBasesRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -349,9 +298,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -361,12 +308,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -374,9 +317,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -386,12 +327,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -409,12 +346,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -422,9 +355,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -434,12 +365,8 @@ class KnowledgeBasesRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -447,9 +374,7 @@ class KnowledgeBasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -539,31 +464,18 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or KnowledgeBasesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateKnowledgeBase(
-        _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase,
-        KnowledgeBasesRestStub,
-    ):
+    class _CreateKnowledgeBase(_BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.CreateKnowledgeBase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -616,32 +528,18 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_knowledge_base(
-                request, metadata
-            )
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_knowledge_base(request, metadata)
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_transcoded_request(http_options, request)
 
-            body = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -665,13 +563,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._CreateKnowledgeBase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -687,16 +579,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             resp = self._interceptor.post_create_knowledge_base(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_knowledge_base_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_knowledge_base_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcd_knowledge_base.KnowledgeBase.to_json(
-                        response
-                    )
+                    response_payload = gcd_knowledge_base.KnowledgeBase.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -715,23 +601,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 )
             return resp
 
-    class _DeleteKnowledgeBase(
-        _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase,
-        KnowledgeBasesRestStub,
-    ):
+    class _DeleteKnowledgeBase(_BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.DeleteKnowledgeBase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -767,28 +642,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_knowledge_base(
-                request, metadata
-            )
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_knowledge_base(request, metadata)
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -812,12 +675,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._DeleteKnowledgeBase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -825,22 +683,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetKnowledgeBase(
-        _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase, KnowledgeBasesRestStub
-    ):
+    class _GetKnowledgeBase(_BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.GetKnowledgeBase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -892,28 +740,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_knowledge_base(
-                request, metadata
-            )
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_knowledge_base(request, metadata)
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -937,12 +773,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._GetKnowledgeBase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -958,12 +789,8 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             resp = self._interceptor.post_get_knowledge_base(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_knowledge_base_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_knowledge_base_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = knowledge_base.KnowledgeBase.to_json(response)
                 except:
@@ -984,22 +811,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 )
             return resp
 
-    class _ListKnowledgeBases(
-        _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases, KnowledgeBasesRestStub
-    ):
+    class _ListKnowledgeBases(_BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.ListKnowledgeBases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1041,28 +858,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_knowledge_bases(
-                request, metadata
-            )
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_knowledge_bases(request, metadata)
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1086,12 +891,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._ListKnowledgeBases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1107,16 +907,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             resp = self._interceptor.post_list_knowledge_bases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_knowledge_bases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_knowledge_bases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        knowledge_base.ListKnowledgeBasesResponse.to_json(response)
-                    )
+                    response_payload = knowledge_base.ListKnowledgeBasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1135,23 +929,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 )
             return resp
 
-    class _UpdateKnowledgeBase(
-        _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase,
-        KnowledgeBasesRestStub,
-    ):
+    class _UpdateKnowledgeBase(_BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.UpdateKnowledgeBase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1204,32 +987,18 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_knowledge_base(
-                request, metadata
-            )
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_knowledge_base(request, metadata)
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_transcoded_request(http_options, request)
 
-            body = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1253,13 +1022,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._UpdateKnowledgeBase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1275,16 +1038,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             resp = self._interceptor.post_update_knowledge_base(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_knowledge_base_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_knowledge_base_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcd_knowledge_base.KnowledgeBase.to_json(
-                        response
-                    )
+                    response_payload = gcd_knowledge_base.KnowledgeBase.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1304,52 +1061,31 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             return resp
 
     @property
-    def create_knowledge_base(
-        self,
-    ) -> Callable[
-        [gcd_knowledge_base.CreateKnowledgeBaseRequest],
-        gcd_knowledge_base.KnowledgeBase,
-    ]:
+    def create_knowledge_base(self) -> Callable[[gcd_knowledge_base.CreateKnowledgeBaseRequest], gcd_knowledge_base.KnowledgeBase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateKnowledgeBase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_knowledge_base(
-        self,
-    ) -> Callable[[knowledge_base.DeleteKnowledgeBaseRequest], empty_pb2.Empty]:
+    def delete_knowledge_base(self) -> Callable[[knowledge_base.DeleteKnowledgeBaseRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteKnowledgeBase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_knowledge_base(
-        self,
-    ) -> Callable[
-        [knowledge_base.GetKnowledgeBaseRequest], knowledge_base.KnowledgeBase
-    ]:
+    def get_knowledge_base(self) -> Callable[[knowledge_base.GetKnowledgeBaseRequest], knowledge_base.KnowledgeBase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetKnowledgeBase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_knowledge_bases(
-        self,
-    ) -> Callable[
-        [knowledge_base.ListKnowledgeBasesRequest],
-        knowledge_base.ListKnowledgeBasesResponse,
-    ]:
+    def list_knowledge_bases(self) -> Callable[[knowledge_base.ListKnowledgeBasesRequest], knowledge_base.ListKnowledgeBasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListKnowledgeBases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_knowledge_base(
-        self,
-    ) -> Callable[
-        [gcd_knowledge_base.UpdateKnowledgeBaseRequest],
-        gcd_knowledge_base.KnowledgeBase,
-    ]:
+    def update_knowledge_base(self) -> Callable[[gcd_knowledge_base.UpdateKnowledgeBaseRequest], gcd_knowledge_base.KnowledgeBase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateKnowledgeBase(self._session, self._host, self._interceptor)  # type: ignore
@@ -1358,22 +1094,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseKnowledgeBasesRestTransport._BaseGetLocation, KnowledgeBasesRestStub
-    ):
+    class _GetLocation(_BaseKnowledgeBasesRestTransport._BaseGetLocation, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1411,26 +1137,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1454,12 +1170,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1471,9 +1182,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1498,22 +1207,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseKnowledgeBasesRestTransport._BaseListLocations, KnowledgeBasesRestStub
-    ):
+    class _ListLocations(_BaseKnowledgeBasesRestTransport._BaseListLocations, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1551,26 +1250,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1594,12 +1283,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1611,9 +1295,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1638,22 +1320,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseKnowledgeBasesRestTransport._BaseCancelOperation, KnowledgeBasesRestStub
-    ):
+    class _CancelOperation(_BaseKnowledgeBasesRestTransport._BaseCancelOperation, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1688,28 +1360,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1733,12 +1393,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1752,22 +1407,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseKnowledgeBasesRestTransport._BaseGetOperation, KnowledgeBasesRestStub
-    ):
+    class _GetOperation(_BaseKnowledgeBasesRestTransport._BaseGetOperation, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1805,26 +1450,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1848,12 +1483,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1865,9 +1495,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1892,22 +1520,12 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseKnowledgeBasesRestTransport._BaseListOperations, KnowledgeBasesRestStub
-    ):
+    class _ListOperations(_BaseKnowledgeBasesRestTransport._BaseListOperations, KnowledgeBasesRestStub):
         def __hash__(self):
             return hash("KnowledgeBasesRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1945,26 +1563,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseKnowledgeBasesRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1988,12 +1596,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
 
             # Send the request
             response = KnowledgeBasesRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2005,9 +1608,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -14,11 +14,7 @@
 # limitations under the License.
 #
 from .billing_accounts import BillingAccount
-from .channel_partner_links import (
-    ChannelPartnerLink,
-    ChannelPartnerLinkState,
-    ChannelPartnerLinkView,
-)
+from .channel_partner_links import ChannelPartnerLink, ChannelPartnerLinkState, ChannelPartnerLinkView
 from .common import AdminUser, CloudIdentityInfo, EduData, Value
 from .customers import ContactInfo, Customer
 from .entitlement_changes import EntitlementChange

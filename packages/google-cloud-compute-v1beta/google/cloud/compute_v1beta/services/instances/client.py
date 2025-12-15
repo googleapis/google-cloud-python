@@ -20,19 +20,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -121,9 +109,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -131,20 +117,39 @@ class InstancesClient(metaclass=InstancesClientMeta):
             return api_endpoint
 
         if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
+            return api_endpoint.replace("sandbox.googleapis.com", "mtls.sandbox.googleapis.com")
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "compute.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "compute.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
+
+    @staticmethod
+    def _use_client_cert_effective():
+        """Returns whether client certificate should be used for mTLS if the
+        google-auth version supports should_use_client_cert automatic mTLS enablement.
+
+        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
+
+        Returns:
+            bool: whether client certificate should be used for mTLS
+        Raises:
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        """
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+            return mtls.should_use_client_cert()
+        else:  # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be" " either `true` or `false`")
+            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -271,9 +276,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -305,26 +308,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.", DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_client_cert = InstancesClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -333,9 +327,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -356,20 +348,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = InstancesClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -391,9 +375,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -409,25 +391,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = InstancesClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = InstancesClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = InstancesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
+            api_endpoint = InstancesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -462,19 +436,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
+    def _add_cred_info_for_auth_errors(self, error: core_exceptions.GoogleAPICallError) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -511,9 +479,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, InstancesTransport, Callable[..., InstancesTransport]]
-        ] = None,
+        transport: Optional[Union[str, InstancesTransport, Callable[..., InstancesTransport]]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -574,23 +540,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = InstancesClient._read_environment_variables()
-        self._client_cert_source = InstancesClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = InstancesClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = InstancesClient._read_environment_variables()
+        self._client_cert_source = InstancesClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._universe_domain = InstancesClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -602,9 +558,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -613,38 +567,23 @@ class InstancesClient(metaclass=InstancesClientMeta):
         if transport_provided:
             # transport is a InstancesTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, " "provide its credentials directly.")
             if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
+                raise ValueError("When providing a transport instance, provide its scopes " "directly.")
             self._transport = cast(InstancesTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = self._api_endpoint or InstancesClient._get_api_endpoint(
-            self._client_options.api_endpoint,
-            self._client_cert_source,
-            self._universe_domain,
-            self._use_mtls_endpoint,
+            self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint
         )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[InstancesTransport], Callable[..., InstancesTransport]
-            ] = (
+            transport_init: Union[Type[InstancesTransport], Callable[..., InstancesTransport]] = (
                 InstancesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InstancesTransport], transport)
@@ -663,20 +602,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.compute_v1beta.InstancesClient`.",
                     extra={
                         "serviceName": "google.cloud.compute.v1beta.Instances",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
@@ -781,21 +714,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            network_interface,
-            access_config_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, network_interface, access_config_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -940,21 +862,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            network_interface,
-            access_config_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, network_interface, access_config_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1030,9 +941,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_network_interface_unary(
         self,
-        request: Optional[
-            Union[compute.AddNetworkInterfaceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.AddNetworkInterfaceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -1121,14 +1030,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, network_interface_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1177,9 +1081,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_network_interface(
         self,
-        request: Optional[
-            Union[compute.AddNetworkInterfaceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.AddNetworkInterfaceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -1268,14 +1170,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, network_interface_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1349,16 +1246,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_resource_policies_unary(
         self,
-        request: Optional[
-            Union[compute.AddResourcePoliciesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.AddResourcePoliciesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_add_resource_policies_request_resource: Optional[
-            compute.InstancesAddResourcePoliciesRequest
-        ] = None,
+        instances_add_resource_policies_request_resource: Optional[compute.InstancesAddResourcePoliciesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1439,20 +1332,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_add_resource_policies_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_add_resource_policies_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1467,9 +1350,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_add_resource_policies_request_resource is not None:
-                request.instances_add_resource_policies_request_resource = (
-                    instances_add_resource_policies_request_resource
-                )
+                request.instances_add_resource_policies_request_resource = instances_add_resource_policies_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1503,16 +1384,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_resource_policies(
         self,
-        request: Optional[
-            Union[compute.AddResourcePoliciesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.AddResourcePoliciesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_add_resource_policies_request_resource: Optional[
-            compute.InstancesAddResourcePoliciesRequest
-        ] = None,
+        instances_add_resource_policies_request_resource: Optional[compute.InstancesAddResourcePoliciesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1593,20 +1470,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_add_resource_policies_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_add_resource_policies_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1621,9 +1488,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_add_resource_policies_request_resource is not None:
-                request.instances_add_resource_policies_request_resource = (
-                    instances_add_resource_policies_request_resource
-                )
+                request.instances_add_resource_policies_request_resource = instances_add_resource_policies_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1752,14 +1617,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1776,9 +1636,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1896,14 +1754,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, attached_disk_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2041,14 +1894,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, attached_disk_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2126,9 +1974,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
-        bulk_insert_instance_resource_resource: Optional[
-            compute.BulkInsertInstanceResource
-        ] = None,
+        bulk_insert_instance_resource_resource: Optional[compute.BulkInsertInstanceResource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2204,14 +2050,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, bulk_insert_instance_resource_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2224,9 +2065,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if zone is not None:
                 request.zone = zone
             if bulk_insert_instance_resource_resource is not None:
-                request.bulk_insert_instance_resource_resource = (
-                    bulk_insert_instance_resource_resource
-                )
+                request.bulk_insert_instance_resource_resource = bulk_insert_instance_resource_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2263,9 +2102,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
-        bulk_insert_instance_resource_resource: Optional[
-            compute.BulkInsertInstanceResource
-        ] = None,
+        bulk_insert_instance_resource_resource: Optional[compute.BulkInsertInstanceResource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2341,14 +2178,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, bulk_insert_instance_resource_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2361,9 +2193,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if zone is not None:
                 request.zone = zone
             if bulk_insert_instance_resource_resource is not None:
-                request.bulk_insert_instance_resource_resource = (
-                    bulk_insert_instance_resource_resource
-                )
+                request.bulk_insert_instance_resource_resource = bulk_insert_instance_resource_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2503,14 +2333,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2639,14 +2464,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2718,9 +2538,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_access_config_unary(
         self,
-        request: Optional[
-            Union[compute.DeleteAccessConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteAccessConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -2816,14 +2634,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, access_config, network_interface]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2874,9 +2687,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_access_config(
         self,
-        request: Optional[
-            Union[compute.DeleteAccessConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteAccessConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -2972,14 +2783,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, access_config, network_interface]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3055,9 +2861,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_network_interface_unary(
         self,
-        request: Optional[
-            Union[compute.DeleteNetworkInterfaceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteNetworkInterfaceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -3153,14 +2957,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, network_interface_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3209,9 +3008,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_network_interface(
         self,
-        request: Optional[
-            Union[compute.DeleteNetworkInterfaceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteNetworkInterfaceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -3307,14 +3104,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, network_interface_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3478,14 +3270,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, device_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3624,14 +3411,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, device_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3788,14 +3570,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3842,9 +3619,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_effective_firewalls(
         self,
-        request: Optional[
-            Union[compute.GetEffectiveFirewallsInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetEffectiveFirewallsInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -3933,14 +3708,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, network_interface]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3989,9 +3759,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_guest_attributes(
         self,
-        request: Optional[
-            Union[compute.GetGuestAttributesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetGuestAttributesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -4070,14 +3838,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4226,14 +3989,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4280,9 +4038,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_partner_metadata(
         self,
-        request: Optional[
-            Union[compute.GetPartnerMetadataInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetPartnerMetadataInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -4365,14 +4121,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4498,14 +4249,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4552,9 +4298,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_serial_port_output(
         self,
-        request: Optional[
-            Union[compute.GetSerialPortOutputInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetSerialPortOutputInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -4634,14 +4378,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4688,9 +4427,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_shielded_instance_identity(
         self,
-        request: Optional[
-            Union[compute.GetShieldedInstanceIdentityInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetShieldedInstanceIdentityInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -4769,14 +4506,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4793,9 +4525,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_shielded_instance_identity
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_shielded_instance_identity]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4825,9 +4555,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_shielded_vm_identity(
         self,
-        request: Optional[
-            Union[compute.GetShieldedVmIdentityInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetShieldedVmIdentityInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -4906,14 +4634,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5039,14 +4762,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5171,14 +4889,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5325,14 +5038,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5479,14 +5187,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5544,9 +5247,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def patch_partner_metadata_unary(
         self,
-        request: Optional[
-            Union[compute.PatchPartnerMetadataInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.PatchPartnerMetadataInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -5633,14 +5334,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, partner_metadata_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5689,9 +5385,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def patch_partner_metadata(
         self,
-        request: Optional[
-            Union[compute.PatchPartnerMetadataInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.PatchPartnerMetadataInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -5778,14 +5472,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, partner_metadata_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5859,9 +5548,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def perform_maintenance_unary(
         self,
-        request: Optional[
-            Union[compute.PerformMaintenanceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.PerformMaintenanceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -5942,14 +5629,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5996,9 +5678,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def perform_maintenance(
         self,
-        request: Optional[
-            Union[compute.PerformMaintenanceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.PerformMaintenanceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -6079,14 +5759,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6158,16 +5833,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def remove_resource_policies_unary(
         self,
-        request: Optional[
-            Union[compute.RemoveResourcePoliciesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.RemoveResourcePoliciesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_remove_resource_policies_request_resource: Optional[
-            compute.InstancesRemoveResourcePoliciesRequest
-        ] = None,
+        instances_remove_resource_policies_request_resource: Optional[compute.InstancesRemoveResourcePoliciesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6246,20 +5917,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_remove_resource_policies_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_remove_resource_policies_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6274,9 +5935,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_remove_resource_policies_request_resource is not None:
-                request.instances_remove_resource_policies_request_resource = (
-                    instances_remove_resource_policies_request_resource
-                )
+                request.instances_remove_resource_policies_request_resource = instances_remove_resource_policies_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6310,16 +5969,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def remove_resource_policies(
         self,
-        request: Optional[
-            Union[compute.RemoveResourcePoliciesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.RemoveResourcePoliciesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_remove_resource_policies_request_resource: Optional[
-            compute.InstancesRemoveResourcePoliciesRequest
-        ] = None,
+        instances_remove_resource_policies_request_resource: Optional[compute.InstancesRemoveResourcePoliciesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6398,20 +6053,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_remove_resource_policies_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_remove_resource_policies_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6426,9 +6071,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_remove_resource_policies_request_resource is not None:
-                request.instances_remove_resource_policies_request_resource = (
-                    instances_remove_resource_policies_request_resource
-                )
+                request.instances_remove_resource_policies_request_resource = instances_remove_resource_policies_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6487,16 +6130,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def report_host_as_faulty_unary(
         self,
-        request: Optional[
-            Union[compute.ReportHostAsFaultyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ReportHostAsFaultyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_report_host_as_faulty_request_resource: Optional[
-            compute.InstancesReportHostAsFaultyRequest
-        ] = None,
+        instances_report_host_as_faulty_request_resource: Optional[compute.InstancesReportHostAsFaultyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6578,20 +6217,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_report_host_as_faulty_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_report_host_as_faulty_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6606,9 +6235,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_report_host_as_faulty_request_resource is not None:
-                request.instances_report_host_as_faulty_request_resource = (
-                    instances_report_host_as_faulty_request_resource
-                )
+                request.instances_report_host_as_faulty_request_resource = instances_report_host_as_faulty_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6642,16 +6269,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def report_host_as_faulty(
         self,
-        request: Optional[
-            Union[compute.ReportHostAsFaultyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ReportHostAsFaultyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_report_host_as_faulty_request_resource: Optional[
-            compute.InstancesReportHostAsFaultyRequest
-        ] = None,
+        instances_report_host_as_faulty_request_resource: Optional[compute.InstancesReportHostAsFaultyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6733,20 +6356,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_report_host_as_faulty_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_report_host_as_faulty_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6761,9 +6374,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_report_host_as_faulty_request_resource is not None:
-                request.instances_report_host_as_faulty_request_resource = (
-                    instances_report_host_as_faulty_request_resource
-                )
+                request.instances_report_host_as_faulty_request_resource = instances_report_host_as_faulty_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6905,14 +6516,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7042,14 +6648,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7203,14 +6804,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7339,14 +6935,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7418,9 +7009,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def send_diagnostic_interrupt(
         self,
-        request: Optional[
-            Union[compute.SendDiagnosticInterruptInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SendDiagnosticInterruptInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -7502,14 +7091,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7526,9 +7110,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.send_diagnostic_interrupt
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.send_diagnostic_interrupt]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7558,9 +7140,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_deletion_protection_unary(
         self,
-        request: Optional[
-            Union[compute.SetDeletionProtectionInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetDeletionProtectionInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -7641,14 +7221,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7695,9 +7270,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_deletion_protection(
         self,
-        request: Optional[
-            Union[compute.SetDeletionProtectionInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetDeletionProtectionInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -7778,14 +7351,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7957,14 +7525,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, auto_delete, device_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8115,14 +7678,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, auto_delete, device_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8306,14 +7864,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, resource, zone_set_policy_request_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8328,9 +7881,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if resource is not None:
                 request.resource = resource
             if zone_set_policy_request_resource is not None:
-                request.zone_set_policy_request_resource = (
-                    zone_set_policy_request_resource
-                )
+                request.zone_set_policy_request_resource = zone_set_policy_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8369,9 +7920,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_labels_request_resource: Optional[
-            compute.InstancesSetLabelsRequest
-        ] = None,
+        instances_set_labels_request_resource: Optional[compute.InstancesSetLabelsRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -8453,20 +8002,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_labels_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_labels_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8481,9 +8020,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_labels_request_resource is not None:
-                request.instances_set_labels_request_resource = (
-                    instances_set_labels_request_resource
-                )
+                request.instances_set_labels_request_resource = instances_set_labels_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8522,9 +8059,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_labels_request_resource: Optional[
-            compute.InstancesSetLabelsRequest
-        ] = None,
+        instances_set_labels_request_resource: Optional[compute.InstancesSetLabelsRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -8606,20 +8141,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_labels_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_labels_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8634,9 +8159,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_labels_request_resource is not None:
-                request.instances_set_labels_request_resource = (
-                    instances_set_labels_request_resource
-                )
+                request.instances_set_labels_request_resource = instances_set_labels_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8695,16 +8218,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_resources_unary(
         self,
-        request: Optional[
-            Union[compute.SetMachineResourcesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetMachineResourcesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_machine_resources_request_resource: Optional[
-            compute.InstancesSetMachineResourcesRequest
-        ] = None,
+        instances_set_machine_resources_request_resource: Optional[compute.InstancesSetMachineResourcesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -8786,20 +8305,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_machine_resources_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_machine_resources_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8814,9 +8323,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_machine_resources_request_resource is not None:
-                request.instances_set_machine_resources_request_resource = (
-                    instances_set_machine_resources_request_resource
-                )
+                request.instances_set_machine_resources_request_resource = instances_set_machine_resources_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8850,16 +8357,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_resources(
         self,
-        request: Optional[
-            Union[compute.SetMachineResourcesInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetMachineResourcesInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_machine_resources_request_resource: Optional[
-            compute.InstancesSetMachineResourcesRequest
-        ] = None,
+        instances_set_machine_resources_request_resource: Optional[compute.InstancesSetMachineResourcesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -8941,20 +8444,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_machine_resources_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_machine_resources_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8969,9 +8462,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_machine_resources_request_resource is not None:
-                request.instances_set_machine_resources_request_resource = (
-                    instances_set_machine_resources_request_resource
-                )
+                request.instances_set_machine_resources_request_resource = instances_set_machine_resources_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9035,9 +8526,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_machine_type_request_resource: Optional[
-            compute.InstancesSetMachineTypeRequest
-        ] = None,
+        instances_set_machine_type_request_resource: Optional[compute.InstancesSetMachineTypeRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -9119,20 +8608,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_machine_type_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_machine_type_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9147,9 +8626,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_machine_type_request_resource is not None:
-                request.instances_set_machine_type_request_resource = (
-                    instances_set_machine_type_request_resource
-                )
+                request.instances_set_machine_type_request_resource = instances_set_machine_type_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9188,9 +8665,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_machine_type_request_resource: Optional[
-            compute.InstancesSetMachineTypeRequest
-        ] = None,
+        instances_set_machine_type_request_resource: Optional[compute.InstancesSetMachineTypeRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -9272,20 +8747,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_machine_type_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_machine_type_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9300,9 +8765,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_machine_type_request_resource is not None:
-                request.instances_set_machine_type_request_resource = (
-                    instances_set_machine_type_request_resource
-                )
+                request.instances_set_machine_type_request_resource = instances_set_machine_type_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9449,14 +8912,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, metadata_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9593,14 +9051,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, metadata_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9679,9 +9132,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_min_cpu_platform_request_resource: Optional[
-            compute.InstancesSetMinCpuPlatformRequest
-        ] = None,
+        instances_set_min_cpu_platform_request_resource: Optional[compute.InstancesSetMinCpuPlatformRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -9765,20 +9216,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_min_cpu_platform_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_min_cpu_platform_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9793,9 +9234,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_min_cpu_platform_request_resource is not None:
-                request.instances_set_min_cpu_platform_request_resource = (
-                    instances_set_min_cpu_platform_request_resource
-                )
+                request.instances_set_min_cpu_platform_request_resource = instances_set_min_cpu_platform_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9834,9 +9273,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_min_cpu_platform_request_resource: Optional[
-            compute.InstancesSetMinCpuPlatformRequest
-        ] = None,
+        instances_set_min_cpu_platform_request_resource: Optional[compute.InstancesSetMinCpuPlatformRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -9920,20 +9357,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_min_cpu_platform_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_min_cpu_platform_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -9948,9 +9375,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_min_cpu_platform_request_resource is not None:
-                request.instances_set_min_cpu_platform_request_resource = (
-                    instances_set_min_cpu_platform_request_resource
-                )
+                request.instances_set_min_cpu_platform_request_resource = instances_set_min_cpu_platform_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -10014,9 +9439,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_name_request_resource: Optional[
-            compute.InstancesSetNameRequest
-        ] = None,
+        instances_set_name_request_resource: Optional[compute.InstancesSetNameRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -10095,20 +9518,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_name_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_name_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10123,9 +9536,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_name_request_resource is not None:
-                request.instances_set_name_request_resource = (
-                    instances_set_name_request_resource
-                )
+                request.instances_set_name_request_resource = instances_set_name_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -10164,9 +9575,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_name_request_resource: Optional[
-            compute.InstancesSetNameRequest
-        ] = None,
+        instances_set_name_request_resource: Optional[compute.InstancesSetNameRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -10245,20 +9654,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_name_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_name_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10273,9 +9672,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_name_request_resource is not None:
-                request.instances_set_name_request_resource = (
-                    instances_set_name_request_resource
-                )
+                request.instances_set_name_request_resource = instances_set_name_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -10424,14 +9821,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, scheduling_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10570,14 +9962,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, scheduling_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10656,9 +10043,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_security_policy_request_resource: Optional[
-            compute.InstancesSetSecurityPolicyRequest
-        ] = None,
+        instances_set_security_policy_request_resource: Optional[compute.InstancesSetSecurityPolicyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -10742,20 +10127,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_security_policy_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_security_policy_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10770,9 +10145,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_security_policy_request_resource is not None:
-                request.instances_set_security_policy_request_resource = (
-                    instances_set_security_policy_request_resource
-                )
+                request.instances_set_security_policy_request_resource = instances_set_security_policy_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -10811,9 +10184,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_security_policy_request_resource: Optional[
-            compute.InstancesSetSecurityPolicyRequest
-        ] = None,
+        instances_set_security_policy_request_resource: Optional[compute.InstancesSetSecurityPolicyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -10897,20 +10268,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_security_policy_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_security_policy_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -10925,9 +10286,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_security_policy_request_resource is not None:
-                request.instances_set_security_policy_request_resource = (
-                    instances_set_security_policy_request_resource
-                )
+                request.instances_set_security_policy_request_resource = instances_set_security_policy_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -10991,9 +10350,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_service_account_request_resource: Optional[
-            compute.InstancesSetServiceAccountRequest
-        ] = None,
+        instances_set_service_account_request_resource: Optional[compute.InstancesSetServiceAccountRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -11076,20 +10433,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_service_account_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_service_account_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11104,9 +10451,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_service_account_request_resource is not None:
-                request.instances_set_service_account_request_resource = (
-                    instances_set_service_account_request_resource
-                )
+                request.instances_set_service_account_request_resource = instances_set_service_account_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -11145,9 +10490,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_set_service_account_request_resource: Optional[
-            compute.InstancesSetServiceAccountRequest
-        ] = None,
+        instances_set_service_account_request_resource: Optional[compute.InstancesSetServiceAccountRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -11230,20 +10573,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_set_service_account_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_set_service_account_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11258,9 +10591,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_set_service_account_request_resource is not None:
-                request.instances_set_service_account_request_resource = (
-                    instances_set_service_account_request_resource
-                )
+                request.instances_set_service_account_request_resource = instances_set_service_account_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -11319,16 +10650,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_instance_integrity_policy_unary(
         self,
-        request: Optional[
-            Union[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        shielded_instance_integrity_policy_resource: Optional[
-            compute.ShieldedInstanceIntegrityPolicy
-        ] = None,
+        shielded_instance_integrity_policy_resource: Optional[compute.ShieldedInstanceIntegrityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -11412,26 +10739,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            shielded_instance_integrity_policy_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, shielded_instance_integrity_policy_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SetShieldedInstanceIntegrityPolicyInstanceRequest
-        ):
+        if not isinstance(request, compute.SetShieldedInstanceIntegrityPolicyInstanceRequest):
             request = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -11442,15 +10757,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if shielded_instance_integrity_policy_resource is not None:
-                request.shielded_instance_integrity_policy_resource = (
-                    shielded_instance_integrity_policy_resource
-                )
+                request.shielded_instance_integrity_policy_resource = shielded_instance_integrity_policy_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.set_shielded_instance_integrity_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.set_shielded_instance_integrity_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -11480,16 +10791,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_instance_integrity_policy(
         self,
-        request: Optional[
-            Union[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        shielded_instance_integrity_policy_resource: Optional[
-            compute.ShieldedInstanceIntegrityPolicy
-        ] = None,
+        shielded_instance_integrity_policy_resource: Optional[compute.ShieldedInstanceIntegrityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -11573,26 +10880,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            shielded_instance_integrity_policy_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, shielded_instance_integrity_policy_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SetShieldedInstanceIntegrityPolicyInstanceRequest
-        ):
+        if not isinstance(request, compute.SetShieldedInstanceIntegrityPolicyInstanceRequest):
             request = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -11603,15 +10898,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if shielded_instance_integrity_policy_resource is not None:
-                request.shielded_instance_integrity_policy_resource = (
-                    shielded_instance_integrity_policy_resource
-                )
+                request.shielded_instance_integrity_policy_resource = shielded_instance_integrity_policy_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.set_shielded_instance_integrity_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.set_shielded_instance_integrity_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -11666,16 +10957,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_vm_integrity_policy_unary(
         self,
-        request: Optional[
-            Union[compute.SetShieldedVmIntegrityPolicyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetShieldedVmIntegrityPolicyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        shielded_vm_integrity_policy_resource: Optional[
-            compute.ShieldedVmIntegrityPolicy
-        ] = None,
+        shielded_vm_integrity_policy_resource: Optional[compute.ShieldedVmIntegrityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -11759,20 +11046,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            shielded_vm_integrity_policy_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, shielded_vm_integrity_policy_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11787,15 +11064,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if shielded_vm_integrity_policy_resource is not None:
-                request.shielded_vm_integrity_policy_resource = (
-                    shielded_vm_integrity_policy_resource
-                )
+                request.shielded_vm_integrity_policy_resource = shielded_vm_integrity_policy_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.set_shielded_vm_integrity_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.set_shielded_vm_integrity_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -11825,16 +11098,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_vm_integrity_policy(
         self,
-        request: Optional[
-            Union[compute.SetShieldedVmIntegrityPolicyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetShieldedVmIntegrityPolicyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        shielded_vm_integrity_policy_resource: Optional[
-            compute.ShieldedVmIntegrityPolicy
-        ] = None,
+        shielded_vm_integrity_policy_resource: Optional[compute.ShieldedVmIntegrityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -11918,20 +11187,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            shielded_vm_integrity_policy_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, shielded_vm_integrity_policy_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -11946,15 +11205,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if shielded_vm_integrity_policy_resource is not None:
-                request.shielded_vm_integrity_policy_resource = (
-                    shielded_vm_integrity_policy_resource
-                )
+                request.shielded_vm_integrity_policy_resource = shielded_vm_integrity_policy_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.set_shielded_vm_integrity_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.set_shielded_vm_integrity_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -12097,14 +11352,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, tags_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12241,14 +11491,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, tags_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12322,9 +11567,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def simulate_maintenance_event_unary(
         self,
-        request: Optional[
-            Union[compute.SimulateMaintenanceEventInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SimulateMaintenanceEventInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -12406,14 +11649,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12430,9 +11668,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.simulate_maintenance_event
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.simulate_maintenance_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -12462,9 +11698,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def simulate_maintenance_event(
         self,
-        request: Optional[
-            Union[compute.SimulateMaintenanceEventInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SimulateMaintenanceEventInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -12546,14 +11780,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12570,9 +11799,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.simulate_maintenance_event
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.simulate_maintenance_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -12710,14 +11937,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12847,14 +12069,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -12926,16 +12143,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start_with_encryption_key_unary(
         self,
-        request: Optional[
-            Union[compute.StartWithEncryptionKeyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.StartWithEncryptionKeyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_start_with_encryption_key_request_resource: Optional[
-            compute.InstancesStartWithEncryptionKeyRequest
-        ] = None,
+        instances_start_with_encryption_key_request_resource: Optional[compute.InstancesStartWithEncryptionKeyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -13018,20 +12231,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_start_with_encryption_key_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_start_with_encryption_key_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13046,15 +12249,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_start_with_encryption_key_request_resource is not None:
-                request.instances_start_with_encryption_key_request_resource = (
-                    instances_start_with_encryption_key_request_resource
-                )
+                request.instances_start_with_encryption_key_request_resource = instances_start_with_encryption_key_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.start_with_encryption_key
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.start_with_encryption_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -13084,16 +12283,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start_with_encryption_key(
         self,
-        request: Optional[
-            Union[compute.StartWithEncryptionKeyInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.StartWithEncryptionKeyInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        instances_start_with_encryption_key_request_resource: Optional[
-            compute.InstancesStartWithEncryptionKeyRequest
-        ] = None,
+        instances_start_with_encryption_key_request_resource: Optional[compute.InstancesStartWithEncryptionKeyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -13176,20 +12371,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            instances_start_with_encryption_key_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, instances_start_with_encryption_key_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13204,15 +12389,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if instances_start_with_encryption_key_request_resource is not None:
-                request.instances_start_with_encryption_key_request_resource = (
-                    instances_start_with_encryption_key_request_resource
-                )
+                request.instances_start_with_encryption_key_request_resource = instances_start_with_encryption_key_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.start_with_encryption_key
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.start_with_encryption_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -13353,14 +12534,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13493,14 +12669,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13661,14 +12832,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13804,14 +12970,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13883,16 +13044,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Optional[
-            Union[compute.TestIamPermissionsInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.TestIamPermissionsInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         resource: Optional[str] = None,
-        test_permissions_request_resource: Optional[
-            compute.TestPermissionsRequest
-        ] = None,
+        test_permissions_request_resource: Optional[compute.TestPermissionsRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -13973,14 +13130,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, resource, test_permissions_request_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -13995,9 +13147,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if resource is not None:
                 request.resource = resource
             if test_permissions_request_resource is not None:
-                request.test_permissions_request_resource = (
-                    test_permissions_request_resource
-                )
+                request.test_permissions_request_resource = test_permissions_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -14121,14 +13271,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, instance_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14267,14 +13412,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, instance_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14348,9 +13488,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_access_config_unary(
         self,
-        request: Optional[
-            Union[compute.UpdateAccessConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateAccessConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -14446,21 +13584,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            network_interface,
-            access_config_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, network_interface, access_config_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14511,9 +13638,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_access_config(
         self,
-        request: Optional[
-            Union[compute.UpdateAccessConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateAccessConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -14609,21 +13734,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            network_interface,
-            access_config_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, network_interface, access_config_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14699,9 +13813,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_display_device_unary(
         self,
-        request: Optional[
-            Union[compute.UpdateDisplayDeviceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateDisplayDeviceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -14791,14 +13903,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, display_device_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -14847,9 +13954,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_display_device(
         self,
-        request: Optional[
-            Union[compute.UpdateDisplayDeviceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateDisplayDeviceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -14939,14 +14044,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, display_device_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15020,9 +14120,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_network_interface_unary(
         self,
-        request: Optional[
-            Union[compute.UpdateNetworkInterfaceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateNetworkInterfaceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -15121,21 +14219,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            network_interface,
-            network_interface_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, network_interface, network_interface_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15186,9 +14273,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_network_interface(
         self,
-        request: Optional[
-            Union[compute.UpdateNetworkInterfaceInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateNetworkInterfaceInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -15287,21 +14372,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            zone,
-            instance,
-            network_interface,
-            network_interface_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, zone, instance, network_interface, network_interface_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15377,16 +14451,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_instance_config_unary(
         self,
-        request: Optional[
-            Union[compute.UpdateShieldedInstanceConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateShieldedInstanceConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        shielded_instance_config_resource: Optional[
-            compute.ShieldedInstanceConfig
-        ] = None,
+        shielded_instance_config_resource: Optional[compute.ShieldedInstanceConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -15471,14 +14541,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, shielded_instance_config_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15493,15 +14558,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if shielded_instance_config_resource is not None:
-                request.shielded_instance_config_resource = (
-                    shielded_instance_config_resource
-                )
+                request.shielded_instance_config_resource = shielded_instance_config_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_shielded_instance_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_shielded_instance_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -15531,16 +14592,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_instance_config(
         self,
-        request: Optional[
-            Union[compute.UpdateShieldedInstanceConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateShieldedInstanceConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
         instance: Optional[str] = None,
-        shielded_instance_config_resource: Optional[
-            compute.ShieldedInstanceConfig
-        ] = None,
+        shielded_instance_config_resource: Optional[compute.ShieldedInstanceConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -15625,14 +14682,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, shielded_instance_config_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15647,15 +14699,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
             if instance is not None:
                 request.instance = instance
             if shielded_instance_config_resource is not None:
-                request.shielded_instance_config_resource = (
-                    shielded_instance_config_resource
-                )
+                request.shielded_instance_config_resource = shielded_instance_config_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_shielded_instance_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_shielded_instance_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -15710,9 +14758,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_vm_config_unary(
         self,
-        request: Optional[
-            Union[compute.UpdateShieldedVmConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateShieldedVmConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -15802,14 +14848,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, shielded_vm_config_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15828,9 +14869,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_shielded_vm_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_shielded_vm_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -15860,9 +14899,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_vm_config(
         self,
-        request: Optional[
-            Union[compute.UpdateShieldedVmConfigInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.UpdateShieldedVmConfigInstanceRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         zone: Optional[str] = None,
@@ -15952,14 +14989,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, zone, instance, shielded_vm_config_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -15978,9 +15010,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_shielded_vm_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_shielded_vm_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -16047,9 +15077,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

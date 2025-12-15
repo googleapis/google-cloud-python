@@ -243,13 +243,8 @@ class MirroringRestInterceptor:
     """
 
     def pre_create_mirroring_deployment(
-        self,
-        request: mirroring.CreateMirroringDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.CreateMirroringDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.CreateMirroringDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.CreateMirroringDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_mirroring_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +252,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_create_mirroring_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_mirroring_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_mirroring_deployment
 
         DEPRECATED. Please use the `post_create_mirroring_deployment_with_metadata`
@@ -273,9 +266,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_create_mirroring_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_mirroring_deployment
 
@@ -292,13 +283,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_create_mirroring_deployment_group(
-        self,
-        request: mirroring.CreateMirroringDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.CreateMirroringDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.CreateMirroringDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.CreateMirroringDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_mirroring_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +292,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_create_mirroring_deployment_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_mirroring_deployment_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_mirroring_deployment_group
 
         DEPRECATED. Please use the `post_create_mirroring_deployment_group_with_metadata`
@@ -322,9 +306,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_create_mirroring_deployment_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_mirroring_deployment_group
 
@@ -341,13 +323,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_create_mirroring_endpoint_group(
-        self,
-        request: mirroring.CreateMirroringEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.CreateMirroringEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.CreateMirroringEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.CreateMirroringEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_mirroring_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -355,9 +332,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_create_mirroring_endpoint_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_mirroring_endpoint_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_mirroring_endpoint_group
 
         DEPRECATED. Please use the `post_create_mirroring_endpoint_group_with_metadata`
@@ -371,9 +346,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_create_mirroring_endpoint_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_mirroring_endpoint_group
 
@@ -390,13 +363,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_create_mirroring_endpoint_group_association(
-        self,
-        request: mirroring.CreateMirroringEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.CreateMirroringEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.CreateMirroringEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.CreateMirroringEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_mirroring_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +372,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_create_mirroring_endpoint_group_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_mirroring_endpoint_group_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_mirroring_endpoint_group_association
 
         DEPRECATED. Please use the `post_create_mirroring_endpoint_group_association_with_metadata`
@@ -420,9 +386,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_create_mirroring_endpoint_group_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_mirroring_endpoint_group_association
 
@@ -439,13 +403,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_delete_mirroring_deployment(
-        self,
-        request: mirroring.DeleteMirroringDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.DeleteMirroringDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.DeleteMirroringDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.DeleteMirroringDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_mirroring_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -453,9 +412,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_mirroring_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_mirroring_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_mirroring_deployment
 
         DEPRECATED. Please use the `post_delete_mirroring_deployment_with_metadata`
@@ -469,9 +426,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_delete_mirroring_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_mirroring_deployment
 
@@ -488,13 +443,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_delete_mirroring_deployment_group(
-        self,
-        request: mirroring.DeleteMirroringDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.DeleteMirroringDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.DeleteMirroringDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.DeleteMirroringDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_mirroring_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -502,9 +452,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_mirroring_deployment_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_mirroring_deployment_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_mirroring_deployment_group
 
         DEPRECATED. Please use the `post_delete_mirroring_deployment_group_with_metadata`
@@ -518,9 +466,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_delete_mirroring_deployment_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_mirroring_deployment_group
 
@@ -537,13 +483,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_delete_mirroring_endpoint_group(
-        self,
-        request: mirroring.DeleteMirroringEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.DeleteMirroringEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.DeleteMirroringEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.DeleteMirroringEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_mirroring_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -551,9 +492,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_mirroring_endpoint_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_mirroring_endpoint_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_mirroring_endpoint_group
 
         DEPRECATED. Please use the `post_delete_mirroring_endpoint_group_with_metadata`
@@ -567,9 +506,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_delete_mirroring_endpoint_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_mirroring_endpoint_group
 
@@ -586,13 +523,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_delete_mirroring_endpoint_group_association(
-        self,
-        request: mirroring.DeleteMirroringEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.DeleteMirroringEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.DeleteMirroringEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.DeleteMirroringEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_mirroring_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -600,9 +532,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_mirroring_endpoint_group_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_mirroring_endpoint_group_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_mirroring_endpoint_group_association
 
         DEPRECATED. Please use the `post_delete_mirroring_endpoint_group_association_with_metadata`
@@ -616,9 +546,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_delete_mirroring_endpoint_group_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_mirroring_endpoint_group_association
 
@@ -635,12 +563,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_get_mirroring_deployment(
-        self,
-        request: mirroring.GetMirroringDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.GetMirroringDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: mirroring.GetMirroringDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.GetMirroringDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_mirroring_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -648,9 +572,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_mirroring_deployment(
-        self, response: mirroring.MirroringDeployment
-    ) -> mirroring.MirroringDeployment:
+    def post_get_mirroring_deployment(self, response: mirroring.MirroringDeployment) -> mirroring.MirroringDeployment:
         """Post-rpc interceptor for get_mirroring_deployment
 
         DEPRECATED. Please use the `post_get_mirroring_deployment_with_metadata`
@@ -664,9 +586,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_get_mirroring_deployment_with_metadata(
-        self,
-        response: mirroring.MirroringDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: mirroring.MirroringDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[mirroring.MirroringDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_mirroring_deployment
 
@@ -683,13 +603,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_get_mirroring_deployment_group(
-        self,
-        request: mirroring.GetMirroringDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.GetMirroringDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.GetMirroringDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.GetMirroringDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_mirroring_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -697,9 +612,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_mirroring_deployment_group(
-        self, response: mirroring.MirroringDeploymentGroup
-    ) -> mirroring.MirroringDeploymentGroup:
+    def post_get_mirroring_deployment_group(self, response: mirroring.MirroringDeploymentGroup) -> mirroring.MirroringDeploymentGroup:
         """Post-rpc interceptor for get_mirroring_deployment_group
 
         DEPRECATED. Please use the `post_get_mirroring_deployment_group_with_metadata`
@@ -713,12 +626,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_get_mirroring_deployment_group_with_metadata(
-        self,
-        response: mirroring.MirroringDeploymentGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.MirroringDeploymentGroup, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: mirroring.MirroringDeploymentGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.MirroringDeploymentGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_mirroring_deployment_group
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -734,13 +643,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_get_mirroring_endpoint_group(
-        self,
-        request: mirroring.GetMirroringEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.GetMirroringEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.GetMirroringEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.GetMirroringEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_mirroring_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -748,9 +652,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_mirroring_endpoint_group(
-        self, response: mirroring.MirroringEndpointGroup
-    ) -> mirroring.MirroringEndpointGroup:
+    def post_get_mirroring_endpoint_group(self, response: mirroring.MirroringEndpointGroup) -> mirroring.MirroringEndpointGroup:
         """Post-rpc interceptor for get_mirroring_endpoint_group
 
         DEPRECATED. Please use the `post_get_mirroring_endpoint_group_with_metadata`
@@ -764,12 +666,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_get_mirroring_endpoint_group_with_metadata(
-        self,
-        response: mirroring.MirroringEndpointGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.MirroringEndpointGroup, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: mirroring.MirroringEndpointGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.MirroringEndpointGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_mirroring_endpoint_group
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -785,13 +683,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_get_mirroring_endpoint_group_association(
-        self,
-        request: mirroring.GetMirroringEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.GetMirroringEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.GetMirroringEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.GetMirroringEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_mirroring_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -815,13 +708,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_get_mirroring_endpoint_group_association_with_metadata(
-        self,
-        response: mirroring.MirroringEndpointGroupAssociation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.MirroringEndpointGroupAssociation,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mirroring.MirroringEndpointGroupAssociation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.MirroringEndpointGroupAssociation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_mirroring_endpoint_group_association
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -837,13 +725,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_list_mirroring_deployment_groups(
-        self,
-        request: mirroring.ListMirroringDeploymentGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringDeploymentGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.ListMirroringDeploymentGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringDeploymentGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_mirroring_deployment_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -867,13 +750,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_list_mirroring_deployment_groups_with_metadata(
-        self,
-        response: mirroring.ListMirroringDeploymentGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringDeploymentGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mirroring.ListMirroringDeploymentGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringDeploymentGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_mirroring_deployment_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -889,13 +767,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_list_mirroring_deployments(
-        self,
-        request: mirroring.ListMirroringDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringDeploymentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.ListMirroringDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_mirroring_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -903,9 +776,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_mirroring_deployments(
-        self, response: mirroring.ListMirroringDeploymentsResponse
-    ) -> mirroring.ListMirroringDeploymentsResponse:
+    def post_list_mirroring_deployments(self, response: mirroring.ListMirroringDeploymentsResponse) -> mirroring.ListMirroringDeploymentsResponse:
         """Post-rpc interceptor for list_mirroring_deployments
 
         DEPRECATED. Please use the `post_list_mirroring_deployments_with_metadata`
@@ -919,13 +790,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_list_mirroring_deployments_with_metadata(
-        self,
-        response: mirroring.ListMirroringDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringDeploymentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mirroring.ListMirroringDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_mirroring_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -941,13 +807,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_list_mirroring_endpoint_group_associations(
-        self,
-        request: mirroring.ListMirroringEndpointGroupAssociationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringEndpointGroupAssociationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.ListMirroringEndpointGroupAssociationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringEndpointGroupAssociationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_mirroring_endpoint_group_associations
 
         Override in a subclass to manipulate the request or metadata
@@ -971,13 +832,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_list_mirroring_endpoint_group_associations_with_metadata(
-        self,
-        response: mirroring.ListMirroringEndpointGroupAssociationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringEndpointGroupAssociationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mirroring.ListMirroringEndpointGroupAssociationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringEndpointGroupAssociationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_mirroring_endpoint_group_associations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -993,13 +849,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_list_mirroring_endpoint_groups(
-        self,
-        request: mirroring.ListMirroringEndpointGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringEndpointGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.ListMirroringEndpointGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringEndpointGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_mirroring_endpoint_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -1023,13 +874,8 @@ class MirroringRestInterceptor:
         return response
 
     def post_list_mirroring_endpoint_groups_with_metadata(
-        self,
-        response: mirroring.ListMirroringEndpointGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.ListMirroringEndpointGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mirroring.ListMirroringEndpointGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.ListMirroringEndpointGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_mirroring_endpoint_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1045,13 +891,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_update_mirroring_deployment(
-        self,
-        request: mirroring.UpdateMirroringDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.UpdateMirroringDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.UpdateMirroringDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.UpdateMirroringDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_mirroring_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1059,9 +900,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_update_mirroring_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_mirroring_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_mirroring_deployment
 
         DEPRECATED. Please use the `post_update_mirroring_deployment_with_metadata`
@@ -1075,9 +914,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_update_mirroring_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_mirroring_deployment
 
@@ -1094,13 +931,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_update_mirroring_deployment_group(
-        self,
-        request: mirroring.UpdateMirroringDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.UpdateMirroringDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.UpdateMirroringDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.UpdateMirroringDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_mirroring_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1108,9 +940,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_update_mirroring_deployment_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_mirroring_deployment_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_mirroring_deployment_group
 
         DEPRECATED. Please use the `post_update_mirroring_deployment_group_with_metadata`
@@ -1124,9 +954,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_update_mirroring_deployment_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_mirroring_deployment_group
 
@@ -1143,13 +971,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_update_mirroring_endpoint_group(
-        self,
-        request: mirroring.UpdateMirroringEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.UpdateMirroringEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.UpdateMirroringEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.UpdateMirroringEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_mirroring_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1157,9 +980,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_update_mirroring_endpoint_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_mirroring_endpoint_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_mirroring_endpoint_group
 
         DEPRECATED. Please use the `post_update_mirroring_endpoint_group_with_metadata`
@@ -1173,9 +994,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_update_mirroring_endpoint_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_mirroring_endpoint_group
 
@@ -1192,13 +1011,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_update_mirroring_endpoint_group_association(
-        self,
-        request: mirroring.UpdateMirroringEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mirroring.UpdateMirroringEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mirroring.UpdateMirroringEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mirroring.UpdateMirroringEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_mirroring_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -1206,9 +1020,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_update_mirroring_endpoint_group_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_mirroring_endpoint_group_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_mirroring_endpoint_group_association
 
         DEPRECATED. Please use the `post_update_mirroring_endpoint_group_association_with_metadata`
@@ -1222,9 +1034,7 @@ class MirroringRestInterceptor:
         return response
 
     def post_update_mirroring_endpoint_group_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_mirroring_endpoint_group_association
 
@@ -1241,12 +1051,8 @@ class MirroringRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1254,9 +1060,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1266,12 +1070,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1279,9 +1079,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1291,12 +1089,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1314,12 +1108,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1337,13 +1127,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1351,9 +1136,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1363,12 +1146,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1386,12 +1165,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1409,12 +1184,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1422,9 +1193,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1434,12 +1203,8 @@ class MirroringRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1447,9 +1212,7 @@ class MirroringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1539,9 +1302,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1611,29 +1372,17 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 path_prefix="v1alpha1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateMirroringDeployment(
-        _BaseMirroringRestTransport._BaseCreateMirroringDeployment, MirroringRestStub
-    ):
+    class _CreateMirroringDeployment(_BaseMirroringRestTransport._BaseCreateMirroringDeployment, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.CreateMirroringDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1678,32 +1427,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_mirroring_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_mirroring_deployment(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1727,13 +1462,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._CreateMirroringDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1747,12 +1476,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_create_mirroring_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_mirroring_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_mirroring_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1773,23 +1498,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _CreateMirroringDeploymentGroup(
-        _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup,
-        MirroringRestStub,
-    ):
+    class _CreateMirroringDeploymentGroup(_BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.CreateMirroringDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1834,32 +1548,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_mirroring_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_mirroring_deployment_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1882,16 +1582,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._CreateMirroringDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MirroringRestTransport._CreateMirroringDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1905,15 +1597,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_create_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_mirroring_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1934,22 +1619,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _CreateMirroringEndpointGroup(
-        _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup, MirroringRestStub
-    ):
+    class _CreateMirroringEndpointGroup(_BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.CreateMirroringEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1994,32 +1669,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_mirroring_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_mirroring_endpoint_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2042,16 +1703,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._CreateMirroringEndpointGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MirroringRestTransport._CreateMirroringEndpointGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2065,15 +1718,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_create_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_mirroring_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2094,25 +1740,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _CreateMirroringEndpointGroupAssociation(
-        _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation,
-        MirroringRestStub,
-    ):
+    class _CreateMirroringEndpointGroupAssociation(_BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation, MirroringRestStub):
         def __hash__(self):
-            return hash(
-                "MirroringRestTransport.CreateMirroringEndpointGroupAssociation"
-            )
+            return hash("MirroringRestTransport.CreateMirroringEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2157,35 +1790,20 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_mirroring_endpoint_group_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_mirroring_endpoint_group_association(request, metadata)
             transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2209,13 +1827,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._CreateMirroringEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2227,19 +1839,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_create_mirroring_endpoint_group_association(
-                resp
-            )
+            resp = self._interceptor.post_create_mirroring_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_mirroring_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2260,22 +1863,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _DeleteMirroringDeployment(
-        _BaseMirroringRestTransport._BaseDeleteMirroringDeployment, MirroringRestStub
-    ):
+    class _DeleteMirroringDeployment(_BaseMirroringRestTransport._BaseDeleteMirroringDeployment, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.DeleteMirroringDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2319,28 +1912,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_mirroring_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_mirroring_deployment(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2364,12 +1945,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._DeleteMirroringDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2383,12 +1959,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_delete_mirroring_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_mirroring_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_mirroring_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2409,23 +1981,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _DeleteMirroringDeploymentGroup(
-        _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup,
-        MirroringRestStub,
-    ):
+    class _DeleteMirroringDeploymentGroup(_BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.DeleteMirroringDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2469,28 +2030,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_mirroring_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_mirroring_deployment_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2513,15 +2062,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._DeleteMirroringDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MirroringRestTransport._DeleteMirroringDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2535,15 +2077,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_delete_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_mirroring_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2564,22 +2099,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _DeleteMirroringEndpointGroup(
-        _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup, MirroringRestStub
-    ):
+    class _DeleteMirroringEndpointGroup(_BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.DeleteMirroringEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2623,28 +2148,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_mirroring_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_mirroring_endpoint_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2667,15 +2180,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._DeleteMirroringEndpointGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MirroringRestTransport._DeleteMirroringEndpointGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2689,15 +2195,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_delete_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_mirroring_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2718,25 +2217,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _DeleteMirroringEndpointGroupAssociation(
-        _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation,
-        MirroringRestStub,
-    ):
+    class _DeleteMirroringEndpointGroupAssociation(_BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation, MirroringRestStub):
         def __hash__(self):
-            return hash(
-                "MirroringRestTransport.DeleteMirroringEndpointGroupAssociation"
-            )
+            return hash("MirroringRestTransport.DeleteMirroringEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2780,31 +2266,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_mirroring_endpoint_group_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_mirroring_endpoint_group_association(request, metadata)
             transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2828,12 +2301,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._DeleteMirroringEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2845,19 +2313,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_delete_mirroring_endpoint_group_association(
-                resp
-            )
+            resp = self._interceptor.post_delete_mirroring_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_mirroring_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2878,22 +2337,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _GetMirroringDeployment(
-        _BaseMirroringRestTransport._BaseGetMirroringDeployment, MirroringRestStub
-    ):
+    class _GetMirroringDeployment(_BaseMirroringRestTransport._BaseGetMirroringDeployment, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.GetMirroringDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2941,28 +2390,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_mirroring_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_mirroring_deployment(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2986,12 +2423,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._GetMirroringDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3007,12 +2439,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_get_mirroring_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_mirroring_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_mirroring_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = mirroring.MirroringDeployment.to_json(response)
                 except:
@@ -3033,22 +2461,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _GetMirroringDeploymentGroup(
-        _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup, MirroringRestStub
-    ):
+    class _GetMirroringDeploymentGroup(_BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.GetMirroringDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3094,28 +2512,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_mirroring_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_mirroring_deployment_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3138,15 +2544,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._GetMirroringDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MirroringRestTransport._GetMirroringDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3162,19 +2561,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_get_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_mirroring_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = mirroring.MirroringDeploymentGroup.to_json(
-                        response
-                    )
+                    response_payload = mirroring.MirroringDeploymentGroup.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3193,22 +2583,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _GetMirroringEndpointGroup(
-        _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup, MirroringRestStub
-    ):
+    class _GetMirroringEndpointGroup(_BaseMirroringRestTransport._BaseGetMirroringEndpointGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.GetMirroringEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3261,28 +2641,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_mirroring_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_mirroring_endpoint_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3306,12 +2674,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._GetMirroringEndpointGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3327,16 +2690,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_get_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_mirroring_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = mirroring.MirroringEndpointGroup.to_json(
-                        response
-                    )
+                    response_payload = mirroring.MirroringEndpointGroup.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3355,23 +2712,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _GetMirroringEndpointGroupAssociation(
-        _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation,
-        MirroringRestStub,
-    ):
+    class _GetMirroringEndpointGroupAssociation(_BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.GetMirroringEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3424,31 +2770,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_mirroring_endpoint_group_association(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_mirroring_endpoint_group_association(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3472,12 +2803,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._GetMirroringEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3493,19 +2819,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_get_mirroring_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_mirroring_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        mirroring.MirroringEndpointGroupAssociation.to_json(response)
-                    )
+                    response_payload = mirroring.MirroringEndpointGroupAssociation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3524,23 +2841,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _ListMirroringDeploymentGroups(
-        _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups,
-        MirroringRestStub,
-    ):
+    class _ListMirroringDeploymentGroups(_BaseMirroringRestTransport._BaseListMirroringDeploymentGroups, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.ListMirroringDeploymentGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3583,28 +2889,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_mirroring_deployment_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_mirroring_deployment_groups(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3627,15 +2921,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._ListMirroringDeploymentGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MirroringRestTransport._ListMirroringDeploymentGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3651,21 +2938,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_list_mirroring_deployment_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_mirroring_deployment_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_mirroring_deployment_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        mirroring.ListMirroringDeploymentGroupsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = mirroring.ListMirroringDeploymentGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3684,22 +2960,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _ListMirroringDeployments(
-        _BaseMirroringRestTransport._BaseListMirroringDeployments, MirroringRestStub
-    ):
+    class _ListMirroringDeployments(_BaseMirroringRestTransport._BaseListMirroringDeployments, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.ListMirroringDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3742,28 +3008,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringDeployments._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_mirroring_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseListMirroringDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_mirroring_deployments(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseListMirroringDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseListMirroringDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseListMirroringDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3787,12 +3041,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._ListMirroringDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3808,16 +3057,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_list_mirroring_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_mirroring_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_mirroring_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        mirroring.ListMirroringDeploymentsResponse.to_json(response)
-                    )
+                    response_payload = mirroring.ListMirroringDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3836,23 +3079,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _ListMirroringEndpointGroupAssociations(
-        _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations,
-        MirroringRestStub,
-    ):
+    class _ListMirroringEndpointGroupAssociations(_BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.ListMirroringEndpointGroupAssociations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3895,31 +3127,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_mirroring_endpoint_group_associations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_mirroring_endpoint_group_associations(request, metadata)
             transcoded_request = _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3943,12 +3162,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._ListMirroringEndpointGroupAssociations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3962,23 +3176,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_mirroring_endpoint_group_associations(
-                resp
-            )
+            resp = self._interceptor.post_list_mirroring_endpoint_group_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_mirroring_endpoint_group_associations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_mirroring_endpoint_group_associations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = mirroring.ListMirroringEndpointGroupAssociationsResponse.to_json(
-                        response
-                    )
+                    response_payload = mirroring.ListMirroringEndpointGroupAssociationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3997,22 +3200,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _ListMirroringEndpointGroups(
-        _BaseMirroringRestTransport._BaseListMirroringEndpointGroups, MirroringRestStub
-    ):
+    class _ListMirroringEndpointGroups(_BaseMirroringRestTransport._BaseListMirroringEndpointGroups, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.ListMirroringEndpointGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4055,28 +3248,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_mirroring_endpoint_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_mirroring_endpoint_groups(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4099,15 +3280,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._ListMirroringEndpointGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MirroringRestTransport._ListMirroringEndpointGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4123,19 +3297,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_list_mirroring_endpoint_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_mirroring_endpoint_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_mirroring_endpoint_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        mirroring.ListMirroringEndpointGroupsResponse.to_json(response)
-                    )
+                    response_payload = mirroring.ListMirroringEndpointGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4154,22 +3319,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _UpdateMirroringDeployment(
-        _BaseMirroringRestTransport._BaseUpdateMirroringDeployment, MirroringRestStub
-    ):
+    class _UpdateMirroringDeployment(_BaseMirroringRestTransport._BaseUpdateMirroringDeployment, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.UpdateMirroringDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4214,32 +3369,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_mirroring_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_mirroring_deployment(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4263,13 +3404,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._UpdateMirroringDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4283,12 +3418,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_update_mirroring_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_mirroring_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_mirroring_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4309,23 +3440,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _UpdateMirroringDeploymentGroup(
-        _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup,
-        MirroringRestStub,
-    ):
+    class _UpdateMirroringDeploymentGroup(_BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.UpdateMirroringDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4370,32 +3490,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_mirroring_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_mirroring_deployment_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4418,16 +3524,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._UpdateMirroringDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MirroringRestTransport._UpdateMirroringDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4441,15 +3539,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_update_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_mirroring_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4470,22 +3561,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _UpdateMirroringEndpointGroup(
-        _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup, MirroringRestStub
-    ):
+    class _UpdateMirroringEndpointGroup(_BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.UpdateMirroringEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4530,32 +3611,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_mirroring_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_mirroring_endpoint_group(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4578,16 +3645,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MirroringRestTransport._UpdateMirroringEndpointGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MirroringRestTransport._UpdateMirroringEndpointGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4601,15 +3660,8 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_update_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_mirroring_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4630,25 +3682,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 )
             return resp
 
-    class _UpdateMirroringEndpointGroupAssociation(
-        _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation,
-        MirroringRestStub,
-    ):
+    class _UpdateMirroringEndpointGroupAssociation(_BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation, MirroringRestStub):
         def __hash__(self):
-            return hash(
-                "MirroringRestTransport.UpdateMirroringEndpointGroupAssociation"
-            )
+            return hash("MirroringRestTransport.UpdateMirroringEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4693,35 +3732,20 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_mirroring_endpoint_group_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_mirroring_endpoint_group_association(request, metadata)
             transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4745,13 +3769,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._UpdateMirroringEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4763,19 +3781,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_update_mirroring_endpoint_group_association(
-                resp
-            )
+            resp = self._interceptor.post_update_mirroring_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_mirroring_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4797,31 +3806,19 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             return resp
 
     @property
-    def create_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.CreateMirroringDeploymentRequest], operations_pb2.Operation
-    ]:
+    def create_mirroring_deployment(self) -> Callable[[mirroring.CreateMirroringDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.CreateMirroringDeploymentGroupRequest], operations_pb2.Operation
-    ]:
+    def create_mirroring_deployment_group(self) -> Callable[[mirroring.CreateMirroringDeploymentGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.CreateMirroringEndpointGroupRequest], operations_pb2.Operation
-    ]:
+    def create_mirroring_endpoint_group(self) -> Callable[[mirroring.CreateMirroringEndpointGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4829,40 +3826,25 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def create_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.CreateMirroringEndpointGroupAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[mirroring.CreateMirroringEndpointGroupAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringDeploymentRequest], operations_pb2.Operation
-    ]:
+    def delete_mirroring_deployment(self) -> Callable[[mirroring.DeleteMirroringDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringDeploymentGroupRequest], operations_pb2.Operation
-    ]:
+    def delete_mirroring_deployment_group(self) -> Callable[[mirroring.DeleteMirroringDeploymentGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringEndpointGroupRequest], operations_pb2.Operation
-    ]:
+    def delete_mirroring_endpoint_group(self) -> Callable[[mirroring.DeleteMirroringEndpointGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4870,41 +3852,25 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def delete_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringEndpointGroupAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[mirroring.DeleteMirroringEndpointGroupAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.GetMirroringDeploymentRequest], mirroring.MirroringDeployment
-    ]:
+    def get_mirroring_deployment(self) -> Callable[[mirroring.GetMirroringDeploymentRequest], mirroring.MirroringDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.GetMirroringDeploymentGroupRequest],
-        mirroring.MirroringDeploymentGroup,
-    ]:
+    def get_mirroring_deployment_group(self) -> Callable[[mirroring.GetMirroringDeploymentGroupRequest], mirroring.MirroringDeploymentGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.GetMirroringEndpointGroupRequest], mirroring.MirroringEndpointGroup
-    ]:
+    def get_mirroring_endpoint_group(self) -> Callable[[mirroring.GetMirroringEndpointGroupRequest], mirroring.MirroringEndpointGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4912,10 +3878,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def get_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.GetMirroringEndpointGroupAssociationRequest],
-        mirroring.MirroringEndpointGroupAssociation,
-    ]:
+    ) -> Callable[[mirroring.GetMirroringEndpointGroupAssociationRequest], mirroring.MirroringEndpointGroupAssociation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -4923,21 +3886,13 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def list_mirroring_deployment_groups(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringDeploymentGroupsRequest],
-        mirroring.ListMirroringDeploymentGroupsResponse,
-    ]:
+    ) -> Callable[[mirroring.ListMirroringDeploymentGroupsRequest], mirroring.ListMirroringDeploymentGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMirroringDeploymentGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_mirroring_deployments(
-        self,
-    ) -> Callable[
-        [mirroring.ListMirroringDeploymentsRequest],
-        mirroring.ListMirroringDeploymentsResponse,
-    ]:
+    def list_mirroring_deployments(self) -> Callable[[mirroring.ListMirroringDeploymentsRequest], mirroring.ListMirroringDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMirroringDeployments(self._session, self._host, self._interceptor)  # type: ignore
@@ -4945,10 +3900,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def list_mirroring_endpoint_group_associations(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringEndpointGroupAssociationsRequest],
-        mirroring.ListMirroringEndpointGroupAssociationsResponse,
-    ]:
+    ) -> Callable[[mirroring.ListMirroringEndpointGroupAssociationsRequest], mirroring.ListMirroringEndpointGroupAssociationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMirroringEndpointGroupAssociations(self._session, self._host, self._interceptor)  # type: ignore
@@ -4956,40 +3908,25 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def list_mirroring_endpoint_groups(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringEndpointGroupsRequest],
-        mirroring.ListMirroringEndpointGroupsResponse,
-    ]:
+    ) -> Callable[[mirroring.ListMirroringEndpointGroupsRequest], mirroring.ListMirroringEndpointGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMirroringEndpointGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringDeploymentRequest], operations_pb2.Operation
-    ]:
+    def update_mirroring_deployment(self) -> Callable[[mirroring.UpdateMirroringDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringDeploymentGroupRequest], operations_pb2.Operation
-    ]:
+    def update_mirroring_deployment_group(self) -> Callable[[mirroring.UpdateMirroringDeploymentGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringEndpointGroupRequest], operations_pb2.Operation
-    ]:
+    def update_mirroring_endpoint_group(self) -> Callable[[mirroring.UpdateMirroringEndpointGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4997,10 +3934,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     @property
     def update_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringEndpointGroupAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[mirroring.UpdateMirroringEndpointGroupAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -5014,15 +3948,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             return hash("MirroringRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5060,30 +3986,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseMirroringRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMirroringRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5107,12 +4019,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5124,9 +4031,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5151,22 +4056,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseMirroringRestTransport._BaseListLocations, MirroringRestStub
-    ):
+    class _ListLocations(_BaseMirroringRestTransport._BaseListLocations, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5204,30 +4099,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseMirroringRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMirroringRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5251,12 +4132,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5268,9 +4144,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5295,22 +4169,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseMirroringRestTransport._BaseGetIamPolicy, MirroringRestStub
-    ):
+    class _GetIamPolicy(_BaseMirroringRestTransport._BaseGetIamPolicy, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5348,30 +4212,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseMirroringRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMirroringRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5395,12 +4245,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5412,9 +4257,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5439,22 +4282,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseMirroringRestTransport._BaseSetIamPolicy, MirroringRestStub
-    ):
+    class _SetIamPolicy(_BaseMirroringRestTransport._BaseSetIamPolicy, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5493,34 +4326,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseMirroringRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMirroringRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5544,13 +4361,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5562,9 +4373,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5589,22 +4398,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseMirroringRestTransport._BaseTestIamPermissions, MirroringRestStub
-    ):
+    class _TestIamPermissions(_BaseMirroringRestTransport._BaseTestIamPermissions, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5643,32 +4442,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseMirroringRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMirroringRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMirroringRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMirroringRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5692,13 +4477,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5710,9 +4489,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5737,22 +4514,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseMirroringRestTransport._BaseCancelOperation, MirroringRestStub
-    ):
+    class _CancelOperation(_BaseMirroringRestTransport._BaseCancelOperation, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5788,36 +4555,18 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseMirroringRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseMirroringRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5841,13 +4590,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5861,22 +4604,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseMirroringRestTransport._BaseDeleteOperation, MirroringRestStub
-    ):
+    class _DeleteOperation(_BaseMirroringRestTransport._BaseDeleteOperation, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5911,30 +4644,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMirroringRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseMirroringRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5958,12 +4677,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5977,22 +4691,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMirroringRestTransport._BaseGetOperation, MirroringRestStub
-    ):
+    class _GetOperation(_BaseMirroringRestTransport._BaseGetOperation, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6030,30 +4734,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseMirroringRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMirroringRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6077,12 +4767,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6094,9 +4779,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6121,22 +4804,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseMirroringRestTransport._BaseListOperations, MirroringRestStub
-    ):
+    class _ListOperations(_BaseMirroringRestTransport._BaseListOperations, MirroringRestStub):
         def __hash__(self):
             return hash("MirroringRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6174,30 +4847,16 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseMirroringRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMirroringRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMirroringRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMirroringRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6221,12 +4880,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             # Send the request
             response = MirroringRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6238,9 +4892,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -28,13 +28,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.financialservices_v1 import gapic_version as package_version
-from google.cloud.financialservices_v1.types import (
-    backtest_result as gcf_backtest_result,
-)
+from google.cloud.financialservices_v1.types import backtest_result as gcf_backtest_result
 from google.cloud.financialservices_v1.types import engine_config as gcf_engine_config
-from google.cloud.financialservices_v1.types import (
-    prediction_result as gcf_prediction_result,
-)
+from google.cloud.financialservices_v1.types import prediction_result as gcf_prediction_result
 from google.cloud.financialservices_v1.types import backtest_result
 from google.cloud.financialservices_v1.types import dataset
 from google.cloud.financialservices_v1.types import dataset as gcf_dataset
@@ -46,9 +42,7 @@ from google.cloud.financialservices_v1.types import model
 from google.cloud.financialservices_v1.types import model as gcf_model
 from google.cloud.financialservices_v1.types import prediction_result
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -110,23 +104,15 @@ class AMLTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -390,227 +376,125 @@ class AMLTransport(abc.ABC):
     @property
     def list_instances(
         self,
-    ) -> Callable[
-        [instance.ListInstancesRequest],
-        Union[
-            instance.ListInstancesResponse, Awaitable[instance.ListInstancesResponse]
-        ],
-    ]:
+    ) -> Callable[[instance.ListInstancesRequest], Union[instance.ListInstancesResponse, Awaitable[instance.ListInstancesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [instance.GetInstanceRequest],
-        Union[instance.Instance, Awaitable[instance.Instance]],
-    ]:
+    def get_instance(self) -> Callable[[instance.GetInstanceRequest], Union[instance.Instance, Awaitable[instance.Instance]]]:
         raise NotImplementedError()
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[
-        [gcf_instance.CreateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_instance(self) -> Callable[[gcf_instance.CreateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [gcf_instance.UpdateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_instance(self) -> Callable[[gcf_instance.UpdateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[
-        [instance.DeleteInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_instance(self) -> Callable[[instance.DeleteInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_registered_parties(
         self,
-    ) -> Callable[
-        [instance.ImportRegisteredPartiesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[instance.ImportRegisteredPartiesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_registered_parties(
         self,
-    ) -> Callable[
-        [instance.ExportRegisteredPartiesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[instance.ExportRegisteredPartiesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_datasets(
-        self,
-    ) -> Callable[
-        [dataset.ListDatasetsRequest],
-        Union[dataset.ListDatasetsResponse, Awaitable[dataset.ListDatasetsResponse]],
-    ]:
+    def list_datasets(self) -> Callable[[dataset.ListDatasetsRequest], Union[dataset.ListDatasetsResponse, Awaitable[dataset.ListDatasetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_dataset(
-        self,
-    ) -> Callable[
-        [dataset.GetDatasetRequest], Union[dataset.Dataset, Awaitable[dataset.Dataset]]
-    ]:
+    def get_dataset(self) -> Callable[[dataset.GetDatasetRequest], Union[dataset.Dataset, Awaitable[dataset.Dataset]]]:
         raise NotImplementedError()
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[
-        [gcf_dataset.CreateDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_dataset(self) -> Callable[[gcf_dataset.CreateDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_dataset(
-        self,
-    ) -> Callable[
-        [gcf_dataset.UpdateDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_dataset(self) -> Callable[[gcf_dataset.UpdateDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[
-        [dataset.DeleteDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_dataset(self) -> Callable[[dataset.DeleteDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_models(
-        self,
-    ) -> Callable[
-        [model.ListModelsRequest],
-        Union[model.ListModelsResponse, Awaitable[model.ListModelsResponse]],
-    ]:
+    def list_models(self) -> Callable[[model.ListModelsRequest], Union[model.ListModelsResponse, Awaitable[model.ListModelsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_model(
-        self,
-    ) -> Callable[[model.GetModelRequest], Union[model.Model, Awaitable[model.Model]]]:
+    def get_model(self) -> Callable[[model.GetModelRequest], Union[model.Model, Awaitable[model.Model]]]:
         raise NotImplementedError()
 
     @property
-    def create_model(
-        self,
-    ) -> Callable[
-        [gcf_model.CreateModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_model(self) -> Callable[[gcf_model.CreateModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_model(
-        self,
-    ) -> Callable[
-        [gcf_model.UpdateModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_model(self) -> Callable[[gcf_model.UpdateModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_model_metadata(
         self,
-    ) -> Callable[
-        [gcf_model.ExportModelMetadataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_model.ExportModelMetadataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_model(
-        self,
-    ) -> Callable[
-        [model.DeleteModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_model(self) -> Callable[[model.DeleteModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_engine_configs(
         self,
     ) -> Callable[
-        [engine_config.ListEngineConfigsRequest],
-        Union[
-            engine_config.ListEngineConfigsResponse,
-            Awaitable[engine_config.ListEngineConfigsResponse],
-        ],
+        [engine_config.ListEngineConfigsRequest], Union[engine_config.ListEngineConfigsResponse, Awaitable[engine_config.ListEngineConfigsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_engine_config(
         self,
-    ) -> Callable[
-        [engine_config.GetEngineConfigRequest],
-        Union[engine_config.EngineConfig, Awaitable[engine_config.EngineConfig]],
-    ]:
+    ) -> Callable[[engine_config.GetEngineConfigRequest], Union[engine_config.EngineConfig, Awaitable[engine_config.EngineConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_engine_config(
         self,
-    ) -> Callable[
-        [gcf_engine_config.CreateEngineConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_engine_config.CreateEngineConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_engine_config(
         self,
-    ) -> Callable[
-        [gcf_engine_config.UpdateEngineConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_engine_config.UpdateEngineConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_engine_config_metadata(
         self,
-    ) -> Callable[
-        [gcf_engine_config.ExportEngineConfigMetadataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_engine_config.ExportEngineConfigMetadataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_engine_config(
         self,
-    ) -> Callable[
-        [engine_config.DeleteEngineConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[engine_config.DeleteEngineConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_engine_version(
         self,
-    ) -> Callable[
-        [engine_version.GetEngineVersionRequest],
-        Union[engine_version.EngineVersion, Awaitable[engine_version.EngineVersion]],
-    ]:
+    ) -> Callable[[engine_version.GetEngineVersionRequest], Union[engine_version.EngineVersion, Awaitable[engine_version.EngineVersion]]]:
         raise NotImplementedError()
 
     @property
@@ -618,10 +502,7 @@ class AMLTransport(abc.ABC):
         self,
     ) -> Callable[
         [engine_version.ListEngineVersionsRequest],
-        Union[
-            engine_version.ListEngineVersionsResponse,
-            Awaitable[engine_version.ListEngineVersionsResponse],
-        ],
+        Union[engine_version.ListEngineVersionsResponse, Awaitable[engine_version.ListEngineVersionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -630,10 +511,7 @@ class AMLTransport(abc.ABC):
         self,
     ) -> Callable[
         [prediction_result.ListPredictionResultsRequest],
-        Union[
-            prediction_result.ListPredictionResultsResponse,
-            Awaitable[prediction_result.ListPredictionResultsResponse],
-        ],
+        Union[prediction_result.ListPredictionResultsResponse, Awaitable[prediction_result.ListPredictionResultsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -641,48 +519,34 @@ class AMLTransport(abc.ABC):
     def get_prediction_result(
         self,
     ) -> Callable[
-        [prediction_result.GetPredictionResultRequest],
-        Union[
-            prediction_result.PredictionResult,
-            Awaitable[prediction_result.PredictionResult],
-        ],
+        [prediction_result.GetPredictionResultRequest], Union[prediction_result.PredictionResult, Awaitable[prediction_result.PredictionResult]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_prediction_result(
         self,
-    ) -> Callable[
-        [gcf_prediction_result.CreatePredictionResultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_prediction_result.CreatePredictionResultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_prediction_result(
         self,
-    ) -> Callable[
-        [gcf_prediction_result.UpdatePredictionResultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_prediction_result.UpdatePredictionResultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_prediction_result_metadata(
         self,
     ) -> Callable[
-        [gcf_prediction_result.ExportPredictionResultMetadataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [gcf_prediction_result.ExportPredictionResultMetadataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_prediction_result(
         self,
-    ) -> Callable[
-        [prediction_result.DeletePredictionResultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[prediction_result.DeletePredictionResultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -690,58 +554,38 @@ class AMLTransport(abc.ABC):
         self,
     ) -> Callable[
         [backtest_result.ListBacktestResultsRequest],
-        Union[
-            backtest_result.ListBacktestResultsResponse,
-            Awaitable[backtest_result.ListBacktestResultsResponse],
-        ],
+        Union[backtest_result.ListBacktestResultsResponse, Awaitable[backtest_result.ListBacktestResultsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_backtest_result(
         self,
-    ) -> Callable[
-        [backtest_result.GetBacktestResultRequest],
-        Union[
-            backtest_result.BacktestResult, Awaitable[backtest_result.BacktestResult]
-        ],
-    ]:
+    ) -> Callable[[backtest_result.GetBacktestResultRequest], Union[backtest_result.BacktestResult, Awaitable[backtest_result.BacktestResult]]]:
         raise NotImplementedError()
 
     @property
     def create_backtest_result(
         self,
-    ) -> Callable[
-        [gcf_backtest_result.CreateBacktestResultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_backtest_result.CreateBacktestResultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_backtest_result(
         self,
-    ) -> Callable[
-        [gcf_backtest_result.UpdateBacktestResultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_backtest_result.UpdateBacktestResultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_backtest_result_metadata(
         self,
-    ) -> Callable[
-        [gcf_backtest_result.ExportBacktestResultMetadataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcf_backtest_result.ExportBacktestResultMetadataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backtest_result(
         self,
-    ) -> Callable[
-        [backtest_result.DeleteBacktestResultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backtest_result.DeleteBacktestResultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -749,20 +593,14 @@ class AMLTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -780,22 +618,13 @@ class AMLTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

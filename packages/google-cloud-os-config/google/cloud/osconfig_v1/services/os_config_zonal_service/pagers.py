@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,19 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.osconfig_v1.types import (
-    inventory,
-    os_policy_assignment_reports,
-    os_policy_assignments,
-    vulnerability,
-)
+from google.cloud.osconfig_v1.types import inventory, os_policy_assignment_reports, os_policy_assignments, vulnerability
 
 
 class ListOSPolicyAssignmentsPager:
@@ -106,12 +89,7 @@ class ListOSPolicyAssignmentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[os_policy_assignments.OSPolicyAssignment]:
@@ -142,9 +120,7 @@ class ListOSPolicyAssignmentsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[os_policy_assignments.ListOSPolicyAssignmentsResponse]
-        ],
+        method: Callable[..., Awaitable[os_policy_assignments.ListOSPolicyAssignmentsResponse]],
         request: os_policy_assignments.ListOSPolicyAssignmentsRequest,
         response: os_policy_assignments.ListOSPolicyAssignmentsResponse,
         *,
@@ -180,18 +156,11 @@ class ListOSPolicyAssignmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
+    async def pages(self) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[os_policy_assignments.OSPolicyAssignment]:
@@ -226,9 +195,7 @@ class ListOSPolicyAssignmentRevisionsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse
-        ],
+        method: Callable[..., os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse],
         request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
         response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
         *,
@@ -254,9 +221,7 @@ class ListOSPolicyAssignmentRevisionsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
-            request
-        )
+        self._request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -266,18 +231,11 @@ class ListOSPolicyAssignmentRevisionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
+    def pages(self) -> Iterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[os_policy_assignments.OSPolicyAssignment]:
@@ -308,10 +266,7 @@ class ListOSPolicyAssignmentRevisionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse],
-        ],
+        method: Callable[..., Awaitable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]],
         request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
         response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
         *,
@@ -337,9 +292,7 @@ class ListOSPolicyAssignmentRevisionsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
-            request
-        )
+        self._request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -349,18 +302,11 @@ class ListOSPolicyAssignmentRevisionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
+    async def pages(self) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[os_policy_assignments.OSPolicyAssignment]:
@@ -395,9 +341,7 @@ class ListOSPolicyAssignmentReportsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
-        ],
+        method: Callable[..., os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse],
         request: os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
         response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
         *,
@@ -423,9 +367,7 @@ class ListOSPolicyAssignmentReportsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(request)
-        )
+        self._request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -435,23 +377,14 @@ class ListOSPolicyAssignmentReportsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse]:
+    def pages(self) -> Iterator[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[os_policy_assignment_reports.OSPolicyAssignmentReport]:
+    def __iter__(self) -> Iterator[os_policy_assignment_reports.OSPolicyAssignmentReport]:
         for page in self.pages:
             yield from page.os_policy_assignment_reports
 
@@ -479,12 +412,7 @@ class ListOSPolicyAssignmentReportsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse]],
         request: os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
         response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
         *,
@@ -510,9 +438,7 @@ class ListOSPolicyAssignmentReportsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(request)
-        )
+        self._request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -522,25 +448,14 @@ class ListOSPolicyAssignmentReportsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
-    ]:
+    async def pages(self) -> AsyncIterator[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[os_policy_assignment_reports.OSPolicyAssignmentReport]:
+    def __aiter__(self) -> AsyncIterator[os_policy_assignment_reports.OSPolicyAssignmentReport]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.os_policy_assignment_reports:
@@ -612,12 +527,7 @@ class ListInventoriesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[inventory.Inventory]:
@@ -688,12 +598,7 @@ class ListInventoriesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[inventory.Inventory]:
@@ -768,12 +673,7 @@ class ListVulnerabilityReportsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[vulnerability.VulnerabilityReport]:
@@ -804,9 +704,7 @@ class ListVulnerabilityReportsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[vulnerability.ListVulnerabilityReportsResponse]
-        ],
+        method: Callable[..., Awaitable[vulnerability.ListVulnerabilityReportsResponse]],
         request: vulnerability.ListVulnerabilityReportsRequest,
         response: vulnerability.ListVulnerabilityReportsResponse,
         *,
@@ -842,18 +740,11 @@ class ListVulnerabilityReportsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[vulnerability.ListVulnerabilityReportsResponse]:
+    async def pages(self) -> AsyncIterator[vulnerability.ListVulnerabilityReportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[vulnerability.VulnerabilityReport]:

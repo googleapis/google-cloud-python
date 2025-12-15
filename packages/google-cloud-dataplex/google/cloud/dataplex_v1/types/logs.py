@@ -1186,12 +1186,10 @@ class DataScanEvent(proto.Message):
         number=11,
         message=PostScanActionsResult,
     )
-    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = (
-        proto.Field(
-            proto.MESSAGE,
-            number=13,
-            message=datascans_common.DataScanCatalogPublishingStatus,
-        )
+    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=datascans_common.DataScanCatalogPublishingStatus,
     )
 
 

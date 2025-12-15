@@ -18,12 +18,8 @@ from google.cloud.language import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.language_v1.services.language_service.async_client import (
-    LanguageServiceAsyncClient,
-)
-from google.cloud.language_v1.services.language_service.client import (
-    LanguageServiceClient,
-)
+from google.cloud.language_v1.services.language_service.async_client import LanguageServiceAsyncClient
+from google.cloud.language_v1.services.language_service.client import LanguageServiceClient
 from google.cloud.language_v1.types.language_service import (
     AnalyzeEntitiesRequest,
     AnalyzeEntitiesResponse,

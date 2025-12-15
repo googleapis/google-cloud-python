@@ -261,9 +261,7 @@ class ListPolicyBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policy_bindings: MutableSequence[
-        policy_binding_resources.PolicyBinding
-    ] = proto.RepeatedField(
+    policy_bindings: MutableSequence[policy_binding_resources.PolicyBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=policy_binding_resources.PolicyBinding,
@@ -354,9 +352,7 @@ class SearchTargetPolicyBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policy_bindings: MutableSequence[
-        policy_binding_resources.PolicyBinding
-    ] = proto.RepeatedField(
+    policy_bindings: MutableSequence[policy_binding_resources.PolicyBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=policy_binding_resources.PolicyBinding,

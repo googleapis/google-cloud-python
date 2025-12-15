@@ -344,9 +344,7 @@ class PrCurve(proto.Message):
         proto.FLOAT,
         number=2,
     )
-    confidence_metrics_entries: MutableSequence[
-        ConfidenceMetricsEntry
-    ] = proto.RepeatedField(
+    confidence_metrics_entries: MutableSequence[ConfidenceMetricsEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ConfidenceMetricsEntry,
@@ -407,9 +405,7 @@ class ConfusionMatrix(proto.Message):
             number=1,
             message=annotation_spec_set.AnnotationSpec,
         )
-        entries: MutableSequence[
-            "ConfusionMatrix.ConfusionMatrixEntry"
-        ] = proto.RepeatedField(
+        entries: MutableSequence["ConfusionMatrix.ConfusionMatrixEntry"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ConfusionMatrix.ConfusionMatrixEntry",

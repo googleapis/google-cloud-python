@@ -54,12 +54,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
-from google.cloud.iam_admin_v1.services.iam import (
-    IAMAsyncClient,
-    IAMClient,
-    pagers,
-    transports,
-)
+from google.cloud.iam_admin_v1.services.iam import IAMAsyncClient, IAMClient, pagers, transports
 from google.cloud.iam_admin_v1.types import iam
 
 CRED_INFO_JSON = {
@@ -92,22 +87,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -120,13 +107,8 @@ def test__get_default_mtls_endpoint():
     assert IAMClient._get_default_mtls_endpoint(None) is None
     assert IAMClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
     assert IAMClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert (
-        IAMClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    )
-    assert (
-        IAMClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert IAMClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert IAMClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert IAMClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -139,15 +121,17 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert IAMClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            IAMClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                IAMClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert IAMClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert IAMClient._read_environment_variables() == (False, "never", None)
@@ -161,13 +145,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             IAMClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
         assert IAMClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert IAMClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert IAMClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert IAMClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert IAMClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert IAMClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert IAMClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert IAMClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert IAMClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert IAMClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                IAMClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert IAMClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert IAMClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -176,103 +242,43 @@ def test__get_client_cert_source():
 
     assert IAMClient._get_client_cert_source(None, False) is None
     assert IAMClient._get_client_cert_source(mock_provided_cert_source, False) is None
-    assert (
-        IAMClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert IAMClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                IAMClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                IAMClient._get_client_cert_source(mock_provided_cert_source, "true")
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert IAMClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert IAMClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient)
-)
-@mock.patch.object(
-    IAMAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IAMAsyncClient),
-)
+@mock.patch.object(IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient))
+@mock.patch.object(IAMAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = IAMClient._DEFAULT_UNIVERSE
-    default_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        IAMClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        IAMClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == IAMClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        IAMClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        IAMClient._get_api_endpoint(None, None, default_universe, "always")
-        == IAMClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        IAMClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == IAMClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        IAMClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    )
-    assert (
-        IAMClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert IAMClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert IAMClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == IAMClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert IAMClient._get_api_endpoint(None, None, default_universe, "always") == IAMClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == IAMClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert IAMClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        IAMClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        IAMClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        IAMClient._get_universe_domain(client_universe_domain, universe_domain_env)
-        == client_universe_domain
-    )
-    assert (
-        IAMClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    )
+    assert IAMClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert IAMClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
     assert IAMClient._get_universe_domain(None, None) == IAMClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
@@ -332,9 +338,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_iam_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -352,16 +356,12 @@ def test_iam_client_from_service_account_info(client_class, transport_name):
     ],
 )
 def test_iam_client_service_account_always_use_jwt(transport_class, transport_name):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -376,19 +376,13 @@ def test_iam_client_service_account_always_use_jwt(transport_class, transport_na
 )
 def test_iam_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
@@ -413,14 +407,8 @@ def test_iam_client_get_transport_class():
         (IAMAsyncClient, transports.IAMGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-@mock.patch.object(
-    IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient)
-)
-@mock.patch.object(
-    IAMAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IAMAsyncClient),
-)
+@mock.patch.object(IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient))
+@mock.patch.object(IAMAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMAsyncClient))
 def test_iam_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(IAMClient, "get_transport_class") as gtc:
@@ -459,9 +447,7 @@ def test_iam_client_client_options(client_class, transport_class, transport_name
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -493,21 +479,7 @@ def test_iam_client_client_options(client_class, transport_class, transport_name
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -517,9 +489,7 @@ def test_iam_client_client_options(client_class, transport_class, transport_name
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -528,18 +498,14 @@ def test_iam_client_client_options(client_class, transport_class, transport_name
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -558,38 +524,24 @@ def test_iam_client_client_options(client_class, transport_class, transport_name
         (IAMAsyncClient, transports.IAMGrpcAsyncIOTransport, "grpc_asyncio", "false"),
     ],
 )
-@mock.patch.object(
-    IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient)
-)
-@mock.patch.object(
-    IAMAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IAMAsyncClient),
-)
+@mock.patch.object(IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient))
+@mock.patch.object(IAMAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_iam_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_iam_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -608,22 +560,12 @@ def test_iam_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -644,22 +586,15 @@ def test_iam_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -671,21 +606,15 @@ def test_iam_client_mtls_env_auto(
 
 @pytest.mark.parametrize("client_class", [IAMClient, IAMAsyncClient])
 @mock.patch.object(IAMClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMClient))
-@mock.patch.object(
-    IAMAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMAsyncClient)
-)
+@mock.patch.object(IAMAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMAsyncClient))
 def test_iam_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -693,14 +622,106 @@ def test_iam_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -716,28 +737,16 @@ def test_iam_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -747,58 +756,26 @@ def test_iam_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [IAMClient, IAMAsyncClient])
-@mock.patch.object(
-    IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient)
-)
-@mock.patch.object(
-    IAMAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IAMAsyncClient),
-)
+@mock.patch.object(IAMClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMClient))
+@mock.patch.object(IAMAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMAsyncClient))
 def test_iam_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = IAMClient._DEFAULT_UNIVERSE
-    default_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = IAMClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -821,19 +798,11 @@ def test_iam_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -841,9 +810,7 @@ def test_iam_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -854,9 +821,7 @@ def test_iam_client_client_api_endpoint(client_class):
         (IAMAsyncClient, transports.IAMGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_iam_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_iam_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -867,9 +832,7 @@ def test_iam_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -883,17 +846,10 @@ def test_iam_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (IAMClient, transports.IAMGrpcTransport, "grpc", grpc_helpers),
-        (
-            IAMAsyncClient,
-            transports.IAMGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (IAMAsyncClient, transports.IAMGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_iam_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_iam_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -903,9 +859,7 @@ def test_iam_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -916,9 +870,7 @@ def test_iam_client_client_options_credentials_file(
 
 
 def test_iam_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.iam_admin_v1.services.iam.transports.IAMGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.iam_admin_v1.services.iam.transports.IAMGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
         client = IAMClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
@@ -938,17 +890,10 @@ def test_iam_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (IAMClient, transports.IAMGrpcTransport, "grpc", grpc_helpers),
-        (
-            IAMAsyncClient,
-            transports.IAMGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (IAMAsyncClient, transports.IAMGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_iam_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_iam_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -958,9 +903,7 @@ def test_iam_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -970,13 +913,9 @@ def test_iam_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1016,9 +955,7 @@ def test_list_service_accounts(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ListServiceAccountsResponse(
             next_page_token="next_page_token_value",
@@ -1053,12 +990,8 @@ def test_list_service_accounts_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_service_accounts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1082,19 +1015,12 @@ def test_list_service_accounts_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_service_accounts
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_service_accounts in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_service_accounts
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_service_accounts] = mock_rpc
         request = {}
         client.list_service_accounts(request)
 
@@ -1109,9 +1035,7 @@ def test_list_service_accounts_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_service_accounts_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_service_accounts_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1125,17 +1049,12 @@ async def test_list_service_accounts_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_service_accounts
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_service_accounts in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_service_accounts
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_service_accounts] = mock_rpc
 
         request = {}
         await client.list_service_accounts(request)
@@ -1151,9 +1070,7 @@ async def test_list_service_accounts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_service_accounts_async(
-    transport: str = "grpc_asyncio", request_type=iam.ListServiceAccountsRequest
-):
+async def test_list_service_accounts_async(transport: str = "grpc_asyncio", request_type=iam.ListServiceAccountsRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1164,9 +1081,7 @@ async def test_list_service_accounts_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ListServiceAccountsResponse(
@@ -1203,9 +1118,7 @@ def test_list_service_accounts_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         call.return_value = iam.ListServiceAccountsResponse()
         client.list_service_accounts(request)
 
@@ -1235,12 +1148,8 @@ async def test_list_service_accounts_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ListServiceAccountsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ListServiceAccountsResponse())
         await client.list_service_accounts(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1262,9 +1171,7 @@ def test_list_service_accounts_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ListServiceAccountsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -1303,15 +1210,11 @@ async def test_list_service_accounts_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ListServiceAccountsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ListServiceAccountsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ListServiceAccountsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_service_accounts(
@@ -1349,9 +1252,7 @@ def test_list_service_accounts_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.ListServiceAccountsResponse(
@@ -1384,9 +1285,7 @@ def test_list_service_accounts_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),)
         pager = client.list_service_accounts(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -1405,9 +1304,7 @@ def test_list_service_accounts_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.ListServiceAccountsResponse(
@@ -1448,11 +1345,7 @@ async def test_list_service_accounts_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.ListServiceAccountsResponse(
@@ -1500,11 +1393,7 @@ async def test_list_service_accounts_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.ListServiceAccountsResponse(
@@ -1536,9 +1425,7 @@ async def test_list_service_accounts_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_service_accounts(request={})
-        ).pages:
+        async for page_ in (await client.list_service_accounts(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1562,9 +1449,7 @@ def test_get_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount(
             name="name_value",
@@ -1614,12 +1499,8 @@ def test_get_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1642,18 +1523,12 @@ def test_get_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_service_account in client._transport._wrapped_methods
-        )
+        assert client._transport.get_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_service_account] = mock_rpc
         request = {}
         client.get_service_account(request)
 
@@ -1668,9 +1543,7 @@ def test_get_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1684,17 +1557,12 @@ async def test_get_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_service_account] = mock_rpc
 
         request = {}
         await client.get_service_account(request)
@@ -1710,9 +1578,7 @@ async def test_get_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.GetServiceAccountRequest
-):
+async def test_get_service_account_async(transport: str = "grpc_asyncio", request_type=iam.GetServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1723,9 +1589,7 @@ async def test_get_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -1778,9 +1642,7 @@ def test_get_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.get_service_account(request)
 
@@ -1810,9 +1672,7 @@ async def test_get_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccount())
         await client.get_service_account(request)
 
@@ -1835,9 +1695,7 @@ def test_get_service_account_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount()
         # Call the method with a truthy value for each flattened field,
@@ -1876,9 +1734,7 @@ async def test_get_service_account_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount()
 
@@ -1931,9 +1787,7 @@ def test_create_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount(
             name="name_value",
@@ -1984,12 +1838,8 @@ def test_create_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2013,19 +1863,12 @@ def test_create_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_service_account] = mock_rpc
         request = {}
         client.create_service_account(request)
 
@@ -2040,9 +1883,7 @@ def test_create_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2056,17 +1897,12 @@ async def test_create_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_service_account] = mock_rpc
 
         request = {}
         await client.create_service_account(request)
@@ -2082,9 +1918,7 @@ async def test_create_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.CreateServiceAccountRequest
-):
+async def test_create_service_account_async(transport: str = "grpc_asyncio", request_type=iam.CreateServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2095,9 +1929,7 @@ async def test_create_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -2150,9 +1982,7 @@ def test_create_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.create_service_account(request)
 
@@ -2182,9 +2012,7 @@ async def test_create_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccount())
         await client.create_service_account(request)
 
@@ -2207,9 +2035,7 @@ def test_create_service_account_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount()
         # Call the method with a truthy value for each flattened field,
@@ -2258,9 +2084,7 @@ async def test_create_service_account_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount()
 
@@ -2323,9 +2147,7 @@ def test_update_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount(
             name="name_value",
@@ -2381,12 +2203,8 @@ def test_update_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2415,19 +2233,12 @@ def test_update_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_service_account] = mock_rpc
         request = {}
         client.update_service_account(request)
 
@@ -2442,9 +2253,7 @@ def test_update_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2458,17 +2267,12 @@ async def test_update_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_service_account] = mock_rpc
 
         request = {}
         await client.update_service_account(request)
@@ -2484,9 +2288,7 @@ async def test_update_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.ServiceAccount
-):
+async def test_update_service_account_async(transport: str = "grpc_asyncio", request_type=iam.ServiceAccount):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2497,9 +2299,7 @@ async def test_update_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -2552,9 +2352,7 @@ def test_update_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.update_service_account(request)
 
@@ -2584,9 +2382,7 @@ async def test_update_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccount())
         await client.update_service_account(request)
 
@@ -2621,9 +2417,7 @@ def test_patch_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccount(
             name="name_value",
@@ -2671,12 +2465,8 @@ def test_patch_service_account_non_empty_request_with_auto_populated_field():
     request = iam.PatchServiceAccountRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.patch_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2697,19 +2487,12 @@ def test_patch_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.patch_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.patch_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.patch_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.patch_service_account] = mock_rpc
         request = {}
         client.patch_service_account(request)
 
@@ -2724,9 +2507,7 @@ def test_patch_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_patch_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_patch_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2740,17 +2521,12 @@ async def test_patch_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.patch_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.patch_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.patch_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.patch_service_account] = mock_rpc
 
         request = {}
         await client.patch_service_account(request)
@@ -2766,9 +2542,7 @@ async def test_patch_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_patch_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.PatchServiceAccountRequest
-):
+async def test_patch_service_account_async(transport: str = "grpc_asyncio", request_type=iam.PatchServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2779,9 +2553,7 @@ async def test_patch_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -2834,9 +2606,7 @@ def test_patch_service_account_field_headers():
     request.service_account.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.patch_service_account(request)
 
@@ -2866,9 +2636,7 @@ async def test_patch_service_account_field_headers_async():
     request.service_account.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccount())
         await client.patch_service_account(request)
 
@@ -2903,9 +2671,7 @@ def test_delete_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.delete_service_account(request)
@@ -2936,12 +2702,8 @@ def test_delete_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2964,19 +2726,12 @@ def test_delete_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_service_account] = mock_rpc
         request = {}
         client.delete_service_account(request)
 
@@ -2991,9 +2746,7 @@ def test_delete_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3007,17 +2760,12 @@ async def test_delete_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_service_account] = mock_rpc
 
         request = {}
         await client.delete_service_account(request)
@@ -3033,9 +2781,7 @@ async def test_delete_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.DeleteServiceAccountRequest
-):
+async def test_delete_service_account_async(transport: str = "grpc_asyncio", request_type=iam.DeleteServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3046,9 +2792,7 @@ async def test_delete_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.delete_service_account(request)
@@ -3080,9 +2824,7 @@ def test_delete_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         call.return_value = None
         client.delete_service_account(request)
 
@@ -3112,9 +2854,7 @@ async def test_delete_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_service_account(request)
 
@@ -3137,9 +2877,7 @@ def test_delete_service_account_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -3178,9 +2916,7 @@ async def test_delete_service_account_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -3233,9 +2969,7 @@ def test_undelete_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.UndeleteServiceAccountResponse()
         response = client.undelete_service_account(request)
@@ -3266,12 +3000,8 @@ def test_undelete_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.undelete_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3294,19 +3024,12 @@ def test_undelete_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.undelete_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.undelete_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.undelete_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.undelete_service_account] = mock_rpc
         request = {}
         client.undelete_service_account(request)
 
@@ -3321,9 +3044,7 @@ def test_undelete_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_undelete_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_undelete_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3337,17 +3058,12 @@ async def test_undelete_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.undelete_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.undelete_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.undelete_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.undelete_service_account] = mock_rpc
 
         request = {}
         await client.undelete_service_account(request)
@@ -3363,9 +3079,7 @@ async def test_undelete_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_undelete_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.UndeleteServiceAccountRequest
-):
+async def test_undelete_service_account_async(transport: str = "grpc_asyncio", request_type=iam.UndeleteServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3376,13 +3090,9 @@ async def test_undelete_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.UndeleteServiceAccountResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.UndeleteServiceAccountResponse())
         response = await client.undelete_service_account(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3412,9 +3122,7 @@ def test_undelete_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
         call.return_value = iam.UndeleteServiceAccountResponse()
         client.undelete_service_account(request)
 
@@ -3444,12 +3152,8 @@ async def test_undelete_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.UndeleteServiceAccountResponse()
-        )
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.UndeleteServiceAccountResponse())
         await client.undelete_service_account(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3483,9 +3187,7 @@ def test_enable_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.enable_service_account(request)
@@ -3516,12 +3218,8 @@ def test_enable_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.enable_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3544,19 +3242,12 @@ def test_enable_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.enable_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.enable_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.enable_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.enable_service_account] = mock_rpc
         request = {}
         client.enable_service_account(request)
 
@@ -3571,9 +3262,7 @@ def test_enable_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_enable_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_enable_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3587,17 +3276,12 @@ async def test_enable_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.enable_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.enable_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.enable_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.enable_service_account] = mock_rpc
 
         request = {}
         await client.enable_service_account(request)
@@ -3613,9 +3297,7 @@ async def test_enable_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_enable_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.EnableServiceAccountRequest
-):
+async def test_enable_service_account_async(transport: str = "grpc_asyncio", request_type=iam.EnableServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3626,9 +3308,7 @@ async def test_enable_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.enable_service_account(request)
@@ -3660,9 +3340,7 @@ def test_enable_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
         call.return_value = None
         client.enable_service_account(request)
 
@@ -3692,9 +3370,7 @@ async def test_enable_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.enable_service_account(request)
 
@@ -3729,9 +3405,7 @@ def test_disable_service_account(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.disable_service_account(request)
@@ -3762,12 +3436,8 @@ def test_disable_service_account_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.disable_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3790,19 +3460,12 @@ def test_disable_service_account_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.disable_service_account
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.disable_service_account in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.disable_service_account
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.disable_service_account] = mock_rpc
         request = {}
         client.disable_service_account(request)
 
@@ -3817,9 +3480,7 @@ def test_disable_service_account_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_disable_service_account_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_disable_service_account_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3833,17 +3494,12 @@ async def test_disable_service_account_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.disable_service_account
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.disable_service_account in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.disable_service_account
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.disable_service_account] = mock_rpc
 
         request = {}
         await client.disable_service_account(request)
@@ -3859,9 +3515,7 @@ async def test_disable_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_disable_service_account_async(
-    transport: str = "grpc_asyncio", request_type=iam.DisableServiceAccountRequest
-):
+async def test_disable_service_account_async(transport: str = "grpc_asyncio", request_type=iam.DisableServiceAccountRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3872,9 +3526,7 @@ async def test_disable_service_account_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.disable_service_account(request)
@@ -3906,9 +3558,7 @@ def test_disable_service_account_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
         call.return_value = None
         client.disable_service_account(request)
 
@@ -3938,9 +3588,7 @@ async def test_disable_service_account_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.disable_service_account(request)
 
@@ -3975,9 +3623,7 @@ def test_list_service_account_keys(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ListServiceAccountKeysResponse()
         response = client.list_service_account_keys(request)
@@ -4008,12 +3654,8 @@ def test_list_service_account_keys_non_empty_request_with_auto_populated_field()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_service_account_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4036,19 +3678,12 @@ def test_list_service_account_keys_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_service_account_keys
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_service_account_keys in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_service_account_keys
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_service_account_keys] = mock_rpc
         request = {}
         client.list_service_account_keys(request)
 
@@ -4063,9 +3698,7 @@ def test_list_service_account_keys_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_service_account_keys_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_service_account_keys_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4079,17 +3712,12 @@ async def test_list_service_account_keys_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_service_account_keys
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_service_account_keys in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_service_account_keys
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_service_account_keys] = mock_rpc
 
         request = {}
         await client.list_service_account_keys(request)
@@ -4105,9 +3733,7 @@ async def test_list_service_account_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_service_account_keys_async(
-    transport: str = "grpc_asyncio", request_type=iam.ListServiceAccountKeysRequest
-):
+async def test_list_service_account_keys_async(transport: str = "grpc_asyncio", request_type=iam.ListServiceAccountKeysRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4118,13 +3744,9 @@ async def test_list_service_account_keys_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ListServiceAccountKeysResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ListServiceAccountKeysResponse())
         response = await client.list_service_account_keys(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4154,9 +3776,7 @@ def test_list_service_account_keys_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         call.return_value = iam.ListServiceAccountKeysResponse()
         client.list_service_account_keys(request)
 
@@ -4186,12 +3806,8 @@ async def test_list_service_account_keys_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ListServiceAccountKeysResponse()
-        )
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ListServiceAccountKeysResponse())
         await client.list_service_account_keys(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4213,9 +3829,7 @@ def test_list_service_account_keys_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ListServiceAccountKeysResponse()
         # Call the method with a truthy value for each flattened field,
@@ -4259,15 +3873,11 @@ async def test_list_service_account_keys_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ListServiceAccountKeysResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ListServiceAccountKeysResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ListServiceAccountKeysResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_service_account_keys(
@@ -4321,9 +3931,7 @@ def test_get_service_account_key(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey(
             name="name_value",
@@ -4346,9 +3954,7 @@ def test_get_service_account_key(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam.ServiceAccountKey)
     assert response.name == "name_value"
-    assert (
-        response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
-    )
+    assert response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
     assert response.key_algorithm == iam.ServiceAccountKeyAlgorithm.KEY_ALG_RSA_1024
     assert response.private_key_data == b"private_key_data_blob"
     assert response.public_key_data == b"public_key_data_blob"
@@ -4373,12 +3979,8 @@ def test_get_service_account_key_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_service_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4401,19 +4003,12 @@ def test_get_service_account_key_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_service_account_key
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_service_account_key in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_service_account_key
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_service_account_key] = mock_rpc
         request = {}
         client.get_service_account_key(request)
 
@@ -4428,9 +4023,7 @@ def test_get_service_account_key_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_service_account_key_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_service_account_key_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4444,17 +4037,12 @@ async def test_get_service_account_key_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_service_account_key
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_service_account_key in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_service_account_key
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_service_account_key] = mock_rpc
 
         request = {}
         await client.get_service_account_key(request)
@@ -4470,9 +4058,7 @@ async def test_get_service_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_service_account_key_async(
-    transport: str = "grpc_asyncio", request_type=iam.GetServiceAccountKeyRequest
-):
+async def test_get_service_account_key_async(transport: str = "grpc_asyncio", request_type=iam.GetServiceAccountKeyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4483,9 +4069,7 @@ async def test_get_service_account_key_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccountKey(
@@ -4510,9 +4094,7 @@ async def test_get_service_account_key_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam.ServiceAccountKey)
     assert response.name == "name_value"
-    assert (
-        response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
-    )
+    assert response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
     assert response.key_algorithm == iam.ServiceAccountKeyAlgorithm.KEY_ALG_RSA_1024
     assert response.private_key_data == b"private_key_data_blob"
     assert response.public_key_data == b"public_key_data_blob"
@@ -4538,9 +4120,7 @@ def test_get_service_account_key_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         call.return_value = iam.ServiceAccountKey()
         client.get_service_account_key(request)
 
@@ -4570,12 +4150,8 @@ async def test_get_service_account_key_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ServiceAccountKey()
-        )
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccountKey())
         await client.get_service_account_key(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4597,9 +4173,7 @@ def test_get_service_account_key_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey()
         # Call the method with a truthy value for each flattened field,
@@ -4643,15 +4217,11 @@ async def test_get_service_account_key_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ServiceAccountKey()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccountKey())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_service_account_key(
@@ -4705,9 +4275,7 @@ def test_create_service_account_key(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey(
             name="name_value",
@@ -4730,9 +4298,7 @@ def test_create_service_account_key(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam.ServiceAccountKey)
     assert response.name == "name_value"
-    assert (
-        response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
-    )
+    assert response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
     assert response.key_algorithm == iam.ServiceAccountKeyAlgorithm.KEY_ALG_RSA_1024
     assert response.private_key_data == b"private_key_data_blob"
     assert response.public_key_data == b"public_key_data_blob"
@@ -4757,12 +4323,8 @@ def test_create_service_account_key_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_service_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4785,19 +4347,12 @@ def test_create_service_account_key_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_service_account_key
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_service_account_key in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_service_account_key
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_service_account_key] = mock_rpc
         request = {}
         client.create_service_account_key(request)
 
@@ -4812,9 +4367,7 @@ def test_create_service_account_key_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_service_account_key_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_service_account_key_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4828,17 +4381,12 @@ async def test_create_service_account_key_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_service_account_key
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_service_account_key in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_service_account_key
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_service_account_key] = mock_rpc
 
         request = {}
         await client.create_service_account_key(request)
@@ -4854,9 +4402,7 @@ async def test_create_service_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_service_account_key_async(
-    transport: str = "grpc_asyncio", request_type=iam.CreateServiceAccountKeyRequest
-):
+async def test_create_service_account_key_async(transport: str = "grpc_asyncio", request_type=iam.CreateServiceAccountKeyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4867,9 +4413,7 @@ async def test_create_service_account_key_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccountKey(
@@ -4894,9 +4438,7 @@ async def test_create_service_account_key_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam.ServiceAccountKey)
     assert response.name == "name_value"
-    assert (
-        response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
-    )
+    assert response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
     assert response.key_algorithm == iam.ServiceAccountKeyAlgorithm.KEY_ALG_RSA_1024
     assert response.private_key_data == b"private_key_data_blob"
     assert response.public_key_data == b"public_key_data_blob"
@@ -4922,9 +4464,7 @@ def test_create_service_account_key_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         call.return_value = iam.ServiceAccountKey()
         client.create_service_account_key(request)
 
@@ -4954,12 +4494,8 @@ async def test_create_service_account_key_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ServiceAccountKey()
-        )
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccountKey())
         await client.create_service_account_key(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4981,9 +4517,7 @@ def test_create_service_account_key_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey()
         # Call the method with a truthy value for each flattened field,
@@ -5032,15 +4566,11 @@ async def test_create_service_account_key_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ServiceAccountKey()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccountKey())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_service_account_key(
@@ -5099,9 +4629,7 @@ def test_upload_service_account_key(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.ServiceAccountKey(
             name="name_value",
@@ -5124,9 +4652,7 @@ def test_upload_service_account_key(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam.ServiceAccountKey)
     assert response.name == "name_value"
-    assert (
-        response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
-    )
+    assert response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
     assert response.key_algorithm == iam.ServiceAccountKeyAlgorithm.KEY_ALG_RSA_1024
     assert response.private_key_data == b"private_key_data_blob"
     assert response.public_key_data == b"public_key_data_blob"
@@ -5151,12 +4677,8 @@ def test_upload_service_account_key_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.upload_service_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5179,19 +4701,12 @@ def test_upload_service_account_key_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.upload_service_account_key
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.upload_service_account_key in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.upload_service_account_key
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.upload_service_account_key] = mock_rpc
         request = {}
         client.upload_service_account_key(request)
 
@@ -5206,9 +4721,7 @@ def test_upload_service_account_key_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_upload_service_account_key_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_upload_service_account_key_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5222,17 +4735,12 @@ async def test_upload_service_account_key_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.upload_service_account_key
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.upload_service_account_key in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.upload_service_account_key
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.upload_service_account_key] = mock_rpc
 
         request = {}
         await client.upload_service_account_key(request)
@@ -5248,9 +4756,7 @@ async def test_upload_service_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_upload_service_account_key_async(
-    transport: str = "grpc_asyncio", request_type=iam.UploadServiceAccountKeyRequest
-):
+async def test_upload_service_account_key_async(transport: str = "grpc_asyncio", request_type=iam.UploadServiceAccountKeyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5261,9 +4767,7 @@ async def test_upload_service_account_key_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccountKey(
@@ -5288,9 +4792,7 @@ async def test_upload_service_account_key_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam.ServiceAccountKey)
     assert response.name == "name_value"
-    assert (
-        response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
-    )
+    assert response.private_key_type == iam.ServiceAccountPrivateKeyType.TYPE_PKCS12_FILE
     assert response.key_algorithm == iam.ServiceAccountKeyAlgorithm.KEY_ALG_RSA_1024
     assert response.private_key_data == b"private_key_data_blob"
     assert response.public_key_data == b"public_key_data_blob"
@@ -5316,9 +4818,7 @@ def test_upload_service_account_key_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
         call.return_value = iam.ServiceAccountKey()
         client.upload_service_account_key(request)
 
@@ -5348,12 +4848,8 @@ async def test_upload_service_account_key_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ServiceAccountKey()
-        )
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ServiceAccountKey())
         await client.upload_service_account_key(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5387,9 +4883,7 @@ def test_delete_service_account_key(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.delete_service_account_key(request)
@@ -5420,12 +4914,8 @@ def test_delete_service_account_key_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_service_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5448,19 +4938,12 @@ def test_delete_service_account_key_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_service_account_key
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_service_account_key in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_service_account_key
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_service_account_key] = mock_rpc
         request = {}
         client.delete_service_account_key(request)
 
@@ -5475,9 +4958,7 @@ def test_delete_service_account_key_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_account_key_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_service_account_key_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5491,17 +4972,12 @@ async def test_delete_service_account_key_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_service_account_key
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_service_account_key in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_service_account_key
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_service_account_key] = mock_rpc
 
         request = {}
         await client.delete_service_account_key(request)
@@ -5517,9 +4993,7 @@ async def test_delete_service_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_service_account_key_async(
-    transport: str = "grpc_asyncio", request_type=iam.DeleteServiceAccountKeyRequest
-):
+async def test_delete_service_account_key_async(transport: str = "grpc_asyncio", request_type=iam.DeleteServiceAccountKeyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5530,9 +5004,7 @@ async def test_delete_service_account_key_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.delete_service_account_key(request)
@@ -5564,9 +5036,7 @@ def test_delete_service_account_key_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         call.return_value = None
         client.delete_service_account_key(request)
 
@@ -5596,9 +5066,7 @@ async def test_delete_service_account_key_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_service_account_key(request)
 
@@ -5621,9 +5089,7 @@ def test_delete_service_account_key_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -5662,9 +5128,7 @@ async def test_delete_service_account_key_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -5717,9 +5181,7 @@ def test_disable_service_account_key(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.disable_service_account_key(request)
@@ -5750,12 +5212,8 @@ def test_disable_service_account_key_non_empty_request_with_auto_populated_field
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.disable_service_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5778,19 +5236,12 @@ def test_disable_service_account_key_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.disable_service_account_key
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.disable_service_account_key in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.disable_service_account_key
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.disable_service_account_key] = mock_rpc
         request = {}
         client.disable_service_account_key(request)
 
@@ -5805,9 +5256,7 @@ def test_disable_service_account_key_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_disable_service_account_key_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_disable_service_account_key_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5821,17 +5270,12 @@ async def test_disable_service_account_key_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.disable_service_account_key
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.disable_service_account_key in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.disable_service_account_key
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.disable_service_account_key] = mock_rpc
 
         request = {}
         await client.disable_service_account_key(request)
@@ -5847,9 +5291,7 @@ async def test_disable_service_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_disable_service_account_key_async(
-    transport: str = "grpc_asyncio", request_type=iam.DisableServiceAccountKeyRequest
-):
+async def test_disable_service_account_key_async(transport: str = "grpc_asyncio", request_type=iam.DisableServiceAccountKeyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5860,9 +5302,7 @@ async def test_disable_service_account_key_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.disable_service_account_key(request)
@@ -5894,9 +5334,7 @@ def test_disable_service_account_key_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         call.return_value = None
         client.disable_service_account_key(request)
 
@@ -5926,9 +5364,7 @@ async def test_disable_service_account_key_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.disable_service_account_key(request)
 
@@ -5951,9 +5387,7 @@ def test_disable_service_account_key_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -5992,9 +5426,7 @@ async def test_disable_service_account_key_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -6047,9 +5479,7 @@ def test_enable_service_account_key(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.enable_service_account_key(request)
@@ -6080,12 +5510,8 @@ def test_enable_service_account_key_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.enable_service_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6108,19 +5534,12 @@ def test_enable_service_account_key_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.enable_service_account_key
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.enable_service_account_key in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.enable_service_account_key
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.enable_service_account_key] = mock_rpc
         request = {}
         client.enable_service_account_key(request)
 
@@ -6135,9 +5554,7 @@ def test_enable_service_account_key_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_enable_service_account_key_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_enable_service_account_key_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6151,17 +5568,12 @@ async def test_enable_service_account_key_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.enable_service_account_key
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.enable_service_account_key in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.enable_service_account_key
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.enable_service_account_key] = mock_rpc
 
         request = {}
         await client.enable_service_account_key(request)
@@ -6177,9 +5589,7 @@ async def test_enable_service_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_enable_service_account_key_async(
-    transport: str = "grpc_asyncio", request_type=iam.EnableServiceAccountKeyRequest
-):
+async def test_enable_service_account_key_async(transport: str = "grpc_asyncio", request_type=iam.EnableServiceAccountKeyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6190,9 +5600,7 @@ async def test_enable_service_account_key_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.enable_service_account_key(request)
@@ -6224,9 +5632,7 @@ def test_enable_service_account_key_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         call.return_value = None
         client.enable_service_account_key(request)
 
@@ -6256,9 +5662,7 @@ async def test_enable_service_account_key_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.enable_service_account_key(request)
 
@@ -6281,9 +5685,7 @@ def test_enable_service_account_key_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -6322,9 +5724,7 @@ async def test_enable_service_account_key_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -6414,9 +5814,7 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sign_blob), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.sign_blob(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6443,9 +5841,7 @@ def test_sign_blob_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.sign_blob] = mock_rpc
         request = {}
         client.sign_blob(request)
@@ -6475,17 +5871,12 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.sign_blob
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.sign_blob in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.sign_blob
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_rpc
 
         request = {}
         await client.sign_blob(request)
@@ -6501,9 +5892,7 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_sign_blob_async(
-    transport: str = "grpc_asyncio", request_type=iam.SignBlobRequest
-):
+async def test_sign_blob_async(transport: str = "grpc_asyncio", request_type=iam.SignBlobRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6584,9 +5973,7 @@ async def test_sign_blob_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sign_blob), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.SignBlobResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.SignBlobResponse())
         await client.sign_blob(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6656,9 +6043,7 @@ async def test_sign_blob_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = iam.SignBlobResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.SignBlobResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.SignBlobResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.sign_blob(
@@ -6750,9 +6135,7 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sign_jwt), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.sign_jwt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6780,9 +6163,7 @@ def test_sign_jwt_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.sign_jwt] = mock_rpc
         request = {}
         client.sign_jwt(request)
@@ -6812,17 +6193,12 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.sign_jwt
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.sign_jwt in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.sign_jwt
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_rpc
 
         request = {}
         await client.sign_jwt(request)
@@ -6838,9 +6214,7 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_sign_jwt_async(
-    transport: str = "grpc_asyncio", request_type=iam.SignJwtRequest
-):
+async def test_sign_jwt_async(transport: str = "grpc_asyncio", request_type=iam.SignJwtRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7082,9 +6456,7 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7111,9 +6483,7 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_iam_policy] = mock_rpc
         request = {}
         client.get_iam_policy(request)
@@ -7129,9 +6499,7 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_iam_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7145,17 +6513,12 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_iam_policy
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_iam_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_iam_policy
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_iam_policy] = mock_rpc
 
         request = {}
         await client.get_iam_policy(request)
@@ -7171,9 +6534,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+async def test_get_iam_policy_async(transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7422,9 +6783,7 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7451,9 +6810,7 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
         request = {}
         client.set_iam_policy(request)
@@ -7469,9 +6826,7 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_set_iam_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7485,17 +6840,12 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.set_iam_policy
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.set_iam_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.set_iam_policy
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.set_iam_policy] = mock_rpc
 
         request = {}
         await client.set_iam_policy(request)
@@ -7511,9 +6861,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+async def test_set_iam_policy_async(transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7726,9 +7074,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
             permissions=["permissions_value"],
@@ -7762,12 +7108,8 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7790,18 +7132,12 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
+        assert client._transport.test_iam_permissions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = mock_rpc
         request = {}
         client.test_iam_permissions(request)
 
@@ -7816,9 +7152,7 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_test_iam_permissions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7832,17 +7166,12 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.test_iam_permissions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.test_iam_permissions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.test_iam_permissions] = mock_rpc
 
         request = {}
         await client.test_iam_permissions(request)
@@ -7858,10 +7187,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
+async def test_test_iam_permissions_async(transport: str = "grpc_asyncio", request_type=iam_policy_pb2.TestIamPermissionsRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7872,9 +7198,7 @@ async def test_test_iam_permissions_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy_pb2.TestIamPermissionsResponse(
@@ -7911,9 +7235,7 @@ def test_test_iam_permissions_field_headers():
     request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         client.test_iam_permissions(request)
 
@@ -7943,12 +7265,8 @@ async def test_test_iam_permissions_field_headers_async():
     request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
         await client.test_iam_permissions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7969,9 +7287,7 @@ def test_test_iam_permissions_from_dict_foreign():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         response = client.test_iam_permissions(
@@ -7989,9 +7305,7 @@ def test_test_iam_permissions_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -8035,15 +7349,11 @@ async def test_test_iam_permissions_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.test_iam_permissions(
@@ -8097,9 +7407,7 @@ def test_query_grantable_roles(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.QueryGrantableRolesResponse(
             next_page_token="next_page_token_value",
@@ -8134,12 +7442,8 @@ def test_query_grantable_roles_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.query_grantable_roles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8163,19 +7467,12 @@ def test_query_grantable_roles_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.query_grantable_roles
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.query_grantable_roles in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.query_grantable_roles
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.query_grantable_roles] = mock_rpc
         request = {}
         client.query_grantable_roles(request)
 
@@ -8190,9 +7487,7 @@ def test_query_grantable_roles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_query_grantable_roles_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_query_grantable_roles_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8206,17 +7501,12 @@ async def test_query_grantable_roles_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.query_grantable_roles
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.query_grantable_roles in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.query_grantable_roles
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.query_grantable_roles] = mock_rpc
 
         request = {}
         await client.query_grantable_roles(request)
@@ -8232,9 +7522,7 @@ async def test_query_grantable_roles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_grantable_roles_async(
-    transport: str = "grpc_asyncio", request_type=iam.QueryGrantableRolesRequest
-):
+async def test_query_grantable_roles_async(transport: str = "grpc_asyncio", request_type=iam.QueryGrantableRolesRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8245,9 +7533,7 @@ async def test_query_grantable_roles_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.QueryGrantableRolesResponse(
@@ -8278,9 +7564,7 @@ def test_query_grantable_roles_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.QueryGrantableRolesResponse()
         # Call the method with a truthy value for each flattened field,
@@ -8319,15 +7603,11 @@ async def test_query_grantable_roles_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.QueryGrantableRolesResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.QueryGrantableRolesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.QueryGrantableRolesResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.query_grantable_roles(
@@ -8365,9 +7645,7 @@ def test_query_grantable_roles_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryGrantableRolesResponse(
@@ -8418,9 +7696,7 @@ def test_query_grantable_roles_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryGrantableRolesResponse(
@@ -8461,11 +7737,7 @@ async def test_query_grantable_roles_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryGrantableRolesResponse(
@@ -8513,11 +7785,7 @@ async def test_query_grantable_roles_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryGrantableRolesResponse(
@@ -8549,9 +7817,7 @@ async def test_query_grantable_roles_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.query_grantable_roles(request={})
-        ).pages:
+        async for page_ in (await client.query_grantable_roles(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8611,9 +7877,7 @@ def test_list_roles_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_roles), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_roles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8641,9 +7905,7 @@ def test_list_roles_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_roles] = mock_rpc
         request = {}
         client.list_roles(request)
@@ -8673,17 +7935,12 @@ async def test_list_roles_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_roles
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_roles in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_roles
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_roles] = mock_rpc
 
         request = {}
         await client.list_roles(request)
@@ -8699,9 +7956,7 @@ async def test_list_roles_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_roles_async(
-    transport: str = "grpc_asyncio", request_type=iam.ListRolesRequest
-):
+async def test_list_roles_async(transport: str = "grpc_asyncio", request_type=iam.ListRolesRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8836,9 +8091,7 @@ async def test_list_roles_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_roles), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_roles), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.ListRolesResponse(
@@ -8886,9 +8139,7 @@ async def test_list_roles_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_roles), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_roles), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.ListRolesResponse(
@@ -8920,9 +8171,7 @@ async def test_list_roles_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_roles(request={})
-        ).pages:
+        async for page_ in (await client.list_roles(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8993,9 +8242,7 @@ def test_get_role_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_role), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_role(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9022,9 +8269,7 @@ def test_get_role_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_role] = mock_rpc
         request = {}
         client.get_role(request)
@@ -9054,17 +8299,12 @@ async def test_get_role_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_role
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_role in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_role
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_role] = mock_rpc
 
         request = {}
         await client.get_role(request)
@@ -9080,9 +8320,7 @@ async def test_get_role_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_role_async(
-    transport: str = "grpc_asyncio", request_type=iam.GetRoleRequest
-):
+async def test_get_role_async(transport: str = "grpc_asyncio", request_type=iam.GetRoleRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9255,9 +8493,7 @@ def test_create_role_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_role), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_role(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9285,9 +8521,7 @@ def test_create_role_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_role] = mock_rpc
         request = {}
         client.create_role(request)
@@ -9303,9 +8537,7 @@ def test_create_role_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_role_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_role_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9319,17 +8551,12 @@ async def test_create_role_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_role
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_role in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_role
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_role] = mock_rpc
 
         request = {}
         await client.create_role(request)
@@ -9345,9 +8572,7 @@ async def test_create_role_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_role_async(
-    transport: str = "grpc_asyncio", request_type=iam.CreateRoleRequest
-):
+async def test_create_role_async(transport: str = "grpc_asyncio", request_type=iam.CreateRoleRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9519,9 +8744,7 @@ def test_update_role_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_role), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_role(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9548,9 +8771,7 @@ def test_update_role_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_role] = mock_rpc
         request = {}
         client.update_role(request)
@@ -9566,9 +8787,7 @@ def test_update_role_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_role_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_role_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9582,17 +8801,12 @@ async def test_update_role_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_role
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_role in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_role
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_role] = mock_rpc
 
         request = {}
         await client.update_role(request)
@@ -9608,9 +8822,7 @@ async def test_update_role_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_role_async(
-    transport: str = "grpc_asyncio", request_type=iam.UpdateRoleRequest
-):
+async def test_update_role_async(transport: str = "grpc_asyncio", request_type=iam.UpdateRoleRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9782,9 +8994,7 @@ def test_delete_role_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_role), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_role(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9811,9 +9021,7 @@ def test_delete_role_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_role] = mock_rpc
         request = {}
         client.delete_role(request)
@@ -9829,9 +9037,7 @@ def test_delete_role_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_role_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_role_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9845,17 +9051,12 @@ async def test_delete_role_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_role
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_role in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_role
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_role] = mock_rpc
 
         request = {}
         await client.delete_role(request)
@@ -9871,9 +9072,7 @@ async def test_delete_role_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_role_async(
-    transport: str = "grpc_asyncio", request_type=iam.DeleteRoleRequest
-):
+async def test_delete_role_async(transport: str = "grpc_asyncio", request_type=iam.DeleteRoleRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10045,9 +9244,7 @@ def test_undelete_role_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.undelete_role), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.undelete_role(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10074,9 +9271,7 @@ def test_undelete_role_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.undelete_role] = mock_rpc
         request = {}
         client.undelete_role(request)
@@ -10092,9 +9287,7 @@ def test_undelete_role_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_undelete_role_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_undelete_role_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10108,17 +9301,12 @@ async def test_undelete_role_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.undelete_role
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.undelete_role in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.undelete_role
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.undelete_role] = mock_rpc
 
         request = {}
         await client.undelete_role(request)
@@ -10134,9 +9322,7 @@ async def test_undelete_role_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_undelete_role_async(
-    transport: str = "grpc_asyncio", request_type=iam.UndeleteRoleRequest
-):
+async def test_undelete_role_async(transport: str = "grpc_asyncio", request_type=iam.UndeleteRoleRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10261,9 +9447,7 @@ def test_query_testable_permissions(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.QueryTestablePermissionsResponse(
             next_page_token="next_page_token_value",
@@ -10298,12 +9482,8 @@ def test_query_testable_permissions_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.query_testable_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10327,19 +9507,12 @@ def test_query_testable_permissions_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.query_testable_permissions
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.query_testable_permissions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.query_testable_permissions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.query_testable_permissions] = mock_rpc
         request = {}
         client.query_testable_permissions(request)
 
@@ -10354,9 +9527,7 @@ def test_query_testable_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_query_testable_permissions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_query_testable_permissions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10370,17 +9541,12 @@ async def test_query_testable_permissions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.query_testable_permissions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.query_testable_permissions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.query_testable_permissions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.query_testable_permissions] = mock_rpc
 
         request = {}
         await client.query_testable_permissions(request)
@@ -10396,9 +9562,7 @@ async def test_query_testable_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_testable_permissions_async(
-    transport: str = "grpc_asyncio", request_type=iam.QueryTestablePermissionsRequest
-):
+async def test_query_testable_permissions_async(transport: str = "grpc_asyncio", request_type=iam.QueryTestablePermissionsRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10409,9 +9573,7 @@ async def test_query_testable_permissions_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.QueryTestablePermissionsResponse(
@@ -10443,9 +9605,7 @@ def test_query_testable_permissions_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryTestablePermissionsResponse(
@@ -10478,9 +9638,7 @@ def test_query_testable_permissions_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        pager = client.query_testable_permissions(
-            request={}, retry=retry, timeout=timeout
-        )
+        pager = client.query_testable_permissions(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -10498,9 +9656,7 @@ def test_query_testable_permissions_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryTestablePermissionsResponse(
@@ -10541,11 +9697,7 @@ async def test_query_testable_permissions_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryTestablePermissionsResponse(
@@ -10593,11 +9745,7 @@ async def test_query_testable_permissions_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             iam.QueryTestablePermissionsResponse(
@@ -10629,9 +9777,7 @@ async def test_query_testable_permissions_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.query_testable_permissions(request={})
-        ).pages:
+        async for page_ in (await client.query_testable_permissions(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10655,9 +9801,7 @@ def test_query_auditable_services(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_auditable_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_auditable_services), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam.QueryAuditableServicesResponse()
         response = client.query_auditable_services(request)
@@ -10688,12 +9832,8 @@ def test_query_auditable_services_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_auditable_services), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.query_auditable_services), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.query_auditable_services(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10716,19 +9856,12 @@ def test_query_auditable_services_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.query_auditable_services
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.query_auditable_services in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.query_auditable_services
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.query_auditable_services] = mock_rpc
         request = {}
         client.query_auditable_services(request)
 
@@ -10743,9 +9876,7 @@ def test_query_auditable_services_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_query_auditable_services_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_query_auditable_services_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10759,17 +9890,12 @@ async def test_query_auditable_services_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.query_auditable_services
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.query_auditable_services in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.query_auditable_services
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.query_auditable_services] = mock_rpc
 
         request = {}
         await client.query_auditable_services(request)
@@ -10785,9 +9911,7 @@ async def test_query_auditable_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_auditable_services_async(
-    transport: str = "grpc_asyncio", request_type=iam.QueryAuditableServicesRequest
-):
+async def test_query_auditable_services_async(transport: str = "grpc_asyncio", request_type=iam.QueryAuditableServicesRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10798,13 +9922,9 @@ async def test_query_auditable_services_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_auditable_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_auditable_services), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.QueryAuditableServicesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.QueryAuditableServicesResponse())
         response = await client.query_auditable_services(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10872,9 +9992,7 @@ def test_lint_policy_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lint_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.lint_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10901,9 +10019,7 @@ def test_lint_policy_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.lint_policy] = mock_rpc
         request = {}
         client.lint_policy(request)
@@ -10919,9 +10035,7 @@ def test_lint_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_lint_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_lint_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10935,17 +10049,12 @@ async def test_lint_policy_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.lint_policy
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.lint_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.lint_policy
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.lint_policy] = mock_rpc
 
         request = {}
         await client.lint_policy(request)
@@ -10961,9 +10070,7 @@ async def test_lint_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lint_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam.LintPolicyRequest
-):
+async def test_lint_policy_async(transport: str = "grpc_asyncio", request_type=iam.LintPolicyRequest):
     client = IAMAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10976,9 +10083,7 @@ async def test_lint_policy_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lint_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.LintPolicyResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.LintPolicyResponse())
         response = await client.lint_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11033,9 +10138,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = IAMClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = IAMClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.IAMGrpcTransport(
@@ -11088,16 +10191,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = IAMClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = IAMClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = IAMClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = IAMClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -11110,9 +10209,7 @@ def test_list_service_accounts_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         call.return_value = iam.ListServiceAccountsResponse()
         client.list_service_accounts(request=None)
 
@@ -11133,9 +10230,7 @@ def test_get_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.get_service_account(request=None)
 
@@ -11156,9 +10251,7 @@ def test_create_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.create_service_account(request=None)
 
@@ -11179,9 +10272,7 @@ def test_update_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.update_service_account(request=None)
 
@@ -11202,9 +10293,7 @@ def test_patch_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
         call.return_value = iam.ServiceAccount()
         client.patch_service_account(request=None)
 
@@ -11225,9 +10314,7 @@ def test_delete_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         call.return_value = None
         client.delete_service_account(request=None)
 
@@ -11248,9 +10335,7 @@ def test_undelete_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
         call.return_value = iam.UndeleteServiceAccountResponse()
         client.undelete_service_account(request=None)
 
@@ -11271,9 +10356,7 @@ def test_enable_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
         call.return_value = None
         client.enable_service_account(request=None)
 
@@ -11294,9 +10377,7 @@ def test_disable_service_account_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
         call.return_value = None
         client.disable_service_account(request=None)
 
@@ -11317,9 +10398,7 @@ def test_list_service_account_keys_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         call.return_value = iam.ListServiceAccountKeysResponse()
         client.list_service_account_keys(request=None)
 
@@ -11340,9 +10419,7 @@ def test_get_service_account_key_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         call.return_value = iam.ServiceAccountKey()
         client.get_service_account_key(request=None)
 
@@ -11363,9 +10440,7 @@ def test_create_service_account_key_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         call.return_value = iam.ServiceAccountKey()
         client.create_service_account_key(request=None)
 
@@ -11386,9 +10461,7 @@ def test_upload_service_account_key_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
         call.return_value = iam.ServiceAccountKey()
         client.upload_service_account_key(request=None)
 
@@ -11409,9 +10482,7 @@ def test_delete_service_account_key_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         call.return_value = None
         client.delete_service_account_key(request=None)
 
@@ -11432,9 +10503,7 @@ def test_disable_service_account_key_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         call.return_value = None
         client.disable_service_account_key(request=None)
 
@@ -11455,9 +10524,7 @@ def test_enable_service_account_key_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         call.return_value = None
         client.enable_service_account_key(request=None)
 
@@ -11562,9 +10629,7 @@ def test_test_iam_permissions_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         client.test_iam_permissions(request=None)
 
@@ -11585,9 +10650,7 @@ def test_query_grantable_roles_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         call.return_value = iam.QueryGrantableRolesResponse()
         client.query_grantable_roles(request=None)
 
@@ -11734,9 +10797,7 @@ def test_query_testable_permissions_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
         call.return_value = iam.QueryTestablePermissionsResponse()
         client.query_testable_permissions(request=None)
 
@@ -11757,9 +10818,7 @@ def test_query_auditable_services_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_auditable_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_auditable_services), "__call__") as call:
         call.return_value = iam.QueryAuditableServicesResponse()
         client.query_auditable_services(request=None)
 
@@ -11793,16 +10852,12 @@ def test_lint_policy_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = IAMAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = IAMAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = IAMAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = IAMAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -11816,9 +10871,7 @@ async def test_list_service_accounts_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ListServiceAccountsResponse(
@@ -11845,9 +10898,7 @@ async def test_get_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -11882,9 +10933,7 @@ async def test_create_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -11919,9 +10968,7 @@ async def test_update_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -11956,9 +11003,7 @@ async def test_patch_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.patch_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.patch_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccount(
@@ -11993,9 +11038,7 @@ async def test_delete_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_service_account(request=None)
@@ -12018,13 +11061,9 @@ async def test_undelete_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.undelete_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.undelete_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.UndeleteServiceAccountResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.UndeleteServiceAccountResponse())
         await client.undelete_service_account(request=None)
 
         # Establish that the underlying stub method was called.
@@ -12045,9 +11084,7 @@ async def test_enable_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.enable_service_account(request=None)
@@ -12070,9 +11107,7 @@ async def test_disable_service_account_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.disable_service_account(request=None)
@@ -12095,13 +11130,9 @@ async def test_list_service_account_keys_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_service_account_keys), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_service_account_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.ListServiceAccountKeysResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.ListServiceAccountKeysResponse())
         await client.list_service_account_keys(request=None)
 
         # Establish that the underlying stub method was called.
@@ -12122,9 +11153,7 @@ async def test_get_service_account_key_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccountKey(
@@ -12158,9 +11187,7 @@ async def test_create_service_account_key_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccountKey(
@@ -12194,9 +11221,7 @@ async def test_upload_service_account_key_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.upload_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upload_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.ServiceAccountKey(
@@ -12230,9 +11255,7 @@ async def test_delete_service_account_key_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_service_account_key(request=None)
@@ -12255,9 +11278,7 @@ async def test_disable_service_account_key_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.disable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.disable_service_account_key(request=None)
@@ -12280,9 +11301,7 @@ async def test_enable_service_account_key_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_service_account_key), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.enable_service_account_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.enable_service_account_key(request=None)
@@ -12417,9 +11436,7 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy_pb2.TestIamPermissionsResponse(
@@ -12446,9 +11463,7 @@ async def test_query_grantable_roles_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_grantable_roles), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_grantable_roles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.QueryGrantableRolesResponse(
@@ -12667,9 +11682,7 @@ async def test_query_testable_permissions_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_testable_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_testable_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam.QueryTestablePermissionsResponse(
@@ -12696,13 +11709,9 @@ async def test_query_auditable_services_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_auditable_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_auditable_services), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.QueryAuditableServicesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.QueryAuditableServicesResponse())
         await client.query_auditable_services(request=None)
 
         # Establish that the underlying stub method was called.
@@ -12725,9 +11734,7 @@ async def test_lint_policy_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.lint_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam.LintPolicyResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam.LintPolicyResponse())
         await client.lint_policy(request=None)
 
         # Establish that the underlying stub method was called.
@@ -12752,17 +11759,12 @@ def test_transport_grpc_default():
 def test_iam_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.IAMTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.IAMTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_iam_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.iam_admin_v1.services.iam.transports.IAMTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.iam_admin_v1.services.iam.transports.IAMTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.IAMTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -12821,9 +11823,7 @@ def test_iam_base_transport():
 
 def test_iam_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.iam_admin_v1.services.iam.transports.IAMTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -12897,9 +11897,7 @@ def test_iam_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -12907,17 +11905,12 @@ def test_iam_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.IAMGrpcTransport, grpc_helpers),
-        (transports.IAMGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.IAMGrpcTransport, grpc_helpers), (transports.IAMGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_iam_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -12940,20 +11933,14 @@ def test_iam_transport_create_channel(transport_class, grpc_helpers):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class", [transports.IAMGrpcTransport, transports.IAMGrpcAsyncIOTransport]
-)
+@pytest.mark.parametrize("transport_class", [transports.IAMGrpcTransport, transports.IAMGrpcAsyncIOTransport])
 def test_iam_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -12971,14 +11958,9 @@ def test_iam_grpc_transport_client_cert_source_for_mtls(transport_class):
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 @pytest.mark.parametrize(
@@ -13007,9 +11989,7 @@ def test_iam_host_no_port(transport_name):
 def test_iam_host_with_port(transport_name):
     client = IAMClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="iam.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="iam.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == ("iam.googleapis.com:8000")
@@ -13043,16 +12023,11 @@ def test_iam_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class", [transports.IAMGrpcTransport, transports.IAMGrpcAsyncIOTransport]
-)
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.IAMGrpcTransport, transports.IAMGrpcAsyncIOTransport])
 def test_iam_transport_channel_mtls_with_client_cert_source(transport_class):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -13070,9 +12045,7 @@ def test_iam_transport_channel_mtls_with_client_cert_source(transport_class):
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -13091,9 +12064,7 @@ def test_iam_transport_channel_mtls_with_client_cert_source(transport_class):
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class", [transports.IAMGrpcTransport, transports.IAMGrpcAsyncIOTransport]
-)
+@pytest.mark.parametrize("transport_class", [transports.IAMGrpcTransport, transports.IAMGrpcAsyncIOTransport])
 def test_iam_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -13101,9 +12072,7 @@ def test_iam_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -13303,12 +12272,8 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_grpc():
-    client = IAMClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = IAMClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -13316,12 +12281,8 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = IAMAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = IAMAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -13332,9 +12293,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = IAMClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = IAMClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -13351,9 +12310,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -13364,9 +12321,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import BusinessIdentityServiceTransport
 from .grpc import BusinessIdentityServiceGrpcTransport
 from .grpc_asyncio import BusinessIdentityServiceGrpcAsyncIOTransport
-from .rest import (
-    BusinessIdentityServiceRestInterceptor,
-    BusinessIdentityServiceRestTransport,
-)
+from .rest import BusinessIdentityServiceRestInterceptor, BusinessIdentityServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[BusinessIdentityServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[BusinessIdentityServiceTransport]]
 _transport_registry["grpc"] = BusinessIdentityServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = BusinessIdentityServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = BusinessIdentityServiceRestTransport

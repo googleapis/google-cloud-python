@@ -153,12 +153,8 @@ class CloudMemcacheRestInterceptor:
     """
 
     def pre_apply_parameters(
-        self,
-        request: cloud_memcache.ApplyParametersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.ApplyParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.ApplyParametersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.ApplyParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for apply_parameters
 
         Override in a subclass to manipulate the request or metadata
@@ -166,9 +162,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_apply_parameters(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_apply_parameters(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for apply_parameters
 
         DEPRECATED. Please use the `post_apply_parameters_with_metadata`
@@ -182,9 +176,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_apply_parameters_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for apply_parameters
 
@@ -201,13 +193,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_apply_software_update(
-        self,
-        request: cloud_memcache.ApplySoftwareUpdateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.ApplySoftwareUpdateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_memcache.ApplySoftwareUpdateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.ApplySoftwareUpdateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for apply_software_update
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +202,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_apply_software_update(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_apply_software_update(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for apply_software_update
 
         DEPRECATED. Please use the `post_apply_software_update_with_metadata`
@@ -231,9 +216,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_apply_software_update_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for apply_software_update
 
@@ -250,12 +233,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_create_instance(
-        self,
-        request: cloud_memcache.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -263,9 +242,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -279,9 +256,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -298,12 +273,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: cloud_memcache.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -311,9 +282,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -327,9 +296,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -346,12 +313,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: cloud_memcache.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -359,9 +322,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_get_instance(
-        self, response: cloud_memcache.Instance
-    ) -> cloud_memcache.Instance:
+    def post_get_instance(self, response: cloud_memcache.Instance) -> cloud_memcache.Instance:
         """Post-rpc interceptor for get_instance
 
         DEPRECATED. Please use the `post_get_instance_with_metadata`
@@ -375,9 +336,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: cloud_memcache.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_memcache.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_memcache.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -394,12 +353,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: cloud_memcache.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -407,9 +362,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: cloud_memcache.ListInstancesResponse
-    ) -> cloud_memcache.ListInstancesResponse:
+    def post_list_instances(self, response: cloud_memcache.ListInstancesResponse) -> cloud_memcache.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -423,12 +376,8 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: cloud_memcache.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_memcache.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -444,13 +393,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_reschedule_maintenance(
-        self,
-        request: cloud_memcache.RescheduleMaintenanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.RescheduleMaintenanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_memcache.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.RescheduleMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -458,9 +402,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_reschedule_maintenance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reschedule_maintenance
 
         DEPRECATED. Please use the `post_reschedule_maintenance_with_metadata`
@@ -474,9 +416,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_reschedule_maintenance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reschedule_maintenance
 
@@ -493,12 +433,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: cloud_memcache.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -506,9 +442,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -522,9 +456,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -541,12 +473,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_update_parameters(
-        self,
-        request: cloud_memcache.UpdateParametersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_memcache.UpdateParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_memcache.UpdateParametersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_memcache.UpdateParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_parameters
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +482,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_update_parameters(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_parameters(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_parameters
 
         DEPRECATED. Please use the `post_update_parameters_with_metadata`
@@ -570,9 +496,7 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def post_update_parameters_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_parameters
 
@@ -589,12 +513,8 @@ class CloudMemcacheRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -602,9 +522,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -614,12 +532,8 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -627,9 +541,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -639,12 +551,8 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -662,12 +570,8 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -685,12 +589,8 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -698,9 +598,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -710,12 +608,8 @@ class CloudMemcacheRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -723,9 +617,7 @@ class CloudMemcacheRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -832,9 +724,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -887,29 +777,17 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 path_prefix="v1beta2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ApplyParameters(
-        _BaseCloudMemcacheRestTransport._BaseApplyParameters, CloudMemcacheRestStub
-    ):
+    class _ApplyParameters(_BaseCloudMemcacheRestTransport._BaseApplyParameters, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.ApplyParameters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -953,32 +831,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_http_options()
 
-            request, metadata = self._interceptor.pre_apply_parameters(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_apply_parameters(request, metadata)
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseApplyParameters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1002,13 +866,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._ApplyParameters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1022,12 +880,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_apply_parameters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_apply_parameters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_apply_parameters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1048,22 +902,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _ApplySoftwareUpdate(
-        _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate, CloudMemcacheRestStub
-    ):
+    class _ApplySoftwareUpdate(_BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.ApplySoftwareUpdate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1107,32 +951,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_http_options()
 
-            request, metadata = self._interceptor.pre_apply_software_update(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_apply_software_update(request, metadata)
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseApplySoftwareUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1156,13 +986,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._ApplySoftwareUpdate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1176,12 +1000,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_apply_software_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_apply_software_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_apply_software_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1202,22 +1022,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _CreateInstance(
-        _BaseCloudMemcacheRestTransport._BaseCreateInstance, CloudMemcacheRestStub
-    ):
+    class _CreateInstance(_BaseCloudMemcacheRestTransport._BaseCreateInstance, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1261,30 +1071,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1308,13 +1106,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1328,12 +1120,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1354,22 +1142,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _DeleteInstance(
-        _BaseCloudMemcacheRestTransport._BaseDeleteInstance, CloudMemcacheRestStub
-    ):
+    class _DeleteInstance(_BaseCloudMemcacheRestTransport._BaseDeleteInstance, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1412,26 +1190,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1455,12 +1223,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1474,12 +1237,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1500,22 +1259,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseCloudMemcacheRestTransport._BaseGetInstance, CloudMemcacheRestStub
-    ):
+    class _GetInstance(_BaseCloudMemcacheRestTransport._BaseGetInstance, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1555,28 +1304,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                     A Memorystore for Memcached instance
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudMemcacheRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1600,12 +1337,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1621,12 +1353,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_memcache.Instance.to_json(response)
                 except:
@@ -1647,22 +1375,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseCloudMemcacheRestTransport._BaseListInstances, CloudMemcacheRestStub
-    ):
+    class _ListInstances(_BaseCloudMemcacheRestTransport._BaseListInstances, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1704,26 +1422,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1747,12 +1455,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1768,16 +1471,10 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_memcache.ListInstancesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_memcache.ListInstancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1796,23 +1493,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _RescheduleMaintenance(
-        _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance,
-        CloudMemcacheRestStub,
-    ):
+    class _RescheduleMaintenance(_BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.RescheduleMaintenance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1856,32 +1542,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_http_options()
 
-            request, metadata = self._interceptor.pre_reschedule_maintenance(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reschedule_maintenance(request, metadata)
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseRescheduleMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1905,13 +1577,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._RescheduleMaintenance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1925,12 +1591,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_reschedule_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reschedule_maintenance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reschedule_maintenance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1951,22 +1613,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _UpdateInstance(
-        _BaseCloudMemcacheRestTransport._BaseUpdateInstance, CloudMemcacheRestStub
-    ):
+    class _UpdateInstance(_BaseCloudMemcacheRestTransport._BaseUpdateInstance, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2010,30 +1662,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2057,13 +1697,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2077,12 +1711,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2103,22 +1733,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 )
             return resp
 
-    class _UpdateParameters(
-        _BaseCloudMemcacheRestTransport._BaseUpdateParameters, CloudMemcacheRestStub
-    ):
+    class _UpdateParameters(_BaseCloudMemcacheRestTransport._BaseUpdateParameters, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.UpdateParameters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2162,32 +1782,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_parameters(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_parameters(request, metadata)
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseUpdateParameters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2211,13 +1817,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._UpdateParameters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2231,12 +1831,8 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             resp = self._interceptor.post_update_parameters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_parameters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_parameters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2258,79 +1854,55 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
             return resp
 
     @property
-    def apply_parameters(
-        self,
-    ) -> Callable[[cloud_memcache.ApplyParametersRequest], operations_pb2.Operation]:
+    def apply_parameters(self) -> Callable[[cloud_memcache.ApplyParametersRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApplyParameters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def apply_software_update(
-        self,
-    ) -> Callable[
-        [cloud_memcache.ApplySoftwareUpdateRequest], operations_pb2.Operation
-    ]:
+    def apply_software_update(self) -> Callable[[cloud_memcache.ApplySoftwareUpdateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApplySoftwareUpdate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[cloud_memcache.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[cloud_memcache.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[cloud_memcache.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[cloud_memcache.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[cloud_memcache.GetInstanceRequest], cloud_memcache.Instance]:
+    def get_instance(self) -> Callable[[cloud_memcache.GetInstanceRequest], cloud_memcache.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [cloud_memcache.ListInstancesRequest], cloud_memcache.ListInstancesResponse
-    ]:
+    def list_instances(self) -> Callable[[cloud_memcache.ListInstancesRequest], cloud_memcache.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reschedule_maintenance(
-        self,
-    ) -> Callable[
-        [cloud_memcache.RescheduleMaintenanceRequest], operations_pb2.Operation
-    ]:
+    def reschedule_maintenance(self) -> Callable[[cloud_memcache.RescheduleMaintenanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[cloud_memcache.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[cloud_memcache.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_parameters(
-        self,
-    ) -> Callable[[cloud_memcache.UpdateParametersRequest], operations_pb2.Operation]:
+    def update_parameters(self) -> Callable[[cloud_memcache.UpdateParametersRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateParameters(self._session, self._host, self._interceptor)  # type: ignore
@@ -2339,22 +1911,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCloudMemcacheRestTransport._BaseGetLocation, CloudMemcacheRestStub
-    ):
+    class _GetLocation(_BaseCloudMemcacheRestTransport._BaseGetLocation, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2392,28 +1954,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudMemcacheRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2437,12 +1987,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2454,9 +1999,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2481,22 +2024,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCloudMemcacheRestTransport._BaseListLocations, CloudMemcacheRestStub
-    ):
+    class _ListLocations(_BaseCloudMemcacheRestTransport._BaseListLocations, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2534,26 +2067,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2577,12 +2100,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2594,9 +2112,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2621,22 +2137,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseCloudMemcacheRestTransport._BaseCancelOperation, CloudMemcacheRestStub
-    ):
+    class _CancelOperation(_BaseCloudMemcacheRestTransport._BaseCancelOperation, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2672,32 +2178,18 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2721,13 +2213,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2741,22 +2227,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseCloudMemcacheRestTransport._BaseDeleteOperation, CloudMemcacheRestStub
-    ):
+    class _DeleteOperation(_BaseCloudMemcacheRestTransport._BaseDeleteOperation, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2791,28 +2267,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2836,12 +2300,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2855,22 +2314,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCloudMemcacheRestTransport._BaseGetOperation, CloudMemcacheRestStub
-    ):
+    class _GetOperation(_BaseCloudMemcacheRestTransport._BaseGetOperation, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2908,26 +2357,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2951,12 +2390,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2968,9 +2402,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2995,22 +2427,12 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCloudMemcacheRestTransport._BaseListOperations, CloudMemcacheRestStub
-    ):
+    class _ListOperations(_BaseCloudMemcacheRestTransport._BaseListOperations, CloudMemcacheRestStub):
         def __hash__(self):
             return hash("CloudMemcacheRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3048,26 +2470,16 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCloudMemcacheRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCloudMemcacheRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCloudMemcacheRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudMemcacheRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudMemcacheRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudMemcacheRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3091,12 +2503,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
 
             # Send the request
             response = CloudMemcacheRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3108,9 +2515,7 @@ class CloudMemcacheRestTransport(_BaseCloudMemcacheRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

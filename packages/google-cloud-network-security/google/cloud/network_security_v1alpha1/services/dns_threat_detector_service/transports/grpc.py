@@ -33,9 +33,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.network_security_v1alpha1.types import (
-    dns_threat_detector as gcn_dns_threat_detector,
-)
+from google.cloud.network_security_v1alpha1.types import dns_threat_detector as gcn_dns_threat_detector
 from google.cloud.network_security_v1alpha1.types import dns_threat_detector
 
 from .base import DEFAULT_CLIENT_INFO, DnsThreatDetectorServiceTransport
@@ -52,9 +50,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -224,18 +213,14 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -269,9 +254,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -332,10 +315,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
     @property
     def list_dns_threat_detectors(
         self,
-    ) -> Callable[
-        [dns_threat_detector.ListDnsThreatDetectorsRequest],
-        dns_threat_detector.ListDnsThreatDetectorsResponse,
-    ]:
+    ) -> Callable[[dns_threat_detector.ListDnsThreatDetectorsRequest], dns_threat_detector.ListDnsThreatDetectorsResponse]:
         r"""Return a callable for the list dns threat detectors method over gRPC.
 
         Lists DnsThreatDetectors in a given project and
@@ -360,12 +340,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
         return self._stubs["list_dns_threat_detectors"]
 
     @property
-    def get_dns_threat_detector(
-        self,
-    ) -> Callable[
-        [dns_threat_detector.GetDnsThreatDetectorRequest],
-        dns_threat_detector.DnsThreatDetector,
-    ]:
+    def get_dns_threat_detector(self) -> Callable[[dns_threat_detector.GetDnsThreatDetectorRequest], dns_threat_detector.DnsThreatDetector]:
         r"""Return a callable for the get dns threat detector method over gRPC.
 
         Gets the details of a single DnsThreatDetector.
@@ -391,10 +366,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
     @property
     def create_dns_threat_detector(
         self,
-    ) -> Callable[
-        [gcn_dns_threat_detector.CreateDnsThreatDetectorRequest],
-        gcn_dns_threat_detector.DnsThreatDetector,
-    ]:
+    ) -> Callable[[gcn_dns_threat_detector.CreateDnsThreatDetectorRequest], gcn_dns_threat_detector.DnsThreatDetector]:
         r"""Return a callable for the create dns threat detector method over gRPC.
 
         Creates a new DnsThreatDetector in a given project
@@ -411,9 +383,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_dns_threat_detector" not in self._stubs:
-            self._stubs[
-                "create_dns_threat_detector"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_dns_threat_detector"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/CreateDnsThreatDetector",
                 request_serializer=gcn_dns_threat_detector.CreateDnsThreatDetectorRequest.serialize,
                 response_deserializer=gcn_dns_threat_detector.DnsThreatDetector.deserialize,
@@ -423,10 +393,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
     @property
     def update_dns_threat_detector(
         self,
-    ) -> Callable[
-        [gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest],
-        gcn_dns_threat_detector.DnsThreatDetector,
-    ]:
+    ) -> Callable[[gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest], gcn_dns_threat_detector.DnsThreatDetector]:
         r"""Return a callable for the update dns threat detector method over gRPC.
 
         Updates a single DnsThreatDetector.
@@ -442,9 +409,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_dns_threat_detector" not in self._stubs:
-            self._stubs[
-                "update_dns_threat_detector"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_dns_threat_detector"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/UpdateDnsThreatDetector",
                 request_serializer=gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest.serialize,
                 response_deserializer=gcn_dns_threat_detector.DnsThreatDetector.deserialize,
@@ -452,11 +417,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
         return self._stubs["update_dns_threat_detector"]
 
     @property
-    def delete_dns_threat_detector(
-        self,
-    ) -> Callable[
-        [dns_threat_detector.DeleteDnsThreatDetectorRequest], empty_pb2.Empty
-    ]:
+    def delete_dns_threat_detector(self) -> Callable[[dns_threat_detector.DeleteDnsThreatDetectorRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete dns threat detector method over gRPC.
 
         Deletes a single DnsThreatDetector.
@@ -472,9 +433,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_dns_threat_detector" not in self._stubs:
-            self._stubs[
-                "delete_dns_threat_detector"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_dns_threat_detector"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/DeleteDnsThreatDetector",
                 request_serializer=dns_threat_detector.DeleteDnsThreatDetectorRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -538,9 +497,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -557,9 +514,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -644,10 +599,7 @@ class DnsThreatDetectorServiceGrpcTransport(DnsThreatDetectorServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

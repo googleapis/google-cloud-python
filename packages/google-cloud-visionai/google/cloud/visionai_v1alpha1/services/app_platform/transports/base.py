@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.visionai_v1alpha1 import gapic_version as package_version
 from google.cloud.visionai_v1alpha1.types import platform
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class AppPlatformTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -331,244 +321,137 @@ class AppPlatformTransport(abc.ABC):
     @property
     def list_applications(
         self,
-    ) -> Callable[
-        [platform.ListApplicationsRequest],
-        Union[
-            platform.ListApplicationsResponse,
-            Awaitable[platform.ListApplicationsResponse],
-        ],
-    ]:
+    ) -> Callable[[platform.ListApplicationsRequest], Union[platform.ListApplicationsResponse, Awaitable[platform.ListApplicationsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_application(
-        self,
-    ) -> Callable[
-        [platform.GetApplicationRequest],
-        Union[platform.Application, Awaitable[platform.Application]],
-    ]:
+    def get_application(self) -> Callable[[platform.GetApplicationRequest], Union[platform.Application, Awaitable[platform.Application]]]:
         raise NotImplementedError()
 
     @property
     def create_application(
         self,
-    ) -> Callable[
-        [platform.CreateApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.CreateApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_application(
         self,
-    ) -> Callable[
-        [platform.UpdateApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.UpdateApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_application(
         self,
-    ) -> Callable[
-        [platform.DeleteApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.DeleteApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def deploy_application(
         self,
-    ) -> Callable[
-        [platform.DeployApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.DeployApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undeploy_application(
         self,
-    ) -> Callable[
-        [platform.UndeployApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.UndeployApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def add_application_stream_input(
         self,
-    ) -> Callable[
-        [platform.AddApplicationStreamInputRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.AddApplicationStreamInputRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_application_stream_input(
         self,
-    ) -> Callable[
-        [platform.RemoveApplicationStreamInputRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.RemoveApplicationStreamInputRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_application_stream_input(
         self,
-    ) -> Callable[
-        [platform.UpdateApplicationStreamInputRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.UpdateApplicationStreamInputRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_instances(
         self,
-    ) -> Callable[
-        [platform.ListInstancesRequest],
-        Union[
-            platform.ListInstancesResponse, Awaitable[platform.ListInstancesResponse]
-        ],
-    ]:
+    ) -> Callable[[platform.ListInstancesRequest], Union[platform.ListInstancesResponse, Awaitable[platform.ListInstancesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [platform.GetInstanceRequest],
-        Union[platform.Instance, Awaitable[platform.Instance]],
-    ]:
+    def get_instance(self) -> Callable[[platform.GetInstanceRequest], Union[platform.Instance, Awaitable[platform.Instance]]]:
         raise NotImplementedError()
 
     @property
     def create_application_instances(
         self,
-    ) -> Callable[
-        [platform.CreateApplicationInstancesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.CreateApplicationInstancesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_application_instances(
         self,
-    ) -> Callable[
-        [platform.DeleteApplicationInstancesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.DeleteApplicationInstancesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_application_instances(
         self,
-    ) -> Callable[
-        [platform.UpdateApplicationInstancesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[platform.UpdateApplicationInstancesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_drafts(
-        self,
-    ) -> Callable[
-        [platform.ListDraftsRequest],
-        Union[platform.ListDraftsResponse, Awaitable[platform.ListDraftsResponse]],
-    ]:
+    def list_drafts(self) -> Callable[[platform.ListDraftsRequest], Union[platform.ListDraftsResponse, Awaitable[platform.ListDraftsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_draft(
-        self,
-    ) -> Callable[
-        [platform.GetDraftRequest], Union[platform.Draft, Awaitable[platform.Draft]]
-    ]:
+    def get_draft(self) -> Callable[[platform.GetDraftRequest], Union[platform.Draft, Awaitable[platform.Draft]]]:
         raise NotImplementedError()
 
     @property
-    def create_draft(
-        self,
-    ) -> Callable[
-        [platform.CreateDraftRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_draft(self) -> Callable[[platform.CreateDraftRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_draft(
-        self,
-    ) -> Callable[
-        [platform.UpdateDraftRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_draft(self) -> Callable[[platform.UpdateDraftRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_draft(
-        self,
-    ) -> Callable[
-        [platform.DeleteDraftRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_draft(self) -> Callable[[platform.DeleteDraftRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_processors(
         self,
-    ) -> Callable[
-        [platform.ListProcessorsRequest],
-        Union[
-            platform.ListProcessorsResponse, Awaitable[platform.ListProcessorsResponse]
-        ],
-    ]:
+    ) -> Callable[[platform.ListProcessorsRequest], Union[platform.ListProcessorsResponse, Awaitable[platform.ListProcessorsResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_prebuilt_processors(
         self,
     ) -> Callable[
-        [platform.ListPrebuiltProcessorsRequest],
-        Union[
-            platform.ListPrebuiltProcessorsResponse,
-            Awaitable[platform.ListPrebuiltProcessorsResponse],
-        ],
+        [platform.ListPrebuiltProcessorsRequest], Union[platform.ListPrebuiltProcessorsResponse, Awaitable[platform.ListPrebuiltProcessorsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_processor(
-        self,
-    ) -> Callable[
-        [platform.GetProcessorRequest],
-        Union[platform.Processor, Awaitable[platform.Processor]],
-    ]:
+    def get_processor(self) -> Callable[[platform.GetProcessorRequest], Union[platform.Processor, Awaitable[platform.Processor]]]:
         raise NotImplementedError()
 
     @property
-    def create_processor(
-        self,
-    ) -> Callable[
-        [platform.CreateProcessorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_processor(self) -> Callable[[platform.CreateProcessorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_processor(
-        self,
-    ) -> Callable[
-        [platform.UpdateProcessorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_processor(self) -> Callable[[platform.UpdateProcessorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_processor(
-        self,
-    ) -> Callable[
-        [platform.DeleteProcessorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_processor(self) -> Callable[[platform.DeleteProcessorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -576,20 +459,14 @@ class AppPlatformTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -607,19 +484,13 @@ class AppPlatformTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -637,22 +508,13 @@ class AppPlatformTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

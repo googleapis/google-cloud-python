@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.contact_center_insights_v1.types import (
-    contact_center_insights,
-    resources,
-)
+from google.cloud.contact_center_insights_v1.types import contact_center_insights, resources
 
 
 class ListConversationsPager:
@@ -104,12 +89,7 @@ class ListConversationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.Conversation]:
@@ -140,9 +120,7 @@ class ListConversationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListConversationsResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListConversationsResponse]],
         request: contact_center_insights.ListConversationsRequest,
         response: contact_center_insights.ListConversationsResponse,
         *,
@@ -178,18 +156,11 @@ class ListConversationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListConversationsResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListConversationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.Conversation]:
@@ -264,12 +235,7 @@ class ListAnalysesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.Analysis]:
@@ -336,18 +302,11 @@ class ListAnalysesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListAnalysesResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListAnalysesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.Analysis]:
@@ -422,12 +381,7 @@ class ListPhraseMatchersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.PhraseMatcher]:
@@ -458,9 +412,7 @@ class ListPhraseMatchersAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListPhraseMatchersResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListPhraseMatchersResponse]],
         request: contact_center_insights.ListPhraseMatchersRequest,
         response: contact_center_insights.ListPhraseMatchersResponse,
         *,
@@ -496,18 +448,11 @@ class ListPhraseMatchersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListPhraseMatchersResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListPhraseMatchersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.PhraseMatcher]:
@@ -582,12 +527,7 @@ class ListAnalysisRulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.AnalysisRule]:
@@ -618,9 +558,7 @@ class ListAnalysisRulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListAnalysisRulesResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListAnalysisRulesResponse]],
         request: contact_center_insights.ListAnalysisRulesRequest,
         response: contact_center_insights.ListAnalysisRulesResponse,
         *,
@@ -656,18 +594,11 @@ class ListAnalysisRulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListAnalysisRulesResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListAnalysisRulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.AnalysisRule]:
@@ -742,12 +673,7 @@ class ListViewsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.View]:
@@ -818,12 +744,7 @@ class ListViewsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.View]:
@@ -898,12 +819,7 @@ class ListQaQuestionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.QaQuestion]:
@@ -934,9 +850,7 @@ class ListQaQuestionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListQaQuestionsResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListQaQuestionsResponse]],
         request: contact_center_insights.ListQaQuestionsRequest,
         response: contact_center_insights.ListQaQuestionsResponse,
         *,
@@ -972,18 +886,11 @@ class ListQaQuestionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListQaQuestionsResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListQaQuestionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.QaQuestion]:
@@ -1058,12 +965,7 @@ class ListQaScorecardsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.QaScorecard]:
@@ -1094,9 +996,7 @@ class ListQaScorecardsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListQaScorecardsResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListQaScorecardsResponse]],
         request: contact_center_insights.ListQaScorecardsRequest,
         response: contact_center_insights.ListQaScorecardsResponse,
         *,
@@ -1132,18 +1032,11 @@ class ListQaScorecardsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListQaScorecardsResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListQaScorecardsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.QaScorecard]:
@@ -1214,18 +1107,11 @@ class ListQaScorecardRevisionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[contact_center_insights.ListQaScorecardRevisionsResponse]:
+    def pages(self) -> Iterator[contact_center_insights.ListQaScorecardRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.QaScorecardRevision]:
@@ -1256,9 +1142,7 @@ class ListQaScorecardRevisionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse]],
         request: contact_center_insights.ListQaScorecardRevisionsRequest,
         response: contact_center_insights.ListQaScorecardRevisionsResponse,
         *,
@@ -1294,18 +1178,11 @@ class ListQaScorecardRevisionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListQaScorecardRevisionsResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListQaScorecardRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.QaScorecardRevision]:
@@ -1380,12 +1257,7 @@ class ListFeedbackLabelsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.FeedbackLabel]:
@@ -1416,9 +1288,7 @@ class ListFeedbackLabelsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListFeedbackLabelsResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListFeedbackLabelsResponse]],
         request: contact_center_insights.ListFeedbackLabelsRequest,
         response: contact_center_insights.ListFeedbackLabelsResponse,
         *,
@@ -1454,18 +1324,11 @@ class ListFeedbackLabelsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListFeedbackLabelsResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListFeedbackLabelsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.FeedbackLabel]:
@@ -1540,12 +1403,7 @@ class ListAllFeedbackLabelsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.FeedbackLabel]:
@@ -1576,9 +1434,7 @@ class ListAllFeedbackLabelsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse]
-        ],
+        method: Callable[..., Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse]],
         request: contact_center_insights.ListAllFeedbackLabelsRequest,
         response: contact_center_insights.ListAllFeedbackLabelsResponse,
         *,
@@ -1614,18 +1470,11 @@ class ListAllFeedbackLabelsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[contact_center_insights.ListAllFeedbackLabelsResponse]:
+    async def pages(self) -> AsyncIterator[contact_center_insights.ListAllFeedbackLabelsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.FeedbackLabel]:

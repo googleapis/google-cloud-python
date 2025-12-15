@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +214,14 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +255,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -337,17 +322,13 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def initialize_zone(
-        self,
-    ) -> Callable[[service.InitializeZoneRequest], service.InitializeZoneResponse]:
+    def initialize_zone(self) -> Callable[[service.InitializeZoneRequest], service.InitializeZoneResponse]:
         r"""Return a callable for the initialize zone method over gRPC.
 
         InitializeZone will initialize resources for a zone
@@ -372,9 +353,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["initialize_zone"]
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
         r"""Return a callable for the list zones method over gRPC.
 
         Deprecated: not implemented.
@@ -424,9 +403,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["get_zone"]
 
     @property
-    def list_networks(
-        self,
-    ) -> Callable[[service.ListNetworksRequest], service.ListNetworksResponse]:
+    def list_networks(self) -> Callable[[service.ListNetworksRequest], service.ListNetworksResponse]:
         r"""Return a callable for the list networks method over gRPC.
 
         Lists Networks in a given project and location.
@@ -474,9 +451,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["get_network"]
 
     @property
-    def diagnose_network(
-        self,
-    ) -> Callable[[service.DiagnoseNetworkRequest], service.DiagnoseNetworkResponse]:
+    def diagnose_network(self) -> Callable[[service.DiagnoseNetworkRequest], service.DiagnoseNetworkResponse]:
         r"""Return a callable for the diagnose network method over gRPC.
 
         Get the diagnostics of a single network resource.
@@ -500,9 +475,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["diagnose_network"]
 
     @property
-    def create_network(
-        self,
-    ) -> Callable[[service.CreateNetworkRequest], operations_pb2.Operation]:
+    def create_network(self) -> Callable[[service.CreateNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the create network method over gRPC.
 
         Creates a new Network in a given project and
@@ -527,9 +500,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["create_network"]
 
     @property
-    def delete_network(
-        self,
-    ) -> Callable[[service.DeleteNetworkRequest], operations_pb2.Operation]:
+    def delete_network(self) -> Callable[[service.DeleteNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete network method over gRPC.
 
         Deletes a single Network.
@@ -553,9 +524,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["delete_network"]
 
     @property
-    def list_subnets(
-        self,
-    ) -> Callable[[service.ListSubnetsRequest], service.ListSubnetsResponse]:
+    def list_subnets(self) -> Callable[[service.ListSubnetsRequest], service.ListSubnetsResponse]:
         r"""Return a callable for the list subnets method over gRPC.
 
         Lists Subnets in a given project and location.
@@ -603,9 +572,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["get_subnet"]
 
     @property
-    def create_subnet(
-        self,
-    ) -> Callable[[service.CreateSubnetRequest], operations_pb2.Operation]:
+    def create_subnet(self) -> Callable[[service.CreateSubnetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create subnet method over gRPC.
 
         Creates a new Subnet in a given project and location.
@@ -629,9 +596,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["create_subnet"]
 
     @property
-    def update_subnet(
-        self,
-    ) -> Callable[[service.UpdateSubnetRequest], operations_pb2.Operation]:
+    def update_subnet(self) -> Callable[[service.UpdateSubnetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update subnet method over gRPC.
 
         Updates the parameters of a single Subnet.
@@ -655,9 +620,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["update_subnet"]
 
     @property
-    def delete_subnet(
-        self,
-    ) -> Callable[[service.DeleteSubnetRequest], operations_pb2.Operation]:
+    def delete_subnet(self) -> Callable[[service.DeleteSubnetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete subnet method over gRPC.
 
         Deletes a single Subnet.
@@ -681,11 +644,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["delete_subnet"]
 
     @property
-    def list_interconnects(
-        self,
-    ) -> Callable[
-        [service.ListInterconnectsRequest], service.ListInterconnectsResponse
-    ]:
+    def list_interconnects(self) -> Callable[[service.ListInterconnectsRequest], service.ListInterconnectsResponse]:
         r"""Return a callable for the list interconnects method over gRPC.
 
         Lists Interconnects in a given project and location.
@@ -709,9 +668,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["list_interconnects"]
 
     @property
-    def get_interconnect(
-        self,
-    ) -> Callable[[service.GetInterconnectRequest], resources.Interconnect]:
+    def get_interconnect(self) -> Callable[[service.GetInterconnectRequest], resources.Interconnect]:
         r"""Return a callable for the get interconnect method over gRPC.
 
         Gets details of a single Interconnect.
@@ -735,11 +692,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["get_interconnect"]
 
     @property
-    def diagnose_interconnect(
-        self,
-    ) -> Callable[
-        [service.DiagnoseInterconnectRequest], service.DiagnoseInterconnectResponse
-    ]:
+    def diagnose_interconnect(self) -> Callable[[service.DiagnoseInterconnectRequest], service.DiagnoseInterconnectResponse]:
         r"""Return a callable for the diagnose interconnect method over gRPC.
 
         Get the diagnostics of a single interconnect
@@ -764,12 +717,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["diagnose_interconnect"]
 
     @property
-    def list_interconnect_attachments(
-        self,
-    ) -> Callable[
-        [service.ListInterconnectAttachmentsRequest],
-        service.ListInterconnectAttachmentsResponse,
-    ]:
+    def list_interconnect_attachments(self) -> Callable[[service.ListInterconnectAttachmentsRequest], service.ListInterconnectAttachmentsResponse]:
         r"""Return a callable for the list interconnect attachments method over gRPC.
 
         Lists InterconnectAttachments in a given project and
@@ -786,9 +734,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_interconnect_attachments" not in self._stubs:
-            self._stubs[
-                "list_interconnect_attachments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_interconnect_attachments"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnectAttachments",
                 request_serializer=service.ListInterconnectAttachmentsRequest.serialize,
                 response_deserializer=service.ListInterconnectAttachmentsResponse.deserialize,
@@ -796,11 +742,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["list_interconnect_attachments"]
 
     @property
-    def get_interconnect_attachment(
-        self,
-    ) -> Callable[
-        [service.GetInterconnectAttachmentRequest], resources.InterconnectAttachment
-    ]:
+    def get_interconnect_attachment(self) -> Callable[[service.GetInterconnectAttachmentRequest], resources.InterconnectAttachment]:
         r"""Return a callable for the get interconnect attachment method over gRPC.
 
         Gets details of a single InterconnectAttachment.
@@ -816,9 +758,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_interconnect_attachment" not in self._stubs:
-            self._stubs[
-                "get_interconnect_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_interconnect_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnectAttachment",
                 request_serializer=service.GetInterconnectAttachmentRequest.serialize,
                 response_deserializer=resources.InterconnectAttachment.deserialize,
@@ -826,11 +766,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["get_interconnect_attachment"]
 
     @property
-    def create_interconnect_attachment(
-        self,
-    ) -> Callable[
-        [service.CreateInterconnectAttachmentRequest], operations_pb2.Operation
-    ]:
+    def create_interconnect_attachment(self) -> Callable[[service.CreateInterconnectAttachmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create interconnect attachment method over gRPC.
 
         Creates a new InterconnectAttachment in a given
@@ -847,9 +783,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_interconnect_attachment" not in self._stubs:
-            self._stubs[
-                "create_interconnect_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_interconnect_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateInterconnectAttachment",
                 request_serializer=service.CreateInterconnectAttachmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -857,11 +791,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["create_interconnect_attachment"]
 
     @property
-    def delete_interconnect_attachment(
-        self,
-    ) -> Callable[
-        [service.DeleteInterconnectAttachmentRequest], operations_pb2.Operation
-    ]:
+    def delete_interconnect_attachment(self) -> Callable[[service.DeleteInterconnectAttachmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete interconnect attachment method over gRPC.
 
         Deletes a single InterconnectAttachment.
@@ -877,9 +807,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_interconnect_attachment" not in self._stubs:
-            self._stubs[
-                "delete_interconnect_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_interconnect_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteInterconnectAttachment",
                 request_serializer=service.DeleteInterconnectAttachmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -887,9 +815,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["delete_interconnect_attachment"]
 
     @property
-    def list_routers(
-        self,
-    ) -> Callable[[service.ListRoutersRequest], service.ListRoutersResponse]:
+    def list_routers(self) -> Callable[[service.ListRoutersRequest], service.ListRoutersResponse]:
         r"""Return a callable for the list routers method over gRPC.
 
         Lists Routers in a given project and location.
@@ -937,9 +863,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["get_router"]
 
     @property
-    def diagnose_router(
-        self,
-    ) -> Callable[[service.DiagnoseRouterRequest], service.DiagnoseRouterResponse]:
+    def diagnose_router(self) -> Callable[[service.DiagnoseRouterRequest], service.DiagnoseRouterResponse]:
         r"""Return a callable for the diagnose router method over gRPC.
 
         Get the diagnostics of a single router resource.
@@ -963,9 +887,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["diagnose_router"]
 
     @property
-    def create_router(
-        self,
-    ) -> Callable[[service.CreateRouterRequest], operations_pb2.Operation]:
+    def create_router(self) -> Callable[[service.CreateRouterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create router method over gRPC.
 
         Creates a new Router in a given project and location.
@@ -989,9 +911,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["create_router"]
 
     @property
-    def update_router(
-        self,
-    ) -> Callable[[service.UpdateRouterRequest], operations_pb2.Operation]:
+    def update_router(self) -> Callable[[service.UpdateRouterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update router method over gRPC.
 
         Updates the parameters of a single Router.
@@ -1015,9 +935,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         return self._stubs["update_router"]
 
     @property
-    def delete_router(
-        self,
-    ) -> Callable[[service.DeleteRouterRequest], operations_pb2.Operation]:
+    def delete_router(self) -> Callable[[service.DeleteRouterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete router method over gRPC.
 
         Deletes a single Router.
@@ -1097,9 +1015,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1116,9 +1032,7 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

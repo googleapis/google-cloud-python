@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .aggregateproductstatuses import (
-    AggregateProductStatus,
-    ListAggregateProductStatusesRequest,
-    ListAggregateProductStatusesResponse,
-)
+from .aggregateproductstatuses import AggregateProductStatus, ListAggregateProductStatusesRequest, ListAggregateProductStatusesResponse
 from .issueresolution import (
     Action,
     ActionFlow,

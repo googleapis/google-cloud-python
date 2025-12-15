@@ -279,9 +279,7 @@ class NotificationChannel(proto.Message):
         number=12,
         message=mutation_record.MutationRecord,
     )
-    mutation_records: MutableSequence[
-        mutation_record.MutationRecord
-    ] = proto.RepeatedField(
+    mutation_records: MutableSequence[mutation_record.MutationRecord] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=mutation_record.MutationRecord,

@@ -21,12 +21,7 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.osconfig_v1.types import (
-    inventory,
-    os_policy_assignment_reports,
-    os_policy_assignments,
-    vulnerability,
-)
+from google.cloud.osconfig_v1.types import inventory, os_policy_assignment_reports, os_policy_assignments, vulnerability
 
 from .base import DEFAULT_CLIENT_INFO, OsConfigZonalServiceTransport
 
@@ -77,20 +72,14 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateOSPolicyAssignment:
@@ -103,11 +92,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -122,9 +107,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = os_policy_assignments.CreateOSPolicyAssignmentRequest.pb(
-                request
-            )
+            pb_request = os_policy_assignments.CreateOSPolicyAssignmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -132,9 +115,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -145,11 +126,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -162,11 +139,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -180,9 +153,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = os_policy_assignments.DeleteOSPolicyAssignmentRequest.pb(
-                request
-            )
+            pb_request = os_policy_assignments.DeleteOSPolicyAssignmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -194,11 +165,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -211,11 +178,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -241,11 +204,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -258,11 +217,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -288,11 +243,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -305,11 +256,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -323,11 +270,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.pb(
-                    request
-                )
-            )
+            pb_request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -339,11 +282,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -356,11 +295,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -386,11 +321,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -403,11 +334,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -433,11 +360,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -450,11 +373,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -468,11 +387,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.pb(
-                    request
-                )
-            )
+            pb_request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -484,11 +399,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -501,11 +412,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -519,9 +426,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest.pb(request)
-            )
+            pb_request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -533,11 +438,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -550,11 +451,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -568,9 +465,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = os_policy_assignments.ListOSPolicyAssignmentsRequest.pb(
-                request
-            )
+            pb_request = os_policy_assignments.ListOSPolicyAssignmentsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -582,11 +477,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -599,11 +490,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -629,11 +516,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -646,11 +529,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -665,9 +544,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = os_policy_assignments.UpdateOSPolicyAssignmentRequest.pb(
-                request
-            )
+            pb_request = os_policy_assignments.UpdateOSPolicyAssignmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -675,9 +552,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -688,11 +563,7 @@ class _BaseOsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

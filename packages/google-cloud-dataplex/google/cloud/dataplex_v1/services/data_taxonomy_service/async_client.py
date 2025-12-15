@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -90,43 +79,21 @@ class DataTaxonomyServiceAsyncClient:
     _DEFAULT_UNIVERSE = DataTaxonomyServiceClient._DEFAULT_UNIVERSE
 
     data_attribute_path = staticmethod(DataTaxonomyServiceClient.data_attribute_path)
-    parse_data_attribute_path = staticmethod(
-        DataTaxonomyServiceClient.parse_data_attribute_path
-    )
-    data_attribute_binding_path = staticmethod(
-        DataTaxonomyServiceClient.data_attribute_binding_path
-    )
-    parse_data_attribute_binding_path = staticmethod(
-        DataTaxonomyServiceClient.parse_data_attribute_binding_path
-    )
+    parse_data_attribute_path = staticmethod(DataTaxonomyServiceClient.parse_data_attribute_path)
+    data_attribute_binding_path = staticmethod(DataTaxonomyServiceClient.data_attribute_binding_path)
+    parse_data_attribute_binding_path = staticmethod(DataTaxonomyServiceClient.parse_data_attribute_binding_path)
     data_taxonomy_path = staticmethod(DataTaxonomyServiceClient.data_taxonomy_path)
-    parse_data_taxonomy_path = staticmethod(
-        DataTaxonomyServiceClient.parse_data_taxonomy_path
-    )
-    common_billing_account_path = staticmethod(
-        DataTaxonomyServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DataTaxonomyServiceClient.parse_common_billing_account_path
-    )
+    parse_data_taxonomy_path = staticmethod(DataTaxonomyServiceClient.parse_data_taxonomy_path)
+    common_billing_account_path = staticmethod(DataTaxonomyServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DataTaxonomyServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DataTaxonomyServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DataTaxonomyServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DataTaxonomyServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DataTaxonomyServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DataTaxonomyServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DataTaxonomyServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DataTaxonomyServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DataTaxonomyServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DataTaxonomyServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DataTaxonomyServiceClient.parse_common_project_path)
     common_location_path = staticmethod(DataTaxonomyServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DataTaxonomyServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DataTaxonomyServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -162,9 +129,7 @@ class DataTaxonomyServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -231,13 +196,7 @@ class DataTaxonomyServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                DataTaxonomyServiceTransport,
-                Callable[..., DataTaxonomyServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DataTaxonomyServiceTransport, Callable[..., DataTaxonomyServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,20 +256,14 @@ class DataTaxonomyServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.dataplex_v1.DataTaxonomyServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -321,9 +274,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def create_data_taxonomy(
         self,
-        request: Optional[
-            Union[gcd_data_taxonomy.CreateDataTaxonomyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_data_taxonomy.CreateDataTaxonomyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         data_taxonomy: Optional[gcd_data_taxonomy.DataTaxonomy] = None,
@@ -409,23 +360,15 @@ class DataTaxonomyServiceAsyncClient:
                    PII data. It is defined at project level.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.create_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.create_data_taxonomy is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, data_taxonomy, data_taxonomy_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -443,15 +386,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_data_taxonomy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_data_taxonomy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -477,9 +416,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def update_data_taxonomy(
         self,
-        request: Optional[
-            Union[gcd_data_taxonomy.UpdateDataTaxonomyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_data_taxonomy.UpdateDataTaxonomyRequest, dict]] = None,
         *,
         data_taxonomy: Optional[gcd_data_taxonomy.DataTaxonomy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -551,23 +488,15 @@ class DataTaxonomyServiceAsyncClient:
                    PII data. It is defined at project level.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.update_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.update_data_taxonomy is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_taxonomy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -583,17 +512,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_taxonomy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_taxonomy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("data_taxonomy.name", request.data_taxonomy.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("data_taxonomy.name", request.data_taxonomy.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -694,23 +617,15 @@ class DataTaxonomyServiceAsyncClient:
                       }
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.delete_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.delete_data_taxonomy is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -724,15 +639,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_data_taxonomy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_data_taxonomy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -824,23 +735,15 @@ class DataTaxonomyServiceAsyncClient:
                 automatically.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.list_data_taxonomies is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.list_data_taxonomies is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -854,15 +757,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_taxonomies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_data_taxonomies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -952,23 +851,15 @@ class DataTaxonomyServiceAsyncClient:
                 defined at project level.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.get_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.get_data_taxonomy is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -982,15 +873,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_taxonomy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_taxonomy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1008,9 +895,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def create_data_attribute_binding(
         self,
-        request: Optional[
-            Union[data_taxonomy.CreateDataAttributeBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[data_taxonomy.CreateDataAttributeBindingRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         data_attribute_binding: Optional[data_taxonomy.DataAttributeBinding] = None,
@@ -1102,23 +987,15 @@ class DataTaxonomyServiceAsyncClient:
                    'CustomerInfo' entity with 'PII' attribute.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.create_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.create_data_attribute_binding is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, data_attribute_binding, data_attribute_binding_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1136,15 +1013,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_data_attribute_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_data_attribute_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1170,9 +1043,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def update_data_attribute_binding(
         self,
-        request: Optional[
-            Union[data_taxonomy.UpdateDataAttributeBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[data_taxonomy.UpdateDataAttributeBindingRequest, dict]] = None,
         *,
         data_attribute_binding: Optional[data_taxonomy.DataAttributeBinding] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1246,23 +1117,15 @@ class DataTaxonomyServiceAsyncClient:
                    'CustomerInfo' entity with 'PII' attribute.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.update_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.update_data_attribute_binding is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_attribute_binding, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1278,16 +1141,12 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_attribute_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_attribute_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("data_attribute_binding.name", request.data_attribute_binding.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("data_attribute_binding.name", request.data_attribute_binding.name),)),
         )
 
         # Validate the universe domain.
@@ -1314,9 +1173,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def delete_data_attribute_binding(
         self,
-        request: Optional[
-            Union[data_taxonomy.DeleteDataAttributeBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[data_taxonomy.DeleteDataAttributeBindingRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1392,23 +1249,15 @@ class DataTaxonomyServiceAsyncClient:
                       }
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.delete_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.delete_data_attribute_binding is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1422,15 +1271,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_data_attribute_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_data_attribute_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1456,9 +1301,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def list_data_attribute_bindings(
         self,
-        request: Optional[
-            Union[data_taxonomy.ListDataAttributeBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[data_taxonomy.ListDataAttributeBindingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1522,23 +1365,15 @@ class DataTaxonomyServiceAsyncClient:
                 automatically.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.list_data_attribute_bindings is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.list_data_attribute_bindings is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1552,15 +1387,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_attribute_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_data_attribute_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1589,9 +1420,7 @@ class DataTaxonomyServiceAsyncClient:
 
     async def get_data_attribute_binding(
         self,
-        request: Optional[
-            Union[data_taxonomy.GetDataAttributeBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[data_taxonomy.GetDataAttributeBindingRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1652,23 +1481,15 @@ class DataTaxonomyServiceAsyncClient:
                 attribute.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.get_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.get_data_attribute_binding is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1682,15 +1503,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_attribute_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_attribute_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1798,23 +1615,15 @@ class DataTaxonomyServiceAsyncClient:
                    :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.create_data_attribute is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.create_data_attribute is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, data_attribute, data_attribute_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1832,15 +1641,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_data_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_data_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1940,23 +1745,15 @@ class DataTaxonomyServiceAsyncClient:
                    :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.update_data_attribute is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.update_data_attribute is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_attribute, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1972,17 +1769,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("data_attribute.name", request.data_attribute.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("data_attribute.name", request.data_attribute.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2081,23 +1872,15 @@ class DataTaxonomyServiceAsyncClient:
                       }
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.delete_data_attribute is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.delete_data_attribute is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2111,15 +1894,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_data_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_data_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2208,23 +1987,15 @@ class DataTaxonomyServiceAsyncClient:
                 automatically.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.list_data_attributes is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.list_data_attributes is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2238,15 +2009,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_attributes
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_data_attributes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2338,23 +2105,15 @@ class DataTaxonomyServiceAsyncClient:
                    :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceAsyncClient.get_data_attribute is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataTaxonomyServiceAsyncClient.get_data_attribute is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2368,15 +2127,11 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2429,9 +2184,7 @@ class DataTaxonomyServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2484,9 +2237,7 @@ class DataTaxonomyServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2543,9 +2294,7 @@ class DataTaxonomyServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2598,9 +2347,7 @@ class DataTaxonomyServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2650,9 +2397,7 @@ class DataTaxonomyServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2705,9 +2450,7 @@ class DataTaxonomyServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2730,9 +2473,7 @@ class DataTaxonomyServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

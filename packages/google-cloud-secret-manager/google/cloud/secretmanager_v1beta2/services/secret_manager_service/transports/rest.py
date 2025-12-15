@@ -199,12 +199,8 @@ class SecretManagerServiceRestInterceptor:
     """
 
     def pre_access_secret_version(
-        self,
-        request: service.AccessSecretVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.AccessSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.AccessSecretVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.AccessSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for access_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -212,9 +208,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_access_secret_version(
-        self, response: service.AccessSecretVersionResponse
-    ) -> service.AccessSecretVersionResponse:
+    def post_access_secret_version(self, response: service.AccessSecretVersionResponse) -> service.AccessSecretVersionResponse:
         """Post-rpc interceptor for access_secret_version
 
         DEPRECATED. Please use the `post_access_secret_version_with_metadata`
@@ -228,12 +222,8 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_access_secret_version_with_metadata(
-        self,
-        response: service.AccessSecretVersionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.AccessSecretVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.AccessSecretVersionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.AccessSecretVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for access_secret_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -249,12 +239,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_add_secret_version(
-        self,
-        request: service.AddSecretVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.AddSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.AddSecretVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.AddSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -262,9 +248,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_add_secret_version(
-        self, response: resources.SecretVersion
-    ) -> resources.SecretVersion:
+    def post_add_secret_version(self, response: resources.SecretVersion) -> resources.SecretVersion:
         """Post-rpc interceptor for add_secret_version
 
         DEPRECATED. Please use the `post_add_secret_version_with_metadata`
@@ -278,9 +262,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_add_secret_version_with_metadata(
-        self,
-        response: resources.SecretVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.SecretVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.SecretVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_secret_version
 
@@ -297,9 +279,7 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_create_secret(
-        self,
-        request: service.CreateSecretRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateSecretRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_secret
 
@@ -322,9 +302,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_create_secret_with_metadata(
-        self,
-        response: resources.Secret,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Secret, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Secret, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_secret
 
@@ -341,9 +319,7 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_secret(
-        self,
-        request: service.DeleteSecretRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteSecretRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_secret
 
@@ -353,12 +329,8 @@ class SecretManagerServiceRestInterceptor:
         return request, metadata
 
     def pre_destroy_secret_version(
-        self,
-        request: service.DestroySecretVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DestroySecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DestroySecretVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DestroySecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for destroy_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +338,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_destroy_secret_version(
-        self, response: resources.SecretVersion
-    ) -> resources.SecretVersion:
+    def post_destroy_secret_version(self, response: resources.SecretVersion) -> resources.SecretVersion:
         """Post-rpc interceptor for destroy_secret_version
 
         DEPRECATED. Please use the `post_destroy_secret_version_with_metadata`
@@ -382,9 +352,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_destroy_secret_version_with_metadata(
-        self,
-        response: resources.SecretVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.SecretVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.SecretVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for destroy_secret_version
 
@@ -401,12 +369,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_disable_secret_version(
-        self,
-        request: service.DisableSecretVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DisableSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DisableSecretVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DisableSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -414,9 +378,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_disable_secret_version(
-        self, response: resources.SecretVersion
-    ) -> resources.SecretVersion:
+    def post_disable_secret_version(self, response: resources.SecretVersion) -> resources.SecretVersion:
         """Post-rpc interceptor for disable_secret_version
 
         DEPRECATED. Please use the `post_disable_secret_version_with_metadata`
@@ -430,9 +392,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_disable_secret_version_with_metadata(
-        self,
-        response: resources.SecretVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.SecretVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.SecretVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for disable_secret_version
 
@@ -449,12 +409,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_enable_secret_version(
-        self,
-        request: service.EnableSecretVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.EnableSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.EnableSecretVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.EnableSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -462,9 +418,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_enable_secret_version(
-        self, response: resources.SecretVersion
-    ) -> resources.SecretVersion:
+    def post_enable_secret_version(self, response: resources.SecretVersion) -> resources.SecretVersion:
         """Post-rpc interceptor for enable_secret_version
 
         DEPRECATED. Please use the `post_enable_secret_version_with_metadata`
@@ -478,9 +432,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_enable_secret_version_with_metadata(
-        self,
-        response: resources.SecretVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.SecretVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.SecretVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enable_secret_version
 
@@ -497,12 +449,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -524,9 +472,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -543,9 +489,7 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_get_secret(
-        self,
-        request: service.GetSecretRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetSecretRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_secret
 
@@ -568,9 +512,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_get_secret_with_metadata(
-        self,
-        response: resources.Secret,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Secret, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Secret, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_secret
 
@@ -587,12 +529,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_get_secret_version(
-        self,
-        request: service.GetSecretVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetSecretVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -600,9 +538,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_secret_version(
-        self, response: resources.SecretVersion
-    ) -> resources.SecretVersion:
+    def post_get_secret_version(self, response: resources.SecretVersion) -> resources.SecretVersion:
         """Post-rpc interceptor for get_secret_version
 
         DEPRECATED. Please use the `post_get_secret_version_with_metadata`
@@ -616,9 +552,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_get_secret_version_with_metadata(
-        self,
-        response: resources.SecretVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.SecretVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.SecretVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_secret_version
 
@@ -635,9 +569,7 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_list_secrets(
-        self,
-        request: service.ListSecretsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListSecretsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSecretsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_secrets
 
@@ -646,9 +578,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_secrets(
-        self, response: service.ListSecretsResponse
-    ) -> service.ListSecretsResponse:
+    def post_list_secrets(self, response: service.ListSecretsResponse) -> service.ListSecretsResponse:
         """Post-rpc interceptor for list_secrets
 
         DEPRECATED. Please use the `post_list_secrets_with_metadata`
@@ -662,9 +592,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_list_secrets_with_metadata(
-        self,
-        response: service.ListSecretsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListSecretsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSecretsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_secrets
 
@@ -681,12 +609,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_list_secret_versions(
-        self,
-        request: service.ListSecretVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListSecretVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListSecretVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListSecretVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_secret_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -694,9 +618,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_secret_versions(
-        self, response: service.ListSecretVersionsResponse
-    ) -> service.ListSecretVersionsResponse:
+    def post_list_secret_versions(self, response: service.ListSecretVersionsResponse) -> service.ListSecretVersionsResponse:
         """Post-rpc interceptor for list_secret_versions
 
         DEPRECATED. Please use the `post_list_secret_versions_with_metadata`
@@ -710,12 +632,8 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_list_secret_versions_with_metadata(
-        self,
-        response: service.ListSecretVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListSecretVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListSecretVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListSecretVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_secret_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -731,12 +649,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -758,9 +672,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -777,13 +689,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -791,9 +698,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -807,13 +712,8 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -829,9 +729,7 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_update_secret(
-        self,
-        request: service.UpdateSecretRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateSecretRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_secret
 
@@ -854,9 +752,7 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def post_update_secret_with_metadata(
-        self,
-        response: resources.Secret,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Secret, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Secret, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_secret
 
@@ -873,12 +769,8 @@ class SecretManagerServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -886,9 +778,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -898,12 +788,8 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -911,9 +797,7 @@ class SecretManagerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1008,31 +892,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SecretManagerServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AccessSecretVersion(
-        _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion,
-        SecretManagerServiceRestStub,
-    ):
+    class _AccessSecretVersion(_BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.AccessSecretVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1074,28 +945,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_access_secret_version(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_access_secret_version(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1118,15 +977,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._AccessSecretVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SecretManagerServiceRestTransport._AccessSecretVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1142,16 +994,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_access_secret_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_access_secret_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_access_secret_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.AccessSecretVersionResponse.to_json(
-                        response
-                    )
+                    response_payload = service.AccessSecretVersionResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1170,23 +1016,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _AddSecretVersion(
-        _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion,
-        SecretManagerServiceRestStub,
-    ):
+    class _AddSecretVersion(_BaseSecretManagerServiceRestTransport._BaseAddSecretVersion, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.AddSecretVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1229,32 +1064,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_secret_version(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_secret_version(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1277,16 +1098,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._AddSecretVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SecretManagerServiceRestTransport._AddSecretVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1302,12 +1115,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_add_secret_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_secret_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_secret_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.SecretVersion.to_json(response)
                 except:
@@ -1328,23 +1137,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _CreateSecret(
-        _BaseSecretManagerServiceRestTransport._BaseCreateSecret,
-        SecretManagerServiceRestStub,
-    ):
+    class _CreateSecret(_BaseSecretManagerServiceRestTransport._BaseCreateSecret, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.CreateSecret")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1393,30 +1191,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_http_options()
 
             request, metadata = self._interceptor.pre_create_secret(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1440,13 +1226,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._CreateSecret._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1462,12 +1242,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_create_secret(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_secret_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_secret_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Secret.to_json(response)
                 except:
@@ -1488,23 +1264,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSecret(
-        _BaseSecretManagerServiceRestTransport._BaseDeleteSecret,
-        SecretManagerServiceRestStub,
-    ):
+    class _DeleteSecret(_BaseSecretManagerServiceRestTransport._BaseDeleteSecret, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.DeleteSecret")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1540,26 +1305,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_secret(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1583,12 +1338,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._DeleteSecret._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1596,23 +1346,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DestroySecretVersion(
-        _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion,
-        SecretManagerServiceRestStub,
-    ):
+    class _DestroySecretVersion(_BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.DestroySecretVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1655,32 +1394,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_destroy_secret_version(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_destroy_secret_version(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1703,16 +1428,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._DestroySecretVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SecretManagerServiceRestTransport._DestroySecretVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1728,12 +1445,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_destroy_secret_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_destroy_secret_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_destroy_secret_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.SecretVersion.to_json(response)
                 except:
@@ -1754,23 +1467,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _DisableSecretVersion(
-        _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion,
-        SecretManagerServiceRestStub,
-    ):
+    class _DisableSecretVersion(_BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.DisableSecretVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1813,32 +1515,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_disable_secret_version(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_disable_secret_version(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1861,16 +1549,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._DisableSecretVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SecretManagerServiceRestTransport._DisableSecretVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1886,12 +1566,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_disable_secret_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_disable_secret_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_disable_secret_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.SecretVersion.to_json(response)
                 except:
@@ -1912,23 +1588,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _EnableSecretVersion(
-        _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion,
-        SecretManagerServiceRestStub,
-    ):
+    class _EnableSecretVersion(_BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.EnableSecretVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1971,32 +1636,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_enable_secret_version(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_enable_secret_version(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2019,16 +1670,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._EnableSecretVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SecretManagerServiceRestTransport._EnableSecretVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2044,12 +1687,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_enable_secret_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_enable_secret_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enable_secret_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.SecretVersion.to_json(response)
                 except:
@@ -2070,23 +1709,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy,
-        SecretManagerServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseSecretManagerServiceRestTransport._BaseGetIamPolicy, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2200,26 +1828,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2243,12 +1861,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2264,12 +1877,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2290,23 +1899,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _GetSecret(
-        _BaseSecretManagerServiceRestTransport._BaseGetSecret,
-        SecretManagerServiceRestStub,
-    ):
+    class _GetSecret(_BaseSecretManagerServiceRestTransport._BaseGetSecret, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.GetSecret")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2354,26 +1952,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_http_options()
 
             request, metadata = self._interceptor.pre_get_secret(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2397,12 +1985,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._GetSecret._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2418,12 +2001,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_get_secret(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_secret_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_secret_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Secret.to_json(response)
                 except:
@@ -2444,23 +2023,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _GetSecretVersion(
-        _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion,
-        SecretManagerServiceRestStub,
-    ):
+    class _GetSecretVersion(_BaseSecretManagerServiceRestTransport._BaseGetSecretVersion, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.GetSecretVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2502,28 +2070,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_secret_version(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_secret_version(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2546,15 +2102,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._GetSecretVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SecretManagerServiceRestTransport._GetSecretVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2570,12 +2119,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_get_secret_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_secret_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_secret_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.SecretVersion.to_json(response)
                 except:
@@ -2596,23 +2141,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _ListSecrets(
-        _BaseSecretManagerServiceRestTransport._BaseListSecrets,
-        SecretManagerServiceRestStub,
-    ):
+    class _ListSecrets(_BaseSecretManagerServiceRestTransport._BaseListSecrets, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.ListSecrets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2654,26 +2188,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_secrets(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2697,12 +2221,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._ListSecrets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2718,12 +2237,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_list_secrets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_secrets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_secrets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSecretsResponse.to_json(response)
                 except:
@@ -2744,23 +2259,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _ListSecretVersions(
-        _BaseSecretManagerServiceRestTransport._BaseListSecretVersions,
-        SecretManagerServiceRestStub,
-    ):
+    class _ListSecretVersions(_BaseSecretManagerServiceRestTransport._BaseListSecretVersions, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.ListSecretVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2802,28 +2306,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_secret_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_secret_versions(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2846,15 +2338,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._ListSecretVersions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SecretManagerServiceRestTransport._ListSecretVersions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2870,16 +2355,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_list_secret_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_secret_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_secret_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListSecretVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListSecretVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2898,23 +2377,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy,
-        SecretManagerServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseSecretManagerServiceRestTransport._BaseSetIamPolicy, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3029,30 +2497,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3076,13 +2532,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3098,12 +2548,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3124,23 +2570,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions,
-        SecretManagerServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseSecretManagerServiceRestTransport._BaseTestIamPermissions, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3180,32 +2615,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3228,16 +2649,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecretManagerServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SecretManagerServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3253,12 +2666,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3279,23 +2688,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSecret(
-        _BaseSecretManagerServiceRestTransport._BaseUpdateSecret,
-        SecretManagerServiceRestStub,
-    ):
+    class _UpdateSecret(_BaseSecretManagerServiceRestTransport._BaseUpdateSecret, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.UpdateSecret")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3344,30 +2742,18 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_http_options()
 
             request, metadata = self._interceptor.pre_update_secret(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_transcoded_request(http_options, request)
 
-            body = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3391,13 +2777,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._UpdateSecret._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3413,12 +2793,8 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             resp = self._interceptor.post_update_secret(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_secret_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_secret_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Secret.to_json(response)
                 except:
@@ -3440,27 +2816,19 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             return resp
 
     @property
-    def access_secret_version(
-        self,
-    ) -> Callable[
-        [service.AccessSecretVersionRequest], service.AccessSecretVersionResponse
-    ]:
+    def access_secret_version(self) -> Callable[[service.AccessSecretVersionRequest], service.AccessSecretVersionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AccessSecretVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def add_secret_version(
-        self,
-    ) -> Callable[[service.AddSecretVersionRequest], resources.SecretVersion]:
+    def add_secret_version(self) -> Callable[[service.AddSecretVersionRequest], resources.SecretVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddSecretVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_secret(
-        self,
-    ) -> Callable[[service.CreateSecretRequest], resources.Secret]:
+    def create_secret(self) -> Callable[[service.CreateSecretRequest], resources.Secret]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSecret(self._session, self._host, self._interceptor)  # type: ignore
@@ -3472,33 +2840,25 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
         return self._DeleteSecret(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def destroy_secret_version(
-        self,
-    ) -> Callable[[service.DestroySecretVersionRequest], resources.SecretVersion]:
+    def destroy_secret_version(self) -> Callable[[service.DestroySecretVersionRequest], resources.SecretVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DestroySecretVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def disable_secret_version(
-        self,
-    ) -> Callable[[service.DisableSecretVersionRequest], resources.SecretVersion]:
+    def disable_secret_version(self) -> Callable[[service.DisableSecretVersionRequest], resources.SecretVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableSecretVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enable_secret_version(
-        self,
-    ) -> Callable[[service.EnableSecretVersionRequest], resources.SecretVersion]:
+    def enable_secret_version(self) -> Callable[[service.EnableSecretVersionRequest], resources.SecretVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnableSecretVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3510,54 +2870,37 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
         return self._GetSecret(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_secret_version(
-        self,
-    ) -> Callable[[service.GetSecretVersionRequest], resources.SecretVersion]:
+    def get_secret_version(self) -> Callable[[service.GetSecretVersionRequest], resources.SecretVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSecretVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_secrets(
-        self,
-    ) -> Callable[[service.ListSecretsRequest], service.ListSecretsResponse]:
+    def list_secrets(self) -> Callable[[service.ListSecretsRequest], service.ListSecretsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSecrets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_secret_versions(
-        self,
-    ) -> Callable[
-        [service.ListSecretVersionsRequest], service.ListSecretVersionsResponse
-    ]:
+    def list_secret_versions(self) -> Callable[[service.ListSecretVersionsRequest], service.ListSecretVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSecretVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_secret(
-        self,
-    ) -> Callable[[service.UpdateSecretRequest], resources.Secret]:
+    def update_secret(self) -> Callable[[service.UpdateSecretRequest], resources.Secret]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSecret(self._session, self._host, self._interceptor)  # type: ignore
@@ -3566,23 +2909,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseSecretManagerServiceRestTransport._BaseGetLocation,
-        SecretManagerServiceRestStub,
-    ):
+    class _GetLocation(_BaseSecretManagerServiceRestTransport._BaseGetLocation, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3620,26 +2952,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3663,12 +2985,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3680,9 +2997,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3707,23 +3022,12 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSecretManagerServiceRestTransport._BaseListLocations,
-        SecretManagerServiceRestStub,
-    ):
+    class _ListLocations(_BaseSecretManagerServiceRestTransport._BaseListLocations, SecretManagerServiceRestStub):
         def __hash__(self):
             return hash("SecretManagerServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3761,26 +3065,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSecretManagerServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3804,12 +3098,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
 
             # Send the request
             response = SecretManagerServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3821,9 +3110,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

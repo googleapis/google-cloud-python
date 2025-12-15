@@ -32,9 +32,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.managedkafka_schemaregistry_v1.types import (
-    schema_registry as gcms_schema_registry,
-)
+from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry as gcms_schema_registry
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
@@ -52,9 +50,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -275,18 +264,14 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +305,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -381,12 +364,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._grpc_channel
 
     @property
-    def get_schema_registry(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaRegistryRequest],
-        schema_registry_resources.SchemaRegistry,
-    ]:
+    def get_schema_registry(self) -> Callable[[schema_registry.GetSchemaRegistryRequest], schema_registry_resources.SchemaRegistry]:
         r"""Return a callable for the get schema registry method over gRPC.
 
         Get the schema registry instance.
@@ -410,12 +388,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_schema_registry"]
 
     @property
-    def list_schema_registries(
-        self,
-    ) -> Callable[
-        [schema_registry.ListSchemaRegistriesRequest],
-        schema_registry.ListSchemaRegistriesResponse,
-    ]:
+    def list_schema_registries(self) -> Callable[[schema_registry.ListSchemaRegistriesRequest], schema_registry.ListSchemaRegistriesResponse]:
         r"""Return a callable for the list schema registries method over gRPC.
 
         List schema registries.
@@ -439,12 +412,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_schema_registries"]
 
     @property
-    def create_schema_registry(
-        self,
-    ) -> Callable[
-        [gcms_schema_registry.CreateSchemaRegistryRequest],
-        schema_registry_resources.SchemaRegistry,
-    ]:
+    def create_schema_registry(self) -> Callable[[gcms_schema_registry.CreateSchemaRegistryRequest], schema_registry_resources.SchemaRegistry]:
         r"""Return a callable for the create schema registry method over gRPC.
 
         Create a schema registry instance.
@@ -468,9 +436,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["create_schema_registry"]
 
     @property
-    def delete_schema_registry(
-        self,
-    ) -> Callable[[schema_registry.DeleteSchemaRegistryRequest], empty_pb2.Empty]:
+    def delete_schema_registry(self) -> Callable[[schema_registry.DeleteSchemaRegistryRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete schema registry method over gRPC.
 
         Delete a schema registry instance.
@@ -494,11 +460,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["delete_schema_registry"]
 
     @property
-    def get_context(
-        self,
-    ) -> Callable[
-        [schema_registry.GetContextRequest], schema_registry_resources.Context
-    ]:
+    def get_context(self) -> Callable[[schema_registry.GetContextRequest], schema_registry_resources.Context]:
         r"""Return a callable for the get context method over gRPC.
 
         Get the context.
@@ -522,9 +484,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_context"]
 
     @property
-    def list_contexts(
-        self,
-    ) -> Callable[[schema_registry.ListContextsRequest], httpbody_pb2.HttpBody]:
+    def list_contexts(self) -> Callable[[schema_registry.ListContextsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list contexts method over gRPC.
 
         List contexts for a schema registry.
@@ -548,9 +508,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_contexts"]
 
     @property
-    def get_schema(
-        self,
-    ) -> Callable[[schema_registry.GetSchemaRequest], schema_registry_resources.Schema]:
+    def get_schema(self) -> Callable[[schema_registry.GetSchemaRequest], schema_registry_resources.Schema]:
         r"""Return a callable for the get schema method over gRPC.
 
         Get the schema for the given schema id.
@@ -574,9 +532,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_schema"]
 
     @property
-    def get_raw_schema(
-        self,
-    ) -> Callable[[schema_registry.GetSchemaRequest], httpbody_pb2.HttpBody]:
+    def get_raw_schema(self) -> Callable[[schema_registry.GetSchemaRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the get raw schema method over gRPC.
 
         Get the schema string for the given schema id.
@@ -601,9 +557,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_raw_schema"]
 
     @property
-    def list_schema_versions(
-        self,
-    ) -> Callable[[schema_registry.ListSchemaVersionsRequest], httpbody_pb2.HttpBody]:
+    def list_schema_versions(self) -> Callable[[schema_registry.ListSchemaVersionsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list schema versions method over gRPC.
 
         List the schema versions for the given schema id. The response
@@ -630,9 +584,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_schema_versions"]
 
     @property
-    def list_schema_types(
-        self,
-    ) -> Callable[[schema_registry.ListSchemaTypesRequest], httpbody_pb2.HttpBody]:
+    def list_schema_types(self) -> Callable[[schema_registry.ListSchemaTypesRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list schema types method over gRPC.
 
         List the supported schema types.
@@ -657,9 +609,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_schema_types"]
 
     @property
-    def list_subjects(
-        self,
-    ) -> Callable[[schema_registry.ListSubjectsRequest], httpbody_pb2.HttpBody]:
+    def list_subjects(self) -> Callable[[schema_registry.ListSubjectsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list subjects method over gRPC.
 
         List subjects in the schema registry.
@@ -684,11 +634,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_subjects"]
 
     @property
-    def list_subjects_by_schema_id(
-        self,
-    ) -> Callable[
-        [schema_registry.ListSubjectsBySchemaIdRequest], httpbody_pb2.HttpBody
-    ]:
+    def list_subjects_by_schema_id(self) -> Callable[[schema_registry.ListSubjectsBySchemaIdRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list subjects by schema id method over gRPC.
 
         List subjects which reference a particular schema id.
@@ -705,9 +651,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subjects_by_schema_id" not in self._stubs:
-            self._stubs[
-                "list_subjects_by_schema_id"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_subjects_by_schema_id"] = self._logged_channel.unary_unary(
                 "/google.cloud.managedkafka.schemaregistry.v1.ManagedSchemaRegistry/ListSubjectsBySchemaId",
                 request_serializer=schema_registry.ListSubjectsBySchemaIdRequest.serialize,
                 response_deserializer=httpbody_pb2.HttpBody.FromString,
@@ -715,9 +659,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_subjects_by_schema_id"]
 
     @property
-    def delete_subject(
-        self,
-    ) -> Callable[[schema_registry.DeleteSubjectRequest], httpbody_pb2.HttpBody]:
+    def delete_subject(self) -> Callable[[schema_registry.DeleteSubjectRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the delete subject method over gRPC.
 
         Delete a subject.
@@ -743,11 +685,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["delete_subject"]
 
     @property
-    def lookup_version(
-        self,
-    ) -> Callable[
-        [schema_registry.LookupVersionRequest], schema_registry_resources.SchemaVersion
-    ]:
+    def lookup_version(self) -> Callable[[schema_registry.LookupVersionRequest], schema_registry_resources.SchemaVersion]:
         r"""Return a callable for the lookup version method over gRPC.
 
         Lookup a schema under the specified subject.
@@ -771,11 +709,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["lookup_version"]
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[
-        [schema_registry.GetVersionRequest], schema_registry_resources.SchemaVersion
-    ]:
+    def get_version(self) -> Callable[[schema_registry.GetVersionRequest], schema_registry_resources.SchemaVersion]:
         r"""Return a callable for the get version method over gRPC.
 
         Get a versioned schema (schema with subject/version)
@@ -800,9 +734,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_version"]
 
     @property
-    def get_raw_schema_version(
-        self,
-    ) -> Callable[[schema_registry.GetVersionRequest], httpbody_pb2.HttpBody]:
+    def get_raw_schema_version(self) -> Callable[[schema_registry.GetVersionRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the get raw schema version method over gRPC.
 
         Get the schema string only for a version of a
@@ -827,9 +759,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_raw_schema_version"]
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[[schema_registry.ListVersionsRequest], httpbody_pb2.HttpBody]:
+    def list_versions(self) -> Callable[[schema_registry.ListVersionsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list versions method over gRPC.
 
         Get all versions of a subject.
@@ -855,11 +785,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_versions"]
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[
-        [schema_registry.CreateVersionRequest], schema_registry.CreateVersionResponse
-    ]:
+    def create_version(self) -> Callable[[schema_registry.CreateVersionRequest], schema_registry.CreateVersionResponse]:
         r"""Return a callable for the create version method over gRPC.
 
         Register a new version under a given subject with the
@@ -884,9 +810,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["create_version"]
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[schema_registry.DeleteVersionRequest], httpbody_pb2.HttpBody]:
+    def delete_version(self) -> Callable[[schema_registry.DeleteVersionRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the delete version method over gRPC.
 
         Delete a version of a subject.
@@ -911,11 +835,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["delete_version"]
 
     @property
-    def list_referenced_schemas(
-        self,
-    ) -> Callable[
-        [schema_registry.ListReferencedSchemasRequest], httpbody_pb2.HttpBody
-    ]:
+    def list_referenced_schemas(self) -> Callable[[schema_registry.ListReferencedSchemasRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the list referenced schemas method over gRPC.
 
         Get a list of IDs of schemas that reference the
@@ -940,12 +860,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["list_referenced_schemas"]
 
     @property
-    def check_compatibility(
-        self,
-    ) -> Callable[
-        [schema_registry.CheckCompatibilityRequest],
-        schema_registry.CheckCompatibilityResponse,
-    ]:
+    def check_compatibility(self) -> Callable[[schema_registry.CheckCompatibilityRequest], schema_registry.CheckCompatibilityResponse]:
         r"""Return a callable for the check compatibility method over gRPC.
 
         Check compatibility of a schema with all versions or
@@ -970,11 +885,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["check_compatibility"]
 
     @property
-    def get_schema_config(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaConfigRequest], schema_registry_resources.SchemaConfig
-    ]:
+    def get_schema_config(self) -> Callable[[schema_registry.GetSchemaConfigRequest], schema_registry_resources.SchemaConfig]:
         r"""Return a callable for the get schema config method over gRPC.
 
         Get schema config at global level or for a subject.
@@ -998,12 +909,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_schema_config"]
 
     @property
-    def update_schema_config(
-        self,
-    ) -> Callable[
-        [schema_registry.UpdateSchemaConfigRequest],
-        schema_registry_resources.SchemaConfig,
-    ]:
+    def update_schema_config(self) -> Callable[[schema_registry.UpdateSchemaConfigRequest], schema_registry_resources.SchemaConfig]:
         r"""Return a callable for the update schema config method over gRPC.
 
         Update config at global level or for a subject.
@@ -1029,12 +935,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["update_schema_config"]
 
     @property
-    def delete_schema_config(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteSchemaConfigRequest],
-        schema_registry_resources.SchemaConfig,
-    ]:
+    def delete_schema_config(self) -> Callable[[schema_registry.DeleteSchemaConfigRequest], schema_registry_resources.SchemaConfig]:
         r"""Return a callable for the delete schema config method over gRPC.
 
         Delete schema config for a subject.
@@ -1058,11 +959,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["delete_schema_config"]
 
     @property
-    def get_schema_mode(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaModeRequest], schema_registry_resources.SchemaMode
-    ]:
+    def get_schema_mode(self) -> Callable[[schema_registry.GetSchemaModeRequest], schema_registry_resources.SchemaMode]:
         r"""Return a callable for the get schema mode method over gRPC.
 
         Get mode at global level or for a subject.
@@ -1086,11 +983,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["get_schema_mode"]
 
     @property
-    def update_schema_mode(
-        self,
-    ) -> Callable[
-        [schema_registry.UpdateSchemaModeRequest], schema_registry_resources.SchemaMode
-    ]:
+    def update_schema_mode(self) -> Callable[[schema_registry.UpdateSchemaModeRequest], schema_registry_resources.SchemaMode]:
         r"""Return a callable for the update schema mode method over gRPC.
 
         Update mode at global level or for a subject.
@@ -1114,11 +1007,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
         return self._stubs["update_schema_mode"]
 
     @property
-    def delete_schema_mode(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteSchemaModeRequest], schema_registry_resources.SchemaMode
-    ]:
+    def delete_schema_mode(self) -> Callable[[schema_registry.DeleteSchemaModeRequest], schema_registry_resources.SchemaMode]:
         r"""Return a callable for the delete schema mode method over gRPC.
 
         Delete schema mode for a subject.
@@ -1198,9 +1087,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1217,9 +1104,7 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

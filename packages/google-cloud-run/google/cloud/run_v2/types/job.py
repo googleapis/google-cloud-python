@@ -22,12 +22,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.run_v2.types import (
-    condition,
-    execution_template,
-    k8s_min,
-    vendor_settings,
-)
+from google.cloud.run_v2.types import condition, execution_template, k8s_min, vendor_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -307,9 +302,7 @@ class RunJobRequest(proto.Message):
                 number=4,
             )
 
-        container_overrides: MutableSequence[
-            "RunJobRequest.Overrides.ContainerOverride"
-        ] = proto.RepeatedField(
+        container_overrides: MutableSequence["RunJobRequest.Overrides.ContainerOverride"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RunJobRequest.Overrides.ContainerOverride",

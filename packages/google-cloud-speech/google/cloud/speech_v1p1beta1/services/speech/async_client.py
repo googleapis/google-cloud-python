@@ -84,23 +84,17 @@ class SpeechAsyncClient:
     crypto_key_path = staticmethod(SpeechClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(SpeechClient.parse_crypto_key_path)
     crypto_key_version_path = staticmethod(SpeechClient.crypto_key_version_path)
-    parse_crypto_key_version_path = staticmethod(
-        SpeechClient.parse_crypto_key_version_path
-    )
+    parse_crypto_key_version_path = staticmethod(SpeechClient.parse_crypto_key_version_path)
     custom_class_path = staticmethod(SpeechClient.custom_class_path)
     parse_custom_class_path = staticmethod(SpeechClient.parse_custom_class_path)
     phrase_set_path = staticmethod(SpeechClient.phrase_set_path)
     parse_phrase_set_path = staticmethod(SpeechClient.parse_phrase_set_path)
     common_billing_account_path = staticmethod(SpeechClient.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(
-        SpeechClient.parse_common_billing_account_path
-    )
+    parse_common_billing_account_path = staticmethod(SpeechClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SpeechClient.common_folder_path)
     parse_common_folder_path = staticmethod(SpeechClient.parse_common_folder_path)
     common_organization_path = staticmethod(SpeechClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        SpeechClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(SpeechClient.parse_common_organization_path)
     common_project_path = staticmethod(SpeechClient.common_project_path)
     parse_common_project_path = staticmethod(SpeechClient.parse_common_project_path)
     common_location_path = staticmethod(SpeechClient.common_location_path)
@@ -140,9 +134,7 @@ class SpeechAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -209,9 +201,7 @@ class SpeechAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, SpeechTransport, Callable[..., SpeechTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, SpeechTransport, Callable[..., SpeechTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -271,20 +261,14 @@ class SpeechAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.speech_v1p1beta1.SpeechAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.speech.v1p1beta1.Speech",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -377,14 +361,9 @@ class SpeechAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [config, audio]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -400,9 +379,7 @@ class SpeechAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.recognize
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.recognize]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -515,14 +492,9 @@ class SpeechAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [config, audio]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -538,9 +510,7 @@ class SpeechAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.long_running_recognize
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.long_running_recognize]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -566,9 +536,7 @@ class SpeechAsyncClient:
 
     def streaming_recognize(
         self,
-        requests: Optional[
-            AsyncIterator[cloud_speech.StreamingRecognizeRequest]
-        ] = None,
+        requests: Optional[AsyncIterator[cloud_speech.StreamingRecognizeRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -706,9 +674,7 @@ class SpeechAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.streaming_recognize
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.streaming_recognize]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -761,9 +727,7 @@ class SpeechAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -816,9 +780,7 @@ class SpeechAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -841,9 +803,7 @@ class SpeechAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

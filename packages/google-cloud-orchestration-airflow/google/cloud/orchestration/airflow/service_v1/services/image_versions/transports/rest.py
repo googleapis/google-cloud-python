@@ -88,12 +88,8 @@ class ImageVersionsRestInterceptor:
     """
 
     def pre_list_image_versions(
-        self,
-        request: image_versions.ListImageVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image_versions.ListImageVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: image_versions.ListImageVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image_versions.ListImageVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_image_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +97,7 @@ class ImageVersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_image_versions(
-        self, response: image_versions.ListImageVersionsResponse
-    ) -> image_versions.ListImageVersionsResponse:
+    def post_list_image_versions(self, response: image_versions.ListImageVersionsResponse) -> image_versions.ListImageVersionsResponse:
         """Post-rpc interceptor for list_image_versions
 
         DEPRECATED. Please use the `post_list_image_versions_with_metadata`
@@ -117,13 +111,8 @@ class ImageVersionsRestInterceptor:
         return response
 
     def post_list_image_versions_with_metadata(
-        self,
-        response: image_versions.ListImageVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image_versions.ListImageVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: image_versions.ListImageVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image_versions.ListImageVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_image_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -139,12 +128,8 @@ class ImageVersionsRestInterceptor:
         return response, metadata
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -162,12 +147,8 @@ class ImageVersionsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +156,7 @@ class ImageVersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -187,12 +166,8 @@ class ImageVersionsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -200,9 +175,7 @@ class ImageVersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -291,30 +264,18 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ImageVersionsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListImageVersions(
-        _BaseImageVersionsRestTransport._BaseListImageVersions, ImageVersionsRestStub
-    ):
+    class _ListImageVersions(_BaseImageVersionsRestTransport._BaseListImageVersions, ImageVersionsRestStub):
         def __hash__(self):
             return hash("ImageVersionsRestTransport.ListImageVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -356,28 +317,16 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageVersionsRestTransport._BaseListImageVersions._get_http_options()
-            )
+            http_options = _BaseImageVersionsRestTransport._BaseListImageVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_image_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseImageVersionsRestTransport._BaseListImageVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_image_versions(request, metadata)
+            transcoded_request = _BaseImageVersionsRestTransport._BaseListImageVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImageVersionsRestTransport._BaseListImageVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageVersionsRestTransport._BaseListImageVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -401,12 +350,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
 
             # Send the request
             response = ImageVersionsRestTransport._ListImageVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -422,16 +366,10 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
 
             resp = self._interceptor.post_list_image_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_image_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_image_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = image_versions.ListImageVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = image_versions.ListImageVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -451,12 +389,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
             return resp
 
     @property
-    def list_image_versions(
-        self,
-    ) -> Callable[
-        [image_versions.ListImageVersionsRequest],
-        image_versions.ListImageVersionsResponse,
-    ]:
+    def list_image_versions(self) -> Callable[[image_versions.ListImageVersionsRequest], image_versions.ListImageVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListImageVersions(self._session, self._host, self._interceptor)  # type: ignore
@@ -465,22 +398,12 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseImageVersionsRestTransport._BaseDeleteOperation, ImageVersionsRestStub
-    ):
+    class _DeleteOperation(_BaseImageVersionsRestTransport._BaseDeleteOperation, ImageVersionsRestStub):
         def __hash__(self):
             return hash("ImageVersionsRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -515,28 +438,16 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseImageVersionsRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseImageVersionsRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseImageVersionsRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseImageVersionsRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImageVersionsRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageVersionsRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -560,12 +471,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
 
             # Send the request
             response = ImageVersionsRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -579,22 +485,12 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseImageVersionsRestTransport._BaseGetOperation, ImageVersionsRestStub
-    ):
+    class _GetOperation(_BaseImageVersionsRestTransport._BaseGetOperation, ImageVersionsRestStub):
         def __hash__(self):
             return hash("ImageVersionsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -632,26 +528,16 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseImageVersionsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseImageVersionsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseImageVersionsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseImageVersionsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImageVersionsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageVersionsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -675,12 +561,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
 
             # Send the request
             response = ImageVersionsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -692,9 +573,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -719,22 +598,12 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseImageVersionsRestTransport._BaseListOperations, ImageVersionsRestStub
-    ):
+    class _ListOperations(_BaseImageVersionsRestTransport._BaseListOperations, ImageVersionsRestStub):
         def __hash__(self):
             return hash("ImageVersionsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -772,26 +641,16 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseImageVersionsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseImageVersionsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseImageVersionsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseImageVersionsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImageVersionsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageVersionsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -815,12 +674,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
 
             # Send the request
             response = ImageVersionsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -832,9 +686,7 @@ class ImageVersionsRestTransport(_BaseImageVersionsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

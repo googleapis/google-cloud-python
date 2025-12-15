@@ -127,13 +127,8 @@ class PermissionServiceRestInterceptor:
     """
 
     def pre_create_permission(
-        self,
-        request: permission_service.CreatePermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.CreatePermissionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: permission_service.CreatePermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.CreatePermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -141,9 +136,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_permission(
-        self, response: gag_permission.Permission
-    ) -> gag_permission.Permission:
+    def post_create_permission(self, response: gag_permission.Permission) -> gag_permission.Permission:
         """Post-rpc interceptor for create_permission
 
         DEPRECATED. Please use the `post_create_permission_with_metadata`
@@ -157,9 +150,7 @@ class PermissionServiceRestInterceptor:
         return response
 
     def post_create_permission_with_metadata(
-        self,
-        response: gag_permission.Permission,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gag_permission.Permission, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gag_permission.Permission, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_permission
 
@@ -176,13 +167,8 @@ class PermissionServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_permission(
-        self,
-        request: permission_service.DeletePermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.DeletePermissionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: permission_service.DeletePermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.DeletePermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -191,12 +177,8 @@ class PermissionServiceRestInterceptor:
         return request, metadata
 
     def pre_get_permission(
-        self,
-        request: permission_service.GetPermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.GetPermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: permission_service.GetPermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.GetPermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +186,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_permission(
-        self, response: permission.Permission
-    ) -> permission.Permission:
+    def post_get_permission(self, response: permission.Permission) -> permission.Permission:
         """Post-rpc interceptor for get_permission
 
         DEPRECATED. Please use the `post_get_permission_with_metadata`
@@ -220,9 +200,7 @@ class PermissionServiceRestInterceptor:
         return response
 
     def post_get_permission_with_metadata(
-        self,
-        response: permission.Permission,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: permission.Permission, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[permission.Permission, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_permission
 
@@ -239,13 +217,8 @@ class PermissionServiceRestInterceptor:
         return response, metadata
 
     def pre_list_permissions(
-        self,
-        request: permission_service.ListPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.ListPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: permission_service.ListPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.ListPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -253,9 +226,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_permissions(
-        self, response: permission_service.ListPermissionsResponse
-    ) -> permission_service.ListPermissionsResponse:
+    def post_list_permissions(self, response: permission_service.ListPermissionsResponse) -> permission_service.ListPermissionsResponse:
         """Post-rpc interceptor for list_permissions
 
         DEPRECATED. Please use the `post_list_permissions_with_metadata`
@@ -269,13 +240,8 @@ class PermissionServiceRestInterceptor:
         return response
 
     def post_list_permissions_with_metadata(
-        self,
-        response: permission_service.ListPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.ListPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: permission_service.ListPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.ListPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -291,13 +257,8 @@ class PermissionServiceRestInterceptor:
         return response, metadata
 
     def pre_transfer_ownership(
-        self,
-        request: permission_service.TransferOwnershipRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.TransferOwnershipRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: permission_service.TransferOwnershipRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.TransferOwnershipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for transfer_ownership
 
         Override in a subclass to manipulate the request or metadata
@@ -305,9 +266,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_transfer_ownership(
-        self, response: permission_service.TransferOwnershipResponse
-    ) -> permission_service.TransferOwnershipResponse:
+    def post_transfer_ownership(self, response: permission_service.TransferOwnershipResponse) -> permission_service.TransferOwnershipResponse:
         """Post-rpc interceptor for transfer_ownership
 
         DEPRECATED. Please use the `post_transfer_ownership_with_metadata`
@@ -321,13 +280,8 @@ class PermissionServiceRestInterceptor:
         return response
 
     def post_transfer_ownership_with_metadata(
-        self,
-        response: permission_service.TransferOwnershipResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.TransferOwnershipResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: permission_service.TransferOwnershipResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.TransferOwnershipResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for transfer_ownership
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -343,13 +297,8 @@ class PermissionServiceRestInterceptor:
         return response, metadata
 
     def pre_update_permission(
-        self,
-        request: permission_service.UpdatePermissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        permission_service.UpdatePermissionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: permission_service.UpdatePermissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[permission_service.UpdatePermissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +306,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_permission(
-        self, response: gag_permission.Permission
-    ) -> gag_permission.Permission:
+    def post_update_permission(self, response: gag_permission.Permission) -> gag_permission.Permission:
         """Post-rpc interceptor for update_permission
 
         DEPRECATED. Please use the `post_update_permission_with_metadata`
@@ -373,9 +320,7 @@ class PermissionServiceRestInterceptor:
         return response
 
     def post_update_permission_with_metadata(
-        self,
-        response: gag_permission.Permission,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gag_permission.Permission, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gag_permission.Permission, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_permission
 
@@ -392,12 +337,8 @@ class PermissionServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -415,12 +356,8 @@ class PermissionServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -438,12 +375,8 @@ class PermissionServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -451,9 +384,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -463,12 +394,8 @@ class PermissionServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -476,9 +403,7 @@ class PermissionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -568,31 +493,18 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PermissionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreatePermission(
-        _BasePermissionServiceRestTransport._BaseCreatePermission,
-        PermissionServiceRestStub,
-    ):
+    class _CreatePermission(_BasePermissionServiceRestTransport._BaseCreatePermission, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.CreatePermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -655,32 +567,18 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseCreatePermission._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseCreatePermission._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_permission(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseCreatePermission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_permission(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseCreatePermission._get_transcoded_request(http_options, request)
 
-            body = _BasePermissionServiceRestTransport._BaseCreatePermission._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePermissionServiceRestTransport._BaseCreatePermission._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseCreatePermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseCreatePermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -704,13 +602,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._CreatePermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -726,12 +618,8 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             resp = self._interceptor.post_create_permission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_permission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_permission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gag_permission.Permission.to_json(response)
                 except:
@@ -752,23 +640,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 )
             return resp
 
-    class _DeletePermission(
-        _BasePermissionServiceRestTransport._BaseDeletePermission,
-        PermissionServiceRestStub,
-    ):
+    class _DeletePermission(_BasePermissionServiceRestTransport._BaseDeletePermission, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.DeletePermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -803,28 +680,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseDeletePermission._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseDeletePermission._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_permission(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseDeletePermission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_permission(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseDeletePermission._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseDeletePermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseDeletePermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -848,12 +713,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._DeletePermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -861,23 +721,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetPermission(
-        _BasePermissionServiceRestTransport._BaseGetPermission,
-        PermissionServiceRestStub,
-    ):
+    class _GetPermission(_BasePermissionServiceRestTransport._BaseGetPermission, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.GetPermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -940,26 +789,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseGetPermission._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseGetPermission._get_http_options()
 
             request, metadata = self._interceptor.pre_get_permission(request, metadata)
-            transcoded_request = _BasePermissionServiceRestTransport._BaseGetPermission._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePermissionServiceRestTransport._BaseGetPermission._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseGetPermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseGetPermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -983,12 +822,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._GetPermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1004,12 +838,8 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             resp = self._interceptor.post_get_permission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_permission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_permission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = permission.Permission.to_json(response)
                 except:
@@ -1030,23 +860,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 )
             return resp
 
-    class _ListPermissions(
-        _BasePermissionServiceRestTransport._BaseListPermissions,
-        PermissionServiceRestStub,
-    ):
+    class _ListPermissions(_BasePermissionServiceRestTransport._BaseListPermissions, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.ListPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1087,28 +906,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseListPermissions._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseListPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_permissions(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseListPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_permissions(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseListPermissions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseListPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseListPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1132,12 +939,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._ListPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1153,16 +955,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             resp = self._interceptor.post_list_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        permission_service.ListPermissionsResponse.to_json(response)
-                    )
+                    response_payload = permission_service.ListPermissionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1181,23 +977,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 )
             return resp
 
-    class _TransferOwnership(
-        _BasePermissionServiceRestTransport._BaseTransferOwnership,
-        PermissionServiceRestStub,
-    ):
+    class _TransferOwnership(_BasePermissionServiceRestTransport._BaseTransferOwnership, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.TransferOwnership")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1238,32 +1023,18 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                     Response from ``TransferOwnership``.
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseTransferOwnership._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_http_options()
 
-            request, metadata = self._interceptor.pre_transfer_ownership(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_transfer_ownership(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_transcoded_request(http_options, request)
 
-            body = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseTransferOwnership._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1287,13 +1058,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._TransferOwnership._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1309,16 +1074,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             resp = self._interceptor.post_transfer_ownership(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_transfer_ownership_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_transfer_ownership_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        permission_service.TransferOwnershipResponse.to_json(response)
-                    )
+                    response_payload = permission_service.TransferOwnershipResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1337,23 +1096,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 )
             return resp
 
-    class _UpdatePermission(
-        _BasePermissionServiceRestTransport._BaseUpdatePermission,
-        PermissionServiceRestStub,
-    ):
+    class _UpdatePermission(_BasePermissionServiceRestTransport._BaseUpdatePermission, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.UpdatePermission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1416,32 +1164,18 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseUpdatePermission._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_permission(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_permission(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_transcoded_request(http_options, request)
 
-            body = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseUpdatePermission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1465,13 +1199,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._UpdatePermission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1487,12 +1215,8 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             resp = self._interceptor.post_update_permission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_permission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_permission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gag_permission.Permission.to_json(response)
                 except:
@@ -1514,59 +1238,37 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             return resp
 
     @property
-    def create_permission(
-        self,
-    ) -> Callable[
-        [permission_service.CreatePermissionRequest], gag_permission.Permission
-    ]:
+    def create_permission(self) -> Callable[[permission_service.CreatePermissionRequest], gag_permission.Permission]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePermission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_permission(
-        self,
-    ) -> Callable[[permission_service.DeletePermissionRequest], empty_pb2.Empty]:
+    def delete_permission(self) -> Callable[[permission_service.DeletePermissionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePermission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_permission(
-        self,
-    ) -> Callable[[permission_service.GetPermissionRequest], permission.Permission]:
+    def get_permission(self) -> Callable[[permission_service.GetPermissionRequest], permission.Permission]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPermission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_permissions(
-        self,
-    ) -> Callable[
-        [permission_service.ListPermissionsRequest],
-        permission_service.ListPermissionsResponse,
-    ]:
+    def list_permissions(self) -> Callable[[permission_service.ListPermissionsRequest], permission_service.ListPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def transfer_ownership(
-        self,
-    ) -> Callable[
-        [permission_service.TransferOwnershipRequest],
-        permission_service.TransferOwnershipResponse,
-    ]:
+    def transfer_ownership(self) -> Callable[[permission_service.TransferOwnershipRequest], permission_service.TransferOwnershipResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TransferOwnership(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_permission(
-        self,
-    ) -> Callable[
-        [permission_service.UpdatePermissionRequest], gag_permission.Permission
-    ]:
+    def update_permission(self) -> Callable[[permission_service.UpdatePermissionRequest], gag_permission.Permission]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePermission(self._session, self._host, self._interceptor)  # type: ignore
@@ -1575,23 +1277,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BasePermissionServiceRestTransport._BaseCancelOperation,
-        PermissionServiceRestStub,
-    ):
+    class _CancelOperation(_BasePermissionServiceRestTransport._BaseCancelOperation, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1626,28 +1317,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1671,12 +1350,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1690,23 +1364,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BasePermissionServiceRestTransport._BaseDeleteOperation,
-        PermissionServiceRestStub,
-    ):
+    class _DeleteOperation(_BasePermissionServiceRestTransport._BaseDeleteOperation, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1741,28 +1404,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePermissionServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BasePermissionServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1786,12 +1437,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1805,22 +1451,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePermissionServiceRestTransport._BaseGetOperation, PermissionServiceRestStub
-    ):
+    class _GetOperation(_BasePermissionServiceRestTransport._BaseGetOperation, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1858,26 +1494,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePermissionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePermissionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1901,12 +1527,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1918,9 +1539,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1945,23 +1564,12 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BasePermissionServiceRestTransport._BaseListOperations,
-        PermissionServiceRestStub,
-    ):
+    class _ListOperations(_BasePermissionServiceRestTransport._BaseListOperations, PermissionServiceRestStub):
         def __hash__(self):
             return hash("PermissionServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1999,26 +1607,16 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePermissionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePermissionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BasePermissionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePermissionServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePermissionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePermissionServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2042,12 +1640,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
 
             # Send the request
             response = PermissionServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2059,9 +1652,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

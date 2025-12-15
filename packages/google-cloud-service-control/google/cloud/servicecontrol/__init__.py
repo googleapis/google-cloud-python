@@ -18,43 +18,18 @@ from google.cloud.servicecontrol import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.servicecontrol_v1.services.quota_controller.async_client import (
-    QuotaControllerAsyncClient,
-)
-from google.cloud.servicecontrol_v1.services.quota_controller.client import (
-    QuotaControllerClient,
-)
-from google.cloud.servicecontrol_v1.services.service_controller.async_client import (
-    ServiceControllerAsyncClient,
-)
-from google.cloud.servicecontrol_v1.services.service_controller.client import (
-    ServiceControllerClient,
-)
+from google.cloud.servicecontrol_v1.services.quota_controller.async_client import QuotaControllerAsyncClient
+from google.cloud.servicecontrol_v1.services.quota_controller.client import QuotaControllerClient
+from google.cloud.servicecontrol_v1.services.service_controller.async_client import ServiceControllerAsyncClient
+from google.cloud.servicecontrol_v1.services.service_controller.client import ServiceControllerClient
 from google.cloud.servicecontrol_v1.types.check_error import CheckError
 from google.cloud.servicecontrol_v1.types.distribution import Distribution
 from google.cloud.servicecontrol_v1.types.http_request import HttpRequest
-from google.cloud.servicecontrol_v1.types.log_entry import (
-    LogEntry,
-    LogEntryOperation,
-    LogEntrySourceLocation,
-)
-from google.cloud.servicecontrol_v1.types.metric_value import (
-    MetricValue,
-    MetricValueSet,
-)
+from google.cloud.servicecontrol_v1.types.log_entry import LogEntry, LogEntryOperation, LogEntrySourceLocation
+from google.cloud.servicecontrol_v1.types.metric_value import MetricValue, MetricValueSet
 from google.cloud.servicecontrol_v1.types.operation import Operation
-from google.cloud.servicecontrol_v1.types.quota_controller import (
-    AllocateQuotaRequest,
-    AllocateQuotaResponse,
-    QuotaError,
-    QuotaOperation,
-)
-from google.cloud.servicecontrol_v1.types.service_controller import (
-    CheckRequest,
-    CheckResponse,
-    ReportRequest,
-    ReportResponse,
-)
+from google.cloud.servicecontrol_v1.types.quota_controller import AllocateQuotaRequest, AllocateQuotaResponse, QuotaError, QuotaOperation
+from google.cloud.servicecontrol_v1.types.service_controller import CheckRequest, CheckResponse, ReportRequest, ReportResponse
 
 __all__ = (
     "QuotaControllerClient",

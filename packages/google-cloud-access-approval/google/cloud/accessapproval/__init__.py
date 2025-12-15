@@ -18,12 +18,8 @@ from google.cloud.accessapproval import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.accessapproval_v1.services.access_approval.async_client import (
-    AccessApprovalAsyncClient,
-)
-from google.cloud.accessapproval_v1.services.access_approval.client import (
-    AccessApprovalClient,
-)
+from google.cloud.accessapproval_v1.services.access_approval.async_client import AccessApprovalAsyncClient
+from google.cloud.accessapproval_v1.services.access_approval.client import AccessApprovalClient
 from google.cloud.accessapproval_v1.types.accessapproval import (
     AccessApprovalServiceAccount,
     AccessApprovalSettings,

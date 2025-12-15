@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.datacatalog_v1beta1 import gapic_version as package_version
 from google.cloud.datacatalog_v1beta1.types import policytagmanager
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class PolicyTagManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -216,115 +206,67 @@ class PolicyTagManagerTransport(abc.ABC):
     @property
     def create_taxonomy(
         self,
-    ) -> Callable[
-        [policytagmanager.CreateTaxonomyRequest],
-        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
-    ]:
+    ) -> Callable[[policytagmanager.CreateTaxonomyRequest], Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]]]:
         raise NotImplementedError()
 
     @property
-    def delete_taxonomy(
-        self,
-    ) -> Callable[
-        [policytagmanager.DeleteTaxonomyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_taxonomy(self) -> Callable[[policytagmanager.DeleteTaxonomyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_taxonomy(
         self,
-    ) -> Callable[
-        [policytagmanager.UpdateTaxonomyRequest],
-        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
-    ]:
+    ) -> Callable[[policytagmanager.UpdateTaxonomyRequest], Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]]]:
         raise NotImplementedError()
 
     @property
     def list_taxonomies(
         self,
     ) -> Callable[
-        [policytagmanager.ListTaxonomiesRequest],
-        Union[
-            policytagmanager.ListTaxonomiesResponse,
-            Awaitable[policytagmanager.ListTaxonomiesResponse],
-        ],
+        [policytagmanager.ListTaxonomiesRequest], Union[policytagmanager.ListTaxonomiesResponse, Awaitable[policytagmanager.ListTaxonomiesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_taxonomy(
-        self,
-    ) -> Callable[
-        [policytagmanager.GetTaxonomyRequest],
-        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
-    ]:
+    def get_taxonomy(self) -> Callable[[policytagmanager.GetTaxonomyRequest], Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]]]:
         raise NotImplementedError()
 
     @property
     def create_policy_tag(
         self,
-    ) -> Callable[
-        [policytagmanager.CreatePolicyTagRequest],
-        Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]],
-    ]:
+    ) -> Callable[[policytagmanager.CreatePolicyTagRequest], Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]]]:
         raise NotImplementedError()
 
     @property
-    def delete_policy_tag(
-        self,
-    ) -> Callable[
-        [policytagmanager.DeletePolicyTagRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_policy_tag(self) -> Callable[[policytagmanager.DeletePolicyTagRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_policy_tag(
         self,
-    ) -> Callable[
-        [policytagmanager.UpdatePolicyTagRequest],
-        Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]],
-    ]:
+    ) -> Callable[[policytagmanager.UpdatePolicyTagRequest], Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]]]:
         raise NotImplementedError()
 
     @property
     def list_policy_tags(
         self,
     ) -> Callable[
-        [policytagmanager.ListPolicyTagsRequest],
-        Union[
-            policytagmanager.ListPolicyTagsResponse,
-            Awaitable[policytagmanager.ListPolicyTagsResponse],
-        ],
+        [policytagmanager.ListPolicyTagsRequest], Union[policytagmanager.ListPolicyTagsResponse, Awaitable[policytagmanager.ListPolicyTagsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_policy_tag(
         self,
-    ) -> Callable[
-        [policytagmanager.GetPolicyTagRequest],
-        Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]],
-    ]:
+    ) -> Callable[[policytagmanager.GetPolicyTagRequest], Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -332,10 +274,7 @@ class PolicyTagManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 

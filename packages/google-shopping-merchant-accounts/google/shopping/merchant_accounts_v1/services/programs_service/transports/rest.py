@@ -111,9 +111,7 @@ class ProgramsServiceRestInterceptor:
     """
 
     def pre_disable_program(
-        self,
-        request: programs.DisableProgramRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: programs.DisableProgramRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.DisableProgramRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_program
 
@@ -136,9 +134,7 @@ class ProgramsServiceRestInterceptor:
         return response
 
     def post_disable_program_with_metadata(
-        self,
-        response: programs.Program,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: programs.Program, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.Program, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for disable_program
 
@@ -155,9 +151,7 @@ class ProgramsServiceRestInterceptor:
         return response, metadata
 
     def pre_enable_program(
-        self,
-        request: programs.EnableProgramRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: programs.EnableProgramRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.EnableProgramRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_program
 
@@ -180,9 +174,7 @@ class ProgramsServiceRestInterceptor:
         return response
 
     def post_enable_program_with_metadata(
-        self,
-        response: programs.Program,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: programs.Program, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.Program, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enable_program
 
@@ -199,9 +191,7 @@ class ProgramsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_program(
-        self,
-        request: programs.GetProgramRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: programs.GetProgramRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.GetProgramRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_program
 
@@ -224,9 +214,7 @@ class ProgramsServiceRestInterceptor:
         return response
 
     def post_get_program_with_metadata(
-        self,
-        response: programs.Program,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: programs.Program, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.Program, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_program
 
@@ -243,9 +231,7 @@ class ProgramsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_programs(
-        self,
-        request: programs.ListProgramsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: programs.ListProgramsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.ListProgramsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_programs
 
@@ -254,9 +240,7 @@ class ProgramsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_programs(
-        self, response: programs.ListProgramsResponse
-    ) -> programs.ListProgramsResponse:
+    def post_list_programs(self, response: programs.ListProgramsResponse) -> programs.ListProgramsResponse:
         """Post-rpc interceptor for list_programs
 
         DEPRECATED. Please use the `post_list_programs_with_metadata`
@@ -270,9 +254,7 @@ class ProgramsServiceRestInterceptor:
         return response
 
     def post_list_programs_with_metadata(
-        self,
-        response: programs.ListProgramsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: programs.ListProgramsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[programs.ListProgramsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_programs
 
@@ -378,30 +360,18 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ProgramsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DisableProgram(
-        _BaseProgramsServiceRestTransport._BaseDisableProgram, ProgramsServiceRestStub
-    ):
+    class _DisableProgram(_BaseProgramsServiceRestTransport._BaseDisableProgram, ProgramsServiceRestStub):
         def __hash__(self):
             return hash("ProgramsServiceRestTransport.DisableProgram")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -459,30 +429,18 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProgramsServiceRestTransport._BaseDisableProgram._get_http_options()
-            )
+            http_options = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_http_options()
 
             request, metadata = self._interceptor.pre_disable_program(request, metadata)
-            transcoded_request = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_transcoded_request(http_options, request)
 
-            body = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -506,13 +464,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             # Send the request
             response = ProgramsServiceRestTransport._DisableProgram._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -528,12 +480,8 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             resp = self._interceptor.post_disable_program(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_disable_program_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_disable_program_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = programs.Program.to_json(response)
                 except:
@@ -554,22 +502,12 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 )
             return resp
 
-    class _EnableProgram(
-        _BaseProgramsServiceRestTransport._BaseEnableProgram, ProgramsServiceRestStub
-    ):
+    class _EnableProgram(_BaseProgramsServiceRestTransport._BaseEnableProgram, ProgramsServiceRestStub):
         def __hash__(self):
             return hash("ProgramsServiceRestTransport.EnableProgram")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -627,30 +565,18 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProgramsServiceRestTransport._BaseEnableProgram._get_http_options()
-            )
+            http_options = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_http_options()
 
             request, metadata = self._interceptor.pre_enable_program(request, metadata)
-            transcoded_request = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_transcoded_request(http_options, request)
 
-            body = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -674,13 +600,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             # Send the request
             response = ProgramsServiceRestTransport._EnableProgram._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -696,12 +616,8 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             resp = self._interceptor.post_enable_program(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_enable_program_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enable_program_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = programs.Program.to_json(response)
                 except:
@@ -722,22 +638,12 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 )
             return resp
 
-    class _GetProgram(
-        _BaseProgramsServiceRestTransport._BaseGetProgram, ProgramsServiceRestStub
-    ):
+    class _GetProgram(_BaseProgramsServiceRestTransport._BaseGetProgram, ProgramsServiceRestStub):
         def __hash__(self):
             return hash("ProgramsServiceRestTransport.GetProgram")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -794,26 +700,16 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProgramsServiceRestTransport._BaseGetProgram._get_http_options()
-            )
+            http_options = _BaseProgramsServiceRestTransport._BaseGetProgram._get_http_options()
 
             request, metadata = self._interceptor.pre_get_program(request, metadata)
-            transcoded_request = _BaseProgramsServiceRestTransport._BaseGetProgram._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProgramsServiceRestTransport._BaseGetProgram._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProgramsServiceRestTransport._BaseGetProgram._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgramsServiceRestTransport._BaseGetProgram._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -837,12 +733,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             # Send the request
             response = ProgramsServiceRestTransport._GetProgram._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -858,12 +749,8 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             resp = self._interceptor.post_get_program(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_program_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_program_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = programs.Program.to_json(response)
                 except:
@@ -884,22 +771,12 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 )
             return resp
 
-    class _ListPrograms(
-        _BaseProgramsServiceRestTransport._BaseListPrograms, ProgramsServiceRestStub
-    ):
+    class _ListPrograms(_BaseProgramsServiceRestTransport._BaseListPrograms, ProgramsServiceRestStub):
         def __hash__(self):
             return hash("ProgramsServiceRestTransport.ListPrograms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -941,26 +818,16 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProgramsServiceRestTransport._BaseListPrograms._get_http_options()
-            )
+            http_options = _BaseProgramsServiceRestTransport._BaseListPrograms._get_http_options()
 
             request, metadata = self._interceptor.pre_list_programs(request, metadata)
-            transcoded_request = _BaseProgramsServiceRestTransport._BaseListPrograms._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProgramsServiceRestTransport._BaseListPrograms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProgramsServiceRestTransport._BaseListPrograms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgramsServiceRestTransport._BaseListPrograms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -984,12 +851,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             # Send the request
             response = ProgramsServiceRestTransport._ListPrograms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1005,12 +867,8 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             resp = self._interceptor.post_list_programs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_programs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_programs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = programs.ListProgramsResponse.to_json(response)
                 except:
@@ -1032,17 +890,13 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             return resp
 
     @property
-    def disable_program(
-        self,
-    ) -> Callable[[programs.DisableProgramRequest], programs.Program]:
+    def disable_program(self) -> Callable[[programs.DisableProgramRequest], programs.Program]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableProgram(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enable_program(
-        self,
-    ) -> Callable[[programs.EnableProgramRequest], programs.Program]:
+    def enable_program(self) -> Callable[[programs.EnableProgramRequest], programs.Program]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnableProgram(self._session, self._host, self._interceptor)  # type: ignore
@@ -1054,9 +908,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
         return self._GetProgram(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_programs(
-        self,
-    ) -> Callable[[programs.ListProgramsRequest], programs.ListProgramsResponse]:
+    def list_programs(self) -> Callable[[programs.ListProgramsRequest], programs.ListProgramsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrograms(self._session, self._host, self._interceptor)  # type: ignore

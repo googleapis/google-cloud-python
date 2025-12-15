@@ -476,21 +476,17 @@ class RemoteRepositoryConfig(proto.Message):
                 number=1,
             )
 
-        public_repository: "RemoteRepositoryConfig.MavenRepository.PublicRepository" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                oneof="upstream",
-                enum="RemoteRepositoryConfig.MavenRepository.PublicRepository",
-            )
+        public_repository: "RemoteRepositoryConfig.MavenRepository.PublicRepository" = proto.Field(
+            proto.ENUM,
+            number=1,
+            oneof="upstream",
+            enum="RemoteRepositoryConfig.MavenRepository.PublicRepository",
         )
-        custom_repository: "RemoteRepositoryConfig.MavenRepository.CustomRepository" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="upstream",
-                message="RemoteRepositoryConfig.MavenRepository.CustomRepository",
-            )
+        custom_repository: "RemoteRepositoryConfig.MavenRepository.CustomRepository" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.MavenRepository.CustomRepository",
         )
 
     class NpmRepository(proto.Message):
@@ -543,21 +539,17 @@ class RemoteRepositoryConfig(proto.Message):
                 number=1,
             )
 
-        public_repository: "RemoteRepositoryConfig.NpmRepository.PublicRepository" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                oneof="upstream",
-                enum="RemoteRepositoryConfig.NpmRepository.PublicRepository",
-            )
+        public_repository: "RemoteRepositoryConfig.NpmRepository.PublicRepository" = proto.Field(
+            proto.ENUM,
+            number=1,
+            oneof="upstream",
+            enum="RemoteRepositoryConfig.NpmRepository.PublicRepository",
         )
-        custom_repository: "RemoteRepositoryConfig.NpmRepository.CustomRepository" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="upstream",
-                message="RemoteRepositoryConfig.NpmRepository.CustomRepository",
-            )
+        custom_repository: "RemoteRepositoryConfig.NpmRepository.CustomRepository" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.NpmRepository.CustomRepository",
         )
 
     class PythonRepository(proto.Message):
@@ -701,21 +693,17 @@ class RemoteRepositoryConfig(proto.Message):
                 number=1,
             )
 
-        public_repository: "RemoteRepositoryConfig.AptRepository.PublicRepository" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="upstream",
-                message="RemoteRepositoryConfig.AptRepository.PublicRepository",
-            )
+        public_repository: "RemoteRepositoryConfig.AptRepository.PublicRepository" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.AptRepository.PublicRepository",
         )
-        custom_repository: "RemoteRepositoryConfig.AptRepository.CustomRepository" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="upstream",
-                message="RemoteRepositoryConfig.AptRepository.CustomRepository",
-            )
+        custom_repository: "RemoteRepositoryConfig.AptRepository.CustomRepository" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.AptRepository.CustomRepository",
         )
 
     class YumRepository(proto.Message):
@@ -806,21 +794,17 @@ class RemoteRepositoryConfig(proto.Message):
                 number=1,
             )
 
-        public_repository: "RemoteRepositoryConfig.YumRepository.PublicRepository" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="upstream",
-                message="RemoteRepositoryConfig.YumRepository.PublicRepository",
-            )
+        public_repository: "RemoteRepositoryConfig.YumRepository.PublicRepository" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.YumRepository.PublicRepository",
         )
-        custom_repository: "RemoteRepositoryConfig.YumRepository.CustomRepository" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="upstream",
-                message="RemoteRepositoryConfig.YumRepository.CustomRepository",
-            )
+        custom_repository: "RemoteRepositoryConfig.YumRepository.CustomRepository" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.YumRepository.CustomRepository",
         )
 
     class CommonRemoteRepository(proto.Message):
@@ -1181,24 +1165,20 @@ class Repository(proto.Message):
             SCANNING_DISABLED = 2
             SCANNING_ACTIVE = 3
 
-        enablement_config: "Repository.VulnerabilityScanningConfig.EnablementConfig" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="Repository.VulnerabilityScanningConfig.EnablementConfig",
-            )
+        enablement_config: "Repository.VulnerabilityScanningConfig.EnablementConfig" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Repository.VulnerabilityScanningConfig.EnablementConfig",
         )
         last_enable_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
-        enablement_state: "Repository.VulnerabilityScanningConfig.EnablementState" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                enum="Repository.VulnerabilityScanningConfig.EnablementState",
-            )
+        enablement_state: "Repository.VulnerabilityScanningConfig.EnablementState" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="Repository.VulnerabilityScanningConfig.EnablementState",
         )
         enablement_state_reason: str = proto.Field(
             proto.STRING,

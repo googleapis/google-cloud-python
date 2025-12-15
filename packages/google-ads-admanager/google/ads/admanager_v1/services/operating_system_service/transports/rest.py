@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    operating_system_messages,
-    operating_system_service,
-)
+from google.ads.admanager_v1.types import operating_system_messages, operating_system_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseOperatingSystemServiceRestTransport
@@ -99,13 +96,8 @@ class OperatingSystemServiceRestInterceptor:
     """
 
     def pre_get_operating_system(
-        self,
-        request: operating_system_service.GetOperatingSystemRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_service.GetOperatingSystemRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: operating_system_service.GetOperatingSystemRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_service.GetOperatingSystemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operating_system
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class OperatingSystemServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operating_system(
-        self, response: operating_system_messages.OperatingSystem
-    ) -> operating_system_messages.OperatingSystem:
+    def post_get_operating_system(self, response: operating_system_messages.OperatingSystem) -> operating_system_messages.OperatingSystem:
         """Post-rpc interceptor for get_operating_system
 
         DEPRECATED. Please use the `post_get_operating_system_with_metadata`
@@ -129,13 +119,8 @@ class OperatingSystemServiceRestInterceptor:
         return response
 
     def post_get_operating_system_with_metadata(
-        self,
-        response: operating_system_messages.OperatingSystem,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_messages.OperatingSystem,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: operating_system_messages.OperatingSystem, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_messages.OperatingSystem, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_operating_system
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +136,8 @@ class OperatingSystemServiceRestInterceptor:
         return response, metadata
 
     def pre_list_operating_systems(
-        self,
-        request: operating_system_service.ListOperatingSystemsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_service.ListOperatingSystemsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: operating_system_service.ListOperatingSystemsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_service.ListOperatingSystemsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operating_systems
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +161,8 @@ class OperatingSystemServiceRestInterceptor:
         return response
 
     def post_list_operating_systems_with_metadata(
-        self,
-        response: operating_system_service.ListOperatingSystemsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_service.ListOperatingSystemsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: operating_system_service.ListOperatingSystemsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_service.ListOperatingSystemsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_operating_systems
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +178,8 @@ class OperatingSystemServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +187,7 @@ class OperatingSystemServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -307,31 +276,18 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OperatingSystemServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetOperatingSystem(
-        _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem,
-        OperatingSystemServiceRestStub,
-    ):
+    class _GetOperatingSystem(_BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem, OperatingSystemServiceRestStub):
         def __hash__(self):
             return hash("OperatingSystemServiceRestTransport.GetOperatingSystem")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -372,28 +328,16 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem._get_http_options()
-            )
+            http_options = _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_operating_system(
-                request, metadata
-            )
-            transcoded_request = _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_operating_system(request, metadata)
+            transcoded_request = _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOperatingSystemServiceRestTransport._BaseGetOperatingSystem._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -416,15 +360,8 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                OperatingSystemServiceRestTransport._GetOperatingSystem._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OperatingSystemServiceRestTransport._GetOperatingSystem._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -440,16 +377,10 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
 
             resp = self._interceptor.post_get_operating_system(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_operating_system_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_operating_system_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        operating_system_messages.OperatingSystem.to_json(response)
-                    )
+                    response_payload = operating_system_messages.OperatingSystem.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -468,23 +399,12 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
                 )
             return resp
 
-    class _ListOperatingSystems(
-        _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems,
-        OperatingSystemServiceRestStub,
-    ):
+    class _ListOperatingSystems(_BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems, OperatingSystemServiceRestStub):
         def __hash__(self):
             return hash("OperatingSystemServiceRestTransport.ListOperatingSystems")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -525,28 +445,16 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems._get_http_options()
-            )
+            http_options = _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_operating_systems(
-                request, metadata
-            )
-            transcoded_request = _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_operating_systems(request, metadata)
+            transcoded_request = _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOperatingSystemServiceRestTransport._BaseListOperatingSystems._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -569,15 +477,8 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                OperatingSystemServiceRestTransport._ListOperatingSystems._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OperatingSystemServiceRestTransport._ListOperatingSystems._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -593,18 +494,10 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
 
             resp = self._interceptor.post_list_operating_systems(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_operating_systems_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_operating_systems_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        operating_system_service.ListOperatingSystemsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = operating_system_service.ListOperatingSystemsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -624,12 +517,7 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
             return resp
 
     @property
-    def get_operating_system(
-        self,
-    ) -> Callable[
-        [operating_system_service.GetOperatingSystemRequest],
-        operating_system_messages.OperatingSystem,
-    ]:
+    def get_operating_system(self) -> Callable[[operating_system_service.GetOperatingSystemRequest], operating_system_messages.OperatingSystem]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOperatingSystem(self._session, self._host, self._interceptor)  # type: ignore
@@ -637,10 +525,7 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
     @property
     def list_operating_systems(
         self,
-    ) -> Callable[
-        [operating_system_service.ListOperatingSystemsRequest],
-        operating_system_service.ListOperatingSystemsResponse,
-    ]:
+    ) -> Callable[[operating_system_service.ListOperatingSystemsRequest], operating_system_service.ListOperatingSystemsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOperatingSystems(self._session, self._host, self._interceptor)  # type: ignore
@@ -649,23 +534,12 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOperatingSystemServiceRestTransport._BaseGetOperation,
-        OperatingSystemServiceRestStub,
-    ):
+    class _GetOperation(_BaseOperatingSystemServiceRestTransport._BaseGetOperation, OperatingSystemServiceRestStub):
         def __hash__(self):
             return hash("OperatingSystemServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -703,26 +577,16 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOperatingSystemServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOperatingSystemServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOperatingSystemServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOperatingSystemServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOperatingSystemServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOperatingSystemServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -746,12 +610,7 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
 
             # Send the request
             response = OperatingSystemServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -763,9 +622,7 @@ class OperatingSystemServiceRestTransport(_BaseOperatingSystemServiceRestTranspo
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

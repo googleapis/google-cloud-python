@@ -127,9 +127,7 @@ class Indicator(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            detections: MutableSequence[
-                "Indicator.ProcessSignature.MemoryHashSignature.Detection"
-            ] = proto.RepeatedField(
+            detections: MutableSequence["Indicator.ProcessSignature.MemoryHashSignature.Detection"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Indicator.ProcessSignature.MemoryHashSignature.Detection",
@@ -148,21 +146,17 @@ class Indicator(proto.Message):
                 number=5,
             )
 
-        memory_hash_signature: "Indicator.ProcessSignature.MemoryHashSignature" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=6,
-                oneof="signature",
-                message="Indicator.ProcessSignature.MemoryHashSignature",
-            )
+        memory_hash_signature: "Indicator.ProcessSignature.MemoryHashSignature" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="signature",
+            message="Indicator.ProcessSignature.MemoryHashSignature",
         )
-        yara_rule_signature: "Indicator.ProcessSignature.YaraRuleSignature" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=7,
-                oneof="signature",
-                message="Indicator.ProcessSignature.YaraRuleSignature",
-            )
+        yara_rule_signature: "Indicator.ProcessSignature.YaraRuleSignature" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="signature",
+            message="Indicator.ProcessSignature.YaraRuleSignature",
         )
         signature_type: "Indicator.ProcessSignature.SignatureType" = proto.Field(
             proto.ENUM,

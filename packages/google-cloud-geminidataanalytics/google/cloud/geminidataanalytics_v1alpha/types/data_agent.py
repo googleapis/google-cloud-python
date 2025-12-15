@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.geminidataanalytics_v1alpha.types import (
-    data_analytics_agent as gcg_data_analytics_agent,
-)
+from google.cloud.geminidataanalytics_v1alpha.types import data_analytics_agent as gcg_data_analytics_agent
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",

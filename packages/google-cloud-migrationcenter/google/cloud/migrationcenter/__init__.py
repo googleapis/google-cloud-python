@@ -18,12 +18,8 @@ from google.cloud.migrationcenter import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.migrationcenter_v1.services.migration_center.async_client import (
-    MigrationCenterAsyncClient,
-)
-from google.cloud.migrationcenter_v1.services.migration_center.client import (
-    MigrationCenterClient,
-)
+from google.cloud.migrationcenter_v1.services.migration_center.async_client import MigrationCenterAsyncClient
+from google.cloud.migrationcenter_v1.services.migration_center.client import MigrationCenterClient
 from google.cloud.migrationcenter_v1.types.migrationcenter import (
     AddAssetsToGroupRequest,
     AggregateAssetsValuesRequest,

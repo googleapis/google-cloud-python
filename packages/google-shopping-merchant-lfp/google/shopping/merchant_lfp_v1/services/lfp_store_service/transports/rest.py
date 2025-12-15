@@ -108,9 +108,7 @@ class LfpStoreServiceRestInterceptor:
     """
 
     def pre_delete_lfp_store(
-        self,
-        request: lfpstore.DeleteLfpStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lfpstore.DeleteLfpStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.DeleteLfpStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_lfp_store
 
@@ -120,9 +118,7 @@ class LfpStoreServiceRestInterceptor:
         return request, metadata
 
     def pre_get_lfp_store(
-        self,
-        request: lfpstore.GetLfpStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lfpstore.GetLfpStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.GetLfpStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lfp_store
 
@@ -145,9 +141,7 @@ class LfpStoreServiceRestInterceptor:
         return response
 
     def post_get_lfp_store_with_metadata(
-        self,
-        response: lfpstore.LfpStore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lfpstore.LfpStore, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.LfpStore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_lfp_store
 
@@ -164,9 +158,7 @@ class LfpStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_insert_lfp_store(
-        self,
-        request: lfpstore.InsertLfpStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lfpstore.InsertLfpStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.InsertLfpStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_lfp_store
 
@@ -189,9 +181,7 @@ class LfpStoreServiceRestInterceptor:
         return response
 
     def post_insert_lfp_store_with_metadata(
-        self,
-        response: lfpstore.LfpStore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lfpstore.LfpStore, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.LfpStore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_lfp_store
 
@@ -208,9 +198,7 @@ class LfpStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_list_lfp_stores(
-        self,
-        request: lfpstore.ListLfpStoresRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lfpstore.ListLfpStoresRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.ListLfpStoresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lfp_stores
 
@@ -219,9 +207,7 @@ class LfpStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lfp_stores(
-        self, response: lfpstore.ListLfpStoresResponse
-    ) -> lfpstore.ListLfpStoresResponse:
+    def post_list_lfp_stores(self, response: lfpstore.ListLfpStoresResponse) -> lfpstore.ListLfpStoresResponse:
         """Post-rpc interceptor for list_lfp_stores
 
         DEPRECATED. Please use the `post_list_lfp_stores_with_metadata`
@@ -235,9 +221,7 @@ class LfpStoreServiceRestInterceptor:
         return response
 
     def post_list_lfp_stores_with_metadata(
-        self,
-        response: lfpstore.ListLfpStoresResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lfpstore.ListLfpStoresResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpstore.ListLfpStoresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lfp_stores
 
@@ -335,30 +319,18 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or LfpStoreServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteLfpStore(
-        _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore, LfpStoreServiceRestStub
-    ):
+    class _DeleteLfpStore(_BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore, LfpStoreServiceRestStub):
         def __hash__(self):
             return hash("LfpStoreServiceRestTransport.DeleteLfpStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -394,28 +366,16 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore._get_http_options()
-            )
+            http_options = _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_lfp_store(
-                request, metadata
-            )
-            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_lfp_store(request, metadata)
+            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpStoreServiceRestTransport._BaseDeleteLfpStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -439,12 +399,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             # Send the request
             response = LfpStoreServiceRestTransport._DeleteLfpStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -452,22 +407,12 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetLfpStore(
-        _BaseLfpStoreServiceRestTransport._BaseGetLfpStore, LfpStoreServiceRestStub
-    ):
+    class _GetLfpStore(_BaseLfpStoreServiceRestTransport._BaseGetLfpStore, LfpStoreServiceRestStub):
         def __hash__(self):
             return hash("LfpStoreServiceRestTransport.GetLfpStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -513,26 +458,16 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLfpStoreServiceRestTransport._BaseGetLfpStore._get_http_options()
-            )
+            http_options = _BaseLfpStoreServiceRestTransport._BaseGetLfpStore._get_http_options()
 
             request, metadata = self._interceptor.pre_get_lfp_store(request, metadata)
-            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseGetLfpStore._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseGetLfpStore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLfpStoreServiceRestTransport._BaseGetLfpStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpStoreServiceRestTransport._BaseGetLfpStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -556,12 +491,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             # Send the request
             response = LfpStoreServiceRestTransport._GetLfpStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -577,12 +507,8 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             resp = self._interceptor.post_get_lfp_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lfp_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lfp_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lfpstore.LfpStore.to_json(response)
                 except:
@@ -603,22 +529,12 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                 )
             return resp
 
-    class _InsertLfpStore(
-        _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore, LfpStoreServiceRestStub
-    ):
+    class _InsertLfpStore(_BaseLfpStoreServiceRestTransport._BaseInsertLfpStore, LfpStoreServiceRestStub):
         def __hash__(self):
             return hash("LfpStoreServiceRestTransport.InsertLfpStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -666,32 +582,18 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_http_options()
-            )
+            http_options = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_lfp_store(
-                request, metadata
-            )
-            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_lfp_store(request, metadata)
+            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_transcoded_request(http_options, request)
 
-            body = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpStoreServiceRestTransport._BaseInsertLfpStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -715,13 +617,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             # Send the request
             response = LfpStoreServiceRestTransport._InsertLfpStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -737,12 +633,8 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             resp = self._interceptor.post_insert_lfp_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_lfp_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_lfp_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lfpstore.LfpStore.to_json(response)
                 except:
@@ -763,22 +655,12 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                 )
             return resp
 
-    class _ListLfpStores(
-        _BaseLfpStoreServiceRestTransport._BaseListLfpStores, LfpStoreServiceRestStub
-    ):
+    class _ListLfpStores(_BaseLfpStoreServiceRestTransport._BaseListLfpStores, LfpStoreServiceRestStub):
         def __hash__(self):
             return hash("LfpStoreServiceRestTransport.ListLfpStores")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -820,26 +702,16 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLfpStoreServiceRestTransport._BaseListLfpStores._get_http_options()
-            )
+            http_options = _BaseLfpStoreServiceRestTransport._BaseListLfpStores._get_http_options()
 
             request, metadata = self._interceptor.pre_list_lfp_stores(request, metadata)
-            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseListLfpStores._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLfpStoreServiceRestTransport._BaseListLfpStores._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLfpStoreServiceRestTransport._BaseListLfpStores._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpStoreServiceRestTransport._BaseListLfpStores._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -863,12 +735,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             # Send the request
             response = LfpStoreServiceRestTransport._ListLfpStores._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -884,12 +751,8 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
 
             resp = self._interceptor.post_list_lfp_stores(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lfp_stores_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lfp_stores_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lfpstore.ListLfpStoresResponse.to_json(response)
                 except:
@@ -911,33 +774,25 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
             return resp
 
     @property
-    def delete_lfp_store(
-        self,
-    ) -> Callable[[lfpstore.DeleteLfpStoreRequest], empty_pb2.Empty]:
+    def delete_lfp_store(self) -> Callable[[lfpstore.DeleteLfpStoreRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLfpStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_lfp_store(
-        self,
-    ) -> Callable[[lfpstore.GetLfpStoreRequest], lfpstore.LfpStore]:
+    def get_lfp_store(self) -> Callable[[lfpstore.GetLfpStoreRequest], lfpstore.LfpStore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLfpStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_lfp_store(
-        self,
-    ) -> Callable[[lfpstore.InsertLfpStoreRequest], lfpstore.LfpStore]:
+    def insert_lfp_store(self) -> Callable[[lfpstore.InsertLfpStoreRequest], lfpstore.LfpStore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertLfpStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lfp_stores(
-        self,
-    ) -> Callable[[lfpstore.ListLfpStoresRequest], lfpstore.ListLfpStoresResponse]:
+    def list_lfp_stores(self) -> Callable[[lfpstore.ListLfpStoresRequest], lfpstore.ListLfpStoresResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLfpStores(self._session, self._host, self._interceptor)  # type: ignore

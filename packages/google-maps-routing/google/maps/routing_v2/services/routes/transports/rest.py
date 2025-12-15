@@ -95,13 +95,8 @@ class RoutesRestInterceptor:
     """
 
     def pre_compute_route_matrix(
-        self,
-        request: routes_service.ComputeRouteMatrixRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        routes_service.ComputeRouteMatrixRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: routes_service.ComputeRouteMatrixRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[routes_service.ComputeRouteMatrixRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_route_matrix
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class RoutesRestInterceptor:
         """
         return request, metadata
 
-    def post_compute_route_matrix(
-        self, response: rest_streaming.ResponseIterator
-    ) -> rest_streaming.ResponseIterator:
+    def post_compute_route_matrix(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for compute_route_matrix
 
         DEPRECATED. Please use the `post_compute_route_matrix_with_metadata`
@@ -125,12 +118,8 @@ class RoutesRestInterceptor:
         return response
 
     def post_compute_route_matrix_with_metadata(
-        self,
-        response: rest_streaming.ResponseIterator,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: rest_streaming.ResponseIterator, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_route_matrix
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,12 +135,8 @@ class RoutesRestInterceptor:
         return response, metadata
 
     def pre_compute_routes(
-        self,
-        request: routes_service.ComputeRoutesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        routes_service.ComputeRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: routes_service.ComputeRoutesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[routes_service.ComputeRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -159,9 +144,7 @@ class RoutesRestInterceptor:
         """
         return request, metadata
 
-    def post_compute_routes(
-        self, response: routes_service.ComputeRoutesResponse
-    ) -> routes_service.ComputeRoutesResponse:
+    def post_compute_routes(self, response: routes_service.ComputeRoutesResponse) -> routes_service.ComputeRoutesResponse:
         """Post-rpc interceptor for compute_routes
 
         DEPRECATED. Please use the `post_compute_routes_with_metadata`
@@ -175,12 +158,8 @@ class RoutesRestInterceptor:
         return response
 
     def post_compute_routes_with_metadata(
-        self,
-        response: routes_service.ComputeRoutesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        routes_service.ComputeRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: routes_service.ComputeRoutesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[routes_service.ComputeRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_routes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -275,30 +254,18 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RoutesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ComputeRouteMatrix(
-        _BaseRoutesRestTransport._BaseComputeRouteMatrix, RoutesRestStub
-    ):
+    class _ComputeRouteMatrix(_BaseRoutesRestTransport._BaseComputeRouteMatrix, RoutesRestStub):
         def __hash__(self):
             return hash("RoutesRestTransport.ComputeRouteMatrix")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -343,36 +310,18 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_http_options()
-            )
+            http_options = _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_http_options()
 
-            request, metadata = self._interceptor.pre_compute_route_matrix(
-                request, metadata
-            )
-            transcoded_request = _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compute_route_matrix(request, metadata)
+            transcoded_request = _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -396,13 +345,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
 
             # Send the request
             response = RoutesRestTransport._ComputeRouteMatrix._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -411,18 +354,12 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = rest_streaming.ResponseIterator(
-                response, routes_service.RouteMatrixElement
-            )
+            resp = rest_streaming.ResponseIterator(response, routes_service.RouteMatrixElement)
 
             resp = self._interceptor.post_compute_route_matrix(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compute_route_matrix_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_route_matrix_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                     "headers": dict(response.headers),
                     "status": response.status_code,
@@ -443,15 +380,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             return hash("RoutesRestTransport.ComputeRoutes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -491,34 +420,18 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
                     ComputeRoutes the response message.
             """
 
-            http_options = (
-                _BaseRoutesRestTransport._BaseComputeRoutes._get_http_options()
-            )
+            http_options = _BaseRoutesRestTransport._BaseComputeRoutes._get_http_options()
 
             request, metadata = self._interceptor.pre_compute_routes(request, metadata)
-            transcoded_request = (
-                _BaseRoutesRestTransport._BaseComputeRoutes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRoutesRestTransport._BaseComputeRoutes._get_transcoded_request(http_options, request)
 
-            body = _BaseRoutesRestTransport._BaseComputeRoutes._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRoutesRestTransport._BaseComputeRoutes._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRoutesRestTransport._BaseComputeRoutes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRoutesRestTransport._BaseComputeRoutes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -542,13 +455,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
 
             # Send the request
             response = RoutesRestTransport._ComputeRoutes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -564,16 +471,10 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
 
             resp = self._interceptor.post_compute_routes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compute_routes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_routes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = routes_service.ComputeRoutesResponse.to_json(
-                        response
-                    )
+                    response_payload = routes_service.ComputeRoutesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -593,21 +494,13 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             return resp
 
     @property
-    def compute_route_matrix(
-        self,
-    ) -> Callable[
-        [routes_service.ComputeRouteMatrixRequest], routes_service.RouteMatrixElement
-    ]:
+    def compute_route_matrix(self) -> Callable[[routes_service.ComputeRouteMatrixRequest], routes_service.RouteMatrixElement]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeRouteMatrix(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def compute_routes(
-        self,
-    ) -> Callable[
-        [routes_service.ComputeRoutesRequest], routes_service.ComputeRoutesResponse
-    ]:
+    def compute_routes(self) -> Callable[[routes_service.ComputeRoutesRequest], routes_service.ComputeRoutesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeRoutes(self._session, self._host, self._interceptor)  # type: ignore

@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import DnsThreatDetectorServiceTransport
 from .grpc import DnsThreatDetectorServiceGrpcTransport
 from .grpc_asyncio import DnsThreatDetectorServiceGrpcAsyncIOTransport
-from .rest import (
-    DnsThreatDetectorServiceRestInterceptor,
-    DnsThreatDetectorServiceRestTransport,
-)
+from .rest import DnsThreatDetectorServiceRestInterceptor, DnsThreatDetectorServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DnsThreatDetectorServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DnsThreatDetectorServiceTransport]]
 _transport_registry["grpc"] = DnsThreatDetectorServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DnsThreatDetectorServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = DnsThreatDetectorServiceRestTransport

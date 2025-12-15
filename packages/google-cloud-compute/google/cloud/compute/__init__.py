@@ -18,242 +18,106 @@ from google.cloud.compute import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.compute_v1.services.accelerator_types.client import (
-    AcceleratorTypesClient,
-)
+from google.cloud.compute_v1.services.accelerator_types.client import AcceleratorTypesClient
 from google.cloud.compute_v1.services.addresses.client import AddressesClient
 from google.cloud.compute_v1.services.autoscalers.client import AutoscalersClient
 from google.cloud.compute_v1.services.backend_buckets.client import BackendBucketsClient
-from google.cloud.compute_v1.services.backend_services.client import (
-    BackendServicesClient,
-)
+from google.cloud.compute_v1.services.backend_services.client import BackendServicesClient
 from google.cloud.compute_v1.services.disk_types.client import DiskTypesClient
 from google.cloud.compute_v1.services.disks.client import DisksClient
-from google.cloud.compute_v1.services.external_vpn_gateways.client import (
-    ExternalVpnGatewaysClient,
-)
-from google.cloud.compute_v1.services.firewall_policies.client import (
-    FirewallPoliciesClient,
-)
+from google.cloud.compute_v1.services.external_vpn_gateways.client import ExternalVpnGatewaysClient
+from google.cloud.compute_v1.services.firewall_policies.client import FirewallPoliciesClient
 from google.cloud.compute_v1.services.firewalls.client import FirewallsClient
-from google.cloud.compute_v1.services.forwarding_rules.client import (
-    ForwardingRulesClient,
-)
-from google.cloud.compute_v1.services.global_addresses.client import (
-    GlobalAddressesClient,
-)
-from google.cloud.compute_v1.services.global_forwarding_rules.client import (
-    GlobalForwardingRulesClient,
-)
-from google.cloud.compute_v1.services.global_network_endpoint_groups.client import (
-    GlobalNetworkEndpointGroupsClient,
-)
-from google.cloud.compute_v1.services.global_operations.client import (
-    GlobalOperationsClient,
-)
-from google.cloud.compute_v1.services.global_organization_operations.client import (
-    GlobalOrganizationOperationsClient,
-)
-from google.cloud.compute_v1.services.global_public_delegated_prefixes.client import (
-    GlobalPublicDelegatedPrefixesClient,
-)
+from google.cloud.compute_v1.services.forwarding_rules.client import ForwardingRulesClient
+from google.cloud.compute_v1.services.global_addresses.client import GlobalAddressesClient
+from google.cloud.compute_v1.services.global_forwarding_rules.client import GlobalForwardingRulesClient
+from google.cloud.compute_v1.services.global_network_endpoint_groups.client import GlobalNetworkEndpointGroupsClient
+from google.cloud.compute_v1.services.global_operations.client import GlobalOperationsClient
+from google.cloud.compute_v1.services.global_organization_operations.client import GlobalOrganizationOperationsClient
+from google.cloud.compute_v1.services.global_public_delegated_prefixes.client import GlobalPublicDelegatedPrefixesClient
 from google.cloud.compute_v1.services.health_checks.client import HealthChecksClient
-from google.cloud.compute_v1.services.image_family_views.client import (
-    ImageFamilyViewsClient,
-)
+from google.cloud.compute_v1.services.image_family_views.client import ImageFamilyViewsClient
 from google.cloud.compute_v1.services.images.client import ImagesClient
-from google.cloud.compute_v1.services.instance_group_manager_resize_requests.client import (
-    InstanceGroupManagerResizeRequestsClient,
-)
-from google.cloud.compute_v1.services.instance_group_managers.client import (
-    InstanceGroupManagersClient,
-)
+from google.cloud.compute_v1.services.instance_group_manager_resize_requests.client import InstanceGroupManagerResizeRequestsClient
+from google.cloud.compute_v1.services.instance_group_managers.client import InstanceGroupManagersClient
 from google.cloud.compute_v1.services.instance_groups.client import InstanceGroupsClient
-from google.cloud.compute_v1.services.instance_settings_service.client import (
-    InstanceSettingsServiceClient,
-)
-from google.cloud.compute_v1.services.instance_templates.client import (
-    InstanceTemplatesClient,
-)
+from google.cloud.compute_v1.services.instance_settings_service.client import InstanceSettingsServiceClient
+from google.cloud.compute_v1.services.instance_templates.client import InstanceTemplatesClient
 from google.cloud.compute_v1.services.instances.client import InstancesClient
-from google.cloud.compute_v1.services.instant_snapshots.client import (
-    InstantSnapshotsClient,
-)
-from google.cloud.compute_v1.services.interconnect_attachment_groups.client import (
-    InterconnectAttachmentGroupsClient,
-)
-from google.cloud.compute_v1.services.interconnect_attachments.client import (
-    InterconnectAttachmentsClient,
-)
-from google.cloud.compute_v1.services.interconnect_groups.client import (
-    InterconnectGroupsClient,
-)
-from google.cloud.compute_v1.services.interconnect_locations.client import (
-    InterconnectLocationsClient,
-)
-from google.cloud.compute_v1.services.interconnect_remote_locations.client import (
-    InterconnectRemoteLocationsClient,
-)
+from google.cloud.compute_v1.services.instant_snapshots.client import InstantSnapshotsClient
+from google.cloud.compute_v1.services.interconnect_attachment_groups.client import InterconnectAttachmentGroupsClient
+from google.cloud.compute_v1.services.interconnect_attachments.client import InterconnectAttachmentsClient
+from google.cloud.compute_v1.services.interconnect_groups.client import InterconnectGroupsClient
+from google.cloud.compute_v1.services.interconnect_locations.client import InterconnectLocationsClient
+from google.cloud.compute_v1.services.interconnect_remote_locations.client import InterconnectRemoteLocationsClient
 from google.cloud.compute_v1.services.interconnects.client import InterconnectsClient
 from google.cloud.compute_v1.services.license_codes.client import LicenseCodesClient
 from google.cloud.compute_v1.services.licenses.client import LicensesClient
 from google.cloud.compute_v1.services.machine_images.client import MachineImagesClient
 from google.cloud.compute_v1.services.machine_types.client import MachineTypesClient
-from google.cloud.compute_v1.services.network_attachments.client import (
-    NetworkAttachmentsClient,
-)
-from google.cloud.compute_v1.services.network_edge_security_services.client import (
-    NetworkEdgeSecurityServicesClient,
-)
-from google.cloud.compute_v1.services.network_endpoint_groups.client import (
-    NetworkEndpointGroupsClient,
-)
-from google.cloud.compute_v1.services.network_firewall_policies.client import (
-    NetworkFirewallPoliciesClient,
-)
-from google.cloud.compute_v1.services.network_profiles.client import (
-    NetworkProfilesClient,
-)
+from google.cloud.compute_v1.services.network_attachments.client import NetworkAttachmentsClient
+from google.cloud.compute_v1.services.network_edge_security_services.client import NetworkEdgeSecurityServicesClient
+from google.cloud.compute_v1.services.network_endpoint_groups.client import NetworkEndpointGroupsClient
+from google.cloud.compute_v1.services.network_firewall_policies.client import NetworkFirewallPoliciesClient
+from google.cloud.compute_v1.services.network_profiles.client import NetworkProfilesClient
 from google.cloud.compute_v1.services.networks.client import NetworksClient
 from google.cloud.compute_v1.services.node_groups.client import NodeGroupsClient
 from google.cloud.compute_v1.services.node_templates.client import NodeTemplatesClient
 from google.cloud.compute_v1.services.node_types.client import NodeTypesClient
-from google.cloud.compute_v1.services.organization_security_policies.client import (
-    OrganizationSecurityPoliciesClient,
-)
-from google.cloud.compute_v1.services.packet_mirrorings.client import (
-    PacketMirroringsClient,
-)
-from google.cloud.compute_v1.services.preview_features.client import (
-    PreviewFeaturesClient,
-)
+from google.cloud.compute_v1.services.organization_security_policies.client import OrganizationSecurityPoliciesClient
+from google.cloud.compute_v1.services.packet_mirrorings.client import PacketMirroringsClient
+from google.cloud.compute_v1.services.preview_features.client import PreviewFeaturesClient
 from google.cloud.compute_v1.services.projects.client import ProjectsClient
-from google.cloud.compute_v1.services.public_advertised_prefixes.client import (
-    PublicAdvertisedPrefixesClient,
-)
-from google.cloud.compute_v1.services.public_delegated_prefixes.client import (
-    PublicDelegatedPrefixesClient,
-)
-from google.cloud.compute_v1.services.region_autoscalers.client import (
-    RegionAutoscalersClient,
-)
-from google.cloud.compute_v1.services.region_backend_services.client import (
-    RegionBackendServicesClient,
-)
-from google.cloud.compute_v1.services.region_commitments.client import (
-    RegionCommitmentsClient,
-)
-from google.cloud.compute_v1.services.region_disk_types.client import (
-    RegionDiskTypesClient,
-)
+from google.cloud.compute_v1.services.public_advertised_prefixes.client import PublicAdvertisedPrefixesClient
+from google.cloud.compute_v1.services.public_delegated_prefixes.client import PublicDelegatedPrefixesClient
+from google.cloud.compute_v1.services.region_autoscalers.client import RegionAutoscalersClient
+from google.cloud.compute_v1.services.region_backend_services.client import RegionBackendServicesClient
+from google.cloud.compute_v1.services.region_commitments.client import RegionCommitmentsClient
+from google.cloud.compute_v1.services.region_disk_types.client import RegionDiskTypesClient
 from google.cloud.compute_v1.services.region_disks.client import RegionDisksClient
-from google.cloud.compute_v1.services.region_health_check_services.client import (
-    RegionHealthCheckServicesClient,
-)
-from google.cloud.compute_v1.services.region_health_checks.client import (
-    RegionHealthChecksClient,
-)
-from google.cloud.compute_v1.services.region_instance_group_managers.client import (
-    RegionInstanceGroupManagersClient,
-)
-from google.cloud.compute_v1.services.region_instance_groups.client import (
-    RegionInstanceGroupsClient,
-)
-from google.cloud.compute_v1.services.region_instance_templates.client import (
-    RegionInstanceTemplatesClient,
-)
-from google.cloud.compute_v1.services.region_instances.client import (
-    RegionInstancesClient,
-)
-from google.cloud.compute_v1.services.region_instant_snapshots.client import (
-    RegionInstantSnapshotsClient,
-)
-from google.cloud.compute_v1.services.region_network_endpoint_groups.client import (
-    RegionNetworkEndpointGroupsClient,
-)
-from google.cloud.compute_v1.services.region_network_firewall_policies.client import (
-    RegionNetworkFirewallPoliciesClient,
-)
-from google.cloud.compute_v1.services.region_notification_endpoints.client import (
-    RegionNotificationEndpointsClient,
-)
-from google.cloud.compute_v1.services.region_operations.client import (
-    RegionOperationsClient,
-)
-from google.cloud.compute_v1.services.region_security_policies.client import (
-    RegionSecurityPoliciesClient,
-)
-from google.cloud.compute_v1.services.region_ssl_certificates.client import (
-    RegionSslCertificatesClient,
-)
-from google.cloud.compute_v1.services.region_ssl_policies.client import (
-    RegionSslPoliciesClient,
-)
-from google.cloud.compute_v1.services.region_target_http_proxies.client import (
-    RegionTargetHttpProxiesClient,
-)
-from google.cloud.compute_v1.services.region_target_https_proxies.client import (
-    RegionTargetHttpsProxiesClient,
-)
-from google.cloud.compute_v1.services.region_target_tcp_proxies.client import (
-    RegionTargetTcpProxiesClient,
-)
+from google.cloud.compute_v1.services.region_health_check_services.client import RegionHealthCheckServicesClient
+from google.cloud.compute_v1.services.region_health_checks.client import RegionHealthChecksClient
+from google.cloud.compute_v1.services.region_instance_group_managers.client import RegionInstanceGroupManagersClient
+from google.cloud.compute_v1.services.region_instance_groups.client import RegionInstanceGroupsClient
+from google.cloud.compute_v1.services.region_instance_templates.client import RegionInstanceTemplatesClient
+from google.cloud.compute_v1.services.region_instances.client import RegionInstancesClient
+from google.cloud.compute_v1.services.region_instant_snapshots.client import RegionInstantSnapshotsClient
+from google.cloud.compute_v1.services.region_network_endpoint_groups.client import RegionNetworkEndpointGroupsClient
+from google.cloud.compute_v1.services.region_network_firewall_policies.client import RegionNetworkFirewallPoliciesClient
+from google.cloud.compute_v1.services.region_notification_endpoints.client import RegionNotificationEndpointsClient
+from google.cloud.compute_v1.services.region_operations.client import RegionOperationsClient
+from google.cloud.compute_v1.services.region_security_policies.client import RegionSecurityPoliciesClient
+from google.cloud.compute_v1.services.region_ssl_certificates.client import RegionSslCertificatesClient
+from google.cloud.compute_v1.services.region_ssl_policies.client import RegionSslPoliciesClient
+from google.cloud.compute_v1.services.region_target_http_proxies.client import RegionTargetHttpProxiesClient
+from google.cloud.compute_v1.services.region_target_https_proxies.client import RegionTargetHttpsProxiesClient
+from google.cloud.compute_v1.services.region_target_tcp_proxies.client import RegionTargetTcpProxiesClient
 from google.cloud.compute_v1.services.region_url_maps.client import RegionUrlMapsClient
 from google.cloud.compute_v1.services.region_zones.client import RegionZonesClient
 from google.cloud.compute_v1.services.regions.client import RegionsClient
-from google.cloud.compute_v1.services.reservation_blocks.client import (
-    ReservationBlocksClient,
-)
-from google.cloud.compute_v1.services.reservation_sub_blocks.client import (
-    ReservationSubBlocksClient,
-)
+from google.cloud.compute_v1.services.reservation_blocks.client import ReservationBlocksClient
+from google.cloud.compute_v1.services.reservation_sub_blocks.client import ReservationSubBlocksClient
 from google.cloud.compute_v1.services.reservations.client import ReservationsClient
-from google.cloud.compute_v1.services.resource_policies.client import (
-    ResourcePoliciesClient,
-)
+from google.cloud.compute_v1.services.resource_policies.client import ResourcePoliciesClient
 from google.cloud.compute_v1.services.routers.client import RoutersClient
 from google.cloud.compute_v1.services.routes.client import RoutesClient
-from google.cloud.compute_v1.services.security_policies.client import (
-    SecurityPoliciesClient,
-)
-from google.cloud.compute_v1.services.service_attachments.client import (
-    ServiceAttachmentsClient,
-)
-from google.cloud.compute_v1.services.snapshot_settings_service.client import (
-    SnapshotSettingsServiceClient,
-)
+from google.cloud.compute_v1.services.security_policies.client import SecurityPoliciesClient
+from google.cloud.compute_v1.services.service_attachments.client import ServiceAttachmentsClient
+from google.cloud.compute_v1.services.snapshot_settings_service.client import SnapshotSettingsServiceClient
 from google.cloud.compute_v1.services.snapshots.client import SnapshotsClient
-from google.cloud.compute_v1.services.ssl_certificates.client import (
-    SslCertificatesClient,
-)
+from google.cloud.compute_v1.services.ssl_certificates.client import SslCertificatesClient
 from google.cloud.compute_v1.services.ssl_policies.client import SslPoliciesClient
-from google.cloud.compute_v1.services.storage_pool_types.client import (
-    StoragePoolTypesClient,
-)
+from google.cloud.compute_v1.services.storage_pool_types.client import StoragePoolTypesClient
 from google.cloud.compute_v1.services.storage_pools.client import StoragePoolsClient
 from google.cloud.compute_v1.services.subnetworks.client import SubnetworksClient
-from google.cloud.compute_v1.services.target_grpc_proxies.client import (
-    TargetGrpcProxiesClient,
-)
-from google.cloud.compute_v1.services.target_http_proxies.client import (
-    TargetHttpProxiesClient,
-)
-from google.cloud.compute_v1.services.target_https_proxies.client import (
-    TargetHttpsProxiesClient,
-)
-from google.cloud.compute_v1.services.target_instances.client import (
-    TargetInstancesClient,
-)
+from google.cloud.compute_v1.services.target_grpc_proxies.client import TargetGrpcProxiesClient
+from google.cloud.compute_v1.services.target_http_proxies.client import TargetHttpProxiesClient
+from google.cloud.compute_v1.services.target_https_proxies.client import TargetHttpsProxiesClient
+from google.cloud.compute_v1.services.target_instances.client import TargetInstancesClient
 from google.cloud.compute_v1.services.target_pools.client import TargetPoolsClient
-from google.cloud.compute_v1.services.target_ssl_proxies.client import (
-    TargetSslProxiesClient,
-)
-from google.cloud.compute_v1.services.target_tcp_proxies.client import (
-    TargetTcpProxiesClient,
-)
-from google.cloud.compute_v1.services.target_vpn_gateways.client import (
-    TargetVpnGatewaysClient,
-)
+from google.cloud.compute_v1.services.target_ssl_proxies.client import TargetSslProxiesClient
+from google.cloud.compute_v1.services.target_tcp_proxies.client import TargetTcpProxiesClient
+from google.cloud.compute_v1.services.target_vpn_gateways.client import TargetVpnGatewaysClient
 from google.cloud.compute_v1.services.url_maps.client import UrlMapsClient
 from google.cloud.compute_v1.services.vpn_gateways.client import VpnGatewaysClient
 from google.cloud.compute_v1.services.vpn_tunnels.client import VpnTunnelsClient

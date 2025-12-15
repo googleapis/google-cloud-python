@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import CustomTargetingKeyServiceTransport
-from .rest import (
-    CustomTargetingKeyServiceRestInterceptor,
-    CustomTargetingKeyServiceRestTransport,
-)
+from .rest import CustomTargetingKeyServiceRestInterceptor, CustomTargetingKeyServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CustomTargetingKeyServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CustomTargetingKeyServiceTransport]]
 _transport_registry["rest"] = CustomTargetingKeyServiceRestTransport
 
 __all__ = (

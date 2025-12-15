@@ -179,12 +179,8 @@ class SSERealmServiceRestInterceptor:
     """
 
     def pre_create_partner_sse_realm(
-        self,
-        request: sse_realm.CreatePartnerSSERealmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.CreatePartnerSSERealmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.CreatePartnerSSERealmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.CreatePartnerSSERealmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_partner_sse_realm
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +188,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_partner_sse_realm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_partner_sse_realm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_partner_sse_realm
 
         DEPRECATED. Please use the `post_create_partner_sse_realm_with_metadata`
@@ -208,9 +202,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_create_partner_sse_realm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_partner_sse_realm
 
@@ -227,12 +219,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_create_sac_attachment(
-        self,
-        request: sse_realm.CreateSACAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.CreateSACAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.CreateSACAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.CreateSACAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_sac_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -240,9 +228,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_sac_attachment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_sac_attachment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_sac_attachment
 
         DEPRECATED. Please use the `post_create_sac_attachment_with_metadata`
@@ -256,9 +242,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_create_sac_attachment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_sac_attachment
 
@@ -275,12 +259,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_create_sac_realm(
-        self,
-        request: sse_realm.CreateSACRealmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.CreateSACRealmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.CreateSACRealmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.CreateSACRealmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_sac_realm
 
         Override in a subclass to manipulate the request or metadata
@@ -288,9 +268,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_sac_realm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_sac_realm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_sac_realm
 
         DEPRECATED. Please use the `post_create_sac_realm_with_metadata`
@@ -304,9 +282,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_create_sac_realm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_sac_realm
 
@@ -323,12 +299,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_partner_sse_realm(
-        self,
-        request: sse_realm.DeletePartnerSSERealmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.DeletePartnerSSERealmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.DeletePartnerSSERealmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.DeletePartnerSSERealmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_partner_sse_realm
 
         Override in a subclass to manipulate the request or metadata
@@ -336,9 +308,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_partner_sse_realm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_partner_sse_realm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_partner_sse_realm
 
         DEPRECATED. Please use the `post_delete_partner_sse_realm_with_metadata`
@@ -352,9 +322,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_delete_partner_sse_realm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_partner_sse_realm
 
@@ -371,12 +339,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_sac_attachment(
-        self,
-        request: sse_realm.DeleteSACAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.DeleteSACAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.DeleteSACAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.DeleteSACAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_sac_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -384,9 +348,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_sac_attachment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_sac_attachment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_sac_attachment
 
         DEPRECATED. Please use the `post_delete_sac_attachment_with_metadata`
@@ -400,9 +362,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_delete_sac_attachment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_sac_attachment
 
@@ -419,12 +379,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_sac_realm(
-        self,
-        request: sse_realm.DeleteSACRealmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.DeleteSACRealmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.DeleteSACRealmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.DeleteSACRealmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_sac_realm
 
         Override in a subclass to manipulate the request or metadata
@@ -432,9 +388,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_sac_realm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_sac_realm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_sac_realm
 
         DEPRECATED. Please use the `post_delete_sac_realm_with_metadata`
@@ -448,9 +402,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_delete_sac_realm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_sac_realm
 
@@ -467,12 +419,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_partner_sse_realm(
-        self,
-        request: sse_realm.GetPartnerSSERealmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.GetPartnerSSERealmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.GetPartnerSSERealmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.GetPartnerSSERealmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_partner_sse_realm
 
         Override in a subclass to manipulate the request or metadata
@@ -480,9 +428,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_partner_sse_realm(
-        self, response: sse_realm.PartnerSSERealm
-    ) -> sse_realm.PartnerSSERealm:
+    def post_get_partner_sse_realm(self, response: sse_realm.PartnerSSERealm) -> sse_realm.PartnerSSERealm:
         """Post-rpc interceptor for get_partner_sse_realm
 
         DEPRECATED. Please use the `post_get_partner_sse_realm_with_metadata`
@@ -496,9 +442,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_get_partner_sse_realm_with_metadata(
-        self,
-        response: sse_realm.PartnerSSERealm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sse_realm.PartnerSSERealm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sse_realm.PartnerSSERealm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_partner_sse_realm
 
@@ -515,12 +459,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_sac_attachment(
-        self,
-        request: sse_realm.GetSACAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.GetSACAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.GetSACAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.GetSACAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sac_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -528,9 +468,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_sac_attachment(
-        self, response: sse_realm.SACAttachment
-    ) -> sse_realm.SACAttachment:
+    def post_get_sac_attachment(self, response: sse_realm.SACAttachment) -> sse_realm.SACAttachment:
         """Post-rpc interceptor for get_sac_attachment
 
         DEPRECATED. Please use the `post_get_sac_attachment_with_metadata`
@@ -544,9 +482,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_get_sac_attachment_with_metadata(
-        self,
-        response: sse_realm.SACAttachment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sse_realm.SACAttachment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sse_realm.SACAttachment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_sac_attachment
 
@@ -563,9 +499,7 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_sac_realm(
-        self,
-        request: sse_realm.GetSACRealmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sse_realm.GetSACRealmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sse_realm.GetSACRealmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sac_realm
 
@@ -588,9 +522,7 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_get_sac_realm_with_metadata(
-        self,
-        response: sse_realm.SACRealm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sse_realm.SACRealm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sse_realm.SACRealm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_sac_realm
 
@@ -607,12 +539,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_list_partner_sse_realms(
-        self,
-        request: sse_realm.ListPartnerSSERealmsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.ListPartnerSSERealmsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.ListPartnerSSERealmsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.ListPartnerSSERealmsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_partner_sse_realms
 
         Override in a subclass to manipulate the request or metadata
@@ -620,9 +548,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_partner_sse_realms(
-        self, response: sse_realm.ListPartnerSSERealmsResponse
-    ) -> sse_realm.ListPartnerSSERealmsResponse:
+    def post_list_partner_sse_realms(self, response: sse_realm.ListPartnerSSERealmsResponse) -> sse_realm.ListPartnerSSERealmsResponse:
         """Post-rpc interceptor for list_partner_sse_realms
 
         DEPRECATED. Please use the `post_list_partner_sse_realms_with_metadata`
@@ -636,12 +562,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_list_partner_sse_realms_with_metadata(
-        self,
-        response: sse_realm.ListPartnerSSERealmsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.ListPartnerSSERealmsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: sse_realm.ListPartnerSSERealmsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.ListPartnerSSERealmsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_partner_sse_realms
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -657,12 +579,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_list_sac_attachments(
-        self,
-        request: sse_realm.ListSACAttachmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.ListSACAttachmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_realm.ListSACAttachmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.ListSACAttachmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sac_attachments
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +588,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sac_attachments(
-        self, response: sse_realm.ListSACAttachmentsResponse
-    ) -> sse_realm.ListSACAttachmentsResponse:
+    def post_list_sac_attachments(self, response: sse_realm.ListSACAttachmentsResponse) -> sse_realm.ListSACAttachmentsResponse:
         """Post-rpc interceptor for list_sac_attachments
 
         DEPRECATED. Please use the `post_list_sac_attachments_with_metadata`
@@ -686,12 +602,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_list_sac_attachments_with_metadata(
-        self,
-        response: sse_realm.ListSACAttachmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.ListSACAttachmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: sse_realm.ListSACAttachmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.ListSACAttachmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sac_attachments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -707,9 +619,7 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_list_sac_realms(
-        self,
-        request: sse_realm.ListSACRealmsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sse_realm.ListSACRealmsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sse_realm.ListSACRealmsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sac_realms
 
@@ -718,9 +628,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sac_realms(
-        self, response: sse_realm.ListSACRealmsResponse
-    ) -> sse_realm.ListSACRealmsResponse:
+    def post_list_sac_realms(self, response: sse_realm.ListSACRealmsResponse) -> sse_realm.ListSACRealmsResponse:
         """Post-rpc interceptor for list_sac_realms
 
         DEPRECATED. Please use the `post_list_sac_realms_with_metadata`
@@ -734,12 +642,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def post_list_sac_realms_with_metadata(
-        self,
-        response: sse_realm.ListSACRealmsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_realm.ListSACRealmsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: sse_realm.ListSACRealmsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_realm.ListSACRealmsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sac_realms
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -755,12 +659,8 @@ class SSERealmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -768,9 +668,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -780,12 +678,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -793,9 +687,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -805,12 +697,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -828,12 +716,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -851,13 +735,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -865,9 +744,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -877,12 +754,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -900,12 +773,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -923,12 +792,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -936,9 +801,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -948,12 +811,8 @@ class SSERealmServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -961,9 +820,7 @@ class SSERealmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1052,9 +909,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1124,30 +979,17 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 path_prefix="v1alpha1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreatePartnerSSERealm(
-        _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm,
-        SSERealmServiceRestStub,
-    ):
+    class _CreatePartnerSSERealm(_BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.CreatePartnerSSERealm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1191,32 +1033,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_partner_sse_realm(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_partner_sse_realm(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_transcoded_request(http_options, request)
 
-            body = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1239,16 +1067,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSERealmServiceRestTransport._CreatePartnerSSERealm._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SSERealmServiceRestTransport._CreatePartnerSSERealm._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1262,12 +1082,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_create_partner_sse_realm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_partner_sse_realm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_partner_sse_realm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1288,23 +1104,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _CreateSACAttachment(
-        _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment,
-        SSERealmServiceRestStub,
-    ):
+    class _CreateSACAttachment(_BaseSSERealmServiceRestTransport._BaseCreateSACAttachment, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.CreateSACAttachment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1347,32 +1152,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_sac_attachment(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_sac_attachment(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_transcoded_request(http_options, request)
 
-            body = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1396,13 +1187,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._CreateSACAttachment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1416,12 +1201,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_create_sac_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_sac_attachment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_sac_attachment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1442,22 +1223,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _CreateSACRealm(
-        _BaseSSERealmServiceRestTransport._BaseCreateSACRealm, SSERealmServiceRestStub
-    ):
+    class _CreateSACRealm(_BaseSSERealmServiceRestTransport._BaseCreateSACRealm, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.CreateSACRealm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1500,32 +1271,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_sac_realm(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_sac_realm(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_transcoded_request(http_options, request)
 
-            body = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1549,13 +1306,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._CreateSACRealm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1569,12 +1320,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_create_sac_realm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_sac_realm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_sac_realm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1595,23 +1342,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _DeletePartnerSSERealm(
-        _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm,
-        SSERealmServiceRestStub,
-    ):
+    class _DeletePartnerSSERealm(_BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.DeletePartnerSSERealm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1654,28 +1390,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_partner_sse_realm(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_partner_sse_realm(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1698,15 +1422,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSERealmServiceRestTransport._DeletePartnerSSERealm._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SSERealmServiceRestTransport._DeletePartnerSSERealm._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1720,12 +1437,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_delete_partner_sse_realm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_partner_sse_realm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_partner_sse_realm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1746,23 +1459,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSACAttachment(
-        _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment,
-        SSERealmServiceRestStub,
-    ):
+    class _DeleteSACAttachment(_BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.DeleteSACAttachment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1804,28 +1506,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_sac_attachment(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_sac_attachment(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1849,12 +1539,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._DeleteSACAttachment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1868,12 +1553,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_delete_sac_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_sac_attachment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_sac_attachment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1894,22 +1575,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSACRealm(
-        _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm, SSERealmServiceRestStub
-    ):
+    class _DeleteSACRealm(_BaseSSERealmServiceRestTransport._BaseDeleteSACRealm, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.DeleteSACRealm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1951,28 +1622,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_sac_realm(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_sac_realm(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1996,12 +1655,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._DeleteSACRealm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2015,12 +1669,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_delete_sac_realm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_sac_realm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_sac_realm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2041,23 +1691,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _GetPartnerSSERealm(
-        _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm,
-        SSERealmServiceRestStub,
-    ):
+    class _GetPartnerSSERealm(_BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.GetPartnerSSERealm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2098,28 +1737,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_partner_sse_realm(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_partner_sse_realm(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2143,12 +1770,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._GetPartnerSSERealm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2164,12 +1786,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_get_partner_sse_realm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_partner_sse_realm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_partner_sse_realm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sse_realm.PartnerSSERealm.to_json(response)
                 except:
@@ -2190,22 +1808,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _GetSACAttachment(
-        _BaseSSERealmServiceRestTransport._BaseGetSACAttachment, SSERealmServiceRestStub
-    ):
+    class _GetSACAttachment(_BaseSSERealmServiceRestTransport._BaseGetSACAttachment, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.GetSACAttachment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2249,28 +1857,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_sac_attachment(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_sac_attachment(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2294,12 +1890,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._GetSACAttachment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2315,12 +1906,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_get_sac_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_sac_attachment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_sac_attachment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sse_realm.SACAttachment.to_json(response)
                 except:
@@ -2341,22 +1928,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _GetSACRealm(
-        _BaseSSERealmServiceRestTransport._BaseGetSACRealm, SSERealmServiceRestStub
-    ):
+    class _GetSACRealm(_BaseSSERealmServiceRestTransport._BaseGetSACRealm, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.GetSACRealm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2400,26 +1977,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_http_options()
 
             request, metadata = self._interceptor.pre_get_sac_realm(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2443,12 +2010,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._GetSACRealm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2464,12 +2026,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_get_sac_realm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_sac_realm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_sac_realm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sse_realm.SACRealm.to_json(response)
                 except:
@@ -2490,23 +2048,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _ListPartnerSSERealms(
-        _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms,
-        SSERealmServiceRestStub,
-    ):
+    class _ListPartnerSSERealms(_BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.ListPartnerSSERealms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2548,28 +2095,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_partner_sse_realms(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_partner_sse_realms(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2593,12 +2128,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._ListPartnerSSERealms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2614,16 +2144,10 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_list_partner_sse_realms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_partner_sse_realms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_partner_sse_realms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = sse_realm.ListPartnerSSERealmsResponse.to_json(
-                        response
-                    )
+                    response_payload = sse_realm.ListPartnerSSERealmsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2642,23 +2166,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _ListSACAttachments(
-        _BaseSSERealmServiceRestTransport._BaseListSACAttachments,
-        SSERealmServiceRestStub,
-    ):
+    class _ListSACAttachments(_BaseSSERealmServiceRestTransport._BaseListSACAttachments, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.ListSACAttachments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2697,28 +2210,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     Response for ``ListSACAttachments`` method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_sac_attachments(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_sac_attachments(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2742,12 +2243,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._ListSACAttachments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2763,16 +2259,10 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_list_sac_attachments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sac_attachments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sac_attachments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = sse_realm.ListSACAttachmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = sse_realm.ListSACAttachmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2791,22 +2281,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 )
             return resp
 
-    class _ListSACRealms(
-        _BaseSSERealmServiceRestTransport._BaseListSACRealms, SSERealmServiceRestStub
-    ):
+    class _ListSACRealms(_BaseSSERealmServiceRestTransport._BaseListSACRealms, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.ListSACRealms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2845,26 +2325,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     Response for ``ListSACRealms`` method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sac_realms(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2888,12 +2358,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._ListSACRealms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2909,12 +2374,8 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             resp = self._interceptor.post_list_sac_realms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sac_realms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sac_realms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sse_realm.ListSACRealmsResponse.to_json(response)
                 except:
@@ -2936,101 +2397,73 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             return resp
 
     @property
-    def create_partner_sse_realm(
-        self,
-    ) -> Callable[[sse_realm.CreatePartnerSSERealmRequest], operations_pb2.Operation]:
+    def create_partner_sse_realm(self) -> Callable[[sse_realm.CreatePartnerSSERealmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePartnerSSERealm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_sac_attachment(
-        self,
-    ) -> Callable[[sse_realm.CreateSACAttachmentRequest], operations_pb2.Operation]:
+    def create_sac_attachment(self) -> Callable[[sse_realm.CreateSACAttachmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSACAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_sac_realm(
-        self,
-    ) -> Callable[[sse_realm.CreateSACRealmRequest], operations_pb2.Operation]:
+    def create_sac_realm(self) -> Callable[[sse_realm.CreateSACRealmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSACRealm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_partner_sse_realm(
-        self,
-    ) -> Callable[[sse_realm.DeletePartnerSSERealmRequest], operations_pb2.Operation]:
+    def delete_partner_sse_realm(self) -> Callable[[sse_realm.DeletePartnerSSERealmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePartnerSSERealm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_sac_attachment(
-        self,
-    ) -> Callable[[sse_realm.DeleteSACAttachmentRequest], operations_pb2.Operation]:
+    def delete_sac_attachment(self) -> Callable[[sse_realm.DeleteSACAttachmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSACAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_sac_realm(
-        self,
-    ) -> Callable[[sse_realm.DeleteSACRealmRequest], operations_pb2.Operation]:
+    def delete_sac_realm(self) -> Callable[[sse_realm.DeleteSACRealmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSACRealm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_partner_sse_realm(
-        self,
-    ) -> Callable[[sse_realm.GetPartnerSSERealmRequest], sse_realm.PartnerSSERealm]:
+    def get_partner_sse_realm(self) -> Callable[[sse_realm.GetPartnerSSERealmRequest], sse_realm.PartnerSSERealm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPartnerSSERealm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_sac_attachment(
-        self,
-    ) -> Callable[[sse_realm.GetSACAttachmentRequest], sse_realm.SACAttachment]:
+    def get_sac_attachment(self) -> Callable[[sse_realm.GetSACAttachmentRequest], sse_realm.SACAttachment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSACAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_sac_realm(
-        self,
-    ) -> Callable[[sse_realm.GetSACRealmRequest], sse_realm.SACRealm]:
+    def get_sac_realm(self) -> Callable[[sse_realm.GetSACRealmRequest], sse_realm.SACRealm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSACRealm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_partner_sse_realms(
-        self,
-    ) -> Callable[
-        [sse_realm.ListPartnerSSERealmsRequest], sse_realm.ListPartnerSSERealmsResponse
-    ]:
+    def list_partner_sse_realms(self) -> Callable[[sse_realm.ListPartnerSSERealmsRequest], sse_realm.ListPartnerSSERealmsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPartnerSSERealms(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sac_attachments(
-        self,
-    ) -> Callable[
-        [sse_realm.ListSACAttachmentsRequest], sse_realm.ListSACAttachmentsResponse
-    ]:
+    def list_sac_attachments(self) -> Callable[[sse_realm.ListSACAttachmentsRequest], sse_realm.ListSACAttachmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSACAttachments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sac_realms(
-        self,
-    ) -> Callable[[sse_realm.ListSACRealmsRequest], sse_realm.ListSACRealmsResponse]:
+    def list_sac_realms(self) -> Callable[[sse_realm.ListSACRealmsRequest], sse_realm.ListSACRealmsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSACRealms(self._session, self._host, self._interceptor)  # type: ignore
@@ -3039,22 +2472,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseSSERealmServiceRestTransport._BaseGetLocation, SSERealmServiceRestStub
-    ):
+    class _GetLocation(_BaseSSERealmServiceRestTransport._BaseGetLocation, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3092,26 +2515,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3135,12 +2548,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3152,9 +2560,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3179,22 +2585,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSSERealmServiceRestTransport._BaseListLocations, SSERealmServiceRestStub
-    ):
+    class _ListLocations(_BaseSSERealmServiceRestTransport._BaseListLocations, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3232,26 +2628,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3275,12 +2661,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3292,9 +2673,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3319,22 +2698,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseSSERealmServiceRestTransport._BaseGetIamPolicy, SSERealmServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseSSERealmServiceRestTransport._BaseGetIamPolicy, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3372,26 +2741,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3415,12 +2774,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3432,9 +2786,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3459,22 +2811,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseSSERealmServiceRestTransport._BaseSetIamPolicy, SSERealmServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseSSERealmServiceRestTransport._BaseSetIamPolicy, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3513,30 +2855,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3560,13 +2890,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3578,9 +2902,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3605,23 +2927,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseSSERealmServiceRestTransport._BaseTestIamPermissions,
-        SSERealmServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseSSERealmServiceRestTransport._BaseTestIamPermissions, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3660,32 +2971,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3709,13 +3006,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3727,9 +3018,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3754,22 +3043,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSSERealmServiceRestTransport._BaseCancelOperation, SSERealmServiceRestStub
-    ):
+    class _CancelOperation(_BaseSSERealmServiceRestTransport._BaseCancelOperation, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3805,32 +3084,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3854,13 +3119,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3874,22 +3133,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseSSERealmServiceRestTransport._BaseDeleteOperation, SSERealmServiceRestStub
-    ):
+    class _DeleteOperation(_BaseSSERealmServiceRestTransport._BaseDeleteOperation, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3924,28 +3173,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3969,12 +3206,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3988,22 +3220,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSSERealmServiceRestTransport._BaseGetOperation, SSERealmServiceRestStub
-    ):
+    class _GetOperation(_BaseSSERealmServiceRestTransport._BaseGetOperation, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4041,26 +3263,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4084,12 +3296,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4101,9 +3308,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4128,22 +3333,12 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSSERealmServiceRestTransport._BaseListOperations, SSERealmServiceRestStub
-    ):
+    class _ListOperations(_BaseSSERealmServiceRestTransport._BaseListOperations, SSERealmServiceRestStub):
         def __hash__(self):
             return hash("SSERealmServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4181,26 +3376,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSERealmServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4224,12 +3409,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             # Send the request
             response = SSERealmServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4241,9 +3421,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

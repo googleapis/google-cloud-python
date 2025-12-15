@@ -272,9 +272,7 @@ class ListGatewaySecurityPolicyRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateway_security_policy_rules: MutableSequence[
-        "GatewaySecurityPolicyRule"
-    ] = proto.RepeatedField(
+    gateway_security_policy_rules: MutableSequence["GatewaySecurityPolicyRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GatewaySecurityPolicyRule",

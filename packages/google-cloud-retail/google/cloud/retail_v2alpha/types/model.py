@@ -489,9 +489,7 @@ class Model(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            candidates: MutableSequence[
-                "Model.PageOptimizationConfig.Candidate"
-            ] = proto.RepeatedField(
+            candidates: MutableSequence["Model.PageOptimizationConfig.Candidate"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Model.PageOptimizationConfig.Candidate",
@@ -506,9 +504,7 @@ class Model(proto.Message):
             proto.STRING,
             number=1,
         )
-        panels: MutableSequence[
-            "Model.PageOptimizationConfig.Panel"
-        ] = proto.RepeatedField(
+        panels: MutableSequence["Model.PageOptimizationConfig.Panel"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Model.PageOptimizationConfig.Panel",

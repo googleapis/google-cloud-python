@@ -891,9 +891,7 @@ class ReservationData(proto.Message):
         number=5,
         message="TimeSeries",
     )
-    future_reservations: MutableSequence[
-        future_reservation.FutureReservation
-    ] = proto.RepeatedField(
+    future_reservations: MutableSequence[future_reservation.FutureReservation] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=future_reservation.FutureReservation,

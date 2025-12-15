@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -225,18 +216,14 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -270,9 +257,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -331,11 +316,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_ekm_connections(
-        self,
-    ) -> Callable[
-        [ekm_service.ListEkmConnectionsRequest], ekm_service.ListEkmConnectionsResponse
-    ]:
+    def list_ekm_connections(self) -> Callable[[ekm_service.ListEkmConnectionsRequest], ekm_service.ListEkmConnectionsResponse]:
         r"""Return a callable for the list ekm connections method over gRPC.
 
         Lists [EkmConnections][google.cloud.kms.v1.EkmConnection].
@@ -359,9 +340,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["list_ekm_connections"]
 
     @property
-    def get_ekm_connection(
-        self,
-    ) -> Callable[[ekm_service.GetEkmConnectionRequest], ekm_service.EkmConnection]:
+    def get_ekm_connection(self) -> Callable[[ekm_service.GetEkmConnectionRequest], ekm_service.EkmConnection]:
         r"""Return a callable for the get ekm connection method over gRPC.
 
         Returns metadata for a given
@@ -386,9 +365,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["get_ekm_connection"]
 
     @property
-    def create_ekm_connection(
-        self,
-    ) -> Callable[[ekm_service.CreateEkmConnectionRequest], ekm_service.EkmConnection]:
+    def create_ekm_connection(self) -> Callable[[ekm_service.CreateEkmConnectionRequest], ekm_service.EkmConnection]:
         r"""Return a callable for the create ekm connection method over gRPC.
 
         Creates a new [EkmConnection][google.cloud.kms.v1.EkmConnection]
@@ -413,9 +390,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["create_ekm_connection"]
 
     @property
-    def update_ekm_connection(
-        self,
-    ) -> Callable[[ekm_service.UpdateEkmConnectionRequest], ekm_service.EkmConnection]:
+    def update_ekm_connection(self) -> Callable[[ekm_service.UpdateEkmConnectionRequest], ekm_service.EkmConnection]:
         r"""Return a callable for the update ekm connection method over gRPC.
 
         Updates an [EkmConnection][google.cloud.kms.v1.EkmConnection]'s
@@ -440,9 +415,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["update_ekm_connection"]
 
     @property
-    def get_ekm_config(
-        self,
-    ) -> Callable[[ekm_service.GetEkmConfigRequest], ekm_service.EkmConfig]:
+    def get_ekm_config(self) -> Callable[[ekm_service.GetEkmConfigRequest], ekm_service.EkmConfig]:
         r"""Return a callable for the get ekm config method over gRPC.
 
         Returns the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton
@@ -467,9 +440,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["get_ekm_config"]
 
     @property
-    def update_ekm_config(
-        self,
-    ) -> Callable[[ekm_service.UpdateEkmConfigRequest], ekm_service.EkmConfig]:
+    def update_ekm_config(self) -> Callable[[ekm_service.UpdateEkmConfigRequest], ekm_service.EkmConfig]:
         r"""Return a callable for the update ekm config method over gRPC.
 
         Updates the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton
@@ -494,11 +465,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["update_ekm_config"]
 
     @property
-    def verify_connectivity(
-        self,
-    ) -> Callable[
-        [ekm_service.VerifyConnectivityRequest], ekm_service.VerifyConnectivityResponse
-    ]:
+    def verify_connectivity(self) -> Callable[[ekm_service.VerifyConnectivityRequest], ekm_service.VerifyConnectivityResponse]:
         r"""Return a callable for the verify connectivity method over gRPC.
 
         Verifies that Cloud KMS can successfully connect to the external
@@ -550,9 +517,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -637,10 +602,7 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

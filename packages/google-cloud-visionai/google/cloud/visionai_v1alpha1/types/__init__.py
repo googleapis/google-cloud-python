@@ -117,15 +117,7 @@ from .platform import (
     VertexCustomConfig,
     VideoStreamInputConfig,
 )
-from .streaming_resources import (
-    GstreamerBufferDescriptor,
-    Packet,
-    PacketHeader,
-    PacketType,
-    RawImageDescriptor,
-    SeriesMetadata,
-    ServerMetadata,
-)
+from .streaming_resources import GstreamerBufferDescriptor, Packet, PacketHeader, PacketType, RawImageDescriptor, SeriesMetadata, ServerMetadata
 from .streaming_service import (
     AcquireLeaseRequest,
     CommitRequest,

@@ -463,9 +463,7 @@ class ListBackupChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_channels: MutableSequence[
-        gcg_backup_channel.BackupChannel
-    ] = proto.RepeatedField(
+    backup_channels: MutableSequence[gcg_backup_channel.BackupChannel] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcg_backup_channel.BackupChannel,
@@ -635,9 +633,7 @@ class ListBackupPlanBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_bindings: MutableSequence[
-        backup_plan_binding.BackupPlanBinding
-    ] = proto.RepeatedField(
+    backup_plan_bindings: MutableSequence[backup_plan_binding.BackupPlanBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=backup_plan_binding.BackupPlanBinding,
@@ -1297,9 +1293,7 @@ class ListRestoreChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    restore_channels: MutableSequence[
-        gcg_restore_channel.RestoreChannel
-    ] = proto.RepeatedField(
+    restore_channels: MutableSequence[gcg_restore_channel.RestoreChannel] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcg_restore_channel.RestoreChannel,
@@ -1461,9 +1455,7 @@ class ListRestorePlanBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    restore_plan_bindings: MutableSequence[
-        restore_plan_binding.RestorePlanBinding
-    ] = proto.RepeatedField(
+    restore_plan_bindings: MutableSequence[restore_plan_binding.RestorePlanBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=restore_plan_binding.RestorePlanBinding,

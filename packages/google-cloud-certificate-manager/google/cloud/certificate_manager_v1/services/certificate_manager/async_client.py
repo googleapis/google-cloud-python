@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -55,9 +44,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.certificate_manager_v1.services.certificate_manager import pagers
 from google.cloud.certificate_manager_v1.types import certificate_issuance_config
-from google.cloud.certificate_manager_v1.types import (
-    certificate_issuance_config as gcc_certificate_issuance_config,
-)
+from google.cloud.certificate_manager_v1.types import certificate_issuance_config as gcc_certificate_issuance_config
 from google.cloud.certificate_manager_v1.types import trust_config as gcc_trust_config
 from google.cloud.certificate_manager_v1.types import certificate_manager
 from google.cloud.certificate_manager_v1.types import trust_config
@@ -119,59 +106,27 @@ class CertificateManagerAsyncClient:
     ca_pool_path = staticmethod(CertificateManagerClient.ca_pool_path)
     parse_ca_pool_path = staticmethod(CertificateManagerClient.parse_ca_pool_path)
     certificate_path = staticmethod(CertificateManagerClient.certificate_path)
-    parse_certificate_path = staticmethod(
-        CertificateManagerClient.parse_certificate_path
-    )
-    certificate_issuance_config_path = staticmethod(
-        CertificateManagerClient.certificate_issuance_config_path
-    )
-    parse_certificate_issuance_config_path = staticmethod(
-        CertificateManagerClient.parse_certificate_issuance_config_path
-    )
+    parse_certificate_path = staticmethod(CertificateManagerClient.parse_certificate_path)
+    certificate_issuance_config_path = staticmethod(CertificateManagerClient.certificate_issuance_config_path)
+    parse_certificate_issuance_config_path = staticmethod(CertificateManagerClient.parse_certificate_issuance_config_path)
     certificate_map_path = staticmethod(CertificateManagerClient.certificate_map_path)
-    parse_certificate_map_path = staticmethod(
-        CertificateManagerClient.parse_certificate_map_path
-    )
-    certificate_map_entry_path = staticmethod(
-        CertificateManagerClient.certificate_map_entry_path
-    )
-    parse_certificate_map_entry_path = staticmethod(
-        CertificateManagerClient.parse_certificate_map_entry_path
-    )
-    dns_authorization_path = staticmethod(
-        CertificateManagerClient.dns_authorization_path
-    )
-    parse_dns_authorization_path = staticmethod(
-        CertificateManagerClient.parse_dns_authorization_path
-    )
+    parse_certificate_map_path = staticmethod(CertificateManagerClient.parse_certificate_map_path)
+    certificate_map_entry_path = staticmethod(CertificateManagerClient.certificate_map_entry_path)
+    parse_certificate_map_entry_path = staticmethod(CertificateManagerClient.parse_certificate_map_entry_path)
+    dns_authorization_path = staticmethod(CertificateManagerClient.dns_authorization_path)
+    parse_dns_authorization_path = staticmethod(CertificateManagerClient.parse_dns_authorization_path)
     trust_config_path = staticmethod(CertificateManagerClient.trust_config_path)
-    parse_trust_config_path = staticmethod(
-        CertificateManagerClient.parse_trust_config_path
-    )
-    common_billing_account_path = staticmethod(
-        CertificateManagerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CertificateManagerClient.parse_common_billing_account_path
-    )
+    parse_trust_config_path = staticmethod(CertificateManagerClient.parse_trust_config_path)
+    common_billing_account_path = staticmethod(CertificateManagerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CertificateManagerClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(CertificateManagerClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        CertificateManagerClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        CertificateManagerClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        CertificateManagerClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(CertificateManagerClient.parse_common_folder_path)
+    common_organization_path = staticmethod(CertificateManagerClient.common_organization_path)
+    parse_common_organization_path = staticmethod(CertificateManagerClient.parse_common_organization_path)
     common_project_path = staticmethod(CertificateManagerClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        CertificateManagerClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(CertificateManagerClient.parse_common_project_path)
     common_location_path = staticmethod(CertificateManagerClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        CertificateManagerClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(CertificateManagerClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -207,9 +162,7 @@ class CertificateManagerAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -276,13 +229,7 @@ class CertificateManagerAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                CertificateManagerTransport,
-                Callable[..., CertificateManagerTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, CertificateManagerTransport, Callable[..., CertificateManagerTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -342,20 +289,14 @@ class CertificateManagerAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.certificatemanager_v1.CertificateManagerAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -366,9 +307,7 @@ class CertificateManagerAsyncClient:
 
     async def list_certificates(
         self,
-        request: Optional[
-            Union[certificate_manager.ListCertificatesRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.ListCertificatesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -435,14 +374,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -456,15 +390,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_certificates
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_certificates]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -493,9 +423,7 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate(
         self,
-        request: Optional[
-            Union[certificate_manager.GetCertificateRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.GetCertificateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -556,14 +484,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -577,15 +500,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_certificate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_certificate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -603,9 +522,7 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate(
         self,
-        request: Optional[
-            Union[certificate_manager.CreateCertificateRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.CreateCertificateRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         certificate: Optional[certificate_manager.Certificate] = None,
@@ -693,14 +610,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, certificate, certificate_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -718,15 +630,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_certificate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_certificate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -752,9 +660,7 @@ class CertificateManagerAsyncClient:
 
     async def update_certificate(
         self,
-        request: Optional[
-            Union[certificate_manager.UpdateCertificateRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.UpdateCertificateRequest, dict]] = None,
         *,
         certificate: Optional[certificate_manager.Certificate] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -832,14 +738,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [certificate, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -855,17 +756,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_certificate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_certificate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("certificate.name", request.certificate.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("certificate.name", request.certificate.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -891,9 +786,7 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate(
         self,
-        request: Optional[
-            Union[certificate_manager.DeleteCertificateRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.DeleteCertificateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -970,14 +863,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -991,15 +879,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_certificate
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_certificate]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1025,9 +909,7 @@ class CertificateManagerAsyncClient:
 
     async def list_certificate_maps(
         self,
-        request: Optional[
-            Union[certificate_manager.ListCertificateMapsRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.ListCertificateMapsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1095,14 +977,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1116,15 +993,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_certificate_maps
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_certificate_maps]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1153,9 +1026,7 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate_map(
         self,
-        request: Optional[
-            Union[certificate_manager.GetCertificateMapRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.GetCertificateMapRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1219,14 +1090,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1240,15 +1106,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_certificate_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_certificate_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1266,9 +1128,7 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate_map(
         self,
-        request: Optional[
-            Union[certificate_manager.CreateCertificateMapRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.CreateCertificateMapRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         certificate_map: Optional[certificate_manager.CertificateMap] = None,
@@ -1356,14 +1216,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, certificate_map, certificate_map_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1381,15 +1236,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_certificate_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_certificate_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1415,9 +1266,7 @@ class CertificateManagerAsyncClient:
 
     async def update_certificate_map(
         self,
-        request: Optional[
-            Union[certificate_manager.UpdateCertificateMapRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.UpdateCertificateMapRequest, dict]] = None,
         *,
         certificate_map: Optional[certificate_manager.CertificateMap] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1495,14 +1344,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [certificate_map, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1518,17 +1362,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_certificate_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_certificate_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("certificate_map.name", request.certificate_map.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("certificate_map.name", request.certificate_map.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1554,9 +1392,7 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate_map(
         self,
-        request: Optional[
-            Union[certificate_manager.DeleteCertificateMapRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.DeleteCertificateMapRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1637,14 +1473,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1658,15 +1489,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_certificate_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_certificate_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1692,9 +1519,7 @@ class CertificateManagerAsyncClient:
 
     async def list_certificate_map_entries(
         self,
-        request: Optional[
-            Union[certificate_manager.ListCertificateMapEntriesRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.ListCertificateMapEntriesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1763,20 +1588,13 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_manager.ListCertificateMapEntriesRequest
-        ):
+        if not isinstance(request, certificate_manager.ListCertificateMapEntriesRequest):
             request = certificate_manager.ListCertificateMapEntriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1786,15 +1604,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_certificate_map_entries
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_certificate_map_entries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1823,9 +1637,7 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate_map_entry(
         self,
-        request: Optional[
-            Union[certificate_manager.GetCertificateMapEntryRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.GetCertificateMapEntryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1887,14 +1699,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1908,15 +1715,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_certificate_map_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_certificate_map_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1934,9 +1737,7 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate_map_entry(
         self,
-        request: Optional[
-            Union[certificate_manager.CreateCertificateMapEntryRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.CreateCertificateMapEntryRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
@@ -2029,20 +1830,13 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, certificate_map_entry, certificate_map_entry_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_manager.CreateCertificateMapEntryRequest
-        ):
+        if not isinstance(request, certificate_manager.CreateCertificateMapEntryRequest):
             request = certificate_manager.CreateCertificateMapEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2056,15 +1850,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_certificate_map_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_certificate_map_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2090,9 +1880,7 @@ class CertificateManagerAsyncClient:
 
     async def update_certificate_map_entry(
         self,
-        request: Optional[
-            Union[certificate_manager.UpdateCertificateMapEntryRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.UpdateCertificateMapEntryRequest, dict]] = None,
         *,
         certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2175,20 +1963,13 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [certificate_map_entry, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_manager.UpdateCertificateMapEntryRequest
-        ):
+        if not isinstance(request, certificate_manager.UpdateCertificateMapEntryRequest):
             request = certificate_manager.UpdateCertificateMapEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2200,16 +1981,12 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_certificate_map_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_certificate_map_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("certificate_map_entry.name", request.certificate_map_entry.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("certificate_map_entry.name", request.certificate_map_entry.name),)),
         )
 
         # Validate the universe domain.
@@ -2236,9 +2013,7 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate_map_entry(
         self,
-        request: Optional[
-            Union[certificate_manager.DeleteCertificateMapEntryRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.DeleteCertificateMapEntryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2316,20 +2091,13 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_manager.DeleteCertificateMapEntryRequest
-        ):
+        if not isinstance(request, certificate_manager.DeleteCertificateMapEntryRequest):
             request = certificate_manager.DeleteCertificateMapEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2339,15 +2107,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_certificate_map_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_certificate_map_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2373,9 +2137,7 @@ class CertificateManagerAsyncClient:
 
     async def list_dns_authorizations(
         self,
-        request: Optional[
-            Union[certificate_manager.ListDnsAuthorizationsRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.ListDnsAuthorizationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2443,14 +2205,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2464,15 +2221,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_dns_authorizations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_dns_authorizations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2501,9 +2254,7 @@ class CertificateManagerAsyncClient:
 
     async def get_dns_authorization(
         self,
-        request: Optional[
-            Union[certificate_manager.GetDnsAuthorizationRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.GetDnsAuthorizationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2568,14 +2319,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2589,15 +2335,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_dns_authorization
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_dns_authorization]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2615,9 +2357,7 @@ class CertificateManagerAsyncClient:
 
     async def create_dns_authorization(
         self,
-        request: Optional[
-            Union[certificate_manager.CreateDnsAuthorizationRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.CreateDnsAuthorizationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
@@ -2708,14 +2448,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, dns_authorization, dns_authorization_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2733,15 +2468,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_dns_authorization
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_dns_authorization]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2767,9 +2498,7 @@ class CertificateManagerAsyncClient:
 
     async def update_dns_authorization(
         self,
-        request: Optional[
-            Union[certificate_manager.UpdateDnsAuthorizationRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.UpdateDnsAuthorizationRequest, dict]] = None,
         *,
         dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2850,14 +2579,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dns_authorization, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2873,17 +2597,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_dns_authorization
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_dns_authorization]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("dns_authorization.name", request.dns_authorization.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dns_authorization.name", request.dns_authorization.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2909,9 +2627,7 @@ class CertificateManagerAsyncClient:
 
     async def delete_dns_authorization(
         self,
-        request: Optional[
-            Union[certificate_manager.DeleteDnsAuthorizationRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_manager.DeleteDnsAuthorizationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2989,14 +2705,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3010,15 +2721,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_dns_authorization
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_dns_authorization]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3044,11 +2751,7 @@ class CertificateManagerAsyncClient:
 
     async def list_certificate_issuance_configs(
         self,
-        request: Optional[
-            Union[
-                certificate_issuance_config.ListCertificateIssuanceConfigsRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[certificate_issuance_config.ListCertificateIssuanceConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3117,23 +2820,14 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_issuance_config.ListCertificateIssuanceConfigsRequest
-        ):
-            request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest(
-                request
-            )
+        if not isinstance(request, certificate_issuance_config.ListCertificateIssuanceConfigsRequest):
+            request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3142,15 +2836,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_certificate_issuance_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_certificate_issuance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3179,9 +2869,7 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate_issuance_config(
         self,
-        request: Optional[
-            Union[certificate_issuance_config.GetCertificateIssuanceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[certificate_issuance_config.GetCertificateIssuanceConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3245,23 +2933,14 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_issuance_config.GetCertificateIssuanceConfigRequest
-        ):
-            request = certificate_issuance_config.GetCertificateIssuanceConfigRequest(
-                request
-            )
+        if not isinstance(request, certificate_issuance_config.GetCertificateIssuanceConfigRequest):
+            request = certificate_issuance_config.GetCertificateIssuanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3270,15 +2949,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_certificate_issuance_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_certificate_issuance_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3296,17 +2971,10 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate_issuance_config(
         self,
-        request: Optional[
-            Union[
-                gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        certificate_issuance_config: Optional[
-            gcc_certificate_issuance_config.CertificateIssuanceConfig
-        ] = None,
+        certificate_issuance_config: Optional[gcc_certificate_issuance_config.CertificateIssuanceConfig] = None,
         certificate_issuance_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3399,31 +3067,15 @@ class CertificateManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            certificate_issuance_config,
-            certificate_issuance_config_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, certificate_issuance_config, certificate_issuance_config_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
-        ):
-            request = (
-                gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(
-                    request
-                )
-            )
+        if not isinstance(request, gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest):
+            request = gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3436,15 +3088,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_certificate_issuance_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_certificate_issuance_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3470,11 +3118,7 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate_issuance_config(
         self,
-        request: Optional[
-            Union[
-                certificate_issuance_config.DeleteCertificateIssuanceConfigRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[certificate_issuance_config.DeleteCertificateIssuanceConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3553,25 +3197,14 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, certificate_issuance_config.DeleteCertificateIssuanceConfigRequest
-        ):
-            request = (
-                certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(
-                    request
-                )
-            )
+        if not isinstance(request, certificate_issuance_config.DeleteCertificateIssuanceConfigRequest):
+            request = certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3580,15 +3213,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_certificate_issuance_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_certificate_issuance_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3681,14 +3310,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3702,15 +3326,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_trust_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_trust_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3800,14 +3420,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3821,15 +3436,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_trust_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_trust_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3847,9 +3458,7 @@ class CertificateManagerAsyncClient:
 
     async def create_trust_config(
         self,
-        request: Optional[
-            Union[gcc_trust_config.CreateTrustConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[gcc_trust_config.CreateTrustConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         trust_config: Optional[gcc_trust_config.TrustConfig] = None,
@@ -3937,14 +3546,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, trust_config, trust_config_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3962,15 +3566,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_trust_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_trust_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3996,9 +3596,7 @@ class CertificateManagerAsyncClient:
 
     async def update_trust_config(
         self,
-        request: Optional[
-            Union[gcc_trust_config.UpdateTrustConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[gcc_trust_config.UpdateTrustConfigRequest, dict]] = None,
         *,
         trust_config: Optional[gcc_trust_config.TrustConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -4076,14 +3674,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [trust_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4099,17 +3692,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_trust_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_trust_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("trust_config.name", request.trust_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("trust_config.name", request.trust_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4212,14 +3799,9 @@ class CertificateManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4233,15 +3815,11 @@ class CertificateManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_trust_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_trust_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4302,9 +3880,7 @@ class CertificateManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4357,9 +3933,7 @@ class CertificateManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4416,9 +3990,7 @@ class CertificateManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4471,9 +4043,7 @@ class CertificateManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4523,9 +4093,7 @@ class CertificateManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4578,9 +4146,7 @@ class CertificateManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4603,9 +4169,7 @@ class CertificateManagerAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

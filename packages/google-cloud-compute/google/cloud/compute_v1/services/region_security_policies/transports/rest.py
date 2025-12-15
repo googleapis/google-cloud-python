@@ -159,13 +159,8 @@ class RegionSecurityPoliciesRestInterceptor:
     """
 
     def pre_add_rule(
-        self,
-        request: compute.AddRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddRuleRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AddRuleRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -187,9 +182,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_add_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_rule
 
@@ -206,13 +199,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +222,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -253,12 +239,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -280,9 +262,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.SecurityPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SecurityPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SecurityPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -299,13 +279,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_rule(
-        self,
-        request: compute.GetRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRuleRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetRuleRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -313,9 +288,7 @@ class RegionSecurityPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_rule(
-        self, response: compute.SecurityPolicyRule
-    ) -> compute.SecurityPolicyRule:
+    def post_get_rule(self, response: compute.SecurityPolicyRule) -> compute.SecurityPolicyRule:
         """Post-rpc interceptor for get_rule
 
         DEPRECATED. Please use the `post_get_rule_with_metadata`
@@ -329,9 +302,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_get_rule_with_metadata(
-        self,
-        response: compute.SecurityPolicyRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SecurityPolicyRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SecurityPolicyRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_rule
 
@@ -348,13 +319,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -376,9 +342,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -395,13 +359,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionSecurityPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionSecurityPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListRegionSecurityPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionSecurityPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -409,9 +368,7 @@ class RegionSecurityPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.SecurityPolicyList
-    ) -> compute.SecurityPolicyList:
+    def post_list(self, response: compute.SecurityPolicyList) -> compute.SecurityPolicyList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -425,9 +382,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.SecurityPolicyList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SecurityPolicyList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SecurityPolicyList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -444,13 +399,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -472,9 +422,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -491,13 +439,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch_rule(
-        self,
-        request: compute.PatchRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRuleRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchRuleRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -519,9 +462,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_patch_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch_rule
 
@@ -538,13 +479,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_remove_rule(
-        self,
-        request: compute.RemoveRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveRuleRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RemoveRuleRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -566,9 +502,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_remove_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_rule
 
@@ -585,13 +519,8 @@ class RegionSecurityPoliciesRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetLabelsRegionSecurityPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetLabelsRegionSecurityPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetLabelsRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -613,9 +542,7 @@ class RegionSecurityPoliciesRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -715,31 +642,18 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionSecurityPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AddRule(
-        _BaseRegionSecurityPoliciesRestTransport._BaseAddRule,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _AddRule(_BaseRegionSecurityPoliciesRestTransport._BaseAddRule, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.AddRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -798,30 +712,18 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -845,13 +747,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._AddRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -867,12 +763,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_add_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -893,23 +785,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _Delete(
-        _BaseRegionSecurityPoliciesRestTransport._BaseDelete,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _Delete(_BaseRegionSecurityPoliciesRestTransport._BaseDelete, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -967,26 +848,16 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1010,12 +881,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1031,12 +897,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1057,23 +919,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _Get(
-        _BaseRegionSecurityPoliciesRestTransport._BaseGet,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _Get(_BaseRegionSecurityPoliciesRestTransport._BaseGet, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1120,26 +971,16 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1163,12 +1004,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1185,9 +1021,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SecurityPolicy.to_json(response)
                 except:
@@ -1208,23 +1042,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _GetRule(
-        _BaseRegionSecurityPoliciesRestTransport._BaseGetRule,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _GetRule(_BaseRegionSecurityPoliciesRestTransport._BaseGetRule, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.GetRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1269,26 +1092,16 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1312,12 +1125,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._GetRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1333,12 +1141,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_get_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SecurityPolicyRule.to_json(response)
                 except:
@@ -1359,23 +1163,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionSecurityPoliciesRestTransport._BaseInsert,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _Insert(_BaseRegionSecurityPoliciesRestTransport._BaseInsert, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1434,30 +1227,18 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1481,13 +1262,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1503,12 +1278,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1529,23 +1300,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _List(
-        _BaseRegionSecurityPoliciesRestTransport._BaseList,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _List(_BaseRegionSecurityPoliciesRestTransport._BaseList, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1586,26 +1346,16 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1629,12 +1379,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1651,9 +1396,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SecurityPolicyList.to_json(response)
                 except:
@@ -1674,23 +1417,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _Patch(
-        _BaseRegionSecurityPoliciesRestTransport._BasePatch,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _Patch(_BaseRegionSecurityPoliciesRestTransport._BasePatch, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1749,30 +1481,18 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1796,13 +1516,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1818,12 +1532,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1844,23 +1554,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _PatchRule(
-        _BaseRegionSecurityPoliciesRestTransport._BasePatchRule,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _PatchRule(_BaseRegionSecurityPoliciesRestTransport._BasePatchRule, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.PatchRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1919,30 +1618,18 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1966,13 +1653,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._PatchRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1988,12 +1669,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_patch_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2014,23 +1691,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _RemoveRule(
-        _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _RemoveRule(_BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.RemoveRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2088,26 +1754,16 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2131,12 +1787,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._RemoveRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2152,12 +1803,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_remove_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2178,23 +1825,12 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 )
             return resp
 
-    class _SetLabels(
-        _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels,
-        RegionSecurityPoliciesRestStub,
-    ):
+    class _SetLabels(_BaseRegionSecurityPoliciesRestTransport._BaseSetLabels, RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSecurityPoliciesRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2253,30 +1889,18 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             """
 
-            http_options = (
-                _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2300,13 +1924,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2322,12 +1940,8 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2349,85 +1963,61 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             return resp
 
     @property
-    def add_rule(
-        self,
-    ) -> Callable[[compute.AddRuleRegionSecurityPolicyRequest], compute.Operation]:
+    def add_rule(self) -> Callable[[compute.AddRuleRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionSecurityPolicyRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetRegionSecurityPolicyRequest], compute.SecurityPolicy]:
+    def get(self) -> Callable[[compute.GetRegionSecurityPolicyRequest], compute.SecurityPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_rule(
-        self,
-    ) -> Callable[
-        [compute.GetRuleRegionSecurityPolicyRequest], compute.SecurityPolicyRule
-    ]:
+    def get_rule(self) -> Callable[[compute.GetRuleRegionSecurityPolicyRequest], compute.SecurityPolicyRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionSecurityPolicyRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionSecurityPoliciesRequest], compute.SecurityPolicyList
-    ]:
+    def list(self) -> Callable[[compute.ListRegionSecurityPoliciesRequest], compute.SecurityPolicyList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchRegionSecurityPolicyRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch_rule(
-        self,
-    ) -> Callable[[compute.PatchRuleRegionSecurityPolicyRequest], compute.Operation]:
+    def patch_rule(self) -> Callable[[compute.PatchRuleRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PatchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_rule(
-        self,
-    ) -> Callable[[compute.RemoveRuleRegionSecurityPolicyRequest], compute.Operation]:
+    def remove_rule(self) -> Callable[[compute.RemoveRuleRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsRegionSecurityPolicyRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsRegionSecurityPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore

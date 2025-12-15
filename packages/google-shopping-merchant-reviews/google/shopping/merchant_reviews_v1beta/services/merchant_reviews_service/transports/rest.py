@@ -108,13 +108,8 @@ class MerchantReviewsServiceRestInterceptor:
     """
 
     def pre_delete_merchant_review(
-        self,
-        request: merchantreviews.DeleteMerchantReviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchantreviews.DeleteMerchantReviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchantreviews.DeleteMerchantReviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchantreviews.DeleteMerchantReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_merchant_review
 
         Override in a subclass to manipulate the request or metadata
@@ -123,13 +118,8 @@ class MerchantReviewsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_merchant_review(
-        self,
-        request: merchantreviews.GetMerchantReviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchantreviews.GetMerchantReviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchantreviews.GetMerchantReviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchantreviews.GetMerchantReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_merchant_review
 
         Override in a subclass to manipulate the request or metadata
@@ -137,9 +127,7 @@ class MerchantReviewsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_merchant_review(
-        self, response: merchantreviews.MerchantReview
-    ) -> merchantreviews.MerchantReview:
+    def post_get_merchant_review(self, response: merchantreviews.MerchantReview) -> merchantreviews.MerchantReview:
         """Post-rpc interceptor for get_merchant_review
 
         DEPRECATED. Please use the `post_get_merchant_review_with_metadata`
@@ -153,9 +141,7 @@ class MerchantReviewsServiceRestInterceptor:
         return response
 
     def post_get_merchant_review_with_metadata(
-        self,
-        response: merchantreviews.MerchantReview,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: merchantreviews.MerchantReview, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[merchantreviews.MerchantReview, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_merchant_review
 
@@ -172,13 +158,8 @@ class MerchantReviewsServiceRestInterceptor:
         return response, metadata
 
     def pre_insert_merchant_review(
-        self,
-        request: merchantreviews.InsertMerchantReviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchantreviews.InsertMerchantReviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchantreviews.InsertMerchantReviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchantreviews.InsertMerchantReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_merchant_review
 
         Override in a subclass to manipulate the request or metadata
@@ -186,9 +167,7 @@ class MerchantReviewsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_merchant_review(
-        self, response: merchantreviews.MerchantReview
-    ) -> merchantreviews.MerchantReview:
+    def post_insert_merchant_review(self, response: merchantreviews.MerchantReview) -> merchantreviews.MerchantReview:
         """Post-rpc interceptor for insert_merchant_review
 
         DEPRECATED. Please use the `post_insert_merchant_review_with_metadata`
@@ -202,9 +181,7 @@ class MerchantReviewsServiceRestInterceptor:
         return response
 
     def post_insert_merchant_review_with_metadata(
-        self,
-        response: merchantreviews.MerchantReview,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: merchantreviews.MerchantReview, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[merchantreviews.MerchantReview, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_merchant_review
 
@@ -221,13 +198,8 @@ class MerchantReviewsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_merchant_reviews(
-        self,
-        request: merchantreviews.ListMerchantReviewsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchantreviews.ListMerchantReviewsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchantreviews.ListMerchantReviewsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchantreviews.ListMerchantReviewsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_merchant_reviews
 
         Override in a subclass to manipulate the request or metadata
@@ -235,9 +207,7 @@ class MerchantReviewsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_merchant_reviews(
-        self, response: merchantreviews.ListMerchantReviewsResponse
-    ) -> merchantreviews.ListMerchantReviewsResponse:
+    def post_list_merchant_reviews(self, response: merchantreviews.ListMerchantReviewsResponse) -> merchantreviews.ListMerchantReviewsResponse:
         """Post-rpc interceptor for list_merchant_reviews
 
         DEPRECATED. Please use the `post_list_merchant_reviews_with_metadata`
@@ -251,13 +221,8 @@ class MerchantReviewsServiceRestInterceptor:
         return response
 
     def post_list_merchant_reviews_with_metadata(
-        self,
-        response: merchantreviews.ListMerchantReviewsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchantreviews.ListMerchantReviewsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: merchantreviews.ListMerchantReviewsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchantreviews.ListMerchantReviewsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_merchant_reviews
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -352,31 +317,18 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MerchantReviewsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteMerchantReview(
-        _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview,
-        MerchantReviewsServiceRestStub,
-    ):
+    class _DeleteMerchantReview(_BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview, MerchantReviewsServiceRestStub):
         def __hash__(self):
             return hash("MerchantReviewsServiceRestTransport.DeleteMerchantReview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -411,28 +363,16 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_http_options()
-            )
+            http_options = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_merchant_review(
-                request, metadata
-            )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_merchant_review(request, metadata)
+            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -455,15 +395,8 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                MerchantReviewsServiceRestTransport._DeleteMerchantReview._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MerchantReviewsServiceRestTransport._DeleteMerchantReview._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -471,23 +404,12 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetMerchantReview(
-        _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview,
-        MerchantReviewsServiceRestStub,
-    ):
+    class _GetMerchantReview(_BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview, MerchantReviewsServiceRestStub):
         def __hash__(self):
             return hash("MerchantReviewsServiceRestTransport.GetMerchantReview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -529,28 +451,16 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_http_options()
-            )
+            http_options = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_merchant_review(
-                request, metadata
-            )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_merchant_review(request, metadata)
+            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -573,15 +483,8 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                MerchantReviewsServiceRestTransport._GetMerchantReview._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MerchantReviewsServiceRestTransport._GetMerchantReview._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -597,12 +500,8 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             resp = self._interceptor.post_get_merchant_review(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_merchant_review_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_merchant_review_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = merchantreviews.MerchantReview.to_json(response)
                 except:
@@ -623,23 +522,12 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                 )
             return resp
 
-    class _InsertMerchantReview(
-        _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview,
-        MerchantReviewsServiceRestStub,
-    ):
+    class _InsertMerchantReview(_BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview, MerchantReviewsServiceRestStub):
         def __hash__(self):
             return hash("MerchantReviewsServiceRestTransport.InsertMerchantReview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -682,32 +570,18 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_http_options()
-            )
+            http_options = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_merchant_review(
-                request, metadata
-            )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_merchant_review(request, metadata)
+            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_transcoded_request(http_options, request)
 
-            body = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -730,16 +604,8 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                MerchantReviewsServiceRestTransport._InsertMerchantReview._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MerchantReviewsServiceRestTransport._InsertMerchantReview._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -755,12 +621,8 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             resp = self._interceptor.post_insert_merchant_review(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_merchant_review_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_merchant_review_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = merchantreviews.MerchantReview.to_json(response)
                 except:
@@ -781,23 +643,12 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                 )
             return resp
 
-    class _ListMerchantReviews(
-        _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews,
-        MerchantReviewsServiceRestStub,
-    ):
+    class _ListMerchantReviews(_BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews, MerchantReviewsServiceRestStub):
         def __hash__(self):
             return hash("MerchantReviewsServiceRestTransport.ListMerchantReviews")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -836,28 +687,16 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                     Response message for the ``ListMerchantsReview`` method.
             """
 
-            http_options = (
-                _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_http_options()
-            )
+            http_options = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_merchant_reviews(
-                request, metadata
-            )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_merchant_reviews(request, metadata)
+            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -880,15 +719,8 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                MerchantReviewsServiceRestTransport._ListMerchantReviews._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MerchantReviewsServiceRestTransport._ListMerchantReviews._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -904,16 +736,10 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             resp = self._interceptor.post_list_merchant_reviews(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_merchant_reviews_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_merchant_reviews_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        merchantreviews.ListMerchantReviewsResponse.to_json(response)
-                    )
+                    response_payload = merchantreviews.ListMerchantReviewsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -933,40 +759,25 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             return resp
 
     @property
-    def delete_merchant_review(
-        self,
-    ) -> Callable[[merchantreviews.DeleteMerchantReviewRequest], empty_pb2.Empty]:
+    def delete_merchant_review(self) -> Callable[[merchantreviews.DeleteMerchantReviewRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMerchantReview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_merchant_review(
-        self,
-    ) -> Callable[
-        [merchantreviews.GetMerchantReviewRequest], merchantreviews.MerchantReview
-    ]:
+    def get_merchant_review(self) -> Callable[[merchantreviews.GetMerchantReviewRequest], merchantreviews.MerchantReview]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMerchantReview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_merchant_review(
-        self,
-    ) -> Callable[
-        [merchantreviews.InsertMerchantReviewRequest], merchantreviews.MerchantReview
-    ]:
+    def insert_merchant_review(self) -> Callable[[merchantreviews.InsertMerchantReviewRequest], merchantreviews.MerchantReview]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertMerchantReview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_merchant_reviews(
-        self,
-    ) -> Callable[
-        [merchantreviews.ListMerchantReviewsRequest],
-        merchantreviews.ListMerchantReviewsResponse,
-    ]:
+    def list_merchant_reviews(self) -> Callable[[merchantreviews.ListMerchantReviewsRequest], merchantreviews.ListMerchantReviewsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMerchantReviews(self._session, self._host, self._interceptor)  # type: ignore

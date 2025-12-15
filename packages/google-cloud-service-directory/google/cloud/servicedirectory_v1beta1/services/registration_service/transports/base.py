@@ -38,9 +38,7 @@ from google.cloud.servicedirectory_v1beta1.types import registration_service
 from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -102,23 +100,15 @@ class RegistrationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -257,10 +247,7 @@ class RegistrationServiceTransport(abc.ABC):
     @property
     def create_namespace(
         self,
-    ) -> Callable[
-        [registration_service.CreateNamespaceRequest],
-        Union[gcs_namespace.Namespace, Awaitable[gcs_namespace.Namespace]],
-    ]:
+    ) -> Callable[[registration_service.CreateNamespaceRequest], Union[gcs_namespace.Namespace, Awaitable[gcs_namespace.Namespace]]]:
         raise NotImplementedError()
 
     @property
@@ -268,47 +255,26 @@ class RegistrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [registration_service.ListNamespacesRequest],
-        Union[
-            registration_service.ListNamespacesResponse,
-            Awaitable[registration_service.ListNamespacesResponse],
-        ],
+        Union[registration_service.ListNamespacesResponse, Awaitable[registration_service.ListNamespacesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_namespace(
-        self,
-    ) -> Callable[
-        [registration_service.GetNamespaceRequest],
-        Union[namespace.Namespace, Awaitable[namespace.Namespace]],
-    ]:
+    def get_namespace(self) -> Callable[[registration_service.GetNamespaceRequest], Union[namespace.Namespace, Awaitable[namespace.Namespace]]]:
         raise NotImplementedError()
 
     @property
     def update_namespace(
         self,
-    ) -> Callable[
-        [registration_service.UpdateNamespaceRequest],
-        Union[gcs_namespace.Namespace, Awaitable[gcs_namespace.Namespace]],
-    ]:
+    ) -> Callable[[registration_service.UpdateNamespaceRequest], Union[gcs_namespace.Namespace, Awaitable[gcs_namespace.Namespace]]]:
         raise NotImplementedError()
 
     @property
-    def delete_namespace(
-        self,
-    ) -> Callable[
-        [registration_service.DeleteNamespaceRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_namespace(self) -> Callable[[registration_service.DeleteNamespaceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[
-        [registration_service.CreateServiceRequest],
-        Union[gcs_service.Service, Awaitable[gcs_service.Service]],
-    ]:
+    def create_service(self) -> Callable[[registration_service.CreateServiceRequest], Union[gcs_service.Service, Awaitable[gcs_service.Service]]]:
         raise NotImplementedError()
 
     @property
@@ -316,47 +282,26 @@ class RegistrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [registration_service.ListServicesRequest],
-        Union[
-            registration_service.ListServicesResponse,
-            Awaitable[registration_service.ListServicesResponse],
-        ],
+        Union[registration_service.ListServicesResponse, Awaitable[registration_service.ListServicesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[
-        [registration_service.GetServiceRequest],
-        Union[service.Service, Awaitable[service.Service]],
-    ]:
+    def get_service(self) -> Callable[[registration_service.GetServiceRequest], Union[service.Service, Awaitable[service.Service]]]:
         raise NotImplementedError()
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[
-        [registration_service.UpdateServiceRequest],
-        Union[gcs_service.Service, Awaitable[gcs_service.Service]],
-    ]:
+    def update_service(self) -> Callable[[registration_service.UpdateServiceRequest], Union[gcs_service.Service, Awaitable[gcs_service.Service]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[
-        [registration_service.DeleteServiceRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_service(self) -> Callable[[registration_service.DeleteServiceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_endpoint(
         self,
-    ) -> Callable[
-        [registration_service.CreateEndpointRequest],
-        Union[gcs_endpoint.Endpoint, Awaitable[gcs_endpoint.Endpoint]],
-    ]:
+    ) -> Callable[[registration_service.CreateEndpointRequest], Union[gcs_endpoint.Endpoint, Awaitable[gcs_endpoint.Endpoint]]]:
         raise NotImplementedError()
 
     @property
@@ -364,56 +309,30 @@ class RegistrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [registration_service.ListEndpointsRequest],
-        Union[
-            registration_service.ListEndpointsResponse,
-            Awaitable[registration_service.ListEndpointsResponse],
-        ],
+        Union[registration_service.ListEndpointsResponse, Awaitable[registration_service.ListEndpointsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_endpoint(
-        self,
-    ) -> Callable[
-        [registration_service.GetEndpointRequest],
-        Union[endpoint.Endpoint, Awaitable[endpoint.Endpoint]],
-    ]:
+    def get_endpoint(self) -> Callable[[registration_service.GetEndpointRequest], Union[endpoint.Endpoint, Awaitable[endpoint.Endpoint]]]:
         raise NotImplementedError()
 
     @property
     def update_endpoint(
         self,
-    ) -> Callable[
-        [registration_service.UpdateEndpointRequest],
-        Union[gcs_endpoint.Endpoint, Awaitable[gcs_endpoint.Endpoint]],
-    ]:
+    ) -> Callable[[registration_service.UpdateEndpointRequest], Union[gcs_endpoint.Endpoint, Awaitable[gcs_endpoint.Endpoint]]]:
         raise NotImplementedError()
 
     @property
-    def delete_endpoint(
-        self,
-    ) -> Callable[
-        [registration_service.DeleteEndpointRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_endpoint(self) -> Callable[[registration_service.DeleteEndpointRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -421,32 +340,20 @@ class RegistrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

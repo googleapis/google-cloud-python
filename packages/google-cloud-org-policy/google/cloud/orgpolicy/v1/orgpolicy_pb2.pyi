@@ -27,24 +27,10 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Policy(_message.Message):
-    __slots__ = (
-        "version",
-        "constraint",
-        "etag",
-        "update_time",
-        "list_policy",
-        "boolean_policy",
-        "restore_default",
-    )
+    __slots__ = ("version", "constraint", "etag", "update_time", "list_policy", "boolean_policy", "restore_default")
 
     class ListPolicy(_message.Message):
-        __slots__ = (
-            "allowed_values",
-            "denied_values",
-            "all_values",
-            "suggested_value",
-            "inherit_from_parent",
-        )
+        __slots__ = ("allowed_values", "denied_values", "all_values", "suggested_value", "inherit_from_parent")
 
         class AllValues(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()

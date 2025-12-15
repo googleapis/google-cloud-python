@@ -96,12 +96,8 @@ class CommentServiceRestInterceptor:
     """
 
     def pre_create_comment(
-        self,
-        request: comment_service.CreateCommentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        comment_service.CreateCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: comment_service.CreateCommentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[comment_service.CreateCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_comment
 
         Override in a subclass to manipulate the request or metadata
@@ -123,9 +119,7 @@ class CommentServiceRestInterceptor:
         return response
 
     def post_create_comment_with_metadata(
-        self,
-        response: gcs_comment.Comment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_comment.Comment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_comment.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_comment
 
@@ -142,12 +136,8 @@ class CommentServiceRestInterceptor:
         return response, metadata
 
     def pre_list_comments(
-        self,
-        request: comment_service.ListCommentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        comment_service.ListCommentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: comment_service.ListCommentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[comment_service.ListCommentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_comments
 
         Override in a subclass to manipulate the request or metadata
@@ -155,9 +145,7 @@ class CommentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_comments(
-        self, response: comment_service.ListCommentsResponse
-    ) -> comment_service.ListCommentsResponse:
+    def post_list_comments(self, response: comment_service.ListCommentsResponse) -> comment_service.ListCommentsResponse:
         """Post-rpc interceptor for list_comments
 
         DEPRECATED. Please use the `post_list_comments_with_metadata`
@@ -171,12 +159,8 @@ class CommentServiceRestInterceptor:
         return response
 
     def post_list_comments_with_metadata(
-        self,
-        response: comment_service.ListCommentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        comment_service.ListCommentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: comment_service.ListCommentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[comment_service.ListCommentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_comments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -271,30 +255,18 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CommentServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateComment(
-        _BaseCommentServiceRestTransport._BaseCreateComment, CommentServiceRestStub
-    ):
+    class _CreateComment(_BaseCommentServiceRestTransport._BaseCreateComment, CommentServiceRestStub):
         def __hash__(self):
             return hash("CommentServiceRestTransport.CreateComment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -342,30 +314,18 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCommentServiceRestTransport._BaseCreateComment._get_http_options()
-            )
+            http_options = _BaseCommentServiceRestTransport._BaseCreateComment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_comment(request, metadata)
-            transcoded_request = _BaseCommentServiceRestTransport._BaseCreateComment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCommentServiceRestTransport._BaseCreateComment._get_transcoded_request(http_options, request)
 
-            body = _BaseCommentServiceRestTransport._BaseCreateComment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCommentServiceRestTransport._BaseCreateComment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCommentServiceRestTransport._BaseCreateComment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCommentServiceRestTransport._BaseCreateComment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -389,13 +349,7 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             # Send the request
             response = CommentServiceRestTransport._CreateComment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -411,12 +365,8 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             resp = self._interceptor.post_create_comment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_comment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_comment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_comment.Comment.to_json(response)
                 except:
@@ -437,22 +387,12 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
                 )
             return resp
 
-    class _ListComments(
-        _BaseCommentServiceRestTransport._BaseListComments, CommentServiceRestStub
-    ):
+    class _ListComments(_BaseCommentServiceRestTransport._BaseListComments, CommentServiceRestStub):
         def __hash__(self):
             return hash("CommentServiceRestTransport.ListComments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -494,26 +434,16 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCommentServiceRestTransport._BaseListComments._get_http_options()
-            )
+            http_options = _BaseCommentServiceRestTransport._BaseListComments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_comments(request, metadata)
-            transcoded_request = _BaseCommentServiceRestTransport._BaseListComments._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCommentServiceRestTransport._BaseListComments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCommentServiceRestTransport._BaseListComments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCommentServiceRestTransport._BaseListComments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -537,12 +467,7 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             # Send the request
             response = CommentServiceRestTransport._ListComments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -558,16 +483,10 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             resp = self._interceptor.post_list_comments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_comments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_comments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = comment_service.ListCommentsResponse.to_json(
-                        response
-                    )
+                    response_payload = comment_service.ListCommentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -587,19 +506,13 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
             return resp
 
     @property
-    def create_comment(
-        self,
-    ) -> Callable[[comment_service.CreateCommentRequest], gcs_comment.Comment]:
+    def create_comment(self) -> Callable[[comment_service.CreateCommentRequest], gcs_comment.Comment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_comments(
-        self,
-    ) -> Callable[
-        [comment_service.ListCommentsRequest], comment_service.ListCommentsResponse
-    ]:
+    def list_comments(self) -> Callable[[comment_service.ListCommentsRequest], comment_service.ListCommentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListComments(self._session, self._host, self._interceptor)  # type: ignore

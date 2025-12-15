@@ -43,15 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -109,22 +101,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -135,94 +119,135 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert CloudFunctionsServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        CloudFunctionsServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        CloudFunctionsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        CloudFunctionsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        CloudFunctionsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        CloudFunctionsServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert CloudFunctionsServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert CloudFunctionsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert CloudFunctionsServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert CloudFunctionsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert CloudFunctionsServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert CloudFunctionsServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert CloudFunctionsServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert CloudFunctionsServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert CloudFunctionsServiceClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert CloudFunctionsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert CloudFunctionsServiceClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            CloudFunctionsServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                CloudFunctionsServiceClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert CloudFunctionsServiceClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert CloudFunctionsServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert CloudFunctionsServiceClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert CloudFunctionsServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert CloudFunctionsServiceClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert CloudFunctionsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert CloudFunctionsServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             CloudFunctionsServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert CloudFunctionsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert CloudFunctionsServiceClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                CloudFunctionsServiceClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert CloudFunctionsServiceClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert CloudFunctionsServiceClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -230,131 +255,51 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert CloudFunctionsServiceClient._get_client_cert_source(None, False) is None
-    assert (
-        CloudFunctionsServiceClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
-        is None
-    )
-    assert (
-        CloudFunctionsServiceClient._get_client_cert_source(
-            mock_provided_cert_source, True
-        )
-        == mock_provided_cert_source
-    )
+    assert CloudFunctionsServiceClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert CloudFunctionsServiceClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                CloudFunctionsServiceClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                CloudFunctionsServiceClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert CloudFunctionsServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert CloudFunctionsServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    CloudFunctionsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceClient),
-)
-@mock.patch.object(
-    CloudFunctionsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceAsyncClient),
-)
+@mock.patch.object(CloudFunctionsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceClient))
+@mock.patch.object(CloudFunctionsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = CloudFunctionsServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert CloudFunctionsServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        CloudFunctionsServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
         == CloudFunctionsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert CloudFunctionsServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert CloudFunctionsServiceClient._get_api_endpoint(None, None, default_universe, "always") == CloudFunctionsServiceClient.DEFAULT_MTLS_ENDPOINT
     assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
+        CloudFunctionsServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == CloudFunctionsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == CloudFunctionsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
+    assert CloudFunctionsServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert CloudFunctionsServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        CloudFunctionsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        CloudFunctionsServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        CloudFunctionsServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        CloudFunctionsServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        CloudFunctionsServiceClient._get_universe_domain(None, None)
-        == CloudFunctionsServiceClient._DEFAULT_UNIVERSE
-    )
+    assert CloudFunctionsServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert CloudFunctionsServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert CloudFunctionsServiceClient._get_universe_domain(None, None) == CloudFunctionsServiceClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         CloudFunctionsServiceClient._get_universe_domain("", None)
@@ -412,13 +357,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (CloudFunctionsServiceClient, "rest"),
     ],
 )
-def test_cloud_functions_service_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_cloud_functions_service_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -426,9 +367,7 @@ def test_cloud_functions_service_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "cloudfunctions.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://cloudfunctions.googleapis.com"
+            "cloudfunctions.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://cloudfunctions.googleapis.com"
         )
 
 
@@ -440,19 +379,13 @@ def test_cloud_functions_service_client_from_service_account_info(
         (transports.CloudFunctionsServiceRestTransport, "rest"),
     ],
 )
-def test_cloud_functions_service_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_cloud_functions_service_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -466,30 +399,20 @@ def test_cloud_functions_service_client_service_account_always_use_jwt(
         (CloudFunctionsServiceClient, "rest"),
     ],
 )
-def test_cloud_functions_service_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_cloud_functions_service_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "cloudfunctions.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://cloudfunctions.googleapis.com"
+            "cloudfunctions.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://cloudfunctions.googleapis.com"
         )
 
 
@@ -508,36 +431,14 @@ def test_cloud_functions_service_client_get_transport_class():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceRestTransport,
-            "rest",
-        ),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport, "grpc"),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    CloudFunctionsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceClient),
-)
-@mock.patch.object(
-    CloudFunctionsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceAsyncClient),
-)
-def test_cloud_functions_service_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(CloudFunctionsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceClient))
+@mock.patch.object(CloudFunctionsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceAsyncClient))
+def test_cloud_functions_service_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(CloudFunctionsServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -575,9 +476,7 @@ def test_cloud_functions_service_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -609,21 +508,7 @@ def test_cloud_functions_service_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -633,9 +518,7 @@ def test_cloud_functions_service_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -644,18 +527,14 @@ def test_cloud_functions_service_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -668,78 +547,32 @@ def test_cloud_functions_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceRestTransport,
-            "rest",
-            "false",
-        ),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport, "grpc", "true"),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio", "true"),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport, "grpc", "false"),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio", "false"),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceRestTransport, "rest", "true"),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    CloudFunctionsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceClient),
-)
-@mock.patch.object(
-    CloudFunctionsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceAsyncClient),
-)
+@mock.patch.object(CloudFunctionsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceClient))
+@mock.patch.object(CloudFunctionsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_cloud_functions_service_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_cloud_functions_service_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -758,22 +591,12 @@ def test_cloud_functions_service_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -794,22 +617,15 @@ def test_cloud_functions_service_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -819,31 +635,17 @@ def test_cloud_functions_service_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize(
-    "client_class", [CloudFunctionsServiceClient, CloudFunctionsServiceAsyncClient]
-)
-@mock.patch.object(
-    CloudFunctionsServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CloudFunctionsServiceClient),
-)
-@mock.patch.object(
-    CloudFunctionsServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CloudFunctionsServiceAsyncClient),
-)
+@pytest.mark.parametrize("client_class", [CloudFunctionsServiceClient, CloudFunctionsServiceAsyncClient])
+@mock.patch.object(CloudFunctionsServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudFunctionsServiceClient))
+@mock.patch.object(CloudFunctionsServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudFunctionsServiceAsyncClient))
 def test_cloud_functions_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -851,14 +653,106 @@ def test_cloud_functions_service_client_get_mtls_endpoint_and_cert_source(client
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -874,28 +768,16 @@ def test_cloud_functions_service_client_get_mtls_endpoint_and_cert_source(client
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -905,62 +787,26 @@ def test_cloud_functions_service_client_get_mtls_endpoint_and_cert_source(client
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
-@pytest.mark.parametrize(
-    "client_class", [CloudFunctionsServiceClient, CloudFunctionsServiceAsyncClient]
-)
-@mock.patch.object(
-    CloudFunctionsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceClient),
-)
-@mock.patch.object(
-    CloudFunctionsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudFunctionsServiceAsyncClient),
-)
+@pytest.mark.parametrize("client_class", [CloudFunctionsServiceClient, CloudFunctionsServiceAsyncClient])
+@mock.patch.object(CloudFunctionsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceClient))
+@mock.patch.object(CloudFunctionsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudFunctionsServiceAsyncClient))
 def test_cloud_functions_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = CloudFunctionsServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = CloudFunctionsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -983,19 +829,11 @@ def test_cloud_functions_service_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -1003,35 +841,19 @@ def test_cloud_functions_service_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceRestTransport,
-            "rest",
-        ),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport, "grpc"),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceRestTransport, "rest"),
     ],
 )
-def test_cloud_functions_service_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_cloud_functions_service_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -1042,9 +864,7 @@ def test_cloud_functions_service_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1057,29 +877,12 @@ def test_cloud_functions_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceRestTransport,
-            "rest",
-            None,
-        ),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport, "grpc", grpc_helpers),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceRestTransport, "rest", None),
     ],
 )
-def test_cloud_functions_service_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_cloud_functions_service_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1089,9 +892,7 @@ def test_cloud_functions_service_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1106,9 +907,7 @@ def test_cloud_functions_service_client_client_options_from_dict():
         "google.cloud.functions_v1.services.cloud_functions_service.transports.CloudFunctionsServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = CloudFunctionsServiceClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = CloudFunctionsServiceClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1125,23 +924,11 @@ def test_cloud_functions_service_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            CloudFunctionsServiceClient,
-            transports.CloudFunctionsServiceGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport, "grpc", grpc_helpers),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_cloud_functions_service_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_cloud_functions_service_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1151,9 +938,7 @@ def test_cloud_functions_service_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1163,13 +948,9 @@ def test_cloud_functions_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1247,9 +1028,7 @@ def test_list_functions_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_functions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1277,9 +1056,7 @@ def test_list_functions_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_functions] = mock_rpc
         request = {}
         client.list_functions(request)
@@ -1295,9 +1072,7 @@ def test_list_functions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_functions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_functions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1311,17 +1086,12 @@ async def test_list_functions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_functions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_functions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_functions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_functions] = mock_rpc
 
         request = {}
         await client.list_functions(request)
@@ -1337,9 +1107,7 @@ async def test_list_functions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_functions_async(
-    transport: str = "grpc_asyncio", request_type=functions.ListFunctionsRequest
-):
+async def test_list_functions_async(transport: str = "grpc_asyncio", request_type=functions.ListFunctionsRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1420,9 +1188,7 @@ async def test_list_functions_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.ListFunctionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.ListFunctionsResponse())
         await client.list_functions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1478,9 +1244,7 @@ def test_list_functions_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_functions(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -1540,9 +1304,7 @@ async def test_list_functions_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_functions), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             functions.ListFunctionsResponse(
@@ -1590,9 +1352,7 @@ async def test_list_functions_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_functions), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             functions.ListFunctionsResponse(
@@ -1624,9 +1384,7 @@ async def test_list_functions_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_functions(request={})
-        ).pages:
+        async for page_ in (await client.list_functions(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1699,23 +1457,15 @@ def test_get_function(request_type, transport: str = "grpc"):
     assert response.max_instances == 1389
     assert response.min_instances == 1387
     assert response.vpc_connector == "vpc_connector_value"
-    assert (
-        response.vpc_connector_egress_settings
-        == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
-    )
-    assert (
-        response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
-    )
+    assert response.vpc_connector_egress_settings == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
+    assert response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
     assert response.kms_key_name == "kms_key_name_value"
     assert response.build_worker_pool == "build_worker_pool_value"
     assert response.build_id == "build_id_value"
     assert response.build_name == "build_name_value"
     assert response.source_token == "source_token_value"
     assert response.docker_repository == "docker_repository_value"
-    assert (
-        response.docker_registry
-        == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
-    )
+    assert response.docker_registry == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     assert response.build_service_account == "build_service_account_value"
 
 
@@ -1736,9 +1486,7 @@ def test_get_function_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_function), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1765,9 +1513,7 @@ def test_get_function_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_function] = mock_rpc
         request = {}
         client.get_function(request)
@@ -1783,9 +1529,7 @@ def test_get_function_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_function_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_function_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1799,17 +1543,12 @@ async def test_get_function_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_function
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_function in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_function
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_function] = mock_rpc
 
         request = {}
         await client.get_function(request)
@@ -1825,9 +1564,7 @@ async def test_get_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.GetFunctionRequest
-):
+async def test_get_function_async(transport: str = "grpc_asyncio", request_type=functions.GetFunctionRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1888,23 +1625,15 @@ async def test_get_function_async(
     assert response.max_instances == 1389
     assert response.min_instances == 1387
     assert response.vpc_connector == "vpc_connector_value"
-    assert (
-        response.vpc_connector_egress_settings
-        == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
-    )
-    assert (
-        response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
-    )
+    assert response.vpc_connector_egress_settings == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
+    assert response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
     assert response.kms_key_name == "kms_key_name_value"
     assert response.build_worker_pool == "build_worker_pool_value"
     assert response.build_id == "build_id_value"
     assert response.build_name == "build_name_value"
     assert response.source_token == "source_token_value"
     assert response.docker_repository == "docker_repository_value"
-    assert (
-        response.docker_registry
-        == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
-    )
+    assert response.docker_registry == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     assert response.build_service_account == "build_service_account_value"
 
 
@@ -1956,9 +1685,7 @@ async def test_get_function_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_function), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.CloudFunction()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.CloudFunction())
         await client.get_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2023,9 +1750,7 @@ async def test_get_function_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = functions.CloudFunction()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.CloudFunction()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.CloudFunction())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_function(
@@ -2106,9 +1831,7 @@ def test_create_function_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_function), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2135,9 +1858,7 @@ def test_create_function_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_function] = mock_rpc
         request = {}
         client.create_function(request)
@@ -2158,9 +1879,7 @@ def test_create_function_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_function_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_function_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2174,17 +1893,12 @@ async def test_create_function_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_function
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_function in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_function
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_function] = mock_rpc
 
         request = {}
         await client.create_function(request)
@@ -2205,9 +1919,7 @@ async def test_create_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.CreateFunctionRequest
-):
+async def test_create_function_async(transport: str = "grpc_asyncio", request_type=functions.CreateFunctionRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2220,9 +1932,7 @@ async def test_create_function_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2283,9 +1993,7 @@ async def test_create_function_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_function), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2355,9 +2063,7 @@ async def test_create_function_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_function(
@@ -2441,9 +2147,7 @@ def test_update_function_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_function), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2468,9 +2172,7 @@ def test_update_function_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_function] = mock_rpc
         request = {}
         client.update_function(request)
@@ -2491,9 +2193,7 @@ def test_update_function_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_function_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_function_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2507,17 +2207,12 @@ async def test_update_function_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_function
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_function in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_function
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_function] = mock_rpc
 
         request = {}
         await client.update_function(request)
@@ -2538,9 +2233,7 @@ async def test_update_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.UpdateFunctionRequest
-):
+async def test_update_function_async(transport: str = "grpc_asyncio", request_type=functions.UpdateFunctionRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2553,9 +2246,7 @@ async def test_update_function_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2616,9 +2307,7 @@ async def test_update_function_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_function), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2683,9 +2372,7 @@ async def test_update_function_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_function(
@@ -2766,9 +2453,7 @@ def test_delete_function_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2795,9 +2480,7 @@ def test_delete_function_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_function] = mock_rpc
         request = {}
         client.delete_function(request)
@@ -2818,9 +2501,7 @@ def test_delete_function_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_function_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_function_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2834,17 +2515,12 @@ async def test_delete_function_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_function
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_function in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_function
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_function] = mock_rpc
 
         request = {}
         await client.delete_function(request)
@@ -2865,9 +2541,7 @@ async def test_delete_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.DeleteFunctionRequest
-):
+async def test_delete_function_async(transport: str = "grpc_asyncio", request_type=functions.DeleteFunctionRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2880,9 +2554,7 @@ async def test_delete_function_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2943,9 +2615,7 @@ async def test_delete_function_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3010,9 +2680,7 @@ async def test_delete_function_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_function(
@@ -3101,9 +2769,7 @@ def test_call_function_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.call_function), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.call_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3131,9 +2797,7 @@ def test_call_function_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.call_function] = mock_rpc
         request = {}
         client.call_function(request)
@@ -3149,9 +2813,7 @@ def test_call_function_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_call_function_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_call_function_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3165,17 +2827,12 @@ async def test_call_function_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.call_function
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.call_function in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.call_function
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.call_function] = mock_rpc
 
         request = {}
         await client.call_function(request)
@@ -3191,9 +2848,7 @@ async def test_call_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_call_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.CallFunctionRequest
-):
+async def test_call_function_async(transport: str = "grpc_asyncio", request_type=functions.CallFunctionRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3276,9 +2931,7 @@ async def test_call_function_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.call_function), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.CallFunctionResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.CallFunctionResponse())
         await client.call_function(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3348,9 +3001,7 @@ async def test_call_function_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = functions.CallFunctionResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.CallFunctionResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.CallFunctionResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.call_function(
@@ -3404,9 +3055,7 @@ def test_generate_upload_url(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.GenerateUploadUrlResponse(
             upload_url="upload_url_value",
@@ -3441,12 +3090,8 @@ def test_generate_upload_url_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.generate_upload_url(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3470,18 +3115,12 @@ def test_generate_upload_url_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_upload_url in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_upload_url in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_upload_url
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_upload_url] = mock_rpc
         request = {}
         client.generate_upload_url(request)
 
@@ -3496,9 +3135,7 @@ def test_generate_upload_url_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_upload_url_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_generate_upload_url_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3512,17 +3149,12 @@ async def test_generate_upload_url_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.generate_upload_url
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.generate_upload_url in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.generate_upload_url
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.generate_upload_url] = mock_rpc
 
         request = {}
         await client.generate_upload_url(request)
@@ -3538,9 +3170,7 @@ async def test_generate_upload_url_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_upload_url_async(
-    transport: str = "grpc_asyncio", request_type=functions.GenerateUploadUrlRequest
-):
+async def test_generate_upload_url_async(transport: str = "grpc_asyncio", request_type=functions.GenerateUploadUrlRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3551,9 +3181,7 @@ async def test_generate_upload_url_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.GenerateUploadUrlResponse(
@@ -3590,9 +3218,7 @@ def test_generate_upload_url_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
         call.return_value = functions.GenerateUploadUrlResponse()
         client.generate_upload_url(request)
 
@@ -3622,12 +3248,8 @@ async def test_generate_upload_url_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.GenerateUploadUrlResponse()
-        )
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.GenerateUploadUrlResponse())
         await client.generate_upload_url(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3661,9 +3283,7 @@ def test_generate_download_url(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.GenerateDownloadUrlResponse(
             download_url="download_url_value",
@@ -3697,12 +3317,8 @@ def test_generate_download_url_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.generate_download_url(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3725,19 +3341,12 @@ def test_generate_download_url_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_download_url
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_download_url in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_download_url
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_download_url] = mock_rpc
         request = {}
         client.generate_download_url(request)
 
@@ -3752,9 +3361,7 @@ def test_generate_download_url_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_download_url_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_generate_download_url_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3768,17 +3375,12 @@ async def test_generate_download_url_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.generate_download_url
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.generate_download_url in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.generate_download_url
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.generate_download_url] = mock_rpc
 
         request = {}
         await client.generate_download_url(request)
@@ -3794,9 +3396,7 @@ async def test_generate_download_url_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_download_url_async(
-    transport: str = "grpc_asyncio", request_type=functions.GenerateDownloadUrlRequest
-):
+async def test_generate_download_url_async(transport: str = "grpc_asyncio", request_type=functions.GenerateDownloadUrlRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3807,9 +3407,7 @@ async def test_generate_download_url_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.GenerateDownloadUrlResponse(
@@ -3846,9 +3444,7 @@ def test_generate_download_url_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
         call.return_value = functions.GenerateDownloadUrlResponse()
         client.generate_download_url(request)
 
@@ -3878,12 +3474,8 @@ async def test_generate_download_url_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            functions.GenerateDownloadUrlResponse()
-        )
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(functions.GenerateDownloadUrlResponse())
         await client.generate_download_url(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3954,9 +3546,7 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3983,9 +3573,7 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
         request = {}
         client.set_iam_policy(request)
@@ -4001,9 +3589,7 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_set_iam_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4017,17 +3603,12 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.set_iam_policy
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.set_iam_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.set_iam_policy
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.set_iam_policy] = mock_rpc
 
         request = {}
         await client.set_iam_policy(request)
@@ -4043,9 +3624,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+async def test_set_iam_policy_async(transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4215,9 +3794,7 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4244,9 +3821,7 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_iam_policy] = mock_rpc
         request = {}
         client.get_iam_policy(request)
@@ -4262,9 +3837,7 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_iam_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4278,17 +3851,12 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_iam_policy
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_iam_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_iam_policy
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_iam_policy] = mock_rpc
 
         request = {}
         await client.get_iam_policy(request)
@@ -4304,9 +3872,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+async def test_get_iam_policy_async(transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4438,9 +4004,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
             permissions=["permissions_value"],
@@ -4474,12 +4038,8 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4502,18 +4062,12 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
+        assert client._transport.test_iam_permissions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = mock_rpc
         request = {}
         client.test_iam_permissions(request)
 
@@ -4528,9 +4082,7 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_test_iam_permissions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4544,17 +4096,12 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.test_iam_permissions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.test_iam_permissions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.test_iam_permissions] = mock_rpc
 
         request = {}
         await client.test_iam_permissions(request)
@@ -4570,10 +4117,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
+async def test_test_iam_permissions_async(transport: str = "grpc_asyncio", request_type=iam_policy_pb2.TestIamPermissionsRequest):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4584,9 +4128,7 @@ async def test_test_iam_permissions_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy_pb2.TestIamPermissionsResponse(
@@ -4623,9 +4165,7 @@ def test_test_iam_permissions_field_headers():
     request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         client.test_iam_permissions(request)
 
@@ -4655,12 +4195,8 @@ async def test_test_iam_permissions_field_headers_async():
     request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
         await client.test_iam_permissions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4681,9 +4217,7 @@ def test_test_iam_permissions_from_dict_foreign():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         response = client.test_iam_permissions(
@@ -4713,9 +4247,7 @@ def test_list_functions_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_functions] = mock_rpc
 
         request = {}
@@ -4810,9 +4342,7 @@ def test_get_function_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_function] = mock_rpc
 
         request = {}
@@ -4835,24 +4365,18 @@ def test_get_function_rest_required_fields(request_type=functions.GetFunctionReq
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_function._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("version_id",))
     jsonified_request.update(unset_fields)
@@ -4904,9 +4428,7 @@ def test_get_function_rest_required_fields(request_type=functions.GetFunctionReq
 
 
 def test_get_function_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_function._get_unset_required_fields({})
     assert set(unset_fields) == (set(("versionId",)) & set(("name",)))
@@ -4924,9 +4446,7 @@ def test_get_function_rest_flattened():
         return_value = functions.CloudFunction()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/functions/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/functions/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4950,10 +4470,7 @@ def test_get_function_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/functions/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/functions/*}" % client.transport._host, args[1])
 
 
 def test_get_function_rest_flattened_error(transport: str = "rest"):
@@ -4989,9 +4506,7 @@ def test_create_function_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_function] = mock_rpc
 
         request = {}
@@ -5011,33 +4526,25 @@ def test_create_function_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_function_rest_required_fields(
-    request_type=functions.CreateFunctionRequest,
-):
+def test_create_function_rest_required_fields(request_type=functions.CreateFunctionRequest):
     transport_class = transports.CloudFunctionsServiceRestTransport
 
     request_init = {}
     request_init["location"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["location"] = "location_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5085,9 +4592,7 @@ def test_create_function_rest_required_fields(
 
 
 def test_create_function_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_function._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5136,11 +4641,7 @@ def test_create_function_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{location=projects/*/locations/*}/functions"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{location=projects/*/locations/*}/functions" % client.transport._host, args[1])
 
 
 def test_create_function_rest_flattened_error(transport: str = "rest"):
@@ -5177,9 +4678,7 @@ def test_update_function_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_function] = mock_rpc
 
         request = {}
@@ -5199,30 +4698,22 @@ def test_update_function_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_function_rest_required_fields(
-    request_type=functions.UpdateFunctionRequest,
-):
+def test_update_function_rest_required_fields(request_type=functions.UpdateFunctionRequest):
     transport_class = transports.CloudFunctionsServiceRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_function._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
     jsonified_request.update(unset_fields)
@@ -5270,9 +4761,7 @@ def test_update_function_rest_required_fields(
 
 
 def test_update_function_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_function._get_unset_required_fields({})
     assert set(unset_fields) == (set(("updateMask",)) & set(("function",)))
@@ -5290,9 +4779,7 @@ def test_update_function_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
-        }
+        sample_request = {"function": {"name": "projects/sample1/locations/sample2/functions/sample3"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -5314,11 +4801,7 @@ def test_update_function_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{function.name=projects/*/locations/*/functions/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{function.name=projects/*/locations/*/functions/*}" % client.transport._host, args[1])
 
 
 def test_update_function_rest_flattened_error(transport: str = "rest"):
@@ -5354,9 +4837,7 @@ def test_delete_function_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_function] = mock_rpc
 
         request = {}
@@ -5376,33 +4857,25 @@ def test_delete_function_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_function_rest_required_fields(
-    request_type=functions.DeleteFunctionRequest,
-):
+def test_delete_function_rest_required_fields(request_type=functions.DeleteFunctionRequest):
     transport_class = transports.CloudFunctionsServiceRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5449,9 +4922,7 @@ def test_delete_function_rest_required_fields(
 
 
 def test_delete_function_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_function._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -5469,9 +4940,7 @@ def test_delete_function_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/functions/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/functions/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -5493,10 +4962,7 @@ def test_delete_function_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/functions/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/functions/*}" % client.transport._host, args[1])
 
 
 def test_delete_function_rest_flattened_error(transport: str = "rest"):
@@ -5532,9 +4998,7 @@ def test_call_function_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.call_function] = mock_rpc
 
         request = {}
@@ -5558,15 +5022,11 @@ def test_call_function_rest_required_fields(request_type=functions.CallFunctionR
     request_init["data"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).call_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).call_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -5574,9 +5034,7 @@ def test_call_function_rest_required_fields(request_type=functions.CallFunctionR
     jsonified_request["name"] = "name_value"
     jsonified_request["data"] = "data_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).call_function._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).call_function._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5629,9 +5087,7 @@ def test_call_function_rest_required_fields(request_type=functions.CallFunctionR
 
 
 def test_call_function_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.call_function._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5657,9 +5113,7 @@ def test_call_function_rest_flattened():
         return_value = functions.CallFunctionResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/functions/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/functions/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -5684,11 +5138,7 @@ def test_call_function_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/functions/*}:call"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/functions/*}:call" % client.transport._host, args[1])
 
 
 def test_call_function_rest_flattened_error(transport: str = "rest"):
@@ -5721,18 +5171,12 @@ def test_generate_upload_url_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_upload_url in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_upload_url in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_upload_url
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_upload_url] = mock_rpc
 
         request = {}
         client.generate_upload_url(request)
@@ -5761,19 +5205,12 @@ def test_generate_download_url_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_download_url
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_download_url in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_download_url
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_download_url] = mock_rpc
 
         request = {}
         client.generate_download_url(request)
@@ -5806,9 +5243,7 @@ def test_set_iam_policy_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
 
         request = {}
@@ -5824,33 +5259,25 @@ def test_set_iam_policy_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_iam_policy_rest_required_fields(
-    request_type=iam_policy_pb2.SetIamPolicyRequest,
-):
+def test_set_iam_policy_rest_required_fields(request_type=iam_policy_pb2.SetIamPolicyRequest):
     transport_class = transports.CloudFunctionsServiceRestTransport
 
     request_init = {}
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5899,9 +5326,7 @@ def test_set_iam_policy_rest_required_fields(
 
 
 def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5933,9 +5358,7 @@ def test_get_iam_policy_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_iam_policy] = mock_rpc
 
         request = {}
@@ -5951,33 +5374,25 @@ def test_get_iam_policy_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_iam_policy_rest_required_fields(
-    request_type=iam_policy_pb2.GetIamPolicyRequest,
-):
+def test_get_iam_policy_rest_required_fields(request_type=iam_policy_pb2.GetIamPolicyRequest):
     transport_class = transports.CloudFunctionsServiceRestTransport
 
     request_init = {}
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("options",))
     jsonified_request.update(unset_fields)
@@ -6027,9 +5442,7 @@ def test_get_iam_policy_rest_required_fields(
 
 
 def test_get_iam_policy_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (set(("options",)) & set(("resource",)))
@@ -6049,18 +5462,12 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
+        assert client._transport.test_iam_permissions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = mock_rpc
 
         request = {}
         client.test_iam_permissions(request)
@@ -6075,9 +5482,7 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_test_iam_permissions_rest_required_fields(
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
+def test_test_iam_permissions_rest_required_fields(request_type=iam_policy_pb2.TestIamPermissionsRequest):
     transport_class = transports.CloudFunctionsServiceRestTransport
 
     request_init = {}
@@ -6085,15 +5490,13 @@ def test_test_iam_permissions_rest_required_fields(
     request_init["permissions"] = ""
     request = request_type(**request_init)
     pb_request = request
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).test_iam_permissions._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -6101,9 +5504,9 @@ def test_test_iam_permissions_rest_required_fields(
     jsonified_request["resource"] = "resource_value"
     jsonified_request["permissions"] = "permissions_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).test_iam_permissions._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6154,9 +5557,7 @@ def test_test_iam_permissions_rest_required_fields(
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.CloudFunctionsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.CloudFunctionsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -6207,9 +5608,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CloudFunctionsServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = CloudFunctionsServiceClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.CloudFunctionsServiceGrpcTransport(
@@ -6263,16 +5662,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = CloudFunctionsServiceClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = CloudFunctionsServiceClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -6411,9 +5806,7 @@ def test_generate_upload_url_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
         call.return_value = functions.GenerateUploadUrlResponse()
         client.generate_upload_url(request=None)
 
@@ -6434,9 +5827,7 @@ def test_generate_download_url_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
         call.return_value = functions.GenerateDownloadUrlResponse()
         client.generate_download_url(request=None)
 
@@ -6499,9 +5890,7 @@ def test_test_iam_permissions_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
         client.test_iam_permissions(request=None)
 
@@ -6514,16 +5903,12 @@ def test_test_iam_permissions_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = CloudFunctionsServiceAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = CloudFunctionsServiceAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = CloudFunctionsServiceAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = CloudFunctionsServiceAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -6615,9 +6000,7 @@ async def test_create_function_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_function(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6640,9 +6023,7 @@ async def test_update_function_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_function(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6665,9 +6046,7 @@ async def test_delete_function_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_function(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6717,9 +6096,7 @@ async def test_generate_upload_url_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.GenerateUploadUrlResponse(
@@ -6746,9 +6123,7 @@ async def test_generate_download_url_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.GenerateDownloadUrlResponse(
@@ -6831,9 +6206,7 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy_pb2.TestIamPermissionsResponse(
@@ -6851,24 +6224,18 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = CloudFunctionsServiceClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = CloudFunctionsServiceClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_list_functions_rest_bad_request(request_type=functions.ListFunctionsRequest):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6888,9 +6255,7 @@ def test_list_functions_rest_bad_request(request_type=functions.ListFunctionsReq
     ],
 )
 def test_list_functions_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -6926,21 +6291,14 @@ def test_list_functions_rest_call_success(request_type):
 def test_list_functions_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_list_functions"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_list_functions_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_list_functions") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_list_functions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_list_functions"
     ) as pre:
@@ -6958,9 +6316,7 @@ def test_list_functions_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = functions.ListFunctionsResponse.to_json(
-            functions.ListFunctionsResponse()
-        )
+        return_value = functions.ListFunctionsResponse.to_json(functions.ListFunctionsResponse())
         req.return_value.content = return_value
 
         request = functions.ListFunctionsRequest()
@@ -6986,17 +6342,13 @@ def test_list_functions_rest_interceptors(null_interceptor):
 
 
 def test_get_function_rest_bad_request(request_type=functions.GetFunctionRequest):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7016,9 +6368,7 @@ def test_get_function_rest_bad_request(request_type=functions.GetFunctionRequest
     ],
 )
 def test_get_function_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
@@ -7079,23 +6429,15 @@ def test_get_function_rest_call_success(request_type):
     assert response.max_instances == 1389
     assert response.min_instances == 1387
     assert response.vpc_connector == "vpc_connector_value"
-    assert (
-        response.vpc_connector_egress_settings
-        == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
-    )
-    assert (
-        response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
-    )
+    assert response.vpc_connector_egress_settings == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
+    assert response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
     assert response.kms_key_name == "kms_key_name_value"
     assert response.build_worker_pool == "build_worker_pool_value"
     assert response.build_id == "build_id_value"
     assert response.build_name == "build_name_value"
     assert response.source_token == "source_token_value"
     assert response.docker_repository == "docker_repository_value"
-    assert (
-        response.docker_registry
-        == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
-    )
+    assert response.docker_registry == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     assert response.build_service_account == "build_service_account_value"
 
 
@@ -7103,21 +6445,14 @@ def test_get_function_rest_call_success(request_type):
 def test_get_function_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_get_function"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_get_function_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_get_function") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_get_function_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_get_function"
     ) as pre:
@@ -7161,17 +6496,13 @@ def test_get_function_rest_interceptors(null_interceptor):
 
 
 def test_create_function_rest_bad_request(request_type=functions.CreateFunctionRequest):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"location": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7191,9 +6522,7 @@ def test_create_function_rest_bad_request(request_type=functions.CreateFunctionR
     ],
 )
 def test_create_function_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"location": "projects/sample1/locations/sample2"}
@@ -7232,12 +6561,7 @@ def test_create_function_rest_call_success(request_type):
         "build_id": "build_id_value",
         "build_name": "build_name_value",
         "secret_environment_variables": [
-            {
-                "key": "key_value",
-                "project_id": "project_id_value",
-                "secret": "secret_value",
-                "version": "version_value",
-            }
+            {"key": "key_value", "project_id": "project_id_value", "secret": "secret_value", "version": "version_value"}
         ],
         "secret_volumes": [
             {
@@ -7278,9 +6602,7 @@ def test_create_function_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -7301,13 +6623,7 @@ def test_create_function_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -7345,32 +6661,23 @@ def test_create_function_rest_call_success(request_type):
 def test_create_function_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "post_create_function"
     ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_create_function_with_metadata",
+        transports.CloudFunctionsServiceRestInterceptor, "post_create_function_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_create_function"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = functions.CreateFunctionRequest.pb(
-            functions.CreateFunctionRequest()
-        )
+        pb_message = functions.CreateFunctionRequest.pb(functions.CreateFunctionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7407,19 +6714,13 @@ def test_create_function_rest_interceptors(null_interceptor):
 
 
 def test_update_function_rest_bad_request(request_type=functions.UpdateFunctionRequest):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
-    }
+    request_init = {"function": {"name": "projects/sample1/locations/sample2/functions/sample3"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7439,14 +6740,10 @@ def test_update_function_rest_bad_request(request_type=functions.UpdateFunctionR
     ],
 )
 def test_update_function_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
-    }
+    request_init = {"function": {"name": "projects/sample1/locations/sample2/functions/sample3"}}
     request_init["function"] = {
         "name": "projects/sample1/locations/sample2/functions/sample3",
         "description": "description_value",
@@ -7482,12 +6779,7 @@ def test_update_function_rest_call_success(request_type):
         "build_id": "build_id_value",
         "build_name": "build_name_value",
         "secret_environment_variables": [
-            {
-                "key": "key_value",
-                "project_id": "project_id_value",
-                "secret": "secret_value",
-                "version": "version_value",
-            }
+            {"key": "key_value", "project_id": "project_id_value", "secret": "secret_value", "version": "version_value"}
         ],
         "secret_volumes": [
             {
@@ -7528,9 +6820,7 @@ def test_update_function_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -7551,13 +6841,7 @@ def test_update_function_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -7595,32 +6879,23 @@ def test_update_function_rest_call_success(request_type):
 def test_update_function_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "post_update_function"
     ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_update_function_with_metadata",
+        transports.CloudFunctionsServiceRestInterceptor, "post_update_function_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_update_function"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = functions.UpdateFunctionRequest.pb(
-            functions.UpdateFunctionRequest()
-        )
+        pb_message = functions.UpdateFunctionRequest.pb(functions.UpdateFunctionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7657,17 +6932,13 @@ def test_update_function_rest_interceptors(null_interceptor):
 
 
 def test_delete_function_rest_bad_request(request_type=functions.DeleteFunctionRequest):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7687,9 +6958,7 @@ def test_delete_function_rest_bad_request(request_type=functions.DeleteFunctionR
     ],
 )
 def test_delete_function_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
@@ -7717,32 +6986,23 @@ def test_delete_function_rest_call_success(request_type):
 def test_delete_function_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "post_delete_function"
     ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_delete_function_with_metadata",
+        transports.CloudFunctionsServiceRestInterceptor, "post_delete_function_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_delete_function"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = functions.DeleteFunctionRequest.pb(
-            functions.DeleteFunctionRequest()
-        )
+        pb_message = functions.DeleteFunctionRequest.pb(functions.DeleteFunctionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7779,17 +7039,13 @@ def test_delete_function_rest_interceptors(null_interceptor):
 
 
 def test_call_function_rest_bad_request(request_type=functions.CallFunctionRequest):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7809,9 +7065,7 @@ def test_call_function_rest_bad_request(request_type=functions.CallFunctionReque
     ],
 )
 def test_call_function_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
@@ -7849,21 +7103,14 @@ def test_call_function_rest_call_success(request_type):
 def test_call_function_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_call_function"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_call_function_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_call_function") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_call_function_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_call_function"
     ) as pre:
@@ -7881,9 +7128,7 @@ def test_call_function_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = functions.CallFunctionResponse.to_json(
-            functions.CallFunctionResponse()
-        )
+        return_value = functions.CallFunctionResponse.to_json(functions.CallFunctionResponse())
         req.return_value.content = return_value
 
         request = functions.CallFunctionRequest()
@@ -7908,20 +7153,14 @@ def test_call_function_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_generate_upload_url_rest_bad_request(
-    request_type=functions.GenerateUploadUrlRequest,
-):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_generate_upload_url_rest_bad_request(request_type=functions.GenerateUploadUrlRequest):
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7941,9 +7180,7 @@ def test_generate_upload_url_rest_bad_request(
     ],
 )
 def test_generate_upload_url_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -7977,30 +7214,21 @@ def test_generate_upload_url_rest_call_success(request_type):
 def test_generate_upload_url_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_generate_upload_url"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_generate_upload_url_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_generate_upload_url") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_generate_upload_url_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_generate_upload_url"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = functions.GenerateUploadUrlRequest.pb(
-            functions.GenerateUploadUrlRequest()
-        )
+        pb_message = functions.GenerateUploadUrlRequest.pb(functions.GenerateUploadUrlRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -8011,9 +7239,7 @@ def test_generate_upload_url_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = functions.GenerateUploadUrlResponse.to_json(
-            functions.GenerateUploadUrlResponse()
-        )
+        return_value = functions.GenerateUploadUrlResponse.to_json(functions.GenerateUploadUrlResponse())
         req.return_value.content = return_value
 
         request = functions.GenerateUploadUrlRequest()
@@ -8023,10 +7249,7 @@ def test_generate_upload_url_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = functions.GenerateUploadUrlResponse()
-        post_with_metadata.return_value = (
-            functions.GenerateUploadUrlResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = functions.GenerateUploadUrlResponse(), metadata
 
         client.generate_upload_url(
             request,
@@ -8041,20 +7264,14 @@ def test_generate_upload_url_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_generate_download_url_rest_bad_request(
-    request_type=functions.GenerateDownloadUrlRequest,
-):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_generate_download_url_rest_bad_request(request_type=functions.GenerateDownloadUrlRequest):
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8074,9 +7291,7 @@ def test_generate_download_url_rest_bad_request(
     ],
 )
 def test_generate_download_url_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
@@ -8110,30 +7325,21 @@ def test_generate_download_url_rest_call_success(request_type):
 def test_generate_download_url_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_generate_download_url"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_generate_download_url_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_generate_download_url") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_generate_download_url_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_generate_download_url"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = functions.GenerateDownloadUrlRequest.pb(
-            functions.GenerateDownloadUrlRequest()
-        )
+        pb_message = functions.GenerateDownloadUrlRequest.pb(functions.GenerateDownloadUrlRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -8144,9 +7350,7 @@ def test_generate_download_url_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = functions.GenerateDownloadUrlResponse.to_json(
-            functions.GenerateDownloadUrlResponse()
-        )
+        return_value = functions.GenerateDownloadUrlResponse.to_json(functions.GenerateDownloadUrlResponse())
         req.return_value.content = return_value
 
         request = functions.GenerateDownloadUrlRequest()
@@ -8156,10 +7360,7 @@ def test_generate_download_url_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = functions.GenerateDownloadUrlResponse()
-        post_with_metadata.return_value = (
-            functions.GenerateDownloadUrlResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = functions.GenerateDownloadUrlResponse(), metadata
 
         client.generate_download_url(
             request,
@@ -8174,20 +7375,14 @@ def test_generate_download_url_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_set_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.SetIamPolicyRequest,
-):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_set_iam_policy_rest_bad_request(request_type=iam_policy_pb2.SetIamPolicyRequest):
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8207,9 +7402,7 @@ def test_set_iam_policy_rest_bad_request(
     ],
 )
 def test_set_iam_policy_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
@@ -8242,21 +7435,14 @@ def test_set_iam_policy_rest_call_success(request_type):
 def test_set_iam_policy_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_set_iam_policy_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_set_iam_policy") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_set_iam_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_set_iam_policy"
     ) as pre:
@@ -8299,20 +7485,14 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.GetIamPolicyRequest,
-):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_iam_policy_rest_bad_request(request_type=iam_policy_pb2.GetIamPolicyRequest):
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8332,9 +7512,7 @@ def test_get_iam_policy_rest_bad_request(
     ],
 )
 def test_get_iam_policy_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
@@ -8367,21 +7545,14 @@ def test_get_iam_policy_rest_call_success(request_type):
 def test_get_iam_policy_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_get_iam_policy_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_get_iam_policy") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_get_iam_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_get_iam_policy"
     ) as pre:
@@ -8424,20 +7595,14 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_test_iam_permissions_rest_bad_request(
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_test_iam_permissions_rest_bad_request(request_type=iam_policy_pb2.TestIamPermissionsRequest):
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8457,9 +7622,7 @@ def test_test_iam_permissions_rest_bad_request(
     ],
 )
 def test_test_iam_permissions_rest_call_success(request_type):
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
@@ -8490,21 +7653,14 @@ def test_test_iam_permissions_rest_call_success(request_type):
 def test_test_iam_permissions_rest_interceptors(null_interceptor):
     transport = transports.CloudFunctionsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudFunctionsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.CloudFunctionsServiceRestInterceptor(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.CloudFunctionsServiceRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
+    ) as transcode, mock.patch.object(transports.CloudFunctionsServiceRestInterceptor, "post_test_iam_permissions") as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_test_iam_permissions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.CloudFunctionsServiceRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
@@ -8522,9 +7678,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = json_format.MessageToJson(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+        return_value = json_format.MessageToJson(iam_policy_pb2.TestIamPermissionsResponse())
         req.return_value.content = return_value
 
         request = iam_policy_pb2.TestIamPermissionsRequest()
@@ -8534,10 +7688,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-        post_with_metadata.return_value = (
-            iam_policy_pb2.TestIamPermissionsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = iam_policy_pb2.TestIamPermissionsResponse(), metadata
 
         client.test_iam_permissions(
             request,
@@ -8552,9 +7703,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_locations_rest_bad_request(
-    request_type=locations_pb2.ListLocationsRequest,
-):
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
     client = CloudFunctionsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -8563,9 +7712,7 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -8612,9 +7759,7 @@ def test_list_locations_rest(request_type):
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = CloudFunctionsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -8623,9 +7768,7 @@ def test_get_operation_rest_bad_request(
     request = json_format.ParseDict({"name": "operations/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -8672,9 +7815,7 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = CloudFunctionsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -8683,9 +7824,7 @@ def test_list_operations_rest_bad_request(
     request = json_format.ParseDict({}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -8733,9 +7872,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -8868,9 +8005,7 @@ def test_generate_upload_url_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_upload_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_upload_url), "__call__") as call:
         client.generate_upload_url(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8890,9 +8025,7 @@ def test_generate_download_url_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_download_url), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_download_url), "__call__") as call:
         client.generate_download_url(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8952,9 +8085,7 @@ def test_test_iam_permissions_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         client.test_iam_permissions(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8996,17 +8127,12 @@ def test_transport_grpc_default():
 def test_cloud_functions_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.CloudFunctionsServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.CloudFunctionsServiceTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_cloud_functions_service_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.functions_v1.services.cloud_functions_service.transports.CloudFunctionsServiceTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.functions_v1.services.cloud_functions_service.transports.CloudFunctionsServiceTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.CloudFunctionsServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -9053,9 +8179,7 @@ def test_cloud_functions_service_base_transport():
 
 def test_cloud_functions_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.functions_v1.services.cloud_functions_service.transports.CloudFunctionsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -9130,9 +8254,7 @@ def test_cloud_functions_service_transport_auth_gdch_credentials(transport_class
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -9140,19 +8262,12 @@ def test_cloud_functions_service_transport_auth_gdch_credentials(transport_class
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.CloudFunctionsServiceGrpcTransport, grpc_helpers),
-        (transports.CloudFunctionsServiceGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.CloudFunctionsServiceGrpcTransport, grpc_helpers), (transports.CloudFunctionsServiceGrpcAsyncIOTransport, grpc_helpers_async)],
 )
-def test_cloud_functions_service_transport_create_channel(
-    transport_class, grpc_helpers
-):
+def test_cloud_functions_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -9175,26 +8290,14 @@ def test_cloud_functions_service_transport_create_channel(
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CloudFunctionsServiceGrpcTransport,
-        transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-    ],
-)
-def test_cloud_functions_service_grpc_transport_client_cert_source_for_mtls(
-    transport_class,
-):
+@pytest.mark.parametrize("transport_class", [transports.CloudFunctionsServiceGrpcTransport, transports.CloudFunctionsServiceGrpcAsyncIOTransport])
+def test_cloud_functions_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -9212,24 +8315,15 @@ def test_cloud_functions_service_grpc_transport_client_cert_source_for_mtls(
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_cloud_functions_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.CloudFunctionsServiceRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.CloudFunctionsServiceRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -9244,15 +8338,11 @@ def test_cloud_functions_service_http_transport_client_cert_source_for_mtls():
 def test_cloud_functions_service_host_no_port(transport_name):
     client = CloudFunctionsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="cloudfunctions.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="cloudfunctions.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "cloudfunctions.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://cloudfunctions.googleapis.com"
+        "cloudfunctions.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://cloudfunctions.googleapis.com"
     )
 
 
@@ -9267,15 +8357,11 @@ def test_cloud_functions_service_host_no_port(transport_name):
 def test_cloud_functions_service_host_with_port(transport_name):
     client = CloudFunctionsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="cloudfunctions.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="cloudfunctions.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "cloudfunctions.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://cloudfunctions.googleapis.com:8000"
+        "cloudfunctions.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://cloudfunctions.googleapis.com:8000"
     )
 
 
@@ -9359,22 +8445,11 @@ def test_cloud_functions_service_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CloudFunctionsServiceGrpcTransport,
-        transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-    ],
-)
-def test_cloud_functions_service_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.CloudFunctionsServiceGrpcTransport, transports.CloudFunctionsServiceGrpcAsyncIOTransport])
+def test_cloud_functions_service_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -9392,9 +8467,7 @@ def test_cloud_functions_service_transport_channel_mtls_with_client_cert_source(
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -9413,13 +8486,7 @@ def test_cloud_functions_service_transport_channel_mtls_with_client_cert_source(
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CloudFunctionsServiceGrpcTransport,
-        transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-    ],
-)
+@pytest.mark.parametrize("transport_class", [transports.CloudFunctionsServiceGrpcTransport, transports.CloudFunctionsServiceGrpcAsyncIOTransport])
 def test_cloud_functions_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -9427,9 +8494,7 @@ def test_cloud_functions_service_transport_channel_mtls_with_adc(transport_class
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -9500,9 +8565,7 @@ def test_cloud_function_path():
         location=location,
         function=function,
     )
-    actual = CloudFunctionsServiceClient.cloud_function_path(
-        project, location, function
-    )
+    actual = CloudFunctionsServiceClient.cloud_function_path(project, location, function)
     assert expected == actual
 
 
@@ -9530,9 +8593,7 @@ def test_crypto_key_path():
         key_ring=key_ring,
         crypto_key=crypto_key,
     )
-    actual = CloudFunctionsServiceClient.crypto_key_path(
-        project, location, key_ring, crypto_key
-    )
+    actual = CloudFunctionsServiceClient.crypto_key_path(project, location, key_ring, crypto_key)
     assert expected == actual
 
 
@@ -9554,12 +8615,10 @@ def test_repository_path():
     project = "whelk"
     location = "octopus"
     repository = "oyster"
-    expected = (
-        "projects/{project}/locations/{location}/repositories/{repository}".format(
-            project=project,
-            location=location,
-            repository=repository,
-        )
+    expected = "projects/{project}/locations/{location}/repositories/{repository}".format(
+        project=project,
+        location=location,
+        repository=repository,
     )
     actual = CloudFunctionsServiceClient.repository_path(project, location, repository)
     assert expected == actual
@@ -9684,18 +8743,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.CloudFunctionsServiceTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.CloudFunctionsServiceTransport, "_prep_wrapped_messages") as prep:
         client = CloudFunctionsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.CloudFunctionsServiceTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.CloudFunctionsServiceTransport, "_prep_wrapped_messages") as prep:
         transport_class = CloudFunctionsServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -9742,9 +8797,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -9796,9 +8849,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -9838,9 +8889,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -9887,9 +8936,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -9941,9 +8988,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -9983,9 +9028,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -10032,9 +9075,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -10086,9 +9127,7 @@ async def test_list_locations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -10128,9 +9167,7 @@ async def test_list_locations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(
             request={
                 "name": "locations",
@@ -10140,12 +9177,8 @@ async def test_list_locations_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -10153,24 +9186,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = CloudFunctionsServiceAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = CloudFunctionsServiceAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = CloudFunctionsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -10182,9 +9207,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = CloudFunctionsServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = CloudFunctionsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -10197,16 +9220,11 @@ def test_client_ctx():
     "client_class,transport_class",
     [
         (CloudFunctionsServiceClient, transports.CloudFunctionsServiceGrpcTransport),
-        (
-            CloudFunctionsServiceAsyncClient,
-            transports.CloudFunctionsServiceGrpcAsyncIOTransport,
-        ),
+        (CloudFunctionsServiceAsyncClient, transports.CloudFunctionsServiceGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -10217,9 +9235,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

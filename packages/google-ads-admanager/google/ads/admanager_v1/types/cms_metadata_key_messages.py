@@ -53,12 +53,10 @@ class CmsMetadataKey(proto.Message):
         proto.STRING,
         number=3,
     )
-    status: cms_metadata_key_enums.CmsMetadataKeyStatusEnum.CmsMetadataKeyStatus = (
-        proto.Field(
-            proto.ENUM,
-            number=4,
-            enum=cms_metadata_key_enums.CmsMetadataKeyStatusEnum.CmsMetadataKeyStatus,
-        )
+    status: cms_metadata_key_enums.CmsMetadataKeyStatusEnum.CmsMetadataKeyStatus = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=cms_metadata_key_enums.CmsMetadataKeyStatusEnum.CmsMetadataKeyStatus,
     )
 
 

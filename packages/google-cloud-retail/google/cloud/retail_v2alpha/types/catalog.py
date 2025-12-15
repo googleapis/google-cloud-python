@@ -503,16 +503,12 @@ class CatalogAttribute(proto.Message):
             number=1,
             message=common.Interval,
         )
-        ignored_facet_values: MutableSequence[
-            "CatalogAttribute.FacetConfig.IgnoredFacetValues"
-        ] = proto.RepeatedField(
+        ignored_facet_values: MutableSequence["CatalogAttribute.FacetConfig.IgnoredFacetValues"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CatalogAttribute.FacetConfig.IgnoredFacetValues",
         )
-        merged_facet_values: MutableSequence[
-            "CatalogAttribute.FacetConfig.MergedFacetValue"
-        ] = proto.RepeatedField(
+        merged_facet_values: MutableSequence["CatalogAttribute.FacetConfig.MergedFacetValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="CatalogAttribute.FacetConfig.MergedFacetValue",
@@ -556,12 +552,10 @@ class CatalogAttribute(proto.Message):
         number=7,
         enum=SearchableOption,
     )
-    recommendations_filtering_option: common.RecommendationsFilteringOption = (
-        proto.Field(
-            proto.ENUM,
-            number=8,
-            enum=common.RecommendationsFilteringOption,
-        )
+    recommendations_filtering_option: common.RecommendationsFilteringOption = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=common.RecommendationsFilteringOption,
     )
     exact_searchable_option: ExactSearchableOption = proto.Field(
         proto.ENUM,

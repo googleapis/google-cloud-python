@@ -75,20 +75,14 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAbandonRelease:
@@ -99,11 +93,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -126,9 +116,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -139,11 +127,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseAbandonRelease._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseAbandonRelease._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -156,11 +140,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -183,9 +163,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -196,11 +174,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseAdvanceRollout._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -213,11 +187,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -240,9 +210,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -253,11 +221,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseApproveRollout._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseApproveRollout._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -270,11 +234,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -297,9 +257,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -310,11 +268,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -327,11 +281,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -354,9 +304,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -367,11 +315,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCancelRollout._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCancelRollout._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -386,11 +330,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -413,9 +353,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -426,11 +364,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateAutomation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateAutomation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -445,11 +379,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -472,9 +402,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -485,11 +413,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -504,11 +428,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -531,9 +451,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -544,11 +462,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -563,11 +477,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -590,9 +500,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -603,11 +511,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -622,11 +526,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -649,9 +549,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -662,11 +560,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateRelease._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateRelease._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -681,11 +575,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -708,9 +598,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -721,11 +609,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateRollout._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateRollout._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -740,11 +624,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -767,9 +647,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -780,11 +658,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseCreateTarget._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseCreateTarget._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -797,11 +671,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -827,11 +697,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseDeleteAutomation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -844,11 +710,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -874,11 +736,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -891,11 +749,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -921,11 +775,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -938,11 +788,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -968,11 +814,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -985,11 +827,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1015,11 +853,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseDeleteTarget._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseDeleteTarget._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1032,11 +866,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1062,11 +892,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetAutomation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetAutomation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1079,11 +905,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1109,11 +931,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetAutomationRun._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1126,11 +944,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1156,11 +970,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1173,11 +983,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1203,11 +1009,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1220,11 +1022,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1250,11 +1048,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1267,11 +1061,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1297,11 +1087,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1314,11 +1100,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1344,11 +1126,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetJobRun._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetJobRun._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1361,11 +1139,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1391,11 +1165,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetRelease._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetRelease._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1408,11 +1178,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1438,11 +1204,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetRollout._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetRollout._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1455,11 +1217,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1485,11 +1243,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseGetTarget._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseGetTarget._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1502,11 +1256,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1529,9 +1279,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1542,11 +1290,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseIgnoreJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseIgnoreJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1559,11 +1303,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1589,11 +1329,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListAutomationRuns._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1606,11 +1342,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1636,11 +1368,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListAutomations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListAutomations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1653,11 +1381,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1683,11 +1407,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1700,11 +1420,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1730,11 +1446,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1747,11 +1459,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1777,11 +1485,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListDeployPolicies._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1794,11 +1498,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1824,11 +1524,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListJobRuns._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListJobRuns._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1841,11 +1537,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1871,11 +1563,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListReleases._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListReleases._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1888,11 +1576,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1918,11 +1602,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListRollouts._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListRollouts._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1935,11 +1615,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1965,11 +1641,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseListTargets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseListTargets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1982,11 +1654,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2009,9 +1677,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2022,11 +1688,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseRetryJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseRetryJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2039,11 +1701,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2066,9 +1724,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2079,11 +1735,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseRollbackTarget._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseRollbackTarget._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2096,11 +1748,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2123,9 +1771,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2136,11 +1782,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseTerminateJobRun._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2155,11 +1797,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2182,9 +1820,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2195,11 +1831,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseUpdateAutomation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2214,11 +1846,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2241,9 +1869,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2254,11 +1880,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2273,11 +1895,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2300,9 +1918,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2313,11 +1929,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2332,11 +1944,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2359,9 +1967,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2372,11 +1978,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2391,11 +1993,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2418,9 +2016,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2431,11 +2027,7 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCloudDeployRestTransport._BaseUpdateTarget._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCloudDeployRestTransport._BaseUpdateTarget._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

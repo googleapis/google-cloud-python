@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,11 +310,7 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_reference_list(
-        self,
-    ) -> Callable[
-        [reference_list.GetReferenceListRequest], reference_list.ReferenceList
-    ]:
+    def get_reference_list(self) -> Callable[[reference_list.GetReferenceListRequest], reference_list.ReferenceList]:
         r"""Return a callable for the get reference list method over gRPC.
 
         Gets a single reference list.
@@ -353,12 +334,7 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
         return self._stubs["get_reference_list"]
 
     @property
-    def list_reference_lists(
-        self,
-    ) -> Callable[
-        [reference_list.ListReferenceListsRequest],
-        reference_list.ListReferenceListsResponse,
-    ]:
+    def list_reference_lists(self) -> Callable[[reference_list.ListReferenceListsRequest], reference_list.ListReferenceListsResponse]:
         r"""Return a callable for the list reference lists method over gRPC.
 
         Lists a collection of reference lists.
@@ -382,12 +358,7 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
         return self._stubs["list_reference_lists"]
 
     @property
-    def create_reference_list(
-        self,
-    ) -> Callable[
-        [gcc_reference_list.CreateReferenceListRequest],
-        gcc_reference_list.ReferenceList,
-    ]:
+    def create_reference_list(self) -> Callable[[gcc_reference_list.CreateReferenceListRequest], gcc_reference_list.ReferenceList]:
         r"""Return a callable for the create reference list method over gRPC.
 
         Creates a new reference list.
@@ -411,12 +382,7 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
         return self._stubs["create_reference_list"]
 
     @property
-    def update_reference_list(
-        self,
-    ) -> Callable[
-        [gcc_reference_list.UpdateReferenceListRequest],
-        gcc_reference_list.ReferenceList,
-    ]:
+    def update_reference_list(self) -> Callable[[gcc_reference_list.UpdateReferenceListRequest], gcc_reference_list.ReferenceList]:
         r"""Return a callable for the update reference list method over gRPC.
 
         Updates an existing reference list.
@@ -496,9 +462,7 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,20 +319,13 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_report_configs(
-        self,
-    ) -> Callable[
-        [storageinsights.ListReportConfigsRequest],
-        storageinsights.ListReportConfigsResponse,
-    ]:
+    def list_report_configs(self) -> Callable[[storageinsights.ListReportConfigsRequest], storageinsights.ListReportConfigsResponse]:
         r"""Return a callable for the list report configs method over gRPC.
 
         Lists ReportConfigs in a given project and location.
@@ -371,11 +349,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["list_report_configs"]
 
     @property
-    def get_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.GetReportConfigRequest], storageinsights.ReportConfig
-    ]:
+    def get_report_config(self) -> Callable[[storageinsights.GetReportConfigRequest], storageinsights.ReportConfig]:
         r"""Return a callable for the get report config method over gRPC.
 
         Gets details of a single ReportConfig.
@@ -399,11 +373,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["get_report_config"]
 
     @property
-    def create_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.CreateReportConfigRequest], storageinsights.ReportConfig
-    ]:
+    def create_report_config(self) -> Callable[[storageinsights.CreateReportConfigRequest], storageinsights.ReportConfig]:
         r"""Return a callable for the create report config method over gRPC.
 
         Creates a new ReportConfig in a given project and
@@ -428,11 +398,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["create_report_config"]
 
     @property
-    def update_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.UpdateReportConfigRequest], storageinsights.ReportConfig
-    ]:
+    def update_report_config(self) -> Callable[[storageinsights.UpdateReportConfigRequest], storageinsights.ReportConfig]:
         r"""Return a callable for the update report config method over gRPC.
 
         Updates the parameters of a single ReportConfig.
@@ -456,9 +422,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["update_report_config"]
 
     @property
-    def delete_report_config(
-        self,
-    ) -> Callable[[storageinsights.DeleteReportConfigRequest], empty_pb2.Empty]:
+    def delete_report_config(self) -> Callable[[storageinsights.DeleteReportConfigRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete report config method over gRPC.
 
         Deletes a single ReportConfig.
@@ -482,12 +446,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["delete_report_config"]
 
     @property
-    def list_report_details(
-        self,
-    ) -> Callable[
-        [storageinsights.ListReportDetailsRequest],
-        storageinsights.ListReportDetailsResponse,
-    ]:
+    def list_report_details(self) -> Callable[[storageinsights.ListReportDetailsRequest], storageinsights.ListReportDetailsResponse]:
         r"""Return a callable for the list report details method over gRPC.
 
         Lists ReportDetails in a given project and location.
@@ -511,11 +470,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["list_report_details"]
 
     @property
-    def get_report_detail(
-        self,
-    ) -> Callable[
-        [storageinsights.GetReportDetailRequest], storageinsights.ReportDetail
-    ]:
+    def get_report_detail(self) -> Callable[[storageinsights.GetReportDetailRequest], storageinsights.ReportDetail]:
         r"""Return a callable for the get report detail method over gRPC.
 
         Gets details of a single ReportDetail.
@@ -539,12 +494,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["get_report_detail"]
 
     @property
-    def list_dataset_configs(
-        self,
-    ) -> Callable[
-        [storageinsights.ListDatasetConfigsRequest],
-        storageinsights.ListDatasetConfigsResponse,
-    ]:
+    def list_dataset_configs(self) -> Callable[[storageinsights.ListDatasetConfigsRequest], storageinsights.ListDatasetConfigsResponse]:
         r"""Return a callable for the list dataset configs method over gRPC.
 
         Lists the dataset configurations in a given project
@@ -569,11 +519,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["list_dataset_configs"]
 
     @property
-    def get_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.GetDatasetConfigRequest], storageinsights.DatasetConfig
-    ]:
+    def get_dataset_config(self) -> Callable[[storageinsights.GetDatasetConfigRequest], storageinsights.DatasetConfig]:
         r"""Return a callable for the get dataset config method over gRPC.
 
         Gets the dataset configuration in a given project for
@@ -598,11 +544,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["get_dataset_config"]
 
     @property
-    def create_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.CreateDatasetConfigRequest], operations_pb2.Operation
-    ]:
+    def create_dataset_config(self) -> Callable[[storageinsights.CreateDatasetConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create dataset config method over gRPC.
 
         Creates a dataset configuration in a given project
@@ -627,11 +569,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["create_dataset_config"]
 
     @property
-    def update_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.UpdateDatasetConfigRequest], operations_pb2.Operation
-    ]:
+    def update_dataset_config(self) -> Callable[[storageinsights.UpdateDatasetConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the update dataset config method over gRPC.
 
         Updates a dataset configuration in a given project
@@ -656,11 +594,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["update_dataset_config"]
 
     @property
-    def delete_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.DeleteDatasetConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_dataset_config(self) -> Callable[[storageinsights.DeleteDatasetConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete dataset config method over gRPC.
 
         Deletes a dataset configuration in a given project
@@ -685,9 +619,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["delete_dataset_config"]
 
     @property
-    def link_dataset(
-        self,
-    ) -> Callable[[storageinsights.LinkDatasetRequest], operations_pb2.Operation]:
+    def link_dataset(self) -> Callable[[storageinsights.LinkDatasetRequest], operations_pb2.Operation]:
         r"""Return a callable for the link dataset method over gRPC.
 
         Links a dataset to BigQuery in a given project for a
@@ -712,9 +644,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         return self._stubs["link_dataset"]
 
     @property
-    def unlink_dataset(
-        self,
-    ) -> Callable[[storageinsights.UnlinkDatasetRequest], operations_pb2.Operation]:
+    def unlink_dataset(self) -> Callable[[storageinsights.UnlinkDatasetRequest], operations_pb2.Operation]:
         r"""Return a callable for the unlink dataset method over gRPC.
 
         Unlinks a dataset from BigQuery in a given project
@@ -795,9 +725,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -814,9 +742,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

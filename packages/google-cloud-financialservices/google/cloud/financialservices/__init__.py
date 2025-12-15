@@ -31,9 +31,7 @@ from google.cloud.financialservices_v1.types.backtest_result import (
     ListBacktestResultsResponse,
     UpdateBacktestResultRequest,
 )
-from google.cloud.financialservices_v1.types.bigquery_destination import (
-    BigQueryDestination,
-)
+from google.cloud.financialservices_v1.types.bigquery_destination import BigQueryDestination
 from google.cloud.financialservices_v1.types.dataset import (
     CreateDatasetRequest,
     Dataset,

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import uuid
 
 from google.api_core import exceptions as core_exceptions
@@ -86,49 +75,25 @@ class StorageControlAsyncClient:
     _DEFAULT_UNIVERSE = StorageControlClient._DEFAULT_UNIVERSE
 
     anywhere_cache_path = staticmethod(StorageControlClient.anywhere_cache_path)
-    parse_anywhere_cache_path = staticmethod(
-        StorageControlClient.parse_anywhere_cache_path
-    )
+    parse_anywhere_cache_path = staticmethod(StorageControlClient.parse_anywhere_cache_path)
     folder_path = staticmethod(StorageControlClient.folder_path)
     parse_folder_path = staticmethod(StorageControlClient.parse_folder_path)
-    intelligence_config_path = staticmethod(
-        StorageControlClient.intelligence_config_path
-    )
-    parse_intelligence_config_path = staticmethod(
-        StorageControlClient.parse_intelligence_config_path
-    )
+    intelligence_config_path = staticmethod(StorageControlClient.intelligence_config_path)
+    parse_intelligence_config_path = staticmethod(StorageControlClient.parse_intelligence_config_path)
     managed_folder_path = staticmethod(StorageControlClient.managed_folder_path)
-    parse_managed_folder_path = staticmethod(
-        StorageControlClient.parse_managed_folder_path
-    )
+    parse_managed_folder_path = staticmethod(StorageControlClient.parse_managed_folder_path)
     storage_layout_path = staticmethod(StorageControlClient.storage_layout_path)
-    parse_storage_layout_path = staticmethod(
-        StorageControlClient.parse_storage_layout_path
-    )
-    common_billing_account_path = staticmethod(
-        StorageControlClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        StorageControlClient.parse_common_billing_account_path
-    )
+    parse_storage_layout_path = staticmethod(StorageControlClient.parse_storage_layout_path)
+    common_billing_account_path = staticmethod(StorageControlClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(StorageControlClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(StorageControlClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        StorageControlClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        StorageControlClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        StorageControlClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(StorageControlClient.parse_common_folder_path)
+    common_organization_path = staticmethod(StorageControlClient.common_organization_path)
+    parse_common_organization_path = staticmethod(StorageControlClient.parse_common_organization_path)
     common_project_path = staticmethod(StorageControlClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        StorageControlClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(StorageControlClient.parse_common_project_path)
     common_location_path = staticmethod(StorageControlClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        StorageControlClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(StorageControlClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -164,9 +129,7 @@ class StorageControlAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -233,9 +196,7 @@ class StorageControlAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, StorageControlTransport, Callable[..., StorageControlTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, StorageControlTransport, Callable[..., StorageControlTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -295,20 +256,14 @@ class StorageControlAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.storage.control_v2.StorageControlAsyncClient`.",
                 extra={
                     "serviceName": "google.storage.control.v2.StorageControl",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -411,14 +366,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, folder, folder_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -436,9 +386,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_folder]
 
         header_params = {}
 
@@ -448,9 +396,7 @@ class StorageControlAsyncClient:
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -529,14 +475,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -550,23 +491,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_folder]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -652,14 +587,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -673,23 +603,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_folder]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -781,14 +705,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -802,9 +721,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_folders
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_folders]
 
         header_params = {}
 
@@ -814,9 +731,7 @@ class StorageControlAsyncClient:
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -928,14 +843,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, destination_folder_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -951,23 +861,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.rename_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.rename_folder]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1061,14 +965,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1082,23 +981,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_storage_layout
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_storage_layout]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1119,9 +1012,7 @@ class StorageControlAsyncClient:
 
     async def create_managed_folder(
         self,
-        request: Optional[
-            Union[storage_control.CreateManagedFolderRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.CreateManagedFolderRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         managed_folder: Optional[storage_control.ManagedFolder] = None,
@@ -1204,14 +1095,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, managed_folder, managed_folder_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1229,9 +1115,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_managed_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_managed_folder]
 
         header_params = {}
 
@@ -1241,9 +1125,7 @@ class StorageControlAsyncClient:
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1264,9 +1146,7 @@ class StorageControlAsyncClient:
 
     async def delete_managed_folder(
         self,
-        request: Optional[
-            Union[storage_control.DeleteManagedFolderRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.DeleteManagedFolderRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1321,14 +1201,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1342,23 +1217,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_managed_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_managed_folder]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1437,14 +1306,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1458,23 +1322,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_managed_folder
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_managed_folder]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1495,9 +1353,7 @@ class StorageControlAsyncClient:
 
     async def list_managed_folders(
         self,
-        request: Optional[
-            Union[storage_control.ListManagedFoldersRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.ListManagedFoldersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1566,14 +1422,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1587,9 +1438,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_managed_folders
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_managed_folders]
 
         header_params = {}
 
@@ -1599,9 +1448,7 @@ class StorageControlAsyncClient:
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1633,9 +1480,7 @@ class StorageControlAsyncClient:
 
     async def create_anywhere_cache(
         self,
-        request: Optional[
-            Union[storage_control.CreateAnywhereCacheRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.CreateAnywhereCacheRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         anywhere_cache: Optional[storage_control.AnywhereCache] = None,
@@ -1717,14 +1562,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, anywhere_cache]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1740,9 +1580,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_anywhere_cache
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_anywhere_cache]
 
         header_params = {}
 
@@ -1752,9 +1590,7 @@ class StorageControlAsyncClient:
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1783,9 +1619,7 @@ class StorageControlAsyncClient:
 
     async def update_anywhere_cache(
         self,
-        request: Optional[
-            Union[storage_control.UpdateAnywhereCacheRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.UpdateAnywhereCacheRequest, dict]] = None,
         *,
         anywhere_cache: Optional[storage_control.AnywhereCache] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1873,14 +1707,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [anywhere_cache, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1896,23 +1725,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_anywhere_cache
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_anywhere_cache]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.anywhere_cache.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1941,9 +1764,7 @@ class StorageControlAsyncClient:
 
     async def disable_anywhere_cache(
         self,
-        request: Optional[
-            Union[storage_control.DisableAnywhereCacheRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.DisableAnywhereCacheRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2009,14 +1830,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2030,23 +1846,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.disable_anywhere_cache
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.disable_anywhere_cache]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -2067,9 +1877,7 @@ class StorageControlAsyncClient:
 
     async def pause_anywhere_cache(
         self,
-        request: Optional[
-            Union[storage_control.PauseAnywhereCacheRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.PauseAnywhereCacheRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2131,14 +1939,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2152,23 +1955,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.pause_anywhere_cache
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.pause_anywhere_cache]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -2189,9 +1986,7 @@ class StorageControlAsyncClient:
 
     async def resume_anywhere_cache(
         self,
-        request: Optional[
-            Union[storage_control.ResumeAnywhereCacheRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.ResumeAnywhereCacheRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2253,14 +2048,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2274,23 +2064,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.resume_anywhere_cache
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.resume_anywhere_cache]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -2372,14 +2156,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2393,23 +2172,17 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_anywhere_cache
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_anywhere_cache]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -2430,9 +2203,7 @@ class StorageControlAsyncClient:
 
     async def list_anywhere_caches(
         self,
-        request: Optional[
-            Union[storage_control.ListAnywhereCachesRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.ListAnywhereCachesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2500,14 +2271,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2521,9 +2287,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_anywhere_caches
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_anywhere_caches]
 
         header_params = {}
 
@@ -2533,9 +2297,7 @@ class StorageControlAsyncClient:
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -2567,9 +2329,7 @@ class StorageControlAsyncClient:
 
     async def get_project_intelligence_config(
         self,
-        request: Optional[
-            Union[storage_control.GetProjectIntelligenceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.GetProjectIntelligenceConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2643,14 +2403,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2664,15 +2419,11 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_project_intelligence_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_project_intelligence_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2690,9 +2441,7 @@ class StorageControlAsyncClient:
 
     async def update_project_intelligence_config(
         self,
-        request: Optional[
-            Union[storage_control.UpdateProjectIntelligenceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.UpdateProjectIntelligenceConfigRequest, dict]] = None,
         *,
         intelligence_config: Optional[storage_control.IntelligenceConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2772,20 +2521,13 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intelligence_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, storage_control.UpdateProjectIntelligenceConfigRequest
-        ):
+        if not isinstance(request, storage_control.UpdateProjectIntelligenceConfigRequest):
             request = storage_control.UpdateProjectIntelligenceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2797,17 +2539,11 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_project_intelligence_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_project_intelligence_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("intelligence_config.name", request.intelligence_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("intelligence_config.name", request.intelligence_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2825,9 +2561,7 @@ class StorageControlAsyncClient:
 
     async def get_folder_intelligence_config(
         self,
-        request: Optional[
-            Union[storage_control.GetFolderIntelligenceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.GetFolderIntelligenceConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2901,14 +2635,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2922,15 +2651,11 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_folder_intelligence_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_folder_intelligence_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2948,9 +2673,7 @@ class StorageControlAsyncClient:
 
     async def update_folder_intelligence_config(
         self,
-        request: Optional[
-            Union[storage_control.UpdateFolderIntelligenceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.UpdateFolderIntelligenceConfigRequest, dict]] = None,
         *,
         intelligence_config: Optional[storage_control.IntelligenceConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3030,20 +2753,13 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intelligence_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, storage_control.UpdateFolderIntelligenceConfigRequest
-        ):
+        if not isinstance(request, storage_control.UpdateFolderIntelligenceConfigRequest):
             request = storage_control.UpdateFolderIntelligenceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -3055,17 +2771,11 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_folder_intelligence_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_folder_intelligence_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("intelligence_config.name", request.intelligence_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("intelligence_config.name", request.intelligence_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3083,9 +2793,7 @@ class StorageControlAsyncClient:
 
     async def get_organization_intelligence_config(
         self,
-        request: Optional[
-            Union[storage_control.GetOrganizationIntelligenceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.GetOrganizationIntelligenceConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3159,20 +2867,13 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, storage_control.GetOrganizationIntelligenceConfigRequest
-        ):
+        if not isinstance(request, storage_control.GetOrganizationIntelligenceConfigRequest):
             request = storage_control.GetOrganizationIntelligenceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -3182,15 +2883,11 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_organization_intelligence_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_organization_intelligence_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3208,9 +2905,7 @@ class StorageControlAsyncClient:
 
     async def update_organization_intelligence_config(
         self,
-        request: Optional[
-            Union[storage_control.UpdateOrganizationIntelligenceConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[storage_control.UpdateOrganizationIntelligenceConfigRequest, dict]] = None,
         *,
         intelligence_config: Optional[storage_control.IntelligenceConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3290,23 +2985,14 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intelligence_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, storage_control.UpdateOrganizationIntelligenceConfigRequest
-        ):
-            request = storage_control.UpdateOrganizationIntelligenceConfigRequest(
-                request
-            )
+        if not isinstance(request, storage_control.UpdateOrganizationIntelligenceConfigRequest):
+            request = storage_control.UpdateOrganizationIntelligenceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3317,17 +3003,11 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_organization_intelligence_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_organization_intelligence_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("intelligence_config.name", request.intelligence_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("intelligence_config.name", request.intelligence_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3443,14 +3123,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -3461,9 +3136,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_iam_policy]
 
         header_params = {}
 
@@ -3472,17 +3145,13 @@ class StorageControlAsyncClient:
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.resource)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3598,14 +3267,9 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -3616,9 +3280,7 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_iam_policy]
 
         header_params = {}
 
@@ -3627,17 +3289,13 @@ class StorageControlAsyncClient:
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.resource)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3737,29 +3395,20 @@ class StorageControlAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource, permissions]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
-            request = iam_policy_pb2.TestIamPermissionsRequest(
-                resource=resource, permissions=permissions
-            )
+            request = iam_policy_pb2.TestIamPermissionsRequest(resource=resource, permissions=permissions)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         header_params = {}
 
@@ -3768,24 +3417,18 @@ class StorageControlAsyncClient:
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)/objects(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)/objects(?:/.*)?$")
         regex_match = routing_param_regex.match(request.resource)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
-        routing_param_regex = re.compile(
-            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)/managedFolders(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^(?P<bucket>projects/[^/]+/buckets/[^/]+)/managedFolders(?:/.*)?$")
         regex_match = routing_param_regex.match(request.resource)
         if regex_match and regex_match.group("bucket"):
             header_params["bucket"] = regex_match.group("bucket")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3808,9 +3451,7 @@ class StorageControlAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

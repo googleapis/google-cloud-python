@@ -332,16 +332,12 @@ class FetchReportResultRowsResponse(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    date_ranges: MutableSequence[
-        report_definition.ReportDefinition.DateRange.FixedDateRange
-    ] = proto.RepeatedField(
+    date_ranges: MutableSequence[report_definition.ReportDefinition.DateRange.FixedDateRange] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=report_definition.ReportDefinition.DateRange.FixedDateRange,
     )
-    comparison_date_ranges: MutableSequence[
-        report_definition.ReportDefinition.DateRange.FixedDateRange
-    ] = proto.RepeatedField(
+    comparison_date_ranges: MutableSequence[report_definition.ReportDefinition.DateRange.FixedDateRange] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=report_definition.ReportDefinition.DateRange.FixedDateRange,

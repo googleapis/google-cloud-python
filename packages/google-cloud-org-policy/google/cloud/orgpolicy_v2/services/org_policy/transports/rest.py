@@ -168,12 +168,8 @@ class OrgPolicyRestInterceptor:
     """
 
     def pre_create_custom_constraint(
-        self,
-        request: orgpolicy.CreateCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.CreateCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.CreateCustomConstraintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.CreateCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +177,7 @@ class OrgPolicyRestInterceptor:
         """
         return request, metadata
 
-    def post_create_custom_constraint(
-        self, response: constraint.CustomConstraint
-    ) -> constraint.CustomConstraint:
+    def post_create_custom_constraint(self, response: constraint.CustomConstraint) -> constraint.CustomConstraint:
         """Post-rpc interceptor for create_custom_constraint
 
         DEPRECATED. Please use the `post_create_custom_constraint_with_metadata`
@@ -197,9 +191,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_create_custom_constraint_with_metadata(
-        self,
-        response: constraint.CustomConstraint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: constraint.CustomConstraint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[constraint.CustomConstraint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_custom_constraint
 
@@ -216,9 +208,7 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_create_policy(
-        self,
-        request: orgpolicy.CreatePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: orgpolicy.CreatePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.CreatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_policy
 
@@ -241,9 +231,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_create_policy_with_metadata(
-        self,
-        response: orgpolicy.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: orgpolicy.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_policy
 
@@ -260,12 +248,8 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_delete_custom_constraint(
-        self,
-        request: orgpolicy.DeleteCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.DeleteCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.DeleteCustomConstraintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.DeleteCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -274,9 +258,7 @@ class OrgPolicyRestInterceptor:
         return request, metadata
 
     def pre_delete_policy(
-        self,
-        request: orgpolicy.DeletePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: orgpolicy.DeletePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.DeletePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_policy
 
@@ -286,12 +268,8 @@ class OrgPolicyRestInterceptor:
         return request, metadata
 
     def pre_get_custom_constraint(
-        self,
-        request: orgpolicy.GetCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.GetCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.GetCustomConstraintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.GetCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +277,7 @@ class OrgPolicyRestInterceptor:
         """
         return request, metadata
 
-    def post_get_custom_constraint(
-        self, response: constraint.CustomConstraint
-    ) -> constraint.CustomConstraint:
+    def post_get_custom_constraint(self, response: constraint.CustomConstraint) -> constraint.CustomConstraint:
         """Post-rpc interceptor for get_custom_constraint
 
         DEPRECATED. Please use the `post_get_custom_constraint_with_metadata`
@@ -315,9 +291,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_get_custom_constraint_with_metadata(
-        self,
-        response: constraint.CustomConstraint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: constraint.CustomConstraint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[constraint.CustomConstraint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_custom_constraint
 
@@ -334,12 +308,8 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_get_effective_policy(
-        self,
-        request: orgpolicy.GetEffectivePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.GetEffectivePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.GetEffectivePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.GetEffectivePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_effective_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -361,9 +331,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_get_effective_policy_with_metadata(
-        self,
-        response: orgpolicy.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: orgpolicy.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_effective_policy
 
@@ -380,9 +348,7 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_get_policy(
-        self,
-        request: orgpolicy.GetPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: orgpolicy.GetPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.GetPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_policy
 
@@ -405,9 +371,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_get_policy_with_metadata(
-        self,
-        response: orgpolicy.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: orgpolicy.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_policy
 
@@ -424,12 +388,8 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_list_constraints(
-        self,
-        request: orgpolicy.ListConstraintsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.ListConstraintsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.ListConstraintsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.ListConstraintsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_constraints
 
         Override in a subclass to manipulate the request or metadata
@@ -437,9 +397,7 @@ class OrgPolicyRestInterceptor:
         """
         return request, metadata
 
-    def post_list_constraints(
-        self, response: orgpolicy.ListConstraintsResponse
-    ) -> orgpolicy.ListConstraintsResponse:
+    def post_list_constraints(self, response: orgpolicy.ListConstraintsResponse) -> orgpolicy.ListConstraintsResponse:
         """Post-rpc interceptor for list_constraints
 
         DEPRECATED. Please use the `post_list_constraints_with_metadata`
@@ -453,12 +411,8 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_list_constraints_with_metadata(
-        self,
-        response: orgpolicy.ListConstraintsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.ListConstraintsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: orgpolicy.ListConstraintsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.ListConstraintsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_constraints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -474,12 +428,8 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_list_custom_constraints(
-        self,
-        request: orgpolicy.ListCustomConstraintsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.ListCustomConstraintsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.ListCustomConstraintsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.ListCustomConstraintsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_custom_constraints
 
         Override in a subclass to manipulate the request or metadata
@@ -487,9 +437,7 @@ class OrgPolicyRestInterceptor:
         """
         return request, metadata
 
-    def post_list_custom_constraints(
-        self, response: orgpolicy.ListCustomConstraintsResponse
-    ) -> orgpolicy.ListCustomConstraintsResponse:
+    def post_list_custom_constraints(self, response: orgpolicy.ListCustomConstraintsResponse) -> orgpolicy.ListCustomConstraintsResponse:
         """Post-rpc interceptor for list_custom_constraints
 
         DEPRECATED. Please use the `post_list_custom_constraints_with_metadata`
@@ -503,12 +451,8 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_list_custom_constraints_with_metadata(
-        self,
-        response: orgpolicy.ListCustomConstraintsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.ListCustomConstraintsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: orgpolicy.ListCustomConstraintsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.ListCustomConstraintsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_custom_constraints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -524,9 +468,7 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_list_policies(
-        self,
-        request: orgpolicy.ListPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: orgpolicy.ListPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.ListPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_policies
 
@@ -535,9 +477,7 @@ class OrgPolicyRestInterceptor:
         """
         return request, metadata
 
-    def post_list_policies(
-        self, response: orgpolicy.ListPoliciesResponse
-    ) -> orgpolicy.ListPoliciesResponse:
+    def post_list_policies(self, response: orgpolicy.ListPoliciesResponse) -> orgpolicy.ListPoliciesResponse:
         """Post-rpc interceptor for list_policies
 
         DEPRECATED. Please use the `post_list_policies_with_metadata`
@@ -551,9 +491,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_list_policies_with_metadata(
-        self,
-        response: orgpolicy.ListPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: orgpolicy.ListPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.ListPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_policies
 
@@ -570,12 +508,8 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_update_custom_constraint(
-        self,
-        request: orgpolicy.UpdateCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        orgpolicy.UpdateCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: orgpolicy.UpdateCustomConstraintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[orgpolicy.UpdateCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -583,9 +517,7 @@ class OrgPolicyRestInterceptor:
         """
         return request, metadata
 
-    def post_update_custom_constraint(
-        self, response: constraint.CustomConstraint
-    ) -> constraint.CustomConstraint:
+    def post_update_custom_constraint(self, response: constraint.CustomConstraint) -> constraint.CustomConstraint:
         """Post-rpc interceptor for update_custom_constraint
 
         DEPRECATED. Please use the `post_update_custom_constraint_with_metadata`
@@ -599,9 +531,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_update_custom_constraint_with_metadata(
-        self,
-        response: constraint.CustomConstraint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: constraint.CustomConstraint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[constraint.CustomConstraint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_custom_constraint
 
@@ -618,9 +548,7 @@ class OrgPolicyRestInterceptor:
         return response, metadata
 
     def pre_update_policy(
-        self,
-        request: orgpolicy.UpdatePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: orgpolicy.UpdatePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.UpdatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_policy
 
@@ -643,9 +571,7 @@ class OrgPolicyRestInterceptor:
         return response
 
     def post_update_policy_with_metadata(
-        self,
-        response: orgpolicy.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: orgpolicy.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_policy
 
@@ -762,30 +688,18 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OrgPolicyRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateCustomConstraint(
-        _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint, OrgPolicyRestStub
-    ):
+    class _CreateCustomConstraint(_BaseOrgPolicyRestTransport._BaseCreateCustomConstraint, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.CreateCustomConstraint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -835,32 +749,18 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_custom_constraint(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_custom_constraint(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_transcoded_request(http_options, request)
 
-            body = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -884,13 +784,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._CreateCustomConstraint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -906,12 +800,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_create_custom_constraint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_custom_constraint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_custom_constraint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = constraint.CustomConstraint.to_json(response)
                 except:
@@ -932,22 +822,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _CreatePolicy(
-        _BaseOrgPolicyRestTransport._BaseCreatePolicy, OrgPolicyRestStub
-    ):
+    class _CreatePolicy(_BaseOrgPolicyRestTransport._BaseCreatePolicy, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.CreatePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -993,34 +873,18 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_policy(request, metadata)
-            transcoded_request = (
-                _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1044,13 +908,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._CreatePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1066,12 +924,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_create_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = orgpolicy.Policy.to_json(response)
                 except:
@@ -1092,22 +946,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _DeleteCustomConstraint(
-        _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint, OrgPolicyRestStub
-    ):
+    class _DeleteCustomConstraint(_BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.DeleteCustomConstraint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1144,28 +988,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_custom_constraint(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_custom_constraint(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1189,12 +1021,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._DeleteCustomConstraint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1202,22 +1029,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeletePolicy(
-        _BaseOrgPolicyRestTransport._BaseDeletePolicy, OrgPolicyRestStub
-    ):
+    class _DeletePolicy(_BaseOrgPolicyRestTransport._BaseDeletePolicy, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.DeletePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1254,30 +1071,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_policy(request, metadata)
-            transcoded_request = (
-                _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1301,12 +1104,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._DeletePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1314,22 +1112,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetCustomConstraint(
-        _BaseOrgPolicyRestTransport._BaseGetCustomConstraint, OrgPolicyRestStub
-    ):
+    class _GetCustomConstraint(_BaseOrgPolicyRestTransport._BaseGetCustomConstraint, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.GetCustomConstraint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1378,28 +1166,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_custom_constraint(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_custom_constraint(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1423,12 +1199,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._GetCustomConstraint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1444,12 +1215,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_get_custom_constraint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_custom_constraint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_custom_constraint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = constraint.CustomConstraint.to_json(response)
                 except:
@@ -1470,22 +1237,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _GetEffectivePolicy(
-        _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy, OrgPolicyRestStub
-    ):
+    class _GetEffectivePolicy(_BaseOrgPolicyRestTransport._BaseGetEffectivePolicy, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.GetEffectivePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1530,28 +1287,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_effective_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_effective_policy(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1575,12 +1320,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._GetEffectivePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1596,12 +1336,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_get_effective_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_effective_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_effective_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = orgpolicy.Policy.to_json(response)
                 except:
@@ -1627,15 +1363,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             return hash("OrgPolicyRestTransport.GetPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1679,30 +1407,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseGetPolicy._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseGetPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
-            transcoded_request = (
-                _BaseOrgPolicyRestTransport._BaseGetPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrgPolicyRestTransport._BaseGetPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseGetPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1725,14 +1439,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
 
             # Send the request
-            response = OrgPolicyRestTransport._GetPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = OrgPolicyRestTransport._GetPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1747,12 +1454,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_get_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = orgpolicy.Policy.to_json(response)
                 except:
@@ -1773,22 +1476,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _ListConstraints(
-        _BaseOrgPolicyRestTransport._BaseListConstraints, OrgPolicyRestStub
-    ):
+    class _ListConstraints(_BaseOrgPolicyRestTransport._BaseListConstraints, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.ListConstraints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1832,30 +1525,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseListConstraints._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseListConstraints._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_constraints(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseListConstraints._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_constraints(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseListConstraints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrgPolicyRestTransport._BaseListConstraints._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseListConstraints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1879,12 +1558,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._ListConstraints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1900,16 +1574,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_list_constraints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_constraints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_constraints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = orgpolicy.ListConstraintsResponse.to_json(
-                        response
-                    )
+                    response_payload = orgpolicy.ListConstraintsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1928,22 +1596,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _ListCustomConstraints(
-        _BaseOrgPolicyRestTransport._BaseListCustomConstraints, OrgPolicyRestStub
-    ):
+    class _ListCustomConstraints(_BaseOrgPolicyRestTransport._BaseListCustomConstraints, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.ListCustomConstraints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1988,28 +1646,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_custom_constraints(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_custom_constraints(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2033,12 +1679,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._ListCustomConstraints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2054,16 +1695,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_list_custom_constraints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_custom_constraints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_custom_constraints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = orgpolicy.ListCustomConstraintsResponse.to_json(
-                        response
-                    )
+                    response_payload = orgpolicy.ListCustomConstraintsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2082,22 +1717,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _ListPolicies(
-        _BaseOrgPolicyRestTransport._BaseListPolicies, OrgPolicyRestStub
-    ):
+    class _ListPolicies(_BaseOrgPolicyRestTransport._BaseListPolicies, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.ListPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2142,30 +1767,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseListPolicies._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseListPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_policies(request, metadata)
-            transcoded_request = (
-                _BaseOrgPolicyRestTransport._BaseListPolicies._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseListPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrgPolicyRestTransport._BaseListPolicies._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseListPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2189,12 +1800,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._ListPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2210,12 +1816,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_list_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = orgpolicy.ListPoliciesResponse.to_json(response)
                 except:
@@ -2236,22 +1838,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _UpdateCustomConstraint(
-        _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint, OrgPolicyRestStub
-    ):
+    class _UpdateCustomConstraint(_BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.UpdateCustomConstraint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2301,32 +1893,18 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_custom_constraint(
-                request, metadata
-            )
-            transcoded_request = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_custom_constraint(request, metadata)
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_transcoded_request(http_options, request)
 
-            body = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2350,13 +1928,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._UpdateCustomConstraint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2372,12 +1944,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_update_custom_constraint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_custom_constraint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_custom_constraint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = constraint.CustomConstraint.to_json(response)
                 except:
@@ -2398,22 +1966,12 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 )
             return resp
 
-    class _UpdatePolicy(
-        _BaseOrgPolicyRestTransport._BaseUpdatePolicy, OrgPolicyRestStub
-    ):
+    class _UpdatePolicy(_BaseOrgPolicyRestTransport._BaseUpdatePolicy, OrgPolicyRestStub):
         def __hash__(self):
             return hash("OrgPolicyRestTransport.UpdatePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2459,34 +2017,18 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_http_options()
-            )
+            http_options = _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_policy(request, metadata)
-            transcoded_request = (
-                _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2510,13 +2052,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             # Send the request
             response = OrgPolicyRestTransport._UpdatePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2532,12 +2068,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
 
             resp = self._interceptor.post_update_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = orgpolicy.Policy.to_json(response)
                 except:
@@ -2559,51 +2091,37 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             return resp
 
     @property
-    def create_custom_constraint(
-        self,
-    ) -> Callable[
-        [orgpolicy.CreateCustomConstraintRequest], constraint.CustomConstraint
-    ]:
+    def create_custom_constraint(self) -> Callable[[orgpolicy.CreateCustomConstraintRequest], constraint.CustomConstraint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_policy(
-        self,
-    ) -> Callable[[orgpolicy.CreatePolicyRequest], orgpolicy.Policy]:
+    def create_policy(self) -> Callable[[orgpolicy.CreatePolicyRequest], orgpolicy.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_custom_constraint(
-        self,
-    ) -> Callable[[orgpolicy.DeleteCustomConstraintRequest], empty_pb2.Empty]:
+    def delete_custom_constraint(self) -> Callable[[orgpolicy.DeleteCustomConstraintRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_policy(
-        self,
-    ) -> Callable[[orgpolicy.DeletePolicyRequest], empty_pb2.Empty]:
+    def delete_policy(self) -> Callable[[orgpolicy.DeletePolicyRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_custom_constraint(
-        self,
-    ) -> Callable[[orgpolicy.GetCustomConstraintRequest], constraint.CustomConstraint]:
+    def get_custom_constraint(self) -> Callable[[orgpolicy.GetCustomConstraintRequest], constraint.CustomConstraint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_effective_policy(
-        self,
-    ) -> Callable[[orgpolicy.GetEffectivePolicyRequest], orgpolicy.Policy]:
+    def get_effective_policy(self) -> Callable[[orgpolicy.GetEffectivePolicyRequest], orgpolicy.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEffectivePolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -2615,48 +2133,31 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
         return self._GetPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_constraints(
-        self,
-    ) -> Callable[
-        [orgpolicy.ListConstraintsRequest], orgpolicy.ListConstraintsResponse
-    ]:
+    def list_constraints(self) -> Callable[[orgpolicy.ListConstraintsRequest], orgpolicy.ListConstraintsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConstraints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_custom_constraints(
-        self,
-    ) -> Callable[
-        [orgpolicy.ListCustomConstraintsRequest],
-        orgpolicy.ListCustomConstraintsResponse,
-    ]:
+    def list_custom_constraints(self) -> Callable[[orgpolicy.ListCustomConstraintsRequest], orgpolicy.ListCustomConstraintsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomConstraints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_policies(
-        self,
-    ) -> Callable[[orgpolicy.ListPoliciesRequest], orgpolicy.ListPoliciesResponse]:
+    def list_policies(self) -> Callable[[orgpolicy.ListPoliciesRequest], orgpolicy.ListPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_custom_constraint(
-        self,
-    ) -> Callable[
-        [orgpolicy.UpdateCustomConstraintRequest], constraint.CustomConstraint
-    ]:
+    def update_custom_constraint(self) -> Callable[[orgpolicy.UpdateCustomConstraintRequest], constraint.CustomConstraint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_policy(
-        self,
-    ) -> Callable[[orgpolicy.UpdatePolicyRequest], orgpolicy.Policy]:
+    def update_policy(self) -> Callable[[orgpolicy.UpdatePolicyRequest], orgpolicy.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePolicy(self._session, self._host, self._interceptor)  # type: ignore

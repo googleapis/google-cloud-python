@@ -143,13 +143,8 @@ class PublicDelegatedPrefixesRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListPublicDelegatedPrefixesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListPublicDelegatedPrefixesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListPublicDelegatedPrefixesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListPublicDelegatedPrefixesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +152,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.PublicDelegatedPrefixAggregatedList
-    ) -> compute.PublicDelegatedPrefixAggregatedList:
+    def post_aggregated_list(self, response: compute.PublicDelegatedPrefixAggregatedList) -> compute.PublicDelegatedPrefixAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -173,13 +166,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.PublicDelegatedPrefixAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PublicDelegatedPrefixAggregatedList,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.PublicDelegatedPrefixAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PublicDelegatedPrefixAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -195,13 +183,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_announce(
-        self,
-        request: compute.AnnouncePublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AnnouncePublicDelegatedPrefixeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AnnouncePublicDelegatedPrefixeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AnnouncePublicDelegatedPrefixeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for announce
 
         Override in a subclass to manipulate the request or metadata
@@ -223,9 +206,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_announce_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for announce
 
@@ -242,13 +223,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeletePublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeletePublicDelegatedPrefixeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeletePublicDelegatedPrefixeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeletePublicDelegatedPrefixeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -270,9 +246,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -289,13 +263,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetPublicDelegatedPrefixeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetPublicDelegatedPrefixeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetPublicDelegatedPrefixeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -303,9 +272,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.PublicDelegatedPrefix
-    ) -> compute.PublicDelegatedPrefix:
+    def post_get(self, response: compute.PublicDelegatedPrefix) -> compute.PublicDelegatedPrefix:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -319,9 +286,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.PublicDelegatedPrefix,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.PublicDelegatedPrefix, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PublicDelegatedPrefix, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -338,13 +303,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertPublicDelegatedPrefixeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertPublicDelegatedPrefixeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertPublicDelegatedPrefixeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +326,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -385,13 +343,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListPublicDelegatedPrefixesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListPublicDelegatedPrefixesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListPublicDelegatedPrefixesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListPublicDelegatedPrefixesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +352,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.PublicDelegatedPrefixList
-    ) -> compute.PublicDelegatedPrefixList:
+    def post_list(self, response: compute.PublicDelegatedPrefixList) -> compute.PublicDelegatedPrefixList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -415,12 +366,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.PublicDelegatedPrefixList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PublicDelegatedPrefixList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.PublicDelegatedPrefixList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PublicDelegatedPrefixList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -436,13 +383,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchPublicDelegatedPrefixeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchPublicDelegatedPrefixeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchPublicDelegatedPrefixeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -464,9 +406,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -483,13 +423,8 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response, metadata
 
     def pre_withdraw(
-        self,
-        request: compute.WithdrawPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.WithdrawPublicDelegatedPrefixeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.WithdrawPublicDelegatedPrefixeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.WithdrawPublicDelegatedPrefixeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for withdraw
 
         Override in a subclass to manipulate the request or metadata
@@ -511,9 +446,7 @@ class PublicDelegatedPrefixesRestInterceptor:
         return response
 
     def post_withdraw_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for withdraw
 
@@ -613,31 +546,18 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PublicDelegatedPrefixesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _AggregatedList(_BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -678,26 +598,16 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -720,15 +630,8 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
 
             # Send the request
-            response = (
-                PublicDelegatedPrefixesRestTransport._AggregatedList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PublicDelegatedPrefixesRestTransport._AggregatedList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -744,16 +647,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.PublicDelegatedPrefixAggregatedList.to_json(response)
-                    )
+                    response_payload = compute.PublicDelegatedPrefixAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -772,23 +669,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _Announce(
-        _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _Announce(_BasePublicDelegatedPrefixesRestTransport._BaseAnnounce, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.Announce")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -846,26 +732,16 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_http_options()
 
             request, metadata = self._interceptor.pre_announce(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -889,12 +765,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Announce._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -910,12 +781,8 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             resp = self._interceptor.post_announce(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_announce_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_announce_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -936,23 +803,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _Delete(
-        _BasePublicDelegatedPrefixesRestTransport._BaseDelete,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _Delete(_BasePublicDelegatedPrefixesRestTransport._BaseDelete, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1010,26 +866,16 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1053,12 +899,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1074,12 +915,8 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1100,23 +937,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _Get(
-        _BasePublicDelegatedPrefixesRestTransport._BaseGet,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _Get(_BasePublicDelegatedPrefixesRestTransport._BaseGet, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1166,26 +992,16 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1209,12 +1025,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1231,9 +1042,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.PublicDelegatedPrefix.to_json(response)
                 except:
@@ -1254,23 +1063,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _Insert(
-        _BasePublicDelegatedPrefixesRestTransport._BaseInsert,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _Insert(_BasePublicDelegatedPrefixesRestTransport._BaseInsert, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1329,30 +1127,18 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1376,13 +1162,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1398,12 +1178,8 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1424,23 +1200,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _List(
-        _BasePublicDelegatedPrefixesRestTransport._BaseList,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _List(_BasePublicDelegatedPrefixesRestTransport._BaseList, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1481,26 +1246,16 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1524,12 +1279,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1546,13 +1296,9 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.PublicDelegatedPrefixList.to_json(
-                        response
-                    )
+                    response_payload = compute.PublicDelegatedPrefixList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1571,23 +1317,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _Patch(
-        _BasePublicDelegatedPrefixesRestTransport._BasePatch,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _Patch(_BasePublicDelegatedPrefixesRestTransport._BasePatch, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1646,30 +1381,18 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1693,13 +1416,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1715,12 +1432,8 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1741,23 +1454,12 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 )
             return resp
 
-    class _Withdraw(
-        _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw,
-        PublicDelegatedPrefixesRestStub,
-    ):
+    class _Withdraw(_BasePublicDelegatedPrefixesRestTransport._BaseWithdraw, PublicDelegatedPrefixesRestStub):
         def __hash__(self):
             return hash("PublicDelegatedPrefixesRestTransport.Withdraw")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1815,26 +1517,16 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             """
 
-            http_options = (
-                _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_http_options()
-            )
+            http_options = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_http_options()
 
             request, metadata = self._interceptor.pre_withdraw(request, metadata)
-            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1858,12 +1550,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Withdraw._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1879,12 +1566,8 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
 
             resp = self._interceptor.post_withdraw(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_withdraw_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_withdraw_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1906,72 +1589,49 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListPublicDelegatedPrefixesRequest],
-        compute.PublicDelegatedPrefixAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListPublicDelegatedPrefixesRequest], compute.PublicDelegatedPrefixAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def announce(
-        self,
-    ) -> Callable[[compute.AnnouncePublicDelegatedPrefixeRequest], compute.Operation]:
+    def announce(self) -> Callable[[compute.AnnouncePublicDelegatedPrefixeRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Announce(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeletePublicDelegatedPrefixeRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeletePublicDelegatedPrefixeRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetPublicDelegatedPrefixeRequest], compute.PublicDelegatedPrefix
-    ]:
+    def get(self) -> Callable[[compute.GetPublicDelegatedPrefixeRequest], compute.PublicDelegatedPrefix]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertPublicDelegatedPrefixeRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertPublicDelegatedPrefixeRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListPublicDelegatedPrefixesRequest], compute.PublicDelegatedPrefixList
-    ]:
+    def list(self) -> Callable[[compute.ListPublicDelegatedPrefixesRequest], compute.PublicDelegatedPrefixList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchPublicDelegatedPrefixeRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchPublicDelegatedPrefixeRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def withdraw(
-        self,
-    ) -> Callable[[compute.WithdrawPublicDelegatedPrefixeRequest], compute.Operation]:
+    def withdraw(self) -> Callable[[compute.WithdrawPublicDelegatedPrefixeRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Withdraw(self._session, self._host, self._interceptor)  # type: ignore

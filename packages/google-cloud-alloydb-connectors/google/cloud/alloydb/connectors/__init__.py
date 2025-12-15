@@ -18,10 +18,7 @@ from google.cloud.alloydb.connectors import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.alloydb.connectors_v1.types.resources import (
-    MetadataExchangeRequest,
-    MetadataExchangeResponse,
-)
+from google.cloud.alloydb.connectors_v1.types.resources import MetadataExchangeRequest, MetadataExchangeResponse
 
 __all__ = (
     "MetadataExchangeRequest",

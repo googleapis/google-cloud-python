@@ -33,9 +33,7 @@ from google.cloud.documentai_v1.types import processor
 from google.cloud.documentai_v1.types import processor as gcd_processor
 from google.cloud.documentai_v1.types import processor_type
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class DocumentProcessorServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -325,20 +315,14 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_processor_service.ProcessRequest],
-        Union[
-            document_processor_service.ProcessResponse,
-            Awaitable[document_processor_service.ProcessResponse],
-        ],
+        Union[document_processor_service.ProcessResponse, Awaitable[document_processor_service.ProcessResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def batch_process_documents(
         self,
-    ) -> Callable[
-        [document_processor_service.BatchProcessRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.BatchProcessRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -346,10 +330,7 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_processor_service.FetchProcessorTypesRequest],
-        Union[
-            document_processor_service.FetchProcessorTypesResponse,
-            Awaitable[document_processor_service.FetchProcessorTypesResponse],
-        ],
+        Union[document_processor_service.FetchProcessorTypesResponse, Awaitable[document_processor_service.FetchProcessorTypesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -358,20 +339,14 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_processor_service.ListProcessorTypesRequest],
-        Union[
-            document_processor_service.ListProcessorTypesResponse,
-            Awaitable[document_processor_service.ListProcessorTypesResponse],
-        ],
+        Union[document_processor_service.ListProcessorTypesResponse, Awaitable[document_processor_service.ListProcessorTypesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_processor_type(
         self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorTypeRequest],
-        Union[processor_type.ProcessorType, Awaitable[processor_type.ProcessorType]],
-    ]:
+    ) -> Callable[[document_processor_service.GetProcessorTypeRequest], Union[processor_type.ProcessorType, Awaitable[processor_type.ProcessorType]]]:
         raise NotImplementedError()
 
     @property
@@ -379,38 +354,24 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_processor_service.ListProcessorsRequest],
-        Union[
-            document_processor_service.ListProcessorsResponse,
-            Awaitable[document_processor_service.ListProcessorsResponse],
-        ],
+        Union[document_processor_service.ListProcessorsResponse, Awaitable[document_processor_service.ListProcessorsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorRequest],
-        Union[processor.Processor, Awaitable[processor.Processor]],
-    ]:
+    def get_processor(self) -> Callable[[document_processor_service.GetProcessorRequest], Union[processor.Processor, Awaitable[processor.Processor]]]:
         raise NotImplementedError()
 
     @property
     def train_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.TrainProcessorVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.TrainProcessorVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorVersionRequest],
-        Union[processor.ProcessorVersion, Awaitable[processor.ProcessorVersion]],
-    ]:
+    ) -> Callable[[document_processor_service.GetProcessorVersionRequest], Union[processor.ProcessorVersion, Awaitable[processor.ProcessorVersion]]]:
         raise NotImplementedError()
 
     @property
@@ -418,110 +379,76 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_processor_service.ListProcessorVersionsRequest],
-        Union[
-            document_processor_service.ListProcessorVersionsResponse,
-            Awaitable[document_processor_service.ListProcessorVersionsResponse],
-        ],
+        Union[document_processor_service.ListProcessorVersionsResponse, Awaitable[document_processor_service.ListProcessorVersionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.DeleteProcessorVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.DeleteProcessorVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def deploy_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.DeployProcessorVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.DeployProcessorVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undeploy_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.UndeployProcessorVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.UndeployProcessorVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_processor(
         self,
-    ) -> Callable[
-        [document_processor_service.CreateProcessorRequest],
-        Union[gcd_processor.Processor, Awaitable[gcd_processor.Processor]],
-    ]:
+    ) -> Callable[[document_processor_service.CreateProcessorRequest], Union[gcd_processor.Processor, Awaitable[gcd_processor.Processor]]]:
         raise NotImplementedError()
 
     @property
     def delete_processor(
         self,
-    ) -> Callable[
-        [document_processor_service.DeleteProcessorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.DeleteProcessorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def enable_processor(
         self,
-    ) -> Callable[
-        [document_processor_service.EnableProcessorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.EnableProcessorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def disable_processor(
         self,
-    ) -> Callable[
-        [document_processor_service.DisableProcessorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.DisableProcessorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_default_processor_version(
         self,
     ) -> Callable[
-        [document_processor_service.SetDefaultProcessorVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [document_processor_service.SetDefaultProcessorVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
     @property
     def review_document(
         self,
-    ) -> Callable[
-        [document_processor_service.ReviewDocumentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.ReviewDocumentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def evaluate_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.EvaluateProcessorVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[document_processor_service.EvaluateProcessorVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_evaluation(
         self,
-    ) -> Callable[
-        [document_processor_service.GetEvaluationRequest],
-        Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]],
-    ]:
+    ) -> Callable[[document_processor_service.GetEvaluationRequest], Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]]]:
         raise NotImplementedError()
 
     @property
@@ -529,10 +456,7 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_processor_service.ListEvaluationsRequest],
-        Union[
-            document_processor_service.ListEvaluationsResponse,
-            Awaitable[document_processor_service.ListEvaluationsResponse],
-        ],
+        Union[document_processor_service.ListEvaluationsResponse, Awaitable[document_processor_service.ListEvaluationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -541,20 +465,14 @@ class DocumentProcessorServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -566,22 +484,13 @@ class DocumentProcessorServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

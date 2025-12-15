@@ -22,9 +22,7 @@ from .grpc_asyncio import CertificateManagerGrpcAsyncIOTransport
 from .rest import CertificateManagerRestInterceptor, CertificateManagerRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CertificateManagerTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CertificateManagerTransport]]
 _transport_registry["grpc"] = CertificateManagerGrpcTransport
 _transport_registry["grpc_asyncio"] = CertificateManagerGrpcAsyncIOTransport
 _transport_registry["rest"] = CertificateManagerRestTransport

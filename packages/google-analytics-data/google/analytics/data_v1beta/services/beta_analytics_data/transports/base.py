@@ -29,9 +29,7 @@ import google.protobuf
 from google.analytics.data_v1beta import gapic_version as package_version
 from google.analytics.data_v1beta.types import analytics_data_api
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class BetaAnalyticsDataTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -212,11 +202,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
     def run_report(
         self,
     ) -> Callable[
-        [analytics_data_api.RunReportRequest],
-        Union[
-            analytics_data_api.RunReportResponse,
-            Awaitable[analytics_data_api.RunReportResponse],
-        ],
+        [analytics_data_api.RunReportRequest], Union[analytics_data_api.RunReportResponse, Awaitable[analytics_data_api.RunReportResponse]]
     ]:
         raise NotImplementedError()
 
@@ -225,10 +211,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.RunPivotReportRequest],
-        Union[
-            analytics_data_api.RunPivotReportResponse,
-            Awaitable[analytics_data_api.RunPivotReportResponse],
-        ],
+        Union[analytics_data_api.RunPivotReportResponse, Awaitable[analytics_data_api.RunPivotReportResponse]],
     ]:
         raise NotImplementedError()
 
@@ -237,10 +220,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.BatchRunReportsRequest],
-        Union[
-            analytics_data_api.BatchRunReportsResponse,
-            Awaitable[analytics_data_api.BatchRunReportsResponse],
-        ],
+        Union[analytics_data_api.BatchRunReportsResponse, Awaitable[analytics_data_api.BatchRunReportsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -249,20 +229,14 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.BatchRunPivotReportsRequest],
-        Union[
-            analytics_data_api.BatchRunPivotReportsResponse,
-            Awaitable[analytics_data_api.BatchRunPivotReportsResponse],
-        ],
+        Union[analytics_data_api.BatchRunPivotReportsResponse, Awaitable[analytics_data_api.BatchRunPivotReportsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_metadata(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetMetadataRequest],
-        Union[analytics_data_api.Metadata, Awaitable[analytics_data_api.Metadata]],
-    ]:
+    ) -> Callable[[analytics_data_api.GetMetadataRequest], Union[analytics_data_api.Metadata, Awaitable[analytics_data_api.Metadata]]]:
         raise NotImplementedError()
 
     @property
@@ -270,10 +244,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.RunRealtimeReportRequest],
-        Union[
-            analytics_data_api.RunRealtimeReportResponse,
-            Awaitable[analytics_data_api.RunRealtimeReportResponse],
-        ],
+        Union[analytics_data_api.RunRealtimeReportResponse, Awaitable[analytics_data_api.RunRealtimeReportResponse]],
     ]:
         raise NotImplementedError()
 
@@ -282,20 +253,14 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.CheckCompatibilityRequest],
-        Union[
-            analytics_data_api.CheckCompatibilityResponse,
-            Awaitable[analytics_data_api.CheckCompatibilityResponse],
-        ],
+        Union[analytics_data_api.CheckCompatibilityResponse, Awaitable[analytics_data_api.CheckCompatibilityResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_audience_export(
         self,
-    ) -> Callable[
-        [analytics_data_api.CreateAudienceExportRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[analytics_data_api.CreateAudienceExportRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -303,10 +268,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.QueryAudienceExportRequest],
-        Union[
-            analytics_data_api.QueryAudienceExportResponse,
-            Awaitable[analytics_data_api.QueryAudienceExportResponse],
-        ],
+        Union[analytics_data_api.QueryAudienceExportResponse, Awaitable[analytics_data_api.QueryAudienceExportResponse]],
     ]:
         raise NotImplementedError()
 
@@ -314,11 +276,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
     def get_audience_export(
         self,
     ) -> Callable[
-        [analytics_data_api.GetAudienceExportRequest],
-        Union[
-            analytics_data_api.AudienceExport,
-            Awaitable[analytics_data_api.AudienceExport],
-        ],
+        [analytics_data_api.GetAudienceExportRequest], Union[analytics_data_api.AudienceExport, Awaitable[analytics_data_api.AudienceExport]]
     ]:
         raise NotImplementedError()
 
@@ -327,10 +285,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.ListAudienceExportsRequest],
-        Union[
-            analytics_data_api.ListAudienceExportsResponse,
-            Awaitable[analytics_data_api.ListAudienceExportsResponse],
-        ],
+        Union[analytics_data_api.ListAudienceExportsResponse, Awaitable[analytics_data_api.ListAudienceExportsResponse]],
     ]:
         raise NotImplementedError()
 

@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.binaryauthorization_v1beta1 import gapic_version as package_version
 from google.cloud.binaryauthorization_v1beta1.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class BinauthzManagementServiceV1Beta1Transport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -241,65 +231,33 @@ class BinauthzManagementServiceV1Beta1Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_policy(
-        self,
-    ) -> Callable[
-        [service.GetPolicyRequest], Union[resources.Policy, Awaitable[resources.Policy]]
-    ]:
+    def get_policy(self) -> Callable[[service.GetPolicyRequest], Union[resources.Policy, Awaitable[resources.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def update_policy(
-        self,
-    ) -> Callable[
-        [service.UpdatePolicyRequest],
-        Union[resources.Policy, Awaitable[resources.Policy]],
-    ]:
+    def update_policy(self) -> Callable[[service.UpdatePolicyRequest], Union[resources.Policy, Awaitable[resources.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def create_attestor(
-        self,
-    ) -> Callable[
-        [service.CreateAttestorRequest],
-        Union[resources.Attestor, Awaitable[resources.Attestor]],
-    ]:
+    def create_attestor(self) -> Callable[[service.CreateAttestorRequest], Union[resources.Attestor, Awaitable[resources.Attestor]]]:
         raise NotImplementedError()
 
     @property
-    def get_attestor(
-        self,
-    ) -> Callable[
-        [service.GetAttestorRequest],
-        Union[resources.Attestor, Awaitable[resources.Attestor]],
-    ]:
+    def get_attestor(self) -> Callable[[service.GetAttestorRequest], Union[resources.Attestor, Awaitable[resources.Attestor]]]:
         raise NotImplementedError()
 
     @property
-    def update_attestor(
-        self,
-    ) -> Callable[
-        [service.UpdateAttestorRequest],
-        Union[resources.Attestor, Awaitable[resources.Attestor]],
-    ]:
+    def update_attestor(self) -> Callable[[service.UpdateAttestorRequest], Union[resources.Attestor, Awaitable[resources.Attestor]]]:
         raise NotImplementedError()
 
     @property
     def list_attestors(
         self,
-    ) -> Callable[
-        [service.ListAttestorsRequest],
-        Union[service.ListAttestorsResponse, Awaitable[service.ListAttestorsResponse]],
-    ]:
+    ) -> Callable[[service.ListAttestorsRequest], Union[service.ListAttestorsResponse, Awaitable[service.ListAttestorsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_attestor(
-        self,
-    ) -> Callable[
-        [service.DeleteAttestorRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_attestor(self) -> Callable[[service.DeleteAttestorRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property

@@ -260,13 +260,8 @@ class DocumentProcessorServiceRestInterceptor:
     """
 
     def pre_batch_process_documents(
-        self,
-        request: document_processor_service.BatchProcessRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.BatchProcessRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.BatchProcessRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.BatchProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_process_documents
 
         Override in a subclass to manipulate the request or metadata
@@ -274,9 +269,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_process_documents(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_process_documents(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_process_documents
 
         DEPRECATED. Please use the `post_batch_process_documents_with_metadata`
@@ -290,9 +283,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_batch_process_documents_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_process_documents
 
@@ -309,13 +300,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_create_processor(
-        self,
-        request: document_processor_service.CreateProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.CreateProcessorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.CreateProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.CreateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -323,9 +309,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_processor(
-        self, response: gcd_processor.Processor
-    ) -> gcd_processor.Processor:
+    def post_create_processor(self, response: gcd_processor.Processor) -> gcd_processor.Processor:
         """Post-rpc interceptor for create_processor
 
         DEPRECATED. Please use the `post_create_processor_with_metadata`
@@ -339,9 +323,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_create_processor_with_metadata(
-        self,
-        response: gcd_processor.Processor,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_processor.Processor, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_processor.Processor, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_processor
 
@@ -358,13 +340,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_processor(
-        self,
-        request: document_processor_service.DeleteProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.DeleteProcessorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.DeleteProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.DeleteProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -372,9 +349,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_processor(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_processor(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_processor
 
         DEPRECATED. Please use the `post_delete_processor_with_metadata`
@@ -388,9 +363,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_delete_processor_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_processor
 
@@ -407,13 +380,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_processor_version(
-        self,
-        request: document_processor_service.DeleteProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.DeleteProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.DeleteProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.DeleteProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -421,9 +389,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_processor_version(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_processor_version(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_processor_version
 
         DEPRECATED. Please use the `post_delete_processor_version_with_metadata`
@@ -437,9 +403,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_delete_processor_version_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_processor_version
 
@@ -456,13 +420,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_deploy_processor_version(
-        self,
-        request: document_processor_service.DeployProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.DeployProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.DeployProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.DeployProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -470,9 +429,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_processor_version(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deploy_processor_version(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_processor_version
 
         DEPRECATED. Please use the `post_deploy_processor_version_with_metadata`
@@ -486,9 +443,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_deploy_processor_version_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_processor_version
 
@@ -505,13 +460,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_disable_processor(
-        self,
-        request: document_processor_service.DisableProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.DisableProcessorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.DisableProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.DisableProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -519,9 +469,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_disable_processor(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_disable_processor(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_processor
 
         DEPRECATED. Please use the `post_disable_processor_with_metadata`
@@ -535,9 +483,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_disable_processor_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for disable_processor
 
@@ -554,13 +500,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_enable_processor(
-        self,
-        request: document_processor_service.EnableProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.EnableProcessorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.EnableProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.EnableProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -568,9 +509,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_enable_processor(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_enable_processor(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_processor
 
         DEPRECATED. Please use the `post_enable_processor_with_metadata`
@@ -584,9 +523,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_enable_processor_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enable_processor
 
@@ -603,13 +540,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_evaluate_processor_version(
-        self,
-        request: document_processor_service.EvaluateProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.EvaluateProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.EvaluateProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.EvaluateProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for evaluate_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -617,9 +549,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_evaluate_processor_version(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_evaluate_processor_version(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for evaluate_processor_version
 
         DEPRECATED. Please use the `post_evaluate_processor_version_with_metadata`
@@ -633,9 +563,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_evaluate_processor_version_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for evaluate_processor_version
 
@@ -652,13 +580,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_fetch_processor_types(
-        self,
-        request: document_processor_service.FetchProcessorTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.FetchProcessorTypesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.FetchProcessorTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.FetchProcessorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_processor_types
 
         Override in a subclass to manipulate the request or metadata
@@ -682,13 +605,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_fetch_processor_types_with_metadata(
-        self,
-        response: document_processor_service.FetchProcessorTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.FetchProcessorTypesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_processor_service.FetchProcessorTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.FetchProcessorTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_processor_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -704,13 +622,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_get_evaluation(
-        self,
-        request: document_processor_service.GetEvaluationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.GetEvaluationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.GetEvaluationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.GetEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_evaluation
 
         Override in a subclass to manipulate the request or metadata
@@ -718,9 +631,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_evaluation(
-        self, response: evaluation.Evaluation
-    ) -> evaluation.Evaluation:
+    def post_get_evaluation(self, response: evaluation.Evaluation) -> evaluation.Evaluation:
         """Post-rpc interceptor for get_evaluation
 
         DEPRECATED. Please use the `post_get_evaluation_with_metadata`
@@ -734,9 +645,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_get_evaluation_with_metadata(
-        self,
-        response: evaluation.Evaluation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: evaluation.Evaluation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[evaluation.Evaluation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_evaluation
 
@@ -753,13 +662,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_get_processor(
-        self,
-        request: document_processor_service.GetProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.GetProcessorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.GetProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.GetProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -781,9 +685,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_get_processor_with_metadata(
-        self,
-        response: processor.Processor,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: processor.Processor, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[processor.Processor, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_processor
 
@@ -800,13 +702,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_get_processor_type(
-        self,
-        request: document_processor_service.GetProcessorTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.GetProcessorTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.GetProcessorTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.GetProcessorTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_processor_type
 
         Override in a subclass to manipulate the request or metadata
@@ -814,9 +711,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_processor_type(
-        self, response: processor_type.ProcessorType
-    ) -> processor_type.ProcessorType:
+    def post_get_processor_type(self, response: processor_type.ProcessorType) -> processor_type.ProcessorType:
         """Post-rpc interceptor for get_processor_type
 
         DEPRECATED. Please use the `post_get_processor_type_with_metadata`
@@ -830,9 +725,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_get_processor_type_with_metadata(
-        self,
-        response: processor_type.ProcessorType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: processor_type.ProcessorType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[processor_type.ProcessorType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_processor_type
 
@@ -849,13 +742,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_get_processor_version(
-        self,
-        request: document_processor_service.GetProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.GetProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.GetProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.GetProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -863,9 +751,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_processor_version(
-        self, response: processor.ProcessorVersion
-    ) -> processor.ProcessorVersion:
+    def post_get_processor_version(self, response: processor.ProcessorVersion) -> processor.ProcessorVersion:
         """Post-rpc interceptor for get_processor_version
 
         DEPRECATED. Please use the `post_get_processor_version_with_metadata`
@@ -879,9 +765,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_get_processor_version_with_metadata(
-        self,
-        response: processor.ProcessorVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: processor.ProcessorVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[processor.ProcessorVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_processor_version
 
@@ -898,13 +782,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_list_evaluations(
-        self,
-        request: document_processor_service.ListEvaluationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListEvaluationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.ListEvaluationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListEvaluationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_evaluations
 
         Override in a subclass to manipulate the request or metadata
@@ -928,13 +807,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_list_evaluations_with_metadata(
-        self,
-        response: document_processor_service.ListEvaluationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListEvaluationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_processor_service.ListEvaluationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListEvaluationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_evaluations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -950,13 +824,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_list_processors(
-        self,
-        request: document_processor_service.ListProcessorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListProcessorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.ListProcessorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListProcessorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processors
 
         Override in a subclass to manipulate the request or metadata
@@ -964,9 +833,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_processors(
-        self, response: document_processor_service.ListProcessorsResponse
-    ) -> document_processor_service.ListProcessorsResponse:
+    def post_list_processors(self, response: document_processor_service.ListProcessorsResponse) -> document_processor_service.ListProcessorsResponse:
         """Post-rpc interceptor for list_processors
 
         DEPRECATED. Please use the `post_list_processors_with_metadata`
@@ -980,13 +847,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_list_processors_with_metadata(
-        self,
-        response: document_processor_service.ListProcessorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListProcessorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_processor_service.ListProcessorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_processors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1002,13 +864,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_list_processor_types(
-        self,
-        request: document_processor_service.ListProcessorTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListProcessorTypesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.ListProcessorTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListProcessorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processor_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1032,13 +889,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_list_processor_types_with_metadata(
-        self,
-        response: document_processor_service.ListProcessorTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListProcessorTypesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_processor_service.ListProcessorTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListProcessorTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_processor_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1054,13 +906,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_list_processor_versions(
-        self,
-        request: document_processor_service.ListProcessorVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListProcessorVersionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.ListProcessorVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListProcessorVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processor_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -1084,13 +931,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_list_processor_versions_with_metadata(
-        self,
-        response: document_processor_service.ListProcessorVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ListProcessorVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_processor_service.ListProcessorVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ListProcessorVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_processor_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1106,13 +948,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_process_document(
-        self,
-        request: document_processor_service.ProcessRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ProcessRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.ProcessRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for process_document
 
         Override in a subclass to manipulate the request or metadata
@@ -1120,9 +957,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_process_document(
-        self, response: document_processor_service.ProcessResponse
-    ) -> document_processor_service.ProcessResponse:
+    def post_process_document(self, response: document_processor_service.ProcessResponse) -> document_processor_service.ProcessResponse:
         """Post-rpc interceptor for process_document
 
         DEPRECATED. Please use the `post_process_document_with_metadata`
@@ -1136,13 +971,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_process_document_with_metadata(
-        self,
-        response: document_processor_service.ProcessResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ProcessResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_processor_service.ProcessResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ProcessResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for process_document
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1158,13 +988,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_review_document(
-        self,
-        request: document_processor_service.ReviewDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.ReviewDocumentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.ReviewDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.ReviewDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for review_document
 
         Override in a subclass to manipulate the request or metadata
@@ -1172,9 +997,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_review_document(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_review_document(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for review_document
 
         DEPRECATED. Please use the `post_review_document_with_metadata`
@@ -1188,9 +1011,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_review_document_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for review_document
 
@@ -1207,13 +1028,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_set_default_processor_version(
-        self,
-        request: document_processor_service.SetDefaultProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.SetDefaultProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.SetDefaultProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.SetDefaultProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_default_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1221,9 +1037,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_default_processor_version(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_set_default_processor_version(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_default_processor_version
 
         DEPRECATED. Please use the `post_set_default_processor_version_with_metadata`
@@ -1237,9 +1051,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_set_default_processor_version_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_default_processor_version
 
@@ -1256,13 +1068,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_train_processor_version(
-        self,
-        request: document_processor_service.TrainProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.TrainProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.TrainProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.TrainProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for train_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1270,9 +1077,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_train_processor_version(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_train_processor_version(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_processor_version
 
         DEPRECATED. Please use the `post_train_processor_version_with_metadata`
@@ -1286,9 +1091,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_train_processor_version_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for train_processor_version
 
@@ -1305,13 +1108,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_undeploy_processor_version(
-        self,
-        request: document_processor_service.UndeployProcessorVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_processor_service.UndeployProcessorVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_processor_service.UndeployProcessorVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_processor_service.UndeployProcessorVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_processor_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1319,9 +1117,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_undeploy_processor_version(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undeploy_processor_version(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_processor_version
 
         DEPRECATED. Please use the `post_undeploy_processor_version_with_metadata`
@@ -1335,9 +1131,7 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def post_undeploy_processor_version_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undeploy_processor_version
 
@@ -1354,12 +1148,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1367,9 +1157,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1379,12 +1167,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1392,9 +1176,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1404,12 +1186,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1427,12 +1205,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1440,9 +1214,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1452,12 +1224,8 @@ class DocumentProcessorServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1465,9 +1233,7 @@ class DocumentProcessorServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1560,9 +1326,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1624,30 +1388,17 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchProcessDocuments(
-        _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _BatchProcessDocuments(_BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.BatchProcessDocuments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1691,32 +1442,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_process_documents(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_process_documents(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1740,13 +1477,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._BatchProcessDocuments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1760,12 +1491,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_batch_process_documents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_process_documents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_process_documents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1786,23 +1513,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _CreateProcessor(
-        _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _CreateProcessor(_BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.CreateProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1851,32 +1567,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_processor(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1899,16 +1601,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._CreateProcessor._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentProcessorServiceRestTransport._CreateProcessor._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1924,12 +1618,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_create_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_processor.Processor.to_json(response)
                 except:
@@ -1950,23 +1640,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _DeleteProcessor(
-        _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _DeleteProcessor(_BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.DeleteProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2010,28 +1689,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_processor(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2054,15 +1721,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._DeleteProcessor._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._DeleteProcessor._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2076,12 +1736,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_delete_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2102,23 +1758,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _DeleteProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _DeleteProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.DeleteProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2162,28 +1807,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_processor_version(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_processor_version(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2207,12 +1840,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._DeleteProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2226,12 +1854,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_delete_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2252,23 +1876,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _DeployProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _DeployProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.DeployProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2313,32 +1926,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_deploy_processor_version(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deploy_processor_version(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2362,13 +1961,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._DeployProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2382,12 +1975,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_deploy_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2408,23 +1997,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _DisableProcessor(
-        _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _DisableProcessor(_BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.DisableProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2469,32 +2047,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_disable_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_disable_processor(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2517,16 +2081,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._DisableProcessor._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentProcessorServiceRestTransport._DisableProcessor._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2540,12 +2096,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_disable_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_disable_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_disable_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2566,23 +2118,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _EnableProcessor(
-        _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _EnableProcessor(_BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.EnableProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2627,32 +2168,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_enable_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_enable_processor(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2675,16 +2202,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._EnableProcessor._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentProcessorServiceRestTransport._EnableProcessor._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2698,12 +2217,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_enable_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_enable_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enable_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2724,25 +2239,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _EvaluateProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _EvaluateProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
-            return hash(
-                "DocumentProcessorServiceRestTransport.EvaluateProcessorVersion"
-            )
+            return hash("DocumentProcessorServiceRestTransport.EvaluateProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2788,32 +2290,20 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_evaluate_processor_version(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_evaluate_processor_version(request, metadata)
             transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2837,13 +2327,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._EvaluateProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2857,12 +2341,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_evaluate_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_evaluate_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_evaluate_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2883,23 +2363,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _FetchProcessorTypes(
-        _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _FetchProcessorTypes(_BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.FetchProcessorTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2944,28 +2413,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_processor_types(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_processor_types(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2989,12 +2446,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._FetchProcessorTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3010,18 +2462,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_fetch_processor_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_processor_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_processor_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_processor_service.FetchProcessorTypesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_processor_service.FetchProcessorTypesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3040,23 +2484,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _GetEvaluation(
-        _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _GetEvaluation(_BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.GetEvaluation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3097,26 +2530,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_evaluation(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3139,15 +2562,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._GetEvaluation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._GetEvaluation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3163,12 +2579,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_get_evaluation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_evaluation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_evaluation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = evaluation.Evaluation.to_json(response)
                 except:
@@ -3189,23 +2601,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _GetProcessor(
-        _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _GetProcessor(_BaseDocumentProcessorServiceRestTransport._BaseGetProcessor, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.GetProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3250,26 +2651,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_http_options()
 
             request, metadata = self._interceptor.pre_get_processor(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3292,15 +2683,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._GetProcessor._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._GetProcessor._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3316,12 +2700,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_get_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = processor.Processor.to_json(response)
                 except:
@@ -3342,23 +2722,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _GetProcessorType(
-        _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _GetProcessorType(_BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.GetProcessorType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3403,28 +2772,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_processor_type(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_processor_type(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3447,15 +2804,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._GetProcessorType._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._GetProcessorType._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3471,12 +2821,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_get_processor_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_processor_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_processor_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = processor_type.ProcessorType.to_json(response)
                 except:
@@ -3497,23 +2843,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _GetProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _GetProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.GetProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3562,28 +2897,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_processor_version(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_processor_version(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3607,12 +2930,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._GetProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3628,12 +2946,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_get_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = processor.ProcessorVersion.to_json(response)
                 except:
@@ -3654,23 +2968,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _ListEvaluations(
-        _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ListEvaluations(_BaseDocumentProcessorServiceRestTransport._BaseListEvaluations, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ListEvaluations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3710,28 +3013,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                     The response from ``ListEvaluations``.
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_evaluations(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_evaluations(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3754,15 +3045,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ListEvaluations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._ListEvaluations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3778,18 +3062,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_list_evaluations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_evaluations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_evaluations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_processor_service.ListEvaluationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_processor_service.ListEvaluationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3808,23 +3084,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _ListProcessors(
-        _BaseDocumentProcessorServiceRestTransport._BaseListProcessors,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ListProcessors(_BaseDocumentProcessorServiceRestTransport._BaseListProcessors, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ListProcessors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3867,26 +3132,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_processors(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3909,15 +3164,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ListProcessors._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._ListProcessors._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3933,18 +3181,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_list_processors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_processors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_processors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_processor_service.ListProcessorsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_processor_service.ListProcessorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3963,23 +3203,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _ListProcessorTypes(
-        _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ListProcessorTypes(_BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ListProcessorTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4024,28 +3253,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_processor_types(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_processor_types(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4068,15 +3285,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ListProcessorTypes._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._ListProcessorTypes._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4092,18 +3302,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_list_processor_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_processor_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_processor_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_processor_service.ListProcessorTypesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_processor_service.ListProcessorTypesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4122,23 +3324,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _ListProcessorVersions(
-        _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ListProcessorVersions(_BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ListProcessorVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4182,28 +3373,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_processor_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_processor_versions(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4227,12 +3406,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._ListProcessorVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4248,16 +3422,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_list_processor_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_processor_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_processor_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = document_processor_service.ListProcessorVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = document_processor_service.ListProcessorVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4276,23 +3444,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _ProcessDocument(
-        _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ProcessDocument(_BaseDocumentProcessorServiceRestTransport._BaseProcessDocument, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ProcessDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4337,32 +3494,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_http_options()
 
-            request, metadata = self._interceptor.pre_process_document(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_process_document(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4385,16 +3528,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ProcessDocument._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentProcessorServiceRestTransport._ProcessDocument._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4410,16 +3545,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_process_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_process_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_process_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_processor_service.ProcessResponse.to_json(response)
-                    )
+                    response_payload = document_processor_service.ProcessResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4438,23 +3567,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _ReviewDocument(
-        _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ReviewDocument(_BaseDocumentProcessorServiceRestTransport._BaseReviewDocument, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ReviewDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4499,30 +3617,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_review_document(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4545,16 +3651,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ReviewDocument._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentProcessorServiceRestTransport._ReviewDocument._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4568,12 +3666,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_review_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_review_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_review_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4594,25 +3688,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _SetDefaultProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _SetDefaultProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
-            return hash(
-                "DocumentProcessorServiceRestTransport.SetDefaultProcessorVersion"
-            )
+            return hash("DocumentProcessorServiceRestTransport.SetDefaultProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4658,32 +3739,20 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_default_processor_version(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_set_default_processor_version(request, metadata)
             transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4707,13 +3776,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._SetDefaultProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4727,15 +3790,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_set_default_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_set_default_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_default_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4756,23 +3812,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _TrainProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _TrainProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.TrainProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4817,32 +3862,18 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_train_processor_version(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_train_processor_version(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4866,13 +3897,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._TrainProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4886,12 +3911,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_train_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_train_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_train_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4912,25 +3933,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
             return resp
 
-    class _UndeployProcessorVersion(
-        _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _UndeployProcessorVersion(_BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion, DocumentProcessorServiceRestStub):
         def __hash__(self):
-            return hash(
-                "DocumentProcessorServiceRestTransport.UndeployProcessorVersion"
-            )
+            return hash("DocumentProcessorServiceRestTransport.UndeployProcessorVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4976,32 +3984,20 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_undeploy_processor_version(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_undeploy_processor_version(request, metadata)
             transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5025,13 +4021,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._UndeployProcessorVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5045,12 +4035,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             resp = self._interceptor.post_undeploy_processor_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undeploy_processor_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undeploy_processor_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5072,84 +4058,49 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             return resp
 
     @property
-    def batch_process_documents(
-        self,
-    ) -> Callable[
-        [document_processor_service.BatchProcessRequest], operations_pb2.Operation
-    ]:
+    def batch_process_documents(self) -> Callable[[document_processor_service.BatchProcessRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchProcessDocuments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.CreateProcessorRequest], gcd_processor.Processor
-    ]:
+    def create_processor(self) -> Callable[[document_processor_service.CreateProcessorRequest], gcd_processor.Processor]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.DeleteProcessorRequest], operations_pb2.Operation
-    ]:
+    def delete_processor(self) -> Callable[[document_processor_service.DeleteProcessorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.DeleteProcessorVersionRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_processor_version(self) -> Callable[[document_processor_service.DeleteProcessorVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.DeployProcessorVersionRequest],
-        operations_pb2.Operation,
-    ]:
+    def deploy_processor_version(self) -> Callable[[document_processor_service.DeployProcessorVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def disable_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.DisableProcessorRequest], operations_pb2.Operation
-    ]:
+    def disable_processor(self) -> Callable[[document_processor_service.DisableProcessorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enable_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.EnableProcessorRequest], operations_pb2.Operation
-    ]:
+    def enable_processor(self) -> Callable[[document_processor_service.EnableProcessorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnableProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def evaluate_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.EvaluateProcessorVersionRequest],
-        operations_pb2.Operation,
-    ]:
+    def evaluate_processor_version(self) -> Callable[[document_processor_service.EvaluateProcessorVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EvaluateProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -5157,74 +4108,43 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     @property
     def fetch_processor_types(
         self,
-    ) -> Callable[
-        [document_processor_service.FetchProcessorTypesRequest],
-        document_processor_service.FetchProcessorTypesResponse,
-    ]:
+    ) -> Callable[[document_processor_service.FetchProcessorTypesRequest], document_processor_service.FetchProcessorTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchProcessorTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_evaluation(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetEvaluationRequest], evaluation.Evaluation
-    ]:
+    def get_evaluation(self) -> Callable[[document_processor_service.GetEvaluationRequest], evaluation.Evaluation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEvaluation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorRequest], processor.Processor
-    ]:
+    def get_processor(self) -> Callable[[document_processor_service.GetProcessorRequest], processor.Processor]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_processor_type(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorTypeRequest],
-        processor_type.ProcessorType,
-    ]:
+    def get_processor_type(self) -> Callable[[document_processor_service.GetProcessorTypeRequest], processor_type.ProcessorType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProcessorType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorVersionRequest],
-        processor.ProcessorVersion,
-    ]:
+    def get_processor_version(self) -> Callable[[document_processor_service.GetProcessorVersionRequest], processor.ProcessorVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_evaluations(
-        self,
-    ) -> Callable[
-        [document_processor_service.ListEvaluationsRequest],
-        document_processor_service.ListEvaluationsResponse,
-    ]:
+    def list_evaluations(self) -> Callable[[document_processor_service.ListEvaluationsRequest], document_processor_service.ListEvaluationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEvaluations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_processors(
-        self,
-    ) -> Callable[
-        [document_processor_service.ListProcessorsRequest],
-        document_processor_service.ListProcessorsResponse,
-    ]:
+    def list_processors(self) -> Callable[[document_processor_service.ListProcessorsRequest], document_processor_service.ListProcessorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProcessors(self._session, self._host, self._interceptor)  # type: ignore
@@ -5232,10 +4152,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     @property
     def list_processor_types(
         self,
-    ) -> Callable[
-        [document_processor_service.ListProcessorTypesRequest],
-        document_processor_service.ListProcessorTypesResponse,
-    ]:
+    ) -> Callable[[document_processor_service.ListProcessorTypesRequest], document_processor_service.ListProcessorTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProcessorTypes(self._session, self._host, self._interceptor)  # type: ignore
@@ -5243,64 +4160,37 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     @property
     def list_processor_versions(
         self,
-    ) -> Callable[
-        [document_processor_service.ListProcessorVersionsRequest],
-        document_processor_service.ListProcessorVersionsResponse,
-    ]:
+    ) -> Callable[[document_processor_service.ListProcessorVersionsRequest], document_processor_service.ListProcessorVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProcessorVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def process_document(
-        self,
-    ) -> Callable[
-        [document_processor_service.ProcessRequest],
-        document_processor_service.ProcessResponse,
-    ]:
+    def process_document(self) -> Callable[[document_processor_service.ProcessRequest], document_processor_service.ProcessResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ProcessDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def review_document(
-        self,
-    ) -> Callable[
-        [document_processor_service.ReviewDocumentRequest], operations_pb2.Operation
-    ]:
+    def review_document(self) -> Callable[[document_processor_service.ReviewDocumentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReviewDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_default_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.SetDefaultProcessorVersionRequest],
-        operations_pb2.Operation,
-    ]:
+    def set_default_processor_version(self) -> Callable[[document_processor_service.SetDefaultProcessorVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetDefaultProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def train_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.TrainProcessorVersionRequest],
-        operations_pb2.Operation,
-    ]:
+    def train_processor_version(self) -> Callable[[document_processor_service.TrainProcessorVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TrainProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undeploy_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.UndeployProcessorVersionRequest],
-        operations_pb2.Operation,
-    ]:
+    def undeploy_processor_version(self) -> Callable[[document_processor_service.UndeployProcessorVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeployProcessorVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -5309,23 +4199,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDocumentProcessorServiceRestTransport._BaseGetLocation,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _GetLocation(_BaseDocumentProcessorServiceRestTransport._BaseGetLocation, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5363,26 +4242,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5406,12 +4275,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
 
             # Send the request
             response = DocumentProcessorServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5423,9 +4287,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5450,23 +4312,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDocumentProcessorServiceRestTransport._BaseListLocations,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ListLocations(_BaseDocumentProcessorServiceRestTransport._BaseListLocations, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5504,26 +4355,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5546,15 +4387,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5566,9 +4400,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5593,23 +4425,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _CancelOperation(_BaseDocumentProcessorServiceRestTransport._BaseCancelOperation, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5644,28 +4465,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5688,15 +4497,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5710,23 +4512,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDocumentProcessorServiceRestTransport._BaseGetOperation,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _GetOperation(_BaseDocumentProcessorServiceRestTransport._BaseGetOperation, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5764,26 +4555,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5806,15 +4587,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5826,9 +4600,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5853,23 +4625,12 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDocumentProcessorServiceRestTransport._BaseListOperations,
-        DocumentProcessorServiceRestStub,
-    ):
+    class _ListOperations(_BaseDocumentProcessorServiceRestTransport._BaseListOperations, DocumentProcessorServiceRestStub):
         def __hash__(self):
             return hash("DocumentProcessorServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5907,26 +4668,16 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5949,15 +4700,8 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 )
 
             # Send the request
-            response = (
-                DocumentProcessorServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentProcessorServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5969,9 +4713,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

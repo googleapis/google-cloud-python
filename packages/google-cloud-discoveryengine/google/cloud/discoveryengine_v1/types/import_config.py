@@ -346,9 +346,7 @@ class BigtableOptions(proto.Message):
             number=3,
             enum="BigtableOptions.Type",
         )
-        columns: MutableSequence[
-            "BigtableOptions.BigtableColumn"
-        ] = proto.RepeatedField(
+        columns: MutableSequence["BigtableOptions.BigtableColumn"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="BigtableOptions.BigtableColumn",
@@ -1237,9 +1235,7 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        entries: MutableSequence[
-            completion.SuggestionDenyListEntry
-        ] = proto.RepeatedField(
+        entries: MutableSequence[completion.SuggestionDenyListEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=completion.SuggestionDenyListEntry,
@@ -1365,9 +1361,7 @@ class ImportCompletionSuggestionsRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        suggestions: MutableSequence[
-            completion.CompletionSuggestion
-        ] = proto.RepeatedField(
+        suggestions: MutableSequence[completion.CompletionSuggestion] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=completion.CompletionSuggestion,

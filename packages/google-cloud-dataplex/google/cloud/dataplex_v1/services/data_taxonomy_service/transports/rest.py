@@ -204,13 +204,8 @@ class DataTaxonomyServiceRestInterceptor:
     """
 
     def pre_create_data_attribute(
-        self,
-        request: data_taxonomy.CreateDataAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.CreateDataAttributeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.CreateDataAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.CreateDataAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -218,9 +213,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_attribute(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_data_attribute(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_data_attribute
 
         DEPRECATED. Please use the `post_create_data_attribute_with_metadata`
@@ -234,9 +227,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_create_data_attribute_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_attribute
 
@@ -253,13 +244,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_create_data_attribute_binding(
-        self,
-        request: data_taxonomy.CreateDataAttributeBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.CreateDataAttributeBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.CreateDataAttributeBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.CreateDataAttributeBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_attribute_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -267,9 +253,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_attribute_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_data_attribute_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_data_attribute_binding
 
         DEPRECATED. Please use the `post_create_data_attribute_binding_with_metadata`
@@ -283,9 +267,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_create_data_attribute_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_attribute_binding
 
@@ -302,13 +284,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_create_data_taxonomy(
-        self,
-        request: gcd_data_taxonomy.CreateDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_data_taxonomy.CreateDataTaxonomyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_data_taxonomy.CreateDataTaxonomyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_data_taxonomy.CreateDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_taxonomy
 
         Override in a subclass to manipulate the request or metadata
@@ -316,9 +293,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_taxonomy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_data_taxonomy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_data_taxonomy
 
         DEPRECATED. Please use the `post_create_data_taxonomy_with_metadata`
@@ -332,9 +307,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_create_data_taxonomy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_taxonomy
 
@@ -351,13 +324,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_attribute(
-        self,
-        request: data_taxonomy.DeleteDataAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.DeleteDataAttributeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.DeleteDataAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.DeleteDataAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -365,9 +333,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_data_attribute(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_data_attribute(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_data_attribute
 
         DEPRECATED. Please use the `post_delete_data_attribute_with_metadata`
@@ -381,9 +347,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_delete_data_attribute_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_data_attribute
 
@@ -400,13 +364,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_attribute_binding(
-        self,
-        request: data_taxonomy.DeleteDataAttributeBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.DeleteDataAttributeBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.DeleteDataAttributeBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.DeleteDataAttributeBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_attribute_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -414,9 +373,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_data_attribute_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_data_attribute_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_data_attribute_binding
 
         DEPRECATED. Please use the `post_delete_data_attribute_binding_with_metadata`
@@ -430,9 +387,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_delete_data_attribute_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_data_attribute_binding
 
@@ -449,12 +404,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_taxonomy(
-        self,
-        request: data_taxonomy.DeleteDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.DeleteDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_taxonomy.DeleteDataTaxonomyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.DeleteDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_taxonomy
 
         Override in a subclass to manipulate the request or metadata
@@ -462,9 +413,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_data_taxonomy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_data_taxonomy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_data_taxonomy
 
         DEPRECATED. Please use the `post_delete_data_taxonomy_with_metadata`
@@ -478,9 +427,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_delete_data_taxonomy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_data_taxonomy
 
@@ -497,12 +444,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_attribute(
-        self,
-        request: data_taxonomy.GetDataAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.GetDataAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_taxonomy.GetDataAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.GetDataAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -510,9 +453,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_attribute(
-        self, response: data_taxonomy.DataAttribute
-    ) -> data_taxonomy.DataAttribute:
+    def post_get_data_attribute(self, response: data_taxonomy.DataAttribute) -> data_taxonomy.DataAttribute:
         """Post-rpc interceptor for get_data_attribute
 
         DEPRECATED. Please use the `post_get_data_attribute_with_metadata`
@@ -526,9 +467,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_get_data_attribute_with_metadata(
-        self,
-        response: data_taxonomy.DataAttribute,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: data_taxonomy.DataAttribute, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[data_taxonomy.DataAttribute, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_attribute
 
@@ -545,13 +484,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_attribute_binding(
-        self,
-        request: data_taxonomy.GetDataAttributeBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.GetDataAttributeBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.GetDataAttributeBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.GetDataAttributeBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_attribute_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -559,9 +493,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_attribute_binding(
-        self, response: data_taxonomy.DataAttributeBinding
-    ) -> data_taxonomy.DataAttributeBinding:
+    def post_get_data_attribute_binding(self, response: data_taxonomy.DataAttributeBinding) -> data_taxonomy.DataAttributeBinding:
         """Post-rpc interceptor for get_data_attribute_binding
 
         DEPRECATED. Please use the `post_get_data_attribute_binding_with_metadata`
@@ -575,12 +507,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_get_data_attribute_binding_with_metadata(
-        self,
-        response: data_taxonomy.DataAttributeBinding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.DataAttributeBinding, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: data_taxonomy.DataAttributeBinding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.DataAttributeBinding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_attribute_binding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -596,12 +524,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_taxonomy(
-        self,
-        request: data_taxonomy.GetDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.GetDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_taxonomy.GetDataTaxonomyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.GetDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_taxonomy
 
         Override in a subclass to manipulate the request or metadata
@@ -609,9 +533,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_taxonomy(
-        self, response: data_taxonomy.DataTaxonomy
-    ) -> data_taxonomy.DataTaxonomy:
+    def post_get_data_taxonomy(self, response: data_taxonomy.DataTaxonomy) -> data_taxonomy.DataTaxonomy:
         """Post-rpc interceptor for get_data_taxonomy
 
         DEPRECATED. Please use the `post_get_data_taxonomy_with_metadata`
@@ -625,9 +547,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_get_data_taxonomy_with_metadata(
-        self,
-        response: data_taxonomy.DataTaxonomy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: data_taxonomy.DataTaxonomy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[data_taxonomy.DataTaxonomy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_taxonomy
 
@@ -644,13 +564,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_attribute_bindings(
-        self,
-        request: data_taxonomy.ListDataAttributeBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributeBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.ListDataAttributeBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.ListDataAttributeBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_attribute_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -674,13 +589,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_list_data_attribute_bindings_with_metadata(
-        self,
-        response: data_taxonomy.ListDataAttributeBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributeBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_taxonomy.ListDataAttributeBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.ListDataAttributeBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_attribute_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -696,12 +606,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_attributes(
-        self,
-        request: data_taxonomy.ListDataAttributesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_taxonomy.ListDataAttributesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.ListDataAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_attributes
 
         Override in a subclass to manipulate the request or metadata
@@ -709,9 +615,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_attributes(
-        self, response: data_taxonomy.ListDataAttributesResponse
-    ) -> data_taxonomy.ListDataAttributesResponse:
+    def post_list_data_attributes(self, response: data_taxonomy.ListDataAttributesResponse) -> data_taxonomy.ListDataAttributesResponse:
         """Post-rpc interceptor for list_data_attributes
 
         DEPRECATED. Please use the `post_list_data_attributes_with_metadata`
@@ -725,13 +629,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_list_data_attributes_with_metadata(
-        self,
-        response: data_taxonomy.ListDataAttributesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_taxonomy.ListDataAttributesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.ListDataAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_attributes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -747,12 +646,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_taxonomies(
-        self,
-        request: data_taxonomy.ListDataTaxonomiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataTaxonomiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_taxonomy.ListDataTaxonomiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.ListDataTaxonomiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_taxonomies
 
         Override in a subclass to manipulate the request or metadata
@@ -760,9 +655,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_taxonomies(
-        self, response: data_taxonomy.ListDataTaxonomiesResponse
-    ) -> data_taxonomy.ListDataTaxonomiesResponse:
+    def post_list_data_taxonomies(self, response: data_taxonomy.ListDataTaxonomiesResponse) -> data_taxonomy.ListDataTaxonomiesResponse:
         """Post-rpc interceptor for list_data_taxonomies
 
         DEPRECATED. Please use the `post_list_data_taxonomies_with_metadata`
@@ -776,13 +669,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_list_data_taxonomies_with_metadata(
-        self,
-        response: data_taxonomy.ListDataTaxonomiesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataTaxonomiesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_taxonomy.ListDataTaxonomiesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.ListDataTaxonomiesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_taxonomies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -798,13 +686,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_attribute(
-        self,
-        request: data_taxonomy.UpdateDataAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.UpdateDataAttributeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.UpdateDataAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.UpdateDataAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -812,9 +695,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_attribute(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_data_attribute(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_data_attribute
 
         DEPRECATED. Please use the `post_update_data_attribute_with_metadata`
@@ -828,9 +709,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_update_data_attribute_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_attribute
 
@@ -847,13 +726,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_attribute_binding(
-        self,
-        request: data_taxonomy.UpdateDataAttributeBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.UpdateDataAttributeBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_taxonomy.UpdateDataAttributeBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_taxonomy.UpdateDataAttributeBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_attribute_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -861,9 +735,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_attribute_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_data_attribute_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_data_attribute_binding
 
         DEPRECATED. Please use the `post_update_data_attribute_binding_with_metadata`
@@ -877,9 +749,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_update_data_attribute_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_attribute_binding
 
@@ -896,13 +766,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_taxonomy(
-        self,
-        request: gcd_data_taxonomy.UpdateDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_data_taxonomy.UpdateDataTaxonomyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_data_taxonomy.UpdateDataTaxonomyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_data_taxonomy.UpdateDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_taxonomy
 
         Override in a subclass to manipulate the request or metadata
@@ -910,9 +775,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_taxonomy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_data_taxonomy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_data_taxonomy
 
         DEPRECATED. Please use the `post_update_data_taxonomy_with_metadata`
@@ -926,9 +789,7 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def post_update_data_taxonomy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_taxonomy
 
@@ -945,12 +806,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -958,9 +815,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -970,12 +825,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -983,9 +834,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -995,12 +844,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1018,12 +863,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1041,12 +882,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1054,9 +891,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1066,12 +901,8 @@ class DataTaxonomyServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1079,9 +910,7 @@ class DataTaxonomyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1172,9 +1001,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1244,30 +1071,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _CreateDataAttribute(_BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.CreateDataAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1310,32 +1124,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_attribute(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1358,16 +1158,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._CreateDataAttribute._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTaxonomyServiceRestTransport._CreateDataAttribute._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1381,12 +1173,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_create_data_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1407,23 +1195,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _CreateDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _CreateDataAttributeBinding(_BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.CreateDataAttributeBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1467,32 +1244,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_attribute_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_attribute_binding(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1516,13 +1279,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._CreateDataAttributeBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1536,15 +1293,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_create_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_data_attribute_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_attribute_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1565,23 +1315,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _CreateDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _CreateDataTaxonomy(_BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.CreateDataTaxonomy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1624,32 +1363,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_taxonomy(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_taxonomy(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1672,16 +1397,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._CreateDataTaxonomy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTaxonomyServiceRestTransport._CreateDataTaxonomy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1695,12 +1412,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_create_data_taxonomy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_taxonomy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_taxonomy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1721,23 +1434,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _DeleteDataAttribute(_BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.DeleteDataAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1779,28 +1481,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_attribute(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1823,15 +1513,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._DeleteDataAttribute._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTaxonomyServiceRestTransport._DeleteDataAttribute._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1845,12 +1528,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_data_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1871,23 +1550,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _DeleteDataAttributeBinding(_BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.DeleteDataAttributeBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1930,28 +1598,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_attribute_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_attribute_binding(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1975,12 +1631,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._DeleteDataAttributeBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1994,15 +1645,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_data_attribute_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_data_attribute_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2023,23 +1667,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _DeleteDataTaxonomy(_BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.DeleteDataTaxonomy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2081,28 +1714,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_taxonomy(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_taxonomy(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2125,15 +1746,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._DeleteDataTaxonomy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTaxonomyServiceRestTransport._DeleteDataTaxonomy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2147,12 +1761,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_taxonomy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_taxonomy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_data_taxonomy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2173,23 +1783,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _GetDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _GetDataAttribute(_BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.GetDataAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2240,28 +1839,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_data_attribute(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2285,12 +1872,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._GetDataAttribute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2306,12 +1888,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_get_data_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = data_taxonomy.DataAttribute.to_json(response)
                 except:
@@ -2332,23 +1910,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _GetDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _GetDataAttributeBinding(_BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.GetDataAttributeBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2392,28 +1959,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_data_attribute_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_data_attribute_binding(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2436,15 +1991,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._GetDataAttributeBinding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTaxonomyServiceRestTransport._GetDataAttributeBinding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2460,16 +2008,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_get_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_attribute_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_attribute_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.DataAttributeBinding.to_json(
-                        response
-                    )
+                    response_payload = data_taxonomy.DataAttributeBinding.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2488,23 +2030,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _GetDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _GetDataTaxonomy(_BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.GetDataTaxonomy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2549,28 +2080,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_data_taxonomy(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_data_taxonomy(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2594,12 +2113,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._GetDataTaxonomy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2615,12 +2129,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_get_data_taxonomy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_taxonomy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_taxonomy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = data_taxonomy.DataTaxonomy.to_json(response)
                 except:
@@ -2641,23 +2151,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _ListDataAttributeBindings(
-        _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _ListDataAttributeBindings(_BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.ListDataAttributeBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2697,28 +2196,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                         List DataAttributeBindings response.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_attribute_bindings(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_attribute_bindings(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2742,12 +2229,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._ListDataAttributeBindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2763,18 +2245,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_list_data_attribute_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_attribute_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_attribute_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        data_taxonomy.ListDataAttributeBindingsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = data_taxonomy.ListDataAttributeBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2793,23 +2267,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _ListDataAttributes(
-        _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _ListDataAttributes(_BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.ListDataAttributes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2848,28 +2311,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     List DataAttributes response.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_attributes(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_attributes(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2892,15 +2343,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._ListDataAttributes._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTaxonomyServiceRestTransport._ListDataAttributes._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2916,16 +2360,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_list_data_attributes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_attributes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_attributes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.ListDataAttributesResponse.to_json(
-                        response
-                    )
+                    response_payload = data_taxonomy.ListDataAttributesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2944,23 +2382,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _ListDataTaxonomies(
-        _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _ListDataTaxonomies(_BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.ListDataTaxonomies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2999,28 +2426,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     List DataTaxonomies response.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_taxonomies(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_taxonomies(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3043,15 +2458,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._ListDataTaxonomies._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTaxonomyServiceRestTransport._ListDataTaxonomies._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3067,16 +2475,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_list_data_taxonomies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_taxonomies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_taxonomies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.ListDataTaxonomiesResponse.to_json(
-                        response
-                    )
+                    response_payload = data_taxonomy.ListDataTaxonomiesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3095,23 +2497,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _UpdateDataAttribute(_BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.UpdateDataAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3154,32 +2545,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_attribute(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3202,16 +2579,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._UpdateDataAttribute._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTaxonomyServiceRestTransport._UpdateDataAttribute._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3225,12 +2594,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_update_data_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3251,23 +2616,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _UpdateDataAttributeBinding(_BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.UpdateDataAttributeBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3311,32 +2665,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_attribute_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_attribute_binding(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3360,13 +2700,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._UpdateDataAttributeBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3380,15 +2714,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_update_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_data_attribute_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_attribute_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3409,23 +2736,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _UpdateDataTaxonomy(_BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.UpdateDataTaxonomy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3468,32 +2784,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_taxonomy(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_taxonomy(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3516,16 +2818,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._UpdateDataTaxonomy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTaxonomyServiceRestTransport._UpdateDataTaxonomy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3539,12 +2833,8 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_update_data_taxonomy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_taxonomy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_taxonomy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3566,82 +2856,55 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             return resp
 
     @property
-    def create_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.CreateDataAttributeRequest], operations_pb2.Operation]:
+    def create_data_attribute(self) -> Callable[[data_taxonomy.CreateDataAttributeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.CreateDataAttributeBindingRequest], operations_pb2.Operation
-    ]:
+    def create_data_attribute_binding(self) -> Callable[[data_taxonomy.CreateDataAttributeBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_data_taxonomy(
-        self,
-    ) -> Callable[
-        [gcd_data_taxonomy.CreateDataTaxonomyRequest], operations_pb2.Operation
-    ]:
+    def create_data_taxonomy(self) -> Callable[[gcd_data_taxonomy.CreateDataTaxonomyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.DeleteDataAttributeRequest], operations_pb2.Operation]:
+    def delete_data_attribute(self) -> Callable[[data_taxonomy.DeleteDataAttributeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.DeleteDataAttributeBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_data_attribute_binding(self) -> Callable[[data_taxonomy.DeleteDataAttributeBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_taxonomy(
-        self,
-    ) -> Callable[[data_taxonomy.DeleteDataTaxonomyRequest], operations_pb2.Operation]:
+    def delete_data_taxonomy(self) -> Callable[[data_taxonomy.DeleteDataTaxonomyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.GetDataAttributeRequest], data_taxonomy.DataAttribute]:
+    def get_data_attribute(self) -> Callable[[data_taxonomy.GetDataAttributeRequest], data_taxonomy.DataAttribute]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.GetDataAttributeBindingRequest],
-        data_taxonomy.DataAttributeBinding,
-    ]:
+    def get_data_attribute_binding(self) -> Callable[[data_taxonomy.GetDataAttributeBindingRequest], data_taxonomy.DataAttributeBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_taxonomy(
-        self,
-    ) -> Callable[[data_taxonomy.GetDataTaxonomyRequest], data_taxonomy.DataTaxonomy]:
+    def get_data_taxonomy(self) -> Callable[[data_taxonomy.GetDataTaxonomyRequest], data_taxonomy.DataTaxonomy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3649,60 +2912,37 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     @property
     def list_data_attribute_bindings(
         self,
-    ) -> Callable[
-        [data_taxonomy.ListDataAttributeBindingsRequest],
-        data_taxonomy.ListDataAttributeBindingsResponse,
-    ]:
+    ) -> Callable[[data_taxonomy.ListDataAttributeBindingsRequest], data_taxonomy.ListDataAttributeBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataAttributeBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_attributes(
-        self,
-    ) -> Callable[
-        [data_taxonomy.ListDataAttributesRequest],
-        data_taxonomy.ListDataAttributesResponse,
-    ]:
+    def list_data_attributes(self) -> Callable[[data_taxonomy.ListDataAttributesRequest], data_taxonomy.ListDataAttributesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataAttributes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_taxonomies(
-        self,
-    ) -> Callable[
-        [data_taxonomy.ListDataTaxonomiesRequest],
-        data_taxonomy.ListDataTaxonomiesResponse,
-    ]:
+    def list_data_taxonomies(self) -> Callable[[data_taxonomy.ListDataTaxonomiesRequest], data_taxonomy.ListDataTaxonomiesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataTaxonomies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.UpdateDataAttributeRequest], operations_pb2.Operation]:
+    def update_data_attribute(self) -> Callable[[data_taxonomy.UpdateDataAttributeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.UpdateDataAttributeBindingRequest], operations_pb2.Operation
-    ]:
+    def update_data_attribute_binding(self) -> Callable[[data_taxonomy.UpdateDataAttributeBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_taxonomy(
-        self,
-    ) -> Callable[
-        [gcd_data_taxonomy.UpdateDataTaxonomyRequest], operations_pb2.Operation
-    ]:
+    def update_data_taxonomy(self) -> Callable[[gcd_data_taxonomy.UpdateDataTaxonomyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3711,23 +2951,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetLocation,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _GetLocation(_BaseDataTaxonomyServiceRestTransport._BaseGetLocation, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3765,26 +2994,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3808,12 +3027,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3825,9 +3039,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3852,23 +3064,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataTaxonomyServiceRestTransport._BaseListLocations,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _ListLocations(_BaseDataTaxonomyServiceRestTransport._BaseListLocations, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3906,26 +3107,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3949,12 +3140,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3966,9 +3152,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3993,23 +3177,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _CancelOperation(_BaseDataTaxonomyServiceRestTransport._BaseCancelOperation, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4045,32 +3218,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4094,13 +3253,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4114,23 +3267,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4165,28 +3307,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4210,12 +3340,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4229,23 +3354,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetOperation,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _GetOperation(_BaseDataTaxonomyServiceRestTransport._BaseGetOperation, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4283,26 +3397,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4326,12 +3430,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4343,9 +3442,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4370,23 +3467,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataTaxonomyServiceRestTransport._BaseListOperations,
-        DataTaxonomyServiceRestStub,
-    ):
+    class _ListOperations(_BaseDataTaxonomyServiceRestTransport._BaseListOperations, DataTaxonomyServiceRestStub):
         def __hash__(self):
             return hash("DataTaxonomyServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4424,26 +3510,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4467,12 +3543,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = DataTaxonomyServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4484,9 +3555,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

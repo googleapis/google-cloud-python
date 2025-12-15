@@ -44,9 +44,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -56,10 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -78,11 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -326,12 +311,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         return self._grpc_channel
 
     @property
-    def get_omnichannel_setting(
-        self,
-    ) -> Callable[
-        [omnichannelsettings.GetOmnichannelSettingRequest],
-        omnichannelsettings.OmnichannelSetting,
-    ]:
+    def get_omnichannel_setting(self) -> Callable[[omnichannelsettings.GetOmnichannelSettingRequest], omnichannelsettings.OmnichannelSetting]:
         r"""Return a callable for the get omnichannel setting method over gRPC.
 
         Get the omnichannel settings for a given merchant.
@@ -357,10 +337,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
     @property
     def list_omnichannel_settings(
         self,
-    ) -> Callable[
-        [omnichannelsettings.ListOmnichannelSettingsRequest],
-        omnichannelsettings.ListOmnichannelSettingsResponse,
-    ]:
+    ) -> Callable[[omnichannelsettings.ListOmnichannelSettingsRequest], omnichannelsettings.ListOmnichannelSettingsResponse]:
         r"""Return a callable for the list omnichannel settings method over gRPC.
 
         List all the omnichannel settings for a given
@@ -385,12 +362,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         return self._stubs["list_omnichannel_settings"]
 
     @property
-    def create_omnichannel_setting(
-        self,
-    ) -> Callable[
-        [omnichannelsettings.CreateOmnichannelSettingRequest],
-        omnichannelsettings.OmnichannelSetting,
-    ]:
+    def create_omnichannel_setting(self) -> Callable[[omnichannelsettings.CreateOmnichannelSettingRequest], omnichannelsettings.OmnichannelSetting]:
         r"""Return a callable for the create omnichannel setting method over gRPC.
 
         Create the omnichannel settings for a given merchant.
@@ -406,9 +378,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_omnichannel_setting" not in self._stubs:
-            self._stubs[
-                "create_omnichannel_setting"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_omnichannel_setting"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/CreateOmnichannelSetting",
                 request_serializer=omnichannelsettings.CreateOmnichannelSettingRequest.serialize,
                 response_deserializer=omnichannelsettings.OmnichannelSetting.deserialize,
@@ -416,12 +386,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         return self._stubs["create_omnichannel_setting"]
 
     @property
-    def update_omnichannel_setting(
-        self,
-    ) -> Callable[
-        [omnichannelsettings.UpdateOmnichannelSettingRequest],
-        omnichannelsettings.OmnichannelSetting,
-    ]:
+    def update_omnichannel_setting(self) -> Callable[[omnichannelsettings.UpdateOmnichannelSettingRequest], omnichannelsettings.OmnichannelSetting]:
         r"""Return a callable for the update omnichannel setting method over gRPC.
 
         Update the omnichannel setting for a given merchant
@@ -438,9 +403,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_omnichannel_setting" not in self._stubs:
-            self._stubs[
-                "update_omnichannel_setting"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_omnichannel_setting"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/UpdateOmnichannelSetting",
                 request_serializer=omnichannelsettings.UpdateOmnichannelSettingRequest.serialize,
                 response_deserializer=omnichannelsettings.OmnichannelSetting.deserialize,
@@ -450,10 +413,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
     @property
     def request_inventory_verification(
         self,
-    ) -> Callable[
-        [omnichannelsettings.RequestInventoryVerificationRequest],
-        omnichannelsettings.RequestInventoryVerificationResponse,
-    ]:
+    ) -> Callable[[omnichannelsettings.RequestInventoryVerificationRequest], omnichannelsettings.RequestInventoryVerificationResponse]:
         r"""Return a callable for the request inventory verification method over gRPC.
 
         Requests inventory verification for a given merchant
@@ -470,9 +430,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "request_inventory_verification" not in self._stubs:
-            self._stubs[
-                "request_inventory_verification"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["request_inventory_verification"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/RequestInventoryVerification",
                 request_serializer=omnichannelsettings.RequestInventoryVerificationRequest.serialize,
                 response_deserializer=omnichannelsettings.RequestInventoryVerificationResponse.deserialize,

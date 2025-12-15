@@ -76,13 +76,7 @@ from .provisioning import (
     UpdateProvisioningConfigRequest,
     VolumeConfig,
 )
-from .ssh_key import (
-    CreateSSHKeyRequest,
-    DeleteSSHKeyRequest,
-    ListSSHKeysRequest,
-    ListSSHKeysResponse,
-    SSHKey,
-)
+from .ssh_key import CreateSSHKeyRequest, DeleteSSHKeyRequest, ListSSHKeysRequest, ListSSHKeysResponse, SSHKey
 from .volume import (
     EvictVolumeRequest,
     GetVolumeRequest,

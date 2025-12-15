@@ -56,9 +56,7 @@ class Simulation(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    resource_value_configs_metadata: MutableSequence[
-        valued_resource.ResourceValueConfigMetadata
-    ] = proto.RepeatedField(
+    resource_value_configs_metadata: MutableSequence[valued_resource.ResourceValueConfigMetadata] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=valued_resource.ResourceValueConfigMetadata,

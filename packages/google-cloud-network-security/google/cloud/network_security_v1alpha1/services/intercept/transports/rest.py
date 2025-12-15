@@ -243,13 +243,8 @@ class InterceptRestInterceptor:
     """
 
     def pre_create_intercept_deployment(
-        self,
-        request: intercept.CreateInterceptDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.CreateInterceptDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.CreateInterceptDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.CreateInterceptDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_intercept_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +252,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_create_intercept_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_intercept_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_intercept_deployment
 
         DEPRECATED. Please use the `post_create_intercept_deployment_with_metadata`
@@ -273,9 +266,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_create_intercept_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_intercept_deployment
 
@@ -292,13 +283,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_create_intercept_deployment_group(
-        self,
-        request: intercept.CreateInterceptDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.CreateInterceptDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.CreateInterceptDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.CreateInterceptDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_intercept_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +292,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_create_intercept_deployment_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_intercept_deployment_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_intercept_deployment_group
 
         DEPRECATED. Please use the `post_create_intercept_deployment_group_with_metadata`
@@ -322,9 +306,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_create_intercept_deployment_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_intercept_deployment_group
 
@@ -341,13 +323,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_create_intercept_endpoint_group(
-        self,
-        request: intercept.CreateInterceptEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.CreateInterceptEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.CreateInterceptEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.CreateInterceptEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_intercept_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -355,9 +332,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_create_intercept_endpoint_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_intercept_endpoint_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_intercept_endpoint_group
 
         DEPRECATED. Please use the `post_create_intercept_endpoint_group_with_metadata`
@@ -371,9 +346,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_create_intercept_endpoint_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_intercept_endpoint_group
 
@@ -390,13 +363,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_create_intercept_endpoint_group_association(
-        self,
-        request: intercept.CreateInterceptEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.CreateInterceptEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.CreateInterceptEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.CreateInterceptEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_intercept_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +372,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_create_intercept_endpoint_group_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_intercept_endpoint_group_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_intercept_endpoint_group_association
 
         DEPRECATED. Please use the `post_create_intercept_endpoint_group_association_with_metadata`
@@ -420,9 +386,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_create_intercept_endpoint_group_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_intercept_endpoint_group_association
 
@@ -439,13 +403,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_delete_intercept_deployment(
-        self,
-        request: intercept.DeleteInterceptDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.DeleteInterceptDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.DeleteInterceptDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.DeleteInterceptDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_intercept_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -453,9 +412,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_intercept_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_intercept_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_intercept_deployment
 
         DEPRECATED. Please use the `post_delete_intercept_deployment_with_metadata`
@@ -469,9 +426,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_delete_intercept_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_intercept_deployment
 
@@ -488,13 +443,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_delete_intercept_deployment_group(
-        self,
-        request: intercept.DeleteInterceptDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.DeleteInterceptDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.DeleteInterceptDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.DeleteInterceptDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_intercept_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -502,9 +452,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_intercept_deployment_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_intercept_deployment_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_intercept_deployment_group
 
         DEPRECATED. Please use the `post_delete_intercept_deployment_group_with_metadata`
@@ -518,9 +466,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_delete_intercept_deployment_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_intercept_deployment_group
 
@@ -537,13 +483,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_delete_intercept_endpoint_group(
-        self,
-        request: intercept.DeleteInterceptEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.DeleteInterceptEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.DeleteInterceptEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.DeleteInterceptEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_intercept_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -551,9 +492,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_intercept_endpoint_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_intercept_endpoint_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_intercept_endpoint_group
 
         DEPRECATED. Please use the `post_delete_intercept_endpoint_group_with_metadata`
@@ -567,9 +506,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_delete_intercept_endpoint_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_intercept_endpoint_group
 
@@ -586,13 +523,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_delete_intercept_endpoint_group_association(
-        self,
-        request: intercept.DeleteInterceptEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.DeleteInterceptEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.DeleteInterceptEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.DeleteInterceptEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_intercept_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -600,9 +532,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_intercept_endpoint_group_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_intercept_endpoint_group_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_intercept_endpoint_group_association
 
         DEPRECATED. Please use the `post_delete_intercept_endpoint_group_association_with_metadata`
@@ -616,9 +546,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_delete_intercept_endpoint_group_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_intercept_endpoint_group_association
 
@@ -635,12 +563,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_get_intercept_deployment(
-        self,
-        request: intercept.GetInterceptDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.GetInterceptDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: intercept.GetInterceptDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.GetInterceptDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_intercept_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -648,9 +572,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_get_intercept_deployment(
-        self, response: intercept.InterceptDeployment
-    ) -> intercept.InterceptDeployment:
+    def post_get_intercept_deployment(self, response: intercept.InterceptDeployment) -> intercept.InterceptDeployment:
         """Post-rpc interceptor for get_intercept_deployment
 
         DEPRECATED. Please use the `post_get_intercept_deployment_with_metadata`
@@ -664,9 +586,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_get_intercept_deployment_with_metadata(
-        self,
-        response: intercept.InterceptDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: intercept.InterceptDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[intercept.InterceptDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_intercept_deployment
 
@@ -683,13 +603,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_get_intercept_deployment_group(
-        self,
-        request: intercept.GetInterceptDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.GetInterceptDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.GetInterceptDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.GetInterceptDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_intercept_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -697,9 +612,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_get_intercept_deployment_group(
-        self, response: intercept.InterceptDeploymentGroup
-    ) -> intercept.InterceptDeploymentGroup:
+    def post_get_intercept_deployment_group(self, response: intercept.InterceptDeploymentGroup) -> intercept.InterceptDeploymentGroup:
         """Post-rpc interceptor for get_intercept_deployment_group
 
         DEPRECATED. Please use the `post_get_intercept_deployment_group_with_metadata`
@@ -713,12 +626,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_get_intercept_deployment_group_with_metadata(
-        self,
-        response: intercept.InterceptDeploymentGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.InterceptDeploymentGroup, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: intercept.InterceptDeploymentGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.InterceptDeploymentGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_intercept_deployment_group
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -734,13 +643,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_get_intercept_endpoint_group(
-        self,
-        request: intercept.GetInterceptEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.GetInterceptEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.GetInterceptEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.GetInterceptEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_intercept_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -748,9 +652,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_get_intercept_endpoint_group(
-        self, response: intercept.InterceptEndpointGroup
-    ) -> intercept.InterceptEndpointGroup:
+    def post_get_intercept_endpoint_group(self, response: intercept.InterceptEndpointGroup) -> intercept.InterceptEndpointGroup:
         """Post-rpc interceptor for get_intercept_endpoint_group
 
         DEPRECATED. Please use the `post_get_intercept_endpoint_group_with_metadata`
@@ -764,12 +666,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_get_intercept_endpoint_group_with_metadata(
-        self,
-        response: intercept.InterceptEndpointGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.InterceptEndpointGroup, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: intercept.InterceptEndpointGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.InterceptEndpointGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_intercept_endpoint_group
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -785,13 +683,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_get_intercept_endpoint_group_association(
-        self,
-        request: intercept.GetInterceptEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.GetInterceptEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.GetInterceptEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.GetInterceptEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_intercept_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -815,13 +708,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_get_intercept_endpoint_group_association_with_metadata(
-        self,
-        response: intercept.InterceptEndpointGroupAssociation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.InterceptEndpointGroupAssociation,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: intercept.InterceptEndpointGroupAssociation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.InterceptEndpointGroupAssociation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_intercept_endpoint_group_association
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -837,13 +725,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_list_intercept_deployment_groups(
-        self,
-        request: intercept.ListInterceptDeploymentGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptDeploymentGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.ListInterceptDeploymentGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptDeploymentGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_intercept_deployment_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -867,13 +750,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_list_intercept_deployment_groups_with_metadata(
-        self,
-        response: intercept.ListInterceptDeploymentGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptDeploymentGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: intercept.ListInterceptDeploymentGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptDeploymentGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_intercept_deployment_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -889,13 +767,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_list_intercept_deployments(
-        self,
-        request: intercept.ListInterceptDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptDeploymentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.ListInterceptDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_intercept_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -903,9 +776,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_list_intercept_deployments(
-        self, response: intercept.ListInterceptDeploymentsResponse
-    ) -> intercept.ListInterceptDeploymentsResponse:
+    def post_list_intercept_deployments(self, response: intercept.ListInterceptDeploymentsResponse) -> intercept.ListInterceptDeploymentsResponse:
         """Post-rpc interceptor for list_intercept_deployments
 
         DEPRECATED. Please use the `post_list_intercept_deployments_with_metadata`
@@ -919,13 +790,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_list_intercept_deployments_with_metadata(
-        self,
-        response: intercept.ListInterceptDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptDeploymentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: intercept.ListInterceptDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_intercept_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -941,13 +807,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_list_intercept_endpoint_group_associations(
-        self,
-        request: intercept.ListInterceptEndpointGroupAssociationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptEndpointGroupAssociationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.ListInterceptEndpointGroupAssociationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptEndpointGroupAssociationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_intercept_endpoint_group_associations
 
         Override in a subclass to manipulate the request or metadata
@@ -971,13 +832,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_list_intercept_endpoint_group_associations_with_metadata(
-        self,
-        response: intercept.ListInterceptEndpointGroupAssociationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptEndpointGroupAssociationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: intercept.ListInterceptEndpointGroupAssociationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptEndpointGroupAssociationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_intercept_endpoint_group_associations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -993,13 +849,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_list_intercept_endpoint_groups(
-        self,
-        request: intercept.ListInterceptEndpointGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptEndpointGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.ListInterceptEndpointGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptEndpointGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_intercept_endpoint_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -1023,13 +874,8 @@ class InterceptRestInterceptor:
         return response
 
     def post_list_intercept_endpoint_groups_with_metadata(
-        self,
-        response: intercept.ListInterceptEndpointGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.ListInterceptEndpointGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: intercept.ListInterceptEndpointGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.ListInterceptEndpointGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_intercept_endpoint_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1045,13 +891,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_update_intercept_deployment(
-        self,
-        request: intercept.UpdateInterceptDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.UpdateInterceptDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.UpdateInterceptDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.UpdateInterceptDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_intercept_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1059,9 +900,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_update_intercept_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_intercept_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_intercept_deployment
 
         DEPRECATED. Please use the `post_update_intercept_deployment_with_metadata`
@@ -1075,9 +914,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_update_intercept_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_intercept_deployment
 
@@ -1094,13 +931,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_update_intercept_deployment_group(
-        self,
-        request: intercept.UpdateInterceptDeploymentGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.UpdateInterceptDeploymentGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.UpdateInterceptDeploymentGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.UpdateInterceptDeploymentGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_intercept_deployment_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1108,9 +940,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_update_intercept_deployment_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_intercept_deployment_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_intercept_deployment_group
 
         DEPRECATED. Please use the `post_update_intercept_deployment_group_with_metadata`
@@ -1124,9 +954,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_update_intercept_deployment_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_intercept_deployment_group
 
@@ -1143,13 +971,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_update_intercept_endpoint_group(
-        self,
-        request: intercept.UpdateInterceptEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.UpdateInterceptEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.UpdateInterceptEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.UpdateInterceptEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_intercept_endpoint_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1157,9 +980,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_update_intercept_endpoint_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_intercept_endpoint_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_intercept_endpoint_group
 
         DEPRECATED. Please use the `post_update_intercept_endpoint_group_with_metadata`
@@ -1173,9 +994,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_update_intercept_endpoint_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_intercept_endpoint_group
 
@@ -1192,13 +1011,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_update_intercept_endpoint_group_association(
-        self,
-        request: intercept.UpdateInterceptEndpointGroupAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intercept.UpdateInterceptEndpointGroupAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: intercept.UpdateInterceptEndpointGroupAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intercept.UpdateInterceptEndpointGroupAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_intercept_endpoint_group_association
 
         Override in a subclass to manipulate the request or metadata
@@ -1206,9 +1020,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_update_intercept_endpoint_group_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_intercept_endpoint_group_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_intercept_endpoint_group_association
 
         DEPRECATED. Please use the `post_update_intercept_endpoint_group_association_with_metadata`
@@ -1222,9 +1034,7 @@ class InterceptRestInterceptor:
         return response
 
     def post_update_intercept_endpoint_group_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_intercept_endpoint_group_association
 
@@ -1241,12 +1051,8 @@ class InterceptRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1254,9 +1060,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1266,12 +1070,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1279,9 +1079,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1291,12 +1089,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1314,12 +1108,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1337,13 +1127,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1351,9 +1136,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1363,12 +1146,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1386,12 +1165,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1409,12 +1184,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1422,9 +1193,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1434,12 +1203,8 @@ class InterceptRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1447,9 +1212,7 @@ class InterceptRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1540,9 +1303,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1612,29 +1373,17 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 path_prefix="v1alpha1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateInterceptDeployment(
-        _BaseInterceptRestTransport._BaseCreateInterceptDeployment, InterceptRestStub
-    ):
+    class _CreateInterceptDeployment(_BaseInterceptRestTransport._BaseCreateInterceptDeployment, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.CreateInterceptDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1679,32 +1428,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_intercept_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_intercept_deployment(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1728,13 +1463,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._CreateInterceptDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1748,12 +1477,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_create_intercept_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_intercept_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_intercept_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1774,23 +1499,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _CreateInterceptDeploymentGroup(
-        _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup,
-        InterceptRestStub,
-    ):
+    class _CreateInterceptDeploymentGroup(_BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.CreateInterceptDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1835,32 +1549,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_intercept_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_intercept_deployment_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1883,16 +1583,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._CreateInterceptDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InterceptRestTransport._CreateInterceptDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1906,15 +1598,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_create_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_intercept_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_intercept_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1935,22 +1620,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _CreateInterceptEndpointGroup(
-        _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup, InterceptRestStub
-    ):
+    class _CreateInterceptEndpointGroup(_BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.CreateInterceptEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1995,32 +1670,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_intercept_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_intercept_endpoint_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2043,16 +1704,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._CreateInterceptEndpointGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InterceptRestTransport._CreateInterceptEndpointGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2066,15 +1719,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_create_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_intercept_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2095,25 +1741,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _CreateInterceptEndpointGroupAssociation(
-        _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation,
-        InterceptRestStub,
-    ):
+    class _CreateInterceptEndpointGroupAssociation(_BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation, InterceptRestStub):
         def __hash__(self):
-            return hash(
-                "InterceptRestTransport.CreateInterceptEndpointGroupAssociation"
-            )
+            return hash("InterceptRestTransport.CreateInterceptEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2158,35 +1791,20 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_intercept_endpoint_group_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_intercept_endpoint_group_association(request, metadata)
             transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2210,13 +1828,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._CreateInterceptEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2228,19 +1840,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_create_intercept_endpoint_group_association(
-                resp
-            )
+            resp = self._interceptor.post_create_intercept_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_intercept_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2261,22 +1864,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _DeleteInterceptDeployment(
-        _BaseInterceptRestTransport._BaseDeleteInterceptDeployment, InterceptRestStub
-    ):
+    class _DeleteInterceptDeployment(_BaseInterceptRestTransport._BaseDeleteInterceptDeployment, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.DeleteInterceptDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2320,28 +1913,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_intercept_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_intercept_deployment(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2365,12 +1946,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._DeleteInterceptDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2384,12 +1960,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_delete_intercept_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_intercept_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_intercept_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2410,23 +1982,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _DeleteInterceptDeploymentGroup(
-        _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup,
-        InterceptRestStub,
-    ):
+    class _DeleteInterceptDeploymentGroup(_BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.DeleteInterceptDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2470,28 +2031,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_intercept_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_intercept_deployment_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2514,15 +2063,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._DeleteInterceptDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InterceptRestTransport._DeleteInterceptDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2536,15 +2078,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_delete_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_intercept_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_intercept_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2565,22 +2100,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _DeleteInterceptEndpointGroup(
-        _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup, InterceptRestStub
-    ):
+    class _DeleteInterceptEndpointGroup(_BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.DeleteInterceptEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2624,28 +2149,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_intercept_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_intercept_endpoint_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2668,15 +2181,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._DeleteInterceptEndpointGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InterceptRestTransport._DeleteInterceptEndpointGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2690,15 +2196,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_delete_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_intercept_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2719,25 +2218,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _DeleteInterceptEndpointGroupAssociation(
-        _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation,
-        InterceptRestStub,
-    ):
+    class _DeleteInterceptEndpointGroupAssociation(_BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation, InterceptRestStub):
         def __hash__(self):
-            return hash(
-                "InterceptRestTransport.DeleteInterceptEndpointGroupAssociation"
-            )
+            return hash("InterceptRestTransport.DeleteInterceptEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2781,31 +2267,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_intercept_endpoint_group_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_intercept_endpoint_group_association(request, metadata)
             transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2829,12 +2302,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._DeleteInterceptEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2846,19 +2314,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_delete_intercept_endpoint_group_association(
-                resp
-            )
+            resp = self._interceptor.post_delete_intercept_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_intercept_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2879,22 +2338,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _GetInterceptDeployment(
-        _BaseInterceptRestTransport._BaseGetInterceptDeployment, InterceptRestStub
-    ):
+    class _GetInterceptDeployment(_BaseInterceptRestTransport._BaseGetInterceptDeployment, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.GetInterceptDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2942,28 +2391,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_intercept_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_intercept_deployment(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2987,12 +2424,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._GetInterceptDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3008,12 +2440,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_get_intercept_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_intercept_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_intercept_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = intercept.InterceptDeployment.to_json(response)
                 except:
@@ -3034,22 +2462,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _GetInterceptDeploymentGroup(
-        _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup, InterceptRestStub
-    ):
+    class _GetInterceptDeploymentGroup(_BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.GetInterceptDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3095,28 +2513,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_intercept_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_intercept_deployment_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3139,15 +2545,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._GetInterceptDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InterceptRestTransport._GetInterceptDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3163,19 +2562,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_get_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_intercept_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_intercept_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = intercept.InterceptDeploymentGroup.to_json(
-                        response
-                    )
+                    response_payload = intercept.InterceptDeploymentGroup.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3194,22 +2584,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _GetInterceptEndpointGroup(
-        _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup, InterceptRestStub
-    ):
+    class _GetInterceptEndpointGroup(_BaseInterceptRestTransport._BaseGetInterceptEndpointGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.GetInterceptEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3262,28 +2642,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_intercept_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_intercept_endpoint_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3307,12 +2675,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._GetInterceptEndpointGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3328,16 +2691,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_get_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_intercept_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = intercept.InterceptEndpointGroup.to_json(
-                        response
-                    )
+                    response_payload = intercept.InterceptEndpointGroup.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3356,23 +2713,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _GetInterceptEndpointGroupAssociation(
-        _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation,
-        InterceptRestStub,
-    ):
+    class _GetInterceptEndpointGroupAssociation(_BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.GetInterceptEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3425,31 +2771,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_intercept_endpoint_group_association(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_intercept_endpoint_group_association(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3473,12 +2804,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._GetInterceptEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3494,19 +2820,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_get_intercept_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_intercept_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        intercept.InterceptEndpointGroupAssociation.to_json(response)
-                    )
+                    response_payload = intercept.InterceptEndpointGroupAssociation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3525,23 +2842,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _ListInterceptDeploymentGroups(
-        _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups,
-        InterceptRestStub,
-    ):
+    class _ListInterceptDeploymentGroups(_BaseInterceptRestTransport._BaseListInterceptDeploymentGroups, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.ListInterceptDeploymentGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3584,28 +2890,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_intercept_deployment_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_intercept_deployment_groups(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3628,15 +2922,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._ListInterceptDeploymentGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InterceptRestTransport._ListInterceptDeploymentGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3652,21 +2939,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_list_intercept_deployment_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_intercept_deployment_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_intercept_deployment_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        intercept.ListInterceptDeploymentGroupsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = intercept.ListInterceptDeploymentGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3685,22 +2961,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _ListInterceptDeployments(
-        _BaseInterceptRestTransport._BaseListInterceptDeployments, InterceptRestStub
-    ):
+    class _ListInterceptDeployments(_BaseInterceptRestTransport._BaseListInterceptDeployments, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.ListInterceptDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3743,28 +3009,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptDeployments._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_intercept_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseListInterceptDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_intercept_deployments(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseListInterceptDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseListInterceptDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseListInterceptDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3788,12 +3042,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._ListInterceptDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3809,16 +3058,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_list_intercept_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_intercept_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_intercept_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        intercept.ListInterceptDeploymentsResponse.to_json(response)
-                    )
+                    response_payload = intercept.ListInterceptDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3837,23 +3080,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _ListInterceptEndpointGroupAssociations(
-        _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations,
-        InterceptRestStub,
-    ):
+    class _ListInterceptEndpointGroupAssociations(_BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.ListInterceptEndpointGroupAssociations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3896,31 +3128,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_intercept_endpoint_group_associations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_intercept_endpoint_group_associations(request, metadata)
             transcoded_request = _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3944,12 +3163,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._ListInterceptEndpointGroupAssociations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3963,23 +3177,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_intercept_endpoint_group_associations(
-                resp
-            )
+            resp = self._interceptor.post_list_intercept_endpoint_group_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_intercept_endpoint_group_associations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_intercept_endpoint_group_associations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = intercept.ListInterceptEndpointGroupAssociationsResponse.to_json(
-                        response
-                    )
+                    response_payload = intercept.ListInterceptEndpointGroupAssociationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3998,22 +3201,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _ListInterceptEndpointGroups(
-        _BaseInterceptRestTransport._BaseListInterceptEndpointGroups, InterceptRestStub
-    ):
+    class _ListInterceptEndpointGroups(_BaseInterceptRestTransport._BaseListInterceptEndpointGroups, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.ListInterceptEndpointGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4056,28 +3249,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_intercept_endpoint_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_intercept_endpoint_groups(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4100,15 +3281,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._ListInterceptEndpointGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InterceptRestTransport._ListInterceptEndpointGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4124,19 +3298,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_list_intercept_endpoint_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_intercept_endpoint_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_intercept_endpoint_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        intercept.ListInterceptEndpointGroupsResponse.to_json(response)
-                    )
+                    response_payload = intercept.ListInterceptEndpointGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4155,22 +3320,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _UpdateInterceptDeployment(
-        _BaseInterceptRestTransport._BaseUpdateInterceptDeployment, InterceptRestStub
-    ):
+    class _UpdateInterceptDeployment(_BaseInterceptRestTransport._BaseUpdateInterceptDeployment, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.UpdateInterceptDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4215,32 +3370,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_intercept_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_intercept_deployment(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4264,13 +3405,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._UpdateInterceptDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4284,12 +3419,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_update_intercept_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_intercept_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_intercept_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4310,23 +3441,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _UpdateInterceptDeploymentGroup(
-        _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup,
-        InterceptRestStub,
-    ):
+    class _UpdateInterceptDeploymentGroup(_BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.UpdateInterceptDeploymentGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4371,32 +3491,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_intercept_deployment_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_intercept_deployment_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4419,16 +3525,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._UpdateInterceptDeploymentGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InterceptRestTransport._UpdateInterceptDeploymentGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4442,15 +3540,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_update_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_intercept_deployment_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_intercept_deployment_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4471,22 +3562,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _UpdateInterceptEndpointGroup(
-        _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup, InterceptRestStub
-    ):
+    class _UpdateInterceptEndpointGroup(_BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.UpdateInterceptEndpointGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4531,32 +3612,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_intercept_endpoint_group(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_intercept_endpoint_group(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4579,16 +3646,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
 
             # Send the request
-            response = (
-                InterceptRestTransport._UpdateInterceptEndpointGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InterceptRestTransport._UpdateInterceptEndpointGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4602,15 +3661,8 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_update_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_intercept_endpoint_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4631,25 +3683,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 )
             return resp
 
-    class _UpdateInterceptEndpointGroupAssociation(
-        _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation,
-        InterceptRestStub,
-    ):
+    class _UpdateInterceptEndpointGroupAssociation(_BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation, InterceptRestStub):
         def __hash__(self):
-            return hash(
-                "InterceptRestTransport.UpdateInterceptEndpointGroupAssociation"
-            )
+            return hash("InterceptRestTransport.UpdateInterceptEndpointGroupAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4694,35 +3733,20 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_intercept_endpoint_group_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_intercept_endpoint_group_association(request, metadata)
             transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4746,13 +3770,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._UpdateInterceptEndpointGroupAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4764,19 +3782,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_update_intercept_endpoint_group_association(
-                resp
-            )
+            resp = self._interceptor.post_update_intercept_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_intercept_endpoint_group_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4798,31 +3807,19 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             return resp
 
     @property
-    def create_intercept_deployment(
-        self,
-    ) -> Callable[
-        [intercept.CreateInterceptDeploymentRequest], operations_pb2.Operation
-    ]:
+    def create_intercept_deployment(self) -> Callable[[intercept.CreateInterceptDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_intercept_deployment_group(
-        self,
-    ) -> Callable[
-        [intercept.CreateInterceptDeploymentGroupRequest], operations_pb2.Operation
-    ]:
+    def create_intercept_deployment_group(self) -> Callable[[intercept.CreateInterceptDeploymentGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_intercept_endpoint_group(
-        self,
-    ) -> Callable[
-        [intercept.CreateInterceptEndpointGroupRequest], operations_pb2.Operation
-    ]:
+    def create_intercept_endpoint_group(self) -> Callable[[intercept.CreateInterceptEndpointGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4830,40 +3827,25 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def create_intercept_endpoint_group_association(
         self,
-    ) -> Callable[
-        [intercept.CreateInterceptEndpointGroupAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[intercept.CreateInterceptEndpointGroupAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_intercept_deployment(
-        self,
-    ) -> Callable[
-        [intercept.DeleteInterceptDeploymentRequest], operations_pb2.Operation
-    ]:
+    def delete_intercept_deployment(self) -> Callable[[intercept.DeleteInterceptDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_intercept_deployment_group(
-        self,
-    ) -> Callable[
-        [intercept.DeleteInterceptDeploymentGroupRequest], operations_pb2.Operation
-    ]:
+    def delete_intercept_deployment_group(self) -> Callable[[intercept.DeleteInterceptDeploymentGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_intercept_endpoint_group(
-        self,
-    ) -> Callable[
-        [intercept.DeleteInterceptEndpointGroupRequest], operations_pb2.Operation
-    ]:
+    def delete_intercept_endpoint_group(self) -> Callable[[intercept.DeleteInterceptEndpointGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4871,41 +3853,25 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def delete_intercept_endpoint_group_association(
         self,
-    ) -> Callable[
-        [intercept.DeleteInterceptEndpointGroupAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[intercept.DeleteInterceptEndpointGroupAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_intercept_deployment(
-        self,
-    ) -> Callable[
-        [intercept.GetInterceptDeploymentRequest], intercept.InterceptDeployment
-    ]:
+    def get_intercept_deployment(self) -> Callable[[intercept.GetInterceptDeploymentRequest], intercept.InterceptDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_intercept_deployment_group(
-        self,
-    ) -> Callable[
-        [intercept.GetInterceptDeploymentGroupRequest],
-        intercept.InterceptDeploymentGroup,
-    ]:
+    def get_intercept_deployment_group(self) -> Callable[[intercept.GetInterceptDeploymentGroupRequest], intercept.InterceptDeploymentGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_intercept_endpoint_group(
-        self,
-    ) -> Callable[
-        [intercept.GetInterceptEndpointGroupRequest], intercept.InterceptEndpointGroup
-    ]:
+    def get_intercept_endpoint_group(self) -> Callable[[intercept.GetInterceptEndpointGroupRequest], intercept.InterceptEndpointGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4913,10 +3879,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def get_intercept_endpoint_group_association(
         self,
-    ) -> Callable[
-        [intercept.GetInterceptEndpointGroupAssociationRequest],
-        intercept.InterceptEndpointGroupAssociation,
-    ]:
+    ) -> Callable[[intercept.GetInterceptEndpointGroupAssociationRequest], intercept.InterceptEndpointGroupAssociation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -4924,21 +3887,13 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def list_intercept_deployment_groups(
         self,
-    ) -> Callable[
-        [intercept.ListInterceptDeploymentGroupsRequest],
-        intercept.ListInterceptDeploymentGroupsResponse,
-    ]:
+    ) -> Callable[[intercept.ListInterceptDeploymentGroupsRequest], intercept.ListInterceptDeploymentGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInterceptDeploymentGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_intercept_deployments(
-        self,
-    ) -> Callable[
-        [intercept.ListInterceptDeploymentsRequest],
-        intercept.ListInterceptDeploymentsResponse,
-    ]:
+    def list_intercept_deployments(self) -> Callable[[intercept.ListInterceptDeploymentsRequest], intercept.ListInterceptDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInterceptDeployments(self._session, self._host, self._interceptor)  # type: ignore
@@ -4946,10 +3901,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def list_intercept_endpoint_group_associations(
         self,
-    ) -> Callable[
-        [intercept.ListInterceptEndpointGroupAssociationsRequest],
-        intercept.ListInterceptEndpointGroupAssociationsResponse,
-    ]:
+    ) -> Callable[[intercept.ListInterceptEndpointGroupAssociationsRequest], intercept.ListInterceptEndpointGroupAssociationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInterceptEndpointGroupAssociations(self._session, self._host, self._interceptor)  # type: ignore
@@ -4957,40 +3909,25 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def list_intercept_endpoint_groups(
         self,
-    ) -> Callable[
-        [intercept.ListInterceptEndpointGroupsRequest],
-        intercept.ListInterceptEndpointGroupsResponse,
-    ]:
+    ) -> Callable[[intercept.ListInterceptEndpointGroupsRequest], intercept.ListInterceptEndpointGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInterceptEndpointGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_intercept_deployment(
-        self,
-    ) -> Callable[
-        [intercept.UpdateInterceptDeploymentRequest], operations_pb2.Operation
-    ]:
+    def update_intercept_deployment(self) -> Callable[[intercept.UpdateInterceptDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_intercept_deployment_group(
-        self,
-    ) -> Callable[
-        [intercept.UpdateInterceptDeploymentGroupRequest], operations_pb2.Operation
-    ]:
+    def update_intercept_deployment_group(self) -> Callable[[intercept.UpdateInterceptDeploymentGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_intercept_endpoint_group(
-        self,
-    ) -> Callable[
-        [intercept.UpdateInterceptEndpointGroupRequest], operations_pb2.Operation
-    ]:
+    def update_intercept_endpoint_group(self) -> Callable[[intercept.UpdateInterceptEndpointGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -4998,10 +3935,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     @property
     def update_intercept_endpoint_group_association(
         self,
-    ) -> Callable[
-        [intercept.UpdateInterceptEndpointGroupAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[intercept.UpdateInterceptEndpointGroupAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -5015,15 +3949,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             return hash("InterceptRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5061,30 +3987,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseInterceptRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseInterceptRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5108,12 +4020,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5125,9 +4032,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5152,22 +4057,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseInterceptRestTransport._BaseListLocations, InterceptRestStub
-    ):
+    class _ListLocations(_BaseInterceptRestTransport._BaseListLocations, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5205,30 +4100,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseInterceptRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseInterceptRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5252,12 +4133,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5269,9 +4145,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5296,22 +4170,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseInterceptRestTransport._BaseGetIamPolicy, InterceptRestStub
-    ):
+    class _GetIamPolicy(_BaseInterceptRestTransport._BaseGetIamPolicy, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5349,30 +4213,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseInterceptRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseInterceptRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5396,12 +4246,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5413,9 +4258,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5440,22 +4283,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseInterceptRestTransport._BaseSetIamPolicy, InterceptRestStub
-    ):
+    class _SetIamPolicy(_BaseInterceptRestTransport._BaseSetIamPolicy, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5494,34 +4327,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseInterceptRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseInterceptRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5545,13 +4362,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5563,9 +4374,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5590,22 +4399,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseInterceptRestTransport._BaseTestIamPermissions, InterceptRestStub
-    ):
+    class _TestIamPermissions(_BaseInterceptRestTransport._BaseTestIamPermissions, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5644,32 +4443,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseInterceptRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterceptRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterceptRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterceptRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5693,13 +4478,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5711,9 +4490,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5738,22 +4515,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseInterceptRestTransport._BaseCancelOperation, InterceptRestStub
-    ):
+    class _CancelOperation(_BaseInterceptRestTransport._BaseCancelOperation, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5789,36 +4556,18 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseInterceptRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseInterceptRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5842,13 +4591,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5862,22 +4605,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseInterceptRestTransport._BaseDeleteOperation, InterceptRestStub
-    ):
+    class _DeleteOperation(_BaseInterceptRestTransport._BaseDeleteOperation, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5912,30 +4645,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseInterceptRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseInterceptRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5959,12 +4678,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5978,22 +4692,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseInterceptRestTransport._BaseGetOperation, InterceptRestStub
-    ):
+    class _GetOperation(_BaseInterceptRestTransport._BaseGetOperation, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6031,30 +4735,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseInterceptRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseInterceptRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6078,12 +4768,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6095,9 +4780,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6122,22 +4805,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseInterceptRestTransport._BaseListOperations, InterceptRestStub
-    ):
+    class _ListOperations(_BaseInterceptRestTransport._BaseListOperations, InterceptRestStub):
         def __hash__(self):
             return hash("InterceptRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6175,30 +4848,16 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseInterceptRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseInterceptRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterceptRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterceptRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6222,12 +4881,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             # Send the request
             response = InterceptRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6239,9 +4893,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

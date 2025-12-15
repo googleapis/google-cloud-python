@@ -221,13 +221,8 @@ class RegistrationServiceRestInterceptor:
     """
 
     def pre_create_endpoint(
-        self,
-        request: registration_service.CreateEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.CreateEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.CreateEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.CreateEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -235,9 +230,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_endpoint(
-        self, response: gcs_endpoint.Endpoint
-    ) -> gcs_endpoint.Endpoint:
+    def post_create_endpoint(self, response: gcs_endpoint.Endpoint) -> gcs_endpoint.Endpoint:
         """Post-rpc interceptor for create_endpoint
 
         DEPRECATED. Please use the `post_create_endpoint_with_metadata`
@@ -251,9 +244,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_create_endpoint_with_metadata(
-        self,
-        response: gcs_endpoint.Endpoint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_endpoint.Endpoint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_endpoint.Endpoint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_endpoint
 
@@ -270,13 +261,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_create_namespace(
-        self,
-        request: registration_service.CreateNamespaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.CreateNamespaceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.CreateNamespaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.CreateNamespaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -284,9 +270,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_namespace(
-        self, response: gcs_namespace.Namespace
-    ) -> gcs_namespace.Namespace:
+    def post_create_namespace(self, response: gcs_namespace.Namespace) -> gcs_namespace.Namespace:
         """Post-rpc interceptor for create_namespace
 
         DEPRECATED. Please use the `post_create_namespace_with_metadata`
@@ -300,9 +284,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_create_namespace_with_metadata(
-        self,
-        response: gcs_namespace.Namespace,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_namespace.Namespace, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_namespace.Namespace, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_namespace
 
@@ -319,13 +301,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_create_service(
-        self,
-        request: registration_service.CreateServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.CreateServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.CreateServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.CreateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_service
 
         Override in a subclass to manipulate the request or metadata
@@ -347,9 +324,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_create_service_with_metadata(
-        self,
-        response: gcs_service.Service,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_service.Service, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_service.Service, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_service
 
@@ -366,13 +341,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_endpoint(
-        self,
-        request: registration_service.DeleteEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.DeleteEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.DeleteEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.DeleteEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -381,13 +351,8 @@ class RegistrationServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_namespace(
-        self,
-        request: registration_service.DeleteNamespaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.DeleteNamespaceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.DeleteNamespaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.DeleteNamespaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -396,13 +361,8 @@ class RegistrationServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_service(
-        self,
-        request: registration_service.DeleteServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.DeleteServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.DeleteServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.DeleteServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_service
 
         Override in a subclass to manipulate the request or metadata
@@ -411,12 +371,8 @@ class RegistrationServiceRestInterceptor:
         return request, metadata
 
     def pre_get_endpoint(
-        self,
-        request: registration_service.GetEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.GetEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: registration_service.GetEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.GetEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -438,9 +394,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_get_endpoint_with_metadata(
-        self,
-        response: endpoint.Endpoint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: endpoint.Endpoint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[endpoint.Endpoint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_endpoint
 
@@ -457,12 +411,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -484,9 +434,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -503,13 +451,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_namespace(
-        self,
-        request: registration_service.GetNamespaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.GetNamespaceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.GetNamespaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.GetNamespaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -531,9 +474,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_get_namespace_with_metadata(
-        self,
-        response: namespace.Namespace,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: namespace.Namespace, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[namespace.Namespace, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_namespace
 
@@ -550,12 +491,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_service(
-        self,
-        request: registration_service.GetServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: registration_service.GetServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_service
 
         Override in a subclass to manipulate the request or metadata
@@ -577,9 +514,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_get_service_with_metadata(
-        self,
-        response: service.Service,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Service, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Service, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_service
 
@@ -596,13 +531,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_endpoints(
-        self,
-        request: registration_service.ListEndpointsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.ListEndpointsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.ListEndpointsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.ListEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -610,9 +540,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_endpoints(
-        self, response: registration_service.ListEndpointsResponse
-    ) -> registration_service.ListEndpointsResponse:
+    def post_list_endpoints(self, response: registration_service.ListEndpointsResponse) -> registration_service.ListEndpointsResponse:
         """Post-rpc interceptor for list_endpoints
 
         DEPRECATED. Please use the `post_list_endpoints_with_metadata`
@@ -626,13 +554,8 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_list_endpoints_with_metadata(
-        self,
-        response: registration_service.ListEndpointsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.ListEndpointsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: registration_service.ListEndpointsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.ListEndpointsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_endpoints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -648,13 +571,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_namespaces(
-        self,
-        request: registration_service.ListNamespacesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.ListNamespacesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.ListNamespacesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.ListNamespacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_namespaces
 
         Override in a subclass to manipulate the request or metadata
@@ -662,9 +580,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_namespaces(
-        self, response: registration_service.ListNamespacesResponse
-    ) -> registration_service.ListNamespacesResponse:
+    def post_list_namespaces(self, response: registration_service.ListNamespacesResponse) -> registration_service.ListNamespacesResponse:
         """Post-rpc interceptor for list_namespaces
 
         DEPRECATED. Please use the `post_list_namespaces_with_metadata`
@@ -678,13 +594,8 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_list_namespaces_with_metadata(
-        self,
-        response: registration_service.ListNamespacesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.ListNamespacesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: registration_service.ListNamespacesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.ListNamespacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_namespaces
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -700,13 +611,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_services(
-        self,
-        request: registration_service.ListServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.ListServicesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.ListServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.ListServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_services
 
         Override in a subclass to manipulate the request or metadata
@@ -714,9 +620,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_services(
-        self, response: registration_service.ListServicesResponse
-    ) -> registration_service.ListServicesResponse:
+    def post_list_services(self, response: registration_service.ListServicesResponse) -> registration_service.ListServicesResponse:
         """Post-rpc interceptor for list_services
 
         DEPRECATED. Please use the `post_list_services_with_metadata`
@@ -730,13 +634,8 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_list_services_with_metadata(
-        self,
-        response: registration_service.ListServicesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.ListServicesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: registration_service.ListServicesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.ListServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_services
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -752,12 +651,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -779,9 +674,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -798,13 +691,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -812,9 +700,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -828,13 +714,8 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -850,13 +731,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_endpoint(
-        self,
-        request: registration_service.UpdateEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.UpdateEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.UpdateEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.UpdateEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -864,9 +740,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_endpoint(
-        self, response: gcs_endpoint.Endpoint
-    ) -> gcs_endpoint.Endpoint:
+    def post_update_endpoint(self, response: gcs_endpoint.Endpoint) -> gcs_endpoint.Endpoint:
         """Post-rpc interceptor for update_endpoint
 
         DEPRECATED. Please use the `post_update_endpoint_with_metadata`
@@ -880,9 +754,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_update_endpoint_with_metadata(
-        self,
-        response: gcs_endpoint.Endpoint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_endpoint.Endpoint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_endpoint.Endpoint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_endpoint
 
@@ -899,13 +771,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_namespace(
-        self,
-        request: registration_service.UpdateNamespaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.UpdateNamespaceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.UpdateNamespaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.UpdateNamespaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -913,9 +780,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_namespace(
-        self, response: gcs_namespace.Namespace
-    ) -> gcs_namespace.Namespace:
+    def post_update_namespace(self, response: gcs_namespace.Namespace) -> gcs_namespace.Namespace:
         """Post-rpc interceptor for update_namespace
 
         DEPRECATED. Please use the `post_update_namespace_with_metadata`
@@ -929,9 +794,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_update_namespace_with_metadata(
-        self,
-        response: gcs_namespace.Namespace,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_namespace.Namespace, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_namespace.Namespace, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_namespace
 
@@ -948,13 +811,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_service(
-        self,
-        request: registration_service.UpdateServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        registration_service.UpdateServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: registration_service.UpdateServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[registration_service.UpdateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_service
 
         Override in a subclass to manipulate the request or metadata
@@ -976,9 +834,7 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def post_update_service_with_metadata(
-        self,
-        response: gcs_service.Service,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_service.Service, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_service.Service, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_service
 
@@ -995,12 +851,8 @@ class RegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1008,9 +860,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1020,12 +870,8 @@ class RegistrationServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1033,9 +879,7 @@ class RegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1138,31 +982,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegistrationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateEndpoint(
-        _BaseRegistrationServiceRestTransport._BaseCreateEndpoint,
-        RegistrationServiceRestStub,
-    ):
+    class _CreateEndpoint(_BaseRegistrationServiceRestTransport._BaseCreateEndpoint, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.CreateEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1206,30 +1037,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1253,13 +1072,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._CreateEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1275,12 +1088,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_create_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_endpoint.Endpoint.to_json(response)
                 except:
@@ -1301,23 +1110,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _CreateNamespace(
-        _BaseRegistrationServiceRestTransport._BaseCreateNamespace,
-        RegistrationServiceRestStub,
-    ):
+    class _CreateNamespace(_BaseRegistrationServiceRestTransport._BaseCreateNamespace, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.CreateNamespace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1363,32 +1161,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_namespace(
-                request, metadata
-            )
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_namespace(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1412,13 +1196,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._CreateNamespace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1434,12 +1212,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_create_namespace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_namespace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_namespace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_namespace.Namespace.to_json(response)
                 except:
@@ -1460,23 +1234,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _CreateService(
-        _BaseRegistrationServiceRestTransport._BaseCreateService,
-        RegistrationServiceRestStub,
-    ):
+    class _CreateService(_BaseRegistrationServiceRestTransport._BaseCreateService, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.CreateService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1521,30 +1284,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseCreateService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseCreateService._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateService._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseCreateService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseCreateService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseCreateService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseCreateService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1568,13 +1319,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._CreateService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1590,12 +1335,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_create_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_service.Service.to_json(response)
                 except:
@@ -1616,23 +1357,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEndpoint(
-        _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint,
-        RegistrationServiceRestStub,
-    ):
+    class _DeleteEndpoint(_BaseRegistrationServiceRestTransport._BaseDeleteEndpoint, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.DeleteEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1668,26 +1398,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_endpoint(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1711,12 +1431,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._DeleteEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1724,23 +1439,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteNamespace(
-        _BaseRegistrationServiceRestTransport._BaseDeleteNamespace,
-        RegistrationServiceRestStub,
-    ):
+    class _DeleteNamespace(_BaseRegistrationServiceRestTransport._BaseDeleteNamespace, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.DeleteNamespace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1776,28 +1480,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_namespace(
-                request, metadata
-            )
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_namespace(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1821,12 +1513,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._DeleteNamespace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1834,23 +1521,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteService(
-        _BaseRegistrationServiceRestTransport._BaseDeleteService,
-        RegistrationServiceRestStub,
-    ):
+    class _DeleteService(_BaseRegistrationServiceRestTransport._BaseDeleteService, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.DeleteService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1886,26 +1562,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseDeleteService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1929,12 +1595,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._DeleteService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1942,23 +1603,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetEndpoint(
-        _BaseRegistrationServiceRestTransport._BaseGetEndpoint,
-        RegistrationServiceRestStub,
-    ):
+    class _GetEndpoint(_BaseRegistrationServiceRestTransport._BaseGetEndpoint, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.GetEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2003,26 +1653,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_get_endpoint(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2046,12 +1686,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._GetEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2067,12 +1702,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_get_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = endpoint.Endpoint.to_json(response)
                 except:
@@ -2093,23 +1724,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseRegistrationServiceRestTransport._BaseGetIamPolicy,
-        RegistrationServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseRegistrationServiceRestTransport._BaseGetIamPolicy, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2224,30 +1844,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2271,13 +1879,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2293,12 +1895,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2319,23 +1917,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _GetNamespace(
-        _BaseRegistrationServiceRestTransport._BaseGetNamespace,
-        RegistrationServiceRestStub,
-    ):
+    class _GetNamespace(_BaseRegistrationServiceRestTransport._BaseGetNamespace, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.GetNamespace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2380,26 +1967,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_namespace(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2423,12 +2000,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._GetNamespace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2444,12 +2016,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_get_namespace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_namespace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_namespace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = namespace.Namespace.to_json(response)
                 except:
@@ -2470,23 +2038,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _GetService(
-        _BaseRegistrationServiceRestTransport._BaseGetService,
-        RegistrationServiceRestStub,
-    ):
+    class _GetService(_BaseRegistrationServiceRestTransport._BaseGetService, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.GetService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2533,26 +2090,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetService._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseGetService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2576,12 +2123,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._GetService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2597,12 +2139,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_get_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Service.to_json(response)
                 except:
@@ -2623,23 +2161,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _ListEndpoints(
-        _BaseRegistrationServiceRestTransport._BaseListEndpoints,
-        RegistrationServiceRestStub,
-    ):
+    class _ListEndpoints(_BaseRegistrationServiceRestTransport._BaseListEndpoints, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.ListEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2681,26 +2208,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_list_endpoints(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2724,12 +2241,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._ListEndpoints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2745,16 +2257,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_list_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        registration_service.ListEndpointsResponse.to_json(response)
-                    )
+                    response_payload = registration_service.ListEndpointsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2773,23 +2279,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _ListNamespaces(
-        _BaseRegistrationServiceRestTransport._BaseListNamespaces,
-        RegistrationServiceRestStub,
-    ):
+    class _ListNamespaces(_BaseRegistrationServiceRestTransport._BaseListNamespaces, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.ListNamespaces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2831,26 +2326,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_http_options()
 
             request, metadata = self._interceptor.pre_list_namespaces(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2874,12 +2359,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._ListNamespaces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2895,16 +2375,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_list_namespaces(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_namespaces_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_namespaces_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        registration_service.ListNamespacesResponse.to_json(response)
-                    )
+                    response_payload = registration_service.ListNamespacesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2923,23 +2397,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _ListServices(
-        _BaseRegistrationServiceRestTransport._BaseListServices,
-        RegistrationServiceRestStub,
-    ):
+    class _ListServices(_BaseRegistrationServiceRestTransport._BaseListServices, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.ListServices")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2981,26 +2444,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListServices._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListServices._get_http_options()
 
             request, metadata = self._interceptor.pre_list_services(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListServices._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListServices._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseListServices._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListServices._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3024,12 +2477,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._ListServices._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3045,16 +2493,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_list_services(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_services_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_services_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        registration_service.ListServicesResponse.to_json(response)
-                    )
+                    response_payload = registration_service.ListServicesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3073,23 +2515,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseRegistrationServiceRestTransport._BaseSetIamPolicy,
-        RegistrationServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseRegistrationServiceRestTransport._BaseSetIamPolicy, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3204,30 +2635,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3251,13 +2670,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3273,12 +2686,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3299,23 +2708,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseRegistrationServiceRestTransport._BaseTestIamPermissions,
-        RegistrationServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseRegistrationServiceRestTransport._BaseTestIamPermissions, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3355,32 +2753,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3403,16 +2787,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                RegistrationServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegistrationServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3428,12 +2804,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3454,23 +2826,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEndpoint(
-        _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint,
-        RegistrationServiceRestStub,
-    ):
+    class _UpdateEndpoint(_BaseRegistrationServiceRestTransport._BaseUpdateEndpoint, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.UpdateEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3514,30 +2875,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_update_endpoint(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3561,13 +2910,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._UpdateEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3583,12 +2926,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_update_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_endpoint.Endpoint.to_json(response)
                 except:
@@ -3609,23 +2948,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateNamespace(
-        _BaseRegistrationServiceRestTransport._BaseUpdateNamespace,
-        RegistrationServiceRestStub,
-    ):
+    class _UpdateNamespace(_BaseRegistrationServiceRestTransport._BaseUpdateNamespace, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.UpdateNamespace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3671,32 +2999,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_namespace(
-                request, metadata
-            )
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_namespace(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3720,13 +3034,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._UpdateNamespace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3742,12 +3050,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_update_namespace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_namespace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_namespace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_namespace.Namespace.to_json(response)
                 except:
@@ -3768,23 +3072,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateService(
-        _BaseRegistrationServiceRestTransport._BaseUpdateService,
-        RegistrationServiceRestStub,
-    ):
+    class _UpdateService(_BaseRegistrationServiceRestTransport._BaseUpdateService, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.UpdateService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3829,30 +3122,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseUpdateService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_http_options()
 
             request, metadata = self._interceptor.pre_update_service(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_transcoded_request(http_options, request)
 
-            body = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3876,13 +3157,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._UpdateService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3898,12 +3173,8 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             resp = self._interceptor.post_update_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_service.Service.to_json(response)
                 except:
@@ -3925,161 +3196,109 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             return resp
 
     @property
-    def create_endpoint(
-        self,
-    ) -> Callable[[registration_service.CreateEndpointRequest], gcs_endpoint.Endpoint]:
+    def create_endpoint(self) -> Callable[[registration_service.CreateEndpointRequest], gcs_endpoint.Endpoint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_namespace(
-        self,
-    ) -> Callable[
-        [registration_service.CreateNamespaceRequest], gcs_namespace.Namespace
-    ]:
+    def create_namespace(self) -> Callable[[registration_service.CreateNamespaceRequest], gcs_namespace.Namespace]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNamespace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[[registration_service.CreateServiceRequest], gcs_service.Service]:
+    def create_service(self) -> Callable[[registration_service.CreateServiceRequest], gcs_service.Service]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_endpoint(
-        self,
-    ) -> Callable[[registration_service.DeleteEndpointRequest], empty_pb2.Empty]:
+    def delete_endpoint(self) -> Callable[[registration_service.DeleteEndpointRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_namespace(
-        self,
-    ) -> Callable[[registration_service.DeleteNamespaceRequest], empty_pb2.Empty]:
+    def delete_namespace(self) -> Callable[[registration_service.DeleteNamespaceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNamespace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[[registration_service.DeleteServiceRequest], empty_pb2.Empty]:
+    def delete_service(self) -> Callable[[registration_service.DeleteServiceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_endpoint(
-        self,
-    ) -> Callable[[registration_service.GetEndpointRequest], endpoint.Endpoint]:
+    def get_endpoint(self) -> Callable[[registration_service.GetEndpointRequest], endpoint.Endpoint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_namespace(
-        self,
-    ) -> Callable[[registration_service.GetNamespaceRequest], namespace.Namespace]:
+    def get_namespace(self) -> Callable[[registration_service.GetNamespaceRequest], namespace.Namespace]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNamespace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[[registration_service.GetServiceRequest], service.Service]:
+    def get_service(self) -> Callable[[registration_service.GetServiceRequest], service.Service]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_endpoints(
-        self,
-    ) -> Callable[
-        [registration_service.ListEndpointsRequest],
-        registration_service.ListEndpointsResponse,
-    ]:
+    def list_endpoints(self) -> Callable[[registration_service.ListEndpointsRequest], registration_service.ListEndpointsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_namespaces(
-        self,
-    ) -> Callable[
-        [registration_service.ListNamespacesRequest],
-        registration_service.ListNamespacesResponse,
-    ]:
+    def list_namespaces(self) -> Callable[[registration_service.ListNamespacesRequest], registration_service.ListNamespacesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNamespaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[
-        [registration_service.ListServicesRequest],
-        registration_service.ListServicesResponse,
-    ]:
+    def list_services(self) -> Callable[[registration_service.ListServicesRequest], registration_service.ListServicesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListServices(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_endpoint(
-        self,
-    ) -> Callable[[registration_service.UpdateEndpointRequest], gcs_endpoint.Endpoint]:
+    def update_endpoint(self) -> Callable[[registration_service.UpdateEndpointRequest], gcs_endpoint.Endpoint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_namespace(
-        self,
-    ) -> Callable[
-        [registration_service.UpdateNamespaceRequest], gcs_namespace.Namespace
-    ]:
+    def update_namespace(self) -> Callable[[registration_service.UpdateNamespaceRequest], gcs_namespace.Namespace]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNamespace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[[registration_service.UpdateServiceRequest], gcs_service.Service]:
+    def update_service(self) -> Callable[[registration_service.UpdateServiceRequest], gcs_service.Service]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateService(self._session, self._host, self._interceptor)  # type: ignore
@@ -4088,23 +3307,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseRegistrationServiceRestTransport._BaseGetLocation,
-        RegistrationServiceRestStub,
-    ):
+    class _GetLocation(_BaseRegistrationServiceRestTransport._BaseGetLocation, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4142,26 +3350,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4185,12 +3383,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4202,9 +3395,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4229,23 +3420,12 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseRegistrationServiceRestTransport._BaseListLocations,
-        RegistrationServiceRestStub,
-    ):
+    class _ListLocations(_BaseRegistrationServiceRestTransport._BaseListLocations, RegistrationServiceRestStub):
         def __hash__(self):
             return hash("RegistrationServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4283,26 +3463,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegistrationServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4326,12 +3496,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             # Send the request
             response = RegistrationServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4343,9 +3508,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

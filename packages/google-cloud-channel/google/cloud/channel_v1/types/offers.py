@@ -394,16 +394,12 @@ class CustomerConstraints(proto.Message):
         proto.STRING,
         number=1,
     )
-    allowed_customer_types: MutableSequence[
-        common.CloudIdentityInfo.CustomerType
-    ] = proto.RepeatedField(
+    allowed_customer_types: MutableSequence[common.CloudIdentityInfo.CustomerType] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=common.CloudIdentityInfo.CustomerType,
     )
-    promotional_order_types: MutableSequence[
-        "PromotionalOrderType"
-    ] = proto.RepeatedField(
+    promotional_order_types: MutableSequence["PromotionalOrderType"] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum="PromotionalOrderType",

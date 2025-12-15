@@ -129,13 +129,8 @@ class PolicyBindingsRestInterceptor:
     """
 
     def pre_create_policy_binding(
-        self,
-        request: policy_bindings_service.CreatePolicyBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.CreatePolicyBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: policy_bindings_service.CreatePolicyBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.CreatePolicyBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_policy_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -143,9 +138,7 @@ class PolicyBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_policy_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_policy_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_policy_binding
 
         DEPRECATED. Please use the `post_create_policy_binding_with_metadata`
@@ -159,9 +152,7 @@ class PolicyBindingsRestInterceptor:
         return response
 
     def post_create_policy_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_policy_binding
 
@@ -178,13 +169,8 @@ class PolicyBindingsRestInterceptor:
         return response, metadata
 
     def pre_delete_policy_binding(
-        self,
-        request: policy_bindings_service.DeletePolicyBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.DeletePolicyBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: policy_bindings_service.DeletePolicyBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.DeletePolicyBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_policy_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +178,7 @@ class PolicyBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_policy_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_policy_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_policy_binding
 
         DEPRECATED. Please use the `post_delete_policy_binding_with_metadata`
@@ -208,9 +192,7 @@ class PolicyBindingsRestInterceptor:
         return response
 
     def post_delete_policy_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_policy_binding
 
@@ -227,13 +209,8 @@ class PolicyBindingsRestInterceptor:
         return response, metadata
 
     def pre_get_policy_binding(
-        self,
-        request: policy_bindings_service.GetPolicyBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.GetPolicyBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: policy_bindings_service.GetPolicyBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.GetPolicyBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_policy_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -241,9 +218,7 @@ class PolicyBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_policy_binding(
-        self, response: policy_binding_resources.PolicyBinding
-    ) -> policy_binding_resources.PolicyBinding:
+    def post_get_policy_binding(self, response: policy_binding_resources.PolicyBinding) -> policy_binding_resources.PolicyBinding:
         """Post-rpc interceptor for get_policy_binding
 
         DEPRECATED. Please use the `post_get_policy_binding_with_metadata`
@@ -257,12 +232,8 @@ class PolicyBindingsRestInterceptor:
         return response
 
     def post_get_policy_binding_with_metadata(
-        self,
-        response: policy_binding_resources.PolicyBinding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_binding_resources.PolicyBinding, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: policy_binding_resources.PolicyBinding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_binding_resources.PolicyBinding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_policy_binding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,13 +249,8 @@ class PolicyBindingsRestInterceptor:
         return response, metadata
 
     def pre_list_policy_bindings(
-        self,
-        request: policy_bindings_service.ListPolicyBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.ListPolicyBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: policy_bindings_service.ListPolicyBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.ListPolicyBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_policy_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -308,13 +274,8 @@ class PolicyBindingsRestInterceptor:
         return response
 
     def post_list_policy_bindings_with_metadata(
-        self,
-        response: policy_bindings_service.ListPolicyBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.ListPolicyBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: policy_bindings_service.ListPolicyBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.ListPolicyBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_policy_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -330,13 +291,8 @@ class PolicyBindingsRestInterceptor:
         return response, metadata
 
     def pre_search_target_policy_bindings(
-        self,
-        request: policy_bindings_service.SearchTargetPolicyBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.SearchTargetPolicyBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: policy_bindings_service.SearchTargetPolicyBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.SearchTargetPolicyBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_target_policy_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -360,13 +316,8 @@ class PolicyBindingsRestInterceptor:
         return response
 
     def post_search_target_policy_bindings_with_metadata(
-        self,
-        response: policy_bindings_service.SearchTargetPolicyBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.SearchTargetPolicyBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: policy_bindings_service.SearchTargetPolicyBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.SearchTargetPolicyBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_target_policy_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -382,13 +333,8 @@ class PolicyBindingsRestInterceptor:
         return response, metadata
 
     def pre_update_policy_binding(
-        self,
-        request: policy_bindings_service.UpdatePolicyBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        policy_bindings_service.UpdatePolicyBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: policy_bindings_service.UpdatePolicyBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[policy_bindings_service.UpdatePolicyBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_policy_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -396,9 +342,7 @@ class PolicyBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_policy_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_policy_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_policy_binding
 
         DEPRECATED. Please use the `post_update_policy_binding_with_metadata`
@@ -412,9 +356,7 @@ class PolicyBindingsRestInterceptor:
         return response
 
     def post_update_policy_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_policy_binding
 
@@ -431,12 +373,8 @@ class PolicyBindingsRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -444,9 +382,7 @@ class PolicyBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -536,9 +472,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -580,30 +514,17 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreatePolicyBinding(
-        _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding,
-        PolicyBindingsRestStub,
-    ):
+    class _CreatePolicyBinding(_BasePolicyBindingsRestTransport._BaseCreatePolicyBinding, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.CreatePolicyBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -647,32 +568,18 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_policy_binding(
-                request, metadata
-            )
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_policy_binding(request, metadata)
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_transcoded_request(http_options, request)
 
-            body = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -696,13 +603,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Send the request
             response = PolicyBindingsRestTransport._CreatePolicyBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -716,12 +617,8 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             resp = self._interceptor.post_create_policy_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_policy_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_policy_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -742,23 +639,12 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 )
             return resp
 
-    class _DeletePolicyBinding(
-        _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding,
-        PolicyBindingsRestStub,
-    ):
+    class _DeletePolicyBinding(_BasePolicyBindingsRestTransport._BaseDeletePolicyBinding, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.DeletePolicyBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -801,28 +687,16 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_policy_binding(
-                request, metadata
-            )
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_policy_binding(request, metadata)
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -846,12 +720,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Send the request
             response = PolicyBindingsRestTransport._DeletePolicyBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -865,12 +734,8 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             resp = self._interceptor.post_delete_policy_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_policy_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_policy_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -891,22 +756,12 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 )
             return resp
 
-    class _GetPolicyBinding(
-        _BasePolicyBindingsRestTransport._BaseGetPolicyBinding, PolicyBindingsRestStub
-    ):
+    class _GetPolicyBinding(_BasePolicyBindingsRestTransport._BaseGetPolicyBinding, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.GetPolicyBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -946,28 +801,16 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                     IAM policy binding resource.
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_policy_binding(
-                request, metadata
-            )
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_policy_binding(request, metadata)
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -991,12 +834,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Send the request
             response = PolicyBindingsRestTransport._GetPolicyBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1012,16 +850,10 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             resp = self._interceptor.post_get_policy_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_policy_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_policy_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = policy_binding_resources.PolicyBinding.to_json(
-                        response
-                    )
+                    response_payload = policy_binding_resources.PolicyBinding.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1040,22 +872,12 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 )
             return resp
 
-    class _ListPolicyBindings(
-        _BasePolicyBindingsRestTransport._BaseListPolicyBindings, PolicyBindingsRestStub
-    ):
+    class _ListPolicyBindings(_BasePolicyBindingsRestTransport._BaseListPolicyBindings, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.ListPolicyBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1097,28 +919,16 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_policy_bindings(
-                request, metadata
-            )
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_policy_bindings(request, metadata)
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1142,12 +952,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Send the request
             response = PolicyBindingsRestTransport._ListPolicyBindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1163,18 +968,10 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             resp = self._interceptor.post_list_policy_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_policy_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_policy_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        policy_bindings_service.ListPolicyBindingsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = policy_bindings_service.ListPolicyBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1193,23 +990,12 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 )
             return resp
 
-    class _SearchTargetPolicyBindings(
-        _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings,
-        PolicyBindingsRestStub,
-    ):
+    class _SearchTargetPolicyBindings(_BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.SearchTargetPolicyBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1252,28 +1038,16 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_target_policy_bindings(
-                request, metadata
-            )
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_target_policy_bindings(request, metadata)
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1296,15 +1070,8 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 )
 
             # Send the request
-            response = (
-                PolicyBindingsRestTransport._SearchTargetPolicyBindings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PolicyBindingsRestTransport._SearchTargetPolicyBindings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1314,27 +1081,16 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Return the response
             resp = policy_bindings_service.SearchTargetPolicyBindingsResponse()
-            pb_resp = policy_bindings_service.SearchTargetPolicyBindingsResponse.pb(
-                resp
-            )
+            pb_resp = policy_bindings_service.SearchTargetPolicyBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_target_policy_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_search_target_policy_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_target_policy_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = policy_bindings_service.SearchTargetPolicyBindingsResponse.to_json(
-                        response
-                    )
+                    response_payload = policy_bindings_service.SearchTargetPolicyBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1353,23 +1109,12 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 )
             return resp
 
-    class _UpdatePolicyBinding(
-        _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding,
-        PolicyBindingsRestStub,
-    ):
+    class _UpdatePolicyBinding(_BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.UpdatePolicyBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1413,32 +1158,18 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_policy_binding(
-                request, metadata
-            )
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_policy_binding(request, metadata)
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_transcoded_request(http_options, request)
 
-            body = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1462,13 +1193,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Send the request
             response = PolicyBindingsRestTransport._UpdatePolicyBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1482,12 +1207,8 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             resp = self._interceptor.post_update_policy_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_policy_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_policy_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1509,32 +1230,19 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
             return resp
 
     @property
-    def create_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.CreatePolicyBindingRequest], operations_pb2.Operation
-    ]:
+    def create_policy_binding(self) -> Callable[[policy_bindings_service.CreatePolicyBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePolicyBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.DeletePolicyBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_policy_binding(self) -> Callable[[policy_bindings_service.DeletePolicyBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePolicyBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.GetPolicyBindingRequest],
-        policy_binding_resources.PolicyBinding,
-    ]:
+    def get_policy_binding(self) -> Callable[[policy_bindings_service.GetPolicyBindingRequest], policy_binding_resources.PolicyBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPolicyBinding(self._session, self._host, self._interceptor)  # type: ignore
@@ -1542,10 +1250,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
     @property
     def list_policy_bindings(
         self,
-    ) -> Callable[
-        [policy_bindings_service.ListPolicyBindingsRequest],
-        policy_bindings_service.ListPolicyBindingsResponse,
-    ]:
+    ) -> Callable[[policy_bindings_service.ListPolicyBindingsRequest], policy_bindings_service.ListPolicyBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPolicyBindings(self._session, self._host, self._interceptor)  # type: ignore
@@ -1553,20 +1258,13 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
     @property
     def search_target_policy_bindings(
         self,
-    ) -> Callable[
-        [policy_bindings_service.SearchTargetPolicyBindingsRequest],
-        policy_bindings_service.SearchTargetPolicyBindingsResponse,
-    ]:
+    ) -> Callable[[policy_bindings_service.SearchTargetPolicyBindingsRequest], policy_bindings_service.SearchTargetPolicyBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchTargetPolicyBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.UpdatePolicyBindingRequest], operations_pb2.Operation
-    ]:
+    def update_policy_binding(self) -> Callable[[policy_bindings_service.UpdatePolicyBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePolicyBinding(self._session, self._host, self._interceptor)  # type: ignore
@@ -1575,22 +1273,12 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePolicyBindingsRestTransport._BaseGetOperation, PolicyBindingsRestStub
-    ):
+    class _GetOperation(_BasePolicyBindingsRestTransport._BaseGetOperation, PolicyBindingsRestStub):
         def __hash__(self):
             return hash("PolicyBindingsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1628,26 +1316,16 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePolicyBindingsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePolicyBindingsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePolicyBindingsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePolicyBindingsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1671,12 +1349,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             # Send the request
             response = PolicyBindingsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1688,9 +1361,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

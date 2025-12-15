@@ -162,9 +162,7 @@ class ClientConnectorService(proto.Message):
                 number=1,
                 enum="ClientConnectorService.Ingress.Config.TransportProtocol",
             )
-            destination_routes: MutableSequence[
-                "ClientConnectorService.Ingress.Config.DestinationRoute"
-            ] = proto.RepeatedField(
+            destination_routes: MutableSequence["ClientConnectorService.Ingress.Config.DestinationRoute"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="ClientConnectorService.Ingress.Config.DestinationRoute",
@@ -307,9 +305,7 @@ class ListClientConnectorServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    client_connector_services: MutableSequence[
-        "ClientConnectorService"
-    ] = proto.RepeatedField(
+    client_connector_services: MutableSequence["ClientConnectorService"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ClientConnectorService",

@@ -18,12 +18,8 @@ from google.cloud.hypercomputecluster import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.hypercomputecluster_v1beta.services.hypercompute_cluster.async_client import (
-    HypercomputeClusterAsyncClient,
-)
-from google.cloud.hypercomputecluster_v1beta.services.hypercompute_cluster.client import (
-    HypercomputeClusterClient,
-)
+from google.cloud.hypercomputecluster_v1beta.services.hypercompute_cluster.async_client import HypercomputeClusterAsyncClient
+from google.cloud.hypercomputecluster_v1beta.services.hypercompute_cluster.client import HypercomputeClusterClient
 from google.cloud.hypercomputecluster_v1beta.types.hypercompute_cluster import (
     BootDisk,
     BucketReference,
@@ -67,9 +63,7 @@ from google.cloud.hypercomputecluster_v1beta.types.hypercompute_cluster import (
     StorageResourceConfig,
     UpdateClusterRequest,
 )
-from google.cloud.hypercomputecluster_v1beta.types.operation_metadata import (
-    OperationMetadata,
-)
+from google.cloud.hypercomputecluster_v1beta.types.operation_metadata import OperationMetadata
 
 __all__ = (
     "HypercomputeClusterClient",

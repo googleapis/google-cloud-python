@@ -30,25 +30,10 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.oracledatabase_v1.types import (
-    db_system_initial_storage_size,
-    db_version,
-    exadata_infra,
-    exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
-    database,
-    database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
-    oracledatabase,
-    pluggable_database,
-    vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exascale_db_storage_vault as gco_exascale_db_storage_vault,
-)
+from google.cloud.oracledatabase_v1.types import db_system_initial_storage_size, db_version, exadata_infra, exadb_vm_cluster
+from google.cloud.oracledatabase_v1.types import autonomous_database, database, database_character_set
+from google.cloud.oracledatabase_v1.types import oracledatabase, pluggable_database, vm_cluster
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault as gco_exascale_db_storage_vault
 from google.cloud.oracledatabase_v1.types import db_system
 from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
@@ -72,9 +57,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -84,10 +67,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -106,11 +86,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -245,18 +221,14 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -290,9 +262,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -359,9 +329,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -369,10 +337,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_cloud_exadata_infrastructures(
         self,
-    ) -> Callable[
-        [oracledatabase.ListCloudExadataInfrastructuresRequest],
-        oracledatabase.ListCloudExadataInfrastructuresResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListCloudExadataInfrastructuresRequest], oracledatabase.ListCloudExadataInfrastructuresResponse]:
         r"""Return a callable for the list cloud exadata
         infrastructures method over gRPC.
 
@@ -390,9 +355,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_cloud_exadata_infrastructures" not in self._stubs:
-            self._stubs[
-                "list_cloud_exadata_infrastructures"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_cloud_exadata_infrastructures"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListCloudExadataInfrastructures",
                 request_serializer=oracledatabase.ListCloudExadataInfrastructuresRequest.serialize,
                 response_deserializer=oracledatabase.ListCloudExadataInfrastructuresResponse.deserialize,
@@ -402,10 +365,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def get_cloud_exadata_infrastructure(
         self,
-    ) -> Callable[
-        [oracledatabase.GetCloudExadataInfrastructureRequest],
-        exadata_infra.CloudExadataInfrastructure,
-    ]:
+    ) -> Callable[[oracledatabase.GetCloudExadataInfrastructureRequest], exadata_infra.CloudExadataInfrastructure]:
         r"""Return a callable for the get cloud exadata
         infrastructure method over gRPC.
 
@@ -422,9 +382,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cloud_exadata_infrastructure" not in self._stubs:
-            self._stubs[
-                "get_cloud_exadata_infrastructure"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_cloud_exadata_infrastructure"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/GetCloudExadataInfrastructure",
                 request_serializer=oracledatabase.GetCloudExadataInfrastructureRequest.serialize,
                 response_deserializer=exadata_infra.CloudExadataInfrastructure.deserialize,
@@ -432,12 +390,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_cloud_exadata_infrastructure"]
 
     @property
-    def create_cloud_exadata_infrastructure(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateCloudExadataInfrastructureRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_cloud_exadata_infrastructure(self) -> Callable[[oracledatabase.CreateCloudExadataInfrastructureRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cloud exadata
         infrastructure method over gRPC.
 
@@ -455,9 +408,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cloud_exadata_infrastructure" not in self._stubs:
-            self._stubs[
-                "create_cloud_exadata_infrastructure"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_cloud_exadata_infrastructure"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/CreateCloudExadataInfrastructure",
                 request_serializer=oracledatabase.CreateCloudExadataInfrastructureRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -465,12 +416,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_cloud_exadata_infrastructure"]
 
     @property
-    def delete_cloud_exadata_infrastructure(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteCloudExadataInfrastructureRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_cloud_exadata_infrastructure(self) -> Callable[[oracledatabase.DeleteCloudExadataInfrastructureRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cloud exadata
         infrastructure method over gRPC.
 
@@ -487,9 +433,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cloud_exadata_infrastructure" not in self._stubs:
-            self._stubs[
-                "delete_cloud_exadata_infrastructure"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_cloud_exadata_infrastructure"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteCloudExadataInfrastructure",
                 request_serializer=oracledatabase.DeleteCloudExadataInfrastructureRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -497,12 +441,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_cloud_exadata_infrastructure"]
 
     @property
-    def list_cloud_vm_clusters(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListCloudVmClustersRequest],
-        oracledatabase.ListCloudVmClustersResponse,
-    ]:
+    def list_cloud_vm_clusters(self) -> Callable[[oracledatabase.ListCloudVmClustersRequest], oracledatabase.ListCloudVmClustersResponse]:
         r"""Return a callable for the list cloud vm clusters method over gRPC.
 
         Lists the VM Clusters in a given project and
@@ -527,9 +466,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_cloud_vm_clusters"]
 
     @property
-    def get_cloud_vm_cluster(
-        self,
-    ) -> Callable[[oracledatabase.GetCloudVmClusterRequest], vm_cluster.CloudVmCluster]:
+    def get_cloud_vm_cluster(self) -> Callable[[oracledatabase.GetCloudVmClusterRequest], vm_cluster.CloudVmCluster]:
         r"""Return a callable for the get cloud vm cluster method over gRPC.
 
         Gets details of a single VM Cluster.
@@ -553,11 +490,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_cloud_vm_cluster"]
 
     @property
-    def create_cloud_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateCloudVmClusterRequest], operations_pb2.Operation
-    ]:
+    def create_cloud_vm_cluster(self) -> Callable[[oracledatabase.CreateCloudVmClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cloud vm cluster method over gRPC.
 
         Creates a new VM Cluster in a given project and
@@ -582,11 +515,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_cloud_vm_cluster"]
 
     @property
-    def delete_cloud_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteCloudVmClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_cloud_vm_cluster(self) -> Callable[[oracledatabase.DeleteCloudVmClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cloud vm cluster method over gRPC.
 
         Deletes a single VM Cluster.
@@ -610,12 +539,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_cloud_vm_cluster"]
 
     @property
-    def list_entitlements(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListEntitlementsRequest],
-        oracledatabase.ListEntitlementsResponse,
-    ]:
+    def list_entitlements(self) -> Callable[[oracledatabase.ListEntitlementsRequest], oracledatabase.ListEntitlementsResponse]:
         r"""Return a callable for the list entitlements method over gRPC.
 
         Lists the entitlements in a given project.
@@ -639,11 +563,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_entitlements"]
 
     @property
-    def list_db_servers(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListDbServersRequest], oracledatabase.ListDbServersResponse
-    ]:
+    def list_db_servers(self) -> Callable[[oracledatabase.ListDbServersRequest], oracledatabase.ListDbServersResponse]:
         r"""Return a callable for the list db servers method over gRPC.
 
         Lists the database servers of an Exadata
@@ -668,11 +588,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_db_servers"]
 
     @property
-    def list_db_nodes(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListDbNodesRequest], oracledatabase.ListDbNodesResponse
-    ]:
+    def list_db_nodes(self) -> Callable[[oracledatabase.ListDbNodesRequest], oracledatabase.ListDbNodesResponse]:
         r"""Return a callable for the list db nodes method over gRPC.
 
         Lists the database nodes of a VM Cluster.
@@ -696,11 +612,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_db_nodes"]
 
     @property
-    def list_gi_versions(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListGiVersionsRequest], oracledatabase.ListGiVersionsResponse
-    ]:
+    def list_gi_versions(self) -> Callable[[oracledatabase.ListGiVersionsRequest], oracledatabase.ListGiVersionsResponse]:
         r"""Return a callable for the list gi versions method over gRPC.
 
         Lists all the valid Oracle Grid Infrastructure (GI)
@@ -725,12 +637,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_gi_versions"]
 
     @property
-    def list_minor_versions(
-        self,
-    ) -> Callable[
-        [minor_version.ListMinorVersionsRequest],
-        minor_version.ListMinorVersionsResponse,
-    ]:
+    def list_minor_versions(self) -> Callable[[minor_version.ListMinorVersionsRequest], minor_version.ListMinorVersionsResponse]:
         r"""Return a callable for the list minor versions method over gRPC.
 
         Lists all the valid minor versions for the given
@@ -755,12 +662,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_minor_versions"]
 
     @property
-    def list_db_system_shapes(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListDbSystemShapesRequest],
-        oracledatabase.ListDbSystemShapesResponse,
-    ]:
+    def list_db_system_shapes(self) -> Callable[[oracledatabase.ListDbSystemShapesRequest], oracledatabase.ListDbSystemShapesResponse]:
         r"""Return a callable for the list db system shapes method over gRPC.
 
         Lists the database system shapes available for the
@@ -785,12 +687,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_db_system_shapes"]
 
     @property
-    def list_autonomous_databases(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDatabasesRequest],
-        oracledatabase.ListAutonomousDatabasesResponse,
-    ]:
+    def list_autonomous_databases(self) -> Callable[[oracledatabase.ListAutonomousDatabasesRequest], oracledatabase.ListAutonomousDatabasesResponse]:
         r"""Return a callable for the list autonomous databases method over gRPC.
 
         Lists the Autonomous Databases in a given project and
@@ -815,12 +712,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_autonomous_databases"]
 
     @property
-    def get_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.GetAutonomousDatabaseRequest],
-        autonomous_database.AutonomousDatabase,
-    ]:
+    def get_autonomous_database(self) -> Callable[[oracledatabase.GetAutonomousDatabaseRequest], autonomous_database.AutonomousDatabase]:
         r"""Return a callable for the get autonomous database method over gRPC.
 
         Gets the details of a single Autonomous Database.
@@ -844,11 +736,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_autonomous_database"]
 
     @property
-    def create_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def create_autonomous_database(self) -> Callable[[oracledatabase.CreateAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the create autonomous database method over gRPC.
 
         Creates a new Autonomous Database in a given project
@@ -865,9 +753,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_autonomous_database" not in self._stubs:
-            self._stubs[
-                "create_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/CreateAutonomousDatabase",
                 request_serializer=oracledatabase.CreateAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -875,11 +761,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_autonomous_database"]
 
     @property
-    def update_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.UpdateAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def update_autonomous_database(self) -> Callable[[oracledatabase.UpdateAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the update autonomous database method over gRPC.
 
         Updates the parameters of a single Autonomous
@@ -896,9 +778,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_autonomous_database" not in self._stubs:
-            self._stubs[
-                "update_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateAutonomousDatabase",
                 request_serializer=oracledatabase.UpdateAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -906,11 +786,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["update_autonomous_database"]
 
     @property
-    def delete_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def delete_autonomous_database(self) -> Callable[[oracledatabase.DeleteAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete autonomous database method over gRPC.
 
         Deletes a single Autonomous Database.
@@ -926,9 +802,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_autonomous_database" not in self._stubs:
-            self._stubs[
-                "delete_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteAutonomousDatabase",
                 request_serializer=oracledatabase.DeleteAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -936,11 +810,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_autonomous_database"]
 
     @property
-    def restore_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.RestoreAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def restore_autonomous_database(self) -> Callable[[oracledatabase.RestoreAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the restore autonomous database method over gRPC.
 
         Restores a single Autonomous Database.
@@ -956,9 +826,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_autonomous_database" not in self._stubs:
-            self._stubs[
-                "restore_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["restore_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/RestoreAutonomousDatabase",
                 request_serializer=oracledatabase.RestoreAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -968,10 +836,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def generate_autonomous_database_wallet(
         self,
-    ) -> Callable[
-        [oracledatabase.GenerateAutonomousDatabaseWalletRequest],
-        oracledatabase.GenerateAutonomousDatabaseWalletResponse,
-    ]:
+    ) -> Callable[[oracledatabase.GenerateAutonomousDatabaseWalletRequest], oracledatabase.GenerateAutonomousDatabaseWalletResponse]:
         r"""Return a callable for the generate autonomous database
         wallet method over gRPC.
 
@@ -988,9 +853,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_autonomous_database_wallet" not in self._stubs:
-            self._stubs[
-                "generate_autonomous_database_wallet"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_autonomous_database_wallet"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/GenerateAutonomousDatabaseWallet",
                 request_serializer=oracledatabase.GenerateAutonomousDatabaseWalletRequest.serialize,
                 response_deserializer=oracledatabase.GenerateAutonomousDatabaseWalletResponse.deserialize,
@@ -1000,10 +863,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_autonomous_db_versions(
         self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDbVersionsRequest],
-        oracledatabase.ListAutonomousDbVersionsResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListAutonomousDbVersionsRequest], oracledatabase.ListAutonomousDbVersionsResponse]:
         r"""Return a callable for the list autonomous db versions method over gRPC.
 
         Lists all the available Autonomous Database versions
@@ -1020,9 +880,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_autonomous_db_versions" not in self._stubs:
-            self._stubs[
-                "list_autonomous_db_versions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_autonomous_db_versions"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDbVersions",
                 request_serializer=oracledatabase.ListAutonomousDbVersionsRequest.serialize,
                 response_deserializer=oracledatabase.ListAutonomousDbVersionsResponse.deserialize,
@@ -1032,10 +890,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_autonomous_database_character_sets(
         self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDatabaseCharacterSetsRequest],
-        oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListAutonomousDatabaseCharacterSetsRequest], oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]:
         r"""Return a callable for the list autonomous database
         character sets method over gRPC.
 
@@ -1053,9 +908,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_autonomous_database_character_sets" not in self._stubs:
-            self._stubs[
-                "list_autonomous_database_character_sets"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_autonomous_database_character_sets"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDatabaseCharacterSets",
                 request_serializer=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.serialize,
                 response_deserializer=oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.deserialize,
@@ -1065,10 +918,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_autonomous_database_backups(
         self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDatabaseBackupsRequest],
-        oracledatabase.ListAutonomousDatabaseBackupsResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListAutonomousDatabaseBackupsRequest], oracledatabase.ListAutonomousDatabaseBackupsResponse]:
         r"""Return a callable for the list autonomous database
         backups method over gRPC.
 
@@ -1086,9 +936,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_autonomous_database_backups" not in self._stubs:
-            self._stubs[
-                "list_autonomous_database_backups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_autonomous_database_backups"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDatabaseBackups",
                 request_serializer=oracledatabase.ListAutonomousDatabaseBackupsRequest.serialize,
                 response_deserializer=oracledatabase.ListAutonomousDatabaseBackupsResponse.deserialize,
@@ -1096,11 +944,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_autonomous_database_backups"]
 
     @property
-    def stop_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.StopAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def stop_autonomous_database(self) -> Callable[[oracledatabase.StopAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the stop autonomous database method over gRPC.
 
         Stops an Autonomous Database.
@@ -1124,11 +968,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["stop_autonomous_database"]
 
     @property
-    def start_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.StartAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def start_autonomous_database(self) -> Callable[[oracledatabase.StartAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the start autonomous database method over gRPC.
 
         Starts an Autonomous Database.
@@ -1152,11 +992,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["start_autonomous_database"]
 
     @property
-    def restart_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.RestartAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def restart_autonomous_database(self) -> Callable[[oracledatabase.RestartAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the restart autonomous database method over gRPC.
 
         Restarts an Autonomous Database.
@@ -1172,9 +1008,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restart_autonomous_database" not in self._stubs:
-            self._stubs[
-                "restart_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["restart_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/RestartAutonomousDatabase",
                 request_serializer=oracledatabase.RestartAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1182,11 +1016,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["restart_autonomous_database"]
 
     @property
-    def switchover_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.SwitchoverAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def switchover_autonomous_database(self) -> Callable[[oracledatabase.SwitchoverAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the switchover autonomous database method over gRPC.
 
         Initiates a switchover of specified autonomous
@@ -1203,9 +1033,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "switchover_autonomous_database" not in self._stubs:
-            self._stubs[
-                "switchover_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["switchover_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/SwitchoverAutonomousDatabase",
                 request_serializer=oracledatabase.SwitchoverAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1213,11 +1041,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["switchover_autonomous_database"]
 
     @property
-    def failover_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.FailoverAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def failover_autonomous_database(self) -> Callable[[oracledatabase.FailoverAutonomousDatabaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the failover autonomous database method over gRPC.
 
         Initiates a failover to target autonomous database
@@ -1234,9 +1058,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "failover_autonomous_database" not in self._stubs:
-            self._stubs[
-                "failover_autonomous_database"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["failover_autonomous_database"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/FailoverAutonomousDatabase",
                 request_serializer=oracledatabase.FailoverAutonomousDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1244,11 +1066,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["failover_autonomous_database"]
 
     @property
-    def list_odb_networks(
-        self,
-    ) -> Callable[
-        [odb_network.ListOdbNetworksRequest], odb_network.ListOdbNetworksResponse
-    ]:
+    def list_odb_networks(self) -> Callable[[odb_network.ListOdbNetworksRequest], odb_network.ListOdbNetworksResponse]:
         r"""Return a callable for the list odb networks method over gRPC.
 
         Lists the ODB Networks in a given project and
@@ -1273,9 +1091,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_odb_networks"]
 
     @property
-    def get_odb_network(
-        self,
-    ) -> Callable[[odb_network.GetOdbNetworkRequest], odb_network.OdbNetwork]:
+    def get_odb_network(self) -> Callable[[odb_network.GetOdbNetworkRequest], odb_network.OdbNetwork]:
         r"""Return a callable for the get odb network method over gRPC.
 
         Gets details of a single ODB Network.
@@ -1299,9 +1115,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_odb_network"]
 
     @property
-    def create_odb_network(
-        self,
-    ) -> Callable[[gco_odb_network.CreateOdbNetworkRequest], operations_pb2.Operation]:
+    def create_odb_network(self) -> Callable[[gco_odb_network.CreateOdbNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the create odb network method over gRPC.
 
         Creates a new ODB Network in a given project and
@@ -1326,9 +1140,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_odb_network"]
 
     @property
-    def delete_odb_network(
-        self,
-    ) -> Callable[[odb_network.DeleteOdbNetworkRequest], operations_pb2.Operation]:
+    def delete_odb_network(self) -> Callable[[odb_network.DeleteOdbNetworkRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete odb network method over gRPC.
 
         Deletes a single ODB Network.
@@ -1352,11 +1164,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_odb_network"]
 
     @property
-    def list_odb_subnets(
-        self,
-    ) -> Callable[
-        [odb_subnet.ListOdbSubnetsRequest], odb_subnet.ListOdbSubnetsResponse
-    ]:
+    def list_odb_subnets(self) -> Callable[[odb_subnet.ListOdbSubnetsRequest], odb_subnet.ListOdbSubnetsResponse]:
         r"""Return a callable for the list odb subnets method over gRPC.
 
         Lists all the ODB Subnets in a given ODB Network.
@@ -1380,9 +1188,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_odb_subnets"]
 
     @property
-    def get_odb_subnet(
-        self,
-    ) -> Callable[[odb_subnet.GetOdbSubnetRequest], odb_subnet.OdbSubnet]:
+    def get_odb_subnet(self) -> Callable[[odb_subnet.GetOdbSubnetRequest], odb_subnet.OdbSubnet]:
         r"""Return a callable for the get odb subnet method over gRPC.
 
         Gets details of a single ODB Subnet.
@@ -1406,9 +1212,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_odb_subnet"]
 
     @property
-    def create_odb_subnet(
-        self,
-    ) -> Callable[[gco_odb_subnet.CreateOdbSubnetRequest], operations_pb2.Operation]:
+    def create_odb_subnet(self) -> Callable[[gco_odb_subnet.CreateOdbSubnetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create odb subnet method over gRPC.
 
         Creates a new ODB Subnet in a given ODB Network.
@@ -1432,9 +1236,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_odb_subnet"]
 
     @property
-    def delete_odb_subnet(
-        self,
-    ) -> Callable[[odb_subnet.DeleteOdbSubnetRequest], operations_pb2.Operation]:
+    def delete_odb_subnet(self) -> Callable[[odb_subnet.DeleteOdbSubnetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete odb subnet method over gRPC.
 
         Deletes a single ODB Subnet.
@@ -1458,12 +1260,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_odb_subnet"]
 
     @property
-    def list_exadb_vm_clusters(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListExadbVmClustersRequest],
-        oracledatabase.ListExadbVmClustersResponse,
-    ]:
+    def list_exadb_vm_clusters(self) -> Callable[[oracledatabase.ListExadbVmClustersRequest], oracledatabase.ListExadbVmClustersResponse]:
         r"""Return a callable for the list exadb vm clusters method over gRPC.
 
         Lists all the Exadb (Exascale) VM Clusters for the
@@ -1488,11 +1285,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_exadb_vm_clusters"]
 
     @property
-    def get_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.GetExadbVmClusterRequest], exadb_vm_cluster.ExadbVmCluster
-    ]:
+    def get_exadb_vm_cluster(self) -> Callable[[oracledatabase.GetExadbVmClusterRequest], exadb_vm_cluster.ExadbVmCluster]:
         r"""Return a callable for the get exadb vm cluster method over gRPC.
 
         Gets details of a single Exadb (Exascale) VM Cluster.
@@ -1516,11 +1309,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_exadb_vm_cluster"]
 
     @property
-    def create_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateExadbVmClusterRequest], operations_pb2.Operation
-    ]:
+    def create_exadb_vm_cluster(self) -> Callable[[oracledatabase.CreateExadbVmClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create exadb vm cluster method over gRPC.
 
         Creates a new Exadb (Exascale) VM Cluster resource.
@@ -1544,11 +1333,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_exadb_vm_cluster"]
 
     @property
-    def delete_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteExadbVmClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_exadb_vm_cluster(self) -> Callable[[oracledatabase.DeleteExadbVmClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete exadb vm cluster method over gRPC.
 
         Deletes a single Exadb (Exascale) VM Cluster.
@@ -1572,11 +1357,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_exadb_vm_cluster"]
 
     @property
-    def update_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.UpdateExadbVmClusterRequest], operations_pb2.Operation
-    ]:
+    def update_exadb_vm_cluster(self) -> Callable[[oracledatabase.UpdateExadbVmClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update exadb vm cluster method over gRPC.
 
         Updates a single Exadb (Exascale) VM Cluster. To add
@@ -1604,10 +1385,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def remove_virtual_machine_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.RemoveVirtualMachineExadbVmClusterRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the remove virtual machine exadb
         vm cluster method over gRPC.
 
@@ -1625,9 +1403,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_virtual_machine_exadb_vm_cluster" not in self._stubs:
-            self._stubs[
-                "remove_virtual_machine_exadb_vm_cluster"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["remove_virtual_machine_exadb_vm_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/RemoveVirtualMachineExadbVmCluster",
                 request_serializer=oracledatabase.RemoveVirtualMachineExadbVmClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1637,10 +1413,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_exascale_db_storage_vaults(
         self,
-    ) -> Callable[
-        [exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest],
-        exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
-    ]:
+    ) -> Callable[[exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest], exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]:
         r"""Return a callable for the list exascale db storage
         vaults method over gRPC.
 
@@ -1658,9 +1431,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_exascale_db_storage_vaults" not in self._stubs:
-            self._stubs[
-                "list_exascale_db_storage_vaults"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_exascale_db_storage_vaults"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListExascaleDbStorageVaults",
                 request_serializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest.serialize,
                 response_deserializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.deserialize,
@@ -1670,10 +1441,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def get_exascale_db_storage_vault(
         self,
-    ) -> Callable[
-        [exascale_db_storage_vault.GetExascaleDbStorageVaultRequest],
-        exascale_db_storage_vault.ExascaleDbStorageVault,
-    ]:
+    ) -> Callable[[exascale_db_storage_vault.GetExascaleDbStorageVaultRequest], exascale_db_storage_vault.ExascaleDbStorageVault]:
         r"""Return a callable for the get exascale db storage vault method over gRPC.
 
         Gets details of a single ExascaleDB Storage Vault.
@@ -1689,9 +1457,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_exascale_db_storage_vault" not in self._stubs:
-            self._stubs[
-                "get_exascale_db_storage_vault"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_exascale_db_storage_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/GetExascaleDbStorageVault",
                 request_serializer=exascale_db_storage_vault.GetExascaleDbStorageVaultRequest.serialize,
                 response_deserializer=exascale_db_storage_vault.ExascaleDbStorageVault.deserialize,
@@ -1701,10 +1467,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def create_exascale_db_storage_vault(
         self,
-    ) -> Callable[
-        [gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest], operations_pb2.Operation]:
         r"""Return a callable for the create exascale db storage
         vault method over gRPC.
 
@@ -1721,9 +1484,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_exascale_db_storage_vault" not in self._stubs:
-            self._stubs[
-                "create_exascale_db_storage_vault"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_exascale_db_storage_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExascaleDbStorageVault",
                 request_serializer=gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1731,12 +1492,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_exascale_db_storage_vault"]
 
     @property
-    def delete_exascale_db_storage_vault(
-        self,
-    ) -> Callable[
-        [exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_exascale_db_storage_vault(self) -> Callable[[exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete exascale db storage
         vault method over gRPC.
 
@@ -1753,9 +1509,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_exascale_db_storage_vault" not in self._stubs:
-            self._stubs[
-                "delete_exascale_db_storage_vault"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_exascale_db_storage_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExascaleDbStorageVault",
                 request_serializer=exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1786,9 +1540,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_db_system_initial_storage_sizes" not in self._stubs:
-            self._stubs[
-                "list_db_system_initial_storage_sizes"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_db_system_initial_storage_sizes"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystemInitialStorageSizes",
                 request_serializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest.serialize,
                 response_deserializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.deserialize,
@@ -1796,9 +1548,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_db_system_initial_storage_sizes"]
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[[database.ListDatabasesRequest], database.ListDatabasesResponse]:
+    def list_databases(self) -> Callable[[database.ListDatabasesRequest], database.ListDatabasesResponse]:
         r"""Return a callable for the list databases method over gRPC.
 
         Lists all the Databases for the given project,
@@ -1823,9 +1573,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_databases"]
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[[database.GetDatabaseRequest], database.Database]:
+    def get_database(self) -> Callable[[database.GetDatabaseRequest], database.Database]:
         r"""Return a callable for the get database method over gRPC.
 
         Gets details of a single Database.
@@ -1851,10 +1599,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_pluggable_databases(
         self,
-    ) -> Callable[
-        [pluggable_database.ListPluggableDatabasesRequest],
-        pluggable_database.ListPluggableDatabasesResponse,
-    ]:
+    ) -> Callable[[pluggable_database.ListPluggableDatabasesRequest], pluggable_database.ListPluggableDatabasesResponse]:
         r"""Return a callable for the list pluggable databases method over gRPC.
 
         Lists all the PluggableDatabases for the given
@@ -1879,12 +1624,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_pluggable_databases"]
 
     @property
-    def get_pluggable_database(
-        self,
-    ) -> Callable[
-        [pluggable_database.GetPluggableDatabaseRequest],
-        pluggable_database.PluggableDatabase,
-    ]:
+    def get_pluggable_database(self) -> Callable[[pluggable_database.GetPluggableDatabaseRequest], pluggable_database.PluggableDatabase]:
         r"""Return a callable for the get pluggable database method over gRPC.
 
         Gets details of a single PluggableDatabase.
@@ -1908,9 +1648,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_pluggable_database"]
 
     @property
-    def list_db_systems(
-        self,
-    ) -> Callable[[db_system.ListDbSystemsRequest], db_system.ListDbSystemsResponse]:
+    def list_db_systems(self) -> Callable[[db_system.ListDbSystemsRequest], db_system.ListDbSystemsResponse]:
         r"""Return a callable for the list db systems method over gRPC.
 
         Lists all the DbSystems for the given project and
@@ -1935,9 +1673,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_db_systems"]
 
     @property
-    def get_db_system(
-        self,
-    ) -> Callable[[db_system.GetDbSystemRequest], db_system.DbSystem]:
+    def get_db_system(self) -> Callable[[db_system.GetDbSystemRequest], db_system.DbSystem]:
         r"""Return a callable for the get db system method over gRPC.
 
         Gets details of a single DbSystem.
@@ -1961,9 +1697,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["get_db_system"]
 
     @property
-    def create_db_system(
-        self,
-    ) -> Callable[[gco_db_system.CreateDbSystemRequest], operations_pb2.Operation]:
+    def create_db_system(self) -> Callable[[gco_db_system.CreateDbSystemRequest], operations_pb2.Operation]:
         r"""Return a callable for the create db system method over gRPC.
 
         Creates a new DbSystem in a given project and
@@ -1988,9 +1722,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["create_db_system"]
 
     @property
-    def delete_db_system(
-        self,
-    ) -> Callable[[db_system.DeleteDbSystemRequest], operations_pb2.Operation]:
+    def delete_db_system(self) -> Callable[[db_system.DeleteDbSystemRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete db system method over gRPC.
 
         Deletes a single DbSystem.
@@ -2014,11 +1746,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_db_system"]
 
     @property
-    def list_db_versions(
-        self,
-    ) -> Callable[
-        [db_version.ListDbVersionsRequest], db_version.ListDbVersionsResponse
-    ]:
+    def list_db_versions(self) -> Callable[[db_version.ListDbVersionsRequest], db_version.ListDbVersionsResponse]:
         r"""Return a callable for the list db versions method over gRPC.
 
         List DbVersions for the given project and location.
@@ -2044,10 +1772,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_database_character_sets(
         self,
-    ) -> Callable[
-        [database_character_set.ListDatabaseCharacterSetsRequest],
-        database_character_set.ListDatabaseCharacterSetsResponse,
-    ]:
+    ) -> Callable[[database_character_set.ListDatabaseCharacterSetsRequest], database_character_set.ListDatabaseCharacterSetsResponse]:
         r"""Return a callable for the list database character sets method over gRPC.
 
         List DatabaseCharacterSets for the given project and
@@ -2064,9 +1789,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_database_character_sets" not in self._stubs:
-            self._stubs[
-                "list_database_character_sets"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_database_character_sets"] = self._logged_channel.unary_unary(
                 "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabaseCharacterSets",
                 request_serializer=database_character_set.ListDatabaseCharacterSetsRequest.serialize,
                 response_deserializer=database_character_set.ListDatabaseCharacterSetsResponse.deserialize,
@@ -2130,9 +1853,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2149,9 +1870,7 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

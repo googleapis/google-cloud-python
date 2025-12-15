@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    document_processing_config as gcd_document_processing_config,
-)
+from google.cloud.discoveryengine_v1.types import document_processing_config as gcd_document_processing_config
 from google.cloud.discoveryengine_v1.types import cmek_config_service, common
 from google.cloud.discoveryengine_v1.types import schema
 

@@ -191,26 +191,20 @@ class ReportRow(proto.Message):
         number=6,
         message="BestSellersBrandView",
     )
-    competitive_visibility_competitor_view: "CompetitiveVisibilityCompetitorView" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=8,
-            message="CompetitiveVisibilityCompetitorView",
-        )
+    competitive_visibility_competitor_view: "CompetitiveVisibilityCompetitorView" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="CompetitiveVisibilityCompetitorView",
     )
-    competitive_visibility_top_merchant_view: "CompetitiveVisibilityTopMerchantView" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=9,
-            message="CompetitiveVisibilityTopMerchantView",
-        )
+    competitive_visibility_top_merchant_view: "CompetitiveVisibilityTopMerchantView" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="CompetitiveVisibilityTopMerchantView",
     )
-    competitive_visibility_benchmark_view: "CompetitiveVisibilityBenchmarkView" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=10,
-            message="CompetitiveVisibilityBenchmarkView",
-        )
+    competitive_visibility_benchmark_view: "CompetitiveVisibilityBenchmarkView" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="CompetitiveVisibilityBenchmarkView",
     )
 
 
@@ -883,13 +877,11 @@ class ProductView(proto.Message):
                         context, represented in ISO 3166 format.
                 """
 
-                reporting_context: types.ReportingContext.ReportingContextEnum = (
-                    proto.Field(
-                        proto.ENUM,
-                        number=1,
-                        optional=True,
-                        enum=types.ReportingContext.ReportingContextEnum,
-                    )
+                reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    optional=True,
+                    enum=types.ReportingContext.ReportingContextEnum,
                 )
                 disapproved_countries: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
@@ -1774,13 +1766,11 @@ class BestSellersProductClusterView(proto.Message):
         optional=True,
         enum="RelativeDemand.RelativeDemandEnum",
     )
-    relative_demand_change: "RelativeDemandChangeType.RelativeDemandChangeTypeEnum" = (
-        proto.Field(
-            proto.ENUM,
-            number=20,
-            optional=True,
-            enum="RelativeDemandChangeType.RelativeDemandChangeTypeEnum",
-        )
+    relative_demand_change: "RelativeDemandChangeType.RelativeDemandChangeTypeEnum" = proto.Field(
+        proto.ENUM,
+        number=20,
+        optional=True,
+        enum="RelativeDemandChangeType.RelativeDemandChangeTypeEnum",
     )
 
 
@@ -1917,13 +1907,11 @@ class BestSellersBrandView(proto.Message):
         optional=True,
         enum="RelativeDemand.RelativeDemandEnum",
     )
-    relative_demand_change: "RelativeDemandChangeType.RelativeDemandChangeTypeEnum" = (
-        proto.Field(
-            proto.ENUM,
-            number=11,
-            optional=True,
-            enum="RelativeDemandChangeType.RelativeDemandChangeTypeEnum",
-        )
+    relative_demand_change: "RelativeDemandChangeType.RelativeDemandChangeTypeEnum" = proto.Field(
+        proto.ENUM,
+        number=11,
+        optional=True,
+        enum="RelativeDemandChangeType.RelativeDemandChangeTypeEnum",
     )
 
 

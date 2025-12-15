@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.functions_v1 import gapic_version as package_version
 from google.cloud.functions_v1.types import functions
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class CloudFunctionsServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -266,101 +256,51 @@ class CloudFunctionsServiceTransport(abc.ABC):
     @property
     def list_functions(
         self,
-    ) -> Callable[
-        [functions.ListFunctionsRequest],
-        Union[
-            functions.ListFunctionsResponse, Awaitable[functions.ListFunctionsResponse]
-        ],
-    ]:
+    ) -> Callable[[functions.ListFunctionsRequest], Union[functions.ListFunctionsResponse, Awaitable[functions.ListFunctionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_function(
-        self,
-    ) -> Callable[
-        [functions.GetFunctionRequest],
-        Union[functions.CloudFunction, Awaitable[functions.CloudFunction]],
-    ]:
+    def get_function(self) -> Callable[[functions.GetFunctionRequest], Union[functions.CloudFunction, Awaitable[functions.CloudFunction]]]:
         raise NotImplementedError()
 
     @property
-    def create_function(
-        self,
-    ) -> Callable[
-        [functions.CreateFunctionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_function(self) -> Callable[[functions.CreateFunctionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_function(
-        self,
-    ) -> Callable[
-        [functions.UpdateFunctionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_function(self) -> Callable[[functions.UpdateFunctionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_function(
-        self,
-    ) -> Callable[
-        [functions.DeleteFunctionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_function(self) -> Callable[[functions.DeleteFunctionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def call_function(
         self,
-    ) -> Callable[
-        [functions.CallFunctionRequest],
-        Union[
-            functions.CallFunctionResponse, Awaitable[functions.CallFunctionResponse]
-        ],
-    ]:
+    ) -> Callable[[functions.CallFunctionRequest], Union[functions.CallFunctionResponse, Awaitable[functions.CallFunctionResponse]]]:
         raise NotImplementedError()
 
     @property
     def generate_upload_url(
         self,
-    ) -> Callable[
-        [functions.GenerateUploadUrlRequest],
-        Union[
-            functions.GenerateUploadUrlResponse,
-            Awaitable[functions.GenerateUploadUrlResponse],
-        ],
-    ]:
+    ) -> Callable[[functions.GenerateUploadUrlRequest], Union[functions.GenerateUploadUrlResponse, Awaitable[functions.GenerateUploadUrlResponse]]]:
         raise NotImplementedError()
 
     @property
     def generate_download_url(
         self,
     ) -> Callable[
-        [functions.GenerateDownloadUrlRequest],
-        Union[
-            functions.GenerateDownloadUrlResponse,
-            Awaitable[functions.GenerateDownloadUrlResponse],
-        ],
+        [functions.GenerateDownloadUrlRequest], Union[functions.GenerateDownloadUrlResponse, Awaitable[functions.GenerateDownloadUrlResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -368,10 +308,7 @@ class CloudFunctionsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -380,32 +317,20 @@ class CloudFunctionsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

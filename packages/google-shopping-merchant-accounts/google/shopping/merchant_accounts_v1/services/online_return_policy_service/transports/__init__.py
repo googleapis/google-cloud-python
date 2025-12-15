@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import OnlineReturnPolicyServiceTransport
 from .grpc import OnlineReturnPolicyServiceGrpcTransport
 from .grpc_asyncio import OnlineReturnPolicyServiceGrpcAsyncIOTransport
-from .rest import (
-    OnlineReturnPolicyServiceRestInterceptor,
-    OnlineReturnPolicyServiceRestTransport,
-)
+from .rest import OnlineReturnPolicyServiceRestInterceptor, OnlineReturnPolicyServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[OnlineReturnPolicyServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[OnlineReturnPolicyServiceTransport]]
 _transport_registry["grpc"] = OnlineReturnPolicyServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = OnlineReturnPolicyServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = OnlineReturnPolicyServiceRestTransport

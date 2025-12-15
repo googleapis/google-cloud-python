@@ -43,15 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -66,12 +58,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.edgenetwork_v1.services.edge_network import (
-    EdgeNetworkAsyncClient,
-    EdgeNetworkClient,
-    pagers,
-    transports,
-)
+from google.cloud.edgenetwork_v1.services.edge_network import EdgeNetworkAsyncClient, EdgeNetworkClient, pagers, transports
 from google.cloud.edgenetwork_v1.types import resources, service
 
 CRED_INFO_JSON = {
@@ -104,22 +91,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -130,21 +109,10 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert EdgeNetworkClient._get_default_mtls_endpoint(None) is None
-    assert (
-        EdgeNetworkClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        EdgeNetworkClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        EdgeNetworkClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        EdgeNetworkClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert EdgeNetworkClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert EdgeNetworkClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert EdgeNetworkClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert EdgeNetworkClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert EdgeNetworkClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -157,25 +125,23 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert EdgeNetworkClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            EdgeNetworkClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                EdgeNetworkClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert EdgeNetworkClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert EdgeNetworkClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert EdgeNetworkClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert EdgeNetworkClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
         assert EdgeNetworkClient._read_environment_variables() == (False, "auto", None)
@@ -183,17 +149,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             EdgeNetworkClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert EdgeNetworkClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert EdgeNetworkClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert EdgeNetworkClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert EdgeNetworkClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert EdgeNetworkClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                EdgeNetworkClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert EdgeNetworkClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert EdgeNetworkClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -201,119 +245,45 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert EdgeNetworkClient._get_client_cert_source(None, False) is None
-    assert (
-        EdgeNetworkClient._get_client_cert_source(mock_provided_cert_source, False)
-        is None
-    )
-    assert (
-        EdgeNetworkClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert EdgeNetworkClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert EdgeNetworkClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                EdgeNetworkClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                EdgeNetworkClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert EdgeNetworkClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert EdgeNetworkClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    EdgeNetworkClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkClient),
-)
-@mock.patch.object(
-    EdgeNetworkAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkAsyncClient),
-)
+@mock.patch.object(EdgeNetworkClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkClient))
+@mock.patch.object(EdgeNetworkAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = EdgeNetworkClient._DEFAULT_UNIVERSE
-    default_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        EdgeNetworkClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        EdgeNetworkClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == EdgeNetworkClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        EdgeNetworkClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        EdgeNetworkClient._get_api_endpoint(None, None, default_universe, "always")
-        == EdgeNetworkClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        EdgeNetworkClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == EdgeNetworkClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        EdgeNetworkClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        EdgeNetworkClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert EdgeNetworkClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert EdgeNetworkClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == EdgeNetworkClient.DEFAULT_MTLS_ENDPOINT
+    assert EdgeNetworkClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert EdgeNetworkClient._get_api_endpoint(None, None, default_universe, "always") == EdgeNetworkClient.DEFAULT_MTLS_ENDPOINT
+    assert EdgeNetworkClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == EdgeNetworkClient.DEFAULT_MTLS_ENDPOINT
+    assert EdgeNetworkClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert EdgeNetworkClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        EdgeNetworkClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        EdgeNetworkClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        EdgeNetworkClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        EdgeNetworkClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        EdgeNetworkClient._get_universe_domain(None, None)
-        == EdgeNetworkClient._DEFAULT_UNIVERSE
-    )
+    assert EdgeNetworkClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert EdgeNetworkClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert EdgeNetworkClient._get_universe_domain(None, None) == EdgeNetworkClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         EdgeNetworkClient._get_universe_domain("", None)
@@ -373,9 +343,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_edge_network_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -383,9 +351,7 @@ def test_edge_network_client_from_service_account_info(client_class, transport_n
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "edgenetwork.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://edgenetwork.googleapis.com"
+            "edgenetwork.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://edgenetwork.googleapis.com"
         )
 
 
@@ -397,19 +363,13 @@ def test_edge_network_client_from_service_account_info(client_class, transport_n
         (transports.EdgeNetworkRestTransport, "rest"),
     ],
 )
-def test_edge_network_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_edge_network_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -425,26 +385,18 @@ def test_edge_network_client_service_account_always_use_jwt(
 )
 def test_edge_network_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "edgenetwork.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://edgenetwork.googleapis.com"
+            "edgenetwork.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://edgenetwork.googleapis.com"
         )
 
 
@@ -464,27 +416,13 @@ def test_edge_network_client_get_transport_class():
     "client_class,transport_class,transport_name",
     [
         (EdgeNetworkClient, transports.EdgeNetworkGrpcTransport, "grpc"),
-        (
-            EdgeNetworkAsyncClient,
-            transports.EdgeNetworkGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (EdgeNetworkAsyncClient, transports.EdgeNetworkGrpcAsyncIOTransport, "grpc_asyncio"),
         (EdgeNetworkClient, transports.EdgeNetworkRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    EdgeNetworkClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkClient),
-)
-@mock.patch.object(
-    EdgeNetworkAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkAsyncClient),
-)
-def test_edge_network_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(EdgeNetworkClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkClient))
+@mock.patch.object(EdgeNetworkAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkAsyncClient))
+def test_edge_network_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(EdgeNetworkClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -522,9 +460,7 @@ def test_edge_network_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -556,21 +492,7 @@ def test_edge_network_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -580,9 +502,7 @@ def test_edge_network_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -591,18 +511,14 @@ def test_edge_network_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -616,57 +532,31 @@ def test_edge_network_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (EdgeNetworkClient, transports.EdgeNetworkGrpcTransport, "grpc", "true"),
-        (
-            EdgeNetworkAsyncClient,
-            transports.EdgeNetworkGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
+        (EdgeNetworkAsyncClient, transports.EdgeNetworkGrpcAsyncIOTransport, "grpc_asyncio", "true"),
         (EdgeNetworkClient, transports.EdgeNetworkGrpcTransport, "grpc", "false"),
-        (
-            EdgeNetworkAsyncClient,
-            transports.EdgeNetworkGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
+        (EdgeNetworkAsyncClient, transports.EdgeNetworkGrpcAsyncIOTransport, "grpc_asyncio", "false"),
         (EdgeNetworkClient, transports.EdgeNetworkRestTransport, "rest", "true"),
         (EdgeNetworkClient, transports.EdgeNetworkRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    EdgeNetworkClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkClient),
-)
-@mock.patch.object(
-    EdgeNetworkAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkAsyncClient),
-)
+@mock.patch.object(EdgeNetworkClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkClient))
+@mock.patch.object(EdgeNetworkAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_edge_network_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_edge_network_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -685,22 +575,12 @@ def test_edge_network_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -721,22 +601,15 @@ def test_edge_network_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -747,26 +620,16 @@ def test_edge_network_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [EdgeNetworkClient, EdgeNetworkAsyncClient])
-@mock.patch.object(
-    EdgeNetworkClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EdgeNetworkClient)
-)
-@mock.patch.object(
-    EdgeNetworkAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(EdgeNetworkAsyncClient),
-)
+@mock.patch.object(EdgeNetworkClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EdgeNetworkClient))
+@mock.patch.object(EdgeNetworkAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EdgeNetworkAsyncClient))
 def test_edge_network_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -774,14 +637,106 @@ def test_edge_network_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -797,28 +752,16 @@ def test_edge_network_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -828,60 +771,26 @@ def test_edge_network_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [EdgeNetworkClient, EdgeNetworkAsyncClient])
-@mock.patch.object(
-    EdgeNetworkClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkClient),
-)
-@mock.patch.object(
-    EdgeNetworkAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(EdgeNetworkAsyncClient),
-)
+@mock.patch.object(EdgeNetworkClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkClient))
+@mock.patch.object(EdgeNetworkAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EdgeNetworkAsyncClient))
 def test_edge_network_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = EdgeNetworkClient._DEFAULT_UNIVERSE
-    default_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = EdgeNetworkClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -904,19 +813,11 @@ def test_edge_network_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -924,9 +825,7 @@ def test_edge_network_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -934,17 +833,11 @@ def test_edge_network_client_client_api_endpoint(client_class):
     "client_class,transport_class,transport_name",
     [
         (EdgeNetworkClient, transports.EdgeNetworkGrpcTransport, "grpc"),
-        (
-            EdgeNetworkAsyncClient,
-            transports.EdgeNetworkGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (EdgeNetworkAsyncClient, transports.EdgeNetworkGrpcAsyncIOTransport, "grpc_asyncio"),
         (EdgeNetworkClient, transports.EdgeNetworkRestTransport, "rest"),
     ],
 )
-def test_edge_network_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_edge_network_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -955,9 +848,7 @@ def test_edge_network_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -971,18 +862,11 @@ def test_edge_network_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (EdgeNetworkClient, transports.EdgeNetworkGrpcTransport, "grpc", grpc_helpers),
-        (
-            EdgeNetworkAsyncClient,
-            transports.EdgeNetworkGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (EdgeNetworkAsyncClient, transports.EdgeNetworkGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
         (EdgeNetworkClient, transports.EdgeNetworkRestTransport, "rest", None),
     ],
 )
-def test_edge_network_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_edge_network_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -992,9 +876,7 @@ def test_edge_network_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1005,9 +887,7 @@ def test_edge_network_client_client_options_credentials_file(
 
 
 def test_edge_network_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.edgenetwork_v1.services.edge_network.transports.EdgeNetworkGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.edgenetwork_v1.services.edge_network.transports.EdgeNetworkGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
         client = EdgeNetworkClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
@@ -1027,17 +907,10 @@ def test_edge_network_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (EdgeNetworkClient, transports.EdgeNetworkGrpcTransport, "grpc", grpc_helpers),
-        (
-            EdgeNetworkAsyncClient,
-            transports.EdgeNetworkGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (EdgeNetworkAsyncClient, transports.EdgeNetworkGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_edge_network_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_edge_network_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1047,9 +920,7 @@ def test_edge_network_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1059,13 +930,9 @@ def test_edge_network_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1137,9 +1004,7 @@ def test_initialize_zone_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.initialize_zone), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.initialize_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1166,9 +1031,7 @@ def test_initialize_zone_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.initialize_zone] = mock_rpc
         request = {}
         client.initialize_zone(request)
@@ -1184,9 +1047,7 @@ def test_initialize_zone_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_initialize_zone_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_initialize_zone_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1200,17 +1061,12 @@ async def test_initialize_zone_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.initialize_zone
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.initialize_zone in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.initialize_zone
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.initialize_zone] = mock_rpc
 
         request = {}
         await client.initialize_zone(request)
@@ -1226,9 +1082,7 @@ async def test_initialize_zone_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_initialize_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.InitializeZoneRequest
-):
+async def test_initialize_zone_async(transport: str = "grpc_asyncio", request_type=service.InitializeZoneRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1241,9 +1095,7 @@ async def test_initialize_zone_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.initialize_zone), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.InitializeZoneResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.InitializeZoneResponse())
         response = await client.initialize_zone(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1304,9 +1156,7 @@ async def test_initialize_zone_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.initialize_zone), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.InitializeZoneResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.InitializeZoneResponse())
         await client.initialize_zone(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1371,9 +1221,7 @@ async def test_initialize_zone_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.InitializeZoneResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.InitializeZoneResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.InitializeZoneResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.initialize_zone(
@@ -1462,9 +1310,7 @@ def test_list_zones_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_zones(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1494,9 +1340,7 @@ def test_list_zones_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_zones] = mock_rpc
         request = {}
         client.list_zones(request)
@@ -1526,17 +1370,12 @@ async def test_list_zones_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_zones
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_zones in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_zones
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_zones] = mock_rpc
 
         request = {}
         await client.list_zones(request)
@@ -1552,9 +1391,7 @@ async def test_list_zones_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_zones_async(
-    transport: str = "grpc_asyncio", request_type=service.ListZonesRequest
-):
+async def test_list_zones_async(transport: str = "grpc_asyncio", request_type=service.ListZonesRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1635,9 +1472,7 @@ async def test_list_zones_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListZonesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListZonesResponse())
         await client.list_zones(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1702,9 +1537,7 @@ async def test_list_zones_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.ListZonesResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListZonesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListZonesResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_zones(
@@ -1775,9 +1608,7 @@ def test_list_zones_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_zones(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -1837,9 +1668,7 @@ async def test_list_zones_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_zones), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_zones), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListZonesResponse(
@@ -1887,9 +1716,7 @@ async def test_list_zones_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_zones), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_zones), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListZonesResponse(
@@ -1921,9 +1748,7 @@ async def test_list_zones_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_zones(request={})
-        ).pages:
+        async for page_ in (await client.list_zones(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1984,9 +1809,7 @@ def test_get_zone_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2013,9 +1836,7 @@ def test_get_zone_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_zone] = mock_rpc
         request = {}
         client.get_zone(request)
@@ -2045,17 +1866,12 @@ async def test_get_zone_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_zone
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_zone in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_zone
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_zone] = mock_rpc
 
         request = {}
         await client.get_zone(request)
@@ -2071,9 +1887,7 @@ async def test_get_zone_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.GetZoneRequest
-):
+async def test_get_zone_async(transport: str = "grpc_asyncio", request_type=service.GetZoneRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2308,9 +2122,7 @@ def test_list_networks_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_networks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2340,9 +2152,7 @@ def test_list_networks_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_networks] = mock_rpc
         request = {}
         client.list_networks(request)
@@ -2358,9 +2168,7 @@ def test_list_networks_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_networks_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_networks_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2374,17 +2182,12 @@ async def test_list_networks_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_networks
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_networks in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_networks
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_networks] = mock_rpc
 
         request = {}
         await client.list_networks(request)
@@ -2400,9 +2203,7 @@ async def test_list_networks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_networks_async(
-    transport: str = "grpc_asyncio", request_type=service.ListNetworksRequest
-):
+async def test_list_networks_async(transport: str = "grpc_asyncio", request_type=service.ListNetworksRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2483,9 +2284,7 @@ async def test_list_networks_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListNetworksResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListNetworksResponse())
         await client.list_networks(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2550,9 +2349,7 @@ async def test_list_networks_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.ListNetworksResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListNetworksResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListNetworksResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_networks(
@@ -2623,9 +2420,7 @@ def test_list_networks_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_networks(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -2685,9 +2480,7 @@ async def test_list_networks_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_networks), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_networks), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListNetworksResponse(
@@ -2735,9 +2528,7 @@ async def test_list_networks_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_networks), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_networks), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListNetworksResponse(
@@ -2769,9 +2560,7 @@ async def test_list_networks_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_networks(request={})
-        ).pages:
+        async for page_ in (await client.list_networks(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2834,9 +2623,7 @@ def test_get_network_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2863,9 +2650,7 @@ def test_get_network_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_network] = mock_rpc
         request = {}
         client.get_network(request)
@@ -2881,9 +2666,7 @@ def test_get_network_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_network_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_network_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2897,17 +2680,12 @@ async def test_get_network_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_network
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_network in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_network
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_network] = mock_rpc
 
         request = {}
         await client.get_network(request)
@@ -2923,9 +2701,7 @@ async def test_get_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_network_async(
-    transport: str = "grpc_asyncio", request_type=service.GetNetworkRequest
-):
+async def test_get_network_async(transport: str = "grpc_asyncio", request_type=service.GetNetworkRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3154,9 +2930,7 @@ def test_diagnose_network_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_network), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.diagnose_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3183,12 +2957,8 @@ def test_diagnose_network_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.diagnose_network
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.diagnose_network] = mock_rpc
         request = {}
         client.diagnose_network(request)
 
@@ -3203,9 +2973,7 @@ def test_diagnose_network_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_diagnose_network_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_diagnose_network_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3219,17 +2987,12 @@ async def test_diagnose_network_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.diagnose_network
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.diagnose_network in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.diagnose_network
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.diagnose_network] = mock_rpc
 
         request = {}
         await client.diagnose_network(request)
@@ -3245,9 +3008,7 @@ async def test_diagnose_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_diagnose_network_async(
-    transport: str = "grpc_asyncio", request_type=service.DiagnoseNetworkRequest
-):
+async def test_diagnose_network_async(transport: str = "grpc_asyncio", request_type=service.DiagnoseNetworkRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3260,9 +3021,7 @@ async def test_diagnose_network_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseNetworkResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseNetworkResponse())
         response = await client.diagnose_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3323,9 +3082,7 @@ async def test_diagnose_network_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_network), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseNetworkResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseNetworkResponse())
         await client.diagnose_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3390,9 +3147,7 @@ async def test_diagnose_network_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.DiagnoseNetworkResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseNetworkResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseNetworkResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.diagnose_network(
@@ -3475,9 +3230,7 @@ def test_create_network_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_network), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3506,9 +3259,7 @@ def test_create_network_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_network] = mock_rpc
         request = {}
         client.create_network(request)
@@ -3529,9 +3280,7 @@ def test_create_network_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_network_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_network_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3545,17 +3294,12 @@ async def test_create_network_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_network
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_network in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_network
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_network] = mock_rpc
 
         request = {}
         await client.create_network(request)
@@ -3576,9 +3320,7 @@ async def test_create_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_network_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateNetworkRequest
-):
+async def test_create_network_async(transport: str = "grpc_asyncio", request_type=service.CreateNetworkRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3591,9 +3333,7 @@ async def test_create_network_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3654,9 +3394,7 @@ async def test_create_network_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_network), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3731,9 +3469,7 @@ async def test_create_network_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_network(
@@ -3825,9 +3561,7 @@ def test_delete_network_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_network), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3855,9 +3589,7 @@ def test_delete_network_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_network] = mock_rpc
         request = {}
         client.delete_network(request)
@@ -3878,9 +3610,7 @@ def test_delete_network_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_network_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_network_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3894,17 +3624,12 @@ async def test_delete_network_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_network
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_network in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_network
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_network] = mock_rpc
 
         request = {}
         await client.delete_network(request)
@@ -3925,9 +3650,7 @@ async def test_delete_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_network_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteNetworkRequest
-):
+async def test_delete_network_async(transport: str = "grpc_asyncio", request_type=service.DeleteNetworkRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3940,9 +3663,7 @@ async def test_delete_network_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4003,9 +3724,7 @@ async def test_delete_network_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_network), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4070,9 +3789,7 @@ async def test_delete_network_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_network(
@@ -4161,9 +3878,7 @@ def test_list_subnets_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_subnets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4193,9 +3908,7 @@ def test_list_subnets_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_subnets] = mock_rpc
         request = {}
         client.list_subnets(request)
@@ -4211,9 +3924,7 @@ def test_list_subnets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_subnets_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_subnets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4227,17 +3938,12 @@ async def test_list_subnets_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_subnets
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_subnets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_subnets
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_subnets] = mock_rpc
 
         request = {}
         await client.list_subnets(request)
@@ -4253,9 +3959,7 @@ async def test_list_subnets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subnets_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSubnetsRequest
-):
+async def test_list_subnets_async(transport: str = "grpc_asyncio", request_type=service.ListSubnetsRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4336,9 +4040,7 @@ async def test_list_subnets_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSubnetsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSubnetsResponse())
         await client.list_subnets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4403,9 +4105,7 @@ async def test_list_subnets_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.ListSubnetsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSubnetsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSubnetsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_subnets(
@@ -4476,9 +4176,7 @@ def test_list_subnets_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_subnets(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -4538,9 +4236,7 @@ async def test_list_subnets_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subnets), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subnets), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubnetsResponse(
@@ -4588,9 +4284,7 @@ async def test_list_subnets_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subnets), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subnets), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubnetsResponse(
@@ -4622,9 +4316,7 @@ async def test_list_subnets_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_subnets(request={})
-        ).pages:
+        async for page_ in (await client.list_subnets(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4697,9 +4389,7 @@ def test_get_subnet_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4726,9 +4416,7 @@ def test_get_subnet_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_subnet] = mock_rpc
         request = {}
         client.get_subnet(request)
@@ -4758,17 +4446,12 @@ async def test_get_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_subnet
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_subnet in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_subnet
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_subnet] = mock_rpc
 
         request = {}
         await client.get_subnet(request)
@@ -4784,9 +4467,7 @@ async def test_get_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.GetSubnetRequest
-):
+async def test_get_subnet_async(transport: str = "grpc_asyncio", request_type=service.GetSubnetRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5027,9 +4708,7 @@ def test_create_subnet_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_subnet), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5058,9 +4737,7 @@ def test_create_subnet_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_subnet] = mock_rpc
         request = {}
         client.create_subnet(request)
@@ -5081,9 +4758,7 @@ def test_create_subnet_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_subnet_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5097,17 +4772,12 @@ async def test_create_subnet_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_subnet
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_subnet in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_subnet
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_subnet] = mock_rpc
 
         request = {}
         await client.create_subnet(request)
@@ -5128,9 +4798,7 @@ async def test_create_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateSubnetRequest
-):
+async def test_create_subnet_async(transport: str = "grpc_asyncio", request_type=service.CreateSubnetRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5143,9 +4811,7 @@ async def test_create_subnet_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_subnet), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_subnet(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5206,9 +4872,7 @@ async def test_create_subnet_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_subnet), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_subnet(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5283,9 +4947,7 @@ async def test_create_subnet_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_subnet(
@@ -5376,9 +5038,7 @@ def test_update_subnet_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5405,9 +5065,7 @@ def test_update_subnet_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_subnet] = mock_rpc
         request = {}
         client.update_subnet(request)
@@ -5428,9 +5086,7 @@ def test_update_subnet_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_subnet_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5444,17 +5100,12 @@ async def test_update_subnet_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_subnet
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_subnet in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_subnet
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_subnet] = mock_rpc
 
         request = {}
         await client.update_subnet(request)
@@ -5475,9 +5126,7 @@ async def test_update_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateSubnetRequest
-):
+async def test_update_subnet_async(transport: str = "grpc_asyncio", request_type=service.UpdateSubnetRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5490,9 +5139,7 @@ async def test_update_subnet_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_subnet(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5553,9 +5200,7 @@ async def test_update_subnet_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_subnet(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5625,9 +5270,7 @@ async def test_update_subnet_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_subnet(
@@ -5714,9 +5357,7 @@ def test_delete_subnet_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subnet), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5744,9 +5385,7 @@ def test_delete_subnet_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_subnet] = mock_rpc
         request = {}
         client.delete_subnet(request)
@@ -5767,9 +5406,7 @@ def test_delete_subnet_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_subnet_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5783,17 +5420,12 @@ async def test_delete_subnet_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_subnet
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_subnet in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_subnet
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_subnet] = mock_rpc
 
         request = {}
         await client.delete_subnet(request)
@@ -5814,9 +5446,7 @@ async def test_delete_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteSubnetRequest
-):
+async def test_delete_subnet_async(transport: str = "grpc_asyncio", request_type=service.DeleteSubnetRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5829,9 +5459,7 @@ async def test_delete_subnet_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subnet), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_subnet(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5892,9 +5520,7 @@ async def test_delete_subnet_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subnet), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_subnet(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5959,9 +5585,7 @@ async def test_delete_subnet_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_subnet(
@@ -6010,9 +5634,7 @@ def test_list_interconnects(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInterconnectsResponse(
             next_page_token="next_page_token_value",
@@ -6051,12 +5673,8 @@ def test_list_interconnects_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_interconnects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6082,18 +5700,12 @@ def test_list_interconnects_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_interconnects in client._transport._wrapped_methods
-        )
+        assert client._transport.list_interconnects in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_interconnects
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_interconnects] = mock_rpc
         request = {}
         client.list_interconnects(request)
 
@@ -6108,9 +5720,7 @@ def test_list_interconnects_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_interconnects_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_interconnects_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6124,17 +5734,12 @@ async def test_list_interconnects_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_interconnects
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_interconnects in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_interconnects
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_interconnects] = mock_rpc
 
         request = {}
         await client.list_interconnects(request)
@@ -6150,9 +5755,7 @@ async def test_list_interconnects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_interconnects_async(
-    transport: str = "grpc_asyncio", request_type=service.ListInterconnectsRequest
-):
+async def test_list_interconnects_async(transport: str = "grpc_asyncio", request_type=service.ListInterconnectsRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6163,9 +5766,7 @@ async def test_list_interconnects_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListInterconnectsResponse(
@@ -6204,9 +5805,7 @@ def test_list_interconnects_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         call.return_value = service.ListInterconnectsResponse()
         client.list_interconnects(request)
 
@@ -6236,12 +5835,8 @@ async def test_list_interconnects_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListInterconnectsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListInterconnectsResponse())
         await client.list_interconnects(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6263,9 +5858,7 @@ def test_list_interconnects_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInterconnectsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -6304,15 +5897,11 @@ async def test_list_interconnects_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInterconnectsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListInterconnectsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListInterconnectsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_interconnects(
@@ -6350,9 +5939,7 @@ def test_list_interconnects_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectsResponse(
@@ -6385,9 +5972,7 @@ def test_list_interconnects_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_interconnects(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -6406,9 +5991,7 @@ def test_list_interconnects_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectsResponse(
@@ -6449,11 +6032,7 @@ async def test_list_interconnects_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectsResponse(
@@ -6501,11 +6080,7 @@ async def test_list_interconnects_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectsResponse(
@@ -6537,9 +6112,7 @@ async def test_list_interconnects_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_interconnects(request={})
-        ).pages:
+        async for page_ in (await client.list_interconnects(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6586,16 +6159,11 @@ def test_get_interconnect(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Interconnect)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert (
-        response.interconnect_type == resources.Interconnect.InterconnectType.DEDICATED
-    )
+    assert response.interconnect_type == resources.Interconnect.InterconnectType.DEDICATED
     assert response.uuid == "uuid_value"
     assert response.device_cloud_resource_name == "device_cloud_resource_name_value"
     assert response.physical_ports == ["physical_ports_value"]
-    assert (
-        response.remote_peering_network_type
-        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
-    )
+    assert response.remote_peering_network_type == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
 
 
 def test_get_interconnect_non_empty_request_with_auto_populated_field():
@@ -6615,9 +6183,7 @@ def test_get_interconnect_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_interconnect), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_interconnect(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6644,12 +6210,8 @@ def test_get_interconnect_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_interconnect
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_interconnect] = mock_rpc
         request = {}
         client.get_interconnect(request)
 
@@ -6664,9 +6226,7 @@ def test_get_interconnect_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_interconnect_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_interconnect_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6680,17 +6240,12 @@ async def test_get_interconnect_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_interconnect
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_interconnect in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_interconnect
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_interconnect] = mock_rpc
 
         request = {}
         await client.get_interconnect(request)
@@ -6706,9 +6261,7 @@ async def test_get_interconnect_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_interconnect_async(
-    transport: str = "grpc_asyncio", request_type=service.GetInterconnectRequest
-):
+async def test_get_interconnect_async(transport: str = "grpc_asyncio", request_type=service.GetInterconnectRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6744,16 +6297,11 @@ async def test_get_interconnect_async(
     assert isinstance(response, resources.Interconnect)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert (
-        response.interconnect_type == resources.Interconnect.InterconnectType.DEDICATED
-    )
+    assert response.interconnect_type == resources.Interconnect.InterconnectType.DEDICATED
     assert response.uuid == "uuid_value"
     assert response.device_cloud_resource_name == "device_cloud_resource_name_value"
     assert response.physical_ports == ["physical_ports_value"]
-    assert (
-        response.remote_peering_network_type
-        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
-    )
+    assert response.remote_peering_network_type == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
 
 
 @pytest.mark.asyncio
@@ -6804,9 +6352,7 @@ async def test_get_interconnect_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_interconnect), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Interconnect()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Interconnect())
         await client.get_interconnect(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6871,9 +6417,7 @@ async def test_get_interconnect_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = resources.Interconnect()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Interconnect()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Interconnect())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_interconnect(
@@ -6922,9 +6466,7 @@ def test_diagnose_interconnect(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.DiagnoseInterconnectResponse()
         response = client.diagnose_interconnect(request)
@@ -6955,12 +6497,8 @@ def test_diagnose_interconnect_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.diagnose_interconnect(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6983,19 +6521,12 @@ def test_diagnose_interconnect_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.diagnose_interconnect
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.diagnose_interconnect in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.diagnose_interconnect
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.diagnose_interconnect] = mock_rpc
         request = {}
         client.diagnose_interconnect(request)
 
@@ -7010,9 +6541,7 @@ def test_diagnose_interconnect_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_diagnose_interconnect_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_diagnose_interconnect_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7026,17 +6555,12 @@ async def test_diagnose_interconnect_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.diagnose_interconnect
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.diagnose_interconnect in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.diagnose_interconnect
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.diagnose_interconnect] = mock_rpc
 
         request = {}
         await client.diagnose_interconnect(request)
@@ -7052,9 +6576,7 @@ async def test_diagnose_interconnect_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_diagnose_interconnect_async(
-    transport: str = "grpc_asyncio", request_type=service.DiagnoseInterconnectRequest
-):
+async def test_diagnose_interconnect_async(transport: str = "grpc_asyncio", request_type=service.DiagnoseInterconnectRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7065,13 +6587,9 @@ async def test_diagnose_interconnect_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseInterconnectResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseInterconnectResponse())
         response = await client.diagnose_interconnect(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7101,9 +6619,7 @@ def test_diagnose_interconnect_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         call.return_value = service.DiagnoseInterconnectResponse()
         client.diagnose_interconnect(request)
 
@@ -7133,12 +6649,8 @@ async def test_diagnose_interconnect_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseInterconnectResponse()
-        )
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseInterconnectResponse())
         await client.diagnose_interconnect(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7160,9 +6672,7 @@ def test_diagnose_interconnect_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.DiagnoseInterconnectResponse()
         # Call the method with a truthy value for each flattened field,
@@ -7201,15 +6711,11 @@ async def test_diagnose_interconnect_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.DiagnoseInterconnectResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseInterconnectResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseInterconnectResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.diagnose_interconnect(
@@ -7258,9 +6764,7 @@ def test_list_interconnect_attachments(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInterconnectAttachmentsResponse(
             next_page_token="next_page_token_value",
@@ -7299,12 +6803,8 @@ def test_list_interconnect_attachments_non_empty_request_with_auto_populated_fie
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_interconnect_attachments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7330,19 +6830,12 @@ def test_list_interconnect_attachments_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_interconnect_attachments
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_interconnect_attachments in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_interconnect_attachments
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_interconnect_attachments] = mock_rpc
         request = {}
         client.list_interconnect_attachments(request)
 
@@ -7357,9 +6850,7 @@ def test_list_interconnect_attachments_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_interconnect_attachments_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_interconnect_attachments_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7373,17 +6864,12 @@ async def test_list_interconnect_attachments_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_interconnect_attachments
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_interconnect_attachments in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_interconnect_attachments
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_interconnect_attachments] = mock_rpc
 
         request = {}
         await client.list_interconnect_attachments(request)
@@ -7399,10 +6885,7 @@ async def test_list_interconnect_attachments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_interconnect_attachments_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListInterconnectAttachmentsRequest,
-):
+async def test_list_interconnect_attachments_async(transport: str = "grpc_asyncio", request_type=service.ListInterconnectAttachmentsRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7413,9 +6896,7 @@ async def test_list_interconnect_attachments_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListInterconnectAttachmentsResponse(
@@ -7454,9 +6935,7 @@ def test_list_interconnect_attachments_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         call.return_value = service.ListInterconnectAttachmentsResponse()
         client.list_interconnect_attachments(request)
 
@@ -7486,12 +6965,8 @@ async def test_list_interconnect_attachments_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListInterconnectAttachmentsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListInterconnectAttachmentsResponse())
         await client.list_interconnect_attachments(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7513,9 +6988,7 @@ def test_list_interconnect_attachments_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInterconnectAttachmentsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -7554,15 +7027,11 @@ async def test_list_interconnect_attachments_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInterconnectAttachmentsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListInterconnectAttachmentsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListInterconnectAttachmentsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_interconnect_attachments(
@@ -7600,9 +7069,7 @@ def test_list_interconnect_attachments_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectAttachmentsResponse(
@@ -7635,12 +7102,8 @@ def test_list_interconnect_attachments_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_interconnect_attachments(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_interconnect_attachments(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -7658,9 +7121,7 @@ def test_list_interconnect_attachments_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectAttachmentsResponse(
@@ -7701,11 +7162,7 @@ async def test_list_interconnect_attachments_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectAttachmentsResponse(
@@ -7753,11 +7210,7 @@ async def test_list_interconnect_attachments_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInterconnectAttachmentsResponse(
@@ -7789,9 +7242,7 @@ async def test_list_interconnect_attachments_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_interconnect_attachments(request={})
-        ).pages:
+        async for page_ in (await client.list_interconnect_attachments(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7815,9 +7266,7 @@ def test_get_interconnect_attachment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = resources.InterconnectAttachment(
             name="name_value",
@@ -7846,10 +7295,7 @@ def test_get_interconnect_attachment(request_type, transport: str = "grpc"):
     assert response.vlan_id == 733
     assert response.mtu == 342
     assert response.state == resources.ResourceState.STATE_PENDING
-    assert (
-        response.peering_type
-        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
-    )
+    assert response.peering_type == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
 
 
 def test_get_interconnect_attachment_non_empty_request_with_auto_populated_field():
@@ -7868,12 +7314,8 @@ def test_get_interconnect_attachment_non_empty_request_with_auto_populated_field
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_interconnect_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7896,19 +7338,12 @@ def test_get_interconnect_attachment_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_interconnect_attachment
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_interconnect_attachment in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_interconnect_attachment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_interconnect_attachment] = mock_rpc
         request = {}
         client.get_interconnect_attachment(request)
 
@@ -7923,9 +7358,7 @@ def test_get_interconnect_attachment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_interconnect_attachment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_interconnect_attachment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7939,17 +7372,12 @@ async def test_get_interconnect_attachment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_interconnect_attachment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_interconnect_attachment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_interconnect_attachment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_interconnect_attachment] = mock_rpc
 
         request = {}
         await client.get_interconnect_attachment(request)
@@ -7965,10 +7393,7 @@ async def test_get_interconnect_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_interconnect_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetInterconnectAttachmentRequest,
-):
+async def test_get_interconnect_attachment_async(transport: str = "grpc_asyncio", request_type=service.GetInterconnectAttachmentRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7979,9 +7404,7 @@ async def test_get_interconnect_attachment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             resources.InterconnectAttachment(
@@ -8012,10 +7435,7 @@ async def test_get_interconnect_attachment_async(
     assert response.vlan_id == 733
     assert response.mtu == 342
     assert response.state == resources.ResourceState.STATE_PENDING
-    assert (
-        response.peering_type
-        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
-    )
+    assert response.peering_type == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
 
 
 @pytest.mark.asyncio
@@ -8035,9 +7455,7 @@ def test_get_interconnect_attachment_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         call.return_value = resources.InterconnectAttachment()
         client.get_interconnect_attachment(request)
 
@@ -8067,12 +7485,8 @@ async def test_get_interconnect_attachment_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.InterconnectAttachment()
-        )
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.InterconnectAttachment())
         await client.get_interconnect_attachment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8094,9 +7508,7 @@ def test_get_interconnect_attachment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = resources.InterconnectAttachment()
         # Call the method with a truthy value for each flattened field,
@@ -8135,15 +7547,11 @@ async def test_get_interconnect_attachment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = resources.InterconnectAttachment()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.InterconnectAttachment()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.InterconnectAttachment())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_interconnect_attachment(
@@ -8192,9 +7600,7 @@ def test_create_interconnect_attachment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_interconnect_attachment(request)
@@ -8227,12 +7633,8 @@ def test_create_interconnect_attachment_non_empty_request_with_auto_populated_fi
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_interconnect_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8257,19 +7659,12 @@ def test_create_interconnect_attachment_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_interconnect_attachment
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_interconnect_attachment in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_interconnect_attachment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_interconnect_attachment] = mock_rpc
         request = {}
         client.create_interconnect_attachment(request)
 
@@ -8289,9 +7684,7 @@ def test_create_interconnect_attachment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_interconnect_attachment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_interconnect_attachment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8305,17 +7698,12 @@ async def test_create_interconnect_attachment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_interconnect_attachment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_interconnect_attachment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_interconnect_attachment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_interconnect_attachment] = mock_rpc
 
         request = {}
         await client.create_interconnect_attachment(request)
@@ -8336,10 +7724,7 @@ async def test_create_interconnect_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_interconnect_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateInterconnectAttachmentRequest,
-):
+async def test_create_interconnect_attachment_async(transport: str = "grpc_asyncio", request_type=service.CreateInterconnectAttachmentRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8350,13 +7735,9 @@ async def test_create_interconnect_attachment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_interconnect_attachment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8386,9 +7767,7 @@ def test_create_interconnect_attachment_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_interconnect_attachment(request)
 
@@ -8418,12 +7797,8 @@ async def test_create_interconnect_attachment_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_interconnect_attachment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8445,9 +7820,7 @@ def test_create_interconnect_attachment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -8496,15 +7869,11 @@ async def test_create_interconnect_attachment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_interconnect_attachment(
@@ -8563,9 +7932,7 @@ def test_delete_interconnect_attachment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_interconnect_attachment(request)
@@ -8597,12 +7964,8 @@ def test_delete_interconnect_attachment_non_empty_request_with_auto_populated_fi
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_interconnect_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8626,19 +7989,12 @@ def test_delete_interconnect_attachment_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_interconnect_attachment
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_interconnect_attachment in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_interconnect_attachment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_interconnect_attachment] = mock_rpc
         request = {}
         client.delete_interconnect_attachment(request)
 
@@ -8658,9 +8014,7 @@ def test_delete_interconnect_attachment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_interconnect_attachment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_interconnect_attachment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8674,17 +8028,12 @@ async def test_delete_interconnect_attachment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_interconnect_attachment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_interconnect_attachment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_interconnect_attachment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_interconnect_attachment] = mock_rpc
 
         request = {}
         await client.delete_interconnect_attachment(request)
@@ -8705,10 +8054,7 @@ async def test_delete_interconnect_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_interconnect_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteInterconnectAttachmentRequest,
-):
+async def test_delete_interconnect_attachment_async(transport: str = "grpc_asyncio", request_type=service.DeleteInterconnectAttachmentRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8719,13 +8065,9 @@ async def test_delete_interconnect_attachment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_interconnect_attachment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8755,9 +8097,7 @@ def test_delete_interconnect_attachment_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_interconnect_attachment(request)
 
@@ -8787,12 +8127,8 @@ async def test_delete_interconnect_attachment_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_interconnect_attachment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8814,9 +8150,7 @@ def test_delete_interconnect_attachment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -8855,15 +8189,11 @@ async def test_delete_interconnect_attachment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_interconnect_attachment(
@@ -8952,9 +8282,7 @@ def test_list_routers_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routers), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_routers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8984,9 +8312,7 @@ def test_list_routers_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_routers] = mock_rpc
         request = {}
         client.list_routers(request)
@@ -9002,9 +8328,7 @@ def test_list_routers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_routers_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_routers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9018,17 +8342,12 @@ async def test_list_routers_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_routers
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_routers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_routers
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_routers] = mock_rpc
 
         request = {}
         await client.list_routers(request)
@@ -9044,9 +8363,7 @@ async def test_list_routers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_routers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListRoutersRequest
-):
+async def test_list_routers_async(transport: str = "grpc_asyncio", request_type=service.ListRoutersRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9127,9 +8444,7 @@ async def test_list_routers_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routers), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListRoutersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListRoutersResponse())
         await client.list_routers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9194,9 +8509,7 @@ async def test_list_routers_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.ListRoutersResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListRoutersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListRoutersResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_routers(
@@ -9267,9 +8580,7 @@ def test_list_routers_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_routers(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -9329,9 +8640,7 @@ async def test_list_routers_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_routers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_routers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListRoutersResponse(
@@ -9379,9 +8688,7 @@ async def test_list_routers_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_routers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_routers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListRoutersResponse(
@@ -9413,9 +8720,7 @@ async def test_list_routers_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_routers(request={})
-        ).pages:
+        async for page_ in (await client.list_routers(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9482,9 +8787,7 @@ def test_get_router_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_router), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9511,9 +8814,7 @@ def test_get_router_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_router] = mock_rpc
         request = {}
         client.get_router(request)
@@ -9543,17 +8844,12 @@ async def test_get_router_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_router
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_router in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_router
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_router] = mock_rpc
 
         request = {}
         await client.get_router(request)
@@ -9569,9 +8865,7 @@ async def test_get_router_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_router_async(
-    transport: str = "grpc_asyncio", request_type=service.GetRouterRequest
-):
+async def test_get_router_async(transport: str = "grpc_asyncio", request_type=service.GetRouterRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9804,9 +9098,7 @@ def test_diagnose_router_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_router), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.diagnose_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9833,9 +9125,7 @@ def test_diagnose_router_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.diagnose_router] = mock_rpc
         request = {}
         client.diagnose_router(request)
@@ -9851,9 +9141,7 @@ def test_diagnose_router_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_diagnose_router_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_diagnose_router_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9867,17 +9155,12 @@ async def test_diagnose_router_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.diagnose_router
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.diagnose_router in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.diagnose_router
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.diagnose_router] = mock_rpc
 
         request = {}
         await client.diagnose_router(request)
@@ -9893,9 +9176,7 @@ async def test_diagnose_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_diagnose_router_async(
-    transport: str = "grpc_asyncio", request_type=service.DiagnoseRouterRequest
-):
+async def test_diagnose_router_async(transport: str = "grpc_asyncio", request_type=service.DiagnoseRouterRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9908,9 +9189,7 @@ async def test_diagnose_router_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseRouterResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseRouterResponse())
         response = await client.diagnose_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9971,9 +9250,7 @@ async def test_diagnose_router_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_router), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseRouterResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseRouterResponse())
         await client.diagnose_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10038,9 +9315,7 @@ async def test_diagnose_router_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.DiagnoseRouterResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseRouterResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseRouterResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.diagnose_router(
@@ -10123,9 +9398,7 @@ def test_create_router_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_router), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10154,9 +9427,7 @@ def test_create_router_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_router] = mock_rpc
         request = {}
         client.create_router(request)
@@ -10177,9 +9448,7 @@ def test_create_router_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_router_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_router_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10193,17 +9462,12 @@ async def test_create_router_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_router
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_router in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_router
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_router] = mock_rpc
 
         request = {}
         await client.create_router(request)
@@ -10224,9 +9488,7 @@ async def test_create_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_router_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateRouterRequest
-):
+async def test_create_router_async(transport: str = "grpc_asyncio", request_type=service.CreateRouterRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10239,9 +9501,7 @@ async def test_create_router_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10302,9 +9562,7 @@ async def test_create_router_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_router), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10379,9 +9637,7 @@ async def test_create_router_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_router(
@@ -10472,9 +9728,7 @@ def test_update_router_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_router), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10501,9 +9755,7 @@ def test_update_router_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_router] = mock_rpc
         request = {}
         client.update_router(request)
@@ -10524,9 +9776,7 @@ def test_update_router_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_router_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_router_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10540,17 +9790,12 @@ async def test_update_router_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_router
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_router in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_router
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_router] = mock_rpc
 
         request = {}
         await client.update_router(request)
@@ -10571,9 +9816,7 @@ async def test_update_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_router_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateRouterRequest
-):
+async def test_update_router_async(transport: str = "grpc_asyncio", request_type=service.UpdateRouterRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10586,9 +9829,7 @@ async def test_update_router_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10649,9 +9890,7 @@ async def test_update_router_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_router), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10721,9 +9960,7 @@ async def test_update_router_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_router(
@@ -10810,9 +10047,7 @@ def test_delete_router_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_router), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10840,9 +10075,7 @@ def test_delete_router_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_router] = mock_rpc
         request = {}
         client.delete_router(request)
@@ -10863,9 +10096,7 @@ def test_delete_router_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_router_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_router_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10879,17 +10110,12 @@ async def test_delete_router_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_router
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_router in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_router
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_router] = mock_rpc
 
         request = {}
         await client.delete_router(request)
@@ -10910,9 +10136,7 @@ async def test_delete_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_router_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteRouterRequest
-):
+async def test_delete_router_async(transport: str = "grpc_asyncio", request_type=service.DeleteRouterRequest):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10925,9 +10149,7 @@ async def test_delete_router_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10988,9 +10210,7 @@ async def test_delete_router_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_router), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_router(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11055,9 +10275,7 @@ async def test_delete_router_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_router(
@@ -11106,9 +10324,7 @@ def test_initialize_zone_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.initialize_zone] = mock_rpc
 
         request = {}
@@ -11124,33 +10340,25 @@ def test_initialize_zone_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_initialize_zone_rest_required_fields(
-    request_type=service.InitializeZoneRequest,
-):
+def test_initialize_zone_rest_required_fields(request_type=service.InitializeZoneRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).initialize_zone._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).initialize_zone._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).initialize_zone._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).initialize_zone._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11201,9 +10409,7 @@ def test_initialize_zone_rest_required_fields(
 
 
 def test_initialize_zone_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.initialize_zone._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -11245,11 +10451,7 @@ def test_initialize_zone_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*}:initialize"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*}:initialize" % client.transport._host, args[1])
 
 
 def test_initialize_zone_rest_flattened_error(transport: str = "rest"):
@@ -11285,9 +10487,7 @@ def test_list_zones_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_zones] = mock_rpc
 
         request = {}
@@ -11310,24 +10510,18 @@ def test_list_zones_rest_required_fields(request_type=service.ListZonesRequest):
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_zones._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_zones._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_zones._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_zones._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11386,9 +10580,7 @@ def test_list_zones_rest_required_fields(request_type=service.ListZonesRequest):
 
 
 def test_list_zones_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_zones._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11440,10 +10632,7 @@ def test_list_zones_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/zones" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/zones" % client.transport._host, args[1])
 
 
 def test_list_zones_rest_flattened_error(transport: str = "rest"):
@@ -11540,9 +10729,7 @@ def test_get_zone_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_zone] = mock_rpc
 
         request = {}
@@ -11565,24 +10752,18 @@ def test_get_zone_rest_required_fields(request_type=service.GetZoneRequest):
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_zone._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_zone._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_zone._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_zone._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11632,9 +10813,7 @@ def test_get_zone_rest_required_fields(request_type=service.GetZoneRequest):
 
 
 def test_get_zone_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_zone._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -11676,10 +10855,7 @@ def test_get_zone_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*}" % client.transport._host, args[1])
 
 
 def test_get_zone_rest_flattened_error(transport: str = "rest"):
@@ -11715,9 +10891,7 @@ def test_list_networks_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_networks] = mock_rpc
 
         request = {}
@@ -11740,24 +10914,18 @@ def test_list_networks_rest_required_fields(request_type=service.ListNetworksReq
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_networks._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_networks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_networks._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_networks._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11816,9 +10984,7 @@ def test_list_networks_rest_required_fields(request_type=service.ListNetworksReq
 
 
 def test_list_networks_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_networks._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11870,11 +11036,7 @@ def test_list_networks_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/networks"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/networks" % client.transport._host, args[1])
 
 
 def test_list_networks_rest_flattened_error(transport: str = "rest"):
@@ -11971,9 +11133,7 @@ def test_get_network_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_network] = mock_rpc
 
         request = {}
@@ -11996,24 +11156,18 @@ def test_get_network_rest_required_fields(request_type=service.GetNetworkRequest
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -12063,9 +11217,7 @@ def test_get_network_rest_required_fields(request_type=service.GetNetworkRequest
 
 
 def test_get_network_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_network._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -12083,9 +11235,7 @@ def test_get_network_rest_flattened():
         return_value = resources.Network()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12109,11 +11259,7 @@ def test_get_network_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/networks/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/networks/*}" % client.transport._host, args[1])
 
 
 def test_get_network_rest_flattened_error(transport: str = "rest"):
@@ -12149,12 +11295,8 @@ def test_diagnose_network_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.diagnose_network
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.diagnose_network] = mock_rpc
 
         request = {}
         client.diagnose_network(request)
@@ -12169,33 +11311,25 @@ def test_diagnose_network_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_diagnose_network_rest_required_fields(
-    request_type=service.DiagnoseNetworkRequest,
-):
+def test_diagnose_network_rest_required_fields(request_type=service.DiagnoseNetworkRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).diagnose_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).diagnose_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).diagnose_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).diagnose_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -12245,9 +11379,7 @@ def test_diagnose_network_rest_required_fields(
 
 
 def test_diagnose_network_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.diagnose_network._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -12265,9 +11397,7 @@ def test_diagnose_network_rest_flattened():
         return_value = service.DiagnoseNetworkResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12291,11 +11421,7 @@ def test_diagnose_network_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/networks/*}:diagnose"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/networks/*}:diagnose" % client.transport._host, args[1])
 
 
 def test_diagnose_network_rest_flattened_error(transport: str = "rest"):
@@ -12331,9 +11457,7 @@ def test_create_network_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_network] = mock_rpc
 
         request = {}
@@ -12361,16 +11485,12 @@ def test_create_network_rest_required_fields(request_type=service.CreateNetworkR
     request_init["network_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "networkId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12380,9 +11500,7 @@ def test_create_network_rest_required_fields(request_type=service.CreateNetworkR
     jsonified_request["parent"] = "parent_value"
     jsonified_request["networkId"] = "network_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_network._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12445,9 +11563,7 @@ def test_create_network_rest_required_fields(request_type=service.CreateNetworkR
 
 
 def test_create_network_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_network._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12503,11 +11619,7 @@ def test_create_network_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/networks"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/networks" % client.transport._host, args[1])
 
 
 def test_create_network_rest_flattened_error(transport: str = "rest"):
@@ -12545,9 +11657,7 @@ def test_delete_network_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_network] = mock_rpc
 
         request = {}
@@ -12574,24 +11684,18 @@ def test_delete_network_rest_required_fields(request_type=service.DeleteNetworkR
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_network._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_network._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -12640,9 +11744,7 @@ def test_delete_network_rest_required_fields(request_type=service.DeleteNetworkR
 
 
 def test_delete_network_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_network._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
@@ -12660,9 +11762,7 @@ def test_delete_network_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12684,11 +11784,7 @@ def test_delete_network_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/networks/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/networks/*}" % client.transport._host, args[1])
 
 
 def test_delete_network_rest_flattened_error(transport: str = "rest"):
@@ -12724,9 +11820,7 @@ def test_list_subnets_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_subnets] = mock_rpc
 
         request = {}
@@ -12749,24 +11843,18 @@ def test_list_subnets_rest_required_fields(request_type=service.ListSubnetsReque
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_subnets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_subnets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_subnets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_subnets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12825,9 +11913,7 @@ def test_list_subnets_rest_required_fields(request_type=service.ListSubnetsReque
 
 
 def test_list_subnets_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_subnets._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12879,11 +11965,7 @@ def test_list_subnets_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/subnets"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/subnets" % client.transport._host, args[1])
 
 
 def test_list_subnets_rest_flattened_error(transport: str = "rest"):
@@ -12980,9 +12062,7 @@ def test_get_subnet_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_subnet] = mock_rpc
 
         request = {}
@@ -13005,24 +12085,18 @@ def test_get_subnet_rest_required_fields(request_type=service.GetSubnetRequest):
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_subnet._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_subnet._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13072,9 +12146,7 @@ def test_get_subnet_rest_required_fields(request_type=service.GetSubnetRequest):
 
 
 def test_get_subnet_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_subnet._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -13092,9 +12164,7 @@ def test_get_subnet_rest_flattened():
         return_value = resources.Subnet()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13118,11 +12188,7 @@ def test_get_subnet_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/subnets/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/subnets/*}" % client.transport._host, args[1])
 
 
 def test_get_subnet_rest_flattened_error(transport: str = "rest"):
@@ -13158,9 +12224,7 @@ def test_create_subnet_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_subnet] = mock_rpc
 
         request = {}
@@ -13188,16 +12252,12 @@ def test_create_subnet_rest_required_fields(request_type=service.CreateSubnetReq
     request_init["subnet_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "subnetId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_subnet._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -13207,9 +12267,7 @@ def test_create_subnet_rest_required_fields(request_type=service.CreateSubnetReq
     jsonified_request["parent"] = "parent_value"
     jsonified_request["subnetId"] = "subnet_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_subnet._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -13272,9 +12330,7 @@ def test_create_subnet_rest_required_fields(request_type=service.CreateSubnetReq
 
 
 def test_create_subnet_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_subnet._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13330,11 +12386,7 @@ def test_create_subnet_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/subnets"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/subnets" % client.transport._host, args[1])
 
 
 def test_create_subnet_rest_flattened_error(transport: str = "rest"):
@@ -13372,9 +12424,7 @@ def test_update_subnet_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_subnet] = mock_rpc
 
         request = {}
@@ -13400,22 +12450,16 @@ def test_update_subnet_rest_required_fields(request_type=service.UpdateSubnetReq
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_subnet._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_subnet._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -13468,9 +12512,7 @@ def test_update_subnet_rest_required_fields(request_type=service.UpdateSubnetReq
 
 
 def test_update_subnet_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_subnet._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13501,11 +12543,7 @@ def test_update_subnet_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "subnet": {
-                "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-            }
-        }
+        sample_request = {"subnet": {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13528,11 +12566,7 @@ def test_update_subnet_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{subnet.name=projects/*/locations/*/zones/*/subnets/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{subnet.name=projects/*/locations/*/zones/*/subnets/*}" % client.transport._host, args[1])
 
 
 def test_update_subnet_rest_flattened_error(transport: str = "rest"):
@@ -13569,9 +12603,7 @@ def test_delete_subnet_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_subnet] = mock_rpc
 
         request = {}
@@ -13598,24 +12630,18 @@ def test_delete_subnet_rest_required_fields(request_type=service.DeleteSubnetReq
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_subnet._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_subnet._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_subnet._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -13664,9 +12690,7 @@ def test_delete_subnet_rest_required_fields(request_type=service.DeleteSubnetReq
 
 
 def test_delete_subnet_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_subnet._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
@@ -13684,9 +12708,7 @@ def test_delete_subnet_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13708,11 +12730,7 @@ def test_delete_subnet_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/subnets/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/subnets/*}" % client.transport._host, args[1])
 
 
 def test_delete_subnet_rest_flattened_error(transport: str = "rest"):
@@ -13744,18 +12762,12 @@ def test_list_interconnects_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_interconnects in client._transport._wrapped_methods
-        )
+        assert client._transport.list_interconnects in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_interconnects
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_interconnects] = mock_rpc
 
         request = {}
         client.list_interconnects(request)
@@ -13770,33 +12782,25 @@ def test_list_interconnects_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_interconnects_rest_required_fields(
-    request_type=service.ListInterconnectsRequest,
-):
+def test_list_interconnects_rest_required_fields(request_type=service.ListInterconnectsRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_interconnects._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_interconnects._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_interconnects._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_interconnects._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -13855,9 +12859,7 @@ def test_list_interconnects_rest_required_fields(
 
 
 def test_list_interconnects_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_interconnects._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13909,11 +12911,7 @@ def test_list_interconnects_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/interconnects"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/interconnects" % client.transport._host, args[1])
 
 
 def test_list_interconnects_rest_flattened_error(transport: str = "rest"):
@@ -14010,12 +13008,8 @@ def test_get_interconnect_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_interconnect
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_interconnect] = mock_rpc
 
         request = {}
         client.get_interconnect(request)
@@ -14030,33 +13024,25 @@ def test_get_interconnect_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_interconnect_rest_required_fields(
-    request_type=service.GetInterconnectRequest,
-):
+def test_get_interconnect_rest_required_fields(request_type=service.GetInterconnectRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_interconnect._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_interconnect._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_interconnect._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_interconnect._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14106,9 +13092,7 @@ def test_get_interconnect_rest_required_fields(
 
 
 def test_get_interconnect_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_interconnect._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -14126,9 +13110,7 @@ def test_get_interconnect_rest_flattened():
         return_value = resources.Interconnect()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14152,11 +13134,7 @@ def test_get_interconnect_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/interconnects/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/interconnects/*}" % client.transport._host, args[1])
 
 
 def test_get_interconnect_rest_flattened_error(transport: str = "rest"):
@@ -14188,19 +13166,12 @@ def test_diagnose_interconnect_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.diagnose_interconnect
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.diagnose_interconnect in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.diagnose_interconnect
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.diagnose_interconnect] = mock_rpc
 
         request = {}
         client.diagnose_interconnect(request)
@@ -14215,33 +13186,29 @@ def test_diagnose_interconnect_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_diagnose_interconnect_rest_required_fields(
-    request_type=service.DiagnoseInterconnectRequest,
-):
+def test_diagnose_interconnect_rest_required_fields(request_type=service.DiagnoseInterconnectRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).diagnose_interconnect._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).diagnose_interconnect._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).diagnose_interconnect._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).diagnose_interconnect._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14291,9 +13258,7 @@ def test_diagnose_interconnect_rest_required_fields(
 
 
 def test_diagnose_interconnect_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.diagnose_interconnect._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -14311,9 +13276,7 @@ def test_diagnose_interconnect_rest_flattened():
         return_value = service.DiagnoseInterconnectResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14337,11 +13300,7 @@ def test_diagnose_interconnect_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/interconnects/*}:diagnose"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/interconnects/*}:diagnose" % client.transport._host, args[1])
 
 
 def test_diagnose_interconnect_rest_flattened_error(transport: str = "rest"):
@@ -14373,19 +13332,12 @@ def test_list_interconnect_attachments_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_interconnect_attachments
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_interconnect_attachments in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_interconnect_attachments
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_interconnect_attachments] = mock_rpc
 
         request = {}
         client.list_interconnect_attachments(request)
@@ -14400,33 +13352,29 @@ def test_list_interconnect_attachments_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_interconnect_attachments_rest_required_fields(
-    request_type=service.ListInterconnectAttachmentsRequest,
-):
+def test_list_interconnect_attachments_rest_required_fields(request_type=service.ListInterconnectAttachmentsRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_interconnect_attachments._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_interconnect_attachments._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_interconnect_attachments._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_interconnect_attachments._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -14485,13 +13433,9 @@ def test_list_interconnect_attachments_rest_required_fields(
 
 
 def test_list_interconnect_attachments_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.list_interconnect_attachments._get_unset_required_fields(
-        {}
-    )
+    unset_fields = transport.list_interconnect_attachments._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
@@ -14541,11 +13485,7 @@ def test_list_interconnect_attachments_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/interconnectAttachments"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/interconnectAttachments" % client.transport._host, args[1])
 
 
 def test_list_interconnect_attachments_rest_flattened_error(transport: str = "rest"):
@@ -14604,9 +13544,7 @@ def test_list_interconnect_attachments_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            service.ListInterconnectAttachmentsResponse.to_json(x) for x in response
-        )
+        response = tuple(service.ListInterconnectAttachmentsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -14640,19 +13578,12 @@ def test_get_interconnect_attachment_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_interconnect_attachment
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_interconnect_attachment in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_interconnect_attachment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_interconnect_attachment] = mock_rpc
 
         request = {}
         client.get_interconnect_attachment(request)
@@ -14667,33 +13598,29 @@ def test_get_interconnect_attachment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_interconnect_attachment_rest_required_fields(
-    request_type=service.GetInterconnectAttachmentRequest,
-):
+def test_get_interconnect_attachment_rest_required_fields(request_type=service.GetInterconnectAttachmentRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_interconnect_attachment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_interconnect_attachment._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_interconnect_attachment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_interconnect_attachment._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14743,9 +13670,7 @@ def test_get_interconnect_attachment_rest_required_fields(
 
 
 def test_get_interconnect_attachment_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_interconnect_attachment._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -14763,9 +13688,7 @@ def test_get_interconnect_attachment_rest_flattened():
         return_value = resources.InterconnectAttachment()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14789,11 +13712,7 @@ def test_get_interconnect_attachment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/interconnectAttachments/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/interconnectAttachments/*}" % client.transport._host, args[1])
 
 
 def test_get_interconnect_attachment_rest_flattened_error(transport: str = "rest"):
@@ -14825,19 +13744,12 @@ def test_create_interconnect_attachment_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_interconnect_attachment
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_interconnect_attachment in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_interconnect_attachment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_interconnect_attachment] = mock_rpc
 
         request = {}
         client.create_interconnect_attachment(request)
@@ -14856,9 +13768,7 @@ def test_create_interconnect_attachment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_interconnect_attachment_rest_required_fields(
-    request_type=service.CreateInterconnectAttachmentRequest,
-):
+def test_create_interconnect_attachment_rest_required_fields(request_type=service.CreateInterconnectAttachmentRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
@@ -14866,31 +13776,26 @@ def test_create_interconnect_attachment_rest_required_fields(
     request_init["interconnect_attachment_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "interconnectAttachmentId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_interconnect_attachment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_interconnect_attachment._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
     assert "interconnectAttachmentId" in jsonified_request
-    assert (
-        jsonified_request["interconnectAttachmentId"]
-        == request_init["interconnect_attachment_id"]
-    )
+    assert jsonified_request["interconnectAttachmentId"] == request_init["interconnect_attachment_id"]
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["interconnectAttachmentId"] = "interconnect_attachment_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_interconnect_attachment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_interconnect_attachment._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -14904,10 +13809,7 @@ def test_create_interconnect_attachment_rest_required_fields(
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
     assert "interconnectAttachmentId" in jsonified_request
-    assert (
-        jsonified_request["interconnectAttachmentId"]
-        == "interconnect_attachment_id_value"
-    )
+    assert jsonified_request["interconnectAttachmentId"] == "interconnect_attachment_id_value"
 
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14956,13 +13858,9 @@ def test_create_interconnect_attachment_rest_required_fields(
 
 
 def test_create_interconnect_attachment_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.create_interconnect_attachment._get_unset_required_fields(
-        {}
-    )
+    unset_fields = transport.create_interconnect_attachment._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
@@ -15016,11 +13914,7 @@ def test_create_interconnect_attachment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/interconnectAttachments"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/interconnectAttachments" % client.transport._host, args[1])
 
 
 def test_create_interconnect_attachment_rest_flattened_error(transport: str = "rest"):
@@ -15054,19 +13948,12 @@ def test_delete_interconnect_attachment_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_interconnect_attachment
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_interconnect_attachment in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_interconnect_attachment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_interconnect_attachment] = mock_rpc
 
         request = {}
         client.delete_interconnect_attachment(request)
@@ -15085,33 +13972,29 @@ def test_delete_interconnect_attachment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_interconnect_attachment_rest_required_fields(
-    request_type=service.DeleteInterconnectAttachmentRequest,
-):
+def test_delete_interconnect_attachment_rest_required_fields(request_type=service.DeleteInterconnectAttachmentRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_interconnect_attachment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_interconnect_attachment._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_interconnect_attachment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_interconnect_attachment._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -15160,13 +14043,9 @@ def test_delete_interconnect_attachment_rest_required_fields(
 
 
 def test_delete_interconnect_attachment_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.delete_interconnect_attachment._get_unset_required_fields(
-        {}
-    )
+    unset_fields = transport.delete_interconnect_attachment._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
@@ -15182,9 +14061,7 @@ def test_delete_interconnect_attachment_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -15206,11 +14083,7 @@ def test_delete_interconnect_attachment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/interconnectAttachments/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/interconnectAttachments/*}" % client.transport._host, args[1])
 
 
 def test_delete_interconnect_attachment_rest_flattened_error(transport: str = "rest"):
@@ -15246,9 +14119,7 @@ def test_list_routers_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_routers] = mock_rpc
 
         request = {}
@@ -15271,24 +14142,18 @@ def test_list_routers_rest_required_fields(request_type=service.ListRoutersReque
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_routers._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_routers._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_routers._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_routers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -15347,9 +14212,7 @@ def test_list_routers_rest_required_fields(request_type=service.ListRoutersReque
 
 
 def test_list_routers_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_routers._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -15401,11 +14264,7 @@ def test_list_routers_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/routers"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/routers" % client.transport._host, args[1])
 
 
 def test_list_routers_rest_flattened_error(transport: str = "rest"):
@@ -15502,9 +14361,7 @@ def test_get_router_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_router] = mock_rpc
 
         request = {}
@@ -15527,24 +14384,18 @@ def test_get_router_rest_required_fields(request_type=service.GetRouterRequest):
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15594,9 +14445,7 @@ def test_get_router_rest_required_fields(request_type=service.GetRouterRequest):
 
 
 def test_get_router_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_router._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -15614,9 +14463,7 @@ def test_get_router_rest_flattened():
         return_value = resources.Router()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -15640,11 +14487,7 @@ def test_get_router_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/routers/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/routers/*}" % client.transport._host, args[1])
 
 
 def test_get_router_rest_flattened_error(transport: str = "rest"):
@@ -15680,9 +14523,7 @@ def test_diagnose_router_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.diagnose_router] = mock_rpc
 
         request = {}
@@ -15698,33 +14539,25 @@ def test_diagnose_router_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_diagnose_router_rest_required_fields(
-    request_type=service.DiagnoseRouterRequest,
-):
+def test_diagnose_router_rest_required_fields(request_type=service.DiagnoseRouterRequest):
     transport_class = transports.EdgeNetworkRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).diagnose_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).diagnose_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).diagnose_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).diagnose_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15774,9 +14607,7 @@ def test_diagnose_router_rest_required_fields(
 
 
 def test_diagnose_router_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.diagnose_router._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -15794,9 +14625,7 @@ def test_diagnose_router_rest_flattened():
         return_value = service.DiagnoseRouterResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -15820,11 +14649,7 @@ def test_diagnose_router_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/routers/*}:diagnose"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/routers/*}:diagnose" % client.transport._host, args[1])
 
 
 def test_diagnose_router_rest_flattened_error(transport: str = "rest"):
@@ -15860,9 +14685,7 @@ def test_create_router_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_router] = mock_rpc
 
         request = {}
@@ -15890,16 +14713,12 @@ def test_create_router_rest_required_fields(request_type=service.CreateRouterReq
     request_init["router_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "routerId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -15909,9 +14728,7 @@ def test_create_router_rest_required_fields(request_type=service.CreateRouterReq
     jsonified_request["parent"] = "parent_value"
     jsonified_request["routerId"] = "router_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_router._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -15974,9 +14791,7 @@ def test_create_router_rest_required_fields(request_type=service.CreateRouterReq
 
 
 def test_create_router_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_router._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -16032,11 +14847,7 @@ def test_create_router_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/zones/*}/routers"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/zones/*}/routers" % client.transport._host, args[1])
 
 
 def test_create_router_rest_flattened_error(transport: str = "rest"):
@@ -16074,9 +14885,7 @@ def test_update_router_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_router] = mock_rpc
 
         request = {}
@@ -16102,22 +14911,16 @@ def test_update_router_rest_required_fields(request_type=service.UpdateRouterReq
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_router._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -16170,9 +14973,7 @@ def test_update_router_rest_required_fields(request_type=service.UpdateRouterReq
 
 
 def test_update_router_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_router._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -16203,11 +15004,7 @@ def test_update_router_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "router": {
-                "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-            }
-        }
+        sample_request = {"router": {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16230,11 +15027,7 @@ def test_update_router_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{router.name=projects/*/locations/*/zones/*/routers/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{router.name=projects/*/locations/*/zones/*/routers/*}" % client.transport._host, args[1])
 
 
 def test_update_router_rest_flattened_error(transport: str = "rest"):
@@ -16271,9 +15064,7 @@ def test_delete_router_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_router] = mock_rpc
 
         request = {}
@@ -16300,24 +15091,18 @@ def test_delete_router_rest_required_fields(request_type=service.DeleteRouterReq
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_router._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_router._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_router._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -16366,9 +15151,7 @@ def test_delete_router_rest_required_fields(request_type=service.DeleteRouterReq
 
 
 def test_delete_router_rest_unset_required_fields():
-    transport = transports.EdgeNetworkRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.EdgeNetworkRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_router._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
@@ -16386,9 +15169,7 @@ def test_delete_router_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16410,11 +15191,7 @@ def test_delete_router_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/zones/*/routers/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/zones/*/routers/*}" % client.transport._host, args[1])
 
 
 def test_delete_router_rest_flattened_error(transport: str = "rest"):
@@ -16469,9 +15246,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = EdgeNetworkClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = EdgeNetworkClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.EdgeNetworkGrpcTransport(
@@ -16525,16 +15300,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = EdgeNetworkClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = EdgeNetworkClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -16820,9 +15591,7 @@ def test_list_interconnects_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         call.return_value = service.ListInterconnectsResponse()
         client.list_interconnects(request=None)
 
@@ -16864,9 +15633,7 @@ def test_diagnose_interconnect_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         call.return_value = service.DiagnoseInterconnectResponse()
         client.diagnose_interconnect(request=None)
 
@@ -16887,9 +15654,7 @@ def test_list_interconnect_attachments_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         call.return_value = service.ListInterconnectAttachmentsResponse()
         client.list_interconnect_attachments(request=None)
 
@@ -16910,9 +15675,7 @@ def test_get_interconnect_attachment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         call.return_value = resources.InterconnectAttachment()
         client.get_interconnect_attachment(request=None)
 
@@ -16933,9 +15696,7 @@ def test_create_interconnect_attachment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_interconnect_attachment(request=None)
 
@@ -16956,9 +15717,7 @@ def test_delete_interconnect_attachment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_interconnect_attachment(request=None)
 
@@ -17097,16 +15856,12 @@ def test_delete_router_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = EdgeNetworkAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = EdgeNetworkAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = EdgeNetworkAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = EdgeNetworkAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -17122,9 +15877,7 @@ async def test_initialize_zone_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.initialize_zone), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.InitializeZoneResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.InitializeZoneResponse())
         await client.initialize_zone(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17260,9 +16013,7 @@ async def test_diagnose_network_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseNetworkResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseNetworkResponse())
         await client.diagnose_network(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17285,9 +16036,7 @@ async def test_create_network_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_network(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17310,9 +16059,7 @@ async def test_delete_network_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.delete_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_network(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17397,9 +16144,7 @@ async def test_create_subnet_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_subnet), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_subnet(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17422,9 +16167,7 @@ async def test_update_subnet_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_subnet(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17447,9 +16190,7 @@ async def test_delete_subnet_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.delete_subnet), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_subnet(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17470,9 +16211,7 @@ async def test_list_interconnects_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListInterconnectsResponse(
@@ -17533,13 +16272,9 @@ async def test_diagnose_interconnect_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseInterconnectResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseInterconnectResponse())
         await client.diagnose_interconnect(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17560,9 +16295,7 @@ async def test_list_interconnect_attachments_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListInterconnectAttachmentsResponse(
@@ -17590,9 +16323,7 @@ async def test_get_interconnect_attachment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             resources.InterconnectAttachment(
@@ -17626,13 +16357,9 @@ async def test_create_interconnect_attachment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_interconnect_attachment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17653,13 +16380,9 @@ async def test_delete_interconnect_attachment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_interconnect_attachment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17741,9 +16464,7 @@ async def test_diagnose_router_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.DiagnoseRouterResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.DiagnoseRouterResponse())
         await client.diagnose_router(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17766,9 +16487,7 @@ async def test_create_router_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_router(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17791,9 +16510,7 @@ async def test_update_router_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.update_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_router(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17816,9 +16533,7 @@ async def test_delete_router_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.delete_router), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_router(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17830,24 +16545,18 @@ async def test_delete_router_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = EdgeNetworkClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = EdgeNetworkClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_initialize_zone_rest_bad_request(request_type=service.InitializeZoneRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17867,9 +16576,7 @@ def test_initialize_zone_rest_bad_request(request_type=service.InitializeZoneReq
     ],
 )
 def test_initialize_zone_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/zones/sample3"}
@@ -17900,19 +16607,13 @@ def test_initialize_zone_rest_call_success(request_type):
 def test_initialize_zone_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_initialize_zone"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_initialize_zone") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_initialize_zone_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_initialize_zone"
@@ -17931,9 +16632,7 @@ def test_initialize_zone_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.InitializeZoneResponse.to_json(
-            service.InitializeZoneResponse()
-        )
+        return_value = service.InitializeZoneResponse.to_json(service.InitializeZoneResponse())
         req.return_value.content = return_value
 
         request = service.InitializeZoneRequest()
@@ -17959,17 +16658,13 @@ def test_initialize_zone_rest_interceptors(null_interceptor):
 
 
 def test_list_zones_rest_bad_request(request_type=service.ListZonesRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17989,9 +16684,7 @@ def test_list_zones_rest_bad_request(request_type=service.ListZonesRequest):
     ],
 )
 def test_list_zones_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -18027,19 +16720,13 @@ def test_list_zones_rest_call_success(request_type):
 def test_list_zones_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_list_zones"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_list_zones") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_list_zones_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_list_zones"
@@ -18084,17 +16771,13 @@ def test_list_zones_rest_interceptors(null_interceptor):
 
 
 def test_get_zone_rest_bad_request(request_type=service.GetZoneRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18114,9 +16797,7 @@ def test_get_zone_rest_bad_request(request_type=service.GetZoneRequest):
     ],
 )
 def test_get_zone_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/zones/sample3"}
@@ -18152,19 +16833,13 @@ def test_get_zone_rest_call_success(request_type):
 def test_get_zone_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_get_zone"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_get_zone") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_get_zone_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_get_zone"
@@ -18209,17 +16884,13 @@ def test_get_zone_rest_interceptors(null_interceptor):
 
 
 def test_list_networks_rest_bad_request(request_type=service.ListNetworksRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18239,9 +16910,7 @@ def test_list_networks_rest_bad_request(request_type=service.ListNetworksRequest
     ],
 )
 def test_list_networks_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -18277,19 +16946,13 @@ def test_list_networks_rest_call_success(request_type):
 def test_list_networks_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_list_networks"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_list_networks") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_list_networks_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_list_networks"
@@ -18308,9 +16971,7 @@ def test_list_networks_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.ListNetworksResponse.to_json(
-            service.ListNetworksResponse()
-        )
+        return_value = service.ListNetworksResponse.to_json(service.ListNetworksResponse())
         req.return_value.content = return_value
 
         request = service.ListNetworksRequest()
@@ -18336,19 +16997,13 @@ def test_list_networks_rest_interceptors(null_interceptor):
 
 
 def test_get_network_rest_bad_request(request_type=service.GetNetworkRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18368,14 +17023,10 @@ def test_get_network_rest_bad_request(request_type=service.GetNetworkRequest):
     ],
 )
 def test_get_network_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18410,19 +17061,13 @@ def test_get_network_rest_call_success(request_type):
 def test_get_network_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_get_network"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_get_network") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_get_network_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_get_network"
@@ -18467,19 +17112,13 @@ def test_get_network_rest_interceptors(null_interceptor):
 
 
 def test_diagnose_network_rest_bad_request(request_type=service.DiagnoseNetworkRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18499,14 +17138,10 @@ def test_diagnose_network_rest_bad_request(request_type=service.DiagnoseNetworkR
     ],
 )
 def test_diagnose_network_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18534,19 +17169,13 @@ def test_diagnose_network_rest_call_success(request_type):
 def test_diagnose_network_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_diagnose_network"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_diagnose_network") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_diagnose_network_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_diagnose_network"
@@ -18565,9 +17194,7 @@ def test_diagnose_network_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.DiagnoseNetworkResponse.to_json(
-            service.DiagnoseNetworkResponse()
-        )
+        return_value = service.DiagnoseNetworkResponse.to_json(service.DiagnoseNetworkResponse())
         req.return_value.content = return_value
 
         request = service.DiagnoseNetworkRequest()
@@ -18593,17 +17220,13 @@ def test_diagnose_network_rest_interceptors(null_interceptor):
 
 
 def test_create_network_rest_bad_request(request_type=service.CreateNetworkRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18623,9 +17246,7 @@ def test_create_network_rest_bad_request(request_type=service.CreateNetworkReque
     ],
 )
 def test_create_network_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -18661,9 +17282,7 @@ def test_create_network_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -18684,13 +17303,7 @@ def test_create_network_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -18728,19 +17341,13 @@ def test_create_network_rest_call_success(request_type):
 def test_create_network_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_network"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_network_with_metadata"
@@ -18787,19 +17394,13 @@ def test_create_network_rest_interceptors(null_interceptor):
 
 
 def test_delete_network_rest_bad_request(request_type=service.DeleteNetworkRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18819,14 +17420,10 @@ def test_delete_network_rest_bad_request(request_type=service.DeleteNetworkReque
     ],
 )
 def test_delete_network_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/networks/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18851,19 +17448,13 @@ def test_delete_network_rest_call_success(request_type):
 def test_delete_network_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_network"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_network_with_metadata"
@@ -18910,17 +17501,13 @@ def test_delete_network_rest_interceptors(null_interceptor):
 
 
 def test_list_subnets_rest_bad_request(request_type=service.ListSubnetsRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18940,9 +17527,7 @@ def test_list_subnets_rest_bad_request(request_type=service.ListSubnetsRequest):
     ],
 )
 def test_list_subnets_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -18978,19 +17563,13 @@ def test_list_subnets_rest_call_success(request_type):
 def test_list_subnets_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_list_subnets"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_list_subnets") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_list_subnets_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_list_subnets"
@@ -19009,9 +17588,7 @@ def test_list_subnets_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.ListSubnetsResponse.to_json(
-            service.ListSubnetsResponse()
-        )
+        return_value = service.ListSubnetsResponse.to_json(service.ListSubnetsResponse())
         req.return_value.content = return_value
 
         request = service.ListSubnetsRequest()
@@ -19037,19 +17614,13 @@ def test_list_subnets_rest_interceptors(null_interceptor):
 
 
 def test_get_subnet_rest_bad_request(request_type=service.GetSubnetRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19069,14 +17640,10 @@ def test_get_subnet_rest_bad_request(request_type=service.GetSubnetRequest):
     ],
 )
 def test_get_subnet_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19121,19 +17688,13 @@ def test_get_subnet_rest_call_success(request_type):
 def test_get_subnet_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_get_subnet"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_get_subnet") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_get_subnet_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_get_subnet"
@@ -19178,17 +17739,13 @@ def test_get_subnet_rest_interceptors(null_interceptor):
 
 
 def test_create_subnet_rest_bad_request(request_type=service.CreateSubnetRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19208,9 +17765,7 @@ def test_create_subnet_rest_bad_request(request_type=service.CreateSubnetRequest
     ],
 )
 def test_create_subnet_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -19251,9 +17806,7 @@ def test_create_subnet_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -19274,13 +17827,7 @@ def test_create_subnet_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -19318,19 +17865,13 @@ def test_create_subnet_rest_call_success(request_type):
 def test_create_subnet_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_subnet"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_subnet_with_metadata"
@@ -19377,21 +17918,13 @@ def test_create_subnet_rest_interceptors(null_interceptor):
 
 
 def test_update_subnet_rest_bad_request(request_type=service.UpdateSubnetRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "subnet": {
-            "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-        }
-    }
+    request_init = {"subnet": {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19411,16 +17944,10 @@ def test_update_subnet_rest_bad_request(request_type=service.UpdateSubnetRequest
     ],
 )
 def test_update_subnet_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "subnet": {
-            "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-        }
-    }
+    request_init = {"subnet": {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}}
     request_init["subnet"] = {
         "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4",
         "create_time": {"seconds": 751, "nanos": 543},
@@ -19458,9 +17985,7 @@ def test_update_subnet_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -19481,13 +18006,7 @@ def test_update_subnet_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -19525,19 +18044,13 @@ def test_update_subnet_rest_call_success(request_type):
 def test_update_subnet_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_update_subnet"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_update_subnet_with_metadata"
@@ -19584,19 +18097,13 @@ def test_update_subnet_rest_interceptors(null_interceptor):
 
 
 def test_delete_subnet_rest_bad_request(request_type=service.DeleteSubnetRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19616,14 +18123,10 @@ def test_delete_subnet_rest_bad_request(request_type=service.DeleteSubnetRequest
     ],
 )
 def test_delete_subnet_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/subnets/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19648,19 +18151,13 @@ def test_delete_subnet_rest_call_success(request_type):
 def test_delete_subnet_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_subnet"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_subnet_with_metadata"
@@ -19706,20 +18203,14 @@ def test_delete_subnet_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_interconnects_rest_bad_request(
-    request_type=service.ListInterconnectsRequest,
-):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_interconnects_rest_bad_request(request_type=service.ListInterconnectsRequest):
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19739,9 +18230,7 @@ def test_list_interconnects_rest_bad_request(
     ],
 )
 def test_list_interconnects_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -19777,19 +18266,13 @@ def test_list_interconnects_rest_call_success(request_type):
 def test_list_interconnects_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_list_interconnects"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_list_interconnects") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_list_interconnects_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_list_interconnects"
@@ -19797,9 +18280,7 @@ def test_list_interconnects_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.ListInterconnectsRequest.pb(
-            service.ListInterconnectsRequest()
-        )
+        pb_message = service.ListInterconnectsRequest.pb(service.ListInterconnectsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19810,9 +18291,7 @@ def test_list_interconnects_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.ListInterconnectsResponse.to_json(
-            service.ListInterconnectsResponse()
-        )
+        return_value = service.ListInterconnectsResponse.to_json(service.ListInterconnectsResponse())
         req.return_value.content = return_value
 
         request = service.ListInterconnectsRequest()
@@ -19838,19 +18317,13 @@ def test_list_interconnects_rest_interceptors(null_interceptor):
 
 
 def test_get_interconnect_rest_bad_request(request_type=service.GetInterconnectRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19870,14 +18343,10 @@ def test_get_interconnect_rest_bad_request(request_type=service.GetInterconnectR
     ],
 )
 def test_get_interconnect_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19909,35 +18378,24 @@ def test_get_interconnect_rest_call_success(request_type):
     assert isinstance(response, resources.Interconnect)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert (
-        response.interconnect_type == resources.Interconnect.InterconnectType.DEDICATED
-    )
+    assert response.interconnect_type == resources.Interconnect.InterconnectType.DEDICATED
     assert response.uuid == "uuid_value"
     assert response.device_cloud_resource_name == "device_cloud_resource_name_value"
     assert response.physical_ports == ["physical_ports_value"]
-    assert (
-        response.remote_peering_network_type
-        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
-    )
+    assert response.remote_peering_network_type == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_interconnect_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_get_interconnect"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_get_interconnect") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_get_interconnect_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_get_interconnect"
@@ -19981,22 +18439,14 @@ def test_get_interconnect_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_diagnose_interconnect_rest_bad_request(
-    request_type=service.DiagnoseInterconnectRequest,
-):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_diagnose_interconnect_rest_bad_request(request_type=service.DiagnoseInterconnectRequest):
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20016,14 +18466,10 @@ def test_diagnose_interconnect_rest_bad_request(
     ],
 )
 def test_diagnose_interconnect_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20051,30 +18497,21 @@ def test_diagnose_interconnect_rest_call_success(request_type):
 def test_diagnose_interconnect_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_diagnose_interconnect"
-    ) as post, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor,
-        "post_diagnose_interconnect_with_metadata",
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_diagnose_interconnect") as post, mock.patch.object(
+        transports.EdgeNetworkRestInterceptor, "post_diagnose_interconnect_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_diagnose_interconnect"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.DiagnoseInterconnectRequest.pb(
-            service.DiagnoseInterconnectRequest()
-        )
+        pb_message = service.DiagnoseInterconnectRequest.pb(service.DiagnoseInterconnectRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20085,9 +18522,7 @@ def test_diagnose_interconnect_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.DiagnoseInterconnectResponse.to_json(
-            service.DiagnoseInterconnectResponse()
-        )
+        return_value = service.DiagnoseInterconnectResponse.to_json(service.DiagnoseInterconnectResponse())
         req.return_value.content = return_value
 
         request = service.DiagnoseInterconnectRequest()
@@ -20097,10 +18532,7 @@ def test_diagnose_interconnect_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.DiagnoseInterconnectResponse()
-        post_with_metadata.return_value = (
-            service.DiagnoseInterconnectResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = service.DiagnoseInterconnectResponse(), metadata
 
         client.diagnose_interconnect(
             request,
@@ -20115,20 +18547,14 @@ def test_diagnose_interconnect_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_interconnect_attachments_rest_bad_request(
-    request_type=service.ListInterconnectAttachmentsRequest,
-):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_interconnect_attachments_rest_bad_request(request_type=service.ListInterconnectAttachmentsRequest):
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20148,9 +18574,7 @@ def test_list_interconnect_attachments_rest_bad_request(
     ],
 )
 def test_list_interconnect_attachments_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -20186,30 +18610,21 @@ def test_list_interconnect_attachments_rest_call_success(request_type):
 def test_list_interconnect_attachments_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_list_interconnect_attachments"
-    ) as post, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor,
-        "post_list_interconnect_attachments_with_metadata",
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_list_interconnect_attachments") as post, mock.patch.object(
+        transports.EdgeNetworkRestInterceptor, "post_list_interconnect_attachments_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_list_interconnect_attachments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.ListInterconnectAttachmentsRequest.pb(
-            service.ListInterconnectAttachmentsRequest()
-        )
+        pb_message = service.ListInterconnectAttachmentsRequest.pb(service.ListInterconnectAttachmentsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20220,9 +18635,7 @@ def test_list_interconnect_attachments_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.ListInterconnectAttachmentsResponse.to_json(
-            service.ListInterconnectAttachmentsResponse()
-        )
+        return_value = service.ListInterconnectAttachmentsResponse.to_json(service.ListInterconnectAttachmentsResponse())
         req.return_value.content = return_value
 
         request = service.ListInterconnectAttachmentsRequest()
@@ -20232,10 +18645,7 @@ def test_list_interconnect_attachments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListInterconnectAttachmentsResponse()
-        post_with_metadata.return_value = (
-            service.ListInterconnectAttachmentsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = service.ListInterconnectAttachmentsResponse(), metadata
 
         client.list_interconnect_attachments(
             request,
@@ -20250,22 +18660,14 @@ def test_list_interconnect_attachments_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_interconnect_attachment_rest_bad_request(
-    request_type=service.GetInterconnectAttachmentRequest,
-):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_interconnect_attachment_rest_bad_request(request_type=service.GetInterconnectAttachmentRequest):
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20285,14 +18687,10 @@ def test_get_interconnect_attachment_rest_bad_request(
     ],
 )
 def test_get_interconnect_attachment_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20330,40 +18728,28 @@ def test_get_interconnect_attachment_rest_call_success(request_type):
     assert response.vlan_id == 733
     assert response.mtu == 342
     assert response.state == resources.ResourceState.STATE_PENDING
-    assert (
-        response.peering_type
-        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
-    )
+    assert response.peering_type == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_interconnect_attachment_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_get_interconnect_attachment"
-    ) as post, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor,
-        "post_get_interconnect_attachment_with_metadata",
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_get_interconnect_attachment") as post, mock.patch.object(
+        transports.EdgeNetworkRestInterceptor, "post_get_interconnect_attachment_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_get_interconnect_attachment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.GetInterconnectAttachmentRequest.pb(
-            service.GetInterconnectAttachmentRequest()
-        )
+        pb_message = service.GetInterconnectAttachmentRequest.pb(service.GetInterconnectAttachmentRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20374,9 +18760,7 @@ def test_get_interconnect_attachment_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = resources.InterconnectAttachment.to_json(
-            resources.InterconnectAttachment()
-        )
+        return_value = resources.InterconnectAttachment.to_json(resources.InterconnectAttachment())
         req.return_value.content = return_value
 
         request = service.GetInterconnectAttachmentRequest()
@@ -20401,20 +18785,14 @@ def test_get_interconnect_attachment_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_interconnect_attachment_rest_bad_request(
-    request_type=service.CreateInterconnectAttachmentRequest,
-):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_interconnect_attachment_rest_bad_request(request_type=service.CreateInterconnectAttachmentRequest):
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20434,9 +18812,7 @@ def test_create_interconnect_attachment_rest_bad_request(
     ],
 )
 def test_create_interconnect_attachment_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -20458,9 +18834,7 @@ def test_create_interconnect_attachment_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = service.CreateInterconnectAttachmentRequest.meta.fields[
-        "interconnect_attachment"
-    ]
+    test_field = service.CreateInterconnectAttachmentRequest.meta.fields["interconnect_attachment"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -20479,18 +18853,14 @@ def test_create_interconnect_attachment_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "interconnect_attachment"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["interconnect_attachment"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -20504,13 +18874,7 @@ def test_create_interconnect_attachment_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -20548,32 +18912,23 @@ def test_create_interconnect_attachment_rest_call_success(request_type):
 def test_create_interconnect_attachment_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_interconnect_attachment"
     ) as post, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor,
-        "post_create_interconnect_attachment_with_metadata",
+        transports.EdgeNetworkRestInterceptor, "post_create_interconnect_attachment_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_create_interconnect_attachment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.CreateInterconnectAttachmentRequest.pb(
-            service.CreateInterconnectAttachmentRequest()
-        )
+        pb_message = service.CreateInterconnectAttachmentRequest.pb(service.CreateInterconnectAttachmentRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20609,22 +18964,14 @@ def test_create_interconnect_attachment_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_interconnect_attachment_rest_bad_request(
-    request_type=service.DeleteInterconnectAttachmentRequest,
-):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_interconnect_attachment_rest_bad_request(request_type=service.DeleteInterconnectAttachmentRequest):
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20644,14 +18991,10 @@ def test_delete_interconnect_attachment_rest_bad_request(
     ],
 )
 def test_delete_interconnect_attachment_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/interconnectAttachments/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20676,32 +19019,23 @@ def test_delete_interconnect_attachment_rest_call_success(request_type):
 def test_delete_interconnect_attachment_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_interconnect_attachment"
     ) as post, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor,
-        "post_delete_interconnect_attachment_with_metadata",
+        transports.EdgeNetworkRestInterceptor, "post_delete_interconnect_attachment_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_delete_interconnect_attachment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.DeleteInterconnectAttachmentRequest.pb(
-            service.DeleteInterconnectAttachmentRequest()
-        )
+        pb_message = service.DeleteInterconnectAttachmentRequest.pb(service.DeleteInterconnectAttachmentRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20738,17 +19072,13 @@ def test_delete_interconnect_attachment_rest_interceptors(null_interceptor):
 
 
 def test_list_routers_rest_bad_request(request_type=service.ListRoutersRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20768,9 +19098,7 @@ def test_list_routers_rest_bad_request(request_type=service.ListRoutersRequest):
     ],
 )
 def test_list_routers_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -20806,19 +19134,13 @@ def test_list_routers_rest_call_success(request_type):
 def test_list_routers_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_list_routers"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_list_routers") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_list_routers_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_list_routers"
@@ -20837,9 +19159,7 @@ def test_list_routers_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.ListRoutersResponse.to_json(
-            service.ListRoutersResponse()
-        )
+        return_value = service.ListRoutersResponse.to_json(service.ListRoutersResponse())
         req.return_value.content = return_value
 
         request = service.ListRoutersRequest()
@@ -20865,19 +19185,13 @@ def test_list_routers_rest_interceptors(null_interceptor):
 
 
 def test_get_router_rest_bad_request(request_type=service.GetRouterRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20897,14 +19211,10 @@ def test_get_router_rest_bad_request(request_type=service.GetRouterRequest):
     ],
 )
 def test_get_router_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20943,19 +19253,13 @@ def test_get_router_rest_call_success(request_type):
 def test_get_router_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_get_router"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_get_router") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_get_router_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_get_router"
@@ -21000,19 +19304,13 @@ def test_get_router_rest_interceptors(null_interceptor):
 
 
 def test_diagnose_router_rest_bad_request(request_type=service.DiagnoseRouterRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21032,14 +19330,10 @@ def test_diagnose_router_rest_bad_request(request_type=service.DiagnoseRouterReq
     ],
 )
 def test_diagnose_router_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21067,19 +19361,13 @@ def test_diagnose_router_rest_call_success(request_type):
 def test_diagnose_router_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeNetworkRestInterceptor, "post_diagnose_router"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.EdgeNetworkRestInterceptor, "post_diagnose_router") as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_diagnose_router_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "pre_diagnose_router"
@@ -21098,9 +19386,7 @@ def test_diagnose_router_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.DiagnoseRouterResponse.to_json(
-            service.DiagnoseRouterResponse()
-        )
+        return_value = service.DiagnoseRouterResponse.to_json(service.DiagnoseRouterResponse())
         req.return_value.content = return_value
 
         request = service.DiagnoseRouterRequest()
@@ -21126,17 +19412,13 @@ def test_diagnose_router_rest_interceptors(null_interceptor):
 
 
 def test_create_router_rest_bad_request(request_type=service.CreateRouterRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21156,9 +19438,7 @@ def test_create_router_rest_bad_request(request_type=service.CreateRouterRequest
     ],
 )
 def test_create_router_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
@@ -21176,10 +19456,7 @@ def test_create_router_rest_call_success(request_type):
                 "ipv6_cidr": "ipv6_cidr_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "subnetwork": "subnetwork_value",
-                "loopback_ip_addresses": [
-                    "loopback_ip_addresses_value1",
-                    "loopback_ip_addresses_value2",
-                ],
+                "loopback_ip_addresses": ["loopback_ip_addresses_value1", "loopback_ip_addresses_value2"],
             }
         ],
         "bgp_peer": [
@@ -21196,10 +19473,7 @@ def test_create_router_rest_call_success(request_type):
         ],
         "bgp": {"asn": 322, "keepalive_interval_in_seconds": 3070},
         "state": 1,
-        "route_advertisements": [
-            "route_advertisements_value1",
-            "route_advertisements_value2",
-        ],
+        "route_advertisements": ["route_advertisements_value1", "route_advertisements_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21225,9 +19499,7 @@ def test_create_router_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -21248,13 +19520,7 @@ def test_create_router_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -21292,19 +19558,13 @@ def test_create_router_rest_call_success(request_type):
 def test_create_router_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_router"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_create_router_with_metadata"
@@ -21351,21 +19611,13 @@ def test_create_router_rest_interceptors(null_interceptor):
 
 
 def test_update_router_rest_bad_request(request_type=service.UpdateRouterRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "router": {
-            "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-        }
-    }
+    request_init = {"router": {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21385,16 +19637,10 @@ def test_update_router_rest_bad_request(request_type=service.UpdateRouterRequest
     ],
 )
 def test_update_router_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "router": {
-            "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-        }
-    }
+    request_init = {"router": {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}}
     request_init["router"] = {
         "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4",
         "create_time": {"seconds": 751, "nanos": 543},
@@ -21409,10 +19655,7 @@ def test_update_router_rest_call_success(request_type):
                 "ipv6_cidr": "ipv6_cidr_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "subnetwork": "subnetwork_value",
-                "loopback_ip_addresses": [
-                    "loopback_ip_addresses_value1",
-                    "loopback_ip_addresses_value2",
-                ],
+                "loopback_ip_addresses": ["loopback_ip_addresses_value1", "loopback_ip_addresses_value2"],
             }
         ],
         "bgp_peer": [
@@ -21429,10 +19672,7 @@ def test_update_router_rest_call_success(request_type):
         ],
         "bgp": {"asn": 322, "keepalive_interval_in_seconds": 3070},
         "state": 1,
-        "route_advertisements": [
-            "route_advertisements_value1",
-            "route_advertisements_value2",
-        ],
+        "route_advertisements": ["route_advertisements_value1", "route_advertisements_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21458,9 +19698,7 @@ def test_update_router_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -21481,13 +19719,7 @@ def test_update_router_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -21525,19 +19757,13 @@ def test_update_router_rest_call_success(request_type):
 def test_update_router_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_update_router"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_update_router_with_metadata"
@@ -21584,19 +19810,13 @@ def test_update_router_rest_interceptors(null_interceptor):
 
 
 def test_delete_router_rest_bad_request(request_type=service.DeleteRouterRequest):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21616,14 +19836,10 @@ def test_delete_router_rest_bad_request(request_type=service.DeleteRouterRequest
     ],
 )
 def test_delete_router_rest_call_success(request_type):
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3/routers/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21648,19 +19864,13 @@ def test_delete_router_rest_call_success(request_type):
 def test_delete_router_rest_interceptors(null_interceptor):
     transport = transports.EdgeNetworkRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EdgeNetworkRestInterceptor(),
+        interceptor=None if null_interceptor else transports.EdgeNetworkRestInterceptor(),
     )
     client = EdgeNetworkClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_router"
     ) as post, mock.patch.object(
         transports.EdgeNetworkRestInterceptor, "post_delete_router_with_metadata"
@@ -21712,14 +19922,10 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -21766,9 +19972,7 @@ def test_get_location_rest(request_type):
     assert isinstance(response, locations_pb2.Location)
 
 
-def test_list_locations_rest_bad_request(
-    request_type=locations_pb2.ListLocationsRequest,
-):
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -21777,9 +19981,7 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -21826,22 +20028,16 @@ def test_list_locations_rest(request_type):
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -21888,22 +20084,16 @@ def test_cancel_operation_rest(request_type):
     assert response is None
 
 
-def test_delete_operation_rest_bad_request(
-    request_type=operations_pb2.DeleteOperationRequest,
-):
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -21950,22 +20140,16 @@ def test_delete_operation_rest(request_type):
     assert response is None
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22012,22 +20196,16 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22075,9 +20253,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -22350,9 +20526,7 @@ def test_list_interconnects_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnects), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnects), "__call__") as call:
         client.list_interconnects(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22392,9 +20566,7 @@ def test_diagnose_interconnect_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.diagnose_interconnect), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.diagnose_interconnect), "__call__") as call:
         client.diagnose_interconnect(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22414,9 +20586,7 @@ def test_list_interconnect_attachments_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_interconnect_attachments), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_interconnect_attachments), "__call__") as call:
         client.list_interconnect_attachments(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22436,9 +20606,7 @@ def test_get_interconnect_attachment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_interconnect_attachment), "__call__") as call:
         client.get_interconnect_attachment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22458,9 +20626,7 @@ def test_create_interconnect_attachment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_interconnect_attachment), "__call__") as call:
         client.create_interconnect_attachment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22480,9 +20646,7 @@ def test_delete_interconnect_attachment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_interconnect_attachment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_interconnect_attachment), "__call__") as call:
         client.delete_interconnect_attachment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22644,17 +20808,12 @@ def test_transport_grpc_default():
 def test_edge_network_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.EdgeNetworkTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.EdgeNetworkTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_edge_network_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.edgenetwork_v1.services.edge_network.transports.EdgeNetworkTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.edgenetwork_v1.services.edge_network.transports.EdgeNetworkTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.EdgeNetworkTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -22719,9 +20878,7 @@ def test_edge_network_base_transport():
 
 def test_edge_network_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.edgenetwork_v1.services.edge_network.transports.EdgeNetworkTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -22796,9 +20953,7 @@ def test_edge_network_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -22806,17 +20961,12 @@ def test_edge_network_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.EdgeNetworkGrpcTransport, grpc_helpers),
-        (transports.EdgeNetworkGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.EdgeNetworkGrpcTransport, grpc_helpers), (transports.EdgeNetworkGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_edge_network_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -22839,21 +20989,14 @@ def test_edge_network_transport_create_channel(transport_class, grpc_helpers):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.EdgeNetworkGrpcTransport, transports.EdgeNetworkGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.EdgeNetworkGrpcTransport, transports.EdgeNetworkGrpcAsyncIOTransport])
 def test_edge_network_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -22871,24 +21014,15 @@ def test_edge_network_grpc_transport_client_cert_source_for_mtls(transport_class
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_edge_network_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.EdgeNetworkRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.EdgeNetworkRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -22903,15 +21037,11 @@ def test_edge_network_http_transport_client_cert_source_for_mtls():
 def test_edge_network_host_no_port(transport_name):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="edgenetwork.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="edgenetwork.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "edgenetwork.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://edgenetwork.googleapis.com"
+        "edgenetwork.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://edgenetwork.googleapis.com"
     )
 
 
@@ -22926,15 +21056,11 @@ def test_edge_network_host_no_port(transport_name):
 def test_edge_network_host_with_port(transport_name):
     client = EdgeNetworkClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="edgenetwork.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="edgenetwork.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "edgenetwork.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://edgenetwork.googleapis.com:8000"
+        "edgenetwork.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://edgenetwork.googleapis.com:8000"
     )
 
 
@@ -23063,17 +21189,11 @@ def test_edge_network_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.EdgeNetworkGrpcTransport, transports.EdgeNetworkGrpcAsyncIOTransport],
-)
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.EdgeNetworkGrpcTransport, transports.EdgeNetworkGrpcAsyncIOTransport])
 def test_edge_network_transport_channel_mtls_with_client_cert_source(transport_class):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -23091,9 +21211,7 @@ def test_edge_network_transport_channel_mtls_with_client_cert_source(transport_c
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -23112,10 +21230,7 @@ def test_edge_network_transport_channel_mtls_with_client_cert_source(transport_c
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.EdgeNetworkGrpcTransport, transports.EdgeNetworkGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.EdgeNetworkGrpcTransport, transports.EdgeNetworkGrpcAsyncIOTransport])
 def test_edge_network_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -23123,9 +21238,7 @@ def test_edge_network_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -23227,9 +21340,7 @@ def test_interconnect_attachment_path():
         zone=zone,
         interconnect_attachment=interconnect_attachment,
     )
-    actual = EdgeNetworkClient.interconnect_attachment_path(
-        project, location, zone, interconnect_attachment
-    )
+    actual = EdgeNetworkClient.interconnect_attachment_path(project, location, zone, interconnect_attachment)
     assert expected == actual
 
 
@@ -23281,13 +21392,11 @@ def test_router_path():
     location = "clam"
     zone = "whelk"
     router = "octopus"
-    expected = (
-        "projects/{project}/locations/{location}/zones/{zone}/routers/{router}".format(
-            project=project,
-            location=location,
-            zone=zone,
-            router=router,
-        )
+    expected = "projects/{project}/locations/{location}/zones/{zone}/routers/{router}".format(
+        project=project,
+        location=location,
+        zone=zone,
+        router=router,
     )
     actual = EdgeNetworkClient.router_path(project, location, zone, router)
     assert expected == actual
@@ -23312,13 +21421,11 @@ def test_subnet_path():
     location = "nautilus"
     zone = "scallop"
     subnet = "abalone"
-    expected = (
-        "projects/{project}/locations/{location}/zones/{zone}/subnets/{subnet}".format(
-            project=project,
-            location=location,
-            zone=zone,
-            subnet=subnet,
-        )
+    expected = "projects/{project}/locations/{location}/zones/{zone}/subnets/{subnet}".format(
+        project=project,
+        location=location,
+        zone=zone,
+        subnet=subnet,
     )
     actual = EdgeNetworkClient.subnet_path(project, location, zone, subnet)
     assert expected == actual
@@ -23470,18 +21577,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.EdgeNetworkTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.EdgeNetworkTransport, "_prep_wrapped_messages") as prep:
         client = EdgeNetworkClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.EdgeNetworkTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.EdgeNetworkTransport, "_prep_wrapped_messages") as prep:
         transport_class = EdgeNetworkClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -23806,9 +21909,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23860,9 +21961,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23902,9 +22001,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -23951,9 +22048,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24005,9 +22100,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24047,9 +22140,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -24096,9 +22187,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24150,9 +22239,7 @@ async def test_list_locations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24192,9 +22279,7 @@ async def test_list_locations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(
             request={
                 "name": "locations",
@@ -24241,9 +22326,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24291,9 +22374,7 @@ async def test_get_location_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24333,9 +22414,7 @@ async def test_get_location_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(
             request={
                 "name": "locations",
@@ -24345,12 +22424,8 @@ async def test_get_location_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -24358,24 +22433,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = EdgeNetworkAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = EdgeNetworkAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = EdgeNetworkClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -24387,9 +22454,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = EdgeNetworkClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = EdgeNetworkClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -24406,9 +22471,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -24419,9 +22482,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

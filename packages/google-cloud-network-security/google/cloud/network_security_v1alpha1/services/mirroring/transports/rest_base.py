@@ -75,20 +75,14 @@ class _BaseMirroringRestTransport(MirroringTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateMirroringDeployment:
@@ -101,11 +95,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -128,9 +118,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -141,11 +129,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -160,11 +144,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -187,9 +167,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -200,11 +178,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -219,11 +193,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -246,9 +216,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -259,11 +227,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -276,11 +240,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -295,9 +255,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = mirroring.CreateMirroringEndpointGroupAssociationRequest.pb(
-                request
-            )
+            pb_request = mirroring.CreateMirroringEndpointGroupAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -305,9 +263,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -318,11 +274,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -335,11 +287,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -365,11 +313,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -382,11 +326,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -412,11 +352,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -429,11 +365,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -459,11 +391,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -476,11 +404,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -494,9 +418,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = mirroring.DeleteMirroringEndpointGroupAssociationRequest.pb(
-                request
-            )
+            pb_request = mirroring.DeleteMirroringEndpointGroupAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -508,11 +430,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -525,11 +443,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -555,11 +469,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseGetMirroringDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -572,11 +482,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -602,11 +508,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -619,11 +521,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -649,11 +547,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -666,11 +560,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -684,9 +574,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = mirroring.GetMirroringEndpointGroupAssociationRequest.pb(
-                request
-            )
+            pb_request = mirroring.GetMirroringEndpointGroupAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -698,11 +586,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -715,11 +599,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -745,11 +625,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -762,11 +638,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -792,11 +664,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseListMirroringDeployments._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseListMirroringDeployments._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -809,11 +677,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -827,9 +691,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = mirroring.ListMirroringEndpointGroupAssociationsRequest.pb(
-                request
-            )
+            pb_request = mirroring.ListMirroringEndpointGroupAssociationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -841,11 +703,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -858,11 +716,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -888,11 +742,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -905,11 +755,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -932,9 +778,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -945,11 +789,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -962,11 +802,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -989,9 +825,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1002,11 +836,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1019,11 +849,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1046,9 +872,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1059,11 +883,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1076,11 +896,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1095,9 +911,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = mirroring.UpdateMirroringEndpointGroupAssociationRequest.pb(
-                request
-            )
+            pb_request = mirroring.UpdateMirroringEndpointGroupAssociationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1105,9 +919,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1118,11 +930,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

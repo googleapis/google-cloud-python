@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.network_services_v1 import gapic_version as package_version
 from google.cloud.network_services_v1.types import dep
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class DepServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -301,192 +291,115 @@ class DepServiceTransport(abc.ABC):
     @property
     def list_lb_traffic_extensions(
         self,
-    ) -> Callable[
-        [dep.ListLbTrafficExtensionsRequest],
-        Union[
-            dep.ListLbTrafficExtensionsResponse,
-            Awaitable[dep.ListLbTrafficExtensionsResponse],
-        ],
-    ]:
+    ) -> Callable[[dep.ListLbTrafficExtensionsRequest], Union[dep.ListLbTrafficExtensionsResponse, Awaitable[dep.ListLbTrafficExtensionsResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_lb_traffic_extension(
         self,
-    ) -> Callable[
-        [dep.GetLbTrafficExtensionRequest],
-        Union[dep.LbTrafficExtension, Awaitable[dep.LbTrafficExtension]],
-    ]:
+    ) -> Callable[[dep.GetLbTrafficExtensionRequest], Union[dep.LbTrafficExtension, Awaitable[dep.LbTrafficExtension]]]:
         raise NotImplementedError()
 
     @property
     def create_lb_traffic_extension(
         self,
-    ) -> Callable[
-        [dep.CreateLbTrafficExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.CreateLbTrafficExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_lb_traffic_extension(
         self,
-    ) -> Callable[
-        [dep.UpdateLbTrafficExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.UpdateLbTrafficExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_lb_traffic_extension(
         self,
-    ) -> Callable[
-        [dep.DeleteLbTrafficExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.DeleteLbTrafficExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_lb_route_extensions(
         self,
-    ) -> Callable[
-        [dep.ListLbRouteExtensionsRequest],
-        Union[
-            dep.ListLbRouteExtensionsResponse,
-            Awaitable[dep.ListLbRouteExtensionsResponse],
-        ],
-    ]:
+    ) -> Callable[[dep.ListLbRouteExtensionsRequest], Union[dep.ListLbRouteExtensionsResponse, Awaitable[dep.ListLbRouteExtensionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_lb_route_extension(
-        self,
-    ) -> Callable[
-        [dep.GetLbRouteExtensionRequest],
-        Union[dep.LbRouteExtension, Awaitable[dep.LbRouteExtension]],
-    ]:
+    def get_lb_route_extension(self) -> Callable[[dep.GetLbRouteExtensionRequest], Union[dep.LbRouteExtension, Awaitable[dep.LbRouteExtension]]]:
         raise NotImplementedError()
 
     @property
     def create_lb_route_extension(
         self,
-    ) -> Callable[
-        [dep.CreateLbRouteExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.CreateLbRouteExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_lb_route_extension(
         self,
-    ) -> Callable[
-        [dep.UpdateLbRouteExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.UpdateLbRouteExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_lb_route_extension(
         self,
-    ) -> Callable[
-        [dep.DeleteLbRouteExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.DeleteLbRouteExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_lb_edge_extensions(
         self,
-    ) -> Callable[
-        [dep.ListLbEdgeExtensionsRequest],
-        Union[
-            dep.ListLbEdgeExtensionsResponse,
-            Awaitable[dep.ListLbEdgeExtensionsResponse],
-        ],
-    ]:
+    ) -> Callable[[dep.ListLbEdgeExtensionsRequest], Union[dep.ListLbEdgeExtensionsResponse, Awaitable[dep.ListLbEdgeExtensionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_lb_edge_extension(
-        self,
-    ) -> Callable[
-        [dep.GetLbEdgeExtensionRequest],
-        Union[dep.LbEdgeExtension, Awaitable[dep.LbEdgeExtension]],
-    ]:
+    def get_lb_edge_extension(self) -> Callable[[dep.GetLbEdgeExtensionRequest], Union[dep.LbEdgeExtension, Awaitable[dep.LbEdgeExtension]]]:
         raise NotImplementedError()
 
     @property
     def create_lb_edge_extension(
         self,
-    ) -> Callable[
-        [dep.CreateLbEdgeExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.CreateLbEdgeExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_lb_edge_extension(
         self,
-    ) -> Callable[
-        [dep.UpdateLbEdgeExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.UpdateLbEdgeExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_lb_edge_extension(
         self,
-    ) -> Callable[
-        [dep.DeleteLbEdgeExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.DeleteLbEdgeExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_authz_extensions(
         self,
-    ) -> Callable[
-        [dep.ListAuthzExtensionsRequest],
-        Union[
-            dep.ListAuthzExtensionsResponse, Awaitable[dep.ListAuthzExtensionsResponse]
-        ],
-    ]:
+    ) -> Callable[[dep.ListAuthzExtensionsRequest], Union[dep.ListAuthzExtensionsResponse, Awaitable[dep.ListAuthzExtensionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_authz_extension(
-        self,
-    ) -> Callable[
-        [dep.GetAuthzExtensionRequest],
-        Union[dep.AuthzExtension, Awaitable[dep.AuthzExtension]],
-    ]:
+    def get_authz_extension(self) -> Callable[[dep.GetAuthzExtensionRequest], Union[dep.AuthzExtension, Awaitable[dep.AuthzExtension]]]:
         raise NotImplementedError()
 
     @property
     def create_authz_extension(
         self,
-    ) -> Callable[
-        [dep.CreateAuthzExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.CreateAuthzExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_authz_extension(
         self,
-    ) -> Callable[
-        [dep.UpdateAuthzExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.UpdateAuthzExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_authz_extension(
         self,
-    ) -> Callable[
-        [dep.DeleteAuthzExtensionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[dep.DeleteAuthzExtensionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -494,20 +407,14 @@ class DepServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -525,19 +432,13 @@ class DepServiceTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -555,22 +456,13 @@ class DepServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

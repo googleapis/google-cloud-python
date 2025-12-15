@@ -1651,9 +1651,7 @@ class CloudBigtableInstanceSpec(proto.Message):
             number=4,
         )
 
-    cloud_bigtable_cluster_specs: MutableSequence[
-        CloudBigtableClusterSpec
-    ] = proto.RepeatedField(
+    cloud_bigtable_cluster_specs: MutableSequence[CloudBigtableClusterSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CloudBigtableClusterSpec,

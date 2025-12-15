@@ -35,13 +35,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.backupdr_v1.types import (
-    backupdr,
-    backupplan,
-    backupplanassociation,
-    backupvault,
-    datasourcereference,
-)
+from google.cloud.backupdr_v1.types import backupdr, backupplan, backupplanassociation, backupvault, datasourcereference
 
 from .base import DEFAULT_CLIENT_INFO, BackupDRTransport
 from .grpc import BackupDRGrpcTransport
@@ -56,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -72,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -94,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -277,18 +260,14 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -324,9 +303,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -349,20 +326,13 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_management_servers(
-        self,
-    ) -> Callable[
-        [backupdr.ListManagementServersRequest],
-        Awaitable[backupdr.ListManagementServersResponse],
-    ]:
+    def list_management_servers(self) -> Callable[[backupdr.ListManagementServersRequest], Awaitable[backupdr.ListManagementServersResponse]]:
         r"""Return a callable for the list management servers method over gRPC.
 
         Lists ManagementServers in a given project and
@@ -387,11 +357,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["list_management_servers"]
 
     @property
-    def get_management_server(
-        self,
-    ) -> Callable[
-        [backupdr.GetManagementServerRequest], Awaitable[backupdr.ManagementServer]
-    ]:
+    def get_management_server(self) -> Callable[[backupdr.GetManagementServerRequest], Awaitable[backupdr.ManagementServer]]:
         r"""Return a callable for the get management server method over gRPC.
 
         Gets details of a single ManagementServer.
@@ -415,11 +381,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["get_management_server"]
 
     @property
-    def create_management_server(
-        self,
-    ) -> Callable[
-        [backupdr.CreateManagementServerRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_management_server(self) -> Callable[[backupdr.CreateManagementServerRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create management server method over gRPC.
 
         Creates a new ManagementServer in a given project and
@@ -444,11 +406,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["create_management_server"]
 
     @property
-    def delete_management_server(
-        self,
-    ) -> Callable[
-        [backupdr.DeleteManagementServerRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_management_server(self) -> Callable[[backupdr.DeleteManagementServerRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete management server method over gRPC.
 
         Deletes a single ManagementServer.
@@ -472,11 +430,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["delete_management_server"]
 
     @property
-    def create_backup_vault(
-        self,
-    ) -> Callable[
-        [backupvault.CreateBackupVaultRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_backup_vault(self) -> Callable[[backupvault.CreateBackupVaultRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup vault method over gRPC.
 
         Creates a new BackupVault in a given project and
@@ -501,12 +455,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["create_backup_vault"]
 
     @property
-    def list_backup_vaults(
-        self,
-    ) -> Callable[
-        [backupvault.ListBackupVaultsRequest],
-        Awaitable[backupvault.ListBackupVaultsResponse],
-    ]:
+    def list_backup_vaults(self) -> Callable[[backupvault.ListBackupVaultsRequest], Awaitable[backupvault.ListBackupVaultsResponse]]:
         r"""Return a callable for the list backup vaults method over gRPC.
 
         Lists BackupVaults in a given project and location.
@@ -532,10 +481,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def fetch_usable_backup_vaults(
         self,
-    ) -> Callable[
-        [backupvault.FetchUsableBackupVaultsRequest],
-        Awaitable[backupvault.FetchUsableBackupVaultsResponse],
-    ]:
+    ) -> Callable[[backupvault.FetchUsableBackupVaultsRequest], Awaitable[backupvault.FetchUsableBackupVaultsResponse]]:
         r"""Return a callable for the fetch usable backup vaults method over gRPC.
 
         FetchUsableBackupVaults lists usable BackupVaults in
@@ -553,9 +499,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_usable_backup_vaults" not in self._stubs:
-            self._stubs[
-                "fetch_usable_backup_vaults"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_usable_backup_vaults"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/FetchUsableBackupVaults",
                 request_serializer=backupvault.FetchUsableBackupVaultsRequest.serialize,
                 response_deserializer=backupvault.FetchUsableBackupVaultsResponse.deserialize,
@@ -563,11 +507,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["fetch_usable_backup_vaults"]
 
     @property
-    def get_backup_vault(
-        self,
-    ) -> Callable[
-        [backupvault.GetBackupVaultRequest], Awaitable[backupvault.BackupVault]
-    ]:
+    def get_backup_vault(self) -> Callable[[backupvault.GetBackupVaultRequest], Awaitable[backupvault.BackupVault]]:
         r"""Return a callable for the get backup vault method over gRPC.
 
         Gets details of a BackupVault.
@@ -591,11 +531,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["get_backup_vault"]
 
     @property
-    def update_backup_vault(
-        self,
-    ) -> Callable[
-        [backupvault.UpdateBackupVaultRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup_vault(self) -> Callable[[backupvault.UpdateBackupVaultRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup vault method over gRPC.
 
         Updates the settings of a BackupVault.
@@ -619,11 +555,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["update_backup_vault"]
 
     @property
-    def delete_backup_vault(
-        self,
-    ) -> Callable[
-        [backupvault.DeleteBackupVaultRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup_vault(self) -> Callable[[backupvault.DeleteBackupVaultRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup vault method over gRPC.
 
         Deletes a BackupVault.
@@ -647,12 +579,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["delete_backup_vault"]
 
     @property
-    def list_data_sources(
-        self,
-    ) -> Callable[
-        [backupvault.ListDataSourcesRequest],
-        Awaitable[backupvault.ListDataSourcesResponse],
-    ]:
+    def list_data_sources(self) -> Callable[[backupvault.ListDataSourcesRequest], Awaitable[backupvault.ListDataSourcesResponse]]:
         r"""Return a callable for the list data sources method over gRPC.
 
         Lists DataSources in a given project and location.
@@ -676,11 +603,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["list_data_sources"]
 
     @property
-    def get_data_source(
-        self,
-    ) -> Callable[
-        [backupvault.GetDataSourceRequest], Awaitable[backupvault.DataSource]
-    ]:
+    def get_data_source(self) -> Callable[[backupvault.GetDataSourceRequest], Awaitable[backupvault.DataSource]]:
         r"""Return a callable for the get data source method over gRPC.
 
         Gets details of a DataSource.
@@ -704,11 +627,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["get_data_source"]
 
     @property
-    def update_data_source(
-        self,
-    ) -> Callable[
-        [backupvault.UpdateDataSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_data_source(self) -> Callable[[backupvault.UpdateDataSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update data source method over gRPC.
 
         Updates the settings of a DataSource.
@@ -732,11 +651,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["update_data_source"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [backupvault.ListBackupsRequest], Awaitable[backupvault.ListBackupsResponse]
-    ]:
+    def list_backups(self) -> Callable[[backupvault.ListBackupsRequest], Awaitable[backupvault.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists Backups in a given project and location.
@@ -762,10 +677,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def fetch_backups_for_resource_type(
         self,
-    ) -> Callable[
-        [backupvault.FetchBackupsForResourceTypeRequest],
-        Awaitable[backupvault.FetchBackupsForResourceTypeResponse],
-    ]:
+    ) -> Callable[[backupvault.FetchBackupsForResourceTypeRequest], Awaitable[backupvault.FetchBackupsForResourceTypeResponse]]:
         r"""Return a callable for the fetch backups for resource
         type method over gRPC.
 
@@ -782,9 +694,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_backups_for_resource_type" not in self._stubs:
-            self._stubs[
-                "fetch_backups_for_resource_type"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_backups_for_resource_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType",
                 request_serializer=backupvault.FetchBackupsForResourceTypeRequest.serialize,
                 response_deserializer=backupvault.FetchBackupsForResourceTypeResponse.deserialize,
@@ -792,9 +702,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["fetch_backups_for_resource_type"]
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[backupvault.GetBackupRequest], Awaitable[backupvault.Backup]]:
+    def get_backup(self) -> Callable[[backupvault.GetBackupRequest], Awaitable[backupvault.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Gets details of a Backup.
@@ -818,11 +726,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["get_backup"]
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [backupvault.UpdateBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup(self) -> Callable[[backupvault.UpdateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup method over gRPC.
 
         Updates the settings of a Backup.
@@ -846,11 +750,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["update_backup"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [backupvault.DeleteBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup(self) -> Callable[[backupvault.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a Backup.
@@ -874,11 +774,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["delete_backup"]
 
     @property
-    def restore_backup(
-        self,
-    ) -> Callable[
-        [backupvault.RestoreBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def restore_backup(self) -> Callable[[backupvault.RestoreBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the restore backup method over gRPC.
 
         Restore from a Backup
@@ -902,11 +798,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["restore_backup"]
 
     @property
-    def create_backup_plan(
-        self,
-    ) -> Callable[
-        [backupplan.CreateBackupPlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_backup_plan(self) -> Callable[[backupplan.CreateBackupPlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup plan method over gRPC.
 
         Create a BackupPlan
@@ -930,11 +822,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["create_backup_plan"]
 
     @property
-    def update_backup_plan(
-        self,
-    ) -> Callable[
-        [backupplan.UpdateBackupPlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup_plan(self) -> Callable[[backupplan.UpdateBackupPlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup plan method over gRPC.
 
         Update a BackupPlan.
@@ -958,9 +846,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["update_backup_plan"]
 
     @property
-    def get_backup_plan(
-        self,
-    ) -> Callable[[backupplan.GetBackupPlanRequest], Awaitable[backupplan.BackupPlan]]:
+    def get_backup_plan(self) -> Callable[[backupplan.GetBackupPlanRequest], Awaitable[backupplan.BackupPlan]]:
         r"""Return a callable for the get backup plan method over gRPC.
 
         Gets details of a single BackupPlan.
@@ -984,12 +870,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["get_backup_plan"]
 
     @property
-    def list_backup_plans(
-        self,
-    ) -> Callable[
-        [backupplan.ListBackupPlansRequest],
-        Awaitable[backupplan.ListBackupPlansResponse],
-    ]:
+    def list_backup_plans(self) -> Callable[[backupplan.ListBackupPlansRequest], Awaitable[backupplan.ListBackupPlansResponse]]:
         r"""Return a callable for the list backup plans method over gRPC.
 
         Lists BackupPlans in a given project and location.
@@ -1013,11 +894,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["list_backup_plans"]
 
     @property
-    def delete_backup_plan(
-        self,
-    ) -> Callable[
-        [backupplan.DeleteBackupPlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup_plan(self) -> Callable[[backupplan.DeleteBackupPlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup plan method over gRPC.
 
         Deletes a single BackupPlan.
@@ -1041,12 +918,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["delete_backup_plan"]
 
     @property
-    def get_backup_plan_revision(
-        self,
-    ) -> Callable[
-        [backupplan.GetBackupPlanRevisionRequest],
-        Awaitable[backupplan.BackupPlanRevision],
-    ]:
+    def get_backup_plan_revision(self) -> Callable[[backupplan.GetBackupPlanRevisionRequest], Awaitable[backupplan.BackupPlanRevision]]:
         r"""Return a callable for the get backup plan revision method over gRPC.
 
         Gets details of a single BackupPlanRevision.
@@ -1072,10 +944,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def list_backup_plan_revisions(
         self,
-    ) -> Callable[
-        [backupplan.ListBackupPlanRevisionsRequest],
-        Awaitable[backupplan.ListBackupPlanRevisionsResponse],
-    ]:
+    ) -> Callable[[backupplan.ListBackupPlanRevisionsRequest], Awaitable[backupplan.ListBackupPlanRevisionsResponse]]:
         r"""Return a callable for the list backup plan revisions method over gRPC.
 
         Lists BackupPlanRevisions in a given project and
@@ -1092,9 +961,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_plan_revisions" not in self._stubs:
-            self._stubs[
-                "list_backup_plan_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_backup_plan_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanRevisions",
                 request_serializer=backupplan.ListBackupPlanRevisionsRequest.serialize,
                 response_deserializer=backupplan.ListBackupPlanRevisionsResponse.deserialize,
@@ -1104,10 +971,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def create_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.CreateBackupPlanAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[backupplanassociation.CreateBackupPlanAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup plan association method over gRPC.
 
         Create a BackupPlanAssociation
@@ -1123,9 +987,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "create_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_backup_plan_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlanAssociation",
                 request_serializer=backupplanassociation.CreateBackupPlanAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1135,10 +997,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def update_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.UpdateBackupPlanAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[backupplanassociation.UpdateBackupPlanAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup plan association method over gRPC.
 
         Update a BackupPlanAssociation.
@@ -1154,9 +1013,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "update_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_backup_plan_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/UpdateBackupPlanAssociation",
                 request_serializer=backupplanassociation.UpdateBackupPlanAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1166,10 +1023,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def get_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.GetBackupPlanAssociationRequest],
-        Awaitable[backupplanassociation.BackupPlanAssociation],
-    ]:
+    ) -> Callable[[backupplanassociation.GetBackupPlanAssociationRequest], Awaitable[backupplanassociation.BackupPlanAssociation]]:
         r"""Return a callable for the get backup plan association method over gRPC.
 
         Gets details of a single BackupPlanAssociation.
@@ -1185,9 +1039,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "get_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_backup_plan_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetBackupPlanAssociation",
                 request_serializer=backupplanassociation.GetBackupPlanAssociationRequest.serialize,
                 response_deserializer=backupplanassociation.BackupPlanAssociation.deserialize,
@@ -1197,10 +1049,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def list_backup_plan_associations(
         self,
-    ) -> Callable[
-        [backupplanassociation.ListBackupPlanAssociationsRequest],
-        Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse],
-    ]:
+    ) -> Callable[[backupplanassociation.ListBackupPlanAssociationsRequest], Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse]]:
         r"""Return a callable for the list backup plan associations method over gRPC.
 
         Lists BackupPlanAssociations in a given project and
@@ -1217,9 +1066,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_plan_associations" not in self._stubs:
-            self._stubs[
-                "list_backup_plan_associations"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_backup_plan_associations"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanAssociations",
                 request_serializer=backupplanassociation.ListBackupPlanAssociationsRequest.serialize,
                 response_deserializer=backupplanassociation.ListBackupPlanAssociationsResponse.deserialize,
@@ -1231,9 +1078,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         self,
     ) -> Callable[
         [backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest],
-        Awaitable[
-            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
-        ],
+        Awaitable[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse],
     ]:
         r"""Return a callable for the fetch backup plan associations
         for resource type method over gRPC.
@@ -1252,9 +1097,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_backup_plan_associations_for_resource_type" not in self._stubs:
-            self._stubs[
-                "fetch_backup_plan_associations_for_resource_type"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_backup_plan_associations_for_resource_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/FetchBackupPlanAssociationsForResourceType",
                 request_serializer=backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest.serialize,
                 response_deserializer=backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.deserialize,
@@ -1264,10 +1107,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def delete_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.DeleteBackupPlanAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[backupplanassociation.DeleteBackupPlanAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup plan association method over gRPC.
 
         Deletes a single BackupPlanAssociation.
@@ -1283,9 +1123,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "delete_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_backup_plan_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlanAssociation",
                 request_serializer=backupplanassociation.DeleteBackupPlanAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1293,12 +1131,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["delete_backup_plan_association"]
 
     @property
-    def trigger_backup(
-        self,
-    ) -> Callable[
-        [backupplanassociation.TriggerBackupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def trigger_backup(self) -> Callable[[backupplanassociation.TriggerBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the trigger backup method over gRPC.
 
         Triggers a new Backup.
@@ -1324,10 +1157,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def get_data_source_reference(
         self,
-    ) -> Callable[
-        [datasourcereference.GetDataSourceReferenceRequest],
-        Awaitable[datasourcereference.DataSourceReference],
-    ]:
+    ) -> Callable[[datasourcereference.GetDataSourceReferenceRequest], Awaitable[datasourcereference.DataSourceReference]]:
         r"""Return a callable for the get data source reference method over gRPC.
 
         Gets details of a single DataSourceReference.
@@ -1353,10 +1183,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def list_data_source_references(
         self,
-    ) -> Callable[
-        [datasourcereference.ListDataSourceReferencesRequest],
-        Awaitable[datasourcereference.ListDataSourceReferencesResponse],
-    ]:
+    ) -> Callable[[datasourcereference.ListDataSourceReferencesRequest], Awaitable[datasourcereference.ListDataSourceReferencesResponse]]:
         r"""Return a callable for the list data source references method over gRPC.
 
         Lists DataSourceReferences for a given project and
@@ -1373,9 +1200,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_source_references" not in self._stubs:
-            self._stubs[
-                "list_data_source_references"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_data_source_references"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListDataSourceReferences",
                 request_serializer=datasourcereference.ListDataSourceReferencesRequest.serialize,
                 response_deserializer=datasourcereference.ListDataSourceReferencesResponse.deserialize,
@@ -1406,9 +1231,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_data_source_references_for_resource_type" not in self._stubs:
-            self._stubs[
-                "fetch_data_source_references_for_resource_type"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_data_source_references_for_resource_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/FetchDataSourceReferencesForResourceType",
                 request_serializer=datasourcereference.FetchDataSourceReferencesForResourceTypeRequest.serialize,
                 response_deserializer=datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.deserialize,
@@ -1416,11 +1239,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return self._stubs["fetch_data_source_references_for_resource_type"]
 
     @property
-    def initialize_service(
-        self,
-    ) -> Callable[
-        [backupdr.InitializeServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def initialize_service(self) -> Callable[[backupdr.InitializeServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the initialize service method over gRPC.
 
         Initializes the service related config for a project.
@@ -1852,9 +1671,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1871,9 +1688,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1958,10 +1773,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

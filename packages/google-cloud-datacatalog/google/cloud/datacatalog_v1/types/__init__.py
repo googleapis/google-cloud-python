@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .bigquery import (
-    BigQueryConnectionSpec,
-    BigQueryRoutineSpec,
-    CloudSqlBigQueryConnectionSpec,
-)
+from .bigquery import BigQueryConnectionSpec, BigQueryRoutineSpec, CloudSqlBigQueryConnectionSpec
 from .common import IntegratedSystem, ManagingSystem, PersonalDetails
 from .data_source import DataSource, StorageProperties
 from .datacatalog import (
@@ -91,12 +87,7 @@ from .datacatalog import (
     VertexModelSourceInfo,
     VertexModelSpec,
 )
-from .dataplex_spec import (
-    DataplexExternalTable,
-    DataplexFilesetSpec,
-    DataplexSpec,
-    DataplexTableSpec,
-)
+from .dataplex_spec import DataplexExternalTable, DataplexFilesetSpec, DataplexSpec, DataplexTableSpec
 from .dump_content import DumpItem, TaggedEntry
 from .gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
 from .physical_schema import PhysicalSchema
@@ -129,13 +120,7 @@ from .policytagmanagerserialization import (
 )
 from .schema import ColumnSchema, Schema
 from .search import SearchCatalogResult, SearchResultType
-from .table_spec import (
-    BigQueryDateShardedSpec,
-    BigQueryTableSpec,
-    TableSourceType,
-    TableSpec,
-    ViewSpec,
-)
+from .table_spec import BigQueryDateShardedSpec, BigQueryTableSpec, TableSourceType, TableSpec, ViewSpec
 from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .timestamps import SystemTimestamps
 from .usage import CommonUsageStats, UsageSignal, UsageStats

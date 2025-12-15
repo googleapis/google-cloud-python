@@ -87,12 +87,8 @@ class AuthorizedDomainsRestInterceptor:
     """
 
     def pre_list_authorized_domains(
-        self,
-        request: appengine.ListAuthorizedDomainsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.ListAuthorizedDomainsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.ListAuthorizedDomainsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.ListAuthorizedDomainsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_authorized_domains
 
         Override in a subclass to manipulate the request or metadata
@@ -100,9 +96,7 @@ class AuthorizedDomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_authorized_domains(
-        self, response: appengine.ListAuthorizedDomainsResponse
-    ) -> appengine.ListAuthorizedDomainsResponse:
+    def post_list_authorized_domains(self, response: appengine.ListAuthorizedDomainsResponse) -> appengine.ListAuthorizedDomainsResponse:
         """Post-rpc interceptor for list_authorized_domains
 
         DEPRECATED. Please use the `post_list_authorized_domains_with_metadata`
@@ -116,12 +110,8 @@ class AuthorizedDomainsRestInterceptor:
         return response
 
     def post_list_authorized_domains_with_metadata(
-        self,
-        response: appengine.ListAuthorizedDomainsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.ListAuthorizedDomainsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: appengine.ListAuthorizedDomainsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.ListAuthorizedDomainsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_authorized_domains
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -218,31 +208,18 @@ class AuthorizedDomainsRestTransport(_BaseAuthorizedDomainsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AuthorizedDomainsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListAuthorizedDomains(
-        _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains,
-        AuthorizedDomainsRestStub,
-    ):
+    class _ListAuthorizedDomains(_BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains, AuthorizedDomainsRestStub):
         def __hash__(self):
             return hash("AuthorizedDomainsRestTransport.ListAuthorizedDomains")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -284,28 +261,16 @@ class AuthorizedDomainsRestTransport(_BaseAuthorizedDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains._get_http_options()
-            )
+            http_options = _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_authorized_domains(
-                request, metadata
-            )
-            transcoded_request = _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_authorized_domains(request, metadata)
+            transcoded_request = _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAuthorizedDomainsRestTransport._BaseListAuthorizedDomains._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -328,15 +293,8 @@ class AuthorizedDomainsRestTransport(_BaseAuthorizedDomainsRestTransport):
                 )
 
             # Send the request
-            response = (
-                AuthorizedDomainsRestTransport._ListAuthorizedDomains._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AuthorizedDomainsRestTransport._ListAuthorizedDomains._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -352,16 +310,10 @@ class AuthorizedDomainsRestTransport(_BaseAuthorizedDomainsRestTransport):
 
             resp = self._interceptor.post_list_authorized_domains(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_authorized_domains_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_authorized_domains_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = appengine.ListAuthorizedDomainsResponse.to_json(
-                        response
-                    )
+                    response_payload = appengine.ListAuthorizedDomainsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -381,12 +333,7 @@ class AuthorizedDomainsRestTransport(_BaseAuthorizedDomainsRestTransport):
             return resp
 
     @property
-    def list_authorized_domains(
-        self,
-    ) -> Callable[
-        [appengine.ListAuthorizedDomainsRequest],
-        appengine.ListAuthorizedDomainsResponse,
-    ]:
+    def list_authorized_domains(self) -> Callable[[appengine.ListAuthorizedDomainsRequest], appengine.ListAuthorizedDomainsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAuthorizedDomains(self._session, self._host, self._interceptor)  # type: ignore

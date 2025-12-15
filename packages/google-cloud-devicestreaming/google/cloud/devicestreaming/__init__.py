@@ -18,12 +18,8 @@ from google.cloud.devicestreaming import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.devicestreaming_v1.services.direct_access_service.async_client import (
-    DirectAccessServiceAsyncClient,
-)
-from google.cloud.devicestreaming_v1.services.direct_access_service.client import (
-    DirectAccessServiceClient,
-)
+from google.cloud.devicestreaming_v1.services.direct_access_service.async_client import DirectAccessServiceAsyncClient
+from google.cloud.devicestreaming_v1.services.direct_access_service.client import DirectAccessServiceClient
 from google.cloud.devicestreaming_v1.types.adb_service import (
     AdbMessage,
     Close,

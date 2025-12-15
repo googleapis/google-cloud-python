@@ -923,9 +923,7 @@ class ListAuthorizedCertificatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificates: MutableSequence[
-        ga_certificate.AuthorizedCertificate
-    ] = proto.RepeatedField(
+    certificates: MutableSequence[ga_certificate.AuthorizedCertificate] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ga_certificate.AuthorizedCertificate,
@@ -1074,9 +1072,7 @@ class ListDomainMappingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    domain_mappings: MutableSequence[
-        ga_domain_mapping.DomainMapping
-    ] = proto.RepeatedField(
+    domain_mappings: MutableSequence[ga_domain_mapping.DomainMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ga_domain_mapping.DomainMapping,

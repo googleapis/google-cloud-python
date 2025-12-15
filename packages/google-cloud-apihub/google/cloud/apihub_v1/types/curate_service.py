@@ -354,9 +354,7 @@ class Curation(proto.Message):
         number=4,
         message="Endpoint",
     )
-    plugin_instance_actions: MutableSequence[
-        PluginInstanceActionID
-    ] = proto.RepeatedField(
+    plugin_instance_actions: MutableSequence[PluginInstanceActionID] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=PluginInstanceActionID,

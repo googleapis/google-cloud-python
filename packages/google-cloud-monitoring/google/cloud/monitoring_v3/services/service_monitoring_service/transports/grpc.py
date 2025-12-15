@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -224,18 +215,14 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -269,9 +256,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -330,9 +315,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[[service_service.CreateServiceRequest], gm_service.Service]:
+    def create_service(self) -> Callable[[service_service.CreateServiceRequest], gm_service.Service]:
         r"""Return a callable for the create service method over gRPC.
 
         Create a ``Service``.
@@ -356,9 +339,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["create_service"]
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[[service_service.GetServiceRequest], service.Service]:
+    def get_service(self) -> Callable[[service_service.GetServiceRequest], service.Service]:
         r"""Return a callable for the get service method over gRPC.
 
         Get the named ``Service``.
@@ -382,11 +363,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["get_service"]
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[
-        [service_service.ListServicesRequest], service_service.ListServicesResponse
-    ]:
+    def list_services(self) -> Callable[[service_service.ListServicesRequest], service_service.ListServicesResponse]:
         r"""Return a callable for the list services method over gRPC.
 
         List ``Service``\ s for this Metrics Scope.
@@ -410,9 +387,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["list_services"]
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[[service_service.UpdateServiceRequest], gm_service.Service]:
+    def update_service(self) -> Callable[[service_service.UpdateServiceRequest], gm_service.Service]:
         r"""Return a callable for the update service method over gRPC.
 
         Update this ``Service``.
@@ -436,9 +411,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["update_service"]
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[[service_service.DeleteServiceRequest], empty_pb2.Empty]:
+    def delete_service(self) -> Callable[[service_service.DeleteServiceRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete service method over gRPC.
 
         Soft delete this ``Service``.
@@ -462,12 +435,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["delete_service"]
 
     @property
-    def create_service_level_objective(
-        self,
-    ) -> Callable[
-        [service_service.CreateServiceLevelObjectiveRequest],
-        service.ServiceLevelObjective,
-    ]:
+    def create_service_level_objective(self) -> Callable[[service_service.CreateServiceLevelObjectiveRequest], service.ServiceLevelObjective]:
         r"""Return a callable for the create service level objective method over gRPC.
 
         Create a ``ServiceLevelObjective`` for the given ``Service``.
@@ -483,9 +451,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_level_objective" not in self._stubs:
-            self._stubs[
-                "create_service_level_objective"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_service_level_objective"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.ServiceMonitoringService/CreateServiceLevelObjective",
                 request_serializer=service_service.CreateServiceLevelObjectiveRequest.serialize,
                 response_deserializer=service.ServiceLevelObjective.deserialize,
@@ -493,11 +459,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["create_service_level_objective"]
 
     @property
-    def get_service_level_objective(
-        self,
-    ) -> Callable[
-        [service_service.GetServiceLevelObjectiveRequest], service.ServiceLevelObjective
-    ]:
+    def get_service_level_objective(self) -> Callable[[service_service.GetServiceLevelObjectiveRequest], service.ServiceLevelObjective]:
         r"""Return a callable for the get service level objective method over gRPC.
 
         Get a ``ServiceLevelObjective`` by name.
@@ -513,9 +475,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_service_level_objective" not in self._stubs:
-            self._stubs[
-                "get_service_level_objective"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_service_level_objective"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.ServiceMonitoringService/GetServiceLevelObjective",
                 request_serializer=service_service.GetServiceLevelObjectiveRequest.serialize,
                 response_deserializer=service.ServiceLevelObjective.deserialize,
@@ -525,10 +485,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
     @property
     def list_service_level_objectives(
         self,
-    ) -> Callable[
-        [service_service.ListServiceLevelObjectivesRequest],
-        service_service.ListServiceLevelObjectivesResponse,
-    ]:
+    ) -> Callable[[service_service.ListServiceLevelObjectivesRequest], service_service.ListServiceLevelObjectivesResponse]:
         r"""Return a callable for the list service level objectives method over gRPC.
 
         List the ``ServiceLevelObjective``\ s for the given ``Service``.
@@ -544,9 +501,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_service_level_objectives" not in self._stubs:
-            self._stubs[
-                "list_service_level_objectives"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_service_level_objectives"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.ServiceMonitoringService/ListServiceLevelObjectives",
                 request_serializer=service_service.ListServiceLevelObjectivesRequest.serialize,
                 response_deserializer=service_service.ListServiceLevelObjectivesResponse.deserialize,
@@ -554,12 +509,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["list_service_level_objectives"]
 
     @property
-    def update_service_level_objective(
-        self,
-    ) -> Callable[
-        [service_service.UpdateServiceLevelObjectiveRequest],
-        service.ServiceLevelObjective,
-    ]:
+    def update_service_level_objective(self) -> Callable[[service_service.UpdateServiceLevelObjectiveRequest], service.ServiceLevelObjective]:
         r"""Return a callable for the update service level objective method over gRPC.
 
         Update the given ``ServiceLevelObjective``.
@@ -575,9 +525,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_service_level_objective" not in self._stubs:
-            self._stubs[
-                "update_service_level_objective"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_service_level_objective"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.ServiceMonitoringService/UpdateServiceLevelObjective",
                 request_serializer=service_service.UpdateServiceLevelObjectiveRequest.serialize,
                 response_deserializer=service.ServiceLevelObjective.deserialize,
@@ -585,11 +533,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         return self._stubs["update_service_level_objective"]
 
     @property
-    def delete_service_level_objective(
-        self,
-    ) -> Callable[
-        [service_service.DeleteServiceLevelObjectiveRequest], empty_pb2.Empty
-    ]:
+    def delete_service_level_objective(self) -> Callable[[service_service.DeleteServiceLevelObjectiveRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete service level objective method over gRPC.
 
         Delete the given ``ServiceLevelObjective``.
@@ -605,9 +549,7 @@ class ServiceMonitoringServiceGrpcTransport(ServiceMonitoringServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_level_objective" not in self._stubs:
-            self._stubs[
-                "delete_service_level_objective"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_service_level_objective"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.ServiceMonitoringService/DeleteServiceLevelObjective",
                 request_serializer=service_service.DeleteServiceLevelObjectiveRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,

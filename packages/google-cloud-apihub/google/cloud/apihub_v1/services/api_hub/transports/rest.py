@@ -358,12 +358,8 @@ class ApiHubRestInterceptor:
     """
 
     def pre_create_api(
-        self,
-        request: apihub_service.CreateApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.CreateApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_api
 
         Override in a subclass to manipulate the request or metadata
@@ -385,9 +381,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_api_with_metadata(
-        self,
-        response: common_fields.Api,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Api, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_api
 
@@ -404,13 +398,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_create_api_operation(
-        self,
-        request: apihub_service.CreateApiOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateApiOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: apihub_service.CreateApiOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_api_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -418,9 +407,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_create_api_operation(
-        self, response: common_fields.ApiOperation
-    ) -> common_fields.ApiOperation:
+    def post_create_api_operation(self, response: common_fields.ApiOperation) -> common_fields.ApiOperation:
         """Post-rpc interceptor for create_api_operation
 
         DEPRECATED. Please use the `post_create_api_operation_with_metadata`
@@ -434,9 +421,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_api_operation_with_metadata(
-        self,
-        response: common_fields.ApiOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.ApiOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.ApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_api_operation
 
@@ -453,12 +438,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_create_attribute(
-        self,
-        request: apihub_service.CreateAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.CreateAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -466,9 +447,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_create_attribute(
-        self, response: common_fields.Attribute
-    ) -> common_fields.Attribute:
+    def post_create_attribute(self, response: common_fields.Attribute) -> common_fields.Attribute:
         """Post-rpc interceptor for create_attribute
 
         DEPRECATED. Please use the `post_create_attribute_with_metadata`
@@ -482,9 +461,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_attribute_with_metadata(
-        self,
-        response: common_fields.Attribute,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Attribute, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Attribute, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_attribute
 
@@ -501,12 +478,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_create_deployment(
-        self,
-        request: apihub_service.CreateDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.CreateDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -514,9 +487,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_create_deployment(
-        self, response: common_fields.Deployment
-    ) -> common_fields.Deployment:
+    def post_create_deployment(self, response: common_fields.Deployment) -> common_fields.Deployment:
         """Post-rpc interceptor for create_deployment
 
         DEPRECATED. Please use the `post_create_deployment_with_metadata`
@@ -530,9 +501,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_deployment_with_metadata(
-        self,
-        response: common_fields.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_deployment
 
@@ -549,12 +518,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_create_external_api(
-        self,
-        request: apihub_service.CreateExternalApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.CreateExternalApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -562,9 +527,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_create_external_api(
-        self, response: common_fields.ExternalApi
-    ) -> common_fields.ExternalApi:
+    def post_create_external_api(self, response: common_fields.ExternalApi) -> common_fields.ExternalApi:
         """Post-rpc interceptor for create_external_api
 
         DEPRECATED. Please use the `post_create_external_api_with_metadata`
@@ -578,9 +541,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_external_api_with_metadata(
-        self,
-        response: common_fields.ExternalApi,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.ExternalApi, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.ExternalApi, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_external_api
 
@@ -597,12 +558,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_create_spec(
-        self,
-        request: apihub_service.CreateSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.CreateSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -624,9 +581,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_spec_with_metadata(
-        self,
-        response: common_fields.Spec,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Spec, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Spec, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_spec
 
@@ -643,12 +598,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_create_version(
-        self,
-        request: apihub_service.CreateVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.CreateVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_version
 
         Override in a subclass to manipulate the request or metadata
@@ -656,9 +607,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_create_version(
-        self, response: common_fields.Version
-    ) -> common_fields.Version:
+    def post_create_version(self, response: common_fields.Version) -> common_fields.Version:
         """Post-rpc interceptor for create_version
 
         DEPRECATED. Please use the `post_create_version_with_metadata`
@@ -672,9 +621,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_create_version_with_metadata(
-        self,
-        response: common_fields.Version,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Version, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_version
 
@@ -691,12 +638,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_delete_api(
-        self,
-        request: apihub_service.DeleteApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.DeleteApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_api
 
         Override in a subclass to manipulate the request or metadata
@@ -705,13 +648,8 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_delete_api_operation(
-        self,
-        request: apihub_service.DeleteApiOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteApiOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: apihub_service.DeleteApiOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_api_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -720,12 +658,8 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_delete_attribute(
-        self,
-        request: apihub_service.DeleteAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.DeleteAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -734,12 +668,8 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_delete_deployment(
-        self,
-        request: apihub_service.DeleteDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.DeleteDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -748,12 +678,8 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_delete_external_api(
-        self,
-        request: apihub_service.DeleteExternalApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.DeleteExternalApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -762,12 +688,8 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_delete_spec(
-        self,
-        request: apihub_service.DeleteSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.DeleteSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -776,12 +698,8 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_delete_version(
-        self,
-        request: apihub_service.DeleteVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.DeleteVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_version
 
         Override in a subclass to manipulate the request or metadata
@@ -790,9 +708,7 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_get_api(
-        self,
-        request: apihub_service.GetApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apihub_service.GetApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apihub_service.GetApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_api
 
@@ -815,9 +731,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_api_with_metadata(
-        self,
-        response: common_fields.Api,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Api, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_api
 
@@ -834,12 +748,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_api_operation(
-        self,
-        request: apihub_service.GetApiOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetApiOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_api_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -847,9 +757,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_api_operation(
-        self, response: common_fields.ApiOperation
-    ) -> common_fields.ApiOperation:
+    def post_get_api_operation(self, response: common_fields.ApiOperation) -> common_fields.ApiOperation:
         """Post-rpc interceptor for get_api_operation
 
         DEPRECATED. Please use the `post_get_api_operation_with_metadata`
@@ -863,9 +771,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_api_operation_with_metadata(
-        self,
-        response: common_fields.ApiOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.ApiOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.ApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_api_operation
 
@@ -882,12 +788,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_attribute(
-        self,
-        request: apihub_service.GetAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -895,9 +797,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_attribute(
-        self, response: common_fields.Attribute
-    ) -> common_fields.Attribute:
+    def post_get_attribute(self, response: common_fields.Attribute) -> common_fields.Attribute:
         """Post-rpc interceptor for get_attribute
 
         DEPRECATED. Please use the `post_get_attribute_with_metadata`
@@ -911,9 +811,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_attribute_with_metadata(
-        self,
-        response: common_fields.Attribute,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Attribute, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Attribute, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_attribute
 
@@ -930,12 +828,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_definition(
-        self,
-        request: apihub_service.GetDefinitionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetDefinitionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetDefinitionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetDefinitionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_definition
 
         Override in a subclass to manipulate the request or metadata
@@ -943,9 +837,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_definition(
-        self, response: common_fields.Definition
-    ) -> common_fields.Definition:
+    def post_get_definition(self, response: common_fields.Definition) -> common_fields.Definition:
         """Post-rpc interceptor for get_definition
 
         DEPRECATED. Please use the `post_get_definition_with_metadata`
@@ -959,9 +851,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_definition_with_metadata(
-        self,
-        response: common_fields.Definition,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Definition, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Definition, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_definition
 
@@ -978,12 +868,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_deployment(
-        self,
-        request: apihub_service.GetDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -991,9 +877,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_deployment(
-        self, response: common_fields.Deployment
-    ) -> common_fields.Deployment:
+    def post_get_deployment(self, response: common_fields.Deployment) -> common_fields.Deployment:
         """Post-rpc interceptor for get_deployment
 
         DEPRECATED. Please use the `post_get_deployment_with_metadata`
@@ -1007,9 +891,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_deployment_with_metadata(
-        self,
-        response: common_fields.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_deployment
 
@@ -1026,12 +908,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_external_api(
-        self,
-        request: apihub_service.GetExternalApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetExternalApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -1039,9 +917,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_external_api(
-        self, response: common_fields.ExternalApi
-    ) -> common_fields.ExternalApi:
+    def post_get_external_api(self, response: common_fields.ExternalApi) -> common_fields.ExternalApi:
         """Post-rpc interceptor for get_external_api
 
         DEPRECATED. Please use the `post_get_external_api_with_metadata`
@@ -1055,9 +931,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_external_api_with_metadata(
-        self,
-        response: common_fields.ExternalApi,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.ExternalApi, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.ExternalApi, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_external_api
 
@@ -1074,9 +948,7 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_spec(
-        self,
-        request: apihub_service.GetSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apihub_service.GetSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apihub_service.GetSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_spec
 
@@ -1099,9 +971,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_spec_with_metadata(
-        self,
-        response: common_fields.Spec,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Spec, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Spec, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_spec
 
@@ -1118,12 +988,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_spec_contents(
-        self,
-        request: apihub_service.GetSpecContentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetSpecContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetSpecContentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetSpecContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_spec_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -1131,9 +997,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_spec_contents(
-        self, response: common_fields.SpecContents
-    ) -> common_fields.SpecContents:
+    def post_get_spec_contents(self, response: common_fields.SpecContents) -> common_fields.SpecContents:
         """Post-rpc interceptor for get_spec_contents
 
         DEPRECATED. Please use the `post_get_spec_contents_with_metadata`
@@ -1147,9 +1011,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_spec_contents_with_metadata(
-        self,
-        response: common_fields.SpecContents,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.SpecContents, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.SpecContents, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_spec_contents
 
@@ -1166,12 +1028,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_version(
-        self,
-        request: apihub_service.GetVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.GetVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1179,9 +1037,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_version(
-        self, response: common_fields.Version
-    ) -> common_fields.Version:
+    def post_get_version(self, response: common_fields.Version) -> common_fields.Version:
         """Post-rpc interceptor for get_version
 
         DEPRECATED. Please use the `post_get_version_with_metadata`
@@ -1195,9 +1051,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_get_version_with_metadata(
-        self,
-        response: common_fields.Version,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Version, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_version
 
@@ -1214,12 +1068,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_api_operations(
-        self,
-        request: apihub_service.ListApiOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListApiOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.ListApiOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListApiOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_api_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1227,9 +1077,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_api_operations(
-        self, response: apihub_service.ListApiOperationsResponse
-    ) -> apihub_service.ListApiOperationsResponse:
+    def post_list_api_operations(self, response: apihub_service.ListApiOperationsResponse) -> apihub_service.ListApiOperationsResponse:
         """Post-rpc interceptor for list_api_operations
 
         DEPRECATED. Please use the `post_list_api_operations_with_metadata`
@@ -1243,13 +1091,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_api_operations_with_metadata(
-        self,
-        response: apihub_service.ListApiOperationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListApiOperationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: apihub_service.ListApiOperationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListApiOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_api_operations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1265,9 +1108,7 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_apis(
-        self,
-        request: apihub_service.ListApisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apihub_service.ListApisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apihub_service.ListApisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_apis
 
@@ -1276,9 +1117,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_apis(
-        self, response: apihub_service.ListApisResponse
-    ) -> apihub_service.ListApisResponse:
+    def post_list_apis(self, response: apihub_service.ListApisResponse) -> apihub_service.ListApisResponse:
         """Post-rpc interceptor for list_apis
 
         DEPRECATED. Please use the `post_list_apis_with_metadata`
@@ -1292,12 +1131,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_apis_with_metadata(
-        self,
-        response: apihub_service.ListApisResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListApisResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.ListApisResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListApisResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_apis
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1313,12 +1148,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_attributes(
-        self,
-        request: apihub_service.ListAttributesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.ListAttributesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_attributes
 
         Override in a subclass to manipulate the request or metadata
@@ -1326,9 +1157,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_attributes(
-        self, response: apihub_service.ListAttributesResponse
-    ) -> apihub_service.ListAttributesResponse:
+    def post_list_attributes(self, response: apihub_service.ListAttributesResponse) -> apihub_service.ListAttributesResponse:
         """Post-rpc interceptor for list_attributes
 
         DEPRECATED. Please use the `post_list_attributes_with_metadata`
@@ -1342,12 +1171,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_attributes_with_metadata(
-        self,
-        response: apihub_service.ListAttributesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.ListAttributesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_attributes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1363,12 +1188,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_deployments(
-        self,
-        request: apihub_service.ListDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.ListDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -1376,9 +1197,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_deployments(
-        self, response: apihub_service.ListDeploymentsResponse
-    ) -> apihub_service.ListDeploymentsResponse:
+    def post_list_deployments(self, response: apihub_service.ListDeploymentsResponse) -> apihub_service.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
         DEPRECATED. Please use the `post_list_deployments_with_metadata`
@@ -1392,12 +1211,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_deployments_with_metadata(
-        self,
-        response: apihub_service.ListDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.ListDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1413,12 +1228,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_external_apis(
-        self,
-        request: apihub_service.ListExternalApisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListExternalApisRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.ListExternalApisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListExternalApisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_external_apis
 
         Override in a subclass to manipulate the request or metadata
@@ -1426,9 +1237,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_external_apis(
-        self, response: apihub_service.ListExternalApisResponse
-    ) -> apihub_service.ListExternalApisResponse:
+    def post_list_external_apis(self, response: apihub_service.ListExternalApisResponse) -> apihub_service.ListExternalApisResponse:
         """Post-rpc interceptor for list_external_apis
 
         DEPRECATED. Please use the `post_list_external_apis_with_metadata`
@@ -1442,12 +1251,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_external_apis_with_metadata(
-        self,
-        response: apihub_service.ListExternalApisResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListExternalApisResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.ListExternalApisResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListExternalApisResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_external_apis
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1463,12 +1268,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_specs(
-        self,
-        request: apihub_service.ListSpecsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListSpecsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.ListSpecsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListSpecsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_specs
 
         Override in a subclass to manipulate the request or metadata
@@ -1476,9 +1277,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_specs(
-        self, response: apihub_service.ListSpecsResponse
-    ) -> apihub_service.ListSpecsResponse:
+    def post_list_specs(self, response: apihub_service.ListSpecsResponse) -> apihub_service.ListSpecsResponse:
         """Post-rpc interceptor for list_specs
 
         DEPRECATED. Please use the `post_list_specs_with_metadata`
@@ -1492,12 +1291,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_specs_with_metadata(
-        self,
-        response: apihub_service.ListSpecsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListSpecsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.ListSpecsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListSpecsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_specs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1513,12 +1308,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_list_versions(
-        self,
-        request: apihub_service.ListVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.ListVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -1526,9 +1317,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_versions(
-        self, response: apihub_service.ListVersionsResponse
-    ) -> apihub_service.ListVersionsResponse:
+    def post_list_versions(self, response: apihub_service.ListVersionsResponse) -> apihub_service.ListVersionsResponse:
         """Post-rpc interceptor for list_versions
 
         DEPRECATED. Please use the `post_list_versions_with_metadata`
@@ -1542,12 +1331,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_list_versions_with_metadata(
-        self,
-        response: apihub_service.ListVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.ListVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.ListVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.ListVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1563,12 +1348,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_search_resources(
-        self,
-        request: apihub_service.SearchResourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.SearchResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.SearchResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.SearchResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -1576,9 +1357,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_search_resources(
-        self, response: apihub_service.SearchResourcesResponse
-    ) -> apihub_service.SearchResourcesResponse:
+    def post_search_resources(self, response: apihub_service.SearchResourcesResponse) -> apihub_service.SearchResourcesResponse:
         """Post-rpc interceptor for search_resources
 
         DEPRECATED. Please use the `post_search_resources_with_metadata`
@@ -1592,12 +1371,8 @@ class ApiHubRestInterceptor:
         return response
 
     def post_search_resources_with_metadata(
-        self,
-        response: apihub_service.SearchResourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.SearchResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: apihub_service.SearchResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.SearchResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_resources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1613,12 +1388,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_api(
-        self,
-        request: apihub_service.UpdateApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.UpdateApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_api
 
         Override in a subclass to manipulate the request or metadata
@@ -1640,9 +1411,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_api_with_metadata(
-        self,
-        response: common_fields.Api,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Api, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_api
 
@@ -1659,13 +1428,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_api_operation(
-        self,
-        request: apihub_service.UpdateApiOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateApiOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: apihub_service.UpdateApiOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_api_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1673,9 +1437,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_update_api_operation(
-        self, response: common_fields.ApiOperation
-    ) -> common_fields.ApiOperation:
+    def post_update_api_operation(self, response: common_fields.ApiOperation) -> common_fields.ApiOperation:
         """Post-rpc interceptor for update_api_operation
 
         DEPRECATED. Please use the `post_update_api_operation_with_metadata`
@@ -1689,9 +1451,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_api_operation_with_metadata(
-        self,
-        response: common_fields.ApiOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.ApiOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.ApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_api_operation
 
@@ -1708,12 +1468,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_attribute(
-        self,
-        request: apihub_service.UpdateAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.UpdateAttributeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -1721,9 +1477,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_update_attribute(
-        self, response: common_fields.Attribute
-    ) -> common_fields.Attribute:
+    def post_update_attribute(self, response: common_fields.Attribute) -> common_fields.Attribute:
         """Post-rpc interceptor for update_attribute
 
         DEPRECATED. Please use the `post_update_attribute_with_metadata`
@@ -1737,9 +1491,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_attribute_with_metadata(
-        self,
-        response: common_fields.Attribute,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Attribute, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Attribute, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_attribute
 
@@ -1756,12 +1508,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_deployment(
-        self,
-        request: apihub_service.UpdateDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.UpdateDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1769,9 +1517,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_update_deployment(
-        self, response: common_fields.Deployment
-    ) -> common_fields.Deployment:
+    def post_update_deployment(self, response: common_fields.Deployment) -> common_fields.Deployment:
         """Post-rpc interceptor for update_deployment
 
         DEPRECATED. Please use the `post_update_deployment_with_metadata`
@@ -1785,9 +1531,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_deployment_with_metadata(
-        self,
-        response: common_fields.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_deployment
 
@@ -1804,12 +1548,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_external_api(
-        self,
-        request: apihub_service.UpdateExternalApiRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.UpdateExternalApiRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -1817,9 +1557,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_update_external_api(
-        self, response: common_fields.ExternalApi
-    ) -> common_fields.ExternalApi:
+    def post_update_external_api(self, response: common_fields.ExternalApi) -> common_fields.ExternalApi:
         """Post-rpc interceptor for update_external_api
 
         DEPRECATED. Please use the `post_update_external_api_with_metadata`
@@ -1833,9 +1571,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_external_api_with_metadata(
-        self,
-        response: common_fields.ExternalApi,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.ExternalApi, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.ExternalApi, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_external_api
 
@@ -1852,12 +1588,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_spec(
-        self,
-        request: apihub_service.UpdateSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.UpdateSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -1879,9 +1611,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_spec_with_metadata(
-        self,
-        response: common_fields.Spec,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Spec, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Spec, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_spec
 
@@ -1898,12 +1628,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_update_version(
-        self,
-        request: apihub_service.UpdateVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        apihub_service.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: apihub_service.UpdateVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[apihub_service.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1911,9 +1637,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_update_version(
-        self, response: common_fields.Version
-    ) -> common_fields.Version:
+    def post_update_version(self, response: common_fields.Version) -> common_fields.Version:
         """Post-rpc interceptor for update_version
 
         DEPRECATED. Please use the `post_update_version_with_metadata`
@@ -1927,9 +1651,7 @@ class ApiHubRestInterceptor:
         return response
 
     def post_update_version_with_metadata(
-        self,
-        response: common_fields.Version,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: common_fields.Version, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[common_fields.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_version
 
@@ -1946,12 +1668,8 @@ class ApiHubRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1959,9 +1677,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1971,12 +1687,8 @@ class ApiHubRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1984,9 +1696,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1996,12 +1706,8 @@ class ApiHubRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2019,12 +1725,8 @@ class ApiHubRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2042,12 +1744,8 @@ class ApiHubRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2055,9 +1753,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2067,12 +1763,8 @@ class ApiHubRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2080,9 +1772,7 @@ class ApiHubRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2171,9 +1861,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ApiHubRestInterceptor()
@@ -2184,15 +1872,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.CreateApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2236,29 +1916,15 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseCreateApi._get_http_options()
 
             request, metadata = self._interceptor.pre_create_api(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCreateApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateApi._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseCreateApi._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseCreateApi._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2282,13 +1948,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2304,12 +1964,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_api(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_api_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_api_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Api.to_json(response)
                 except:
@@ -2330,22 +1986,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _CreateApiOperation(
-        _BaseApiHubRestTransport._BaseCreateApiOperation, ApiHubRestStub
-    ):
+    class _CreateApiOperation(_BaseApiHubRestTransport._BaseCreateApiOperation, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.CreateApiOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2403,36 +2049,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseCreateApiOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseCreateApiOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_api_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubRestTransport._BaseCreateApiOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_api_operation(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateApiOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseApiHubRestTransport._BaseCreateApiOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseApiHubRestTransport._BaseCreateApiOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateApiOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateApiOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2456,13 +2084,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateApiOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2478,12 +2100,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_api_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_api_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_api_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ApiOperation.to_json(response)
                 except:
@@ -2504,22 +2122,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _CreateAttribute(
-        _BaseApiHubRestTransport._BaseCreateAttribute, ApiHubRestStub
-    ):
+    class _CreateAttribute(_BaseApiHubRestTransport._BaseCreateAttribute, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.CreateAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2568,36 +2176,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseCreateAttribute._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseCreateAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_attribute(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCreateAttribute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_attribute(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateAttribute._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseCreateAttribute._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseCreateAttribute._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateAttribute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2621,13 +2211,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateAttribute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2643,12 +2227,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Attribute.to_json(response)
                 except:
@@ -2669,22 +2249,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _CreateDeployment(
-        _BaseApiHubRestTransport._BaseCreateDeployment, ApiHubRestStub
-    ):
+    class _CreateDeployment(_BaseApiHubRestTransport._BaseCreateDeployment, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.CreateDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2733,38 +2303,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseCreateDeployment._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseCreateDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_deployment(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCreateDeployment._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_deployment(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateDeployment._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseApiHubRestTransport._BaseCreateDeployment._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseApiHubRestTransport._BaseCreateDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateDeployment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2788,13 +2338,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2810,12 +2354,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Deployment.to_json(response)
                 except:
@@ -2836,22 +2376,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _CreateExternalApi(
-        _BaseApiHubRestTransport._BaseCreateExternalApi, ApiHubRestStub
-    ):
+    class _CreateExternalApi(_BaseApiHubRestTransport._BaseCreateExternalApi, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.CreateExternalApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2897,38 +2427,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseCreateExternalApi._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseCreateExternalApi._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_external_api(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCreateExternalApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_external_api(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateExternalApi._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseApiHubRestTransport._BaseCreateExternalApi._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseApiHubRestTransport._BaseCreateExternalApi._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateExternalApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateExternalApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2952,13 +2462,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateExternalApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2974,12 +2478,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_external_api(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_external_api_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_external_api_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ExternalApi.to_json(response)
                 except:
@@ -3005,15 +2505,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.CreateSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3063,29 +2555,15 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseCreateSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_create_spec(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCreateSpec._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateSpec._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseCreateSpec._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseCreateSpec._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateSpec._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3109,13 +2587,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3131,12 +2603,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Spec.to_json(response)
                 except:
@@ -3162,15 +2630,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.CreateVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3215,34 +2675,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseCreateVersion._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseCreateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_version(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCreateVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseCreateVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseCreateVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCreateVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCreateVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3266,13 +2710,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CreateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3288,12 +2726,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_create_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Version.to_json(response)
                 except:
@@ -3319,15 +2753,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.DeleteApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3366,25 +2792,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseDeleteApi._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_api(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteApi._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3407,36 +2821,19 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._DeleteApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._DeleteApi._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteApiOperation(
-        _BaseApiHubRestTransport._BaseDeleteApiOperation, ApiHubRestStub
-    ):
+    class _DeleteApiOperation(_BaseApiHubRestTransport._BaseDeleteApiOperation, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.DeleteApiOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3473,30 +2870,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseDeleteApiOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseDeleteApiOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_api_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubRestTransport._BaseDeleteApiOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_api_operation(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteApiOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteApiOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteApiOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3520,12 +2903,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._DeleteApiOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3533,22 +2911,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteAttribute(
-        _BaseApiHubRestTransport._BaseDeleteAttribute, ApiHubRestStub
-    ):
+    class _DeleteAttribute(_BaseApiHubRestTransport._BaseDeleteAttribute, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.DeleteAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3585,32 +2953,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseDeleteAttribute._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseDeleteAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_attribute(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteAttribute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_attribute(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteAttribute._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteAttribute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3634,12 +2986,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._DeleteAttribute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3647,22 +2994,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDeployment(
-        _BaseApiHubRestTransport._BaseDeleteDeployment, ApiHubRestStub
-    ):
+    class _DeleteDeployment(_BaseApiHubRestTransport._BaseDeleteDeployment, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.DeleteDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3699,32 +3036,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseDeleteDeployment._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseDeleteDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_deployment(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteDeployment._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_deployment(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteDeployment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3748,12 +3069,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._DeleteDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3761,22 +3077,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteExternalApi(
-        _BaseApiHubRestTransport._BaseDeleteExternalApi, ApiHubRestStub
-    ):
+    class _DeleteExternalApi(_BaseApiHubRestTransport._BaseDeleteExternalApi, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.DeleteExternalApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3813,32 +3119,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseDeleteExternalApi._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseDeleteExternalApi._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_external_api(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteExternalApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_external_api(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteExternalApi._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteExternalApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteExternalApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3862,12 +3152,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._DeleteExternalApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3880,15 +3165,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.DeleteSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3928,25 +3205,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseDeleteSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_spec(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteSpec._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteSpec._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteSpec._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3969,14 +3234,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._DeleteSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._DeleteSpec._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3988,15 +3246,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.DeleteVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4033,30 +3283,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseDeleteVersion._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseDeleteVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4080,12 +3316,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._DeleteVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4098,15 +3329,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4149,23 +3372,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseGetApi._get_http_options()
 
             request, metadata = self._interceptor.pre_get_api(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetApi._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubRestTransport._BaseGetApi._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4188,14 +3401,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._GetApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._GetApi._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4210,12 +3416,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_api(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_api_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_api_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Api.to_json(response)
                 except:
@@ -4236,22 +3438,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _GetApiOperation(
-        _BaseApiHubRestTransport._BaseGetApiOperation, ApiHubRestStub
-    ):
+    class _GetApiOperation(_BaseApiHubRestTransport._BaseGetApiOperation, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.GetApiOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4308,32 +3500,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetApiOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetApiOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_api_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetApiOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_api_operation(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseGetApiOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetApiOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetApiOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4357,12 +3533,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._GetApiOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4378,12 +3549,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_api_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_api_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_api_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ApiOperation.to_json(response)
                 except:
@@ -4409,15 +3576,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4465,30 +3624,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetAttribute._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetAttribute._get_http_options()
 
             request, metadata = self._interceptor.pre_get_attribute(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetAttribute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetAttribute._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetAttribute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4511,14 +3656,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._GetAttribute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._GetAttribute._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4533,12 +3671,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Attribute.to_json(response)
                 except:
@@ -4564,15 +3698,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetDefinition")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4621,30 +3747,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetDefinition._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetDefinition._get_http_options()
 
             request, metadata = self._interceptor.pre_get_definition(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetDefinition._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetDefinition._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetDefinition._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetDefinition._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4668,12 +3780,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._GetDefinition._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4689,12 +3796,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_definition(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_definition_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_definition_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Definition.to_json(response)
                 except:
@@ -4720,15 +3823,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4776,30 +3871,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetDeployment._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetDeployment._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetDeployment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4823,12 +3904,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._GetDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4844,12 +3920,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Deployment.to_json(response)
                 except:
@@ -4875,15 +3947,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetExternalApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4928,32 +3992,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetExternalApi._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetExternalApi._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_external_api(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetExternalApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_external_api(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseGetExternalApi._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetExternalApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetExternalApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4977,12 +4025,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._GetExternalApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4998,12 +4041,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_external_api(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_external_api_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_external_api_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ExternalApi.to_json(response)
                 except:
@@ -5029,15 +4068,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5085,23 +4116,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseGetSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_get_spec(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetSpec._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetSpec._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiHubRestTransport._BaseGetSpec._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5124,14 +4145,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._GetSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._GetSpec._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5146,12 +4160,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Spec.to_json(response)
                 except:
@@ -5172,22 +4182,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _GetSpecContents(
-        _BaseApiHubRestTransport._BaseGetSpecContents, ApiHubRestStub
-    ):
+    class _GetSpecContents(_BaseApiHubRestTransport._BaseGetSpecContents, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.GetSpecContents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5228,32 +4228,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     The spec contents.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetSpecContents._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetSpecContents._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_spec_contents(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetSpecContents._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_spec_contents(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseGetSpecContents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetSpecContents._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetSpecContents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5277,12 +4261,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._GetSpecContents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5298,12 +4277,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_spec_contents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_spec_contents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_spec_contents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.SpecContents.to_json(response)
                 except:
@@ -5329,15 +4304,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5384,25 +4351,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseGetVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_version(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5425,14 +4380,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._GetVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._GetVersion._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5447,12 +4395,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_get_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Version.to_json(response)
                 except:
@@ -5473,22 +4417,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _ListApiOperations(
-        _BaseApiHubRestTransport._BaseListApiOperations, ApiHubRestStub
-    ):
+    class _ListApiOperations(_BaseApiHubRestTransport._BaseListApiOperations, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.ListApiOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5532,32 +4466,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListApiOperations._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListApiOperations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_api_operations(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListApiOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_api_operations(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseListApiOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListApiOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListApiOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5581,12 +4499,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._ListApiOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5602,16 +4515,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_api_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_api_operations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_api_operations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.ListApiOperationsResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.ListApiOperationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5635,15 +4542,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.ListApis")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5688,25 +4587,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseListApis._get_http_options()
 
             request, metadata = self._interceptor.pre_list_apis(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListApis._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseListApis._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListApis._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListApis._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5729,14 +4616,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._ListApis._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._ListApis._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5751,12 +4631,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_apis(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_apis_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_apis_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = apihub_service.ListApisResponse.to_json(response)
                 except:
@@ -5782,15 +4658,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.ListAttributes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5834,30 +4702,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListAttributes._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListAttributes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_attributes(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListAttributes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseListAttributes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListAttributes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListAttributes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5881,12 +4735,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._ListAttributes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5902,16 +4751,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_attributes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_attributes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_attributes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.ListAttributesResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.ListAttributesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5930,22 +4773,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _ListDeployments(
-        _BaseApiHubRestTransport._BaseListDeployments, ApiHubRestStub
-    ):
+    class _ListDeployments(_BaseApiHubRestTransport._BaseListDeployments, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.ListDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5989,32 +4822,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListDeployments._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_deployments(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListDeployments._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_deployments(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseListDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListDeployments._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6038,12 +4855,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._ListDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6059,16 +4871,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.ListDeploymentsResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.ListDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6087,22 +4893,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _ListExternalApis(
-        _BaseApiHubRestTransport._BaseListExternalApis, ApiHubRestStub
-    ):
+    class _ListExternalApis(_BaseApiHubRestTransport._BaseListExternalApis, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.ListExternalApis")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6146,32 +4942,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListExternalApis._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListExternalApis._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_external_apis(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListExternalApis._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_external_apis(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseListExternalApis._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListExternalApis._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListExternalApis._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6195,12 +4975,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._ListExternalApis._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6216,16 +4991,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_external_apis(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_external_apis_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_external_apis_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.ListExternalApisResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.ListExternalApisResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6249,15 +5018,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.ListSpecs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6301,25 +5062,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseListSpecs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_specs(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListSpecs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseListSpecs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListSpecs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListSpecs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6342,14 +5091,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._ListSpecs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._ListSpecs._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -6364,16 +5106,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_specs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_specs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_specs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.ListSpecsResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.ListSpecsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6397,15 +5133,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.ListVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6449,30 +5177,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListVersions._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseListVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListVersions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6495,14 +5209,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._ListVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._ListVersions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -6517,16 +5224,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_list_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.ListVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.ListVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6545,22 +5246,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _SearchResources(
-        _BaseApiHubRestTransport._BaseSearchResources, ApiHubRestStub
-    ):
+    class _SearchResources(_BaseApiHubRestTransport._BaseSearchResources, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.SearchResources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6605,36 +5296,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseSearchResources._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseSearchResources._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_resources(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseSearchResources._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_search_resources(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseSearchResources._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseSearchResources._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseSearchResources._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseSearchResources._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseSearchResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6658,13 +5331,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._SearchResources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6680,16 +5347,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_search_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_resources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = apihub_service.SearchResourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = apihub_service.SearchResourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6713,15 +5374,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.UpdateApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6765,29 +5418,15 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseUpdateApi._get_http_options()
 
             request, metadata = self._interceptor.pre_update_api(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseUpdateApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateApi._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseUpdateApi._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateApi._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6811,13 +5450,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6833,12 +5466,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_api(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_api_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_api_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Api.to_json(response)
                 except:
@@ -6859,22 +5488,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _UpdateApiOperation(
-        _BaseApiHubRestTransport._BaseUpdateApiOperation, ApiHubRestStub
-    ):
+    class _UpdateApiOperation(_BaseApiHubRestTransport._BaseUpdateApiOperation, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.UpdateApiOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6932,36 +5551,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseUpdateApiOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_api_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseApiHubRestTransport._BaseUpdateApiOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_api_operation(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateApiOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateApiOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateApiOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6985,13 +5586,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateApiOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7007,12 +5602,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_api_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_api_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_api_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ApiOperation.to_json(response)
                 except:
@@ -7033,22 +5624,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _UpdateAttribute(
-        _BaseApiHubRestTransport._BaseUpdateAttribute, ApiHubRestStub
-    ):
+    class _UpdateAttribute(_BaseApiHubRestTransport._BaseUpdateAttribute, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.UpdateAttribute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7097,36 +5678,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseUpdateAttribute._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseUpdateAttribute._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_attribute(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseUpdateAttribute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_attribute(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateAttribute._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseUpdateAttribute._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateAttribute._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateAttribute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateAttribute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7150,13 +5713,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateAttribute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7172,12 +5729,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_attribute(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_attribute_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_attribute_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Attribute.to_json(response)
                 except:
@@ -7198,22 +5751,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _UpdateDeployment(
-        _BaseApiHubRestTransport._BaseUpdateDeployment, ApiHubRestStub
-    ):
+    class _UpdateDeployment(_BaseApiHubRestTransport._BaseUpdateDeployment, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.UpdateDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7262,38 +5805,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseUpdateDeployment._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseUpdateDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_deployment(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseUpdateDeployment._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_deployment(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateDeployment._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseApiHubRestTransport._BaseUpdateDeployment._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateDeployment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7317,13 +5840,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7339,12 +5856,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Deployment.to_json(response)
                 except:
@@ -7365,22 +5878,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
-    class _UpdateExternalApi(
-        _BaseApiHubRestTransport._BaseUpdateExternalApi, ApiHubRestStub
-    ):
+    class _UpdateExternalApi(_BaseApiHubRestTransport._BaseUpdateExternalApi, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.UpdateExternalApi")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7426,38 +5929,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseUpdateExternalApi._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseUpdateExternalApi._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_external_api(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseUpdateExternalApi._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_external_api(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateExternalApi._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseApiHubRestTransport._BaseUpdateExternalApi._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateExternalApi._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateExternalApi._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateExternalApi._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7481,13 +5964,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateExternalApi._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7503,12 +5980,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_external_api(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_external_api_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_external_api_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ExternalApi.to_json(response)
                 except:
@@ -7534,15 +6007,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.UpdateSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7592,29 +6057,15 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseUpdateSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_update_spec(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseUpdateSpec._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateSpec._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseUpdateSpec._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateSpec._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateSpec._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7638,13 +6089,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7660,12 +6105,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Spec.to_json(response)
                 except:
@@ -7691,15 +6132,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.UpdateVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7744,34 +6177,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseUpdateVersion._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseUpdateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_update_version(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseUpdateVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseUpdateVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseUpdateVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseUpdateVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseUpdateVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7795,13 +6212,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._UpdateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7817,12 +6228,8 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             resp = self._interceptor.post_update_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Version.to_json(response)
                 except:
@@ -7844,115 +6251,85 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return resp
 
     @property
-    def create_api(
-        self,
-    ) -> Callable[[apihub_service.CreateApiRequest], common_fields.Api]:
+    def create_api(self) -> Callable[[apihub_service.CreateApiRequest], common_fields.Api]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_api_operation(
-        self,
-    ) -> Callable[
-        [apihub_service.CreateApiOperationRequest], common_fields.ApiOperation
-    ]:
+    def create_api_operation(self) -> Callable[[apihub_service.CreateApiOperationRequest], common_fields.ApiOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateApiOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_attribute(
-        self,
-    ) -> Callable[[apihub_service.CreateAttributeRequest], common_fields.Attribute]:
+    def create_attribute(self) -> Callable[[apihub_service.CreateAttributeRequest], common_fields.Attribute]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[[apihub_service.CreateDeploymentRequest], common_fields.Deployment]:
+    def create_deployment(self) -> Callable[[apihub_service.CreateDeploymentRequest], common_fields.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_external_api(
-        self,
-    ) -> Callable[[apihub_service.CreateExternalApiRequest], common_fields.ExternalApi]:
+    def create_external_api(self) -> Callable[[apihub_service.CreateExternalApiRequest], common_fields.ExternalApi]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExternalApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_spec(
-        self,
-    ) -> Callable[[apihub_service.CreateSpecRequest], common_fields.Spec]:
+    def create_spec(self) -> Callable[[apihub_service.CreateSpecRequest], common_fields.Spec]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[[apihub_service.CreateVersionRequest], common_fields.Version]:
+    def create_version(self) -> Callable[[apihub_service.CreateVersionRequest], common_fields.Version]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_api(
-        self,
-    ) -> Callable[[apihub_service.DeleteApiRequest], empty_pb2.Empty]:
+    def delete_api(self) -> Callable[[apihub_service.DeleteApiRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_api_operation(
-        self,
-    ) -> Callable[[apihub_service.DeleteApiOperationRequest], empty_pb2.Empty]:
+    def delete_api_operation(self) -> Callable[[apihub_service.DeleteApiOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApiOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_attribute(
-        self,
-    ) -> Callable[[apihub_service.DeleteAttributeRequest], empty_pb2.Empty]:
+    def delete_attribute(self) -> Callable[[apihub_service.DeleteAttributeRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[[apihub_service.DeleteDeploymentRequest], empty_pb2.Empty]:
+    def delete_deployment(self) -> Callable[[apihub_service.DeleteDeploymentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_external_api(
-        self,
-    ) -> Callable[[apihub_service.DeleteExternalApiRequest], empty_pb2.Empty]:
+    def delete_external_api(self) -> Callable[[apihub_service.DeleteExternalApiRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExternalApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_spec(
-        self,
-    ) -> Callable[[apihub_service.DeleteSpecRequest], empty_pb2.Empty]:
+    def delete_spec(self) -> Callable[[apihub_service.DeleteSpecRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[apihub_service.DeleteVersionRequest], empty_pb2.Empty]:
+    def delete_version(self) -> Callable[[apihub_service.DeleteVersionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -7964,41 +6341,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
         return self._GetApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_api_operation(
-        self,
-    ) -> Callable[[apihub_service.GetApiOperationRequest], common_fields.ApiOperation]:
+    def get_api_operation(self) -> Callable[[apihub_service.GetApiOperationRequest], common_fields.ApiOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApiOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_attribute(
-        self,
-    ) -> Callable[[apihub_service.GetAttributeRequest], common_fields.Attribute]:
+    def get_attribute(self) -> Callable[[apihub_service.GetAttributeRequest], common_fields.Attribute]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_definition(
-        self,
-    ) -> Callable[[apihub_service.GetDefinitionRequest], common_fields.Definition]:
+    def get_definition(self) -> Callable[[apihub_service.GetDefinitionRequest], common_fields.Definition]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDefinition(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[[apihub_service.GetDeploymentRequest], common_fields.Deployment]:
+    def get_deployment(self) -> Callable[[apihub_service.GetDeploymentRequest], common_fields.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_external_api(
-        self,
-    ) -> Callable[[apihub_service.GetExternalApiRequest], common_fields.ExternalApi]:
+    def get_external_api(self) -> Callable[[apihub_service.GetExternalApiRequest], common_fields.ExternalApi]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetExternalApi(self._session, self._host, self._interceptor)  # type: ignore
@@ -8010,153 +6377,103 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
         return self._GetSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_spec_contents(
-        self,
-    ) -> Callable[[apihub_service.GetSpecContentsRequest], common_fields.SpecContents]:
+    def get_spec_contents(self) -> Callable[[apihub_service.GetSpecContentsRequest], common_fields.SpecContents]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSpecContents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[[apihub_service.GetVersionRequest], common_fields.Version]:
+    def get_version(self) -> Callable[[apihub_service.GetVersionRequest], common_fields.Version]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_api_operations(
-        self,
-    ) -> Callable[
-        [apihub_service.ListApiOperationsRequest],
-        apihub_service.ListApiOperationsResponse,
-    ]:
+    def list_api_operations(self) -> Callable[[apihub_service.ListApiOperationsRequest], apihub_service.ListApiOperationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApiOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_apis(
-        self,
-    ) -> Callable[[apihub_service.ListApisRequest], apihub_service.ListApisResponse]:
+    def list_apis(self) -> Callable[[apihub_service.ListApisRequest], apihub_service.ListApisResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_attributes(
-        self,
-    ) -> Callable[
-        [apihub_service.ListAttributesRequest], apihub_service.ListAttributesResponse
-    ]:
+    def list_attributes(self) -> Callable[[apihub_service.ListAttributesRequest], apihub_service.ListAttributesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAttributes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [apihub_service.ListDeploymentsRequest], apihub_service.ListDeploymentsResponse
-    ]:
+    def list_deployments(self) -> Callable[[apihub_service.ListDeploymentsRequest], apihub_service.ListDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeployments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_external_apis(
-        self,
-    ) -> Callable[
-        [apihub_service.ListExternalApisRequest],
-        apihub_service.ListExternalApisResponse,
-    ]:
+    def list_external_apis(self) -> Callable[[apihub_service.ListExternalApisRequest], apihub_service.ListExternalApisResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExternalApis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_specs(
-        self,
-    ) -> Callable[[apihub_service.ListSpecsRequest], apihub_service.ListSpecsResponse]:
+    def list_specs(self) -> Callable[[apihub_service.ListSpecsRequest], apihub_service.ListSpecsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSpecs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [apihub_service.ListVersionsRequest], apihub_service.ListVersionsResponse
-    ]:
+    def list_versions(self) -> Callable[[apihub_service.ListVersionsRequest], apihub_service.ListVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_resources(
-        self,
-    ) -> Callable[
-        [apihub_service.SearchResourcesRequest], apihub_service.SearchResourcesResponse
-    ]:
+    def search_resources(self) -> Callable[[apihub_service.SearchResourcesRequest], apihub_service.SearchResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_api(
-        self,
-    ) -> Callable[[apihub_service.UpdateApiRequest], common_fields.Api]:
+    def update_api(self) -> Callable[[apihub_service.UpdateApiRequest], common_fields.Api]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_api_operation(
-        self,
-    ) -> Callable[
-        [apihub_service.UpdateApiOperationRequest], common_fields.ApiOperation
-    ]:
+    def update_api_operation(self) -> Callable[[apihub_service.UpdateApiOperationRequest], common_fields.ApiOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApiOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_attribute(
-        self,
-    ) -> Callable[[apihub_service.UpdateAttributeRequest], common_fields.Attribute]:
+    def update_attribute(self) -> Callable[[apihub_service.UpdateAttributeRequest], common_fields.Attribute]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAttribute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_deployment(
-        self,
-    ) -> Callable[[apihub_service.UpdateDeploymentRequest], common_fields.Deployment]:
+    def update_deployment(self) -> Callable[[apihub_service.UpdateDeploymentRequest], common_fields.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_external_api(
-        self,
-    ) -> Callable[[apihub_service.UpdateExternalApiRequest], common_fields.ExternalApi]:
+    def update_external_api(self) -> Callable[[apihub_service.UpdateExternalApiRequest], common_fields.ExternalApi]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExternalApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_spec(
-        self,
-    ) -> Callable[[apihub_service.UpdateSpecRequest], common_fields.Spec]:
+    def update_spec(self) -> Callable[[apihub_service.UpdateSpecRequest], common_fields.Spec]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[[apihub_service.UpdateVersionRequest], common_fields.Version]:
+    def update_version(self) -> Callable[[apihub_service.UpdateVersionRequest], common_fields.Version]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -8170,15 +6487,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8219,25 +6528,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = _BaseApiHubRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8260,14 +6557,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8278,9 +6568,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8310,15 +6598,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8356,30 +6636,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8403,12 +6669,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8420,9 +6681,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8447,22 +6706,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseApiHubRestTransport._BaseCancelOperation, ApiHubRestStub
-    ):
+    class _CancelOperation(_BaseApiHubRestTransport._BaseCancelOperation, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8498,36 +6747,18 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseApiHubRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiHubRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8551,13 +6782,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8571,22 +6796,12 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseApiHubRestTransport._BaseDeleteOperation, ApiHubRestStub
-    ):
+    class _DeleteOperation(_BaseApiHubRestTransport._BaseDeleteOperation, ApiHubRestStub):
         def __hash__(self):
             return hash("ApiHubRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8621,32 +6836,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8670,12 +6869,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8694,15 +6888,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8740,30 +6926,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8786,14 +6958,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
 
             # Send the request
-            response = ApiHubRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiHubRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8804,9 +6969,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8836,15 +6999,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             return hash("ApiHubRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8882,30 +7037,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseApiHubRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseApiHubRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseApiHubRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiHubRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiHubRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiHubRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8929,12 +7070,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
 
             # Send the request
             response = ApiHubRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8946,9 +7082,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

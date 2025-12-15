@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.container_v1 import gapic_version as package_version
 from google.cloud.container_v1.types import cluster_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class ClusterManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -419,170 +409,109 @@ class ClusterManagerTransport(abc.ABC):
     def list_clusters(
         self,
     ) -> Callable[
-        [cluster_service.ListClustersRequest],
-        Union[
-            cluster_service.ListClustersResponse,
-            Awaitable[cluster_service.ListClustersResponse],
-        ],
+        [cluster_service.ListClustersRequest], Union[cluster_service.ListClustersResponse, Awaitable[cluster_service.ListClustersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[
-        [cluster_service.GetClusterRequest],
-        Union[cluster_service.Cluster, Awaitable[cluster_service.Cluster]],
-    ]:
+    def get_cluster(self) -> Callable[[cluster_service.GetClusterRequest], Union[cluster_service.Cluster, Awaitable[cluster_service.Cluster]]]:
         raise NotImplementedError()
 
     @property
     def create_cluster(
         self,
-    ) -> Callable[
-        [cluster_service.CreateClusterRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.CreateClusterRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_cluster(
         self,
-    ) -> Callable[
-        [cluster_service.UpdateClusterRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.UpdateClusterRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_node_pool(
         self,
-    ) -> Callable[
-        [cluster_service.UpdateNodePoolRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.UpdateNodePoolRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_node_pool_autoscaling(
         self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolAutoscalingRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetNodePoolAutoscalingRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_logging_service(
         self,
-    ) -> Callable[
-        [cluster_service.SetLoggingServiceRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetLoggingServiceRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_monitoring_service(
         self,
-    ) -> Callable[
-        [cluster_service.SetMonitoringServiceRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetMonitoringServiceRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_addons_config(
         self,
-    ) -> Callable[
-        [cluster_service.SetAddonsConfigRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetAddonsConfigRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_locations(
         self,
-    ) -> Callable[
-        [cluster_service.SetLocationsRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetLocationsRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_master(
         self,
-    ) -> Callable[
-        [cluster_service.UpdateMasterRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.UpdateMasterRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_master_auth(
         self,
-    ) -> Callable[
-        [cluster_service.SetMasterAuthRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetMasterAuthRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_cluster(
         self,
-    ) -> Callable[
-        [cluster_service.DeleteClusterRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.DeleteClusterRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_operations(
         self,
     ) -> Callable[
-        [cluster_service.ListOperationsRequest],
-        Union[
-            cluster_service.ListOperationsResponse,
-            Awaitable[cluster_service.ListOperationsResponse],
-        ],
+        [cluster_service.ListOperationsRequest], Union[cluster_service.ListOperationsResponse, Awaitable[cluster_service.ListOperationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [cluster_service.GetOperationRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.GetOperationRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_operation(
-        self,
-    ) -> Callable[
-        [cluster_service.CancelOperationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def cancel_operation(self) -> Callable[[cluster_service.CancelOperationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_server_config(
         self,
-    ) -> Callable[
-        [cluster_service.GetServerConfigRequest],
-        Union[cluster_service.ServerConfig, Awaitable[cluster_service.ServerConfig]],
-    ]:
+    ) -> Callable[[cluster_service.GetServerConfigRequest], Union[cluster_service.ServerConfig, Awaitable[cluster_service.ServerConfig]]]:
         raise NotImplementedError()
 
     @property
     def get_json_web_keys(
         self,
     ) -> Callable[
-        [cluster_service.GetJSONWebKeysRequest],
-        Union[
-            cluster_service.GetJSONWebKeysResponse,
-            Awaitable[cluster_service.GetJSONWebKeysResponse],
-        ],
+        [cluster_service.GetJSONWebKeysRequest], Union[cluster_service.GetJSONWebKeysResponse, Awaitable[cluster_service.GetJSONWebKeysResponse]]
     ]:
         raise NotImplementedError()
 
@@ -590,129 +519,82 @@ class ClusterManagerTransport(abc.ABC):
     def list_node_pools(
         self,
     ) -> Callable[
-        [cluster_service.ListNodePoolsRequest],
-        Union[
-            cluster_service.ListNodePoolsResponse,
-            Awaitable[cluster_service.ListNodePoolsResponse],
-        ],
+        [cluster_service.ListNodePoolsRequest], Union[cluster_service.ListNodePoolsResponse, Awaitable[cluster_service.ListNodePoolsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_node_pool(
-        self,
-    ) -> Callable[
-        [cluster_service.GetNodePoolRequest],
-        Union[cluster_service.NodePool, Awaitable[cluster_service.NodePool]],
-    ]:
+    def get_node_pool(self) -> Callable[[cluster_service.GetNodePoolRequest], Union[cluster_service.NodePool, Awaitable[cluster_service.NodePool]]]:
         raise NotImplementedError()
 
     @property
     def create_node_pool(
         self,
-    ) -> Callable[
-        [cluster_service.CreateNodePoolRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.CreateNodePoolRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_node_pool(
         self,
-    ) -> Callable[
-        [cluster_service.DeleteNodePoolRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.DeleteNodePoolRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def complete_node_pool_upgrade(
         self,
-    ) -> Callable[
-        [cluster_service.CompleteNodePoolUpgradeRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[cluster_service.CompleteNodePoolUpgradeRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def rollback_node_pool_upgrade(
         self,
-    ) -> Callable[
-        [cluster_service.RollbackNodePoolUpgradeRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.RollbackNodePoolUpgradeRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_node_pool_management(
         self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolManagementRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetNodePoolManagementRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[
-        [cluster_service.SetLabelsRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    def set_labels(self) -> Callable[[cluster_service.SetLabelsRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_legacy_abac(
         self,
-    ) -> Callable[
-        [cluster_service.SetLegacyAbacRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetLegacyAbacRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_ip_rotation(
         self,
-    ) -> Callable[
-        [cluster_service.StartIPRotationRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.StartIPRotationRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def complete_ip_rotation(
         self,
-    ) -> Callable[
-        [cluster_service.CompleteIPRotationRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.CompleteIPRotationRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_node_pool_size(
         self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolSizeRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetNodePoolSizeRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_network_policy(
         self,
-    ) -> Callable[
-        [cluster_service.SetNetworkPolicyRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetNetworkPolicyRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_maintenance_policy(
         self,
-    ) -> Callable[
-        [cluster_service.SetMaintenancePolicyRequest],
-        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
-    ]:
+    ) -> Callable[[cluster_service.SetMaintenancePolicyRequest], Union[cluster_service.Operation, Awaitable[cluster_service.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -720,10 +602,7 @@ class ClusterManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cluster_service.ListUsableSubnetworksRequest],
-        Union[
-            cluster_service.ListUsableSubnetworksResponse,
-            Awaitable[cluster_service.ListUsableSubnetworksResponse],
-        ],
+        Union[cluster_service.ListUsableSubnetworksResponse, Awaitable[cluster_service.ListUsableSubnetworksResponse]],
     ]:
         raise NotImplementedError()
 
@@ -732,10 +611,7 @@ class ClusterManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cluster_service.CheckAutopilotCompatibilityRequest],
-        Union[
-            cluster_service.CheckAutopilotCompatibilityResponse,
-            Awaitable[cluster_service.CheckAutopilotCompatibilityResponse],
-        ],
+        Union[cluster_service.CheckAutopilotCompatibilityResponse, Awaitable[cluster_service.CheckAutopilotCompatibilityResponse]],
     ]:
         raise NotImplementedError()
 
@@ -743,11 +619,7 @@ class ClusterManagerTransport(abc.ABC):
     def fetch_cluster_upgrade_info(
         self,
     ) -> Callable[
-        [cluster_service.FetchClusterUpgradeInfoRequest],
-        Union[
-            cluster_service.ClusterUpgradeInfo,
-            Awaitable[cluster_service.ClusterUpgradeInfo],
-        ],
+        [cluster_service.FetchClusterUpgradeInfoRequest], Union[cluster_service.ClusterUpgradeInfo, Awaitable[cluster_service.ClusterUpgradeInfo]]
     ]:
         raise NotImplementedError()
 
@@ -755,11 +627,7 @@ class ClusterManagerTransport(abc.ABC):
     def fetch_node_pool_upgrade_info(
         self,
     ) -> Callable[
-        [cluster_service.FetchNodePoolUpgradeInfoRequest],
-        Union[
-            cluster_service.NodePoolUpgradeInfo,
-            Awaitable[cluster_service.NodePoolUpgradeInfo],
-        ],
+        [cluster_service.FetchNodePoolUpgradeInfoRequest], Union[cluster_service.NodePoolUpgradeInfo, Awaitable[cluster_service.NodePoolUpgradeInfo]]
     ]:
         raise NotImplementedError()
 

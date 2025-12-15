@@ -103,12 +103,8 @@ class WebRiskServiceV1Beta1RestInterceptor:
     """
 
     def pre_compute_threat_list_diff(
-        self,
-        request: webrisk.ComputeThreatListDiffRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        webrisk.ComputeThreatListDiffRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: webrisk.ComputeThreatListDiffRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[webrisk.ComputeThreatListDiffRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_threat_list_diff
 
         Override in a subclass to manipulate the request or metadata
@@ -116,9 +112,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         """
         return request, metadata
 
-    def post_compute_threat_list_diff(
-        self, response: webrisk.ComputeThreatListDiffResponse
-    ) -> webrisk.ComputeThreatListDiffResponse:
+    def post_compute_threat_list_diff(self, response: webrisk.ComputeThreatListDiffResponse) -> webrisk.ComputeThreatListDiffResponse:
         """Post-rpc interceptor for compute_threat_list_diff
 
         DEPRECATED. Please use the `post_compute_threat_list_diff_with_metadata`
@@ -132,12 +126,8 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response
 
     def post_compute_threat_list_diff_with_metadata(
-        self,
-        response: webrisk.ComputeThreatListDiffResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        webrisk.ComputeThreatListDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: webrisk.ComputeThreatListDiffResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[webrisk.ComputeThreatListDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_threat_list_diff
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -153,9 +143,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_search_hashes(
-        self,
-        request: webrisk.SearchHashesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webrisk.SearchHashesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchHashesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_hashes
 
@@ -164,9 +152,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         """
         return request, metadata
 
-    def post_search_hashes(
-        self, response: webrisk.SearchHashesResponse
-    ) -> webrisk.SearchHashesResponse:
+    def post_search_hashes(self, response: webrisk.SearchHashesResponse) -> webrisk.SearchHashesResponse:
         """Post-rpc interceptor for search_hashes
 
         DEPRECATED. Please use the `post_search_hashes_with_metadata`
@@ -180,9 +166,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response
 
     def post_search_hashes_with_metadata(
-        self,
-        response: webrisk.SearchHashesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webrisk.SearchHashesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchHashesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_hashes
 
@@ -199,9 +183,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response, metadata
 
     def pre_search_uris(
-        self,
-        request: webrisk.SearchUrisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webrisk.SearchUrisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchUrisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_uris
 
@@ -210,9 +192,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         """
         return request, metadata
 
-    def post_search_uris(
-        self, response: webrisk.SearchUrisResponse
-    ) -> webrisk.SearchUrisResponse:
+    def post_search_uris(self, response: webrisk.SearchUrisResponse) -> webrisk.SearchUrisResponse:
         """Post-rpc interceptor for search_uris
 
         DEPRECATED. Please use the `post_search_uris_with_metadata`
@@ -226,9 +206,7 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response
 
     def post_search_uris_with_metadata(
-        self,
-        response: webrisk.SearchUrisResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webrisk.SearchUrisResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchUrisResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_uris
 
@@ -325,31 +303,18 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or WebRiskServiceV1Beta1RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ComputeThreatListDiff(
-        _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff,
-        WebRiskServiceV1Beta1RestStub,
-    ):
+    class _ComputeThreatListDiff(_BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff, WebRiskServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("WebRiskServiceV1Beta1RestTransport.ComputeThreatListDiff")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -388,28 +353,16 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_http_options()
 
-            request, metadata = self._interceptor.pre_compute_threat_list_diff(
-                request, metadata
-            )
-            transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compute_threat_list_diff(request, metadata)
+            transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -432,15 +385,8 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
                 )
 
             # Send the request
-            response = (
-                WebRiskServiceV1Beta1RestTransport._ComputeThreatListDiff._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = WebRiskServiceV1Beta1RestTransport._ComputeThreatListDiff._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -456,16 +402,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             resp = self._interceptor.post_compute_threat_list_diff(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compute_threat_list_diff_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_threat_list_diff_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = webrisk.ComputeThreatListDiffResponse.to_json(
-                        response
-                    )
+                    response_payload = webrisk.ComputeThreatListDiffResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -484,23 +424,12 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
                 )
             return resp
 
-    class _SearchHashes(
-        _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes,
-        WebRiskServiceV1Beta1RestStub,
-    ):
+    class _SearchHashes(_BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes, WebRiskServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("WebRiskServiceV1Beta1RestTransport.SearchHashes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -540,26 +469,16 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_http_options()
 
             request, metadata = self._interceptor.pre_search_hashes(request, metadata)
-            transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -583,12 +502,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             # Send the request
             response = WebRiskServiceV1Beta1RestTransport._SearchHashes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -604,12 +518,8 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             resp = self._interceptor.post_search_hashes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_hashes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_hashes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webrisk.SearchHashesResponse.to_json(response)
                 except:
@@ -630,23 +540,12 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
                 )
             return resp
 
-    class _SearchUris(
-        _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris,
-        WebRiskServiceV1Beta1RestStub,
-    ):
+    class _SearchUris(_BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris, WebRiskServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("WebRiskServiceV1Beta1RestTransport.SearchUris")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -686,26 +585,16 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_http_options()
 
             request, metadata = self._interceptor.pre_search_uris(request, metadata)
-            transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -729,12 +618,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             # Send the request
             response = WebRiskServiceV1Beta1RestTransport._SearchUris._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -750,12 +634,8 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
 
             resp = self._interceptor.post_search_uris(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_uris_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_uris_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webrisk.SearchUrisResponse.to_json(response)
                 except:
@@ -777,27 +657,19 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             return resp
 
     @property
-    def compute_threat_list_diff(
-        self,
-    ) -> Callable[
-        [webrisk.ComputeThreatListDiffRequest], webrisk.ComputeThreatListDiffResponse
-    ]:
+    def compute_threat_list_diff(self) -> Callable[[webrisk.ComputeThreatListDiffRequest], webrisk.ComputeThreatListDiffResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeThreatListDiff(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_hashes(
-        self,
-    ) -> Callable[[webrisk.SearchHashesRequest], webrisk.SearchHashesResponse]:
+    def search_hashes(self) -> Callable[[webrisk.SearchHashesRequest], webrisk.SearchHashesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchHashes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_uris(
-        self,
-    ) -> Callable[[webrisk.SearchUrisRequest], webrisk.SearchUrisResponse]:
+    def search_uris(self) -> Callable[[webrisk.SearchUrisRequest], webrisk.SearchUrisResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchUris(self._session, self._host, self._interceptor)  # type: ignore

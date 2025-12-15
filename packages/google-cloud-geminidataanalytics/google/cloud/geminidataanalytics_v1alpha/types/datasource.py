@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.geminidataanalytics_v1alpha.types import (
-    credentials as gcg_credentials,
-)
+from google.cloud.geminidataanalytics_v1alpha.types import credentials as gcg_credentials
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
@@ -163,9 +161,7 @@ class StudioDatasourceReferences(proto.Message):
             The references to the studio datasources.
     """
 
-    studio_references: MutableSequence[
-        "StudioDatasourceReference"
-    ] = proto.RepeatedField(
+    studio_references: MutableSequence["StudioDatasourceReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="StudioDatasourceReference",

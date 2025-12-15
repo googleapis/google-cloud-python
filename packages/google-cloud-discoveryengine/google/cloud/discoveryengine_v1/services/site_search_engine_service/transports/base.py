@@ -28,14 +28,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.discoveryengine_v1 import gapic_version as package_version
-from google.cloud.discoveryengine_v1.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
+from google.cloud.discoveryengine_v1.types import site_search_engine, site_search_engine_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +92,15 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -249,56 +236,38 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [site_search_engine_service.GetSiteSearchEngineRequest],
-        Union[
-            site_search_engine.SiteSearchEngine,
-            Awaitable[site_search_engine.SiteSearchEngine],
-        ],
+        Union[site_search_engine.SiteSearchEngine, Awaitable[site_search_engine.SiteSearchEngine]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_target_site(
         self,
-    ) -> Callable[
-        [site_search_engine_service.CreateTargetSiteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.CreateTargetSiteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_target_sites(
         self,
-    ) -> Callable[
-        [site_search_engine_service.BatchCreateTargetSitesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.BatchCreateTargetSitesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_target_site(
         self,
-    ) -> Callable[
-        [site_search_engine_service.GetTargetSiteRequest],
-        Union[site_search_engine.TargetSite, Awaitable[site_search_engine.TargetSite]],
-    ]:
+    ) -> Callable[[site_search_engine_service.GetTargetSiteRequest], Union[site_search_engine.TargetSite, Awaitable[site_search_engine.TargetSite]]]:
         raise NotImplementedError()
 
     @property
     def update_target_site(
         self,
-    ) -> Callable[
-        [site_search_engine_service.UpdateTargetSiteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.UpdateTargetSiteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_target_site(
         self,
-    ) -> Callable[
-        [site_search_engine_service.DeleteTargetSiteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.DeleteTargetSiteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -306,29 +275,20 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [site_search_engine_service.ListTargetSitesRequest],
-        Union[
-            site_search_engine_service.ListTargetSitesResponse,
-            Awaitable[site_search_engine_service.ListTargetSitesResponse],
-        ],
+        Union[site_search_engine_service.ListTargetSitesResponse, Awaitable[site_search_engine_service.ListTargetSitesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_sitemap(
         self,
-    ) -> Callable[
-        [site_search_engine_service.CreateSitemapRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.CreateSitemapRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_sitemap(
         self,
-    ) -> Callable[
-        [site_search_engine_service.DeleteSitemapRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.DeleteSitemapRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -336,47 +296,34 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [site_search_engine_service.FetchSitemapsRequest],
-        Union[
-            site_search_engine_service.FetchSitemapsResponse,
-            Awaitable[site_search_engine_service.FetchSitemapsResponse],
-        ],
+        Union[site_search_engine_service.FetchSitemapsResponse, Awaitable[site_search_engine_service.FetchSitemapsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def enable_advanced_site_search(
         self,
-    ) -> Callable[
-        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.EnableAdvancedSiteSearchRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def disable_advanced_site_search(
         self,
     ) -> Callable[
-        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [site_search_engine_service.DisableAdvancedSiteSearchRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
     @property
     def recrawl_uris(
         self,
-    ) -> Callable[
-        [site_search_engine_service.RecrawlUrisRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.RecrawlUrisRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_verify_target_sites(
         self,
-    ) -> Callable[
-        [site_search_engine_service.BatchVerifyTargetSitesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[site_search_engine_service.BatchVerifyTargetSitesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -396,20 +343,14 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

@@ -18,12 +18,8 @@ from google.cloud.webrisk import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.webrisk_v1.services.web_risk_service.async_client import (
-    WebRiskServiceAsyncClient,
-)
-from google.cloud.webrisk_v1.services.web_risk_service.client import (
-    WebRiskServiceClient,
-)
+from google.cloud.webrisk_v1.services.web_risk_service.async_client import WebRiskServiceAsyncClient
+from google.cloud.webrisk_v1.services.web_risk_service.client import WebRiskServiceClient
 from google.cloud.webrisk_v1.types.webrisk import (
     CompressionType,
     ComputeThreatListDiffRequest,

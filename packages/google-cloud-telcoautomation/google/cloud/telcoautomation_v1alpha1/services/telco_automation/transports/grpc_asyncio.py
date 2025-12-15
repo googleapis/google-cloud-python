@@ -49,13 +49,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -65,10 +61,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -87,11 +80,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -274,18 +263,14 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -321,9 +306,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -346,9 +329,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -356,10 +337,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_orchestration_clusters(
         self,
-    ) -> Callable[
-        [telcoautomation.ListOrchestrationClustersRequest],
-        Awaitable[telcoautomation.ListOrchestrationClustersResponse],
-    ]:
+    ) -> Callable[[telcoautomation.ListOrchestrationClustersRequest], Awaitable[telcoautomation.ListOrchestrationClustersResponse]]:
         r"""Return a callable for the list orchestration clusters method over gRPC.
 
         Lists OrchestrationClusters in a given project and
@@ -376,9 +354,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_orchestration_clusters" not in self._stubs:
-            self._stubs[
-                "list_orchestration_clusters"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_orchestration_clusters"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListOrchestrationClusters",
                 request_serializer=telcoautomation.ListOrchestrationClustersRequest.serialize,
                 response_deserializer=telcoautomation.ListOrchestrationClustersResponse.deserialize,
@@ -388,10 +364,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def get_orchestration_cluster(
         self,
-    ) -> Callable[
-        [telcoautomation.GetOrchestrationClusterRequest],
-        Awaitable[telcoautomation.OrchestrationCluster],
-    ]:
+    ) -> Callable[[telcoautomation.GetOrchestrationClusterRequest], Awaitable[telcoautomation.OrchestrationCluster]]:
         r"""Return a callable for the get orchestration cluster method over gRPC.
 
         Gets details of a single OrchestrationCluster.
@@ -415,12 +388,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["get_orchestration_cluster"]
 
     @property
-    def create_orchestration_cluster(
-        self,
-    ) -> Callable[
-        [telcoautomation.CreateOrchestrationClusterRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_orchestration_cluster(self) -> Callable[[telcoautomation.CreateOrchestrationClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create orchestration cluster method over gRPC.
 
         Creates a new OrchestrationCluster in a given project
@@ -437,9 +405,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_orchestration_cluster" not in self._stubs:
-            self._stubs[
-                "create_orchestration_cluster"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_orchestration_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/CreateOrchestrationCluster",
                 request_serializer=telcoautomation.CreateOrchestrationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -447,12 +413,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["create_orchestration_cluster"]
 
     @property
-    def delete_orchestration_cluster(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteOrchestrationClusterRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_orchestration_cluster(self) -> Callable[[telcoautomation.DeleteOrchestrationClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete orchestration cluster method over gRPC.
 
         Deletes a single OrchestrationCluster.
@@ -468,9 +429,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_orchestration_cluster" not in self._stubs:
-            self._stubs[
-                "delete_orchestration_cluster"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_orchestration_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteOrchestrationCluster",
                 request_serializer=telcoautomation.DeleteOrchestrationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -478,12 +437,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["delete_orchestration_cluster"]
 
     @property
-    def list_edge_slms(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListEdgeSlmsRequest],
-        Awaitable[telcoautomation.ListEdgeSlmsResponse],
-    ]:
+    def list_edge_slms(self) -> Callable[[telcoautomation.ListEdgeSlmsRequest], Awaitable[telcoautomation.ListEdgeSlmsResponse]]:
         r"""Return a callable for the list edge slms method over gRPC.
 
         Lists EdgeSlms in a given project and location.
@@ -507,11 +461,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["list_edge_slms"]
 
     @property
-    def get_edge_slm(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetEdgeSlmRequest], Awaitable[telcoautomation.EdgeSlm]
-    ]:
+    def get_edge_slm(self) -> Callable[[telcoautomation.GetEdgeSlmRequest], Awaitable[telcoautomation.EdgeSlm]]:
         r"""Return a callable for the get edge slm method over gRPC.
 
         Gets details of a single EdgeSlm.
@@ -535,11 +485,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["get_edge_slm"]
 
     @property
-    def create_edge_slm(
-        self,
-    ) -> Callable[
-        [telcoautomation.CreateEdgeSlmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_edge_slm(self) -> Callable[[telcoautomation.CreateEdgeSlmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create edge slm method over gRPC.
 
         Creates a new EdgeSlm in a given project and
@@ -564,11 +510,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["create_edge_slm"]
 
     @property
-    def delete_edge_slm(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteEdgeSlmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_edge_slm(self) -> Callable[[telcoautomation.DeleteEdgeSlmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete edge slm method over gRPC.
 
         Deletes a single EdgeSlm.
@@ -592,11 +534,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["delete_edge_slm"]
 
     @property
-    def create_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.CreateBlueprintRequest], Awaitable[telcoautomation.Blueprint]
-    ]:
+    def create_blueprint(self) -> Callable[[telcoautomation.CreateBlueprintRequest], Awaitable[telcoautomation.Blueprint]]:
         r"""Return a callable for the create blueprint method over gRPC.
 
         Creates a blueprint.
@@ -620,11 +558,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["create_blueprint"]
 
     @property
-    def update_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.UpdateBlueprintRequest], Awaitable[telcoautomation.Blueprint]
-    ]:
+    def update_blueprint(self) -> Callable[[telcoautomation.UpdateBlueprintRequest], Awaitable[telcoautomation.Blueprint]]:
         r"""Return a callable for the update blueprint method over gRPC.
 
         Updates a blueprint.
@@ -648,11 +582,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["update_blueprint"]
 
     @property
-    def get_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetBlueprintRequest], Awaitable[telcoautomation.Blueprint]
-    ]:
+    def get_blueprint(self) -> Callable[[telcoautomation.GetBlueprintRequest], Awaitable[telcoautomation.Blueprint]]:
         r"""Return a callable for the get blueprint method over gRPC.
 
         Returns the requested blueprint.
@@ -676,9 +606,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["get_blueprint"]
 
     @property
-    def delete_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.DeleteBlueprintRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_blueprint(self) -> Callable[[telcoautomation.DeleteBlueprintRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete blueprint method over gRPC.
 
         Deletes a blueprint and all its revisions.
@@ -702,12 +630,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["delete_blueprint"]
 
     @property
-    def list_blueprints(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListBlueprintsRequest],
-        Awaitable[telcoautomation.ListBlueprintsResponse],
-    ]:
+    def list_blueprints(self) -> Callable[[telcoautomation.ListBlueprintsRequest], Awaitable[telcoautomation.ListBlueprintsResponse]]:
         r"""Return a callable for the list blueprints method over gRPC.
 
         List all blueprints.
@@ -731,11 +654,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["list_blueprints"]
 
     @property
-    def approve_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.ApproveBlueprintRequest], Awaitable[telcoautomation.Blueprint]
-    ]:
+    def approve_blueprint(self) -> Callable[[telcoautomation.ApproveBlueprintRequest], Awaitable[telcoautomation.Blueprint]]:
         r"""Return a callable for the approve blueprint method over gRPC.
 
         Approves a blueprint and commits a new revision.
@@ -759,11 +678,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["approve_blueprint"]
 
     @property
-    def propose_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.ProposeBlueprintRequest], Awaitable[telcoautomation.Blueprint]
-    ]:
+    def propose_blueprint(self) -> Callable[[telcoautomation.ProposeBlueprintRequest], Awaitable[telcoautomation.Blueprint]]:
         r"""Return a callable for the propose blueprint method over gRPC.
 
         Proposes a blueprint for approval of changes.
@@ -787,11 +702,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["propose_blueprint"]
 
     @property
-    def reject_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.RejectBlueprintRequest], Awaitable[telcoautomation.Blueprint]
-    ]:
+    def reject_blueprint(self) -> Callable[[telcoautomation.RejectBlueprintRequest], Awaitable[telcoautomation.Blueprint]]:
         r"""Return a callable for the reject blueprint method over gRPC.
 
         Rejects a blueprint revision proposal and flips it
@@ -818,10 +729,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_blueprint_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.ListBlueprintRevisionsRequest],
-        Awaitable[telcoautomation.ListBlueprintRevisionsResponse],
-    ]:
+    ) -> Callable[[telcoautomation.ListBlueprintRevisionsRequest], Awaitable[telcoautomation.ListBlueprintRevisionsResponse]]:
         r"""Return a callable for the list blueprint revisions method over gRPC.
 
         List blueprint revisions of a given blueprint.
@@ -847,10 +755,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def search_blueprint_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.SearchBlueprintRevisionsRequest],
-        Awaitable[telcoautomation.SearchBlueprintRevisionsResponse],
-    ]:
+    ) -> Callable[[telcoautomation.SearchBlueprintRevisionsRequest], Awaitable[telcoautomation.SearchBlueprintRevisionsResponse]]:
         r"""Return a callable for the search blueprint revisions method over gRPC.
 
         Searches across blueprint revisions.
@@ -866,9 +771,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_blueprint_revisions" not in self._stubs:
-            self._stubs[
-                "search_blueprint_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_blueprint_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/SearchBlueprintRevisions",
                 request_serializer=telcoautomation.SearchBlueprintRevisionsRequest.serialize,
                 response_deserializer=telcoautomation.SearchBlueprintRevisionsResponse.deserialize,
@@ -878,10 +781,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def search_deployment_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.SearchDeploymentRevisionsRequest],
-        Awaitable[telcoautomation.SearchDeploymentRevisionsResponse],
-    ]:
+    ) -> Callable[[telcoautomation.SearchDeploymentRevisionsRequest], Awaitable[telcoautomation.SearchDeploymentRevisionsResponse]]:
         r"""Return a callable for the search deployment revisions method over gRPC.
 
         Searches across deployment revisions.
@@ -897,9 +797,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_deployment_revisions" not in self._stubs:
-            self._stubs[
-                "search_deployment_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_deployment_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/SearchDeploymentRevisions",
                 request_serializer=telcoautomation.SearchDeploymentRevisionsRequest.serialize,
                 response_deserializer=telcoautomation.SearchDeploymentRevisionsResponse.deserialize,
@@ -909,10 +807,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def discard_blueprint_changes(
         self,
-    ) -> Callable[
-        [telcoautomation.DiscardBlueprintChangesRequest],
-        Awaitable[telcoautomation.DiscardBlueprintChangesResponse],
-    ]:
+    ) -> Callable[[telcoautomation.DiscardBlueprintChangesRequest], Awaitable[telcoautomation.DiscardBlueprintChangesResponse]]:
         r"""Return a callable for the discard blueprint changes method over gRPC.
 
         Discards the changes in a blueprint and reverts the
@@ -941,10 +836,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_public_blueprints(
         self,
-    ) -> Callable[
-        [telcoautomation.ListPublicBlueprintsRequest],
-        Awaitable[telcoautomation.ListPublicBlueprintsResponse],
-    ]:
+    ) -> Callable[[telcoautomation.ListPublicBlueprintsRequest], Awaitable[telcoautomation.ListPublicBlueprintsResponse]]:
         r"""Return a callable for the list public blueprints method over gRPC.
 
         Lists the blueprints in TNA's public catalog. Default
@@ -969,12 +861,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["list_public_blueprints"]
 
     @property
-    def get_public_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetPublicBlueprintRequest],
-        Awaitable[telcoautomation.PublicBlueprint],
-    ]:
+    def get_public_blueprint(self) -> Callable[[telcoautomation.GetPublicBlueprintRequest], Awaitable[telcoautomation.PublicBlueprint]]:
         r"""Return a callable for the get public blueprint method over gRPC.
 
         Returns the requested public blueprint.
@@ -998,11 +885,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["get_public_blueprint"]
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.CreateDeploymentRequest], Awaitable[telcoautomation.Deployment]
-    ]:
+    def create_deployment(self) -> Callable[[telcoautomation.CreateDeploymentRequest], Awaitable[telcoautomation.Deployment]]:
         r"""Return a callable for the create deployment method over gRPC.
 
         Creates a deployment.
@@ -1026,11 +909,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["create_deployment"]
 
     @property
-    def update_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.UpdateDeploymentRequest], Awaitable[telcoautomation.Deployment]
-    ]:
+    def update_deployment(self) -> Callable[[telcoautomation.UpdateDeploymentRequest], Awaitable[telcoautomation.Deployment]]:
         r"""Return a callable for the update deployment method over gRPC.
 
         Updates a deployment.
@@ -1054,11 +933,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["update_deployment"]
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetDeploymentRequest], Awaitable[telcoautomation.Deployment]
-    ]:
+    def get_deployment(self) -> Callable[[telcoautomation.GetDeploymentRequest], Awaitable[telcoautomation.Deployment]]:
         r"""Return a callable for the get deployment method over gRPC.
 
         Returns the requested deployment.
@@ -1082,11 +957,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["get_deployment"]
 
     @property
-    def remove_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.RemoveDeploymentRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def remove_deployment(self) -> Callable[[telcoautomation.RemoveDeploymentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the remove deployment method over gRPC.
 
         Removes the deployment by marking it as DELETING.
@@ -1111,12 +982,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["remove_deployment"]
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListDeploymentsRequest],
-        Awaitable[telcoautomation.ListDeploymentsResponse],
-    ]:
+    def list_deployments(self) -> Callable[[telcoautomation.ListDeploymentsRequest], Awaitable[telcoautomation.ListDeploymentsResponse]]:
         r"""Return a callable for the list deployments method over gRPC.
 
         List all deployments.
@@ -1142,10 +1008,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_deployment_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.ListDeploymentRevisionsRequest],
-        Awaitable[telcoautomation.ListDeploymentRevisionsResponse],
-    ]:
+    ) -> Callable[[telcoautomation.ListDeploymentRevisionsRequest], Awaitable[telcoautomation.ListDeploymentRevisionsResponse]]:
         r"""Return a callable for the list deployment revisions method over gRPC.
 
         List deployment revisions of a given deployment.
@@ -1171,10 +1034,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def discard_deployment_changes(
         self,
-    ) -> Callable[
-        [telcoautomation.DiscardDeploymentChangesRequest],
-        Awaitable[telcoautomation.DiscardDeploymentChangesResponse],
-    ]:
+    ) -> Callable[[telcoautomation.DiscardDeploymentChangesRequest], Awaitable[telcoautomation.DiscardDeploymentChangesResponse]]:
         r"""Return a callable for the discard deployment changes method over gRPC.
 
         Discards the changes in a deployment and reverts the
@@ -1193,9 +1053,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "discard_deployment_changes" not in self._stubs:
-            self._stubs[
-                "discard_deployment_changes"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["discard_deployment_changes"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DiscardDeploymentChanges",
                 request_serializer=telcoautomation.DiscardDeploymentChangesRequest.serialize,
                 response_deserializer=telcoautomation.DiscardDeploymentChangesResponse.deserialize,
@@ -1203,11 +1061,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["discard_deployment_changes"]
 
     @property
-    def apply_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.ApplyDeploymentRequest], Awaitable[telcoautomation.Deployment]
-    ]:
+    def apply_deployment(self) -> Callable[[telcoautomation.ApplyDeploymentRequest], Awaitable[telcoautomation.Deployment]]:
         r"""Return a callable for the apply deployment method over gRPC.
 
         Applies the deployment's YAML files to the parent
@@ -1234,10 +1088,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def compute_deployment_status(
         self,
-    ) -> Callable[
-        [telcoautomation.ComputeDeploymentStatusRequest],
-        Awaitable[telcoautomation.ComputeDeploymentStatusResponse],
-    ]:
+    ) -> Callable[[telcoautomation.ComputeDeploymentStatusRequest], Awaitable[telcoautomation.ComputeDeploymentStatusResponse]]:
         r"""Return a callable for the compute deployment status method over gRPC.
 
         Returns the requested deployment status.
@@ -1261,12 +1112,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["compute_deployment_status"]
 
     @property
-    def rollback_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.RollbackDeploymentRequest],
-        Awaitable[telcoautomation.Deployment],
-    ]:
+    def rollback_deployment(self) -> Callable[[telcoautomation.RollbackDeploymentRequest], Awaitable[telcoautomation.Deployment]]:
         r"""Return a callable for the rollback deployment method over gRPC.
 
         Rollback the active deployment to the given past
@@ -1291,12 +1137,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["rollback_deployment"]
 
     @property
-    def get_hydrated_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetHydratedDeploymentRequest],
-        Awaitable[telcoautomation.HydratedDeployment],
-    ]:
+    def get_hydrated_deployment(self) -> Callable[[telcoautomation.GetHydratedDeploymentRequest], Awaitable[telcoautomation.HydratedDeployment]]:
         r"""Return a callable for the get hydrated deployment method over gRPC.
 
         Returns the requested hydrated deployment.
@@ -1322,10 +1163,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_hydrated_deployments(
         self,
-    ) -> Callable[
-        [telcoautomation.ListHydratedDeploymentsRequest],
-        Awaitable[telcoautomation.ListHydratedDeploymentsResponse],
-    ]:
+    ) -> Callable[[telcoautomation.ListHydratedDeploymentsRequest], Awaitable[telcoautomation.ListHydratedDeploymentsResponse]]:
         r"""Return a callable for the list hydrated deployments method over gRPC.
 
         List all hydrated deployments present under a
@@ -1352,10 +1190,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def update_hydrated_deployment(
         self,
-    ) -> Callable[
-        [telcoautomation.UpdateHydratedDeploymentRequest],
-        Awaitable[telcoautomation.HydratedDeployment],
-    ]:
+    ) -> Callable[[telcoautomation.UpdateHydratedDeploymentRequest], Awaitable[telcoautomation.HydratedDeployment]]:
         r"""Return a callable for the update hydrated deployment method over gRPC.
 
         Updates a hydrated deployment.
@@ -1371,9 +1206,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_hydrated_deployment" not in self._stubs:
-            self._stubs[
-                "update_hydrated_deployment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_hydrated_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/UpdateHydratedDeployment",
                 request_serializer=telcoautomation.UpdateHydratedDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.HydratedDeployment.deserialize,
@@ -1381,12 +1214,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
         return self._stubs["update_hydrated_deployment"]
 
     @property
-    def apply_hydrated_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.ApplyHydratedDeploymentRequest],
-        Awaitable[telcoautomation.HydratedDeployment],
-    ]:
+    def apply_hydrated_deployment(self) -> Callable[[telcoautomation.ApplyHydratedDeploymentRequest], Awaitable[telcoautomation.HydratedDeployment]]:
         r"""Return a callable for the apply hydrated deployment method over gRPC.
 
         Applies a hydrated deployment to a workload cluster.
@@ -1717,9 +1545,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1736,9 +1562,7 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

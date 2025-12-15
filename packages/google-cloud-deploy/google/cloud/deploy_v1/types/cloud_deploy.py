@@ -862,12 +862,10 @@ class KubernetesConfig(proto.Message):
             proto.STRING,
             number=6,
         )
-        route_destinations: "KubernetesConfig.GatewayServiceMesh.RouteDestinations" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=8,
-                message="KubernetesConfig.GatewayServiceMesh.RouteDestinations",
-            )
+        route_destinations: "KubernetesConfig.GatewayServiceMesh.RouteDestinations" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="KubernetesConfig.GatewayServiceMesh.RouteDestinations",
         )
 
     class ServiceNetworking(proto.Message):
@@ -3341,9 +3339,7 @@ class PolicyViolation(proto.Message):
             Policy violation details.
     """
 
-    policy_violation_details: MutableSequence[
-        "PolicyViolationDetails"
-    ] = proto.RepeatedField(
+    policy_violation_details: MutableSequence["PolicyViolationDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PolicyViolationDetails",
@@ -3684,12 +3680,10 @@ class Release(proto.Message):
             number=1,
             message="Release.ReleaseReadyCondition",
         )
-        skaffold_supported_condition: "Release.SkaffoldSupportedCondition" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="Release.SkaffoldSupportedCondition",
-            )
+        skaffold_supported_condition: "Release.SkaffoldSupportedCondition" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Release.SkaffoldSupportedCondition",
         )
 
     name: str = proto.Field(
@@ -3756,9 +3750,7 @@ class Release(proto.Message):
         number=12,
         message="Target",
     )
-    custom_target_type_snapshots: MutableSequence[
-        "CustomTargetType"
-    ] = proto.RepeatedField(
+    custom_target_type_snapshots: MutableSequence["CustomTargetType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=27,
         message="CustomTargetType",

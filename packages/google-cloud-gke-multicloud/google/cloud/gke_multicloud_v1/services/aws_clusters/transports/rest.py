@@ -208,12 +208,8 @@ class AwsClustersRestInterceptor:
     """
 
     def pre_create_aws_cluster(
-        self,
-        request: aws_service.CreateAwsClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.CreateAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.CreateAwsClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.CreateAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -221,9 +217,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_aws_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_aws_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_aws_cluster
 
         DEPRECATED. Please use the `post_create_aws_cluster_with_metadata`
@@ -237,9 +231,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_create_aws_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_aws_cluster
 
@@ -256,12 +248,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_create_aws_node_pool(
-        self,
-        request: aws_service.CreateAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.CreateAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.CreateAwsNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.CreateAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -269,9 +257,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_aws_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_aws_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_aws_node_pool
 
         DEPRECATED. Please use the `post_create_aws_node_pool_with_metadata`
@@ -285,9 +271,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_create_aws_node_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_aws_node_pool
 
@@ -304,12 +288,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_delete_aws_cluster(
-        self,
-        request: aws_service.DeleteAwsClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.DeleteAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.DeleteAwsClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.DeleteAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -317,9 +297,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_aws_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_aws_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_aws_cluster
 
         DEPRECATED. Please use the `post_delete_aws_cluster_with_metadata`
@@ -333,9 +311,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_delete_aws_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_aws_cluster
 
@@ -352,12 +328,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_delete_aws_node_pool(
-        self,
-        request: aws_service.DeleteAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.DeleteAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.DeleteAwsNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.DeleteAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -365,9 +337,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_aws_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_aws_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_aws_node_pool
 
         DEPRECATED. Please use the `post_delete_aws_node_pool_with_metadata`
@@ -381,9 +351,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_delete_aws_node_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_aws_node_pool
 
@@ -400,13 +368,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_generate_aws_access_token(
-        self,
-        request: aws_service.GenerateAwsAccessTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GenerateAwsAccessTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: aws_service.GenerateAwsAccessTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GenerateAwsAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_aws_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -414,9 +377,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_aws_access_token(
-        self, response: aws_service.GenerateAwsAccessTokenResponse
-    ) -> aws_service.GenerateAwsAccessTokenResponse:
+    def post_generate_aws_access_token(self, response: aws_service.GenerateAwsAccessTokenResponse) -> aws_service.GenerateAwsAccessTokenResponse:
         """Post-rpc interceptor for generate_aws_access_token
 
         DEPRECATED. Please use the `post_generate_aws_access_token_with_metadata`
@@ -430,13 +391,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_generate_aws_access_token_with_metadata(
-        self,
-        response: aws_service.GenerateAwsAccessTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GenerateAwsAccessTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: aws_service.GenerateAwsAccessTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GenerateAwsAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_aws_access_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -452,13 +408,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_generate_aws_cluster_agent_token(
-        self,
-        request: aws_service.GenerateAwsClusterAgentTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GenerateAwsClusterAgentTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: aws_service.GenerateAwsClusterAgentTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GenerateAwsClusterAgentTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_aws_cluster_agent_token
 
         Override in a subclass to manipulate the request or metadata
@@ -482,13 +433,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_generate_aws_cluster_agent_token_with_metadata(
-        self,
-        response: aws_service.GenerateAwsClusterAgentTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GenerateAwsClusterAgentTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: aws_service.GenerateAwsClusterAgentTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GenerateAwsClusterAgentTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_aws_cluster_agent_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -504,12 +450,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_get_aws_cluster(
-        self,
-        request: aws_service.GetAwsClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GetAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.GetAwsClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GetAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +459,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_aws_cluster(
-        self, response: aws_resources.AwsCluster
-    ) -> aws_resources.AwsCluster:
+    def post_get_aws_cluster(self, response: aws_resources.AwsCluster) -> aws_resources.AwsCluster:
         """Post-rpc interceptor for get_aws_cluster
 
         DEPRECATED. Please use the `post_get_aws_cluster_with_metadata`
@@ -533,9 +473,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_get_aws_cluster_with_metadata(
-        self,
-        response: aws_resources.AwsCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: aws_resources.AwsCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[aws_resources.AwsCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_aws_cluster
 
@@ -552,12 +490,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_get_aws_json_web_keys(
-        self,
-        request: aws_service.GetAwsJsonWebKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GetAwsJsonWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.GetAwsJsonWebKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GetAwsJsonWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_aws_json_web_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -565,9 +499,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_aws_json_web_keys(
-        self, response: aws_resources.AwsJsonWebKeys
-    ) -> aws_resources.AwsJsonWebKeys:
+    def post_get_aws_json_web_keys(self, response: aws_resources.AwsJsonWebKeys) -> aws_resources.AwsJsonWebKeys:
         """Post-rpc interceptor for get_aws_json_web_keys
 
         DEPRECATED. Please use the `post_get_aws_json_web_keys_with_metadata`
@@ -581,9 +513,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_get_aws_json_web_keys_with_metadata(
-        self,
-        response: aws_resources.AwsJsonWebKeys,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: aws_resources.AwsJsonWebKeys, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[aws_resources.AwsJsonWebKeys, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_aws_json_web_keys
 
@@ -600,12 +530,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_get_aws_node_pool(
-        self,
-        request: aws_service.GetAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GetAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.GetAwsNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GetAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -613,9 +539,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_aws_node_pool(
-        self, response: aws_resources.AwsNodePool
-    ) -> aws_resources.AwsNodePool:
+    def post_get_aws_node_pool(self, response: aws_resources.AwsNodePool) -> aws_resources.AwsNodePool:
         """Post-rpc interceptor for get_aws_node_pool
 
         DEPRECATED. Please use the `post_get_aws_node_pool_with_metadata`
@@ -629,9 +553,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_get_aws_node_pool_with_metadata(
-        self,
-        response: aws_resources.AwsNodePool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: aws_resources.AwsNodePool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[aws_resources.AwsNodePool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_aws_node_pool
 
@@ -648,12 +570,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_get_aws_open_id_config(
-        self,
-        request: aws_service.GetAwsOpenIdConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GetAwsOpenIdConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.GetAwsOpenIdConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GetAwsOpenIdConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_aws_open_id_config
 
         Override in a subclass to manipulate the request or metadata
@@ -661,9 +579,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_aws_open_id_config(
-        self, response: aws_resources.AwsOpenIdConfig
-    ) -> aws_resources.AwsOpenIdConfig:
+    def post_get_aws_open_id_config(self, response: aws_resources.AwsOpenIdConfig) -> aws_resources.AwsOpenIdConfig:
         """Post-rpc interceptor for get_aws_open_id_config
 
         DEPRECATED. Please use the `post_get_aws_open_id_config_with_metadata`
@@ -677,9 +593,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_get_aws_open_id_config_with_metadata(
-        self,
-        response: aws_resources.AwsOpenIdConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: aws_resources.AwsOpenIdConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[aws_resources.AwsOpenIdConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_aws_open_id_config
 
@@ -696,12 +610,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_get_aws_server_config(
-        self,
-        request: aws_service.GetAwsServerConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.GetAwsServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.GetAwsServerConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.GetAwsServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_aws_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -709,9 +619,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_aws_server_config(
-        self, response: aws_resources.AwsServerConfig
-    ) -> aws_resources.AwsServerConfig:
+    def post_get_aws_server_config(self, response: aws_resources.AwsServerConfig) -> aws_resources.AwsServerConfig:
         """Post-rpc interceptor for get_aws_server_config
 
         DEPRECATED. Please use the `post_get_aws_server_config_with_metadata`
@@ -725,9 +633,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_get_aws_server_config_with_metadata(
-        self,
-        response: aws_resources.AwsServerConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: aws_resources.AwsServerConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[aws_resources.AwsServerConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_aws_server_config
 
@@ -744,12 +650,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_list_aws_clusters(
-        self,
-        request: aws_service.ListAwsClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.ListAwsClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.ListAwsClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.ListAwsClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_aws_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -757,9 +659,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_aws_clusters(
-        self, response: aws_service.ListAwsClustersResponse
-    ) -> aws_service.ListAwsClustersResponse:
+    def post_list_aws_clusters(self, response: aws_service.ListAwsClustersResponse) -> aws_service.ListAwsClustersResponse:
         """Post-rpc interceptor for list_aws_clusters
 
         DEPRECATED. Please use the `post_list_aws_clusters_with_metadata`
@@ -773,12 +673,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_list_aws_clusters_with_metadata(
-        self,
-        response: aws_service.ListAwsClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.ListAwsClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: aws_service.ListAwsClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.ListAwsClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_aws_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -794,12 +690,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_list_aws_node_pools(
-        self,
-        request: aws_service.ListAwsNodePoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.ListAwsNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.ListAwsNodePoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.ListAwsNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_aws_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -807,9 +699,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_aws_node_pools(
-        self, response: aws_service.ListAwsNodePoolsResponse
-    ) -> aws_service.ListAwsNodePoolsResponse:
+    def post_list_aws_node_pools(self, response: aws_service.ListAwsNodePoolsResponse) -> aws_service.ListAwsNodePoolsResponse:
         """Post-rpc interceptor for list_aws_node_pools
 
         DEPRECATED. Please use the `post_list_aws_node_pools_with_metadata`
@@ -823,12 +713,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_list_aws_node_pools_with_metadata(
-        self,
-        response: aws_service.ListAwsNodePoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.ListAwsNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: aws_service.ListAwsNodePoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.ListAwsNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_aws_node_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -844,13 +730,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_rollback_aws_node_pool_update(
-        self,
-        request: aws_service.RollbackAwsNodePoolUpdateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.RollbackAwsNodePoolUpdateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: aws_service.RollbackAwsNodePoolUpdateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.RollbackAwsNodePoolUpdateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback_aws_node_pool_update
 
         Override in a subclass to manipulate the request or metadata
@@ -858,9 +739,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_rollback_aws_node_pool_update(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_rollback_aws_node_pool_update(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for rollback_aws_node_pool_update
 
         DEPRECATED. Please use the `post_rollback_aws_node_pool_update_with_metadata`
@@ -874,9 +753,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_rollback_aws_node_pool_update_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rollback_aws_node_pool_update
 
@@ -893,12 +770,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_update_aws_cluster(
-        self,
-        request: aws_service.UpdateAwsClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.UpdateAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.UpdateAwsClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.UpdateAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -906,9 +779,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_aws_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_aws_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_aws_cluster
 
         DEPRECATED. Please use the `post_update_aws_cluster_with_metadata`
@@ -922,9 +793,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_update_aws_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_aws_cluster
 
@@ -941,12 +810,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_update_aws_node_pool(
-        self,
-        request: aws_service.UpdateAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aws_service.UpdateAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: aws_service.UpdateAwsNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aws_service.UpdateAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -954,9 +819,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_aws_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_aws_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_aws_node_pool
 
         DEPRECATED. Please use the `post_update_aws_node_pool_with_metadata`
@@ -970,9 +833,7 @@ class AwsClustersRestInterceptor:
         return response
 
     def post_update_aws_node_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_aws_node_pool
 
@@ -989,12 +850,8 @@ class AwsClustersRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1012,12 +869,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1035,12 +888,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1048,9 +897,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1060,12 +907,8 @@ class AwsClustersRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1073,9 +916,7 @@ class AwsClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1170,9 +1011,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1225,29 +1064,17 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAwsCluster(
-        _BaseAwsClustersRestTransport._BaseCreateAwsCluster, AwsClustersRestStub
-    ):
+    class _CreateAwsCluster(_BaseAwsClustersRestTransport._BaseCreateAwsCluster, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.CreateAwsCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1291,32 +1118,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_aws_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_aws_cluster(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1340,13 +1153,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._CreateAwsCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1360,12 +1167,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_create_aws_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_aws_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_aws_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1386,22 +1189,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _CreateAwsNodePool(
-        _BaseAwsClustersRestTransport._BaseCreateAwsNodePool, AwsClustersRestStub
-    ):
+    class _CreateAwsNodePool(_BaseAwsClustersRestTransport._BaseCreateAwsNodePool, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.CreateAwsNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1445,32 +1238,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_aws_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_aws_node_pool(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1494,13 +1273,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._CreateAwsNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1514,12 +1287,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_create_aws_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_aws_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_aws_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1540,22 +1309,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _DeleteAwsCluster(
-        _BaseAwsClustersRestTransport._BaseDeleteAwsCluster, AwsClustersRestStub
-    ):
+    class _DeleteAwsCluster(_BaseAwsClustersRestTransport._BaseDeleteAwsCluster, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.DeleteAwsCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1598,28 +1357,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_aws_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_aws_cluster(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1643,12 +1390,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._DeleteAwsCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1662,12 +1404,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_delete_aws_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_aws_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_aws_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1688,22 +1426,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _DeleteAwsNodePool(
-        _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool, AwsClustersRestStub
-    ):
+    class _DeleteAwsNodePool(_BaseAwsClustersRestTransport._BaseDeleteAwsNodePool, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.DeleteAwsNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1746,28 +1474,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_aws_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_aws_node_pool(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1791,12 +1507,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._DeleteAwsNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1810,12 +1521,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_delete_aws_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_aws_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_aws_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1836,22 +1543,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GenerateAwsAccessToken(
-        _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken, AwsClustersRestStub
-    ):
+    class _GenerateAwsAccessToken(_BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GenerateAwsAccessToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1893,28 +1590,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_aws_access_token(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_aws_access_token(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1938,12 +1623,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GenerateAwsAccessToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1959,16 +1639,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_generate_aws_access_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_aws_access_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_aws_access_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        aws_service.GenerateAwsAccessTokenResponse.to_json(response)
-                    )
+                    response_payload = aws_service.GenerateAwsAccessTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1987,23 +1661,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GenerateAwsClusterAgentToken(
-        _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken,
-        AwsClustersRestStub,
-    ):
+    class _GenerateAwsClusterAgentToken(_BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GenerateAwsClusterAgentToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2044,32 +1707,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_aws_cluster_agent_token(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_aws_cluster_agent_token(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2092,16 +1741,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AwsClustersRestTransport._GenerateAwsClusterAgentToken._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AwsClustersRestTransport._GenerateAwsClusterAgentToken._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2117,21 +1758,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_generate_aws_cluster_agent_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_aws_cluster_agent_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_aws_cluster_agent_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        aws_service.GenerateAwsClusterAgentTokenResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = aws_service.GenerateAwsClusterAgentTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2150,22 +1780,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GetAwsCluster(
-        _BaseAwsClustersRestTransport._BaseGetAwsCluster, AwsClustersRestStub
-    ):
+    class _GetAwsCluster(_BaseAwsClustersRestTransport._BaseGetAwsCluster, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GetAwsCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2205,28 +1825,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     An Anthos cluster running on AWS.
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_aws_cluster(request, metadata)
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2250,12 +1858,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2271,12 +1874,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_get_aws_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_aws_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_aws_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = aws_resources.AwsCluster.to_json(response)
                 except:
@@ -2297,22 +1896,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GetAwsJsonWebKeys(
-        _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys, AwsClustersRestStub
-    ):
+    class _GetAwsJsonWebKeys(_BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GetAwsJsonWebKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2357,28 +1946,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_aws_json_web_keys(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_aws_json_web_keys(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2402,12 +1979,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsJsonWebKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2423,12 +1995,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_get_aws_json_web_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_aws_json_web_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_aws_json_web_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = aws_resources.AwsJsonWebKeys.to_json(response)
                 except:
@@ -2449,22 +2017,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GetAwsNodePool(
-        _BaseAwsClustersRestTransport._BaseGetAwsNodePool, AwsClustersRestStub
-    ):
+    class _GetAwsNodePool(_BaseAwsClustersRestTransport._BaseGetAwsNodePool, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GetAwsNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2504,28 +2062,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     An Anthos node pool running on AWS.
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_aws_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_aws_node_pool(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2549,12 +2095,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2570,12 +2111,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_get_aws_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_aws_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_aws_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = aws_resources.AwsNodePool.to_json(response)
                 except:
@@ -2596,22 +2133,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GetAwsOpenIdConfig(
-        _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig, AwsClustersRestStub
-    ):
+    class _GetAwsOpenIdConfig(_BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GetAwsOpenIdConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2657,28 +2184,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_aws_open_id_config(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_aws_open_id_config(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2702,12 +2217,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsOpenIdConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2723,12 +2233,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_get_aws_open_id_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_aws_open_id_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_aws_open_id_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = aws_resources.AwsOpenIdConfig.to_json(response)
                 except:
@@ -2749,22 +2255,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _GetAwsServerConfig(
-        _BaseAwsClustersRestTransport._BaseGetAwsServerConfig, AwsClustersRestStub
-    ):
+    class _GetAwsServerConfig(_BaseAwsClustersRestTransport._BaseGetAwsServerConfig, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GetAwsServerConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2806,28 +2302,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_aws_server_config(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_aws_server_config(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2851,12 +2335,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsServerConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2872,12 +2351,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_get_aws_server_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_aws_server_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_aws_server_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = aws_resources.AwsServerConfig.to_json(response)
                 except:
@@ -2898,22 +2373,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _ListAwsClusters(
-        _BaseAwsClustersRestTransport._BaseListAwsClusters, AwsClustersRestStub
-    ):
+    class _ListAwsClusters(_BaseAwsClustersRestTransport._BaseListAwsClusters, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.ListAwsClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2955,28 +2420,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseListAwsClusters._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseListAwsClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_aws_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseListAwsClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_aws_clusters(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseListAwsClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseListAwsClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseListAwsClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3000,12 +2453,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._ListAwsClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3021,16 +2469,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_list_aws_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_aws_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_aws_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = aws_service.ListAwsClustersResponse.to_json(
-                        response
-                    )
+                    response_payload = aws_service.ListAwsClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3049,22 +2491,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _ListAwsNodePools(
-        _BaseAwsClustersRestTransport._BaseListAwsNodePools, AwsClustersRestStub
-    ):
+    class _ListAwsNodePools(_BaseAwsClustersRestTransport._BaseListAwsNodePools, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.ListAwsNodePools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3106,28 +2538,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_aws_node_pools(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_aws_node_pools(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3151,12 +2571,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._ListAwsNodePools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3172,16 +2587,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_list_aws_node_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_aws_node_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_aws_node_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = aws_service.ListAwsNodePoolsResponse.to_json(
-                        response
-                    )
+                    response_payload = aws_service.ListAwsNodePoolsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3200,23 +2609,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _RollbackAwsNodePoolUpdate(
-        _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate,
-        AwsClustersRestStub,
-    ):
+    class _RollbackAwsNodePoolUpdate(_BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.RollbackAwsNodePoolUpdate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3261,32 +2659,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_http_options()
 
-            request, metadata = self._interceptor.pre_rollback_aws_node_pool_update(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_rollback_aws_node_pool_update(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3309,16 +2693,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AwsClustersRestTransport._RollbackAwsNodePoolUpdate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AwsClustersRestTransport._RollbackAwsNodePoolUpdate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3332,15 +2708,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_rollback_aws_node_pool_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_rollback_aws_node_pool_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rollback_aws_node_pool_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3361,22 +2730,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _UpdateAwsCluster(
-        _BaseAwsClustersRestTransport._BaseUpdateAwsCluster, AwsClustersRestStub
-    ):
+    class _UpdateAwsCluster(_BaseAwsClustersRestTransport._BaseUpdateAwsCluster, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.UpdateAwsCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3420,32 +2779,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_aws_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_aws_cluster(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3469,13 +2814,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._UpdateAwsCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3489,12 +2828,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_update_aws_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_aws_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_aws_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3515,22 +2850,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 )
             return resp
 
-    class _UpdateAwsNodePool(
-        _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool, AwsClustersRestStub
-    ):
+    class _UpdateAwsNodePool(_BaseAwsClustersRestTransport._BaseUpdateAwsNodePool, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.UpdateAwsNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3574,32 +2899,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_aws_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_aws_node_pool(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3623,13 +2934,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._UpdateAwsNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3643,12 +2948,8 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             resp = self._interceptor.post_update_aws_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_aws_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_aws_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3670,44 +2971,31 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             return resp
 
     @property
-    def create_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.CreateAwsClusterRequest], operations_pb2.Operation]:
+    def create_aws_cluster(self) -> Callable[[aws_service.CreateAwsClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.CreateAwsNodePoolRequest], operations_pb2.Operation]:
+    def create_aws_node_pool(self) -> Callable[[aws_service.CreateAwsNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.DeleteAwsClusterRequest], operations_pb2.Operation]:
+    def delete_aws_cluster(self) -> Callable[[aws_service.DeleteAwsClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.DeleteAwsNodePoolRequest], operations_pb2.Operation]:
+    def delete_aws_node_pool(self) -> Callable[[aws_service.DeleteAwsNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_aws_access_token(
-        self,
-    ) -> Callable[
-        [aws_service.GenerateAwsAccessTokenRequest],
-        aws_service.GenerateAwsAccessTokenResponse,
-    ]:
+    def generate_aws_access_token(self) -> Callable[[aws_service.GenerateAwsAccessTokenRequest], aws_service.GenerateAwsAccessTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAwsAccessToken(self._session, self._host, self._interceptor)  # type: ignore
@@ -3715,100 +3003,67 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
     @property
     def generate_aws_cluster_agent_token(
         self,
-    ) -> Callable[
-        [aws_service.GenerateAwsClusterAgentTokenRequest],
-        aws_service.GenerateAwsClusterAgentTokenResponse,
-    ]:
+    ) -> Callable[[aws_service.GenerateAwsClusterAgentTokenRequest], aws_service.GenerateAwsClusterAgentTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAwsClusterAgentToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.GetAwsClusterRequest], aws_resources.AwsCluster]:
+    def get_aws_cluster(self) -> Callable[[aws_service.GetAwsClusterRequest], aws_resources.AwsCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aws_json_web_keys(
-        self,
-    ) -> Callable[[aws_service.GetAwsJsonWebKeysRequest], aws_resources.AwsJsonWebKeys]:
+    def get_aws_json_web_keys(self) -> Callable[[aws_service.GetAwsJsonWebKeysRequest], aws_resources.AwsJsonWebKeys]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAwsJsonWebKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.GetAwsNodePoolRequest], aws_resources.AwsNodePool]:
+    def get_aws_node_pool(self) -> Callable[[aws_service.GetAwsNodePoolRequest], aws_resources.AwsNodePool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aws_open_id_config(
-        self,
-    ) -> Callable[
-        [aws_service.GetAwsOpenIdConfigRequest], aws_resources.AwsOpenIdConfig
-    ]:
+    def get_aws_open_id_config(self) -> Callable[[aws_service.GetAwsOpenIdConfigRequest], aws_resources.AwsOpenIdConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAwsOpenIdConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aws_server_config(
-        self,
-    ) -> Callable[
-        [aws_service.GetAwsServerConfigRequest], aws_resources.AwsServerConfig
-    ]:
+    def get_aws_server_config(self) -> Callable[[aws_service.GetAwsServerConfigRequest], aws_resources.AwsServerConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAwsServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_aws_clusters(
-        self,
-    ) -> Callable[
-        [aws_service.ListAwsClustersRequest], aws_service.ListAwsClustersResponse
-    ]:
+    def list_aws_clusters(self) -> Callable[[aws_service.ListAwsClustersRequest], aws_service.ListAwsClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAwsClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_aws_node_pools(
-        self,
-    ) -> Callable[
-        [aws_service.ListAwsNodePoolsRequest], aws_service.ListAwsNodePoolsResponse
-    ]:
+    def list_aws_node_pools(self) -> Callable[[aws_service.ListAwsNodePoolsRequest], aws_service.ListAwsNodePoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAwsNodePools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rollback_aws_node_pool_update(
-        self,
-    ) -> Callable[
-        [aws_service.RollbackAwsNodePoolUpdateRequest], operations_pb2.Operation
-    ]:
+    def rollback_aws_node_pool_update(self) -> Callable[[aws_service.RollbackAwsNodePoolUpdateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RollbackAwsNodePoolUpdate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_aws_cluster(
-        self,
-    ) -> Callable[[aws_service.UpdateAwsClusterRequest], operations_pb2.Operation]:
+    def update_aws_cluster(self) -> Callable[[aws_service.UpdateAwsClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_aws_node_pool(
-        self,
-    ) -> Callable[[aws_service.UpdateAwsNodePoolRequest], operations_pb2.Operation]:
+    def update_aws_node_pool(self) -> Callable[[aws_service.UpdateAwsNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
@@ -3817,22 +3072,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAwsClustersRestTransport._BaseCancelOperation, AwsClustersRestStub
-    ):
+    class _CancelOperation(_BaseAwsClustersRestTransport._BaseCancelOperation, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3868,32 +3113,18 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseAwsClustersRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAwsClustersRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3917,13 +3148,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3937,22 +3162,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseAwsClustersRestTransport._BaseDeleteOperation, AwsClustersRestStub
-    ):
+    class _DeleteOperation(_BaseAwsClustersRestTransport._BaseDeleteOperation, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3987,28 +3202,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAwsClustersRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAwsClustersRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4032,12 +3235,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4051,22 +3249,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAwsClustersRestTransport._BaseGetOperation, AwsClustersRestStub
-    ):
+    class _GetOperation(_BaseAwsClustersRestTransport._BaseGetOperation, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4104,30 +3292,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAwsClustersRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAwsClustersRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAwsClustersRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4151,12 +3325,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4168,9 +3337,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4195,22 +3362,12 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAwsClustersRestTransport._BaseListOperations, AwsClustersRestStub
-    ):
+    class _ListOperations(_BaseAwsClustersRestTransport._BaseListOperations, AwsClustersRestStub):
         def __hash__(self):
             return hash("AwsClustersRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4248,26 +3405,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAwsClustersRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAwsClustersRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAwsClustersRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAwsClustersRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAwsClustersRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAwsClustersRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4291,12 +3438,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
 
             # Send the request
             response = AwsClustersRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4308,9 +3450,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

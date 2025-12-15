@@ -820,12 +820,10 @@ class Action(proto.Message):
             CONSISTENT_KEYS = 1
             HIVE_STYLE_KEYS = 2
 
-        expected_structure: "Action.InvalidDataPartition.PartitionStructure" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="Action.InvalidDataPartition.PartitionStructure",
-            )
+        expected_structure: "Action.InvalidDataPartition.PartitionStructure" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Action.InvalidDataPartition.PartitionStructure",
         )
 
     class MissingData(proto.Message):

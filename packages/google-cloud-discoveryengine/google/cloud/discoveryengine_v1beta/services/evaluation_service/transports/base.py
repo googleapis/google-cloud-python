@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 from google.cloud.discoveryengine_v1beta.types import evaluation, evaluation_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class EvaluationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -187,12 +177,7 @@ class EvaluationServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_evaluation(
-        self,
-    ) -> Callable[
-        [evaluation_service.GetEvaluationRequest],
-        Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]],
-    ]:
+    def get_evaluation(self) -> Callable[[evaluation_service.GetEvaluationRequest], Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]]]:
         raise NotImplementedError()
 
     @property
@@ -200,20 +185,14 @@ class EvaluationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [evaluation_service.ListEvaluationsRequest],
-        Union[
-            evaluation_service.ListEvaluationsResponse,
-            Awaitable[evaluation_service.ListEvaluationsResponse],
-        ],
+        Union[evaluation_service.ListEvaluationsResponse, Awaitable[evaluation_service.ListEvaluationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_evaluation(
         self,
-    ) -> Callable[
-        [evaluation_service.CreateEvaluationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[evaluation_service.CreateEvaluationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -221,10 +200,7 @@ class EvaluationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [evaluation_service.ListEvaluationResultsRequest],
-        Union[
-            evaluation_service.ListEvaluationResultsResponse,
-            Awaitable[evaluation_service.ListEvaluationResultsResponse],
-        ],
+        Union[evaluation_service.ListEvaluationResultsResponse, Awaitable[evaluation_service.ListEvaluationResultsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -233,20 +209,14 @@ class EvaluationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

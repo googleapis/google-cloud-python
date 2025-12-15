@@ -109,12 +109,10 @@ class DataDiscoverySpec(proto.Message):
             EXTERNAL = 1
             BIGLAKE = 2
 
-        table_type: "DataDiscoverySpec.BigQueryPublishingConfig.TableType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="DataDiscoverySpec.BigQueryPublishingConfig.TableType",
-            )
+        table_type: "DataDiscoverySpec.BigQueryPublishingConfig.TableType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DataDiscoverySpec.BigQueryPublishingConfig.TableType",
         )
         connection: str = proto.Field(
             proto.STRING,

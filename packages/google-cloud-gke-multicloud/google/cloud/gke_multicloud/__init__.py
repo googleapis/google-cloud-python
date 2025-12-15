@@ -18,24 +18,12 @@ from google.cloud.gke_multicloud import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.gke_multicloud_v1.services.attached_clusters.async_client import (
-    AttachedClustersAsyncClient,
-)
-from google.cloud.gke_multicloud_v1.services.attached_clusters.client import (
-    AttachedClustersClient,
-)
-from google.cloud.gke_multicloud_v1.services.aws_clusters.async_client import (
-    AwsClustersAsyncClient,
-)
-from google.cloud.gke_multicloud_v1.services.aws_clusters.client import (
-    AwsClustersClient,
-)
-from google.cloud.gke_multicloud_v1.services.azure_clusters.async_client import (
-    AzureClustersAsyncClient,
-)
-from google.cloud.gke_multicloud_v1.services.azure_clusters.client import (
-    AzureClustersClient,
-)
+from google.cloud.gke_multicloud_v1.services.attached_clusters.async_client import AttachedClustersAsyncClient
+from google.cloud.gke_multicloud_v1.services.attached_clusters.client import AttachedClustersClient
+from google.cloud.gke_multicloud_v1.services.aws_clusters.async_client import AwsClustersAsyncClient
+from google.cloud.gke_multicloud_v1.services.aws_clusters.client import AwsClustersClient
+from google.cloud.gke_multicloud_v1.services.azure_clusters.async_client import AzureClustersAsyncClient
+from google.cloud.gke_multicloud_v1.services.azure_clusters.client import AzureClustersClient
 from google.cloud.gke_multicloud_v1.types.attached_resources import (
     AttachedCluster,
     AttachedClusterError,

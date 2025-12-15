@@ -123,12 +123,8 @@ class EngineServiceRestInterceptor:
     """
 
     def pre_create_engine(
-        self,
-        request: engine_service.CreateEngineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_service.CreateEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_service.CreateEngineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_service.CreateEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -136,9 +132,7 @@ class EngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_engine(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_engine(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_engine
 
         DEPRECATED. Please use the `post_create_engine_with_metadata`
@@ -152,9 +146,7 @@ class EngineServiceRestInterceptor:
         return response
 
     def post_create_engine_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_engine
 
@@ -171,12 +163,8 @@ class EngineServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_engine(
-        self,
-        request: engine_service.DeleteEngineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_service.DeleteEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_service.DeleteEngineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_service.DeleteEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -184,9 +172,7 @@ class EngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_engine(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_engine(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_engine
 
         DEPRECATED. Please use the `post_delete_engine_with_metadata`
@@ -200,9 +186,7 @@ class EngineServiceRestInterceptor:
         return response
 
     def post_delete_engine_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_engine
 
@@ -219,12 +203,8 @@ class EngineServiceRestInterceptor:
         return response, metadata
 
     def pre_get_engine(
-        self,
-        request: engine_service.GetEngineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_service.GetEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_service.GetEngineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_service.GetEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -263,12 +243,8 @@ class EngineServiceRestInterceptor:
         return response, metadata
 
     def pre_list_engines(
-        self,
-        request: engine_service.ListEnginesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_service.ListEnginesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_service.ListEnginesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_service.ListEnginesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_engines
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +252,7 @@ class EngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_engines(
-        self, response: engine_service.ListEnginesResponse
-    ) -> engine_service.ListEnginesResponse:
+    def post_list_engines(self, response: engine_service.ListEnginesResponse) -> engine_service.ListEnginesResponse:
         """Post-rpc interceptor for list_engines
 
         DEPRECATED. Please use the `post_list_engines_with_metadata`
@@ -292,12 +266,8 @@ class EngineServiceRestInterceptor:
         return response
 
     def post_list_engines_with_metadata(
-        self,
-        response: engine_service.ListEnginesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_service.ListEnginesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: engine_service.ListEnginesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_service.ListEnginesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_engines
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -313,12 +283,8 @@ class EngineServiceRestInterceptor:
         return response, metadata
 
     def pre_update_engine(
-        self,
-        request: engine_service.UpdateEngineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_service.UpdateEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_service.UpdateEngineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_service.UpdateEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -340,9 +306,7 @@ class EngineServiceRestInterceptor:
         return response
 
     def post_update_engine_with_metadata(
-        self,
-        response: gcd_engine.Engine,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_engine.Engine, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_engine.Engine, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_engine
 
@@ -359,12 +323,8 @@ class EngineServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -382,12 +342,8 @@ class EngineServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -395,9 +351,7 @@ class EngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -407,12 +361,8 @@ class EngineServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -420,9 +370,7 @@ class EngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -512,9 +460,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -696,29 +642,17 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateEngine(
-        _BaseEngineServiceRestTransport._BaseCreateEngine, EngineServiceRestStub
-    ):
+    class _CreateEngine(_BaseEngineServiceRestTransport._BaseCreateEngine, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.CreateEngine")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -763,30 +697,18 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseCreateEngine._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseCreateEngine._get_http_options()
 
             request, metadata = self._interceptor.pre_create_engine(request, metadata)
-            transcoded_request = _BaseEngineServiceRestTransport._BaseCreateEngine._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseCreateEngine._get_transcoded_request(http_options, request)
 
-            body = _BaseEngineServiceRestTransport._BaseCreateEngine._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEngineServiceRestTransport._BaseCreateEngine._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEngineServiceRestTransport._BaseCreateEngine._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseCreateEngine._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -810,13 +732,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._CreateEngine._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -830,12 +746,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             resp = self._interceptor.post_create_engine(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_engine_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_engine_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -856,22 +768,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEngine(
-        _BaseEngineServiceRestTransport._BaseDeleteEngine, EngineServiceRestStub
-    ):
+    class _DeleteEngine(_BaseEngineServiceRestTransport._BaseDeleteEngine, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.DeleteEngine")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -915,26 +817,16 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseDeleteEngine._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_engine(request, metadata)
-            transcoded_request = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -958,12 +850,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._DeleteEngine._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -977,12 +864,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             resp = self._interceptor.post_delete_engine(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_engine_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_engine_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1003,22 +886,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 )
             return resp
 
-    class _GetEngine(
-        _BaseEngineServiceRestTransport._BaseGetEngine, EngineServiceRestStub
-    ):
+    class _GetEngine(_BaseEngineServiceRestTransport._BaseGetEngine, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.GetEngine")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1062,30 +935,16 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseGetEngine._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseGetEngine._get_http_options()
 
             request, metadata = self._interceptor.pre_get_engine(request, metadata)
-            transcoded_request = (
-                _BaseEngineServiceRestTransport._BaseGetEngine._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseGetEngine._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEngineServiceRestTransport._BaseGetEngine._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseGetEngine._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1109,12 +968,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._GetEngine._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1130,12 +984,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             resp = self._interceptor.post_get_engine(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_engine_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_engine_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = engine.Engine.to_json(response)
                 except:
@@ -1156,22 +1006,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 )
             return resp
 
-    class _ListEngines(
-        _BaseEngineServiceRestTransport._BaseListEngines, EngineServiceRestStub
-    ):
+    class _ListEngines(_BaseEngineServiceRestTransport._BaseListEngines, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.ListEngines")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1215,28 +1055,16 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseListEngines._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseListEngines._get_http_options()
 
             request, metadata = self._interceptor.pre_list_engines(request, metadata)
-            transcoded_request = _BaseEngineServiceRestTransport._BaseListEngines._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseListEngines._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEngineServiceRestTransport._BaseListEngines._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseListEngines._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1260,12 +1088,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._ListEngines._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1281,16 +1104,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             resp = self._interceptor.post_list_engines(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_engines_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_engines_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = engine_service.ListEnginesResponse.to_json(
-                        response
-                    )
+                    response_payload = engine_service.ListEnginesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1309,22 +1126,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEngine(
-        _BaseEngineServiceRestTransport._BaseUpdateEngine, EngineServiceRestStub
-    ):
+    class _UpdateEngine(_BaseEngineServiceRestTransport._BaseUpdateEngine, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.UpdateEngine")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1369,30 +1176,18 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseUpdateEngine._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_http_options()
 
             request, metadata = self._interceptor.pre_update_engine(request, metadata)
-            transcoded_request = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_transcoded_request(http_options, request)
 
-            body = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1416,13 +1211,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._UpdateEngine._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1438,12 +1227,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             resp = self._interceptor.post_update_engine(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_engine_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_engine_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_engine.Engine.to_json(response)
                 except:
@@ -1465,17 +1250,13 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             return resp
 
     @property
-    def create_engine(
-        self,
-    ) -> Callable[[engine_service.CreateEngineRequest], operations_pb2.Operation]:
+    def create_engine(self) -> Callable[[engine_service.CreateEngineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEngine(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_engine(
-        self,
-    ) -> Callable[[engine_service.DeleteEngineRequest], operations_pb2.Operation]:
+    def delete_engine(self) -> Callable[[engine_service.DeleteEngineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEngine(self._session, self._host, self._interceptor)  # type: ignore
@@ -1487,19 +1268,13 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
         return self._GetEngine(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_engines(
-        self,
-    ) -> Callable[
-        [engine_service.ListEnginesRequest], engine_service.ListEnginesResponse
-    ]:
+    def list_engines(self) -> Callable[[engine_service.ListEnginesRequest], engine_service.ListEnginesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEngines(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_engine(
-        self,
-    ) -> Callable[[engine_service.UpdateEngineRequest], gcd_engine.Engine]:
+    def update_engine(self) -> Callable[[engine_service.UpdateEngineRequest], gcd_engine.Engine]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEngine(self._session, self._host, self._interceptor)  # type: ignore
@@ -1508,22 +1283,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEngineServiceRestTransport._BaseCancelOperation, EngineServiceRestStub
-    ):
+    class _CancelOperation(_BaseEngineServiceRestTransport._BaseCancelOperation, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1559,32 +1324,18 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEngineServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEngineServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseEngineServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEngineServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEngineServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1608,13 +1359,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1628,22 +1373,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEngineServiceRestTransport._BaseGetOperation, EngineServiceRestStub
-    ):
+    class _GetOperation(_BaseEngineServiceRestTransport._BaseGetOperation, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1681,26 +1416,16 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEngineServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEngineServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1724,12 +1449,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1741,9 +1461,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1768,22 +1486,12 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEngineServiceRestTransport._BaseListOperations, EngineServiceRestStub
-    ):
+    class _ListOperations(_BaseEngineServiceRestTransport._BaseListOperations, EngineServiceRestStub):
         def __hash__(self):
             return hash("EngineServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1821,26 +1529,16 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEngineServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEngineServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEngineServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEngineServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEngineServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEngineServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1864,12 +1562,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             # Send the request
             response = EngineServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1881,9 +1574,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

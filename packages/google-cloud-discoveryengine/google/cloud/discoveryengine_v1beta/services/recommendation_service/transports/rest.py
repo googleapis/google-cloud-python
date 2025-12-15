@@ -89,12 +89,8 @@ class RecommendationServiceRestInterceptor:
     """
 
     def pre_recommend(
-        self,
-        request: recommendation_service.RecommendRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommendation_service.RecommendRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: recommendation_service.RecommendRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommendation_service.RecommendRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for recommend
 
         Override in a subclass to manipulate the request or metadata
@@ -102,9 +98,7 @@ class RecommendationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_recommend(
-        self, response: recommendation_service.RecommendResponse
-    ) -> recommendation_service.RecommendResponse:
+    def post_recommend(self, response: recommendation_service.RecommendResponse) -> recommendation_service.RecommendResponse:
         """Post-rpc interceptor for recommend
 
         DEPRECATED. Please use the `post_recommend_with_metadata`
@@ -118,13 +112,8 @@ class RecommendationServiceRestInterceptor:
         return response
 
     def post_recommend_with_metadata(
-        self,
-        response: recommendation_service.RecommendResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommendation_service.RecommendResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: recommendation_service.RecommendResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommendation_service.RecommendResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for recommend
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -140,12 +129,8 @@ class RecommendationServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -163,12 +148,8 @@ class RecommendationServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -176,9 +157,7 @@ class RecommendationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -188,12 +167,8 @@ class RecommendationServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -201,9 +176,7 @@ class RecommendationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -292,31 +265,18 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RecommendationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Recommend(
-        _BaseRecommendationServiceRestTransport._BaseRecommend,
-        RecommendationServiceRestStub,
-    ):
+    class _Recommend(_BaseRecommendationServiceRestTransport._BaseRecommend, RecommendationServiceRestStub):
         def __hash__(self):
             return hash("RecommendationServiceRestTransport.Recommend")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -358,30 +318,18 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseRecommendationServiceRestTransport._BaseRecommend._get_http_options()
-            )
+            http_options = _BaseRecommendationServiceRestTransport._BaseRecommend._get_http_options()
 
             request, metadata = self._interceptor.pre_recommend(request, metadata)
-            transcoded_request = _BaseRecommendationServiceRestTransport._BaseRecommend._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRecommendationServiceRestTransport._BaseRecommend._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommendationServiceRestTransport._BaseRecommend._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommendationServiceRestTransport._BaseRecommend._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommendationServiceRestTransport._BaseRecommend._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommendationServiceRestTransport._BaseRecommend._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -405,13 +353,7 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
 
             # Send the request
             response = RecommendationServiceRestTransport._Recommend._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -427,16 +369,10 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
 
             resp = self._interceptor.post_recommend(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_recommend_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_recommend_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = recommendation_service.RecommendResponse.to_json(
-                        response
-                    )
+                    response_payload = recommendation_service.RecommendResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -456,12 +392,7 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
             return resp
 
     @property
-    def recommend(
-        self,
-    ) -> Callable[
-        [recommendation_service.RecommendRequest],
-        recommendation_service.RecommendResponse,
-    ]:
+    def recommend(self) -> Callable[[recommendation_service.RecommendRequest], recommendation_service.RecommendResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Recommend(self._session, self._host, self._interceptor)  # type: ignore
@@ -470,23 +401,12 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseRecommendationServiceRestTransport._BaseCancelOperation,
-        RecommendationServiceRestStub,
-    ):
+    class _CancelOperation(_BaseRecommendationServiceRestTransport._BaseCancelOperation, RecommendationServiceRestStub):
         def __hash__(self):
             return hash("RecommendationServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -522,32 +442,18 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommendationServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -570,16 +476,8 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                RecommendationServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RecommendationServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -593,23 +491,12 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseRecommendationServiceRestTransport._BaseGetOperation,
-        RecommendationServiceRestStub,
-    ):
+    class _GetOperation(_BaseRecommendationServiceRestTransport._BaseGetOperation, RecommendationServiceRestStub):
         def __hash__(self):
             return hash("RecommendationServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -647,26 +534,16 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRecommendationServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRecommendationServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseRecommendationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRecommendationServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRecommendationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommendationServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -690,12 +567,7 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
 
             # Send the request
             response = RecommendationServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -707,9 +579,7 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -734,23 +604,12 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseRecommendationServiceRestTransport._BaseListOperations,
-        RecommendationServiceRestStub,
-    ):
+    class _ListOperations(_BaseRecommendationServiceRestTransport._BaseListOperations, RecommendationServiceRestStub):
         def __hash__(self):
             return hash("RecommendationServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -788,26 +647,16 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseRecommendationServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseRecommendationServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseRecommendationServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRecommendationServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRecommendationServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommendationServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -831,12 +680,7 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
 
             # Send the request
             response = RecommendationServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -848,9 +692,7 @@ class RecommendationServiceRestTransport(_BaseRecommendationServiceRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

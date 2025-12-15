@@ -18,22 +18,11 @@ from google.cloud.kms_inventory import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.kms_inventory_v1.services.key_dashboard_service.async_client import (
-    KeyDashboardServiceAsyncClient,
-)
-from google.cloud.kms_inventory_v1.services.key_dashboard_service.client import (
-    KeyDashboardServiceClient,
-)
-from google.cloud.kms_inventory_v1.services.key_tracking_service.async_client import (
-    KeyTrackingServiceAsyncClient,
-)
-from google.cloud.kms_inventory_v1.services.key_tracking_service.client import (
-    KeyTrackingServiceClient,
-)
-from google.cloud.kms_inventory_v1.types.key_dashboard_service import (
-    ListCryptoKeysRequest,
-    ListCryptoKeysResponse,
-)
+from google.cloud.kms_inventory_v1.services.key_dashboard_service.async_client import KeyDashboardServiceAsyncClient
+from google.cloud.kms_inventory_v1.services.key_dashboard_service.client import KeyDashboardServiceClient
+from google.cloud.kms_inventory_v1.services.key_tracking_service.async_client import KeyTrackingServiceAsyncClient
+from google.cloud.kms_inventory_v1.services.key_tracking_service.client import KeyTrackingServiceClient
+from google.cloud.kms_inventory_v1.types.key_dashboard_service import ListCryptoKeysRequest, ListCryptoKeysResponse
 from google.cloud.kms_inventory_v1.types.key_tracking_service import (
     GetProtectedResourcesSummaryRequest,
     ProtectedResource,

@@ -20,18 +20,12 @@ __version__ = package_version.__version__
 
 from google.cloud.kms_v1.services.autokey.async_client import AutokeyAsyncClient
 from google.cloud.kms_v1.services.autokey.client import AutokeyClient
-from google.cloud.kms_v1.services.autokey_admin.async_client import (
-    AutokeyAdminAsyncClient,
-)
+from google.cloud.kms_v1.services.autokey_admin.async_client import AutokeyAdminAsyncClient
 from google.cloud.kms_v1.services.autokey_admin.client import AutokeyAdminClient
 from google.cloud.kms_v1.services.ekm_service.async_client import EkmServiceAsyncClient
 from google.cloud.kms_v1.services.ekm_service.client import EkmServiceClient
-from google.cloud.kms_v1.services.key_management_service.async_client import (
-    KeyManagementServiceAsyncClient,
-)
-from google.cloud.kms_v1.services.key_management_service.client import (
-    KeyManagementServiceClient,
-)
+from google.cloud.kms_v1.services.key_management_service.async_client import KeyManagementServiceAsyncClient
+from google.cloud.kms_v1.services.key_management_service.client import KeyManagementServiceClient
 from google.cloud.kms_v1.types.autokey import (
     CreateKeyHandleMetadata,
     CreateKeyHandleRequest,

@@ -122,9 +122,7 @@ class SessionControllerRestInterceptor:
     """
 
     def pre_create_session(
-        self,
-        request: sessions.CreateSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sessions.CreateSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.CreateSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_session
 
@@ -133,9 +131,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_session(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_session(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_session
 
         DEPRECATED. Please use the `post_create_session_with_metadata`
@@ -149,9 +145,7 @@ class SessionControllerRestInterceptor:
         return response
 
     def post_create_session_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_session
 
@@ -168,9 +162,7 @@ class SessionControllerRestInterceptor:
         return response, metadata
 
     def pre_delete_session(
-        self,
-        request: sessions.DeleteSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sessions.DeleteSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.DeleteSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_session
 
@@ -179,9 +171,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_session(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_session(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_session
 
         DEPRECATED. Please use the `post_delete_session_with_metadata`
@@ -195,9 +185,7 @@ class SessionControllerRestInterceptor:
         return response
 
     def post_delete_session_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_session
 
@@ -214,9 +202,7 @@ class SessionControllerRestInterceptor:
         return response, metadata
 
     def pre_get_session(
-        self,
-        request: sessions.GetSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sessions.GetSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.GetSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_session
 
@@ -239,9 +225,7 @@ class SessionControllerRestInterceptor:
         return response
 
     def post_get_session_with_metadata(
-        self,
-        response: sessions.Session,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sessions.Session, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_session
 
@@ -258,9 +242,7 @@ class SessionControllerRestInterceptor:
         return response, metadata
 
     def pre_list_sessions(
-        self,
-        request: sessions.ListSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sessions.ListSessionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.ListSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sessions
 
@@ -269,9 +251,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sessions(
-        self, response: sessions.ListSessionsResponse
-    ) -> sessions.ListSessionsResponse:
+    def post_list_sessions(self, response: sessions.ListSessionsResponse) -> sessions.ListSessionsResponse:
         """Post-rpc interceptor for list_sessions
 
         DEPRECATED. Please use the `post_list_sessions_with_metadata`
@@ -285,9 +265,7 @@ class SessionControllerRestInterceptor:
         return response
 
     def post_list_sessions_with_metadata(
-        self,
-        response: sessions.ListSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sessions.ListSessionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.ListSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sessions
 
@@ -304,12 +282,8 @@ class SessionControllerRestInterceptor:
         return response, metadata
 
     def pre_terminate_session(
-        self,
-        request: sessions.TerminateSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sessions.TerminateSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sessions.TerminateSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sessions.TerminateSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for terminate_session
 
         Override in a subclass to manipulate the request or metadata
@@ -317,9 +291,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_terminate_session(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_terminate_session(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for terminate_session
 
         DEPRECATED. Please use the `post_terminate_session_with_metadata`
@@ -333,9 +305,7 @@ class SessionControllerRestInterceptor:
         return response
 
     def post_terminate_session_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for terminate_session
 
@@ -352,12 +322,8 @@ class SessionControllerRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -375,12 +341,8 @@ class SessionControllerRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -398,13 +360,8 @@ class SessionControllerRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -412,9 +369,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -424,12 +379,8 @@ class SessionControllerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -447,12 +398,8 @@ class SessionControllerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -470,12 +417,8 @@ class SessionControllerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -483,9 +426,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -495,12 +436,8 @@ class SessionControllerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -508,9 +445,7 @@ class SessionControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -600,9 +535,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -670,30 +603,17 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateSession(
-        _BaseSessionControllerRestTransport._BaseCreateSession,
-        SessionControllerRestStub,
-    ):
+    class _CreateSession(_BaseSessionControllerRestTransport._BaseCreateSession, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.CreateSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -736,30 +656,18 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseCreateSession._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseCreateSession._get_http_options()
 
             request, metadata = self._interceptor.pre_create_session(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseCreateSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseCreateSession._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionControllerRestTransport._BaseCreateSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionControllerRestTransport._BaseCreateSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseCreateSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseCreateSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -783,13 +691,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._CreateSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -803,12 +705,8 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             resp = self._interceptor.post_create_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -829,23 +727,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 )
             return resp
 
-    class _DeleteSession(
-        _BaseSessionControllerRestTransport._BaseDeleteSession,
-        SessionControllerRestStub,
-    ):
+    class _DeleteSession(_BaseSessionControllerRestTransport._BaseDeleteSession, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.DeleteSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -887,26 +774,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseDeleteSession._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseDeleteSession._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_session(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseDeleteSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseDeleteSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseDeleteSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseDeleteSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -930,12 +807,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._DeleteSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -949,12 +821,8 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             resp = self._interceptor.post_delete_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -975,22 +843,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 )
             return resp
 
-    class _GetSession(
-        _BaseSessionControllerRestTransport._BaseGetSession, SessionControllerRestStub
-    ):
+    class _GetSession(_BaseSessionControllerRestTransport._BaseGetSession, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.GetSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1030,26 +888,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                     A representation of a session.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseGetSession._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseGetSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_session(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseGetSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseGetSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseGetSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseGetSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1073,12 +921,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._GetSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1094,12 +937,8 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             resp = self._interceptor.post_get_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sessions.Session.to_json(response)
                 except:
@@ -1120,22 +959,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 )
             return resp
 
-    class _ListSessions(
-        _BaseSessionControllerRestTransport._BaseListSessions, SessionControllerRestStub
-    ):
+    class _ListSessions(_BaseSessionControllerRestTransport._BaseListSessions, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.ListSessions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1175,26 +1004,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                     A list of interactive sessions.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseListSessions._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseListSessions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sessions(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseListSessions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseListSessions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseListSessions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseListSessions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1218,12 +1037,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._ListSessions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1239,12 +1053,8 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             resp = self._interceptor.post_list_sessions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sessions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sessions.ListSessionsResponse.to_json(response)
                 except:
@@ -1265,23 +1075,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 )
             return resp
 
-    class _TerminateSession(
-        _BaseSessionControllerRestTransport._BaseTerminateSession,
-        SessionControllerRestStub,
-    ):
+    class _TerminateSession(_BaseSessionControllerRestTransport._BaseTerminateSession, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.TerminateSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1325,32 +1124,18 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseTerminateSession._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseTerminateSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_terminate_session(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionControllerRestTransport._BaseTerminateSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_terminate_session(request, metadata)
+            transcoded_request = _BaseSessionControllerRestTransport._BaseTerminateSession._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionControllerRestTransport._BaseTerminateSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionControllerRestTransport._BaseTerminateSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseTerminateSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseTerminateSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1374,13 +1159,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._TerminateSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1394,12 +1173,8 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             resp = self._interceptor.post_terminate_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_terminate_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_terminate_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1421,17 +1196,13 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             return resp
 
     @property
-    def create_session(
-        self,
-    ) -> Callable[[sessions.CreateSessionRequest], operations_pb2.Operation]:
+    def create_session(self) -> Callable[[sessions.CreateSessionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[[sessions.DeleteSessionRequest], operations_pb2.Operation]:
+    def delete_session(self) -> Callable[[sessions.DeleteSessionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSession(self._session, self._host, self._interceptor)  # type: ignore
@@ -1443,17 +1214,13 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
         return self._GetSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[[sessions.ListSessionsRequest], sessions.ListSessionsResponse]:
+    def list_sessions(self) -> Callable[[sessions.ListSessionsRequest], sessions.ListSessionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSessions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def terminate_session(
-        self,
-    ) -> Callable[[sessions.TerminateSessionRequest], operations_pb2.Operation]:
+    def terminate_session(self) -> Callable[[sessions.TerminateSessionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TerminateSession(self._session, self._host, self._interceptor)  # type: ignore
@@ -1462,22 +1229,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseSessionControllerRestTransport._BaseGetIamPolicy, SessionControllerRestStub
-    ):
+    class _GetIamPolicy(_BaseSessionControllerRestTransport._BaseGetIamPolicy, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1516,30 +1273,18 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1563,13 +1308,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1581,9 +1320,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1608,22 +1345,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseSessionControllerRestTransport._BaseSetIamPolicy, SessionControllerRestStub
-    ):
+    class _SetIamPolicy(_BaseSessionControllerRestTransport._BaseSetIamPolicy, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1662,30 +1389,18 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1709,13 +1424,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1727,9 +1436,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1754,23 +1461,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseSessionControllerRestTransport._BaseTestIamPermissions,
-        SessionControllerRestStub,
-    ):
+    class _TestIamPermissions(_BaseSessionControllerRestTransport._BaseTestIamPermissions, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1809,32 +1505,18 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1858,13 +1540,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1876,9 +1552,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1903,23 +1577,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSessionControllerRestTransport._BaseCancelOperation,
-        SessionControllerRestStub,
-    ):
+    class _CancelOperation(_BaseSessionControllerRestTransport._BaseCancelOperation, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1954,28 +1617,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionControllerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSessionControllerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1999,12 +1650,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2018,23 +1664,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseSessionControllerRestTransport._BaseDeleteOperation,
-        SessionControllerRestStub,
-    ):
+    class _DeleteOperation(_BaseSessionControllerRestTransport._BaseDeleteOperation, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2069,28 +1704,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionControllerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseSessionControllerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2114,12 +1737,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2133,22 +1751,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSessionControllerRestTransport._BaseGetOperation, SessionControllerRestStub
-    ):
+    class _GetOperation(_BaseSessionControllerRestTransport._BaseGetOperation, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2186,26 +1794,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2229,12 +1827,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2246,9 +1839,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2273,23 +1864,12 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSessionControllerRestTransport._BaseListOperations,
-        SessionControllerRestStub,
-    ):
+    class _ListOperations(_BaseSessionControllerRestTransport._BaseListOperations, SessionControllerRestStub):
         def __hash__(self):
             return hash("SessionControllerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2327,26 +1907,16 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSessionControllerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSessionControllerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSessionControllerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionControllerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionControllerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionControllerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2370,12 +1940,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
 
             # Send the request
             response = SessionControllerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2387,9 +1952,7 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

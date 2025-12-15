@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .containeranalysis import (
-    ExportSBOMRequest,
-    ExportSBOMResponse,
-    GetVulnerabilityOccurrencesSummaryRequest,
-    VulnerabilityOccurrencesSummary,
-)
+from .containeranalysis import ExportSBOMRequest, ExportSBOMResponse, GetVulnerabilityOccurrencesSummaryRequest, VulnerabilityOccurrencesSummary
 
 __all__ = (
     "ExportSBOMRequest",

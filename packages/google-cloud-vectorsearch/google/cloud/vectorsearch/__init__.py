@@ -18,31 +18,14 @@ from google.cloud.vectorsearch import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.vectorsearch_v1beta.services.data_object_search_service.async_client import (
-    DataObjectSearchServiceAsyncClient,
-)
-from google.cloud.vectorsearch_v1beta.services.data_object_search_service.client import (
-    DataObjectSearchServiceClient,
-)
-from google.cloud.vectorsearch_v1beta.services.data_object_service.async_client import (
-    DataObjectServiceAsyncClient,
-)
-from google.cloud.vectorsearch_v1beta.services.data_object_service.client import (
-    DataObjectServiceClient,
-)
-from google.cloud.vectorsearch_v1beta.services.vector_search_service.async_client import (
-    VectorSearchServiceAsyncClient,
-)
-from google.cloud.vectorsearch_v1beta.services.vector_search_service.client import (
-    VectorSearchServiceClient,
-)
+from google.cloud.vectorsearch_v1beta.services.data_object_search_service.async_client import DataObjectSearchServiceAsyncClient
+from google.cloud.vectorsearch_v1beta.services.data_object_search_service.client import DataObjectSearchServiceClient
+from google.cloud.vectorsearch_v1beta.services.data_object_service.async_client import DataObjectServiceAsyncClient
+from google.cloud.vectorsearch_v1beta.services.data_object_service.client import DataObjectServiceClient
+from google.cloud.vectorsearch_v1beta.services.vector_search_service.async_client import VectorSearchServiceAsyncClient
+from google.cloud.vectorsearch_v1beta.services.vector_search_service.client import VectorSearchServiceClient
 from google.cloud.vectorsearch_v1beta.types.common import DistanceMetric
-from google.cloud.vectorsearch_v1beta.types.data_object import (
-    DataObject,
-    DenseVector,
-    SparseVector,
-    Vector,
-)
+from google.cloud.vectorsearch_v1beta.types.data_object import DataObject, DenseVector, SparseVector, Vector
 from google.cloud.vectorsearch_v1beta.types.data_object_search_service import (
     AggregateDataObjectsRequest,
     AggregateDataObjectsResponse,
@@ -76,10 +59,7 @@ from google.cloud.vectorsearch_v1beta.types.data_object_service import (
     GetDataObjectRequest,
     UpdateDataObjectRequest,
 )
-from google.cloud.vectorsearch_v1beta.types.embedding_config import (
-    EmbeddingTaskType,
-    VertexEmbeddingConfig,
-)
+from google.cloud.vectorsearch_v1beta.types.embedding_config import EmbeddingTaskType, VertexEmbeddingConfig
 from google.cloud.vectorsearch_v1beta.types.vectorsearch_service import (
     Collection,
     CreateCollectionRequest,

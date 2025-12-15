@@ -18,12 +18,8 @@ from google.cloud.devtools.containeranalysis import gapic_version as package_ver
 __version__ = package_version.__version__
 
 
-from google.cloud.devtools.containeranalysis_v1.services.container_analysis.async_client import (
-    ContainerAnalysisAsyncClient,
-)
-from google.cloud.devtools.containeranalysis_v1.services.container_analysis.client import (
-    ContainerAnalysisClient,
-)
+from google.cloud.devtools.containeranalysis_v1.services.container_analysis.async_client import ContainerAnalysisAsyncClient
+from google.cloud.devtools.containeranalysis_v1.services.container_analysis.client import ContainerAnalysisClient
 from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
     ExportSBOMRequest,
     ExportSBOMResponse,

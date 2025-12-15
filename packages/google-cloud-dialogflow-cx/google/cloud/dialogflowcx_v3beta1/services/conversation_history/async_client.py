@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -50,13 +39,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.conversation_history import pagers
-from google.cloud.dialogflowcx_v3beta1.types import (
-    conversation_history,
-    environment,
-    flow,
-    intent,
-    page,
-)
+from google.cloud.dialogflowcx_v3beta1.types import conversation_history, environment, flow, intent, page
 
 from .client import ConversationHistoryClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationHistoryTransport
@@ -85,21 +68,13 @@ class ConversationHistoryAsyncClient:
     _DEFAULT_UNIVERSE = ConversationHistoryClient._DEFAULT_UNIVERSE
 
     conversation_path = staticmethod(ConversationHistoryClient.conversation_path)
-    parse_conversation_path = staticmethod(
-        ConversationHistoryClient.parse_conversation_path
-    )
+    parse_conversation_path = staticmethod(ConversationHistoryClient.parse_conversation_path)
     data_store_path = staticmethod(ConversationHistoryClient.data_store_path)
-    parse_data_store_path = staticmethod(
-        ConversationHistoryClient.parse_data_store_path
-    )
+    parse_data_store_path = staticmethod(ConversationHistoryClient.parse_data_store_path)
     entity_type_path = staticmethod(ConversationHistoryClient.entity_type_path)
-    parse_entity_type_path = staticmethod(
-        ConversationHistoryClient.parse_entity_type_path
-    )
+    parse_entity_type_path = staticmethod(ConversationHistoryClient.parse_entity_type_path)
     environment_path = staticmethod(ConversationHistoryClient.environment_path)
-    parse_environment_path = staticmethod(
-        ConversationHistoryClient.parse_environment_path
-    )
+    parse_environment_path = staticmethod(ConversationHistoryClient.parse_environment_path)
     example_path = staticmethod(ConversationHistoryClient.example_path)
     parse_example_path = staticmethod(ConversationHistoryClient.parse_example_path)
     flow_path = staticmethod(ConversationHistoryClient.flow_path)
@@ -113,57 +88,33 @@ class ConversationHistoryAsyncClient:
     playbook_path = staticmethod(ConversationHistoryClient.playbook_path)
     parse_playbook_path = staticmethod(ConversationHistoryClient.parse_playbook_path)
     secret_version_path = staticmethod(ConversationHistoryClient.secret_version_path)
-    parse_secret_version_path = staticmethod(
-        ConversationHistoryClient.parse_secret_version_path
-    )
+    parse_secret_version_path = staticmethod(ConversationHistoryClient.parse_secret_version_path)
     service_path = staticmethod(ConversationHistoryClient.service_path)
     parse_service_path = staticmethod(ConversationHistoryClient.parse_service_path)
     session_path = staticmethod(ConversationHistoryClient.session_path)
     parse_session_path = staticmethod(ConversationHistoryClient.parse_session_path)
-    session_entity_type_path = staticmethod(
-        ConversationHistoryClient.session_entity_type_path
-    )
-    parse_session_entity_type_path = staticmethod(
-        ConversationHistoryClient.parse_session_entity_type_path
-    )
+    session_entity_type_path = staticmethod(ConversationHistoryClient.session_entity_type_path)
+    parse_session_entity_type_path = staticmethod(ConversationHistoryClient.parse_session_entity_type_path)
     test_case_path = staticmethod(ConversationHistoryClient.test_case_path)
     parse_test_case_path = staticmethod(ConversationHistoryClient.parse_test_case_path)
     tool_path = staticmethod(ConversationHistoryClient.tool_path)
     parse_tool_path = staticmethod(ConversationHistoryClient.parse_tool_path)
-    transition_route_group_path = staticmethod(
-        ConversationHistoryClient.transition_route_group_path
-    )
-    parse_transition_route_group_path = staticmethod(
-        ConversationHistoryClient.parse_transition_route_group_path
-    )
+    transition_route_group_path = staticmethod(ConversationHistoryClient.transition_route_group_path)
+    parse_transition_route_group_path = staticmethod(ConversationHistoryClient.parse_transition_route_group_path)
     version_path = staticmethod(ConversationHistoryClient.version_path)
     parse_version_path = staticmethod(ConversationHistoryClient.parse_version_path)
     webhook_path = staticmethod(ConversationHistoryClient.webhook_path)
     parse_webhook_path = staticmethod(ConversationHistoryClient.parse_webhook_path)
-    common_billing_account_path = staticmethod(
-        ConversationHistoryClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationHistoryClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ConversationHistoryClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ConversationHistoryClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ConversationHistoryClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationHistoryClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ConversationHistoryClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ConversationHistoryClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ConversationHistoryClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ConversationHistoryClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ConversationHistoryClient.parse_common_organization_path)
     common_project_path = staticmethod(ConversationHistoryClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationHistoryClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ConversationHistoryClient.parse_common_project_path)
     common_location_path = staticmethod(ConversationHistoryClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ConversationHistoryClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ConversationHistoryClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -199,9 +150,7 @@ class ConversationHistoryAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -268,13 +217,7 @@ class ConversationHistoryAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ConversationHistoryTransport,
-                Callable[..., ConversationHistoryTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ConversationHistoryTransport, Callable[..., ConversationHistoryTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -334,20 +277,14 @@ class ConversationHistoryAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.dialogflow.cx_v3beta1.ConversationHistoryAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -358,9 +295,7 @@ class ConversationHistoryAsyncClient:
 
     async def list_conversations(
         self,
-        request: Optional[
-            Union[conversation_history.ListConversationsRequest, dict]
-        ] = None,
+        request: Optional[Union[conversation_history.ListConversationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -429,14 +364,9 @@ class ConversationHistoryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -450,15 +380,11 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_conversations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_conversations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -487,9 +413,7 @@ class ConversationHistoryAsyncClient:
 
     async def get_conversation(
         self,
-        request: Optional[
-            Union[conversation_history.GetConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversation_history.GetConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -551,14 +475,9 @@ class ConversationHistoryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -572,15 +491,11 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -598,9 +513,7 @@ class ConversationHistoryAsyncClient:
 
     async def delete_conversation(
         self,
-        request: Optional[
-            Union[conversation_history.DeleteConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversation_history.DeleteConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -655,14 +568,9 @@ class ConversationHistoryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -676,15 +584,11 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -734,9 +638,7 @@ class ConversationHistoryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -789,9 +691,7 @@ class ConversationHistoryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -847,9 +747,7 @@ class ConversationHistoryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -899,9 +797,7 @@ class ConversationHistoryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -954,9 +850,7 @@ class ConversationHistoryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -979,9 +873,7 @@ class ConversationHistoryAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

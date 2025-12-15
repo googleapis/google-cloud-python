@@ -18,12 +18,8 @@ from google.cloud.gdchardwaremanagement import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.async_client import (
-    GDCHardwareManagementAsyncClient,
-)
-from google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.client import (
-    GDCHardwareManagementClient,
-)
+from google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.async_client import GDCHardwareManagementAsyncClient
+from google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.client import GDCHardwareManagementClient
 from google.cloud.gdchardwaremanagement_v1alpha.types.resources import (
     ChangeLogEntry,
     Comment,

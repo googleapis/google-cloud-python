@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import DataAccessControlServiceTransport
 from .grpc import DataAccessControlServiceGrpcTransport
 from .grpc_asyncio import DataAccessControlServiceGrpcAsyncIOTransport
-from .rest import (
-    DataAccessControlServiceRestInterceptor,
-    DataAccessControlServiceRestTransport,
-)
+from .rest import DataAccessControlServiceRestInterceptor, DataAccessControlServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DataAccessControlServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DataAccessControlServiceTransport]]
 _transport_registry["grpc"] = DataAccessControlServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataAccessControlServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = DataAccessControlServiceRestTransport

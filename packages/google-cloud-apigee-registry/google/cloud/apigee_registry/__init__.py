@@ -18,15 +18,9 @@ from google.cloud.apigee_registry import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.apigee_registry_v1.services.provisioning.async_client import (
-    ProvisioningAsyncClient,
-)
-from google.cloud.apigee_registry_v1.services.provisioning.client import (
-    ProvisioningClient,
-)
-from google.cloud.apigee_registry_v1.services.registry.async_client import (
-    RegistryAsyncClient,
-)
+from google.cloud.apigee_registry_v1.services.provisioning.async_client import ProvisioningAsyncClient
+from google.cloud.apigee_registry_v1.services.provisioning.client import ProvisioningClient
+from google.cloud.apigee_registry_v1.services.registry.async_client import RegistryAsyncClient
 from google.cloud.apigee_registry_v1.services.registry.client import RegistryClient
 from google.cloud.apigee_registry_v1.types.provisioning_service import (
     CreateInstanceRequest,
@@ -35,13 +29,7 @@ from google.cloud.apigee_registry_v1.types.provisioning_service import (
     Instance,
     OperationMetadata,
 )
-from google.cloud.apigee_registry_v1.types.registry_models import (
-    Api,
-    ApiDeployment,
-    ApiSpec,
-    ApiVersion,
-    Artifact,
-)
+from google.cloud.apigee_registry_v1.types.registry_models import Api, ApiDeployment, ApiSpec, ApiVersion, Artifact
 from google.cloud.apigee_registry_v1.types.registry_service import (
     CreateApiDeploymentRequest,
     CreateApiRequest,

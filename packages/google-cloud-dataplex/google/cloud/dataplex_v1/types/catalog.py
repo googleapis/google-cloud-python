@@ -391,16 +391,12 @@ class AspectType(proto.Message):
             proto.STRING,
             number=5,
         )
-        record_fields: MutableSequence[
-            "AspectType.MetadataTemplate"
-        ] = proto.RepeatedField(
+        record_fields: MutableSequence["AspectType.MetadataTemplate"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="AspectType.MetadataTemplate",
         )
-        enum_values: MutableSequence[
-            "AspectType.MetadataTemplate.EnumValue"
-        ] = proto.RepeatedField(
+        enum_values: MutableSequence["AspectType.MetadataTemplate.EnumValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=8,
             message="AspectType.MetadataTemplate.EnumValue",

@@ -18,20 +18,11 @@ from google.cloud.apigeeconnect import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.apigeeconnect_v1.services.connection_service.async_client import (
-    ConnectionServiceAsyncClient,
-)
-from google.cloud.apigeeconnect_v1.services.connection_service.client import (
-    ConnectionServiceClient,
-)
+from google.cloud.apigeeconnect_v1.services.connection_service.async_client import ConnectionServiceAsyncClient
+from google.cloud.apigeeconnect_v1.services.connection_service.client import ConnectionServiceClient
 from google.cloud.apigeeconnect_v1.services.tether.async_client import TetherAsyncClient
 from google.cloud.apigeeconnect_v1.services.tether.client import TetherClient
-from google.cloud.apigeeconnect_v1.types.connection import (
-    Cluster,
-    Connection,
-    ListConnectionsRequest,
-    ListConnectionsResponse,
-)
+from google.cloud.apigeeconnect_v1.types.connection import Cluster, Connection, ListConnectionsRequest, ListConnectionsResponse
 from google.cloud.apigeeconnect_v1.types.tether import (
     Action,
     EgressRequest,

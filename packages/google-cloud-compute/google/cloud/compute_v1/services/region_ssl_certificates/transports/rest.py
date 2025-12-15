@@ -111,13 +111,8 @@ class RegionSslCertificatesRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionSslCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionSslCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteRegionSslCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionSslCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -139,9 +134,7 @@ class RegionSslCertificatesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -158,12 +151,8 @@ class RegionSslCertificatesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionSslCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionSslCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRegionSslCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionSslCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -185,9 +174,7 @@ class RegionSslCertificatesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.SslCertificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SslCertificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SslCertificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -204,13 +191,8 @@ class RegionSslCertificatesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionSslCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionSslCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertRegionSslCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionSslCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -232,9 +214,7 @@ class RegionSslCertificatesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -251,13 +231,8 @@ class RegionSslCertificatesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionSslCertificatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionSslCertificatesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListRegionSslCertificatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionSslCertificatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -265,9 +240,7 @@ class RegionSslCertificatesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.SslCertificateList
-    ) -> compute.SslCertificateList:
+    def post_list(self, response: compute.SslCertificateList) -> compute.SslCertificateList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -281,9 +254,7 @@ class RegionSslCertificatesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.SslCertificateList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SslCertificateList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SslCertificateList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -383,31 +354,18 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionSslCertificatesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Delete(
-        _BaseRegionSslCertificatesRestTransport._BaseDelete,
-        RegionSslCertificatesRestStub,
-    ):
+    class _Delete(_BaseRegionSslCertificatesRestTransport._BaseDelete, RegionSslCertificatesRestStub):
         def __hash__(self):
             return hash("RegionSslCertificatesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -465,26 +423,16 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionSslCertificatesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -508,12 +456,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             # Send the request
             response = RegionSslCertificatesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -529,12 +472,8 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -555,22 +494,12 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 )
             return resp
 
-    class _Get(
-        _BaseRegionSslCertificatesRestTransport._BaseGet, RegionSslCertificatesRestStub
-    ):
+    class _Get(_BaseRegionSslCertificatesRestTransport._BaseGet, RegionSslCertificatesRestStub):
         def __hash__(self):
             return hash("RegionSslCertificatesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -631,28 +560,16 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionSslCertificatesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionSslCertificatesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionSslCertificatesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionSslCertificatesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -676,12 +593,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             # Send the request
             response = RegionSslCertificatesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -698,9 +610,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SslCertificate.to_json(response)
                 except:
@@ -721,23 +631,12 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionSslCertificatesRestTransport._BaseInsert,
-        RegionSslCertificatesRestStub,
-    ):
+    class _Insert(_BaseRegionSslCertificatesRestTransport._BaseInsert, RegionSslCertificatesRestStub):
         def __hash__(self):
             return hash("RegionSslCertificatesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -796,30 +695,18 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionSslCertificatesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -843,13 +730,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             # Send the request
             response = RegionSslCertificatesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -865,12 +746,8 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -891,22 +768,12 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 )
             return resp
 
-    class _List(
-        _BaseRegionSslCertificatesRestTransport._BaseList, RegionSslCertificatesRestStub
-    ):
+    class _List(_BaseRegionSslCertificatesRestTransport._BaseList, RegionSslCertificatesRestStub):
         def __hash__(self):
             return hash("RegionSslCertificatesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -949,26 +816,16 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionSslCertificatesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionSslCertificatesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSslCertificatesRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSslCertificatesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -992,12 +849,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
 
             # Send the request
             response = RegionSslCertificatesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1014,9 +866,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SslCertificateList.to_json(response)
                 except:
@@ -1038,35 +888,25 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionSslCertificateRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionSslCertificateRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetRegionSslCertificateRequest], compute.SslCertificate]:
+    def get(self) -> Callable[[compute.GetRegionSslCertificateRequest], compute.SslCertificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionSslCertificateRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionSslCertificateRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionSslCertificatesRequest], compute.SslCertificateList
-    ]:
+    def list(self) -> Callable[[compute.ListRegionSslCertificatesRequest], compute.SslCertificateList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore

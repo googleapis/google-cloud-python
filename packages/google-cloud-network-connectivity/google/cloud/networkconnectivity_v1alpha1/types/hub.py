@@ -206,9 +206,7 @@ class Spoke(proto.Message):
         proto.STRING,
         number=13,
     )
-    linked_router_appliance_instances: MutableSequence[
-        "RouterApplianceInstance"
-    ] = proto.RepeatedField(
+    linked_router_appliance_instances: MutableSequence["RouterApplianceInstance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="RouterApplianceInstance",

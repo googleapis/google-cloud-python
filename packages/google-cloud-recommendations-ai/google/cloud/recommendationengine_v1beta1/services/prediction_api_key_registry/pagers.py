@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,16 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.recommendationengine_v1beta1.types import (
-    prediction_apikey_registry_service,
-)
+from google.cloud.recommendationengine_v1beta1.types import prediction_apikey_registry_service
 
 
 class ListPredictionApiKeyRegistrationsPager:
@@ -63,10 +49,7 @@ class ListPredictionApiKeyRegistrationsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
-        ],
+        method: Callable[..., prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse],
         request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
         response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
         *,
@@ -92,11 +75,7 @@ class ListPredictionApiKeyRegistrationsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-                request
-            )
-        )
+        self._request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -106,25 +85,14 @@ class ListPredictionApiKeyRegistrationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
-    ]:
+    def pages(self) -> Iterator[prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
+    def __iter__(self) -> Iterator[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
         for page in self.pages:
             yield from page.prediction_api_key_registrations
 
@@ -152,12 +120,7 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse]],
         request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
         response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
         *,
@@ -183,11 +146,7 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-                request
-            )
-        )
+        self._request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -197,25 +156,14 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
-    ]:
+    async def pages(self) -> AsyncIterator[prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
+    def __aiter__(self) -> AsyncIterator[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.prediction_api_key_registrations:

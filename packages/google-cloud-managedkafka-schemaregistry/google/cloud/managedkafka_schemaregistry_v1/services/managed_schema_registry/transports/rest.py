@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.managedkafka_schemaregistry_v1.types import (
-    schema_registry as gcms_schema_registry,
-)
+from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry as gcms_schema_registry
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
@@ -299,13 +297,8 @@ class ManagedSchemaRegistryRestInterceptor:
     """
 
     def pre_check_compatibility(
-        self,
-        request: schema_registry.CheckCompatibilityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.CheckCompatibilityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.CheckCompatibilityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.CheckCompatibilityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check_compatibility
 
         Override in a subclass to manipulate the request or metadata
@@ -313,9 +306,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_check_compatibility(
-        self, response: schema_registry.CheckCompatibilityResponse
-    ) -> schema_registry.CheckCompatibilityResponse:
+    def post_check_compatibility(self, response: schema_registry.CheckCompatibilityResponse) -> schema_registry.CheckCompatibilityResponse:
         """Post-rpc interceptor for check_compatibility
 
         DEPRECATED. Please use the `post_check_compatibility_with_metadata`
@@ -329,13 +320,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_check_compatibility_with_metadata(
-        self,
-        response: schema_registry.CheckCompatibilityResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.CheckCompatibilityResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: schema_registry.CheckCompatibilityResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.CheckCompatibilityResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check_compatibility
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -351,13 +337,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_create_schema_registry(
-        self,
-        request: gcms_schema_registry.CreateSchemaRegistryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcms_schema_registry.CreateSchemaRegistryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcms_schema_registry.CreateSchemaRegistryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcms_schema_registry.CreateSchemaRegistryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_schema_registry
 
         Override in a subclass to manipulate the request or metadata
@@ -365,9 +346,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_create_schema_registry(
-        self, response: schema_registry_resources.SchemaRegistry
-    ) -> schema_registry_resources.SchemaRegistry:
+    def post_create_schema_registry(self, response: schema_registry_resources.SchemaRegistry) -> schema_registry_resources.SchemaRegistry:
         """Post-rpc interceptor for create_schema_registry
 
         DEPRECATED. Please use the `post_create_schema_registry_with_metadata`
@@ -381,13 +360,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_create_schema_registry_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaRegistry,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaRegistry,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: schema_registry_resources.SchemaRegistry, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaRegistry, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_schema_registry
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -403,12 +377,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_create_version(
-        self,
-        request: schema_registry.CreateVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.CreateVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_version
 
         Override in a subclass to manipulate the request or metadata
@@ -416,9 +386,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_create_version(
-        self, response: schema_registry.CreateVersionResponse
-    ) -> schema_registry.CreateVersionResponse:
+    def post_create_version(self, response: schema_registry.CreateVersionResponse) -> schema_registry.CreateVersionResponse:
         """Post-rpc interceptor for create_version
 
         DEPRECATED. Please use the `post_create_version_with_metadata`
@@ -432,12 +400,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_create_version_with_metadata(
-        self,
-        response: schema_registry.CreateVersionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.CreateVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry.CreateVersionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.CreateVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -453,13 +417,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_delete_schema_config(
-        self,
-        request: schema_registry.DeleteSchemaConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.DeleteSchemaConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.DeleteSchemaConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.DeleteSchemaConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_schema_config
 
         Override in a subclass to manipulate the request or metadata
@@ -467,9 +426,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_schema_config(
-        self, response: schema_registry_resources.SchemaConfig
-    ) -> schema_registry_resources.SchemaConfig:
+    def post_delete_schema_config(self, response: schema_registry_resources.SchemaConfig) -> schema_registry_resources.SchemaConfig:
         """Post-rpc interceptor for delete_schema_config
 
         DEPRECATED. Please use the `post_delete_schema_config_with_metadata`
@@ -483,12 +440,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_delete_schema_config_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_schema_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -504,12 +457,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_delete_schema_mode(
-        self,
-        request: schema_registry.DeleteSchemaModeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.DeleteSchemaModeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.DeleteSchemaModeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.DeleteSchemaModeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_schema_mode
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +466,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_schema_mode(
-        self, response: schema_registry_resources.SchemaMode
-    ) -> schema_registry_resources.SchemaMode:
+    def post_delete_schema_mode(self, response: schema_registry_resources.SchemaMode) -> schema_registry_resources.SchemaMode:
         """Post-rpc interceptor for delete_schema_mode
 
         DEPRECATED. Please use the `post_delete_schema_mode_with_metadata`
@@ -533,12 +480,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_delete_schema_mode_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaMode,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaMode, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaMode, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaMode, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_schema_mode
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -554,13 +497,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_delete_schema_registry(
-        self,
-        request: schema_registry.DeleteSchemaRegistryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.DeleteSchemaRegistryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.DeleteSchemaRegistryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.DeleteSchemaRegistryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_schema_registry
 
         Override in a subclass to manipulate the request or metadata
@@ -569,12 +507,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return request, metadata
 
     def pre_delete_subject(
-        self,
-        request: schema_registry.DeleteSubjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.DeleteSubjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.DeleteSubjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.DeleteSubjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_subject
 
         Override in a subclass to manipulate the request or metadata
@@ -582,9 +516,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_subject(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_delete_subject(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for delete_subject
 
         DEPRECATED. Please use the `post_delete_subject_with_metadata`
@@ -598,9 +530,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_delete_subject_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_subject
 
@@ -617,12 +547,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_delete_version(
-        self,
-        request: schema_registry.DeleteVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.DeleteVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_version
 
         Override in a subclass to manipulate the request or metadata
@@ -630,9 +556,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_version(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_delete_version(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for delete_version
 
         DEPRECATED. Please use the `post_delete_version_with_metadata`
@@ -646,9 +570,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_delete_version_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_version
 
@@ -665,12 +587,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_context(
-        self,
-        request: schema_registry.GetContextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetContextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetContextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetContextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_context
 
         Override in a subclass to manipulate the request or metadata
@@ -678,9 +596,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_context(
-        self, response: schema_registry_resources.Context
-    ) -> schema_registry_resources.Context:
+    def post_get_context(self, response: schema_registry_resources.Context) -> schema_registry_resources.Context:
         """Post-rpc interceptor for get_context
 
         DEPRECATED. Please use the `post_get_context_with_metadata`
@@ -694,12 +610,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_context_with_metadata(
-        self,
-        response: schema_registry_resources.Context,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.Context, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.Context, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.Context, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_context
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -715,12 +627,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_raw_schema(
-        self,
-        request: schema_registry.GetSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_raw_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -728,9 +636,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_raw_schema(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_get_raw_schema(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for get_raw_schema
 
         DEPRECATED. Please use the `post_get_raw_schema_with_metadata`
@@ -744,9 +650,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_raw_schema_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_raw_schema
 
@@ -763,12 +667,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_raw_schema_version(
-        self,
-        request: schema_registry.GetVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_raw_schema_version
 
         Override in a subclass to manipulate the request or metadata
@@ -776,9 +676,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_raw_schema_version(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_get_raw_schema_version(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for get_raw_schema_version
 
         DEPRECATED. Please use the `post_get_raw_schema_version_with_metadata`
@@ -792,9 +690,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_raw_schema_version_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_raw_schema_version
 
@@ -811,12 +707,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_schema(
-        self,
-        request: schema_registry.GetSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -824,9 +716,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_schema(
-        self, response: schema_registry_resources.Schema
-    ) -> schema_registry_resources.Schema:
+    def post_get_schema(self, response: schema_registry_resources.Schema) -> schema_registry_resources.Schema:
         """Post-rpc interceptor for get_schema
 
         DEPRECATED. Please use the `post_get_schema_with_metadata`
@@ -840,12 +730,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_schema_with_metadata(
-        self,
-        response: schema_registry_resources.Schema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.Schema, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.Schema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.Schema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_schema
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -861,12 +747,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_schema_config(
-        self,
-        request: schema_registry.GetSchemaConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetSchemaConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetSchemaConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetSchemaConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_schema_config
 
         Override in a subclass to manipulate the request or metadata
@@ -874,9 +756,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_schema_config(
-        self, response: schema_registry_resources.SchemaConfig
-    ) -> schema_registry_resources.SchemaConfig:
+    def post_get_schema_config(self, response: schema_registry_resources.SchemaConfig) -> schema_registry_resources.SchemaConfig:
         """Post-rpc interceptor for get_schema_config
 
         DEPRECATED. Please use the `post_get_schema_config_with_metadata`
@@ -890,12 +770,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_schema_config_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_schema_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -911,12 +787,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_schema_mode(
-        self,
-        request: schema_registry.GetSchemaModeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetSchemaModeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetSchemaModeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetSchemaModeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_schema_mode
 
         Override in a subclass to manipulate the request or metadata
@@ -924,9 +796,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_schema_mode(
-        self, response: schema_registry_resources.SchemaMode
-    ) -> schema_registry_resources.SchemaMode:
+    def post_get_schema_mode(self, response: schema_registry_resources.SchemaMode) -> schema_registry_resources.SchemaMode:
         """Post-rpc interceptor for get_schema_mode
 
         DEPRECATED. Please use the `post_get_schema_mode_with_metadata`
@@ -940,12 +810,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_schema_mode_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaMode,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaMode, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaMode, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaMode, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_schema_mode
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -961,13 +827,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_schema_registry(
-        self,
-        request: schema_registry.GetSchemaRegistryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetSchemaRegistryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.GetSchemaRegistryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetSchemaRegistryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_schema_registry
 
         Override in a subclass to manipulate the request or metadata
@@ -975,9 +836,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_schema_registry(
-        self, response: schema_registry_resources.SchemaRegistry
-    ) -> schema_registry_resources.SchemaRegistry:
+    def post_get_schema_registry(self, response: schema_registry_resources.SchemaRegistry) -> schema_registry_resources.SchemaRegistry:
         """Post-rpc interceptor for get_schema_registry
 
         DEPRECATED. Please use the `post_get_schema_registry_with_metadata`
@@ -991,13 +850,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_schema_registry_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaRegistry,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaRegistry,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: schema_registry_resources.SchemaRegistry, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaRegistry, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_schema_registry
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1013,12 +867,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_version(
-        self,
-        request: schema_registry.GetVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.GetVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1026,9 +876,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_version(
-        self, response: schema_registry_resources.SchemaVersion
-    ) -> schema_registry_resources.SchemaVersion:
+    def post_get_version(self, response: schema_registry_resources.SchemaVersion) -> schema_registry_resources.SchemaVersion:
         """Post-rpc interceptor for get_version
 
         DEPRECATED. Please use the `post_get_version_with_metadata`
@@ -1042,12 +890,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_get_version_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaVersion, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1063,12 +907,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_contexts(
-        self,
-        request: schema_registry.ListContextsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListContextsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.ListContextsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListContextsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_contexts
 
         Override in a subclass to manipulate the request or metadata
@@ -1076,9 +916,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_contexts(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_contexts(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_contexts
 
         DEPRECATED. Please use the `post_list_contexts_with_metadata`
@@ -1092,9 +930,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_contexts_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_contexts
 
@@ -1111,13 +947,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_referenced_schemas(
-        self,
-        request: schema_registry.ListReferencedSchemasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListReferencedSchemasRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.ListReferencedSchemasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListReferencedSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_referenced_schemas
 
         Override in a subclass to manipulate the request or metadata
@@ -1125,9 +956,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_referenced_schemas(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_referenced_schemas(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_referenced_schemas
 
         DEPRECATED. Please use the `post_list_referenced_schemas_with_metadata`
@@ -1141,9 +970,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_referenced_schemas_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_referenced_schemas
 
@@ -1160,13 +987,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_schema_registries(
-        self,
-        request: schema_registry.ListSchemaRegistriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListSchemaRegistriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.ListSchemaRegistriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListSchemaRegistriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_schema_registries
 
         Override in a subclass to manipulate the request or metadata
@@ -1174,9 +996,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_schema_registries(
-        self, response: schema_registry.ListSchemaRegistriesResponse
-    ) -> schema_registry.ListSchemaRegistriesResponse:
+    def post_list_schema_registries(self, response: schema_registry.ListSchemaRegistriesResponse) -> schema_registry.ListSchemaRegistriesResponse:
         """Post-rpc interceptor for list_schema_registries
 
         DEPRECATED. Please use the `post_list_schema_registries_with_metadata`
@@ -1190,13 +1010,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_schema_registries_with_metadata(
-        self,
-        response: schema_registry.ListSchemaRegistriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListSchemaRegistriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: schema_registry.ListSchemaRegistriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListSchemaRegistriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_schema_registries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1212,12 +1027,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_schema_types(
-        self,
-        request: schema_registry.ListSchemaTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListSchemaTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.ListSchemaTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListSchemaTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_schema_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1225,9 +1036,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_schema_types(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_schema_types(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_schema_types
 
         DEPRECATED. Please use the `post_list_schema_types_with_metadata`
@@ -1241,9 +1050,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_schema_types_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_schema_types
 
@@ -1260,13 +1067,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_schema_versions(
-        self,
-        request: schema_registry.ListSchemaVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListSchemaVersionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.ListSchemaVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListSchemaVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_schema_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -1274,9 +1076,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_schema_versions(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_schema_versions(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_schema_versions
 
         DEPRECATED. Please use the `post_list_schema_versions_with_metadata`
@@ -1290,9 +1090,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_schema_versions_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_schema_versions
 
@@ -1309,12 +1107,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_subjects(
-        self,
-        request: schema_registry.ListSubjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListSubjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.ListSubjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListSubjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_subjects
 
         Override in a subclass to manipulate the request or metadata
@@ -1322,9 +1116,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_subjects(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_subjects(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_subjects
 
         DEPRECATED. Please use the `post_list_subjects_with_metadata`
@@ -1338,9 +1130,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_subjects_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_subjects
 
@@ -1357,13 +1147,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_subjects_by_schema_id(
-        self,
-        request: schema_registry.ListSubjectsBySchemaIdRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListSubjectsBySchemaIdRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.ListSubjectsBySchemaIdRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListSubjectsBySchemaIdRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_subjects_by_schema_id
 
         Override in a subclass to manipulate the request or metadata
@@ -1371,9 +1156,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_subjects_by_schema_id(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_subjects_by_schema_id(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_subjects_by_schema_id
 
         DEPRECATED. Please use the `post_list_subjects_by_schema_id_with_metadata`
@@ -1387,9 +1170,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_subjects_by_schema_id_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_subjects_by_schema_id
 
@@ -1406,12 +1187,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_list_versions(
-        self,
-        request: schema_registry.ListVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.ListVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -1419,9 +1196,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_versions(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_list_versions(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for list_versions
 
         DEPRECATED. Please use the `post_list_versions_with_metadata`
@@ -1435,9 +1210,7 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_list_versions_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_versions
 
@@ -1454,12 +1227,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_lookup_version(
-        self,
-        request: schema_registry.LookupVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.LookupVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.LookupVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.LookupVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1467,9 +1236,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_lookup_version(
-        self, response: schema_registry_resources.SchemaVersion
-    ) -> schema_registry_resources.SchemaVersion:
+    def post_lookup_version(self, response: schema_registry_resources.SchemaVersion) -> schema_registry_resources.SchemaVersion:
         """Post-rpc interceptor for lookup_version
 
         DEPRECATED. Please use the `post_lookup_version_with_metadata`
@@ -1483,12 +1250,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_lookup_version_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaVersion, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for lookup_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1504,13 +1267,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_update_schema_config(
-        self,
-        request: schema_registry.UpdateSchemaConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.UpdateSchemaConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: schema_registry.UpdateSchemaConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.UpdateSchemaConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_schema_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1518,9 +1276,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_update_schema_config(
-        self, response: schema_registry_resources.SchemaConfig
-    ) -> schema_registry_resources.SchemaConfig:
+    def post_update_schema_config(self, response: schema_registry_resources.SchemaConfig) -> schema_registry_resources.SchemaConfig:
         """Post-rpc interceptor for update_schema_config
 
         DEPRECATED. Please use the `post_update_schema_config_with_metadata`
@@ -1534,12 +1290,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_update_schema_config_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_schema_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1555,12 +1307,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_update_schema_mode(
-        self,
-        request: schema_registry.UpdateSchemaModeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry.UpdateSchemaModeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_registry.UpdateSchemaModeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry.UpdateSchemaModeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_schema_mode
 
         Override in a subclass to manipulate the request or metadata
@@ -1568,9 +1316,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_update_schema_mode(
-        self, response: schema_registry_resources.SchemaMode
-    ) -> schema_registry_resources.SchemaMode:
+    def post_update_schema_mode(self, response: schema_registry_resources.SchemaMode) -> schema_registry_resources.SchemaMode:
         """Post-rpc interceptor for update_schema_mode
 
         DEPRECATED. Please use the `post_update_schema_mode_with_metadata`
@@ -1584,12 +1330,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def post_update_schema_mode_with_metadata(
-        self,
-        response: schema_registry_resources.SchemaMode,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_registry_resources.SchemaMode, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_registry_resources.SchemaMode, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_registry_resources.SchemaMode, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_schema_mode
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1605,12 +1347,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1618,9 +1356,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1630,12 +1366,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1643,9 +1375,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1655,12 +1385,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1678,12 +1404,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1701,12 +1423,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1714,9 +1432,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1726,12 +1442,8 @@ class ManagedSchemaRegistryRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1739,9 +1451,7 @@ class ManagedSchemaRegistryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1881,31 +1591,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ManagedSchemaRegistryRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CheckCompatibility(
-        _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _CheckCompatibility(_BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.CheckCompatibility")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1945,32 +1642,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Response for CheckCompatibility.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_http_options()
 
-            request, metadata = self._interceptor.pre_check_compatibility(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_check_compatibility(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1993,16 +1676,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._CheckCompatibility._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedSchemaRegistryRestTransport._CheckCompatibility._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2018,16 +1693,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_check_compatibility(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_check_compatibility_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_compatibility_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        schema_registry.CheckCompatibilityResponse.to_json(response)
-                    )
+                    response_payload = schema_registry.CheckCompatibilityResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2046,23 +1715,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _CreateSchemaRegistry(
-        _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _CreateSchemaRegistry(_BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.CreateSchemaRegistry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2105,32 +1763,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_schema_registry(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_schema_registry(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2153,16 +1797,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._CreateSchemaRegistry._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedSchemaRegistryRestTransport._CreateSchemaRegistry._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2178,16 +1814,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_create_schema_registry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_schema_registry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_schema_registry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaRegistry.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaRegistry.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2206,23 +1836,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _CreateVersion(
-        _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _CreateVersion(_BaseManagedSchemaRegistryRestTransport._BaseCreateVersion, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.CreateVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2262,30 +1881,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Response for CreateVersion.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2309,13 +1916,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._CreateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2331,16 +1932,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_create_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry.CreateVersionResponse.to_json(
-                        response
-                    )
+                    response_payload = schema_registry.CreateVersionResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2359,23 +1954,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _DeleteSchemaConfig(
-        _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _DeleteSchemaConfig(_BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.DeleteSchemaConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2417,28 +2001,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_schema_config(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_schema_config(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2461,15 +2033,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._DeleteSchemaConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._DeleteSchemaConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2485,16 +2050,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_delete_schema_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_schema_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_schema_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaConfig.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2513,23 +2072,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _DeleteSchemaMode(
-        _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _DeleteSchemaMode(_BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.DeleteSchemaMode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2580,28 +2128,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_schema_mode(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_schema_mode(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2624,15 +2160,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._DeleteSchemaMode._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._DeleteSchemaMode._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2648,16 +2177,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_delete_schema_mode(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_schema_mode_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_schema_mode_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaMode.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaMode.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2676,23 +2199,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _DeleteSchemaRegistry(
-        _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _DeleteSchemaRegistry(_BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.DeleteSchemaRegistry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2727,28 +2239,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_schema_registry(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_schema_registry(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2771,15 +2271,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._DeleteSchemaRegistry._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._DeleteSchemaRegistry._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2787,23 +2280,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSubject(
-        _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _DeleteSubject(_BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.DeleteSubject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2891,26 +2373,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_subject(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2934,12 +2406,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._DeleteSubject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2955,12 +2422,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_delete_subject(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_subject_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_subject_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2981,23 +2444,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _DeleteVersion(
-        _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _DeleteVersion(_BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.DeleteVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3085,26 +2537,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3128,12 +2570,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._DeleteVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3149,12 +2586,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_delete_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3175,23 +2608,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetContext(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetContext,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetContext(_BaseManagedSchemaRegistryRestTransport._BaseGetContext, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetContext")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3233,26 +2655,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_http_options()
 
             request, metadata = self._interceptor.pre_get_context(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3276,12 +2688,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetContext._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3297,16 +2704,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_context(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_context_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_context_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.Context.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.Context.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3325,23 +2726,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetRawSchema(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetRawSchema(_BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetRawSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3429,26 +2819,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_get_raw_schema(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3472,12 +2852,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetRawSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3493,12 +2868,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_raw_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_raw_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_raw_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3519,23 +2890,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetRawSchemaVersion(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetRawSchemaVersion(_BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetRawSchemaVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3623,28 +2983,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_raw_schema_version(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_raw_schema_version(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3667,15 +3015,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._GetRawSchemaVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._GetRawSchemaVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3691,12 +3032,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_raw_schema_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_raw_schema_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_raw_schema_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3717,23 +3054,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetSchema(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetSchema,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetSchema(_BaseManagedSchemaRegistryRestTransport._BaseGetSchema, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3772,26 +3098,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Schema for a Kafka message.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3815,12 +3131,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3836,16 +3147,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.Schema.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.Schema.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3864,23 +3169,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetSchemaConfig(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetSchemaConfig(_BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetSchemaConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3922,28 +3216,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_schema_config(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_schema_config(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3966,15 +3248,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._GetSchemaConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._GetSchemaConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3990,16 +3265,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_schema_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_schema_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_schema_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaConfig.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4018,23 +3287,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetSchemaMode(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetSchemaMode(_BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetSchemaMode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4086,26 +3344,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema_mode(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4129,12 +3377,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetSchemaMode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4150,16 +3393,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_schema_mode(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_schema_mode_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_schema_mode_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaMode.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaMode.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4178,23 +3415,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetSchemaRegistry(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetSchemaRegistry(_BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetSchemaRegistry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4235,28 +3461,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_schema_registry(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_schema_registry(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4279,15 +3493,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._GetSchemaRegistry._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._GetSchemaRegistry._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4303,16 +3510,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_schema_registry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_schema_registry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_schema_registry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaRegistry.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaRegistry.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4331,23 +3532,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _GetVersion(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetVersion,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetVersion(_BaseManagedSchemaRegistryRestTransport._BaseGetVersion, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4386,26 +3576,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Version of a schema.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4429,12 +3609,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4450,16 +3625,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_get_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaVersion.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaVersion.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4478,23 +3647,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListContexts(
-        _BaseManagedSchemaRegistryRestTransport._BaseListContexts,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListContexts(_BaseManagedSchemaRegistryRestTransport._BaseListContexts, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListContexts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4582,26 +3740,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_contexts(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4625,12 +3773,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._ListContexts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4646,12 +3789,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_contexts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_contexts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_contexts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4672,23 +3811,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListReferencedSchemas(
-        _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListReferencedSchemas(_BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListReferencedSchemas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4776,28 +3904,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_referenced_schemas(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_referenced_schemas(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4820,15 +3936,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._ListReferencedSchemas._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._ListReferencedSchemas._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4844,12 +3953,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_referenced_schemas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_referenced_schemas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_referenced_schemas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4870,23 +3975,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListSchemaRegistries(
-        _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListSchemaRegistries(_BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListSchemaRegistries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4925,28 +4019,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Request for ListSchemaRegistries.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_schema_registries(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_schema_registries(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4969,15 +4051,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._ListSchemaRegistries._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._ListSchemaRegistries._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4993,16 +4068,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_schema_registries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_schema_registries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_schema_registries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        schema_registry.ListSchemaRegistriesResponse.to_json(response)
-                    )
+                    response_payload = schema_registry.ListSchemaRegistriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5021,23 +4090,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListSchemaTypes(
-        _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListSchemaTypes(_BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListSchemaTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5125,28 +4183,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_schema_types(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_schema_types(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5169,15 +4215,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._ListSchemaTypes._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._ListSchemaTypes._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5193,12 +4232,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_schema_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_schema_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_schema_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5219,23 +4254,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListSchemaVersions(
-        _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListSchemaVersions(_BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListSchemaVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5323,28 +4347,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_schema_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_schema_versions(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5367,15 +4379,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._ListSchemaVersions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._ListSchemaVersions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5391,12 +4396,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_schema_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_schema_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_schema_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5417,23 +4418,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListSubjects(
-        _BaseManagedSchemaRegistryRestTransport._BaseListSubjects,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListSubjects(_BaseManagedSchemaRegistryRestTransport._BaseListSubjects, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListSubjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5521,26 +4511,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_http_options()
 
             request, metadata = self._interceptor.pre_list_subjects(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5564,12 +4544,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._ListSubjects._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5585,12 +4560,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_subjects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_subjects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_subjects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5611,23 +4582,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListSubjectsBySchemaId(
-        _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListSubjectsBySchemaId(_BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListSubjectsBySchemaId")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5716,28 +4676,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_subjects_by_schema_id(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_subjects_by_schema_id(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5761,12 +4709,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._ListSubjectsBySchemaId._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5782,12 +4725,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_subjects_by_schema_id(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_subjects_by_schema_id_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_subjects_by_schema_id_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5808,23 +4747,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _ListVersions(
-        _BaseManagedSchemaRegistryRestTransport._BaseListVersions,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListVersions(_BaseManagedSchemaRegistryRestTransport._BaseListVersions, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5912,26 +4840,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5955,12 +4873,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._ListVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5976,12 +4889,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_list_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6002,23 +4911,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _LookupVersion(
-        _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _LookupVersion(_BaseManagedSchemaRegistryRestTransport._BaseLookupVersion, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.LookupVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6058,30 +4956,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Version of a schema.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6105,13 +4991,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._LookupVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6127,16 +5007,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_lookup_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaVersion.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaVersion.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6155,23 +5029,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _UpdateSchemaConfig(
-        _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _UpdateSchemaConfig(_BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.UpdateSchemaConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6217,32 +5080,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_schema_config(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_schema_config(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6265,16 +5114,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._UpdateSchemaConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedSchemaRegistryRestTransport._UpdateSchemaConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6290,16 +5131,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_update_schema_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_schema_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_schema_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaConfig.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6318,23 +5153,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
             return resp
 
-    class _UpdateSchemaMode(
-        _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _UpdateSchemaMode(_BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.UpdateSchemaMode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6387,32 +5211,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_schema_mode(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_schema_mode(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6435,16 +5245,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._UpdateSchemaMode._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedSchemaRegistryRestTransport._UpdateSchemaMode._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6460,16 +5262,10 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             resp = self._interceptor.post_update_schema_mode(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_schema_mode_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_schema_mode_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_registry_resources.SchemaMode.to_json(
-                        response
-                    )
+                    response_payload = schema_registry_resources.SchemaMode.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6489,255 +5285,163 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             return resp
 
     @property
-    def check_compatibility(
-        self,
-    ) -> Callable[
-        [schema_registry.CheckCompatibilityRequest],
-        schema_registry.CheckCompatibilityResponse,
-    ]:
+    def check_compatibility(self) -> Callable[[schema_registry.CheckCompatibilityRequest], schema_registry.CheckCompatibilityResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckCompatibility(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_schema_registry(
-        self,
-    ) -> Callable[
-        [gcms_schema_registry.CreateSchemaRegistryRequest],
-        schema_registry_resources.SchemaRegistry,
-    ]:
+    def create_schema_registry(self) -> Callable[[gcms_schema_registry.CreateSchemaRegistryRequest], schema_registry_resources.SchemaRegistry]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSchemaRegistry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[
-        [schema_registry.CreateVersionRequest], schema_registry.CreateVersionResponse
-    ]:
+    def create_version(self) -> Callable[[schema_registry.CreateVersionRequest], schema_registry.CreateVersionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_schema_config(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteSchemaConfigRequest],
-        schema_registry_resources.SchemaConfig,
-    ]:
+    def delete_schema_config(self) -> Callable[[schema_registry.DeleteSchemaConfigRequest], schema_registry_resources.SchemaConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSchemaConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_schema_mode(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteSchemaModeRequest], schema_registry_resources.SchemaMode
-    ]:
+    def delete_schema_mode(self) -> Callable[[schema_registry.DeleteSchemaModeRequest], schema_registry_resources.SchemaMode]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSchemaMode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_schema_registry(
-        self,
-    ) -> Callable[[schema_registry.DeleteSchemaRegistryRequest], empty_pb2.Empty]:
+    def delete_schema_registry(self) -> Callable[[schema_registry.DeleteSchemaRegistryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSchemaRegistry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_subject(
-        self,
-    ) -> Callable[[schema_registry.DeleteSubjectRequest], httpbody_pb2.HttpBody]:
+    def delete_subject(self) -> Callable[[schema_registry.DeleteSubjectRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSubject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[schema_registry.DeleteVersionRequest], httpbody_pb2.HttpBody]:
+    def delete_version(self) -> Callable[[schema_registry.DeleteVersionRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_context(
-        self,
-    ) -> Callable[
-        [schema_registry.GetContextRequest], schema_registry_resources.Context
-    ]:
+    def get_context(self) -> Callable[[schema_registry.GetContextRequest], schema_registry_resources.Context]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetContext(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_raw_schema(
-        self,
-    ) -> Callable[[schema_registry.GetSchemaRequest], httpbody_pb2.HttpBody]:
+    def get_raw_schema(self) -> Callable[[schema_registry.GetSchemaRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRawSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_raw_schema_version(
-        self,
-    ) -> Callable[[schema_registry.GetVersionRequest], httpbody_pb2.HttpBody]:
+    def get_raw_schema_version(self) -> Callable[[schema_registry.GetVersionRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRawSchemaVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_schema(
-        self,
-    ) -> Callable[[schema_registry.GetSchemaRequest], schema_registry_resources.Schema]:
+    def get_schema(self) -> Callable[[schema_registry.GetSchemaRequest], schema_registry_resources.Schema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_schema_config(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaConfigRequest], schema_registry_resources.SchemaConfig
-    ]:
+    def get_schema_config(self) -> Callable[[schema_registry.GetSchemaConfigRequest], schema_registry_resources.SchemaConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSchemaConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_schema_mode(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaModeRequest], schema_registry_resources.SchemaMode
-    ]:
+    def get_schema_mode(self) -> Callable[[schema_registry.GetSchemaModeRequest], schema_registry_resources.SchemaMode]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSchemaMode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_schema_registry(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaRegistryRequest],
-        schema_registry_resources.SchemaRegistry,
-    ]:
+    def get_schema_registry(self) -> Callable[[schema_registry.GetSchemaRegistryRequest], schema_registry_resources.SchemaRegistry]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSchemaRegistry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[
-        [schema_registry.GetVersionRequest], schema_registry_resources.SchemaVersion
-    ]:
+    def get_version(self) -> Callable[[schema_registry.GetVersionRequest], schema_registry_resources.SchemaVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_contexts(
-        self,
-    ) -> Callable[[schema_registry.ListContextsRequest], httpbody_pb2.HttpBody]:
+    def list_contexts(self) -> Callable[[schema_registry.ListContextsRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListContexts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_referenced_schemas(
-        self,
-    ) -> Callable[
-        [schema_registry.ListReferencedSchemasRequest], httpbody_pb2.HttpBody
-    ]:
+    def list_referenced_schemas(self) -> Callable[[schema_registry.ListReferencedSchemasRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReferencedSchemas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_schema_registries(
-        self,
-    ) -> Callable[
-        [schema_registry.ListSchemaRegistriesRequest],
-        schema_registry.ListSchemaRegistriesResponse,
-    ]:
+    def list_schema_registries(self) -> Callable[[schema_registry.ListSchemaRegistriesRequest], schema_registry.ListSchemaRegistriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSchemaRegistries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_schema_types(
-        self,
-    ) -> Callable[[schema_registry.ListSchemaTypesRequest], httpbody_pb2.HttpBody]:
+    def list_schema_types(self) -> Callable[[schema_registry.ListSchemaTypesRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSchemaTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_schema_versions(
-        self,
-    ) -> Callable[[schema_registry.ListSchemaVersionsRequest], httpbody_pb2.HttpBody]:
+    def list_schema_versions(self) -> Callable[[schema_registry.ListSchemaVersionsRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSchemaVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_subjects(
-        self,
-    ) -> Callable[[schema_registry.ListSubjectsRequest], httpbody_pb2.HttpBody]:
+    def list_subjects(self) -> Callable[[schema_registry.ListSubjectsRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSubjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_subjects_by_schema_id(
-        self,
-    ) -> Callable[
-        [schema_registry.ListSubjectsBySchemaIdRequest], httpbody_pb2.HttpBody
-    ]:
+    def list_subjects_by_schema_id(self) -> Callable[[schema_registry.ListSubjectsBySchemaIdRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSubjectsBySchemaId(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[[schema_registry.ListVersionsRequest], httpbody_pb2.HttpBody]:
+    def list_versions(self) -> Callable[[schema_registry.ListVersionsRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def lookup_version(
-        self,
-    ) -> Callable[
-        [schema_registry.LookupVersionRequest], schema_registry_resources.SchemaVersion
-    ]:
+    def lookup_version(self) -> Callable[[schema_registry.LookupVersionRequest], schema_registry_resources.SchemaVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_schema_config(
-        self,
-    ) -> Callable[
-        [schema_registry.UpdateSchemaConfigRequest],
-        schema_registry_resources.SchemaConfig,
-    ]:
+    def update_schema_config(self) -> Callable[[schema_registry.UpdateSchemaConfigRequest], schema_registry_resources.SchemaConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSchemaConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_schema_mode(
-        self,
-    ) -> Callable[
-        [schema_registry.UpdateSchemaModeRequest], schema_registry_resources.SchemaMode
-    ]:
+    def update_schema_mode(self) -> Callable[[schema_registry.UpdateSchemaModeRequest], schema_registry_resources.SchemaMode]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSchemaMode(self._session, self._host, self._interceptor)  # type: ignore
@@ -6746,23 +5450,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetLocation,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetLocation(_BaseManagedSchemaRegistryRestTransport._BaseGetLocation, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6800,26 +5493,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6843,12 +5526,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6860,9 +5538,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6887,23 +5563,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseManagedSchemaRegistryRestTransport._BaseListLocations,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListLocations(_BaseManagedSchemaRegistryRestTransport._BaseListLocations, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6941,26 +5606,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6984,12 +5639,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7001,9 +5651,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7028,23 +5676,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _CancelOperation(_BaseManagedSchemaRegistryRestTransport._BaseCancelOperation, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7080,32 +5717,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7128,16 +5751,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedSchemaRegistryRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7151,23 +5766,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _DeleteOperation(_BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7202,28 +5806,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7246,15 +5838,8 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
 
             # Send the request
-            response = (
-                ManagedSchemaRegistryRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedSchemaRegistryRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7268,23 +5853,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseManagedSchemaRegistryRestTransport._BaseGetOperation,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _GetOperation(_BaseManagedSchemaRegistryRestTransport._BaseGetOperation, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7322,26 +5896,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7365,12 +5929,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7382,9 +5941,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7409,23 +5966,12 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseManagedSchemaRegistryRestTransport._BaseListOperations,
-        ManagedSchemaRegistryRestStub,
-    ):
+    class _ListOperations(_BaseManagedSchemaRegistryRestTransport._BaseListOperations, ManagedSchemaRegistryRestStub):
         def __hash__(self):
             return hash("ManagedSchemaRegistryRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7463,26 +6009,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7506,12 +6042,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             # Send the request
             response = ManagedSchemaRegistryRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7523,9 +6054,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

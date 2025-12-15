@@ -95,13 +95,8 @@ class AutofeedSettingsServiceRestInterceptor:
     """
 
     def pre_get_autofeed_settings(
-        self,
-        request: autofeedsettings.GetAutofeedSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autofeedsettings.GetAutofeedSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autofeedsettings.GetAutofeedSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autofeedsettings.GetAutofeedSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_autofeed_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class AutofeedSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_autofeed_settings(
-        self, response: autofeedsettings.AutofeedSettings
-    ) -> autofeedsettings.AutofeedSettings:
+    def post_get_autofeed_settings(self, response: autofeedsettings.AutofeedSettings) -> autofeedsettings.AutofeedSettings:
         """Post-rpc interceptor for get_autofeed_settings
 
         DEPRECATED. Please use the `post_get_autofeed_settings_with_metadata`
@@ -125,12 +118,8 @@ class AutofeedSettingsServiceRestInterceptor:
         return response
 
     def post_get_autofeed_settings_with_metadata(
-        self,
-        response: autofeedsettings.AutofeedSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autofeedsettings.AutofeedSettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: autofeedsettings.AutofeedSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autofeedsettings.AutofeedSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_autofeed_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,13 +135,8 @@ class AutofeedSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_autofeed_settings(
-        self,
-        request: autofeedsettings.UpdateAutofeedSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autofeedsettings.UpdateAutofeedSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autofeedsettings.UpdateAutofeedSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autofeedsettings.UpdateAutofeedSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_autofeed_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +144,7 @@ class AutofeedSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_autofeed_settings(
-        self, response: autofeedsettings.AutofeedSettings
-    ) -> autofeedsettings.AutofeedSettings:
+    def post_update_autofeed_settings(self, response: autofeedsettings.AutofeedSettings) -> autofeedsettings.AutofeedSettings:
         """Post-rpc interceptor for update_autofeed_settings
 
         DEPRECATED. Please use the `post_update_autofeed_settings_with_metadata`
@@ -176,12 +158,8 @@ class AutofeedSettingsServiceRestInterceptor:
         return response
 
     def post_update_autofeed_settings_with_metadata(
-        self,
-        response: autofeedsettings.AutofeedSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autofeedsettings.AutofeedSettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: autofeedsettings.AutofeedSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autofeedsettings.AutofeedSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_autofeed_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,31 +256,18 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AutofeedSettingsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetAutofeedSettings(
-        _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings,
-        AutofeedSettingsServiceRestStub,
-    ):
+    class _GetAutofeedSettings(_BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings, AutofeedSettingsServiceRestStub):
         def __hash__(self):
             return hash("AutofeedSettingsServiceRestTransport.GetAutofeedSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -344,28 +309,16 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings._get_http_options()
-            )
+            http_options = _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_autofeed_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_autofeed_settings(request, metadata)
+            transcoded_request = _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutofeedSettingsServiceRestTransport._BaseGetAutofeedSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -388,15 +341,8 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                AutofeedSettingsServiceRestTransport._GetAutofeedSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AutofeedSettingsServiceRestTransport._GetAutofeedSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -412,16 +358,10 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
 
             resp = self._interceptor.post_get_autofeed_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_autofeed_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_autofeed_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = autofeedsettings.AutofeedSettings.to_json(
-                        response
-                    )
+                    response_payload = autofeedsettings.AutofeedSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -440,23 +380,12 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
                 )
             return resp
 
-    class _UpdateAutofeedSettings(
-        _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings,
-        AutofeedSettingsServiceRestStub,
-    ):
+    class _UpdateAutofeedSettings(_BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings, AutofeedSettingsServiceRestStub):
         def __hash__(self):
             return hash("AutofeedSettingsServiceRestTransport.UpdateAutofeedSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -500,32 +429,18 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_http_options()
-            )
+            http_options = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_autofeed_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_autofeed_settings(request, metadata)
+            transcoded_request = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutofeedSettingsServiceRestTransport._BaseUpdateAutofeedSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -549,13 +464,7 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
 
             # Send the request
             response = AutofeedSettingsServiceRestTransport._UpdateAutofeedSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -571,16 +480,10 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
 
             resp = self._interceptor.post_update_autofeed_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_autofeed_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_autofeed_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = autofeedsettings.AutofeedSettings.to_json(
-                        response
-                    )
+                    response_payload = autofeedsettings.AutofeedSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -600,22 +503,13 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
             return resp
 
     @property
-    def get_autofeed_settings(
-        self,
-    ) -> Callable[
-        [autofeedsettings.GetAutofeedSettingsRequest], autofeedsettings.AutofeedSettings
-    ]:
+    def get_autofeed_settings(self) -> Callable[[autofeedsettings.GetAutofeedSettingsRequest], autofeedsettings.AutofeedSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAutofeedSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_autofeed_settings(
-        self,
-    ) -> Callable[
-        [autofeedsettings.UpdateAutofeedSettingsRequest],
-        autofeedsettings.AutofeedSettings,
-    ]:
+    def update_autofeed_settings(self) -> Callable[[autofeedsettings.UpdateAutofeedSettingsRequest], autofeedsettings.AutofeedSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAutofeedSettings(self._session, self._host, self._interceptor)  # type: ignore

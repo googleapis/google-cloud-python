@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.alloydb_v1alpha import gapic_version as package_version
 from google.cloud.alloydb_v1alpha.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class AlloyDBAdminTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -483,254 +473,125 @@ class AlloyDBAdminTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [service.ListClustersRequest],
-        Union[service.ListClustersResponse, Awaitable[service.ListClustersResponse]],
-    ]:
+    def list_clusters(self) -> Callable[[service.ListClustersRequest], Union[service.ListClustersResponse, Awaitable[service.ListClustersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[
-        [service.GetClusterRequest],
-        Union[resources.Cluster, Awaitable[resources.Cluster]],
-    ]:
+    def get_cluster(self) -> Callable[[service.GetClusterRequest], Union[resources.Cluster, Awaitable[resources.Cluster]]]:
         raise NotImplementedError()
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[
-        [service.CreateClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_cluster(self) -> Callable[[service.CreateClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[
-        [service.UpdateClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_cluster(self) -> Callable[[service.UpdateClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_cluster(
-        self,
-    ) -> Callable[
-        [service.ExportClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_cluster(self) -> Callable[[service.ExportClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def import_cluster(
-        self,
-    ) -> Callable[
-        [service.ImportClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def import_cluster(self) -> Callable[[service.ImportClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def upgrade_cluster(
-        self,
-    ) -> Callable[
-        [service.UpgradeClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def upgrade_cluster(self) -> Callable[[service.UpgradeClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[
-        [service.DeleteClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_cluster(self) -> Callable[[service.DeleteClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def promote_cluster(
-        self,
-    ) -> Callable[
-        [service.PromoteClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def promote_cluster(self) -> Callable[[service.PromoteClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def switchover_cluster(
         self,
-    ) -> Callable[
-        [service.SwitchoverClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.SwitchoverClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def restore_cluster(
-        self,
-    ) -> Callable[
-        [service.RestoreClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def restore_cluster(self) -> Callable[[service.RestoreClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_secondary_cluster(
         self,
-    ) -> Callable[
-        [service.CreateSecondaryClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateSecondaryClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_instances(
         self,
-    ) -> Callable[
-        [service.ListInstancesRequest],
-        Union[service.ListInstancesResponse, Awaitable[service.ListInstancesResponse]],
-    ]:
+    ) -> Callable[[service.ListInstancesRequest], Union[service.ListInstancesResponse, Awaitable[service.ListInstancesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [service.GetInstanceRequest],
-        Union[resources.Instance, Awaitable[resources.Instance]],
-    ]:
+    def get_instance(self) -> Callable[[service.GetInstanceRequest], Union[resources.Instance, Awaitable[resources.Instance]]]:
         raise NotImplementedError()
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[
-        [service.CreateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_instance(self) -> Callable[[service.CreateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_secondary_instance(
         self,
-    ) -> Callable[
-        [service.CreateSecondaryInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateSecondaryInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_instances(
         self,
-    ) -> Callable[
-        [service.BatchCreateInstancesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.BatchCreateInstancesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [service.UpdateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_instance(self) -> Callable[[service.UpdateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[
-        [service.DeleteInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_instance(self) -> Callable[[service.DeleteInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def failover_instance(
-        self,
-    ) -> Callable[
-        [service.FailoverInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def failover_instance(self) -> Callable[[service.FailoverInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def inject_fault(
-        self,
-    ) -> Callable[
-        [service.InjectFaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def inject_fault(self) -> Callable[[service.InjectFaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def restart_instance(
-        self,
-    ) -> Callable[
-        [service.RestartInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def restart_instance(self) -> Callable[[service.RestartInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def execute_sql(
-        self,
-    ) -> Callable[
-        [service.ExecuteSqlRequest],
-        Union[service.ExecuteSqlResponse, Awaitable[service.ExecuteSqlResponse]],
-    ]:
+    def execute_sql(self) -> Callable[[service.ExecuteSqlRequest], Union[service.ExecuteSqlResponse, Awaitable[service.ExecuteSqlResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [service.ListBackupsRequest],
-        Union[service.ListBackupsResponse, Awaitable[service.ListBackupsResponse]],
-    ]:
+    def list_backups(self) -> Callable[[service.ListBackupsRequest], Union[service.ListBackupsResponse, Awaitable[service.ListBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [service.GetBackupRequest], Union[resources.Backup, Awaitable[resources.Backup]]
-    ]:
+    def get_backup(self) -> Callable[[service.GetBackupRequest], Union[resources.Backup, Awaitable[resources.Backup]]]:
         raise NotImplementedError()
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [service.CreateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_backup(self) -> Callable[[service.CreateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [service.UpdateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_backup(self) -> Callable[[service.UpdateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [service.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_backup(self) -> Callable[[service.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -738,10 +599,7 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListSupportedDatabaseFlagsRequest],
-        Union[
-            service.ListSupportedDatabaseFlagsResponse,
-            Awaitable[service.ListSupportedDatabaseFlagsResponse],
-        ],
+        Union[service.ListSupportedDatabaseFlagsResponse, Awaitable[service.ListSupportedDatabaseFlagsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -750,79 +608,44 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.GenerateClientCertificateRequest],
-        Union[
-            service.GenerateClientCertificateResponse,
-            Awaitable[service.GenerateClientCertificateResponse],
-        ],
+        Union[service.GenerateClientCertificateResponse, Awaitable[service.GenerateClientCertificateResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_connection_info(
         self,
-    ) -> Callable[
-        [service.GetConnectionInfoRequest],
-        Union[resources.ConnectionInfo, Awaitable[resources.ConnectionInfo]],
-    ]:
+    ) -> Callable[[service.GetConnectionInfoRequest], Union[resources.ConnectionInfo, Awaitable[resources.ConnectionInfo]]]:
         raise NotImplementedError()
 
     @property
-    def list_users(
-        self,
-    ) -> Callable[
-        [service.ListUsersRequest],
-        Union[service.ListUsersResponse, Awaitable[service.ListUsersResponse]],
-    ]:
+    def list_users(self) -> Callable[[service.ListUsersRequest], Union[service.ListUsersResponse, Awaitable[service.ListUsersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_user(
-        self,
-    ) -> Callable[
-        [service.GetUserRequest], Union[resources.User, Awaitable[resources.User]]
-    ]:
+    def get_user(self) -> Callable[[service.GetUserRequest], Union[resources.User, Awaitable[resources.User]]]:
         raise NotImplementedError()
 
     @property
-    def create_user(
-        self,
-    ) -> Callable[
-        [service.CreateUserRequest], Union[resources.User, Awaitable[resources.User]]
-    ]:
+    def create_user(self) -> Callable[[service.CreateUserRequest], Union[resources.User, Awaitable[resources.User]]]:
         raise NotImplementedError()
 
     @property
-    def update_user(
-        self,
-    ) -> Callable[
-        [service.UpdateUserRequest], Union[resources.User, Awaitable[resources.User]]
-    ]:
+    def update_user(self) -> Callable[[service.UpdateUserRequest], Union[resources.User, Awaitable[resources.User]]]:
         raise NotImplementedError()
 
     @property
-    def delete_user(
-        self,
-    ) -> Callable[
-        [service.DeleteUserRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_user(self) -> Callable[[service.DeleteUserRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_databases(
         self,
-    ) -> Callable[
-        [service.ListDatabasesRequest],
-        Union[service.ListDatabasesResponse, Awaitable[service.ListDatabasesResponse]],
-    ]:
+    ) -> Callable[[service.ListDatabasesRequest], Union[service.ListDatabasesResponse, Awaitable[service.ListDatabasesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[
-        [service.CreateDatabaseRequest],
-        Union[resources.Database, Awaitable[resources.Database]],
-    ]:
+    def create_database(self) -> Callable[[service.CreateDatabaseRequest], Union[resources.Database, Awaitable[resources.Database]]]:
         raise NotImplementedError()
 
     @property
@@ -830,20 +653,14 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -861,22 +678,13 @@ class AlloyDBAdminTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

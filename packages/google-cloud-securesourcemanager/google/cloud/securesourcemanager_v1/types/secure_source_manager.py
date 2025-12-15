@@ -326,12 +326,10 @@ class Instance(proto.Message):
         number=9,
         message=HostConfig,
     )
-    workforce_identity_federation_config: WorkforceIdentityFederationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=14,
-            message=WorkforceIdentityFederationConfig,
-        )
+    workforce_identity_federation_config: WorkforceIdentityFederationConfig = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=WorkforceIdentityFederationConfig,
     )
 
 

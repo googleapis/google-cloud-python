@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,20 +326,13 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_google_service_account(
-        self,
-    ) -> Callable[
-        [transfer.GetGoogleServiceAccountRequest],
-        Awaitable[transfer_types.GoogleServiceAccount],
-    ]:
+    def get_google_service_account(self) -> Callable[[transfer.GetGoogleServiceAccountRequest], Awaitable[transfer_types.GoogleServiceAccount]]:
         r"""Return a callable for the get google service account method over gRPC.
 
         Returns the Google service account that is used by
@@ -381,9 +357,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_google_service_account" not in self._stubs:
-            self._stubs[
-                "get_google_service_account"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_google_service_account"] = self._logged_channel.unary_unary(
                 "/google.storagetransfer.v1.StorageTransferService/GetGoogleServiceAccount",
                 request_serializer=transfer.GetGoogleServiceAccountRequest.serialize,
                 response_deserializer=transfer_types.GoogleServiceAccount.deserialize,
@@ -391,11 +365,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["get_google_service_account"]
 
     @property
-    def create_transfer_job(
-        self,
-    ) -> Callable[
-        [transfer.CreateTransferJobRequest], Awaitable[transfer_types.TransferJob]
-    ]:
+    def create_transfer_job(self) -> Callable[[transfer.CreateTransferJobRequest], Awaitable[transfer_types.TransferJob]]:
         r"""Return a callable for the create transfer job method over gRPC.
 
         Creates a transfer job that runs periodically.
@@ -419,11 +389,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["create_transfer_job"]
 
     @property
-    def update_transfer_job(
-        self,
-    ) -> Callable[
-        [transfer.UpdateTransferJobRequest], Awaitable[transfer_types.TransferJob]
-    ]:
+    def update_transfer_job(self) -> Callable[[transfer.UpdateTransferJobRequest], Awaitable[transfer_types.TransferJob]]:
         r"""Return a callable for the update transfer job method over gRPC.
 
         Updates a transfer job. Updating a job's transfer spec does not
@@ -457,11 +423,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["update_transfer_job"]
 
     @property
-    def get_transfer_job(
-        self,
-    ) -> Callable[
-        [transfer.GetTransferJobRequest], Awaitable[transfer_types.TransferJob]
-    ]:
+    def get_transfer_job(self) -> Callable[[transfer.GetTransferJobRequest], Awaitable[transfer_types.TransferJob]]:
         r"""Return a callable for the get transfer job method over gRPC.
 
         Gets a transfer job.
@@ -485,11 +447,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["get_transfer_job"]
 
     @property
-    def list_transfer_jobs(
-        self,
-    ) -> Callable[
-        [transfer.ListTransferJobsRequest], Awaitable[transfer.ListTransferJobsResponse]
-    ]:
+    def list_transfer_jobs(self) -> Callable[[transfer.ListTransferJobsRequest], Awaitable[transfer.ListTransferJobsResponse]]:
         r"""Return a callable for the list transfer jobs method over gRPC.
 
         Lists transfer jobs.
@@ -513,9 +471,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["list_transfer_jobs"]
 
     @property
-    def pause_transfer_operation(
-        self,
-    ) -> Callable[[transfer.PauseTransferOperationRequest], Awaitable[empty_pb2.Empty]]:
+    def pause_transfer_operation(self) -> Callable[[transfer.PauseTransferOperationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the pause transfer operation method over gRPC.
 
         Pauses a transfer operation.
@@ -539,11 +495,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["pause_transfer_operation"]
 
     @property
-    def resume_transfer_operation(
-        self,
-    ) -> Callable[
-        [transfer.ResumeTransferOperationRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def resume_transfer_operation(self) -> Callable[[transfer.ResumeTransferOperationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the resume transfer operation method over gRPC.
 
         Resumes a transfer operation that is paused.
@@ -567,11 +519,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["resume_transfer_operation"]
 
     @property
-    def run_transfer_job(
-        self,
-    ) -> Callable[
-        [transfer.RunTransferJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def run_transfer_job(self) -> Callable[[transfer.RunTransferJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the run transfer job method over gRPC.
 
         Starts a new operation for the specified transfer job. A
@@ -598,9 +546,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["run_transfer_job"]
 
     @property
-    def delete_transfer_job(
-        self,
-    ) -> Callable[[transfer.DeleteTransferJobRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_transfer_job(self) -> Callable[[transfer.DeleteTransferJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete transfer job method over gRPC.
 
         Deletes a transfer job. Deleting a transfer job sets its status
@@ -626,11 +572,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["delete_transfer_job"]
 
     @property
-    def create_agent_pool(
-        self,
-    ) -> Callable[
-        [transfer.CreateAgentPoolRequest], Awaitable[transfer_types.AgentPool]
-    ]:
+    def create_agent_pool(self) -> Callable[[transfer.CreateAgentPoolRequest], Awaitable[transfer_types.AgentPool]]:
         r"""Return a callable for the create agent pool method over gRPC.
 
         Creates an agent pool resource.
@@ -654,11 +596,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["create_agent_pool"]
 
     @property
-    def update_agent_pool(
-        self,
-    ) -> Callable[
-        [transfer.UpdateAgentPoolRequest], Awaitable[transfer_types.AgentPool]
-    ]:
+    def update_agent_pool(self) -> Callable[[transfer.UpdateAgentPoolRequest], Awaitable[transfer_types.AgentPool]]:
         r"""Return a callable for the update agent pool method over gRPC.
 
         Updates an existing agent pool resource.
@@ -682,9 +620,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["update_agent_pool"]
 
     @property
-    def get_agent_pool(
-        self,
-    ) -> Callable[[transfer.GetAgentPoolRequest], Awaitable[transfer_types.AgentPool]]:
+    def get_agent_pool(self) -> Callable[[transfer.GetAgentPoolRequest], Awaitable[transfer_types.AgentPool]]:
         r"""Return a callable for the get agent pool method over gRPC.
 
         Gets an agent pool.
@@ -708,11 +644,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["get_agent_pool"]
 
     @property
-    def list_agent_pools(
-        self,
-    ) -> Callable[
-        [transfer.ListAgentPoolsRequest], Awaitable[transfer.ListAgentPoolsResponse]
-    ]:
+    def list_agent_pools(self) -> Callable[[transfer.ListAgentPoolsRequest], Awaitable[transfer.ListAgentPoolsResponse]]:
         r"""Return a callable for the list agent pools method over gRPC.
 
         Lists agent pools.
@@ -736,9 +668,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["list_agent_pools"]
 
     @property
-    def delete_agent_pool(
-        self,
-    ) -> Callable[[transfer.DeleteAgentPoolRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_agent_pool(self) -> Callable[[transfer.DeleteAgentPoolRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete agent pool method over gRPC.
 
         Deletes an agent pool.
@@ -900,9 +830,7 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -18,9 +18,7 @@ from google.cloud.redis import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.redis_v1.services.cloud_redis.async_client import (
-    CloudRedisAsyncClient,
-)
+from google.cloud.redis_v1.services.cloud_redis.async_client import CloudRedisAsyncClient
 from google.cloud.redis_v1.services.cloud_redis.client import CloudRedisClient
 from google.cloud.redis_v1.types.cloud_redis import (
     CreateInstanceRequest,

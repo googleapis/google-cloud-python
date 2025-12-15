@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -81,55 +70,27 @@ class WorkflowTemplateServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = WorkflowTemplateServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = WorkflowTemplateServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        WorkflowTemplateServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = WorkflowTemplateServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = WorkflowTemplateServiceClient._DEFAULT_UNIVERSE
 
     crypto_key_path = staticmethod(WorkflowTemplateServiceClient.crypto_key_path)
-    parse_crypto_key_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_crypto_key_path
-    )
+    parse_crypto_key_path = staticmethod(WorkflowTemplateServiceClient.parse_crypto_key_path)
     node_group_path = staticmethod(WorkflowTemplateServiceClient.node_group_path)
-    parse_node_group_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_node_group_path
-    )
+    parse_node_group_path = staticmethod(WorkflowTemplateServiceClient.parse_node_group_path)
     service_path = staticmethod(WorkflowTemplateServiceClient.service_path)
     parse_service_path = staticmethod(WorkflowTemplateServiceClient.parse_service_path)
-    workflow_template_path = staticmethod(
-        WorkflowTemplateServiceClient.workflow_template_path
-    )
-    parse_workflow_template_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_workflow_template_path
-    )
-    common_billing_account_path = staticmethod(
-        WorkflowTemplateServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_common_billing_account_path
-    )
+    workflow_template_path = staticmethod(WorkflowTemplateServiceClient.workflow_template_path)
+    parse_workflow_template_path = staticmethod(WorkflowTemplateServiceClient.parse_workflow_template_path)
+    common_billing_account_path = staticmethod(WorkflowTemplateServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(WorkflowTemplateServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(WorkflowTemplateServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        WorkflowTemplateServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        WorkflowTemplateServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        WorkflowTemplateServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        WorkflowTemplateServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(WorkflowTemplateServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(WorkflowTemplateServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(WorkflowTemplateServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(WorkflowTemplateServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(WorkflowTemplateServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(WorkflowTemplateServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(WorkflowTemplateServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -165,9 +126,7 @@ class WorkflowTemplateServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -234,13 +193,7 @@ class WorkflowTemplateServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                WorkflowTemplateServiceTransport,
-                Callable[..., WorkflowTemplateServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, WorkflowTemplateServiceTransport, Callable[..., WorkflowTemplateServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -300,20 +253,14 @@ class WorkflowTemplateServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -324,9 +271,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def create_workflow_template(
         self,
-        request: Optional[
-            Union[workflow_templates.CreateWorkflowTemplateRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.CreateWorkflowTemplateRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         template: Optional[workflow_templates.WorkflowTemplate] = None,
@@ -414,14 +359,9 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, template]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -437,15 +377,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_workflow_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_workflow_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -463,9 +399,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def get_workflow_template(
         self,
-        request: Optional[
-            Union[workflow_templates.GetWorkflowTemplateRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.GetWorkflowTemplateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -543,14 +477,9 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -564,15 +493,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_workflow_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_workflow_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -590,9 +515,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def instantiate_workflow_template(
         self,
-        request: Optional[
-            Union[workflow_templates.InstantiateWorkflowTemplateRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.InstantiateWorkflowTemplateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         parameters: Optional[MutableMapping[str, str]] = None,
@@ -713,20 +636,13 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, parameters]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, workflow_templates.InstantiateWorkflowTemplateRequest
-        ):
+        if not isinstance(request, workflow_templates.InstantiateWorkflowTemplateRequest):
             request = workflow_templates.InstantiateWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -739,15 +655,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.instantiate_workflow_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.instantiate_workflow_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -773,9 +685,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def instantiate_inline_workflow_template(
         self,
-        request: Optional[
-            Union[workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         template: Optional[workflow_templates.WorkflowTemplate] = None,
@@ -904,23 +814,14 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, template]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, workflow_templates.InstantiateInlineWorkflowTemplateRequest
-        ):
-            request = workflow_templates.InstantiateInlineWorkflowTemplateRequest(
-                request
-            )
+        if not isinstance(request, workflow_templates.InstantiateInlineWorkflowTemplateRequest):
+            request = workflow_templates.InstantiateInlineWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -931,15 +832,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.instantiate_inline_workflow_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.instantiate_inline_workflow_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -965,9 +862,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def update_workflow_template(
         self,
-        request: Optional[
-            Union[workflow_templates.UpdateWorkflowTemplateRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.UpdateWorkflowTemplateRequest, dict]] = None,
         *,
         template: Optional[workflow_templates.WorkflowTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1041,14 +936,9 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [template]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1062,17 +952,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_workflow_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_workflow_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("template.name", request.template.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("template.name", request.template.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1090,9 +974,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def list_workflow_templates(
         self,
-        request: Optional[
-            Union[workflow_templates.ListWorkflowTemplatesRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.ListWorkflowTemplatesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1170,14 +1052,9 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1191,15 +1068,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_workflow_templates
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_workflow_templates]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1228,9 +1101,7 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def delete_workflow_template(
         self,
-        request: Optional[
-            Union[workflow_templates.DeleteWorkflowTemplateRequest, dict]
-        ] = None,
+        request: Optional[Union[workflow_templates.DeleteWorkflowTemplateRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1300,14 +1171,9 @@ class WorkflowTemplateServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1321,15 +1187,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_workflow_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_workflow_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1379,9 +1241,7 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1434,9 +1294,7 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1493,9 +1351,7 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1548,9 +1404,7 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1666,9 +1520,7 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1788,9 +1640,7 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1844,15 +1694,11 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1875,9 +1721,7 @@ class WorkflowTemplateServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

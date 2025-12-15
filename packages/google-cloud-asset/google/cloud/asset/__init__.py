@@ -18,9 +18,7 @@ from google.cloud.asset import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.asset_v1.services.asset_service.async_client import (
-    AssetServiceAsyncClient,
-)
+from google.cloud.asset_v1.services.asset_service.async_client import AssetServiceAsyncClient
 from google.cloud.asset_v1.services.asset_service.client import AssetServiceClient
 from google.cloud.asset_v1.types.asset_enrichment_resourceowners import ResourceOwners
 from google.cloud.asset_v1.types.asset_service import (

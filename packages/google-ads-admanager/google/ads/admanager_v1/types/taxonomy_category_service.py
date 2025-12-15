@@ -136,9 +136,7 @@ class ListTaxonomyCategoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    taxonomy_categories: MutableSequence[
-        taxonomy_category_messages.TaxonomyCategory
-    ] = proto.RepeatedField(
+    taxonomy_categories: MutableSequence[taxonomy_category_messages.TaxonomyCategory] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=taxonomy_category_messages.TaxonomyCategory,

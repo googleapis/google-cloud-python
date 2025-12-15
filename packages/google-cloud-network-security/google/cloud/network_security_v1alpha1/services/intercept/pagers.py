@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class ListInterceptEndpointGroupsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[intercept.InterceptEndpointGroup]:
@@ -173,18 +156,11 @@ class ListInterceptEndpointGroupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[intercept.ListInterceptEndpointGroupsResponse]:
+    async def pages(self) -> AsyncIterator[intercept.ListInterceptEndpointGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[intercept.InterceptEndpointGroup]:
@@ -255,18 +231,11 @@ class ListInterceptEndpointGroupAssociationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[intercept.ListInterceptEndpointGroupAssociationsResponse]:
+    def pages(self) -> Iterator[intercept.ListInterceptEndpointGroupAssociationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[intercept.InterceptEndpointGroupAssociation]:
@@ -297,9 +266,7 @@ class ListInterceptEndpointGroupAssociationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[intercept.ListInterceptEndpointGroupAssociationsResponse]
-        ],
+        method: Callable[..., Awaitable[intercept.ListInterceptEndpointGroupAssociationsResponse]],
         request: intercept.ListInterceptEndpointGroupAssociationsRequest,
         response: intercept.ListInterceptEndpointGroupAssociationsResponse,
         *,
@@ -335,18 +302,11 @@ class ListInterceptEndpointGroupAssociationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[intercept.ListInterceptEndpointGroupAssociationsResponse]:
+    async def pages(self) -> AsyncIterator[intercept.ListInterceptEndpointGroupAssociationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[intercept.InterceptEndpointGroupAssociation]:
@@ -421,12 +381,7 @@ class ListInterceptDeploymentGroupsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[intercept.InterceptDeploymentGroup]:
@@ -457,9 +412,7 @@ class ListInterceptDeploymentGroupsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[intercept.ListInterceptDeploymentGroupsResponse]
-        ],
+        method: Callable[..., Awaitable[intercept.ListInterceptDeploymentGroupsResponse]],
         request: intercept.ListInterceptDeploymentGroupsRequest,
         response: intercept.ListInterceptDeploymentGroupsResponse,
         *,
@@ -495,18 +448,11 @@ class ListInterceptDeploymentGroupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[intercept.ListInterceptDeploymentGroupsResponse]:
+    async def pages(self) -> AsyncIterator[intercept.ListInterceptDeploymentGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[intercept.InterceptDeploymentGroup]:
@@ -581,12 +527,7 @@ class ListInterceptDeploymentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[intercept.InterceptDeployment]:
@@ -657,12 +598,7 @@ class ListInterceptDeploymentsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[intercept.InterceptDeployment]:

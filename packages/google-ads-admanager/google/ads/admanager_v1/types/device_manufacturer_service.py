@@ -138,9 +138,7 @@ class ListDeviceManufacturersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    device_manufacturers: MutableSequence[
-        device_manufacturer_messages.DeviceManufacturer
-    ] = proto.RepeatedField(
+    device_manufacturers: MutableSequence[device_manufacturer_messages.DeviceManufacturer] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=device_manufacturer_messages.DeviceManufacturer,

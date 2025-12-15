@@ -22,12 +22,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.run_v2.types import (
-    condition,
-    instance_split,
-    vendor_settings,
-    worker_pool_revision_template,
-)
+from google.cloud.run_v2.types import condition, instance_split, vendor_settings, worker_pool_revision_template
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -520,9 +515,7 @@ class WorkerPool(proto.Message):
         number=18,
         message=worker_pool_revision_template.WorkerPoolRevisionTemplate,
     )
-    instance_splits: MutableSequence[
-        instance_split.InstanceSplit
-    ] = proto.RepeatedField(
+    instance_splits: MutableSequence[instance_split.InstanceSplit] = proto.RepeatedField(
         proto.MESSAGE,
         number=26,
         message=instance_split.InstanceSplit,
@@ -554,9 +547,7 @@ class WorkerPool(proto.Message):
         proto.STRING,
         number=34,
     )
-    instance_split_statuses: MutableSequence[
-        instance_split.InstanceSplitStatus
-    ] = proto.RepeatedField(
+    instance_split_statuses: MutableSequence[instance_split.InstanceSplitStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=27,
         message=instance_split.InstanceSplitStatus,

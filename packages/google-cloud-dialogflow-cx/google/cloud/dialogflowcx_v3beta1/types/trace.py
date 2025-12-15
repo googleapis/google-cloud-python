@@ -229,9 +229,7 @@ class Action(proto.Message):
                 message=struct_pb2.Struct,
             )
 
-        matched_intents: MutableSequence[
-            "Action.IntentMatch.MatchedIntent"
-        ] = proto.RepeatedField(
+        matched_intents: MutableSequence["Action.IntentMatch.MatchedIntent"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Action.IntentMatch.MatchedIntent",

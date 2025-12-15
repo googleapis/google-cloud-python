@@ -104,13 +104,8 @@ class AdReviewCenterAdServiceRestInterceptor:
     """
 
     def pre_batch_allow_ad_review_center_ads(
-        self,
-        request: ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_allow_ad_review_center_ads
 
         Override in a subclass to manipulate the request or metadata
@@ -118,9 +113,7 @@ class AdReviewCenterAdServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_allow_ad_review_center_ads(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_allow_ad_review_center_ads(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_allow_ad_review_center_ads
 
         DEPRECATED. Please use the `post_batch_allow_ad_review_center_ads_with_metadata`
@@ -134,9 +127,7 @@ class AdReviewCenterAdServiceRestInterceptor:
         return response
 
     def post_batch_allow_ad_review_center_ads_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_allow_ad_review_center_ads
 
@@ -153,13 +144,8 @@ class AdReviewCenterAdServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_block_ad_review_center_ads(
-        self,
-        request: ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_block_ad_review_center_ads
 
         Override in a subclass to manipulate the request or metadata
@@ -167,9 +153,7 @@ class AdReviewCenterAdServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_block_ad_review_center_ads(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_block_ad_review_center_ads(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_block_ad_review_center_ads
 
         DEPRECATED. Please use the `post_batch_block_ad_review_center_ads_with_metadata`
@@ -183,9 +167,7 @@ class AdReviewCenterAdServiceRestInterceptor:
         return response
 
     def post_batch_block_ad_review_center_ads_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_block_ad_review_center_ads
 
@@ -202,13 +184,8 @@ class AdReviewCenterAdServiceRestInterceptor:
         return response, metadata
 
     def pre_search_ad_review_center_ads(
-        self,
-        request: ad_review_center_ad_service.SearchAdReviewCenterAdsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_review_center_ad_service.SearchAdReviewCenterAdsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_review_center_ad_service.SearchAdReviewCenterAdsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_review_center_ad_service.SearchAdReviewCenterAdsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_ad_review_center_ads
 
         Override in a subclass to manipulate the request or metadata
@@ -232,13 +209,8 @@ class AdReviewCenterAdServiceRestInterceptor:
         return response
 
     def post_search_ad_review_center_ads_with_metadata(
-        self,
-        response: ad_review_center_ad_service.SearchAdReviewCenterAdsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_review_center_ad_service.SearchAdReviewCenterAdsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ad_review_center_ad_service.SearchAdReviewCenterAdsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_review_center_ad_service.SearchAdReviewCenterAdsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_ad_review_center_ads
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -254,12 +226,8 @@ class AdReviewCenterAdServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -267,9 +235,7 @@ class AdReviewCenterAdServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -358,9 +324,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -394,32 +358,17 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchAllowAdReviewCenterAds(
-        _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds,
-        AdReviewCenterAdServiceRestStub,
-    ):
+    class _BatchAllowAdReviewCenterAds(_BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds, AdReviewCenterAdServiceRestStub):
         def __hash__(self):
-            return hash(
-                "AdReviewCenterAdServiceRestTransport.BatchAllowAdReviewCenterAds"
-            )
+            return hash("AdReviewCenterAdServiceRestTransport.BatchAllowAdReviewCenterAds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -464,32 +413,20 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_http_options()
-            )
+            http_options = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_allow_ad_review_center_ads(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_batch_allow_ad_review_center_ads(request, metadata)
             transcoded_request = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchAllowAdReviewCenterAds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -513,13 +450,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             # Send the request
             response = AdReviewCenterAdServiceRestTransport._BatchAllowAdReviewCenterAds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -533,15 +464,8 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             resp = self._interceptor.post_batch_allow_ad_review_center_ads(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_allow_ad_review_center_ads_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_allow_ad_review_center_ads_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -562,25 +486,12 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
                 )
             return resp
 
-    class _BatchBlockAdReviewCenterAds(
-        _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds,
-        AdReviewCenterAdServiceRestStub,
-    ):
+    class _BatchBlockAdReviewCenterAds(_BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds, AdReviewCenterAdServiceRestStub):
         def __hash__(self):
-            return hash(
-                "AdReviewCenterAdServiceRestTransport.BatchBlockAdReviewCenterAds"
-            )
+            return hash("AdReviewCenterAdServiceRestTransport.BatchBlockAdReviewCenterAds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -625,32 +536,20 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_http_options()
-            )
+            http_options = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_block_ad_review_center_ads(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_batch_block_ad_review_center_ads(request, metadata)
             transcoded_request = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseBatchBlockAdReviewCenterAds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -674,13 +573,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             # Send the request
             response = AdReviewCenterAdServiceRestTransport._BatchBlockAdReviewCenterAds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -694,15 +587,8 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             resp = self._interceptor.post_batch_block_ad_review_center_ads(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_block_ad_review_center_ads_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_block_ad_review_center_ads_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -723,23 +609,12 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
                 )
             return resp
 
-    class _SearchAdReviewCenterAds(
-        _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds,
-        AdReviewCenterAdServiceRestStub,
-    ):
+    class _SearchAdReviewCenterAds(_BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds, AdReviewCenterAdServiceRestStub):
         def __hash__(self):
             return hash("AdReviewCenterAdServiceRestTransport.SearchAdReviewCenterAds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -779,28 +654,16 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
                         Response object for ``SearchAdReviewCenterAds`` method.
             """
 
-            http_options = (
-                _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds._get_http_options()
-            )
+            http_options = _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_ad_review_center_ads(
-                request, metadata
-            )
-            transcoded_request = _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_ad_review_center_ads(request, metadata)
+            transcoded_request = _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseSearchAdReviewCenterAds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -824,12 +687,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             # Send the request
             response = AdReviewCenterAdServiceRestTransport._SearchAdReviewCenterAds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -839,24 +697,16 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             # Return the response
             resp = ad_review_center_ad_service.SearchAdReviewCenterAdsResponse()
-            pb_resp = ad_review_center_ad_service.SearchAdReviewCenterAdsResponse.pb(
-                resp
-            )
+            pb_resp = ad_review_center_ad_service.SearchAdReviewCenterAdsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_ad_review_center_ads(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_ad_review_center_ads_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_ad_review_center_ads_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ad_review_center_ad_service.SearchAdReviewCenterAdsResponse.to_json(
-                        response
-                    )
+                    response_payload = ad_review_center_ad_service.SearchAdReviewCenterAdsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -878,10 +728,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
     @property
     def batch_allow_ad_review_center_ads(
         self,
-    ) -> Callable[
-        [ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchAllowAdReviewCenterAds(self._session, self._host, self._interceptor)  # type: ignore
@@ -889,10 +736,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
     @property
     def batch_block_ad_review_center_ads(
         self,
-    ) -> Callable[
-        [ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchBlockAdReviewCenterAds(self._session, self._host, self._interceptor)  # type: ignore
@@ -900,10 +744,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
     @property
     def search_ad_review_center_ads(
         self,
-    ) -> Callable[
-        [ad_review_center_ad_service.SearchAdReviewCenterAdsRequest],
-        ad_review_center_ad_service.SearchAdReviewCenterAdsResponse,
-    ]:
+    ) -> Callable[[ad_review_center_ad_service.SearchAdReviewCenterAdsRequest], ad_review_center_ad_service.SearchAdReviewCenterAdsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAdReviewCenterAds(self._session, self._host, self._interceptor)  # type: ignore
@@ -912,23 +753,12 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation,
-        AdReviewCenterAdServiceRestStub,
-    ):
+    class _GetOperation(_BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation, AdReviewCenterAdServiceRestStub):
         def __hash__(self):
             return hash("AdReviewCenterAdServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -966,26 +796,16 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdReviewCenterAdServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1009,12 +829,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
 
             # Send the request
             response = AdReviewCenterAdServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1026,9 +841,7 @@ class AdReviewCenterAdServiceRestTransport(_BaseAdReviewCenterAdServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

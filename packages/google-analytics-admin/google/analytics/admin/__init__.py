@@ -18,12 +18,8 @@ from google.analytics.admin import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.analytics.admin_v1alpha.services.analytics_admin_service.async_client import (
-    AnalyticsAdminServiceAsyncClient,
-)
-from google.analytics.admin_v1alpha.services.analytics_admin_service.client import (
-    AnalyticsAdminServiceClient,
-)
+from google.analytics.admin_v1alpha.services.analytics_admin_service.async_client import AnalyticsAdminServiceAsyncClient
+from google.analytics.admin_v1alpha.services.analytics_admin_service.client import AnalyticsAdminServiceClient
 from google.analytics.admin_v1alpha.types.access_report import (
     AccessBetweenFilter,
     AccessDateRange,
@@ -259,12 +255,7 @@ from google.analytics.admin_v1alpha.types.channel_group import (
     ChannelGroupFilterExpressionList,
     GroupingRule,
 )
-from google.analytics.admin_v1alpha.types.event_create_and_edit import (
-    EventCreateRule,
-    EventEditRule,
-    MatchingCondition,
-    ParameterMutation,
-)
+from google.analytics.admin_v1alpha.types.event_create_and_edit import EventCreateRule, EventEditRule, MatchingCondition, ParameterMutation
 from google.analytics.admin_v1alpha.types.expanded_data_set import (
     ExpandedDataSet,
     ExpandedDataSetFilter,

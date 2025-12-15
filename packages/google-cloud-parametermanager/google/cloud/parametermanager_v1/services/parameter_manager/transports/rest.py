@@ -161,9 +161,7 @@ class ParameterManagerRestInterceptor:
     """
 
     def pre_create_parameter(
-        self,
-        request: service.CreateParameterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateParameterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateParameterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_parameter
 
@@ -186,9 +184,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_create_parameter_with_metadata(
-        self,
-        response: service.Parameter,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Parameter, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Parameter, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_parameter
 
@@ -205,12 +201,8 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_create_parameter_version(
-        self,
-        request: service.CreateParameterVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateParameterVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_parameter_version
 
         Override in a subclass to manipulate the request or metadata
@@ -218,9 +210,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_parameter_version(
-        self, response: service.ParameterVersion
-    ) -> service.ParameterVersion:
+    def post_create_parameter_version(self, response: service.ParameterVersion) -> service.ParameterVersion:
         """Post-rpc interceptor for create_parameter_version
 
         DEPRECATED. Please use the `post_create_parameter_version_with_metadata`
@@ -234,9 +224,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_create_parameter_version_with_metadata(
-        self,
-        response: service.ParameterVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ParameterVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ParameterVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_parameter_version
 
@@ -253,9 +241,7 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_parameter(
-        self,
-        request: service.DeleteParameterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteParameterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteParameterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_parameter
 
@@ -265,12 +251,8 @@ class ParameterManagerRestInterceptor:
         return request, metadata
 
     def pre_delete_parameter_version(
-        self,
-        request: service.DeleteParameterVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DeleteParameterVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_parameter_version
 
         Override in a subclass to manipulate the request or metadata
@@ -279,9 +261,7 @@ class ParameterManagerRestInterceptor:
         return request, metadata
 
     def pre_get_parameter(
-        self,
-        request: service.GetParameterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetParameterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetParameterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_parameter
 
@@ -304,9 +284,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_get_parameter_with_metadata(
-        self,
-        response: service.Parameter,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Parameter, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Parameter, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_parameter
 
@@ -323,12 +301,8 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_parameter_version(
-        self,
-        request: service.GetParameterVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetParameterVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_parameter_version
 
         Override in a subclass to manipulate the request or metadata
@@ -336,9 +310,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_parameter_version(
-        self, response: service.ParameterVersion
-    ) -> service.ParameterVersion:
+    def post_get_parameter_version(self, response: service.ParameterVersion) -> service.ParameterVersion:
         """Post-rpc interceptor for get_parameter_version
 
         DEPRECATED. Please use the `post_get_parameter_version_with_metadata`
@@ -352,9 +324,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_get_parameter_version_with_metadata(
-        self,
-        response: service.ParameterVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ParameterVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ParameterVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_parameter_version
 
@@ -371,9 +341,7 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_list_parameters(
-        self,
-        request: service.ListParametersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListParametersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_parameters
 
@@ -382,9 +350,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_parameters(
-        self, response: service.ListParametersResponse
-    ) -> service.ListParametersResponse:
+    def post_list_parameters(self, response: service.ListParametersResponse) -> service.ListParametersResponse:
         """Post-rpc interceptor for list_parameters
 
         DEPRECATED. Please use the `post_list_parameters_with_metadata`
@@ -398,9 +364,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_list_parameters_with_metadata(
-        self,
-        response: service.ListParametersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListParametersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListParametersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_parameters
 
@@ -417,12 +381,8 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_list_parameter_versions(
-        self,
-        request: service.ListParameterVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListParameterVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListParameterVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListParameterVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_parameter_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -430,9 +390,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_parameter_versions(
-        self, response: service.ListParameterVersionsResponse
-    ) -> service.ListParameterVersionsResponse:
+    def post_list_parameter_versions(self, response: service.ListParameterVersionsResponse) -> service.ListParameterVersionsResponse:
         """Post-rpc interceptor for list_parameter_versions
 
         DEPRECATED. Please use the `post_list_parameter_versions_with_metadata`
@@ -446,12 +404,8 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_list_parameter_versions_with_metadata(
-        self,
-        response: service.ListParameterVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListParameterVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListParameterVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListParameterVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_parameter_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -467,12 +421,8 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_render_parameter_version(
-        self,
-        request: service.RenderParameterVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RenderParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.RenderParameterVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RenderParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for render_parameter_version
 
         Override in a subclass to manipulate the request or metadata
@@ -480,9 +430,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_render_parameter_version(
-        self, response: service.RenderParameterVersionResponse
-    ) -> service.RenderParameterVersionResponse:
+    def post_render_parameter_version(self, response: service.RenderParameterVersionResponse) -> service.RenderParameterVersionResponse:
         """Post-rpc interceptor for render_parameter_version
 
         DEPRECATED. Please use the `post_render_parameter_version_with_metadata`
@@ -496,12 +444,8 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_render_parameter_version_with_metadata(
-        self,
-        response: service.RenderParameterVersionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RenderParameterVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.RenderParameterVersionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RenderParameterVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for render_parameter_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -517,9 +461,7 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_update_parameter(
-        self,
-        request: service.UpdateParameterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateParameterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateParameterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_parameter
 
@@ -542,9 +484,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_update_parameter_with_metadata(
-        self,
-        response: service.Parameter,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Parameter, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Parameter, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_parameter
 
@@ -561,12 +501,8 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_update_parameter_version(
-        self,
-        request: service.UpdateParameterVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateParameterVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateParameterVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_parameter_version
 
         Override in a subclass to manipulate the request or metadata
@@ -574,9 +510,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_parameter_version(
-        self, response: service.ParameterVersion
-    ) -> service.ParameterVersion:
+    def post_update_parameter_version(self, response: service.ParameterVersion) -> service.ParameterVersion:
         """Post-rpc interceptor for update_parameter_version
 
         DEPRECATED. Please use the `post_update_parameter_version_with_metadata`
@@ -590,9 +524,7 @@ class ParameterManagerRestInterceptor:
         return response
 
     def post_update_parameter_version_with_metadata(
-        self,
-        response: service.ParameterVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ParameterVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ParameterVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_parameter_version
 
@@ -609,12 +541,8 @@ class ParameterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -622,9 +550,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -634,12 +560,8 @@ class ParameterManagerRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -647,9 +569,7 @@ class ParameterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -738,31 +658,18 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ParameterManagerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateParameter(
-        _BaseParameterManagerRestTransport._BaseCreateParameter,
-        ParameterManagerRestStub,
-    ):
+    class _CreateParameter(_BaseParameterManagerRestTransport._BaseCreateParameter, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.CreateParameter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -802,32 +709,18 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     Message describing Parameter resource
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseCreateParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseCreateParameter._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_parameter(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseCreateParameter._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_parameter(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseCreateParameter._get_transcoded_request(http_options, request)
 
-            body = _BaseParameterManagerRestTransport._BaseCreateParameter._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParameterManagerRestTransport._BaseCreateParameter._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseCreateParameter._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseCreateParameter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -851,13 +744,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._CreateParameter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -873,12 +760,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_create_parameter(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_parameter_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_parameter_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Parameter.to_json(response)
                 except:
@@ -899,23 +782,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _CreateParameterVersion(
-        _BaseParameterManagerRestTransport._BaseCreateParameterVersion,
-        ParameterManagerRestStub,
-    ):
+    class _CreateParameterVersion(_BaseParameterManagerRestTransport._BaseCreateParameterVersion, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.CreateParameterVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -958,32 +830,18 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_parameter_version(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_parameter_version(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1006,16 +864,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ParameterManagerRestTransport._CreateParameterVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ParameterManagerRestTransport._CreateParameterVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1031,12 +881,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_create_parameter_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_parameter_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_parameter_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ParameterVersion.to_json(response)
                 except:
@@ -1057,23 +903,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _DeleteParameter(
-        _BaseParameterManagerRestTransport._BaseDeleteParameter,
-        ParameterManagerRestStub,
-    ):
+    class _DeleteParameter(_BaseParameterManagerRestTransport._BaseDeleteParameter, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.DeleteParameter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1108,28 +943,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseDeleteParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseDeleteParameter._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_parameter(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseDeleteParameter._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_parameter(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseDeleteParameter._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseDeleteParameter._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseDeleteParameter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1153,12 +976,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._DeleteParameter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1166,23 +984,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteParameterVersion(
-        _BaseParameterManagerRestTransport._BaseDeleteParameterVersion,
-        ParameterManagerRestStub,
-    ):
+    class _DeleteParameterVersion(_BaseParameterManagerRestTransport._BaseDeleteParameterVersion, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.DeleteParameterVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1218,28 +1025,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_parameter_version(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_parameter_version(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1262,15 +1057,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ParameterManagerRestTransport._DeleteParameterVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ParameterManagerRestTransport._DeleteParameterVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1278,22 +1066,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetParameter(
-        _BaseParameterManagerRestTransport._BaseGetParameter, ParameterManagerRestStub
-    ):
+    class _GetParameter(_BaseParameterManagerRestTransport._BaseGetParameter, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.GetParameter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1332,26 +1110,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     Message describing Parameter resource
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseGetParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseGetParameter._get_http_options()
 
             request, metadata = self._interceptor.pre_get_parameter(request, metadata)
-            transcoded_request = _BaseParameterManagerRestTransport._BaseGetParameter._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParameterManagerRestTransport._BaseGetParameter._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseGetParameter._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseGetParameter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1375,12 +1143,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._GetParameter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1396,12 +1159,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_get_parameter(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_parameter_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_parameter_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Parameter.to_json(response)
                 except:
@@ -1422,23 +1181,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _GetParameterVersion(
-        _BaseParameterManagerRestTransport._BaseGetParameterVersion,
-        ParameterManagerRestStub,
-    ):
+    class _GetParameterVersion(_BaseParameterManagerRestTransport._BaseGetParameterVersion, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.GetParameterVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1480,28 +1228,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_parameter_version(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_parameter_version(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1525,12 +1261,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._GetParameterVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1546,12 +1277,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_get_parameter_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_parameter_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_parameter_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ParameterVersion.to_json(response)
                 except:
@@ -1572,22 +1299,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _ListParameters(
-        _BaseParameterManagerRestTransport._BaseListParameters, ParameterManagerRestStub
-    ):
+    class _ListParameters(_BaseParameterManagerRestTransport._BaseListParameters, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.ListParameters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1629,26 +1346,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseListParameters._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseListParameters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_parameters(request, metadata)
-            transcoded_request = _BaseParameterManagerRestTransport._BaseListParameters._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParameterManagerRestTransport._BaseListParameters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseListParameters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseListParameters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1672,12 +1379,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._ListParameters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1693,12 +1395,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_list_parameters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_parameters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_parameters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListParametersResponse.to_json(response)
                 except:
@@ -1719,23 +1417,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _ListParameterVersions(
-        _BaseParameterManagerRestTransport._BaseListParameterVersions,
-        ParameterManagerRestStub,
-    ):
+    class _ListParameterVersions(_BaseParameterManagerRestTransport._BaseListParameterVersions, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.ListParameterVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1777,28 +1464,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseListParameterVersions._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseListParameterVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_parameter_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseListParameterVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_parameter_versions(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseListParameterVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseListParameterVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseListParameterVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1821,15 +1496,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ParameterManagerRestTransport._ListParameterVersions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ParameterManagerRestTransport._ListParameterVersions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1845,16 +1513,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_list_parameter_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_parameter_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_parameter_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListParameterVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListParameterVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1873,23 +1535,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _RenderParameterVersion(
-        _BaseParameterManagerRestTransport._BaseRenderParameterVersion,
-        ParameterManagerRestStub,
-    ):
+    class _RenderParameterVersion(_BaseParameterManagerRestTransport._BaseRenderParameterVersion, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.RenderParameterVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1931,28 +1582,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_render_parameter_version(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_render_parameter_version(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1975,15 +1614,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ParameterManagerRestTransport._RenderParameterVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ParameterManagerRestTransport._RenderParameterVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1999,16 +1631,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_render_parameter_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_render_parameter_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_render_parameter_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.RenderParameterVersionResponse.to_json(
-                        response
-                    )
+                    response_payload = service.RenderParameterVersionResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2027,23 +1653,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _UpdateParameter(
-        _BaseParameterManagerRestTransport._BaseUpdateParameter,
-        ParameterManagerRestStub,
-    ):
+    class _UpdateParameter(_BaseParameterManagerRestTransport._BaseUpdateParameter, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.UpdateParameter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2083,32 +1698,18 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     Message describing Parameter resource
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseUpdateParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_parameter(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_parameter(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_transcoded_request(http_options, request)
 
-            body = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2132,13 +1733,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._UpdateParameter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2154,12 +1749,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_update_parameter(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_parameter_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_parameter_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Parameter.to_json(response)
                 except:
@@ -2180,23 +1771,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
             return resp
 
-    class _UpdateParameterVersion(
-        _BaseParameterManagerRestTransport._BaseUpdateParameterVersion,
-        ParameterManagerRestStub,
-    ):
+    class _UpdateParameterVersion(_BaseParameterManagerRestTransport._BaseUpdateParameterVersion, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.UpdateParameterVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2239,32 +1819,18 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_parameter_version(
-                request, metadata
-            )
-            transcoded_request = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_parameter_version(request, metadata)
+            transcoded_request = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2287,16 +1853,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ParameterManagerRestTransport._UpdateParameterVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ParameterManagerRestTransport._UpdateParameterVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2312,12 +1870,8 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             resp = self._interceptor.post_update_parameter_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_parameter_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_parameter_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ParameterVersion.to_json(response)
                 except:
@@ -2339,93 +1893,67 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             return resp
 
     @property
-    def create_parameter(
-        self,
-    ) -> Callable[[service.CreateParameterRequest], service.Parameter]:
+    def create_parameter(self) -> Callable[[service.CreateParameterRequest], service.Parameter]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateParameter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_parameter_version(
-        self,
-    ) -> Callable[[service.CreateParameterVersionRequest], service.ParameterVersion]:
+    def create_parameter_version(self) -> Callable[[service.CreateParameterVersionRequest], service.ParameterVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_parameter(
-        self,
-    ) -> Callable[[service.DeleteParameterRequest], empty_pb2.Empty]:
+    def delete_parameter(self) -> Callable[[service.DeleteParameterRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteParameter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_parameter_version(
-        self,
-    ) -> Callable[[service.DeleteParameterVersionRequest], empty_pb2.Empty]:
+    def delete_parameter_version(self) -> Callable[[service.DeleteParameterVersionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_parameter(
-        self,
-    ) -> Callable[[service.GetParameterRequest], service.Parameter]:
+    def get_parameter(self) -> Callable[[service.GetParameterRequest], service.Parameter]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetParameter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_parameter_version(
-        self,
-    ) -> Callable[[service.GetParameterVersionRequest], service.ParameterVersion]:
+    def get_parameter_version(self) -> Callable[[service.GetParameterVersionRequest], service.ParameterVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_parameters(
-        self,
-    ) -> Callable[[service.ListParametersRequest], service.ListParametersResponse]:
+    def list_parameters(self) -> Callable[[service.ListParametersRequest], service.ListParametersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListParameters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_parameter_versions(
-        self,
-    ) -> Callable[
-        [service.ListParameterVersionsRequest], service.ListParameterVersionsResponse
-    ]:
+    def list_parameter_versions(self) -> Callable[[service.ListParameterVersionsRequest], service.ListParameterVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListParameterVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def render_parameter_version(
-        self,
-    ) -> Callable[
-        [service.RenderParameterVersionRequest], service.RenderParameterVersionResponse
-    ]:
+    def render_parameter_version(self) -> Callable[[service.RenderParameterVersionRequest], service.RenderParameterVersionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenderParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_parameter(
-        self,
-    ) -> Callable[[service.UpdateParameterRequest], service.Parameter]:
+    def update_parameter(self) -> Callable[[service.UpdateParameterRequest], service.Parameter]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateParameter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_parameter_version(
-        self,
-    ) -> Callable[[service.UpdateParameterVersionRequest], service.ParameterVersion]:
+    def update_parameter_version(self) -> Callable[[service.UpdateParameterVersionRequest], service.ParameterVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -2434,22 +1962,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseParameterManagerRestTransport._BaseGetLocation, ParameterManagerRestStub
-    ):
+    class _GetLocation(_BaseParameterManagerRestTransport._BaseGetLocation, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2487,26 +2005,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseParameterManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParameterManagerRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2530,12 +2038,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2547,9 +2050,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2574,22 +2075,12 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseParameterManagerRestTransport._BaseListLocations, ParameterManagerRestStub
-    ):
+    class _ListLocations(_BaseParameterManagerRestTransport._BaseListLocations, ParameterManagerRestStub):
         def __hash__(self):
             return hash("ParameterManagerRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2627,26 +2118,16 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseParameterManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParameterManagerRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParameterManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParameterManagerRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2670,12 +2151,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             # Send the request
             response = ParameterManagerRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2687,9 +2163,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

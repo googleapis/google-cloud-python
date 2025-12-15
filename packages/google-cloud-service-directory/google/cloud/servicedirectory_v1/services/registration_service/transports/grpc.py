@@ -54,9 +54,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +64,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +83,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -240,18 +231,14 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -285,9 +272,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -346,11 +331,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_namespace(
-        self,
-    ) -> Callable[
-        [registration_service.CreateNamespaceRequest], gcs_namespace.Namespace
-    ]:
+    def create_namespace(self) -> Callable[[registration_service.CreateNamespaceRequest], gcs_namespace.Namespace]:
         r"""Return a callable for the create namespace method over gRPC.
 
         Creates a namespace, and returns the new namespace.
@@ -374,12 +355,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["create_namespace"]
 
     @property
-    def list_namespaces(
-        self,
-    ) -> Callable[
-        [registration_service.ListNamespacesRequest],
-        registration_service.ListNamespacesResponse,
-    ]:
+    def list_namespaces(self) -> Callable[[registration_service.ListNamespacesRequest], registration_service.ListNamespacesResponse]:
         r"""Return a callable for the list namespaces method over gRPC.
 
         Lists all namespaces.
@@ -403,9 +379,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["list_namespaces"]
 
     @property
-    def get_namespace(
-        self,
-    ) -> Callable[[registration_service.GetNamespaceRequest], namespace.Namespace]:
+    def get_namespace(self) -> Callable[[registration_service.GetNamespaceRequest], namespace.Namespace]:
         r"""Return a callable for the get namespace method over gRPC.
 
         Gets a namespace.
@@ -429,11 +403,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["get_namespace"]
 
     @property
-    def update_namespace(
-        self,
-    ) -> Callable[
-        [registration_service.UpdateNamespaceRequest], gcs_namespace.Namespace
-    ]:
+    def update_namespace(self) -> Callable[[registration_service.UpdateNamespaceRequest], gcs_namespace.Namespace]:
         r"""Return a callable for the update namespace method over gRPC.
 
         Updates a namespace.
@@ -457,9 +427,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["update_namespace"]
 
     @property
-    def delete_namespace(
-        self,
-    ) -> Callable[[registration_service.DeleteNamespaceRequest], empty_pb2.Empty]:
+    def delete_namespace(self) -> Callable[[registration_service.DeleteNamespaceRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete namespace method over gRPC.
 
         Deletes a namespace. This also deletes all services
@@ -484,9 +452,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["delete_namespace"]
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[[registration_service.CreateServiceRequest], gcs_service.Service]:
+    def create_service(self) -> Callable[[registration_service.CreateServiceRequest], gcs_service.Service]:
         r"""Return a callable for the create service method over gRPC.
 
         Creates a service, and returns the new service.
@@ -510,12 +476,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["create_service"]
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[
-        [registration_service.ListServicesRequest],
-        registration_service.ListServicesResponse,
-    ]:
+    def list_services(self) -> Callable[[registration_service.ListServicesRequest], registration_service.ListServicesResponse]:
         r"""Return a callable for the list services method over gRPC.
 
         Lists all services belonging to a namespace.
@@ -539,9 +500,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["list_services"]
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[[registration_service.GetServiceRequest], service.Service]:
+    def get_service(self) -> Callable[[registration_service.GetServiceRequest], service.Service]:
         r"""Return a callable for the get service method over gRPC.
 
         Gets a service.
@@ -565,9 +524,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["get_service"]
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[[registration_service.UpdateServiceRequest], gcs_service.Service]:
+    def update_service(self) -> Callable[[registration_service.UpdateServiceRequest], gcs_service.Service]:
         r"""Return a callable for the update service method over gRPC.
 
         Updates a service.
@@ -591,9 +548,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["update_service"]
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[[registration_service.DeleteServiceRequest], empty_pb2.Empty]:
+    def delete_service(self) -> Callable[[registration_service.DeleteServiceRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete service method over gRPC.
 
         Deletes a service. This also deletes all endpoints
@@ -618,9 +573,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["delete_service"]
 
     @property
-    def create_endpoint(
-        self,
-    ) -> Callable[[registration_service.CreateEndpointRequest], gcs_endpoint.Endpoint]:
+    def create_endpoint(self) -> Callable[[registration_service.CreateEndpointRequest], gcs_endpoint.Endpoint]:
         r"""Return a callable for the create endpoint method over gRPC.
 
         Creates an endpoint, and returns the new endpoint.
@@ -644,12 +597,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["create_endpoint"]
 
     @property
-    def list_endpoints(
-        self,
-    ) -> Callable[
-        [registration_service.ListEndpointsRequest],
-        registration_service.ListEndpointsResponse,
-    ]:
+    def list_endpoints(self) -> Callable[[registration_service.ListEndpointsRequest], registration_service.ListEndpointsResponse]:
         r"""Return a callable for the list endpoints method over gRPC.
 
         Lists all endpoints.
@@ -673,9 +621,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["list_endpoints"]
 
     @property
-    def get_endpoint(
-        self,
-    ) -> Callable[[registration_service.GetEndpointRequest], endpoint.Endpoint]:
+    def get_endpoint(self) -> Callable[[registration_service.GetEndpointRequest], endpoint.Endpoint]:
         r"""Return a callable for the get endpoint method over gRPC.
 
         Gets an endpoint.
@@ -699,9 +645,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["get_endpoint"]
 
     @property
-    def update_endpoint(
-        self,
-    ) -> Callable[[registration_service.UpdateEndpointRequest], gcs_endpoint.Endpoint]:
+    def update_endpoint(self) -> Callable[[registration_service.UpdateEndpointRequest], gcs_endpoint.Endpoint]:
         r"""Return a callable for the update endpoint method over gRPC.
 
         Updates an endpoint.
@@ -725,9 +669,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["update_endpoint"]
 
     @property
-    def delete_endpoint(
-        self,
-    ) -> Callable[[registration_service.DeleteEndpointRequest], empty_pb2.Empty]:
+    def delete_endpoint(self) -> Callable[[registration_service.DeleteEndpointRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete endpoint method over gRPC.
 
         Deletes an endpoint.
@@ -751,9 +693,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["delete_endpoint"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM Policy for a resource (namespace or
@@ -778,9 +718,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM Policy for a resource (namespace or
@@ -805,12 +743,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests IAM permissions for a resource (namespace or
@@ -840,9 +773,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

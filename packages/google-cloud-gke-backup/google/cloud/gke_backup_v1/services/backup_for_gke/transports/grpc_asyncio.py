@@ -61,13 +61,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -77,10 +73,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -99,11 +92,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -284,18 +273,14 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -331,9 +316,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -356,19 +339,13 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_backup_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateBackupPlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_backup_plan(self) -> Callable[[gkebackup.CreateBackupPlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup plan method over gRPC.
 
         Creates a new BackupPlan in a given location.
@@ -392,11 +369,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["create_backup_plan"]
 
     @property
-    def list_backup_plans(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupPlansRequest], Awaitable[gkebackup.ListBackupPlansResponse]
-    ]:
+    def list_backup_plans(self) -> Callable[[gkebackup.ListBackupPlansRequest], Awaitable[gkebackup.ListBackupPlansResponse]]:
         r"""Return a callable for the list backup plans method over gRPC.
 
         Lists BackupPlans in a given location.
@@ -420,9 +393,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_backup_plans"]
 
     @property
-    def get_backup_plan(
-        self,
-    ) -> Callable[[gkebackup.GetBackupPlanRequest], Awaitable[backup_plan.BackupPlan]]:
+    def get_backup_plan(self) -> Callable[[gkebackup.GetBackupPlanRequest], Awaitable[backup_plan.BackupPlan]]:
         r"""Return a callable for the get backup plan method over gRPC.
 
         Retrieve the details of a single BackupPlan.
@@ -446,11 +417,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_backup_plan"]
 
     @property
-    def update_backup_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateBackupPlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup_plan(self) -> Callable[[gkebackup.UpdateBackupPlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup plan method over gRPC.
 
         Update a BackupPlan.
@@ -474,11 +441,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["update_backup_plan"]
 
     @property
-    def delete_backup_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteBackupPlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup_plan(self) -> Callable[[gkebackup.DeleteBackupPlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup plan method over gRPC.
 
         Deletes an existing BackupPlan.
@@ -502,11 +465,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["delete_backup_plan"]
 
     @property
-    def create_backup_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateBackupChannelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_backup_channel(self) -> Callable[[gkebackup.CreateBackupChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup channel method over gRPC.
 
         Creates a new BackupChannel in a given location.
@@ -530,12 +489,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["create_backup_channel"]
 
     @property
-    def list_backup_channels(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupChannelsRequest],
-        Awaitable[gkebackup.ListBackupChannelsResponse],
-    ]:
+    def list_backup_channels(self) -> Callable[[gkebackup.ListBackupChannelsRequest], Awaitable[gkebackup.ListBackupChannelsResponse]]:
         r"""Return a callable for the list backup channels method over gRPC.
 
         Lists BackupChannels in a given location.
@@ -559,11 +513,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_backup_channels"]
 
     @property
-    def get_backup_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.GetBackupChannelRequest], Awaitable[backup_channel.BackupChannel]
-    ]:
+    def get_backup_channel(self) -> Callable[[gkebackup.GetBackupChannelRequest], Awaitable[backup_channel.BackupChannel]]:
         r"""Return a callable for the get backup channel method over gRPC.
 
         Retrieve the details of a single BackupChannel.
@@ -587,11 +537,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_backup_channel"]
 
     @property
-    def update_backup_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateBackupChannelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup_channel(self) -> Callable[[gkebackup.UpdateBackupChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup channel method over gRPC.
 
         Update a BackupChannel.
@@ -615,11 +561,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["update_backup_channel"]
 
     @property
-    def delete_backup_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteBackupChannelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup_channel(self) -> Callable[[gkebackup.DeleteBackupChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup channel method over gRPC.
 
         Deletes an existing BackupChannel.
@@ -643,12 +585,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["delete_backup_channel"]
 
     @property
-    def list_backup_plan_bindings(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupPlanBindingsRequest],
-        Awaitable[gkebackup.ListBackupPlanBindingsResponse],
-    ]:
+    def list_backup_plan_bindings(self) -> Callable[[gkebackup.ListBackupPlanBindingsRequest], Awaitable[gkebackup.ListBackupPlanBindingsResponse]]:
         r"""Return a callable for the list backup plan bindings method over gRPC.
 
         Lists BackupPlanBindings in a given location.
@@ -672,12 +609,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_backup_plan_bindings"]
 
     @property
-    def get_backup_plan_binding(
-        self,
-    ) -> Callable[
-        [gkebackup.GetBackupPlanBindingRequest],
-        Awaitable[backup_plan_binding.BackupPlanBinding],
-    ]:
+    def get_backup_plan_binding(self) -> Callable[[gkebackup.GetBackupPlanBindingRequest], Awaitable[backup_plan_binding.BackupPlanBinding]]:
         r"""Return a callable for the get backup plan binding method over gRPC.
 
         Retrieve the details of a single BackupPlanBinding.
@@ -701,9 +633,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_backup_plan_binding"]
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[gkebackup.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
+    def create_backup(self) -> Callable[[gkebackup.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
         Creates a Backup for the given BackupPlan.
@@ -727,11 +657,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["create_backup"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupsRequest], Awaitable[gkebackup.ListBackupsResponse]
-    ]:
+    def list_backups(self) -> Callable[[gkebackup.ListBackupsRequest], Awaitable[gkebackup.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists the Backups for a given BackupPlan.
@@ -755,9 +681,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_backups"]
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[gkebackup.GetBackupRequest], Awaitable[backup.Backup]]:
+    def get_backup(self) -> Callable[[gkebackup.GetBackupRequest], Awaitable[backup.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Retrieve the details of a single Backup.
@@ -781,9 +705,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_backup"]
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[gkebackup.UpdateBackupRequest], Awaitable[operations_pb2.Operation]]:
+    def update_backup(self) -> Callable[[gkebackup.UpdateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup method over gRPC.
 
         Update a Backup.
@@ -807,9 +729,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["update_backup"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[gkebackup.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_backup(self) -> Callable[[gkebackup.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes an existing Backup.
@@ -833,12 +753,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["delete_backup"]
 
     @property
-    def list_volume_backups(
-        self,
-    ) -> Callable[
-        [gkebackup.ListVolumeBackupsRequest],
-        Awaitable[gkebackup.ListVolumeBackupsResponse],
-    ]:
+    def list_volume_backups(self) -> Callable[[gkebackup.ListVolumeBackupsRequest], Awaitable[gkebackup.ListVolumeBackupsResponse]]:
         r"""Return a callable for the list volume backups method over gRPC.
 
         Lists the VolumeBackups for a given Backup.
@@ -862,9 +777,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_volume_backups"]
 
     @property
-    def get_volume_backup(
-        self,
-    ) -> Callable[[gkebackup.GetVolumeBackupRequest], Awaitable[volume.VolumeBackup]]:
+    def get_volume_backup(self) -> Callable[[gkebackup.GetVolumeBackupRequest], Awaitable[volume.VolumeBackup]]:
         r"""Return a callable for the get volume backup method over gRPC.
 
         Retrieve the details of a single VolumeBackup.
@@ -888,11 +801,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_volume_backup"]
 
     @property
-    def create_restore_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateRestorePlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_restore_plan(self) -> Callable[[gkebackup.CreateRestorePlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create restore plan method over gRPC.
 
         Creates a new RestorePlan in a given location.
@@ -916,12 +825,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["create_restore_plan"]
 
     @property
-    def list_restore_plans(
-        self,
-    ) -> Callable[
-        [gkebackup.ListRestorePlansRequest],
-        Awaitable[gkebackup.ListRestorePlansResponse],
-    ]:
+    def list_restore_plans(self) -> Callable[[gkebackup.ListRestorePlansRequest], Awaitable[gkebackup.ListRestorePlansResponse]]:
         r"""Return a callable for the list restore plans method over gRPC.
 
         Lists RestorePlans in a given location.
@@ -945,11 +849,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_restore_plans"]
 
     @property
-    def get_restore_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.GetRestorePlanRequest], Awaitable[restore_plan.RestorePlan]
-    ]:
+    def get_restore_plan(self) -> Callable[[gkebackup.GetRestorePlanRequest], Awaitable[restore_plan.RestorePlan]]:
         r"""Return a callable for the get restore plan method over gRPC.
 
         Retrieve the details of a single RestorePlan.
@@ -973,11 +873,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_restore_plan"]
 
     @property
-    def update_restore_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateRestorePlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_restore_plan(self) -> Callable[[gkebackup.UpdateRestorePlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update restore plan method over gRPC.
 
         Update a RestorePlan.
@@ -1001,11 +897,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["update_restore_plan"]
 
     @property
-    def delete_restore_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteRestorePlanRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_restore_plan(self) -> Callable[[gkebackup.DeleteRestorePlanRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete restore plan method over gRPC.
 
         Deletes an existing RestorePlan.
@@ -1029,11 +921,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["delete_restore_plan"]
 
     @property
-    def create_restore_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateRestoreChannelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_restore_channel(self) -> Callable[[gkebackup.CreateRestoreChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create restore channel method over gRPC.
 
         Creates a new RestoreChannel in a given location.
@@ -1057,12 +945,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["create_restore_channel"]
 
     @property
-    def list_restore_channels(
-        self,
-    ) -> Callable[
-        [gkebackup.ListRestoreChannelsRequest],
-        Awaitable[gkebackup.ListRestoreChannelsResponse],
-    ]:
+    def list_restore_channels(self) -> Callable[[gkebackup.ListRestoreChannelsRequest], Awaitable[gkebackup.ListRestoreChannelsResponse]]:
         r"""Return a callable for the list restore channels method over gRPC.
 
         Lists RestoreChannels in a given location.
@@ -1086,11 +969,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_restore_channels"]
 
     @property
-    def get_restore_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.GetRestoreChannelRequest], Awaitable[restore_channel.RestoreChannel]
-    ]:
+    def get_restore_channel(self) -> Callable[[gkebackup.GetRestoreChannelRequest], Awaitable[restore_channel.RestoreChannel]]:
         r"""Return a callable for the get restore channel method over gRPC.
 
         Retrieve the details of a single RestoreChannel.
@@ -1114,11 +993,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_restore_channel"]
 
     @property
-    def update_restore_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateRestoreChannelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_restore_channel(self) -> Callable[[gkebackup.UpdateRestoreChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update restore channel method over gRPC.
 
         Update a RestoreChannel.
@@ -1142,11 +1017,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["update_restore_channel"]
 
     @property
-    def delete_restore_channel(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteRestoreChannelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_restore_channel(self) -> Callable[[gkebackup.DeleteRestoreChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete restore channel method over gRPC.
 
         Deletes an existing RestoreChannel.
@@ -1172,10 +1043,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
     @property
     def list_restore_plan_bindings(
         self,
-    ) -> Callable[
-        [gkebackup.ListRestorePlanBindingsRequest],
-        Awaitable[gkebackup.ListRestorePlanBindingsResponse],
-    ]:
+    ) -> Callable[[gkebackup.ListRestorePlanBindingsRequest], Awaitable[gkebackup.ListRestorePlanBindingsResponse]]:
         r"""Return a callable for the list restore plan bindings method over gRPC.
 
         Lists RestorePlanBindings in a given location.
@@ -1191,9 +1059,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_restore_plan_bindings" not in self._stubs:
-            self._stubs[
-                "list_restore_plan_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_restore_plan_bindings"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListRestorePlanBindings",
                 request_serializer=gkebackup.ListRestorePlanBindingsRequest.serialize,
                 response_deserializer=gkebackup.ListRestorePlanBindingsResponse.deserialize,
@@ -1201,12 +1067,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_restore_plan_bindings"]
 
     @property
-    def get_restore_plan_binding(
-        self,
-    ) -> Callable[
-        [gkebackup.GetRestorePlanBindingRequest],
-        Awaitable[restore_plan_binding.RestorePlanBinding],
-    ]:
+    def get_restore_plan_binding(self) -> Callable[[gkebackup.GetRestorePlanBindingRequest], Awaitable[restore_plan_binding.RestorePlanBinding]]:
         r"""Return a callable for the get restore plan binding method over gRPC.
 
         Retrieve the details of a single RestorePlanBinding.
@@ -1230,11 +1091,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_restore_plan_binding"]
 
     @property
-    def create_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateRestoreRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_restore(self) -> Callable[[gkebackup.CreateRestoreRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create restore method over gRPC.
 
         Creates a new Restore for the given RestorePlan.
@@ -1258,11 +1115,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["create_restore"]
 
     @property
-    def list_restores(
-        self,
-    ) -> Callable[
-        [gkebackup.ListRestoresRequest], Awaitable[gkebackup.ListRestoresResponse]
-    ]:
+    def list_restores(self) -> Callable[[gkebackup.ListRestoresRequest], Awaitable[gkebackup.ListRestoresResponse]]:
         r"""Return a callable for the list restores method over gRPC.
 
         Lists the Restores for a given RestorePlan.
@@ -1286,9 +1139,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_restores"]
 
     @property
-    def get_restore(
-        self,
-    ) -> Callable[[gkebackup.GetRestoreRequest], Awaitable[restore.Restore]]:
+    def get_restore(self) -> Callable[[gkebackup.GetRestoreRequest], Awaitable[restore.Restore]]:
         r"""Return a callable for the get restore method over gRPC.
 
         Retrieves the details of a single Restore.
@@ -1312,11 +1163,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["get_restore"]
 
     @property
-    def update_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateRestoreRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_restore(self) -> Callable[[gkebackup.UpdateRestoreRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update restore method over gRPC.
 
         Update a Restore.
@@ -1340,11 +1187,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["update_restore"]
 
     @property
-    def delete_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteRestoreRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_restore(self) -> Callable[[gkebackup.DeleteRestoreRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete restore method over gRPC.
 
         Deletes an existing Restore.
@@ -1368,12 +1211,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["delete_restore"]
 
     @property
-    def list_volume_restores(
-        self,
-    ) -> Callable[
-        [gkebackup.ListVolumeRestoresRequest],
-        Awaitable[gkebackup.ListVolumeRestoresResponse],
-    ]:
+    def list_volume_restores(self) -> Callable[[gkebackup.ListVolumeRestoresRequest], Awaitable[gkebackup.ListVolumeRestoresResponse]]:
         r"""Return a callable for the list volume restores method over gRPC.
 
         Lists the VolumeRestores for a given Restore.
@@ -1397,9 +1235,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         return self._stubs["list_volume_restores"]
 
     @property
-    def get_volume_restore(
-        self,
-    ) -> Callable[[gkebackup.GetVolumeRestoreRequest], Awaitable[volume.VolumeRestore]]:
+    def get_volume_restore(self) -> Callable[[gkebackup.GetVolumeRestoreRequest], Awaitable[volume.VolumeRestore]]:
         r"""Return a callable for the get volume restore method over gRPC.
 
         Retrieve the details of a single VolumeRestore.
@@ -1425,10 +1261,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
     @property
     def get_backup_index_download_url(
         self,
-    ) -> Callable[
-        [gkebackup.GetBackupIndexDownloadUrlRequest],
-        Awaitable[gkebackup.GetBackupIndexDownloadUrlResponse],
-    ]:
+    ) -> Callable[[gkebackup.GetBackupIndexDownloadUrlRequest], Awaitable[gkebackup.GetBackupIndexDownloadUrlResponse]]:
         r"""Return a callable for the get backup index download url method over gRPC.
 
         Retrieve the link to the backupIndex.
@@ -1444,9 +1277,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_index_download_url" not in self._stubs:
-            self._stubs[
-                "get_backup_index_download_url"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_backup_index_download_url"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupIndexDownloadUrl",
                 request_serializer=gkebackup.GetBackupIndexDownloadUrlRequest.serialize,
                 response_deserializer=gkebackup.GetBackupIndexDownloadUrlResponse.deserialize,
@@ -1953,9 +1784,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1972,9 +1801,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2059,10 +1886,7 @@ class BackupForGKEGrpcAsyncIOTransport(BackupForGKETransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

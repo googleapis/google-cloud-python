@@ -120,12 +120,8 @@ class WebRiskServiceRestInterceptor:
     """
 
     def pre_compute_threat_list_diff(
-        self,
-        request: webrisk.ComputeThreatListDiffRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        webrisk.ComputeThreatListDiffRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: webrisk.ComputeThreatListDiffRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[webrisk.ComputeThreatListDiffRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_threat_list_diff
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +129,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_compute_threat_list_diff(
-        self, response: webrisk.ComputeThreatListDiffResponse
-    ) -> webrisk.ComputeThreatListDiffResponse:
+    def post_compute_threat_list_diff(self, response: webrisk.ComputeThreatListDiffResponse) -> webrisk.ComputeThreatListDiffResponse:
         """Post-rpc interceptor for compute_threat_list_diff
 
         DEPRECATED. Please use the `post_compute_threat_list_diff_with_metadata`
@@ -149,12 +143,8 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def post_compute_threat_list_diff_with_metadata(
-        self,
-        response: webrisk.ComputeThreatListDiffResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        webrisk.ComputeThreatListDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: webrisk.ComputeThreatListDiffResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[webrisk.ComputeThreatListDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_threat_list_diff
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,12 +160,8 @@ class WebRiskServiceRestInterceptor:
         return response, metadata
 
     def pre_create_submission(
-        self,
-        request: webrisk.CreateSubmissionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        webrisk.CreateSubmissionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: webrisk.CreateSubmissionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[webrisk.CreateSubmissionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_submission
 
         Override in a subclass to manipulate the request or metadata
@@ -183,9 +169,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_submission(
-        self, response: webrisk.Submission
-    ) -> webrisk.Submission:
+    def post_create_submission(self, response: webrisk.Submission) -> webrisk.Submission:
         """Post-rpc interceptor for create_submission
 
         DEPRECATED. Please use the `post_create_submission_with_metadata`
@@ -199,9 +183,7 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def post_create_submission_with_metadata(
-        self,
-        response: webrisk.Submission,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webrisk.Submission, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.Submission, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_submission
 
@@ -218,9 +200,7 @@ class WebRiskServiceRestInterceptor:
         return response, metadata
 
     def pre_search_hashes(
-        self,
-        request: webrisk.SearchHashesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webrisk.SearchHashesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchHashesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_hashes
 
@@ -229,9 +209,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_hashes(
-        self, response: webrisk.SearchHashesResponse
-    ) -> webrisk.SearchHashesResponse:
+    def post_search_hashes(self, response: webrisk.SearchHashesResponse) -> webrisk.SearchHashesResponse:
         """Post-rpc interceptor for search_hashes
 
         DEPRECATED. Please use the `post_search_hashes_with_metadata`
@@ -245,9 +223,7 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def post_search_hashes_with_metadata(
-        self,
-        response: webrisk.SearchHashesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webrisk.SearchHashesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchHashesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_hashes
 
@@ -264,9 +240,7 @@ class WebRiskServiceRestInterceptor:
         return response, metadata
 
     def pre_search_uris(
-        self,
-        request: webrisk.SearchUrisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webrisk.SearchUrisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchUrisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_uris
 
@@ -275,9 +249,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_uris(
-        self, response: webrisk.SearchUrisResponse
-    ) -> webrisk.SearchUrisResponse:
+    def post_search_uris(self, response: webrisk.SearchUrisResponse) -> webrisk.SearchUrisResponse:
         """Post-rpc interceptor for search_uris
 
         DEPRECATED. Please use the `post_search_uris_with_metadata`
@@ -291,9 +263,7 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def post_search_uris_with_metadata(
-        self,
-        response: webrisk.SearchUrisResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: webrisk.SearchUrisResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SearchUrisResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_uris
 
@@ -310,9 +280,7 @@ class WebRiskServiceRestInterceptor:
         return response, metadata
 
     def pre_submit_uri(
-        self,
-        request: webrisk.SubmitUriRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: webrisk.SubmitUriRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[webrisk.SubmitUriRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_uri
 
@@ -321,9 +289,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_submit_uri(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_submit_uri(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for submit_uri
 
         DEPRECATED. Please use the `post_submit_uri_with_metadata`
@@ -337,9 +303,7 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def post_submit_uri_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for submit_uri
 
@@ -356,12 +320,8 @@ class WebRiskServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -379,12 +339,8 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -402,12 +358,8 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -415,9 +367,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -427,12 +377,8 @@ class WebRiskServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -440,9 +386,7 @@ class WebRiskServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -532,9 +476,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -587,30 +529,17 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ComputeThreatListDiff(
-        _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff,
-        WebRiskServiceRestStub,
-    ):
+    class _ComputeThreatListDiff(_BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.ComputeThreatListDiff")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -649,28 +578,16 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff._get_http_options()
 
-            request, metadata = self._interceptor.pre_compute_threat_list_diff(
-                request, metadata
-            )
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compute_threat_list_diff(request, metadata)
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseComputeThreatListDiff._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -694,12 +611,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._ComputeThreatListDiff._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -715,16 +627,10 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             resp = self._interceptor.post_compute_threat_list_diff(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compute_threat_list_diff_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_threat_list_diff_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = webrisk.ComputeThreatListDiffResponse.to_json(
-                        response
-                    )
+                    response_payload = webrisk.ComputeThreatListDiffResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -743,22 +649,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 )
             return resp
 
-    class _CreateSubmission(
-        _BaseWebRiskServiceRestTransport._BaseCreateSubmission, WebRiskServiceRestStub
-    ):
+    class _CreateSubmission(_BaseWebRiskServiceRestTransport._BaseCreateSubmission, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.CreateSubmission")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -801,32 +697,18 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_submission(
-                request, metadata
-            )
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_submission(request, metadata)
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_transcoded_request(http_options, request)
 
-            body = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseCreateSubmission._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -850,13 +732,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._CreateSubmission._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -872,12 +748,8 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             resp = self._interceptor.post_create_submission(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_submission_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_submission_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webrisk.Submission.to_json(response)
                 except:
@@ -898,22 +770,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 )
             return resp
 
-    class _SearchHashes(
-        _BaseWebRiskServiceRestTransport._BaseSearchHashes, WebRiskServiceRestStub
-    ):
+    class _SearchHashes(_BaseWebRiskServiceRestTransport._BaseSearchHashes, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.SearchHashes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -953,26 +815,16 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseSearchHashes._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseSearchHashes._get_http_options()
 
             request, metadata = self._interceptor.pre_search_hashes(request, metadata)
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseSearchHashes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseSearchHashes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseSearchHashes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseSearchHashes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -996,12 +848,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._SearchHashes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1017,12 +864,8 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             resp = self._interceptor.post_search_hashes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_hashes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_hashes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webrisk.SearchHashesResponse.to_json(response)
                 except:
@@ -1043,22 +886,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 )
             return resp
 
-    class _SearchUris(
-        _BaseWebRiskServiceRestTransport._BaseSearchUris, WebRiskServiceRestStub
-    ):
+    class _SearchUris(_BaseWebRiskServiceRestTransport._BaseSearchUris, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.SearchUris")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1098,28 +931,16 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseSearchUris._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseSearchUris._get_http_options()
 
             request, metadata = self._interceptor.pre_search_uris(request, metadata)
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseSearchUris._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseSearchUris._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebRiskServiceRestTransport._BaseSearchUris._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseSearchUris._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1143,12 +964,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._SearchUris._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1164,12 +980,8 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             resp = self._interceptor.post_search_uris(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_uris_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_uris_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = webrisk.SearchUrisResponse.to_json(response)
                 except:
@@ -1190,22 +1002,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 )
             return resp
 
-    class _SubmitUri(
-        _BaseWebRiskServiceRestTransport._BaseSubmitUri, WebRiskServiceRestStub
-    ):
+    class _SubmitUri(_BaseWebRiskServiceRestTransport._BaseSubmitUri, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.SubmitUri")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1249,36 +1051,18 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_http_options()
 
             request, metadata = self._interceptor.pre_submit_uri(request, metadata)
-            transcoded_request = (
-                _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseSubmitUri._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1302,13 +1086,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._SubmitUri._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1322,12 +1100,8 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             resp = self._interceptor.post_submit_uri(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_submit_uri_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_submit_uri_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1349,43 +1123,31 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
             return resp
 
     @property
-    def compute_threat_list_diff(
-        self,
-    ) -> Callable[
-        [webrisk.ComputeThreatListDiffRequest], webrisk.ComputeThreatListDiffResponse
-    ]:
+    def compute_threat_list_diff(self) -> Callable[[webrisk.ComputeThreatListDiffRequest], webrisk.ComputeThreatListDiffResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeThreatListDiff(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_submission(
-        self,
-    ) -> Callable[[webrisk.CreateSubmissionRequest], webrisk.Submission]:
+    def create_submission(self) -> Callable[[webrisk.CreateSubmissionRequest], webrisk.Submission]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSubmission(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_hashes(
-        self,
-    ) -> Callable[[webrisk.SearchHashesRequest], webrisk.SearchHashesResponse]:
+    def search_hashes(self) -> Callable[[webrisk.SearchHashesRequest], webrisk.SearchHashesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchHashes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_uris(
-        self,
-    ) -> Callable[[webrisk.SearchUrisRequest], webrisk.SearchUrisResponse]:
+    def search_uris(self) -> Callable[[webrisk.SearchUrisRequest], webrisk.SearchUrisResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchUris(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def submit_uri(
-        self,
-    ) -> Callable[[webrisk.SubmitUriRequest], operations_pb2.Operation]:
+    def submit_uri(self) -> Callable[[webrisk.SubmitUriRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SubmitUri(self._session, self._host, self._interceptor)  # type: ignore
@@ -1394,22 +1156,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseWebRiskServiceRestTransport._BaseCancelOperation, WebRiskServiceRestStub
-    ):
+    class _CancelOperation(_BaseWebRiskServiceRestTransport._BaseCancelOperation, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1445,32 +1197,18 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1494,13 +1232,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1514,22 +1246,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseWebRiskServiceRestTransport._BaseDeleteOperation, WebRiskServiceRestStub
-    ):
+    class _DeleteOperation(_BaseWebRiskServiceRestTransport._BaseDeleteOperation, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1564,28 +1286,16 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1609,12 +1319,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1628,22 +1333,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseWebRiskServiceRestTransport._BaseGetOperation, WebRiskServiceRestStub
-    ):
+    class _GetOperation(_BaseWebRiskServiceRestTransport._BaseGetOperation, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1681,26 +1376,16 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1724,12 +1409,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1741,9 +1421,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1768,22 +1446,12 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseWebRiskServiceRestTransport._BaseListOperations, WebRiskServiceRestStub
-    ):
+    class _ListOperations(_BaseWebRiskServiceRestTransport._BaseListOperations, WebRiskServiceRestStub):
         def __hash__(self):
             return hash("WebRiskServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1821,26 +1489,16 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseWebRiskServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseWebRiskServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseWebRiskServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebRiskServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebRiskServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebRiskServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1864,12 +1522,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
 
             # Send the request
             response = WebRiskServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1881,9 +1534,7 @@ class WebRiskServiceRestTransport(_BaseWebRiskServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

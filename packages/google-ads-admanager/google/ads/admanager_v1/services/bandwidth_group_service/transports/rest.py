@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    bandwidth_group_messages,
-    bandwidth_group_service,
-)
+from google.ads.admanager_v1.types import bandwidth_group_messages, bandwidth_group_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseBandwidthGroupServiceRestTransport
@@ -99,13 +96,8 @@ class BandwidthGroupServiceRestInterceptor:
     """
 
     def pre_get_bandwidth_group(
-        self,
-        request: bandwidth_group_service.GetBandwidthGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        bandwidth_group_service.GetBandwidthGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: bandwidth_group_service.GetBandwidthGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[bandwidth_group_service.GetBandwidthGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_bandwidth_group
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class BandwidthGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_bandwidth_group(
-        self, response: bandwidth_group_messages.BandwidthGroup
-    ) -> bandwidth_group_messages.BandwidthGroup:
+    def post_get_bandwidth_group(self, response: bandwidth_group_messages.BandwidthGroup) -> bandwidth_group_messages.BandwidthGroup:
         """Post-rpc interceptor for get_bandwidth_group
 
         DEPRECATED. Please use the `post_get_bandwidth_group_with_metadata`
@@ -129,12 +119,8 @@ class BandwidthGroupServiceRestInterceptor:
         return response
 
     def post_get_bandwidth_group_with_metadata(
-        self,
-        response: bandwidth_group_messages.BandwidthGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        bandwidth_group_messages.BandwidthGroup, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: bandwidth_group_messages.BandwidthGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[bandwidth_group_messages.BandwidthGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_bandwidth_group
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -150,13 +136,8 @@ class BandwidthGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_list_bandwidth_groups(
-        self,
-        request: bandwidth_group_service.ListBandwidthGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        bandwidth_group_service.ListBandwidthGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: bandwidth_group_service.ListBandwidthGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[bandwidth_group_service.ListBandwidthGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_bandwidth_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -180,13 +161,8 @@ class BandwidthGroupServiceRestInterceptor:
         return response
 
     def post_list_bandwidth_groups_with_metadata(
-        self,
-        response: bandwidth_group_service.ListBandwidthGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        bandwidth_group_service.ListBandwidthGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: bandwidth_group_service.ListBandwidthGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[bandwidth_group_service.ListBandwidthGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_bandwidth_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -202,12 +178,8 @@ class BandwidthGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +187,7 @@ class BandwidthGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -306,31 +276,18 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or BandwidthGroupServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetBandwidthGroup(
-        _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup,
-        BandwidthGroupServiceRestStub,
-    ):
+    class _GetBandwidthGroup(_BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup, BandwidthGroupServiceRestStub):
         def __hash__(self):
             return hash("BandwidthGroupServiceRestTransport.GetBandwidthGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -373,28 +330,16 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup._get_http_options()
-            )
+            http_options = _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_bandwidth_group(
-                request, metadata
-            )
-            transcoded_request = _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_bandwidth_group(request, metadata)
+            transcoded_request = _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBandwidthGroupServiceRestTransport._BaseGetBandwidthGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -417,15 +362,8 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                BandwidthGroupServiceRestTransport._GetBandwidthGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BandwidthGroupServiceRestTransport._GetBandwidthGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -441,16 +379,10 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
 
             resp = self._interceptor.post_get_bandwidth_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_bandwidth_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_bandwidth_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = bandwidth_group_messages.BandwidthGroup.to_json(
-                        response
-                    )
+                    response_payload = bandwidth_group_messages.BandwidthGroup.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -469,23 +401,12 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
                 )
             return resp
 
-    class _ListBandwidthGroups(
-        _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups,
-        BandwidthGroupServiceRestStub,
-    ):
+    class _ListBandwidthGroups(_BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups, BandwidthGroupServiceRestStub):
         def __hash__(self):
             return hash("BandwidthGroupServiceRestTransport.ListBandwidthGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -526,28 +447,16 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups._get_http_options()
-            )
+            http_options = _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_bandwidth_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_bandwidth_groups(request, metadata)
+            transcoded_request = _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBandwidthGroupServiceRestTransport._BaseListBandwidthGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -570,15 +479,8 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                BandwidthGroupServiceRestTransport._ListBandwidthGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BandwidthGroupServiceRestTransport._ListBandwidthGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -594,18 +496,10 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
 
             resp = self._interceptor.post_list_bandwidth_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_bandwidth_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_bandwidth_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        bandwidth_group_service.ListBandwidthGroupsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = bandwidth_group_service.ListBandwidthGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -625,12 +519,7 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
             return resp
 
     @property
-    def get_bandwidth_group(
-        self,
-    ) -> Callable[
-        [bandwidth_group_service.GetBandwidthGroupRequest],
-        bandwidth_group_messages.BandwidthGroup,
-    ]:
+    def get_bandwidth_group(self) -> Callable[[bandwidth_group_service.GetBandwidthGroupRequest], bandwidth_group_messages.BandwidthGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBandwidthGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -638,10 +527,7 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
     @property
     def list_bandwidth_groups(
         self,
-    ) -> Callable[
-        [bandwidth_group_service.ListBandwidthGroupsRequest],
-        bandwidth_group_service.ListBandwidthGroupsResponse,
-    ]:
+    ) -> Callable[[bandwidth_group_service.ListBandwidthGroupsRequest], bandwidth_group_service.ListBandwidthGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBandwidthGroups(self._session, self._host, self._interceptor)  # type: ignore
@@ -650,23 +536,12 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseBandwidthGroupServiceRestTransport._BaseGetOperation,
-        BandwidthGroupServiceRestStub,
-    ):
+    class _GetOperation(_BaseBandwidthGroupServiceRestTransport._BaseGetOperation, BandwidthGroupServiceRestStub):
         def __hash__(self):
             return hash("BandwidthGroupServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -704,26 +579,16 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseBandwidthGroupServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseBandwidthGroupServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseBandwidthGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBandwidthGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBandwidthGroupServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBandwidthGroupServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -747,12 +612,7 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
 
             # Send the request
             response = BandwidthGroupServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -764,9 +624,7 @@ class BandwidthGroupServiceRestTransport(_BaseBandwidthGroupServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

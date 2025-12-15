@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.dataform_v1 import gapic_version as package_version
 from google.cloud.dataform_v1.types import dataform
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class DataformTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -449,49 +439,23 @@ class DataformTransport(abc.ABC):
     @property
     def list_repositories(
         self,
-    ) -> Callable[
-        [dataform.ListRepositoriesRequest],
-        Union[
-            dataform.ListRepositoriesResponse,
-            Awaitable[dataform.ListRepositoriesResponse],
-        ],
-    ]:
+    ) -> Callable[[dataform.ListRepositoriesRequest], Union[dataform.ListRepositoriesResponse, Awaitable[dataform.ListRepositoriesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[
-        [dataform.GetRepositoryRequest],
-        Union[dataform.Repository, Awaitable[dataform.Repository]],
-    ]:
+    def get_repository(self) -> Callable[[dataform.GetRepositoryRequest], Union[dataform.Repository, Awaitable[dataform.Repository]]]:
         raise NotImplementedError()
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[
-        [dataform.CreateRepositoryRequest],
-        Union[dataform.Repository, Awaitable[dataform.Repository]],
-    ]:
+    def create_repository(self) -> Callable[[dataform.CreateRepositoryRequest], Union[dataform.Repository, Awaitable[dataform.Repository]]]:
         raise NotImplementedError()
 
     @property
-    def update_repository(
-        self,
-    ) -> Callable[
-        [dataform.UpdateRepositoryRequest],
-        Union[dataform.Repository, Awaitable[dataform.Repository]],
-    ]:
+    def update_repository(self) -> Callable[[dataform.UpdateRepositoryRequest], Union[dataform.Repository, Awaitable[dataform.Repository]]]:
         raise NotImplementedError()
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[
-        [dataform.DeleteRepositoryRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_repository(self) -> Callable[[dataform.DeleteRepositoryRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -499,23 +463,14 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.CommitRepositoryChangesRequest],
-        Union[
-            dataform.CommitRepositoryChangesResponse,
-            Awaitable[dataform.CommitRepositoryChangesResponse],
-        ],
+        Union[dataform.CommitRepositoryChangesResponse, Awaitable[dataform.CommitRepositoryChangesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def read_repository_file(
         self,
-    ) -> Callable[
-        [dataform.ReadRepositoryFileRequest],
-        Union[
-            dataform.ReadRepositoryFileResponse,
-            Awaitable[dataform.ReadRepositoryFileResponse],
-        ],
-    ]:
+    ) -> Callable[[dataform.ReadRepositoryFileRequest], Union[dataform.ReadRepositoryFileResponse, Awaitable[dataform.ReadRepositoryFileResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -523,10 +478,7 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.QueryRepositoryDirectoryContentsRequest],
-        Union[
-            dataform.QueryRepositoryDirectoryContentsResponse,
-            Awaitable[dataform.QueryRepositoryDirectoryContentsResponse],
-        ],
+        Union[dataform.QueryRepositoryDirectoryContentsResponse, Awaitable[dataform.QueryRepositoryDirectoryContentsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -534,11 +486,7 @@ class DataformTransport(abc.ABC):
     def fetch_repository_history(
         self,
     ) -> Callable[
-        [dataform.FetchRepositoryHistoryRequest],
-        Union[
-            dataform.FetchRepositoryHistoryResponse,
-            Awaitable[dataform.FetchRepositoryHistoryResponse],
-        ],
+        [dataform.FetchRepositoryHistoryRequest], Union[dataform.FetchRepositoryHistoryResponse, Awaitable[dataform.FetchRepositoryHistoryResponse]]
     ]:
         raise NotImplementedError()
 
@@ -547,10 +495,7 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.ComputeRepositoryAccessTokenStatusRequest],
-        Union[
-            dataform.ComputeRepositoryAccessTokenStatusResponse,
-            Awaitable[dataform.ComputeRepositoryAccessTokenStatusResponse],
-        ],
+        Union[dataform.ComputeRepositoryAccessTokenStatusResponse, Awaitable[dataform.ComputeRepositoryAccessTokenStatusResponse]],
     ]:
         raise NotImplementedError()
 
@@ -558,95 +503,51 @@ class DataformTransport(abc.ABC):
     def fetch_remote_branches(
         self,
     ) -> Callable[
-        [dataform.FetchRemoteBranchesRequest],
-        Union[
-            dataform.FetchRemoteBranchesResponse,
-            Awaitable[dataform.FetchRemoteBranchesResponse],
-        ],
+        [dataform.FetchRemoteBranchesRequest], Union[dataform.FetchRemoteBranchesResponse, Awaitable[dataform.FetchRemoteBranchesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_workspaces(
         self,
-    ) -> Callable[
-        [dataform.ListWorkspacesRequest],
-        Union[
-            dataform.ListWorkspacesResponse, Awaitable[dataform.ListWorkspacesResponse]
-        ],
-    ]:
+    ) -> Callable[[dataform.ListWorkspacesRequest], Union[dataform.ListWorkspacesResponse, Awaitable[dataform.ListWorkspacesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_workspace(
-        self,
-    ) -> Callable[
-        [dataform.GetWorkspaceRequest],
-        Union[dataform.Workspace, Awaitable[dataform.Workspace]],
-    ]:
+    def get_workspace(self) -> Callable[[dataform.GetWorkspaceRequest], Union[dataform.Workspace, Awaitable[dataform.Workspace]]]:
         raise NotImplementedError()
 
     @property
-    def create_workspace(
-        self,
-    ) -> Callable[
-        [dataform.CreateWorkspaceRequest],
-        Union[dataform.Workspace, Awaitable[dataform.Workspace]],
-    ]:
+    def create_workspace(self) -> Callable[[dataform.CreateWorkspaceRequest], Union[dataform.Workspace, Awaitable[dataform.Workspace]]]:
         raise NotImplementedError()
 
     @property
-    def delete_workspace(
-        self,
-    ) -> Callable[
-        [dataform.DeleteWorkspaceRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_workspace(self) -> Callable[[dataform.DeleteWorkspaceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def install_npm_packages(
         self,
-    ) -> Callable[
-        [dataform.InstallNpmPackagesRequest],
-        Union[
-            dataform.InstallNpmPackagesResponse,
-            Awaitable[dataform.InstallNpmPackagesResponse],
-        ],
-    ]:
+    ) -> Callable[[dataform.InstallNpmPackagesRequest], Union[dataform.InstallNpmPackagesResponse, Awaitable[dataform.InstallNpmPackagesResponse]]]:
         raise NotImplementedError()
 
     @property
     def pull_git_commits(
         self,
-    ) -> Callable[
-        [dataform.PullGitCommitsRequest],
-        Union[
-            dataform.PullGitCommitsResponse, Awaitable[dataform.PullGitCommitsResponse]
-        ],
-    ]:
+    ) -> Callable[[dataform.PullGitCommitsRequest], Union[dataform.PullGitCommitsResponse, Awaitable[dataform.PullGitCommitsResponse]]]:
         raise NotImplementedError()
 
     @property
     def push_git_commits(
         self,
-    ) -> Callable[
-        [dataform.PushGitCommitsRequest],
-        Union[
-            dataform.PushGitCommitsResponse, Awaitable[dataform.PushGitCommitsResponse]
-        ],
-    ]:
+    ) -> Callable[[dataform.PushGitCommitsRequest], Union[dataform.PushGitCommitsResponse, Awaitable[dataform.PushGitCommitsResponse]]]:
         raise NotImplementedError()
 
     @property
     def fetch_file_git_statuses(
         self,
     ) -> Callable[
-        [dataform.FetchFileGitStatusesRequest],
-        Union[
-            dataform.FetchFileGitStatusesResponse,
-            Awaitable[dataform.FetchFileGitStatusesResponse],
-        ],
+        [dataform.FetchFileGitStatusesRequest], Union[dataform.FetchFileGitStatusesResponse, Awaitable[dataform.FetchFileGitStatusesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -654,11 +555,7 @@ class DataformTransport(abc.ABC):
     def fetch_git_ahead_behind(
         self,
     ) -> Callable[
-        [dataform.FetchGitAheadBehindRequest],
-        Union[
-            dataform.FetchGitAheadBehindResponse,
-            Awaitable[dataform.FetchGitAheadBehindResponse],
-        ],
+        [dataform.FetchGitAheadBehindRequest], Union[dataform.FetchGitAheadBehindResponse, Awaitable[dataform.FetchGitAheadBehindResponse]]
     ]:
         raise NotImplementedError()
 
@@ -666,11 +563,7 @@ class DataformTransport(abc.ABC):
     def commit_workspace_changes(
         self,
     ) -> Callable[
-        [dataform.CommitWorkspaceChangesRequest],
-        Union[
-            dataform.CommitWorkspaceChangesResponse,
-            Awaitable[dataform.CommitWorkspaceChangesResponse],
-        ],
+        [dataform.CommitWorkspaceChangesRequest], Union[dataform.CommitWorkspaceChangesResponse, Awaitable[dataform.CommitWorkspaceChangesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -678,192 +571,106 @@ class DataformTransport(abc.ABC):
     def reset_workspace_changes(
         self,
     ) -> Callable[
-        [dataform.ResetWorkspaceChangesRequest],
-        Union[
-            dataform.ResetWorkspaceChangesResponse,
-            Awaitable[dataform.ResetWorkspaceChangesResponse],
-        ],
+        [dataform.ResetWorkspaceChangesRequest], Union[dataform.ResetWorkspaceChangesResponse, Awaitable[dataform.ResetWorkspaceChangesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def fetch_file_diff(
         self,
-    ) -> Callable[
-        [dataform.FetchFileDiffRequest],
-        Union[
-            dataform.FetchFileDiffResponse, Awaitable[dataform.FetchFileDiffResponse]
-        ],
-    ]:
+    ) -> Callable[[dataform.FetchFileDiffRequest], Union[dataform.FetchFileDiffResponse, Awaitable[dataform.FetchFileDiffResponse]]]:
         raise NotImplementedError()
 
     @property
     def query_directory_contents(
         self,
     ) -> Callable[
-        [dataform.QueryDirectoryContentsRequest],
-        Union[
-            dataform.QueryDirectoryContentsResponse,
-            Awaitable[dataform.QueryDirectoryContentsResponse],
-        ],
+        [dataform.QueryDirectoryContentsRequest], Union[dataform.QueryDirectoryContentsResponse, Awaitable[dataform.QueryDirectoryContentsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def search_files(
-        self,
-    ) -> Callable[
-        [dataform.SearchFilesRequest],
-        Union[dataform.SearchFilesResponse, Awaitable[dataform.SearchFilesResponse]],
-    ]:
+    def search_files(self) -> Callable[[dataform.SearchFilesRequest], Union[dataform.SearchFilesResponse, Awaitable[dataform.SearchFilesResponse]]]:
         raise NotImplementedError()
 
     @property
     def make_directory(
         self,
-    ) -> Callable[
-        [dataform.MakeDirectoryRequest],
-        Union[
-            dataform.MakeDirectoryResponse, Awaitable[dataform.MakeDirectoryResponse]
-        ],
-    ]:
+    ) -> Callable[[dataform.MakeDirectoryRequest], Union[dataform.MakeDirectoryResponse, Awaitable[dataform.MakeDirectoryResponse]]]:
         raise NotImplementedError()
 
     @property
     def remove_directory(
         self,
-    ) -> Callable[
-        [dataform.RemoveDirectoryRequest],
-        Union[
-            dataform.RemoveDirectoryResponse,
-            Awaitable[dataform.RemoveDirectoryResponse],
-        ],
-    ]:
+    ) -> Callable[[dataform.RemoveDirectoryRequest], Union[dataform.RemoveDirectoryResponse, Awaitable[dataform.RemoveDirectoryResponse]]]:
         raise NotImplementedError()
 
     @property
     def move_directory(
         self,
-    ) -> Callable[
-        [dataform.MoveDirectoryRequest],
-        Union[
-            dataform.MoveDirectoryResponse, Awaitable[dataform.MoveDirectoryResponse]
-        ],
-    ]:
+    ) -> Callable[[dataform.MoveDirectoryRequest], Union[dataform.MoveDirectoryResponse, Awaitable[dataform.MoveDirectoryResponse]]]:
         raise NotImplementedError()
 
     @property
-    def read_file(
-        self,
-    ) -> Callable[
-        [dataform.ReadFileRequest],
-        Union[dataform.ReadFileResponse, Awaitable[dataform.ReadFileResponse]],
-    ]:
+    def read_file(self) -> Callable[[dataform.ReadFileRequest], Union[dataform.ReadFileResponse, Awaitable[dataform.ReadFileResponse]]]:
         raise NotImplementedError()
 
     @property
-    def remove_file(
-        self,
-    ) -> Callable[
-        [dataform.RemoveFileRequest],
-        Union[dataform.RemoveFileResponse, Awaitable[dataform.RemoveFileResponse]],
-    ]:
+    def remove_file(self) -> Callable[[dataform.RemoveFileRequest], Union[dataform.RemoveFileResponse, Awaitable[dataform.RemoveFileResponse]]]:
         raise NotImplementedError()
 
     @property
-    def move_file(
-        self,
-    ) -> Callable[
-        [dataform.MoveFileRequest],
-        Union[dataform.MoveFileResponse, Awaitable[dataform.MoveFileResponse]],
-    ]:
+    def move_file(self) -> Callable[[dataform.MoveFileRequest], Union[dataform.MoveFileResponse, Awaitable[dataform.MoveFileResponse]]]:
         raise NotImplementedError()
 
     @property
-    def write_file(
-        self,
-    ) -> Callable[
-        [dataform.WriteFileRequest],
-        Union[dataform.WriteFileResponse, Awaitable[dataform.WriteFileResponse]],
-    ]:
+    def write_file(self) -> Callable[[dataform.WriteFileRequest], Union[dataform.WriteFileResponse, Awaitable[dataform.WriteFileResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_release_configs(
         self,
-    ) -> Callable[
-        [dataform.ListReleaseConfigsRequest],
-        Union[
-            dataform.ListReleaseConfigsResponse,
-            Awaitable[dataform.ListReleaseConfigsResponse],
-        ],
-    ]:
+    ) -> Callable[[dataform.ListReleaseConfigsRequest], Union[dataform.ListReleaseConfigsResponse, Awaitable[dataform.ListReleaseConfigsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_release_config(
-        self,
-    ) -> Callable[
-        [dataform.GetReleaseConfigRequest],
-        Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]],
-    ]:
+    def get_release_config(self) -> Callable[[dataform.GetReleaseConfigRequest], Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_release_config(
         self,
-    ) -> Callable[
-        [dataform.CreateReleaseConfigRequest],
-        Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]],
-    ]:
+    ) -> Callable[[dataform.CreateReleaseConfigRequest], Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_release_config(
         self,
-    ) -> Callable[
-        [dataform.UpdateReleaseConfigRequest],
-        Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]],
-    ]:
+    ) -> Callable[[dataform.UpdateReleaseConfigRequest], Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]]]:
         raise NotImplementedError()
 
     @property
-    def delete_release_config(
-        self,
-    ) -> Callable[
-        [dataform.DeleteReleaseConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_release_config(self) -> Callable[[dataform.DeleteReleaseConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_compilation_results(
         self,
     ) -> Callable[
-        [dataform.ListCompilationResultsRequest],
-        Union[
-            dataform.ListCompilationResultsResponse,
-            Awaitable[dataform.ListCompilationResultsResponse],
-        ],
+        [dataform.ListCompilationResultsRequest], Union[dataform.ListCompilationResultsResponse, Awaitable[dataform.ListCompilationResultsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_compilation_result(
         self,
-    ) -> Callable[
-        [dataform.GetCompilationResultRequest],
-        Union[dataform.CompilationResult, Awaitable[dataform.CompilationResult]],
-    ]:
+    ) -> Callable[[dataform.GetCompilationResultRequest], Union[dataform.CompilationResult, Awaitable[dataform.CompilationResult]]]:
         raise NotImplementedError()
 
     @property
     def create_compilation_result(
         self,
-    ) -> Callable[
-        [dataform.CreateCompilationResultRequest],
-        Union[dataform.CompilationResult, Awaitable[dataform.CompilationResult]],
-    ]:
+    ) -> Callable[[dataform.CreateCompilationResultRequest], Union[dataform.CompilationResult, Awaitable[dataform.CompilationResult]]]:
         raise NotImplementedError()
 
     @property
@@ -871,10 +678,7 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.QueryCompilationResultActionsRequest],
-        Union[
-            dataform.QueryCompilationResultActionsResponse,
-            Awaitable[dataform.QueryCompilationResultActionsResponse],
-        ],
+        Union[dataform.QueryCompilationResultActionsResponse, Awaitable[dataform.QueryCompilationResultActionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -882,48 +686,30 @@ class DataformTransport(abc.ABC):
     def list_workflow_configs(
         self,
     ) -> Callable[
-        [dataform.ListWorkflowConfigsRequest],
-        Union[
-            dataform.ListWorkflowConfigsResponse,
-            Awaitable[dataform.ListWorkflowConfigsResponse],
-        ],
+        [dataform.ListWorkflowConfigsRequest], Union[dataform.ListWorkflowConfigsResponse, Awaitable[dataform.ListWorkflowConfigsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_workflow_config(
         self,
-    ) -> Callable[
-        [dataform.GetWorkflowConfigRequest],
-        Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]],
-    ]:
+    ) -> Callable[[dataform.GetWorkflowConfigRequest], Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_workflow_config(
         self,
-    ) -> Callable[
-        [dataform.CreateWorkflowConfigRequest],
-        Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]],
-    ]:
+    ) -> Callable[[dataform.CreateWorkflowConfigRequest], Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_workflow_config(
         self,
-    ) -> Callable[
-        [dataform.UpdateWorkflowConfigRequest],
-        Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]],
-    ]:
+    ) -> Callable[[dataform.UpdateWorkflowConfigRequest], Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]]]:
         raise NotImplementedError()
 
     @property
-    def delete_workflow_config(
-        self,
-    ) -> Callable[
-        [dataform.DeleteWorkflowConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_workflow_config(self) -> Callable[[dataform.DeleteWorkflowConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -931,38 +717,24 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.ListWorkflowInvocationsRequest],
-        Union[
-            dataform.ListWorkflowInvocationsResponse,
-            Awaitable[dataform.ListWorkflowInvocationsResponse],
-        ],
+        Union[dataform.ListWorkflowInvocationsResponse, Awaitable[dataform.ListWorkflowInvocationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_workflow_invocation(
         self,
-    ) -> Callable[
-        [dataform.GetWorkflowInvocationRequest],
-        Union[dataform.WorkflowInvocation, Awaitable[dataform.WorkflowInvocation]],
-    ]:
+    ) -> Callable[[dataform.GetWorkflowInvocationRequest], Union[dataform.WorkflowInvocation, Awaitable[dataform.WorkflowInvocation]]]:
         raise NotImplementedError()
 
     @property
     def create_workflow_invocation(
         self,
-    ) -> Callable[
-        [dataform.CreateWorkflowInvocationRequest],
-        Union[dataform.WorkflowInvocation, Awaitable[dataform.WorkflowInvocation]],
-    ]:
+    ) -> Callable[[dataform.CreateWorkflowInvocationRequest], Union[dataform.WorkflowInvocation, Awaitable[dataform.WorkflowInvocation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_workflow_invocation(
-        self,
-    ) -> Callable[
-        [dataform.DeleteWorkflowInvocationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_workflow_invocation(self) -> Callable[[dataform.DeleteWorkflowInvocationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -970,10 +742,7 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.CancelWorkflowInvocationRequest],
-        Union[
-            dataform.CancelWorkflowInvocationResponse,
-            Awaitable[dataform.CancelWorkflowInvocationResponse],
-        ],
+        Union[dataform.CancelWorkflowInvocationResponse, Awaitable[dataform.CancelWorkflowInvocationResponse]],
     ]:
         raise NotImplementedError()
 
@@ -982,46 +751,28 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.QueryWorkflowInvocationActionsRequest],
-        Union[
-            dataform.QueryWorkflowInvocationActionsResponse,
-            Awaitable[dataform.QueryWorkflowInvocationActionsResponse],
-        ],
+        Union[dataform.QueryWorkflowInvocationActionsResponse, Awaitable[dataform.QueryWorkflowInvocationActionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[
-        [dataform.GetConfigRequest], Union[dataform.Config, Awaitable[dataform.Config]]
-    ]:
+    def get_config(self) -> Callable[[dataform.GetConfigRequest], Union[dataform.Config, Awaitable[dataform.Config]]]:
         raise NotImplementedError()
 
     @property
-    def update_config(
-        self,
-    ) -> Callable[
-        [dataform.UpdateConfigRequest],
-        Union[dataform.Config, Awaitable[dataform.Config]],
-    ]:
+    def update_config(self) -> Callable[[dataform.UpdateConfigRequest], Union[dataform.Config, Awaitable[dataform.Config]]]:
         raise NotImplementedError()
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1039,22 +790,13 @@ class DataformTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

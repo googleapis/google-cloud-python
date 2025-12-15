@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.recommendationengine_v1beta1.types import (
-    prediction_apikey_registry_service,
-)
+from google.cloud.recommendationengine_v1beta1.types import prediction_apikey_registry_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BasePredictionApiKeyRegistryRestTransport
@@ -102,13 +100,8 @@ class PredictionApiKeyRegistryRestInterceptor:
     """
 
     def pre_create_prediction_api_key_registration(
-        self,
-        request: prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_prediction_api_key_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -132,13 +125,8 @@ class PredictionApiKeyRegistryRestInterceptor:
         return response
 
     def post_create_prediction_api_key_registration_with_metadata(
-        self,
-        response: prediction_apikey_registry_service.PredictionApiKeyRegistration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_apikey_registry_service.PredictionApiKeyRegistration,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: prediction_apikey_registry_service.PredictionApiKeyRegistration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_apikey_registry_service.PredictionApiKeyRegistration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_prediction_api_key_registration
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -154,13 +142,8 @@ class PredictionApiKeyRegistryRestInterceptor:
         return response, metadata
 
     def pre_delete_prediction_api_key_registration(
-        self,
-        request: prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_prediction_api_key_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -169,13 +152,8 @@ class PredictionApiKeyRegistryRestInterceptor:
         return request, metadata
 
     def pre_list_prediction_api_key_registrations(
-        self,
-        request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_prediction_api_key_registrations
 
         Override in a subclass to manipulate the request or metadata
@@ -184,8 +162,7 @@ class PredictionApiKeyRegistryRestInterceptor:
         return request, metadata
 
     def post_list_prediction_api_key_registrations(
-        self,
-        response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
+        self, response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
     ) -> prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse:
         """Post-rpc interceptor for list_prediction_api_key_registrations
 
@@ -203,10 +180,7 @@ class PredictionApiKeyRegistryRestInterceptor:
         self,
         response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_prediction_api_key_registrations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -306,33 +280,20 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PredictionApiKeyRegistryRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CreatePredictionApiKeyRegistration(
-        _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration,
-        PredictionApiKeyRegistryRestStub,
+        _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration, PredictionApiKeyRegistryRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PredictionApiKeyRegistryRestTransport.CreatePredictionApiKeyRegistration"
-            )
+            return hash("PredictionApiKeyRegistryRestTransport.CreatePredictionApiKeyRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -374,35 +335,22 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                         Registered Api Key.
             """
 
-            http_options = (
-                _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration._get_http_options()
-            )
+            http_options = _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_prediction_api_key_registration(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_prediction_api_key_registration(request, metadata)
             transcoded_request = _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BasePredictionApiKeyRegistryRestTransport._BaseCreatePredictionApiKeyRegistration._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -426,13 +374,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
 
             # Send the request
             response = PredictionApiKeyRegistryRestTransport._CreatePredictionApiKeyRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -442,27 +384,16 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
 
             # Return the response
             resp = prediction_apikey_registry_service.PredictionApiKeyRegistration()
-            pb_resp = (
-                prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(resp)
-            )
+            pb_resp = prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_prediction_api_key_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_prediction_api_key_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_prediction_api_key_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = prediction_apikey_registry_service.PredictionApiKeyRegistration.to_json(
-                        response
-                    )
+                    response_payload = prediction_apikey_registry_service.PredictionApiKeyRegistration.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -482,24 +413,13 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
             return resp
 
     class _DeletePredictionApiKeyRegistration(
-        _BasePredictionApiKeyRegistryRestTransport._BaseDeletePredictionApiKeyRegistration,
-        PredictionApiKeyRegistryRestStub,
+        _BasePredictionApiKeyRegistryRestTransport._BaseDeletePredictionApiKeyRegistration, PredictionApiKeyRegistryRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PredictionApiKeyRegistryRestTransport.DeletePredictionApiKeyRegistration"
-            )
+            return hash("PredictionApiKeyRegistryRestTransport.DeletePredictionApiKeyRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -536,16 +456,9 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BasePredictionApiKeyRegistryRestTransport._BaseDeletePredictionApiKeyRegistration._get_http_options()
-            )
+            http_options = _BasePredictionApiKeyRegistryRestTransport._BaseDeletePredictionApiKeyRegistration._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_prediction_api_key_registration(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_prediction_api_key_registration(request, metadata)
             transcoded_request = _BasePredictionApiKeyRegistryRestTransport._BaseDeletePredictionApiKeyRegistration._get_transcoded_request(
                 http_options, request
             )
@@ -555,12 +468,8 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -584,12 +493,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
 
             # Send the request
             response = PredictionApiKeyRegistryRestTransport._DeletePredictionApiKeyRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -598,24 +502,13 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 raise core_exceptions.from_http_response(response)
 
     class _ListPredictionApiKeyRegistrations(
-        _BasePredictionApiKeyRegistryRestTransport._BaseListPredictionApiKeyRegistrations,
-        PredictionApiKeyRegistryRestStub,
+        _BasePredictionApiKeyRegistryRestTransport._BaseListPredictionApiKeyRegistrations, PredictionApiKeyRegistryRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PredictionApiKeyRegistryRestTransport.ListPredictionApiKeyRegistrations"
-            )
+            return hash("PredictionApiKeyRegistryRestTransport.ListPredictionApiKeyRegistrations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -635,9 +528,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
-        ):
+        ) -> prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse:
             r"""Call the list prediction api key
             registrations method over HTTP.
 
@@ -660,16 +551,9 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
 
             """
 
-            http_options = (
-                _BasePredictionApiKeyRegistryRestTransport._BaseListPredictionApiKeyRegistrations._get_http_options()
-            )
+            http_options = _BasePredictionApiKeyRegistryRestTransport._BaseListPredictionApiKeyRegistrations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_prediction_api_key_registrations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_prediction_api_key_registrations(request, metadata)
             transcoded_request = _BasePredictionApiKeyRegistryRestTransport._BaseListPredictionApiKeyRegistrations._get_transcoded_request(
                 http_options, request
             )
@@ -679,12 +563,8 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -708,12 +588,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
 
             # Send the request
             response = PredictionApiKeyRegistryRestTransport._ListPredictionApiKeyRegistrations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -722,30 +597,17 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-            )
-            pb_resp = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
-                resp
-            )
+            resp = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
+            pb_resp = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_prediction_api_key_registrations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_prediction_api_key_registrations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_prediction_api_key_registrations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.to_json(
-                        response
-                    )
+                    response_payload = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -778,10 +640,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
     @property
     def delete_prediction_api_key_registration(
         self,
-    ) -> Callable[
-        [prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePredictionApiKeyRegistration(self._session, self._host, self._interceptor)  # type: ignore

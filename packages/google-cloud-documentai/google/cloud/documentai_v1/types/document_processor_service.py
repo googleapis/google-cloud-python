@@ -604,9 +604,7 @@ class BatchProcessMetadata(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    individual_process_statuses: MutableSequence[
-        IndividualProcessStatus
-    ] = proto.RepeatedField(
+    individual_process_statuses: MutableSequence[IndividualProcessStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=IndividualProcessStatus,
@@ -641,9 +639,7 @@ class FetchProcessorTypesResponse(proto.Message):
             The list of processor types.
     """
 
-    processor_types: MutableSequence[
-        processor_type.ProcessorType
-    ] = proto.RepeatedField(
+    processor_types: MutableSequence[processor_type.ProcessorType] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=processor_type.ProcessorType,
@@ -700,9 +696,7 @@ class ListProcessorTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processor_types: MutableSequence[
-        processor_type.ProcessorType
-    ] = proto.RepeatedField(
+    processor_types: MutableSequence[processor_type.ProcessorType] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=processor_type.ProcessorType,
@@ -873,9 +867,7 @@ class ListProcessorVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processor_versions: MutableSequence[
-        gcd_processor.ProcessorVersion
-    ] = proto.RepeatedField(
+    processor_versions: MutableSequence[gcd_processor.ProcessorVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_processor.ProcessorVersion,

@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import InstanceGroupManagerResizeRequestsTransport
-from .rest import (
-    InstanceGroupManagerResizeRequestsRestInterceptor,
-    InstanceGroupManagerResizeRequestsRestTransport,
-)
+from .rest import InstanceGroupManagerResizeRequestsRestInterceptor, InstanceGroupManagerResizeRequestsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[InstanceGroupManagerResizeRequestsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[InstanceGroupManagerResizeRequestsTransport]]
 _transport_registry["rest"] = InstanceGroupManagerResizeRequestsRestTransport
 
 __all__ = (

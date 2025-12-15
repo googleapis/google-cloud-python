@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,10 +41,7 @@ from google.cloud.apihub_v1.services.runtime_project_attachment_service import p
 from google.cloud.apihub_v1.types import runtime_project_attachment_service
 
 from .client import RuntimeProjectAttachmentServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    RuntimeProjectAttachmentServiceTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, RuntimeProjectAttachmentServiceTransport
 from .transports.grpc_asyncio import RuntimeProjectAttachmentServiceGrpcAsyncIOTransport
 
 try:
@@ -79,47 +65,21 @@ class RuntimeProjectAttachmentServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = RuntimeProjectAttachmentServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = RuntimeProjectAttachmentServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        RuntimeProjectAttachmentServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = RuntimeProjectAttachmentServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = RuntimeProjectAttachmentServiceClient._DEFAULT_UNIVERSE
 
-    runtime_project_attachment_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.runtime_project_attachment_path
-    )
-    parse_runtime_project_attachment_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_runtime_project_attachment_path
-    )
-    common_billing_account_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_location_path
-    )
+    runtime_project_attachment_path = staticmethod(RuntimeProjectAttachmentServiceClient.runtime_project_attachment_path)
+    parse_runtime_project_attachment_path = staticmethod(RuntimeProjectAttachmentServiceClient.parse_runtime_project_attachment_path)
+    common_billing_account_path = staticmethod(RuntimeProjectAttachmentServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(RuntimeProjectAttachmentServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(RuntimeProjectAttachmentServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(RuntimeProjectAttachmentServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(RuntimeProjectAttachmentServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(RuntimeProjectAttachmentServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(RuntimeProjectAttachmentServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(RuntimeProjectAttachmentServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(RuntimeProjectAttachmentServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(RuntimeProjectAttachmentServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -155,9 +115,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -225,11 +183,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                RuntimeProjectAttachmentServiceTransport,
-                Callable[..., RuntimeProjectAttachmentServiceTransport],
-            ]
+            Union[str, RuntimeProjectAttachmentServiceTransport, Callable[..., RuntimeProjectAttachmentServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -290,20 +244,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.apihub_v1.RuntimeProjectAttachmentServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -314,17 +262,10 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
     async def create_runtime_project_attachment(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        runtime_project_attachment: Optional[
-            runtime_project_attachment_service.RuntimeProjectAttachment
-        ] = None,
+        runtime_project_attachment: Optional[runtime_project_attachment_service.RuntimeProjectAttachment] = None,
         runtime_project_attachment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -416,29 +357,15 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            runtime_project_attachment,
-            runtime_project_attachment_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, runtime_project_attachment, runtime_project_attachment_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-        ):
-            request = runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(
-                request
-            )
+        if not isinstance(request, runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest):
+            request = runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -451,15 +378,11 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_runtime_project_attachment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_runtime_project_attachment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -477,12 +400,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
     async def get_runtime_project_attachment(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -553,26 +471,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-        ):
-            request = (
-                runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(
-                    request
-                )
-            )
+        if not isinstance(request, runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest):
+            request = runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -581,15 +487,11 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_runtime_project_attachment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_runtime_project_attachment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -607,12 +509,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
     async def list_runtime_project_attachments(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -683,26 +580,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-        ):
-            request = (
-                runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(
-                    request
-                )
-            )
+        if not isinstance(request, runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest):
+            request = runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -711,15 +596,11 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_runtime_project_attachments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_runtime_project_attachments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -748,12 +629,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
     async def delete_runtime_project_attachment(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -812,24 +688,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-        ):
-            request = runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(
-                request
-            )
+        if not isinstance(request, runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest):
+            request = runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -838,15 +704,11 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_runtime_project_attachment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_runtime_project_attachment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -861,12 +723,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
     async def lookup_runtime_project_attachment(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -935,24 +792,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-        ):
-            request = runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(
-                request
-            )
+        if not isinstance(request, runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest):
+            request = runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -961,15 +808,11 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lookup_runtime_project_attachment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.lookup_runtime_project_attachment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1022,9 +865,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1077,9 +918,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1136,9 +975,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1191,9 +1028,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1243,9 +1078,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1298,9 +1131,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1323,9 +1154,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

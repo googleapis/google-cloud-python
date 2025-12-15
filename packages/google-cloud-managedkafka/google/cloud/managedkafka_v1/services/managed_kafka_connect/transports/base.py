@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.managedkafka_v1 import gapic_version as package_version
 from google.cloud.managedkafka_v1.types import managed_kafka_connect, resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class ManagedKafkaConnectTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -293,47 +283,32 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka_connect.ListConnectClustersRequest],
-        Union[
-            managed_kafka_connect.ListConnectClustersResponse,
-            Awaitable[managed_kafka_connect.ListConnectClustersResponse],
-        ],
+        Union[managed_kafka_connect.ListConnectClustersResponse, Awaitable[managed_kafka_connect.ListConnectClustersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_connect_cluster(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.GetConnectClusterRequest],
-        Union[resources.ConnectCluster, Awaitable[resources.ConnectCluster]],
-    ]:
+    ) -> Callable[[managed_kafka_connect.GetConnectClusterRequest], Union[resources.ConnectCluster, Awaitable[resources.ConnectCluster]]]:
         raise NotImplementedError()
 
     @property
     def create_connect_cluster(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.CreateConnectClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_kafka_connect.CreateConnectClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_connect_cluster(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.UpdateConnectClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_kafka_connect.UpdateConnectClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_connect_cluster(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.DeleteConnectClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_kafka_connect.DeleteConnectClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -341,47 +316,28 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka_connect.ListConnectorsRequest],
-        Union[
-            managed_kafka_connect.ListConnectorsResponse,
-            Awaitable[managed_kafka_connect.ListConnectorsResponse],
-        ],
+        Union[managed_kafka_connect.ListConnectorsResponse, Awaitable[managed_kafka_connect.ListConnectorsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_connector(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.GetConnectorRequest],
-        Union[resources.Connector, Awaitable[resources.Connector]],
-    ]:
+    def get_connector(self) -> Callable[[managed_kafka_connect.GetConnectorRequest], Union[resources.Connector, Awaitable[resources.Connector]]]:
         raise NotImplementedError()
 
     @property
     def create_connector(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.CreateConnectorRequest],
-        Union[resources.Connector, Awaitable[resources.Connector]],
-    ]:
+    ) -> Callable[[managed_kafka_connect.CreateConnectorRequest], Union[resources.Connector, Awaitable[resources.Connector]]]:
         raise NotImplementedError()
 
     @property
     def update_connector(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.UpdateConnectorRequest],
-        Union[resources.Connector, Awaitable[resources.Connector]],
-    ]:
+    ) -> Callable[[managed_kafka_connect.UpdateConnectorRequest], Union[resources.Connector, Awaitable[resources.Connector]]]:
         raise NotImplementedError()
 
     @property
-    def delete_connector(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.DeleteConnectorRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_connector(self) -> Callable[[managed_kafka_connect.DeleteConnectorRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -389,10 +345,7 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka_connect.PauseConnectorRequest],
-        Union[
-            managed_kafka_connect.PauseConnectorResponse,
-            Awaitable[managed_kafka_connect.PauseConnectorResponse],
-        ],
+        Union[managed_kafka_connect.PauseConnectorResponse, Awaitable[managed_kafka_connect.PauseConnectorResponse]],
     ]:
         raise NotImplementedError()
 
@@ -401,10 +354,7 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka_connect.ResumeConnectorRequest],
-        Union[
-            managed_kafka_connect.ResumeConnectorResponse,
-            Awaitable[managed_kafka_connect.ResumeConnectorResponse],
-        ],
+        Union[managed_kafka_connect.ResumeConnectorResponse, Awaitable[managed_kafka_connect.ResumeConnectorResponse]],
     ]:
         raise NotImplementedError()
 
@@ -413,10 +363,7 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka_connect.RestartConnectorRequest],
-        Union[
-            managed_kafka_connect.RestartConnectorResponse,
-            Awaitable[managed_kafka_connect.RestartConnectorResponse],
-        ],
+        Union[managed_kafka_connect.RestartConnectorResponse, Awaitable[managed_kafka_connect.RestartConnectorResponse]],
     ]:
         raise NotImplementedError()
 
@@ -425,10 +372,7 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka_connect.StopConnectorRequest],
-        Union[
-            managed_kafka_connect.StopConnectorResponse,
-            Awaitable[managed_kafka_connect.StopConnectorResponse],
-        ],
+        Union[managed_kafka_connect.StopConnectorResponse, Awaitable[managed_kafka_connect.StopConnectorResponse]],
     ]:
         raise NotImplementedError()
 
@@ -437,20 +381,14 @@ class ManagedKafkaConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -468,22 +406,13 @@ class ManagedKafkaConnectTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

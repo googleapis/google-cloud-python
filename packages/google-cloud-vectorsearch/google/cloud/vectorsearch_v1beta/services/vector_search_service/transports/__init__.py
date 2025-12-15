@@ -22,9 +22,7 @@ from .grpc_asyncio import VectorSearchServiceGrpcAsyncIOTransport
 from .rest import VectorSearchServiceRestInterceptor, VectorSearchServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[VectorSearchServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[VectorSearchServiceTransport]]
 _transport_registry["grpc"] = VectorSearchServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = VectorSearchServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = VectorSearchServiceRestTransport

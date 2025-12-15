@@ -39,9 +39,7 @@ def sample_list_preconfigured_expression_sets():
     client = compute_v1beta.OrganizationSecurityPoliciesClient()
 
     # Initialize request argument(s)
-    request = (
-        compute_v1beta.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
-    )
+    request = compute_v1beta.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
 
     # Make the request
     response = client.list_preconfigured_expression_sets(request=request)

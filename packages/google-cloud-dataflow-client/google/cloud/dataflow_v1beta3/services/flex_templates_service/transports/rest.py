@@ -87,12 +87,8 @@ class FlexTemplatesServiceRestInterceptor:
     """
 
     def pre_launch_flex_template(
-        self,
-        request: templates.LaunchFlexTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        templates.LaunchFlexTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: templates.LaunchFlexTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[templates.LaunchFlexTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for launch_flex_template
 
         Override in a subclass to manipulate the request or metadata
@@ -100,9 +96,7 @@ class FlexTemplatesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_launch_flex_template(
-        self, response: templates.LaunchFlexTemplateResponse
-    ) -> templates.LaunchFlexTemplateResponse:
+    def post_launch_flex_template(self, response: templates.LaunchFlexTemplateResponse) -> templates.LaunchFlexTemplateResponse:
         """Post-rpc interceptor for launch_flex_template
 
         DEPRECATED. Please use the `post_launch_flex_template_with_metadata`
@@ -116,12 +110,8 @@ class FlexTemplatesServiceRestInterceptor:
         return response
 
     def post_launch_flex_template_with_metadata(
-        self,
-        response: templates.LaunchFlexTemplateResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        templates.LaunchFlexTemplateResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: templates.LaunchFlexTemplateResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[templates.LaunchFlexTemplateResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for launch_flex_template
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -216,31 +206,18 @@ class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or FlexTemplatesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _LaunchFlexTemplate(
-        _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate,
-        FlexTemplatesServiceRestStub,
-    ):
+    class _LaunchFlexTemplate(_BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate, FlexTemplatesServiceRestStub):
         def __hash__(self):
             return hash("FlexTemplatesServiceRestTransport.LaunchFlexTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -283,32 +260,18 @@ class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_http_options()
-            )
+            http_options = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_launch_flex_template(
-                request, metadata
-            )
-            transcoded_request = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_launch_flex_template(request, metadata)
+            transcoded_request = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -331,16 +294,8 @@ class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                FlexTemplatesServiceRestTransport._LaunchFlexTemplate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = FlexTemplatesServiceRestTransport._LaunchFlexTemplate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -356,16 +311,10 @@ class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
 
             resp = self._interceptor.post_launch_flex_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_launch_flex_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_launch_flex_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = templates.LaunchFlexTemplateResponse.to_json(
-                        response
-                    )
+                    response_payload = templates.LaunchFlexTemplateResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -385,11 +334,7 @@ class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
             return resp
 
     @property
-    def launch_flex_template(
-        self,
-    ) -> Callable[
-        [templates.LaunchFlexTemplateRequest], templates.LaunchFlexTemplateResponse
-    ]:
+    def launch_flex_template(self) -> Callable[[templates.LaunchFlexTemplateRequest], templates.LaunchFlexTemplateResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LaunchFlexTemplate(self._session, self._host, self._interceptor)  # type: ignore

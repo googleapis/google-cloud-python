@@ -50,12 +50,7 @@ from .server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
-from .tls import (
-    CertificateProvider,
-    CertificateProviderInstance,
-    GrpcEndpoint,
-    ValidationCA,
-)
+from .tls import CertificateProvider, CertificateProviderInstance, GrpcEndpoint, ValidationCA
 
 __all__ = (
     "AuthorizationPolicy",

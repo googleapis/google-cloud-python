@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,9 +310,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_corpus(
-        self,
-    ) -> Callable[[retriever_service.CreateCorpusRequest], retriever.Corpus]:
+    def create_corpus(self) -> Callable[[retriever_service.CreateCorpusRequest], retriever.Corpus]:
         r"""Return a callable for the create corpus method over gRPC.
 
         Creates an empty ``Corpus``.
@@ -351,9 +334,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["create_corpus"]
 
     @property
-    def get_corpus(
-        self,
-    ) -> Callable[[retriever_service.GetCorpusRequest], retriever.Corpus]:
+    def get_corpus(self) -> Callable[[retriever_service.GetCorpusRequest], retriever.Corpus]:
         r"""Return a callable for the get corpus method over gRPC.
 
         Gets information about a specific ``Corpus``.
@@ -377,9 +358,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["get_corpus"]
 
     @property
-    def update_corpus(
-        self,
-    ) -> Callable[[retriever_service.UpdateCorpusRequest], retriever.Corpus]:
+    def update_corpus(self) -> Callable[[retriever_service.UpdateCorpusRequest], retriever.Corpus]:
         r"""Return a callable for the update corpus method over gRPC.
 
         Updates a ``Corpus``.
@@ -403,9 +382,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["update_corpus"]
 
     @property
-    def delete_corpus(
-        self,
-    ) -> Callable[[retriever_service.DeleteCorpusRequest], empty_pb2.Empty]:
+    def delete_corpus(self) -> Callable[[retriever_service.DeleteCorpusRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete corpus method over gRPC.
 
         Deletes a ``Corpus``.
@@ -429,11 +406,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["delete_corpus"]
 
     @property
-    def list_corpora(
-        self,
-    ) -> Callable[
-        [retriever_service.ListCorporaRequest], retriever_service.ListCorporaResponse
-    ]:
+    def list_corpora(self) -> Callable[[retriever_service.ListCorporaRequest], retriever_service.ListCorporaResponse]:
         r"""Return a callable for the list corpora method over gRPC.
 
         Lists all ``Corpora`` owned by the user.
@@ -457,11 +430,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["list_corpora"]
 
     @property
-    def query_corpus(
-        self,
-    ) -> Callable[
-        [retriever_service.QueryCorpusRequest], retriever_service.QueryCorpusResponse
-    ]:
+    def query_corpus(self) -> Callable[[retriever_service.QueryCorpusRequest], retriever_service.QueryCorpusResponse]:
         r"""Return a callable for the query corpus method over gRPC.
 
         Performs semantic search over a ``Corpus``.
@@ -485,9 +454,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["query_corpus"]
 
     @property
-    def create_document(
-        self,
-    ) -> Callable[[retriever_service.CreateDocumentRequest], retriever.Document]:
+    def create_document(self) -> Callable[[retriever_service.CreateDocumentRequest], retriever.Document]:
         r"""Return a callable for the create document method over gRPC.
 
         Creates an empty ``Document``.
@@ -511,9 +478,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["create_document"]
 
     @property
-    def get_document(
-        self,
-    ) -> Callable[[retriever_service.GetDocumentRequest], retriever.Document]:
+    def get_document(self) -> Callable[[retriever_service.GetDocumentRequest], retriever.Document]:
         r"""Return a callable for the get document method over gRPC.
 
         Gets information about a specific ``Document``.
@@ -537,9 +502,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["get_document"]
 
     @property
-    def update_document(
-        self,
-    ) -> Callable[[retriever_service.UpdateDocumentRequest], retriever.Document]:
+    def update_document(self) -> Callable[[retriever_service.UpdateDocumentRequest], retriever.Document]:
         r"""Return a callable for the update document method over gRPC.
 
         Updates a ``Document``.
@@ -563,9 +526,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["update_document"]
 
     @property
-    def delete_document(
-        self,
-    ) -> Callable[[retriever_service.DeleteDocumentRequest], empty_pb2.Empty]:
+    def delete_document(self) -> Callable[[retriever_service.DeleteDocumentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete document method over gRPC.
 
         Deletes a ``Document``.
@@ -589,12 +550,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["delete_document"]
 
     @property
-    def list_documents(
-        self,
-    ) -> Callable[
-        [retriever_service.ListDocumentsRequest],
-        retriever_service.ListDocumentsResponse,
-    ]:
+    def list_documents(self) -> Callable[[retriever_service.ListDocumentsRequest], retriever_service.ListDocumentsResponse]:
         r"""Return a callable for the list documents method over gRPC.
 
         Lists all ``Document``\ s in a ``Corpus``.
@@ -618,12 +574,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["list_documents"]
 
     @property
-    def query_document(
-        self,
-    ) -> Callable[
-        [retriever_service.QueryDocumentRequest],
-        retriever_service.QueryDocumentResponse,
-    ]:
+    def query_document(self) -> Callable[[retriever_service.QueryDocumentRequest], retriever_service.QueryDocumentResponse]:
         r"""Return a callable for the query document method over gRPC.
 
         Performs semantic search over a ``Document``.
@@ -647,9 +598,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["query_document"]
 
     @property
-    def create_chunk(
-        self,
-    ) -> Callable[[retriever_service.CreateChunkRequest], retriever.Chunk]:
+    def create_chunk(self) -> Callable[[retriever_service.CreateChunkRequest], retriever.Chunk]:
         r"""Return a callable for the create chunk method over gRPC.
 
         Creates a ``Chunk``.
@@ -673,12 +622,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["create_chunk"]
 
     @property
-    def batch_create_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.BatchCreateChunksRequest],
-        retriever_service.BatchCreateChunksResponse,
-    ]:
+    def batch_create_chunks(self) -> Callable[[retriever_service.BatchCreateChunksRequest], retriever_service.BatchCreateChunksResponse]:
         r"""Return a callable for the batch create chunks method over gRPC.
 
         Batch create ``Chunk``\ s.
@@ -702,9 +646,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["batch_create_chunks"]
 
     @property
-    def get_chunk(
-        self,
-    ) -> Callable[[retriever_service.GetChunkRequest], retriever.Chunk]:
+    def get_chunk(self) -> Callable[[retriever_service.GetChunkRequest], retriever.Chunk]:
         r"""Return a callable for the get chunk method over gRPC.
 
         Gets information about a specific ``Chunk``.
@@ -728,9 +670,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["get_chunk"]
 
     @property
-    def update_chunk(
-        self,
-    ) -> Callable[[retriever_service.UpdateChunkRequest], retriever.Chunk]:
+    def update_chunk(self) -> Callable[[retriever_service.UpdateChunkRequest], retriever.Chunk]:
         r"""Return a callable for the update chunk method over gRPC.
 
         Updates a ``Chunk``.
@@ -754,12 +694,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["update_chunk"]
 
     @property
-    def batch_update_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.BatchUpdateChunksRequest],
-        retriever_service.BatchUpdateChunksResponse,
-    ]:
+    def batch_update_chunks(self) -> Callable[[retriever_service.BatchUpdateChunksRequest], retriever_service.BatchUpdateChunksResponse]:
         r"""Return a callable for the batch update chunks method over gRPC.
 
         Batch update ``Chunk``\ s.
@@ -783,9 +718,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["batch_update_chunks"]
 
     @property
-    def delete_chunk(
-        self,
-    ) -> Callable[[retriever_service.DeleteChunkRequest], empty_pb2.Empty]:
+    def delete_chunk(self) -> Callable[[retriever_service.DeleteChunkRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete chunk method over gRPC.
 
         Deletes a ``Chunk``.
@@ -809,9 +742,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["delete_chunk"]
 
     @property
-    def batch_delete_chunks(
-        self,
-    ) -> Callable[[retriever_service.BatchDeleteChunksRequest], empty_pb2.Empty]:
+    def batch_delete_chunks(self) -> Callable[[retriever_service.BatchDeleteChunksRequest], empty_pb2.Empty]:
         r"""Return a callable for the batch delete chunks method over gRPC.
 
         Batch delete ``Chunk``\ s.
@@ -835,11 +766,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
         return self._stubs["batch_delete_chunks"]
 
     @property
-    def list_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.ListChunksRequest], retriever_service.ListChunksResponse
-    ]:
+    def list_chunks(self) -> Callable[[retriever_service.ListChunksRequest], retriever_service.ListChunksResponse]:
         r"""Return a callable for the list chunks method over gRPC.
 
         Lists all ``Chunk``\ s in a ``Document``.
@@ -885,9 +812,7 @@ class RetrieverServiceGrpcTransport(RetrieverServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

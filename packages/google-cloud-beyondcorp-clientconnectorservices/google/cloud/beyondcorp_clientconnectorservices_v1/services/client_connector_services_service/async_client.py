@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -37,9 +26,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-from google.cloud.beyondcorp_clientconnectorservices_v1 import (
-    gapic_version as package_version,
-)
+from google.cloud.beyondcorp_clientconnectorservices_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -56,18 +43,11 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service import (
-    pagers,
-)
-from google.cloud.beyondcorp_clientconnectorservices_v1.types import (
-    client_connector_services_service,
-)
+from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service import pagers
+from google.cloud.beyondcorp_clientconnectorservices_v1.types import client_connector_services_service
 
 from .client import ClientConnectorServicesServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    ClientConnectorServicesServiceTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, ClientConnectorServicesServiceTransport
 from .transports.grpc_asyncio import ClientConnectorServicesServiceGrpcAsyncIOTransport
 
 try:
@@ -100,47 +80,21 @@ class ClientConnectorServicesServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ClientConnectorServicesServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ClientConnectorServicesServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        ClientConnectorServicesServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = ClientConnectorServicesServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ClientConnectorServicesServiceClient._DEFAULT_UNIVERSE
 
-    client_connector_service_path = staticmethod(
-        ClientConnectorServicesServiceClient.client_connector_service_path
-    )
-    parse_client_connector_service_path = staticmethod(
-        ClientConnectorServicesServiceClient.parse_client_connector_service_path
-    )
-    common_billing_account_path = staticmethod(
-        ClientConnectorServicesServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ClientConnectorServicesServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        ClientConnectorServicesServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        ClientConnectorServicesServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ClientConnectorServicesServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ClientConnectorServicesServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        ClientConnectorServicesServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        ClientConnectorServicesServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        ClientConnectorServicesServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        ClientConnectorServicesServiceClient.parse_common_location_path
-    )
+    client_connector_service_path = staticmethod(ClientConnectorServicesServiceClient.client_connector_service_path)
+    parse_client_connector_service_path = staticmethod(ClientConnectorServicesServiceClient.parse_client_connector_service_path)
+    common_billing_account_path = staticmethod(ClientConnectorServicesServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ClientConnectorServicesServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(ClientConnectorServicesServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(ClientConnectorServicesServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ClientConnectorServicesServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ClientConnectorServicesServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(ClientConnectorServicesServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(ClientConnectorServicesServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(ClientConnectorServicesServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(ClientConnectorServicesServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -176,9 +130,7 @@ class ClientConnectorServicesServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -246,11 +198,7 @@ class ClientConnectorServicesServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                ClientConnectorServicesServiceTransport,
-                Callable[..., ClientConnectorServicesServiceTransport],
-            ]
+            Union[str, ClientConnectorServicesServiceTransport, Callable[..., ClientConnectorServicesServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -311,20 +259,14 @@ class ClientConnectorServicesServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.beyondcorp.clientconnectorservices_v1.ClientConnectorServicesServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -335,12 +277,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def list_client_connector_services(
         self,
-        request: Optional[
-            Union[
-                client_connector_services_service.ListClientConnectorServicesRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[client_connector_services_service.ListClientConnectorServicesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -409,26 +346,14 @@ class ClientConnectorServicesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            client_connector_services_service.ListClientConnectorServicesRequest,
-        ):
-            request = (
-                client_connector_services_service.ListClientConnectorServicesRequest(
-                    request
-                )
-            )
+        if not isinstance(request, client_connector_services_service.ListClientConnectorServicesRequest):
+            request = client_connector_services_service.ListClientConnectorServicesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -437,15 +362,11 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_client_connector_services
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_client_connector_services]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -474,11 +395,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def get_client_connector_service(
         self,
-        request: Optional[
-            Union[
-                client_connector_services_service.GetClientConnectorServiceRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[client_connector_services_service.GetClientConnectorServiceRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -540,25 +457,14 @@ class ClientConnectorServicesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, client_connector_services_service.GetClientConnectorServiceRequest
-        ):
-            request = (
-                client_connector_services_service.GetClientConnectorServiceRequest(
-                    request
-                )
-            )
+        if not isinstance(request, client_connector_services_service.GetClientConnectorServiceRequest):
+            request = client_connector_services_service.GetClientConnectorServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -567,15 +473,11 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_client_connector_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_client_connector_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -593,17 +495,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def create_client_connector_service(
         self,
-        request: Optional[
-            Union[
-                client_connector_services_service.CreateClientConnectorServiceRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[client_connector_services_service.CreateClientConnectorServiceRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        client_connector_service: Optional[
-            client_connector_services_service.ClientConnectorService
-        ] = None,
+        client_connector_service: Optional[client_connector_services_service.ClientConnectorService] = None,
         client_connector_service_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -699,31 +594,15 @@ class ClientConnectorServicesServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            client_connector_service,
-            client_connector_service_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, client_connector_service, client_connector_service_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            client_connector_services_service.CreateClientConnectorServiceRequest,
-        ):
-            request = (
-                client_connector_services_service.CreateClientConnectorServiceRequest(
-                    request
-                )
-            )
+        if not isinstance(request, client_connector_services_service.CreateClientConnectorServiceRequest):
+            request = client_connector_services_service.CreateClientConnectorServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -736,15 +615,11 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_client_connector_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_client_connector_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -770,16 +645,9 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def update_client_connector_service(
         self,
-        request: Optional[
-            Union[
-                client_connector_services_service.UpdateClientConnectorServiceRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[client_connector_services_service.UpdateClientConnectorServiceRequest, dict]] = None,
         *,
-        client_connector_service: Optional[
-            client_connector_services_service.ClientConnectorService
-        ] = None,
+        client_connector_service: Optional[client_connector_services_service.ClientConnectorService] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -869,26 +737,14 @@ class ClientConnectorServicesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [client_connector_service, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            client_connector_services_service.UpdateClientConnectorServiceRequest,
-        ):
-            request = (
-                client_connector_services_service.UpdateClientConnectorServiceRequest(
-                    request
-                )
-            )
+        if not isinstance(request, client_connector_services_service.UpdateClientConnectorServiceRequest):
+            request = client_connector_services_service.UpdateClientConnectorServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -899,21 +755,12 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_client_connector_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_client_connector_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "client_connector_service.name",
-                        request.client_connector_service.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("client_connector_service.name", request.client_connector_service.name),)),
         )
 
         # Validate the universe domain.
@@ -940,12 +787,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def delete_client_connector_service(
         self,
-        request: Optional[
-            Union[
-                client_connector_services_service.DeleteClientConnectorServiceRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[client_connector_services_service.DeleteClientConnectorServiceRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1021,26 +863,14 @@ class ClientConnectorServicesServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            client_connector_services_service.DeleteClientConnectorServiceRequest,
-        ):
-            request = (
-                client_connector_services_service.DeleteClientConnectorServiceRequest(
-                    request
-                )
-            )
+        if not isinstance(request, client_connector_services_service.DeleteClientConnectorServiceRequest):
+            request = client_connector_services_service.DeleteClientConnectorServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1049,15 +879,11 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_client_connector_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_client_connector_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1118,9 +944,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1173,9 +997,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1232,9 +1054,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1287,9 +1107,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1405,9 +1223,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1527,9 +1343,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1583,15 +1397,11 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1644,9 +1454,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1699,9 +1507,7 @@ class ClientConnectorServicesServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1724,9 +1530,7 @@ class ClientConnectorServicesServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

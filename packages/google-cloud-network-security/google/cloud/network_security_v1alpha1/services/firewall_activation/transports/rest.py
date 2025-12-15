@@ -163,13 +163,8 @@ class FirewallActivationRestInterceptor:
     """
 
     def pre_create_firewall_endpoint(
-        self,
-        request: firewall_activation.CreateFirewallEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.CreateFirewallEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.CreateFirewallEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.CreateFirewallEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_firewall_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -177,9 +172,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_firewall_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_firewall_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_firewall_endpoint
 
         DEPRECATED. Please use the `post_create_firewall_endpoint_with_metadata`
@@ -193,9 +186,7 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_create_firewall_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_firewall_endpoint
 
@@ -212,13 +203,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_create_firewall_endpoint_association(
-        self,
-        request: firewall_activation.CreateFirewallEndpointAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.CreateFirewallEndpointAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.CreateFirewallEndpointAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.CreateFirewallEndpointAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_firewall_endpoint_association
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +212,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_firewall_endpoint_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_firewall_endpoint_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_firewall_endpoint_association
 
         DEPRECATED. Please use the `post_create_firewall_endpoint_association_with_metadata`
@@ -242,9 +226,7 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_create_firewall_endpoint_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_firewall_endpoint_association
 
@@ -261,13 +243,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_delete_firewall_endpoint(
-        self,
-        request: firewall_activation.DeleteFirewallEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.DeleteFirewallEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.DeleteFirewallEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.DeleteFirewallEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_firewall_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -275,9 +252,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_firewall_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_firewall_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_firewall_endpoint
 
         DEPRECATED. Please use the `post_delete_firewall_endpoint_with_metadata`
@@ -291,9 +266,7 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_delete_firewall_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_firewall_endpoint
 
@@ -310,13 +283,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_delete_firewall_endpoint_association(
-        self,
-        request: firewall_activation.DeleteFirewallEndpointAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.DeleteFirewallEndpointAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.DeleteFirewallEndpointAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.DeleteFirewallEndpointAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_firewall_endpoint_association
 
         Override in a subclass to manipulate the request or metadata
@@ -324,9 +292,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_firewall_endpoint_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_firewall_endpoint_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_firewall_endpoint_association
 
         DEPRECATED. Please use the `post_delete_firewall_endpoint_association_with_metadata`
@@ -340,9 +306,7 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_delete_firewall_endpoint_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_firewall_endpoint_association
 
@@ -359,13 +323,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_get_firewall_endpoint(
-        self,
-        request: firewall_activation.GetFirewallEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.GetFirewallEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.GetFirewallEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.GetFirewallEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_firewall_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -373,9 +332,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_firewall_endpoint(
-        self, response: firewall_activation.FirewallEndpoint
-    ) -> firewall_activation.FirewallEndpoint:
+    def post_get_firewall_endpoint(self, response: firewall_activation.FirewallEndpoint) -> firewall_activation.FirewallEndpoint:
         """Post-rpc interceptor for get_firewall_endpoint
 
         DEPRECATED. Please use the `post_get_firewall_endpoint_with_metadata`
@@ -389,12 +346,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_get_firewall_endpoint_with_metadata(
-        self,
-        response: firewall_activation.FirewallEndpoint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.FirewallEndpoint, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: firewall_activation.FirewallEndpoint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.FirewallEndpoint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_firewall_endpoint
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -410,13 +363,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_get_firewall_endpoint_association(
-        self,
-        request: firewall_activation.GetFirewallEndpointAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.GetFirewallEndpointAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.GetFirewallEndpointAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.GetFirewallEndpointAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_firewall_endpoint_association
 
         Override in a subclass to manipulate the request or metadata
@@ -440,13 +388,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_get_firewall_endpoint_association_with_metadata(
-        self,
-        response: firewall_activation.FirewallEndpointAssociation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.FirewallEndpointAssociation,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: firewall_activation.FirewallEndpointAssociation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.FirewallEndpointAssociation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_firewall_endpoint_association
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -462,13 +405,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_list_firewall_endpoint_associations(
-        self,
-        request: firewall_activation.ListFirewallEndpointAssociationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.ListFirewallEndpointAssociationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.ListFirewallEndpointAssociationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.ListFirewallEndpointAssociationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_firewall_endpoint_associations
 
         Override in a subclass to manipulate the request or metadata
@@ -492,13 +430,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_list_firewall_endpoint_associations_with_metadata(
-        self,
-        response: firewall_activation.ListFirewallEndpointAssociationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.ListFirewallEndpointAssociationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: firewall_activation.ListFirewallEndpointAssociationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.ListFirewallEndpointAssociationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_firewall_endpoint_associations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -514,13 +447,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_list_firewall_endpoints(
-        self,
-        request: firewall_activation.ListFirewallEndpointsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.ListFirewallEndpointsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.ListFirewallEndpointsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.ListFirewallEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_firewall_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -544,13 +472,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_list_firewall_endpoints_with_metadata(
-        self,
-        response: firewall_activation.ListFirewallEndpointsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.ListFirewallEndpointsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: firewall_activation.ListFirewallEndpointsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.ListFirewallEndpointsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_firewall_endpoints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -566,13 +489,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_update_firewall_endpoint(
-        self,
-        request: firewall_activation.UpdateFirewallEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.UpdateFirewallEndpointRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.UpdateFirewallEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.UpdateFirewallEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_firewall_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -580,9 +498,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_firewall_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_firewall_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_firewall_endpoint
 
         DEPRECATED. Please use the `post_update_firewall_endpoint_with_metadata`
@@ -596,9 +512,7 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_update_firewall_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_firewall_endpoint
 
@@ -615,13 +529,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_update_firewall_endpoint_association(
-        self,
-        request: firewall_activation.UpdateFirewallEndpointAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        firewall_activation.UpdateFirewallEndpointAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: firewall_activation.UpdateFirewallEndpointAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[firewall_activation.UpdateFirewallEndpointAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_firewall_endpoint_association
 
         Override in a subclass to manipulate the request or metadata
@@ -629,9 +538,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_firewall_endpoint_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_firewall_endpoint_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_firewall_endpoint_association
 
         DEPRECATED. Please use the `post_update_firewall_endpoint_association_with_metadata`
@@ -645,9 +552,7 @@ class FirewallActivationRestInterceptor:
         return response
 
     def post_update_firewall_endpoint_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_firewall_endpoint_association
 
@@ -664,12 +569,8 @@ class FirewallActivationRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -677,9 +578,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -689,12 +588,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -702,9 +597,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -714,12 +607,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -737,12 +626,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -760,13 +645,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -774,9 +654,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -786,12 +664,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -809,12 +683,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -832,12 +702,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -845,9 +711,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -857,12 +721,8 @@ class FirewallActivationRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -870,9 +730,7 @@ class FirewallActivationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -961,9 +819,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1033,30 +889,17 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 path_prefix="v1alpha1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateFirewallEndpoint(
-        _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint,
-        FirewallActivationRestStub,
-    ):
+    class _CreateFirewallEndpoint(_BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.CreateFirewallEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1099,32 +942,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_firewall_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_firewall_endpoint(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1147,16 +976,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
 
             # Send the request
-            response = (
-                FirewallActivationRestTransport._CreateFirewallEndpoint._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = FirewallActivationRestTransport._CreateFirewallEndpoint._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1170,12 +991,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_create_firewall_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_firewall_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_firewall_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1196,25 +1013,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _CreateFirewallEndpointAssociation(
-        _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation,
-        FirewallActivationRestStub,
-    ):
+    class _CreateFirewallEndpointAssociation(_BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation, FirewallActivationRestStub):
         def __hash__(self):
-            return hash(
-                "FirewallActivationRestTransport.CreateFirewallEndpointAssociation"
-            )
+            return hash("FirewallActivationRestTransport.CreateFirewallEndpointAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1258,35 +1062,20 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_firewall_endpoint_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_firewall_endpoint_association(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1310,13 +1099,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._CreateFirewallEndpointAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1330,15 +1113,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_create_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_firewall_endpoint_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1359,23 +1135,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _DeleteFirewallEndpoint(
-        _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint,
-        FirewallActivationRestStub,
-    ):
+    class _DeleteFirewallEndpoint(_BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.DeleteFirewallEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1417,28 +1182,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_firewall_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_firewall_endpoint(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1461,15 +1214,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
 
             # Send the request
-            response = (
-                FirewallActivationRestTransport._DeleteFirewallEndpoint._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = FirewallActivationRestTransport._DeleteFirewallEndpoint._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1483,12 +1229,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_delete_firewall_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_firewall_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_firewall_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1509,25 +1251,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _DeleteFirewallEndpointAssociation(
-        _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation,
-        FirewallActivationRestStub,
-    ):
+    class _DeleteFirewallEndpointAssociation(_BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation, FirewallActivationRestStub):
         def __hash__(self):
-            return hash(
-                "FirewallActivationRestTransport.DeleteFirewallEndpointAssociation"
-            )
+            return hash("FirewallActivationRestTransport.DeleteFirewallEndpointAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1570,31 +1299,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_firewall_endpoint_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_firewall_endpoint_association(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1618,12 +1334,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._DeleteFirewallEndpointAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1637,15 +1348,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_delete_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_firewall_endpoint_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1666,23 +1370,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _GetFirewallEndpoint(
-        _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint,
-        FirewallActivationRestStub,
-    ):
+    class _GetFirewallEndpoint(_BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.GetFirewallEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1721,28 +1414,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     Message describing Endpoint object.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_firewall_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_firewall_endpoint(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1765,15 +1446,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
 
             # Send the request
-            response = (
-                FirewallActivationRestTransport._GetFirewallEndpoint._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = FirewallActivationRestTransport._GetFirewallEndpoint._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1789,16 +1463,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_get_firewall_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_firewall_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_firewall_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = firewall_activation.FirewallEndpoint.to_json(
-                        response
-                    )
+                    response_payload = firewall_activation.FirewallEndpoint.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1817,25 +1485,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _GetFirewallEndpointAssociation(
-        _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation,
-        FirewallActivationRestStub,
-    ):
+    class _GetFirewallEndpointAssociation(_BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation, FirewallActivationRestStub):
         def __hash__(self):
-            return hash(
-                "FirewallActivationRestTransport.GetFirewallEndpointAssociation"
-            )
+            return hash("FirewallActivationRestTransport.GetFirewallEndpointAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1875,28 +1530,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                         Message describing Association object
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_firewall_endpoint_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_firewall_endpoint_association(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1920,12 +1565,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._GetFirewallEndpointAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1941,21 +1581,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_get_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_firewall_endpoint_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        firewall_activation.FirewallEndpointAssociation.to_json(
-                            response
-                        )
-                    )
+                    response_payload = firewall_activation.FirewallEndpointAssociation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1974,25 +1603,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _ListFirewallEndpointAssociations(
-        _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations,
-        FirewallActivationRestStub,
-    ):
+    class _ListFirewallEndpointAssociations(_BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations, FirewallActivationRestStub):
         def __hash__(self):
-            return hash(
-                "FirewallActivationRestTransport.ListFirewallEndpointAssociations"
-            )
+            return hash("FirewallActivationRestTransport.ListFirewallEndpointAssociations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2035,31 +1651,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_firewall_endpoint_associations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_firewall_endpoint_associations(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2083,12 +1686,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._ListFirewallEndpointAssociations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2098,27 +1696,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Return the response
             resp = firewall_activation.ListFirewallEndpointAssociationsResponse()
-            pb_resp = firewall_activation.ListFirewallEndpointAssociationsResponse.pb(
-                resp
-            )
+            pb_resp = firewall_activation.ListFirewallEndpointAssociationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_firewall_endpoint_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_firewall_endpoint_associations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_firewall_endpoint_associations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = firewall_activation.ListFirewallEndpointAssociationsResponse.to_json(
-                        response
-                    )
+                    response_payload = firewall_activation.ListFirewallEndpointAssociationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2137,23 +1724,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _ListFirewallEndpoints(
-        _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints,
-        FirewallActivationRestStub,
-    ):
+    class _ListFirewallEndpoints(_BaseFirewallActivationRestTransport._BaseListFirewallEndpoints, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.ListFirewallEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2195,28 +1771,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_firewall_endpoints(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_firewall_endpoints(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2239,15 +1803,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
 
             # Send the request
-            response = (
-                FirewallActivationRestTransport._ListFirewallEndpoints._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = FirewallActivationRestTransport._ListFirewallEndpoints._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2263,18 +1820,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_list_firewall_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_firewall_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_firewall_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        firewall_activation.ListFirewallEndpointsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = firewall_activation.ListFirewallEndpointsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2293,23 +1842,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _UpdateFirewallEndpoint(
-        _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint,
-        FirewallActivationRestStub,
-    ):
+    class _UpdateFirewallEndpoint(_BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.UpdateFirewallEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2352,32 +1890,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_firewall_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_firewall_endpoint(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2400,16 +1924,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
 
             # Send the request
-            response = (
-                FirewallActivationRestTransport._UpdateFirewallEndpoint._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = FirewallActivationRestTransport._UpdateFirewallEndpoint._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2423,12 +1939,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_update_firewall_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_firewall_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_firewall_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2449,25 +1961,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
-    class _UpdateFirewallEndpointAssociation(
-        _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation,
-        FirewallActivationRestStub,
-    ):
+    class _UpdateFirewallEndpointAssociation(_BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation, FirewallActivationRestStub):
         def __hash__(self):
-            return hash(
-                "FirewallActivationRestTransport.UpdateFirewallEndpointAssociation"
-            )
+            return hash("FirewallActivationRestTransport.UpdateFirewallEndpointAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2511,35 +2010,20 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_firewall_endpoint_association(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_firewall_endpoint_association(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2563,13 +2047,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._UpdateFirewallEndpointAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2583,15 +2061,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_update_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_firewall_endpoint_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2613,11 +2084,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             return resp
 
     @property
-    def create_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.CreateFirewallEndpointRequest], operations_pb2.Operation
-    ]:
+    def create_firewall_endpoint(self) -> Callable[[firewall_activation.CreateFirewallEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
@@ -2625,20 +2092,13 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     @property
     def create_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.CreateFirewallEndpointAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[firewall_activation.CreateFirewallEndpointAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.DeleteFirewallEndpointRequest], operations_pb2.Operation
-    ]:
+    def delete_firewall_endpoint(self) -> Callable[[firewall_activation.DeleteFirewallEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
@@ -2646,21 +2106,13 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     @property
     def delete_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.DeleteFirewallEndpointAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[firewall_activation.DeleteFirewallEndpointAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.GetFirewallEndpointRequest],
-        firewall_activation.FirewallEndpoint,
-    ]:
+    def get_firewall_endpoint(self) -> Callable[[firewall_activation.GetFirewallEndpointRequest], firewall_activation.FirewallEndpoint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
@@ -2668,10 +2120,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     @property
     def get_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.GetFirewallEndpointAssociationRequest],
-        firewall_activation.FirewallEndpointAssociation,
-    ]:
+    ) -> Callable[[firewall_activation.GetFirewallEndpointAssociationRequest], firewall_activation.FirewallEndpointAssociation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -2679,10 +2128,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     @property
     def list_firewall_endpoint_associations(
         self,
-    ) -> Callable[
-        [firewall_activation.ListFirewallEndpointAssociationsRequest],
-        firewall_activation.ListFirewallEndpointAssociationsResponse,
-    ]:
+    ) -> Callable[[firewall_activation.ListFirewallEndpointAssociationsRequest], firewall_activation.ListFirewallEndpointAssociationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFirewallEndpointAssociations(self._session, self._host, self._interceptor)  # type: ignore
@@ -2690,20 +2136,13 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     @property
     def list_firewall_endpoints(
         self,
-    ) -> Callable[
-        [firewall_activation.ListFirewallEndpointsRequest],
-        firewall_activation.ListFirewallEndpointsResponse,
-    ]:
+    ) -> Callable[[firewall_activation.ListFirewallEndpointsRequest], firewall_activation.ListFirewallEndpointsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFirewallEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.UpdateFirewallEndpointRequest], operations_pb2.Operation
-    ]:
+    def update_firewall_endpoint(self) -> Callable[[firewall_activation.UpdateFirewallEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
@@ -2711,10 +2150,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     @property
     def update_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.UpdateFirewallEndpointAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[firewall_activation.UpdateFirewallEndpointAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -2723,23 +2159,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseFirewallActivationRestTransport._BaseGetLocation,
-        FirewallActivationRestStub,
-    ):
+    class _GetLocation(_BaseFirewallActivationRestTransport._BaseGetLocation, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2777,26 +2202,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2820,12 +2235,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2837,9 +2247,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2864,23 +2272,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseFirewallActivationRestTransport._BaseListLocations,
-        FirewallActivationRestStub,
-    ):
+    class _ListLocations(_BaseFirewallActivationRestTransport._BaseListLocations, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2918,26 +2315,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2961,12 +2348,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2978,9 +2360,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3005,23 +2385,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseFirewallActivationRestTransport._BaseGetIamPolicy,
-        FirewallActivationRestStub,
-    ):
+    class _GetIamPolicy(_BaseFirewallActivationRestTransport._BaseGetIamPolicy, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3059,26 +2428,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3102,12 +2461,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3119,9 +2473,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3146,23 +2498,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseFirewallActivationRestTransport._BaseSetIamPolicy,
-        FirewallActivationRestStub,
-    ):
+    class _SetIamPolicy(_BaseFirewallActivationRestTransport._BaseSetIamPolicy, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3201,30 +2542,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3248,13 +2577,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3266,9 +2589,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3293,23 +2614,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseFirewallActivationRestTransport._BaseTestIamPermissions,
-        FirewallActivationRestStub,
-    ):
+    class _TestIamPermissions(_BaseFirewallActivationRestTransport._BaseTestIamPermissions, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3348,32 +2658,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3396,16 +2692,8 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
 
             # Send the request
-            response = (
-                FirewallActivationRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = FirewallActivationRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3417,9 +2705,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3444,23 +2730,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseFirewallActivationRestTransport._BaseCancelOperation,
-        FirewallActivationRestStub,
-    ):
+    class _CancelOperation(_BaseFirewallActivationRestTransport._BaseCancelOperation, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3496,32 +2771,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3545,13 +2806,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3565,23 +2820,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseFirewallActivationRestTransport._BaseDeleteOperation,
-        FirewallActivationRestStub,
-    ):
+    class _DeleteOperation(_BaseFirewallActivationRestTransport._BaseDeleteOperation, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3616,28 +2860,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3661,12 +2893,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3680,23 +2907,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseFirewallActivationRestTransport._BaseGetOperation,
-        FirewallActivationRestStub,
-    ):
+    class _GetOperation(_BaseFirewallActivationRestTransport._BaseGetOperation, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3734,26 +2950,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3777,12 +2983,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3794,9 +2995,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3821,23 +3020,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseFirewallActivationRestTransport._BaseListOperations,
-        FirewallActivationRestStub,
-    ):
+    class _ListOperations(_BaseFirewallActivationRestTransport._BaseListOperations, FirewallActivationRestStub):
         def __hash__(self):
             return hash("FirewallActivationRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3875,26 +3063,16 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseFirewallActivationRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallActivationRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallActivationRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3918,12 +3096,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             # Send the request
             response = FirewallActivationRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3935,9 +3108,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

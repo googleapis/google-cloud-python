@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -251,18 +242,14 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -296,9 +283,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -365,20 +350,13 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_microsoft_ad_domain(
-        self,
-    ) -> Callable[
-        [managed_identities_service.CreateMicrosoftAdDomainRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_microsoft_ad_domain(self) -> Callable[[managed_identities_service.CreateMicrosoftAdDomainRequest], operations_pb2.Operation]:
         r"""Return a callable for the create microsoft ad domain method over gRPC.
 
         Creates a Microsoft AD domain.
@@ -394,9 +372,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_microsoft_ad_domain" not in self._stubs:
-            self._stubs[
-                "create_microsoft_ad_domain"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_microsoft_ad_domain"] = self._logged_channel.unary_unary(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/CreateMicrosoftAdDomain",
                 request_serializer=managed_identities_service.CreateMicrosoftAdDomainRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -406,10 +382,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
     @property
     def reset_admin_password(
         self,
-    ) -> Callable[
-        [managed_identities_service.ResetAdminPasswordRequest],
-        managed_identities_service.ResetAdminPasswordResponse,
-    ]:
+    ) -> Callable[[managed_identities_service.ResetAdminPasswordRequest], managed_identities_service.ResetAdminPasswordResponse]:
         r"""Return a callable for the reset admin password method over gRPC.
 
         Resets a domain's administrator password.
@@ -433,12 +406,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["reset_admin_password"]
 
     @property
-    def list_domains(
-        self,
-    ) -> Callable[
-        [managed_identities_service.ListDomainsRequest],
-        managed_identities_service.ListDomainsResponse,
-    ]:
+    def list_domains(self) -> Callable[[managed_identities_service.ListDomainsRequest], managed_identities_service.ListDomainsResponse]:
         r"""Return a callable for the list domains method over gRPC.
 
         Lists domains in a project.
@@ -462,9 +430,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["list_domains"]
 
     @property
-    def get_domain(
-        self,
-    ) -> Callable[[managed_identities_service.GetDomainRequest], resource.Domain]:
+    def get_domain(self) -> Callable[[managed_identities_service.GetDomainRequest], resource.Domain]:
         r"""Return a callable for the get domain method over gRPC.
 
         Gets information about a domain.
@@ -488,11 +454,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["get_domain"]
 
     @property
-    def update_domain(
-        self,
-    ) -> Callable[
-        [managed_identities_service.UpdateDomainRequest], operations_pb2.Operation
-    ]:
+    def update_domain(self) -> Callable[[managed_identities_service.UpdateDomainRequest], operations_pb2.Operation]:
         r"""Return a callable for the update domain method over gRPC.
 
         Updates the metadata and configuration of a domain.
@@ -516,11 +478,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["update_domain"]
 
     @property
-    def delete_domain(
-        self,
-    ) -> Callable[
-        [managed_identities_service.DeleteDomainRequest], operations_pb2.Operation
-    ]:
+    def delete_domain(self) -> Callable[[managed_identities_service.DeleteDomainRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete domain method over gRPC.
 
         Deletes a domain.
@@ -544,11 +502,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["delete_domain"]
 
     @property
-    def attach_trust(
-        self,
-    ) -> Callable[
-        [managed_identities_service.AttachTrustRequest], operations_pb2.Operation
-    ]:
+    def attach_trust(self) -> Callable[[managed_identities_service.AttachTrustRequest], operations_pb2.Operation]:
         r"""Return a callable for the attach trust method over gRPC.
 
         Adds an AD trust to a domain.
@@ -572,11 +526,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["attach_trust"]
 
     @property
-    def reconfigure_trust(
-        self,
-    ) -> Callable[
-        [managed_identities_service.ReconfigureTrustRequest], operations_pb2.Operation
-    ]:
+    def reconfigure_trust(self) -> Callable[[managed_identities_service.ReconfigureTrustRequest], operations_pb2.Operation]:
         r"""Return a callable for the reconfigure trust method over gRPC.
 
         Updates the DNS conditional forwarder.
@@ -600,11 +550,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["reconfigure_trust"]
 
     @property
-    def detach_trust(
-        self,
-    ) -> Callable[
-        [managed_identities_service.DetachTrustRequest], operations_pb2.Operation
-    ]:
+    def detach_trust(self) -> Callable[[managed_identities_service.DetachTrustRequest], operations_pb2.Operation]:
         r"""Return a callable for the detach trust method over gRPC.
 
         Removes an AD trust.
@@ -628,11 +574,7 @@ class ManagedIdentitiesServiceGrpcTransport(ManagedIdentitiesServiceTransport):
         return self._stubs["detach_trust"]
 
     @property
-    def validate_trust(
-        self,
-    ) -> Callable[
-        [managed_identities_service.ValidateTrustRequest], operations_pb2.Operation
-    ]:
+    def validate_trust(self) -> Callable[[managed_identities_service.ValidateTrustRequest], operations_pb2.Operation]:
         r"""Return a callable for the validate trust method over gRPC.
 
         Validates a trust state, that the target domain is

@@ -20,23 +20,13 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import empty_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import (
-    collapsible_group as gmd_collapsible_group,
-)
-from google.cloud.monitoring_dashboard_v1.types import (
-    error_reporting_panel as gmd_error_reporting_panel,
-)
-from google.cloud.monitoring_dashboard_v1.types import (
-    incident_list as gmd_incident_list,
-)
+from google.cloud.monitoring_dashboard_v1.types import collapsible_group as gmd_collapsible_group
+from google.cloud.monitoring_dashboard_v1.types import error_reporting_panel as gmd_error_reporting_panel
+from google.cloud.monitoring_dashboard_v1.types import incident_list as gmd_incident_list
 from google.cloud.monitoring_dashboard_v1.types import logs_panel as gmd_logs_panel
 from google.cloud.monitoring_dashboard_v1.types import scorecard as gmd_scorecard
-from google.cloud.monitoring_dashboard_v1.types import (
-    section_header as gmd_section_header,
-)
-from google.cloud.monitoring_dashboard_v1.types import (
-    single_view_group as gmd_single_view_group,
-)
+from google.cloud.monitoring_dashboard_v1.types import section_header as gmd_section_header
+from google.cloud.monitoring_dashboard_v1.types import single_view_group as gmd_single_view_group
 from google.cloud.monitoring_dashboard_v1.types import alertchart
 from google.cloud.monitoring_dashboard_v1.types import piechart
 from google.cloud.monitoring_dashboard_v1.types import table

@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -217,18 +208,14 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -262,9 +249,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -323,9 +308,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_account(
-        self,
-    ) -> Callable[[analytics_admin.GetAccountRequest], resources.Account]:
+    def get_account(self) -> Callable[[analytics_admin.GetAccountRequest], resources.Account]:
         r"""Return a callable for the get account method over gRPC.
 
         Lookup for a single Account.
@@ -349,11 +332,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_account"]
 
     @property
-    def list_accounts(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAccountsRequest], analytics_admin.ListAccountsResponse
-    ]:
+    def list_accounts(self) -> Callable[[analytics_admin.ListAccountsRequest], analytics_admin.ListAccountsResponse]:
         r"""Return a callable for the list accounts method over gRPC.
 
         Returns all accounts accessible by the caller.
@@ -382,9 +361,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_accounts"]
 
     @property
-    def delete_account(
-        self,
-    ) -> Callable[[analytics_admin.DeleteAccountRequest], empty_pb2.Empty]:
+    def delete_account(self) -> Callable[[analytics_admin.DeleteAccountRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete account method over gRPC.
 
         Marks target Account as soft-deleted (ie: "trashed")
@@ -420,9 +397,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_account"]
 
     @property
-    def update_account(
-        self,
-    ) -> Callable[[analytics_admin.UpdateAccountRequest], resources.Account]:
+    def update_account(self) -> Callable[[analytics_admin.UpdateAccountRequest], resources.Account]:
         r"""Return a callable for the update account method over gRPC.
 
         Updates an account.
@@ -446,12 +421,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_account"]
 
     @property
-    def provision_account_ticket(
-        self,
-    ) -> Callable[
-        [analytics_admin.ProvisionAccountTicketRequest],
-        analytics_admin.ProvisionAccountTicketResponse,
-    ]:
+    def provision_account_ticket(self) -> Callable[[analytics_admin.ProvisionAccountTicketRequest], analytics_admin.ProvisionAccountTicketResponse]:
         r"""Return a callable for the provision account ticket method over gRPC.
 
         Requests a ticket for creating an account.
@@ -475,12 +445,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["provision_account_ticket"]
 
     @property
-    def list_account_summaries(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAccountSummariesRequest],
-        analytics_admin.ListAccountSummariesResponse,
-    ]:
+    def list_account_summaries(self) -> Callable[[analytics_admin.ListAccountSummariesRequest], analytics_admin.ListAccountSummariesResponse]:
         r"""Return a callable for the list account summaries method over gRPC.
 
         Returns summaries of all accounts accessible by the
@@ -505,9 +470,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_account_summaries"]
 
     @property
-    def get_property(
-        self,
-    ) -> Callable[[analytics_admin.GetPropertyRequest], resources.Property]:
+    def get_property(self) -> Callable[[analytics_admin.GetPropertyRequest], resources.Property]:
         r"""Return a callable for the get property method over gRPC.
 
         Lookup for a single GA Property.
@@ -531,11 +494,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_property"]
 
     @property
-    def list_properties(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListPropertiesRequest], analytics_admin.ListPropertiesResponse
-    ]:
+    def list_properties(self) -> Callable[[analytics_admin.ListPropertiesRequest], analytics_admin.ListPropertiesResponse]:
         r"""Return a callable for the list properties method over gRPC.
 
         Returns child Properties under the specified parent
@@ -564,9 +523,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_properties"]
 
     @property
-    def create_property(
-        self,
-    ) -> Callable[[analytics_admin.CreatePropertyRequest], resources.Property]:
+    def create_property(self) -> Callable[[analytics_admin.CreatePropertyRequest], resources.Property]:
         r"""Return a callable for the create property method over gRPC.
 
         Creates a Google Analytics property with the
@@ -591,9 +548,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_property"]
 
     @property
-    def delete_property(
-        self,
-    ) -> Callable[[analytics_admin.DeletePropertyRequest], resources.Property]:
+    def delete_property(self) -> Callable[[analytics_admin.DeletePropertyRequest], resources.Property]:
         r"""Return a callable for the delete property method over gRPC.
 
         Marks target Property as soft-deleted (ie: "trashed")
@@ -629,9 +584,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_property"]
 
     @property
-    def update_property(
-        self,
-    ) -> Callable[[analytics_admin.UpdatePropertyRequest], resources.Property]:
+    def update_property(self) -> Callable[[analytics_admin.UpdatePropertyRequest], resources.Property]:
         r"""Return a callable for the update property method over gRPC.
 
         Updates a property.
@@ -655,9 +608,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_property"]
 
     @property
-    def create_firebase_link(
-        self,
-    ) -> Callable[[analytics_admin.CreateFirebaseLinkRequest], resources.FirebaseLink]:
+    def create_firebase_link(self) -> Callable[[analytics_admin.CreateFirebaseLinkRequest], resources.FirebaseLink]:
         r"""Return a callable for the create firebase link method over gRPC.
 
         Creates a FirebaseLink.
@@ -683,9 +634,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_firebase_link"]
 
     @property
-    def delete_firebase_link(
-        self,
-    ) -> Callable[[analytics_admin.DeleteFirebaseLinkRequest], empty_pb2.Empty]:
+    def delete_firebase_link(self) -> Callable[[analytics_admin.DeleteFirebaseLinkRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete firebase link method over gRPC.
 
         Deletes a FirebaseLink on a property
@@ -709,12 +658,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_firebase_link"]
 
     @property
-    def list_firebase_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListFirebaseLinksRequest],
-        analytics_admin.ListFirebaseLinksResponse,
-    ]:
+    def list_firebase_links(self) -> Callable[[analytics_admin.ListFirebaseLinksRequest], analytics_admin.ListFirebaseLinksResponse]:
         r"""Return a callable for the list firebase links method over gRPC.
 
         Lists FirebaseLinks on a property.
@@ -739,11 +683,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_firebase_links"]
 
     @property
-    def create_google_ads_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateGoogleAdsLinkRequest], resources.GoogleAdsLink
-    ]:
+    def create_google_ads_link(self) -> Callable[[analytics_admin.CreateGoogleAdsLinkRequest], resources.GoogleAdsLink]:
         r"""Return a callable for the create google ads link method over gRPC.
 
         Creates a GoogleAdsLink.
@@ -767,11 +707,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_google_ads_link"]
 
     @property
-    def update_google_ads_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateGoogleAdsLinkRequest], resources.GoogleAdsLink
-    ]:
+    def update_google_ads_link(self) -> Callable[[analytics_admin.UpdateGoogleAdsLinkRequest], resources.GoogleAdsLink]:
         r"""Return a callable for the update google ads link method over gRPC.
 
         Updates a GoogleAdsLink on a property
@@ -795,9 +731,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_google_ads_link"]
 
     @property
-    def delete_google_ads_link(
-        self,
-    ) -> Callable[[analytics_admin.DeleteGoogleAdsLinkRequest], empty_pb2.Empty]:
+    def delete_google_ads_link(self) -> Callable[[analytics_admin.DeleteGoogleAdsLinkRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete google ads link method over gRPC.
 
         Deletes a GoogleAdsLink on a property
@@ -821,12 +755,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_google_ads_link"]
 
     @property
-    def list_google_ads_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListGoogleAdsLinksRequest],
-        analytics_admin.ListGoogleAdsLinksResponse,
-    ]:
+    def list_google_ads_links(self) -> Callable[[analytics_admin.ListGoogleAdsLinksRequest], analytics_admin.ListGoogleAdsLinksResponse]:
         r"""Return a callable for the list google ads links method over gRPC.
 
         Lists GoogleAdsLinks on a property.
@@ -850,11 +779,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_google_ads_links"]
 
     @property
-    def get_data_sharing_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataSharingSettingsRequest], resources.DataSharingSettings
-    ]:
+    def get_data_sharing_settings(self) -> Callable[[analytics_admin.GetDataSharingSettingsRequest], resources.DataSharingSettings]:
         r"""Return a callable for the get data sharing settings method over gRPC.
 
         Get data sharing settings on an account.
@@ -879,12 +804,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_data_sharing_settings"]
 
     @property
-    def get_measurement_protocol_secret(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetMeasurementProtocolSecretRequest],
-        resources.MeasurementProtocolSecret,
-    ]:
+    def get_measurement_protocol_secret(self) -> Callable[[analytics_admin.GetMeasurementProtocolSecretRequest], resources.MeasurementProtocolSecret]:
         r"""Return a callable for the get measurement protocol
         secret method over gRPC.
 
@@ -901,9 +821,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "get_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetMeasurementProtocolSecret",
                 request_serializer=analytics_admin.GetMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=resources.MeasurementProtocolSecret.deserialize,
@@ -913,10 +831,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
     @property
     def list_measurement_protocol_secrets(
         self,
-    ) -> Callable[
-        [analytics_admin.ListMeasurementProtocolSecretsRequest],
-        analytics_admin.ListMeasurementProtocolSecretsResponse,
-    ]:
+    ) -> Callable[[analytics_admin.ListMeasurementProtocolSecretsRequest], analytics_admin.ListMeasurementProtocolSecretsResponse]:
         r"""Return a callable for the list measurement protocol
         secrets method over gRPC.
 
@@ -934,9 +849,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_measurement_protocol_secrets" not in self._stubs:
-            self._stubs[
-                "list_measurement_protocol_secrets"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_measurement_protocol_secrets"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListMeasurementProtocolSecrets",
                 request_serializer=analytics_admin.ListMeasurementProtocolSecretsRequest.serialize,
                 response_deserializer=analytics_admin.ListMeasurementProtocolSecretsResponse.deserialize,
@@ -946,10 +859,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
     @property
     def create_measurement_protocol_secret(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateMeasurementProtocolSecretRequest],
-        resources.MeasurementProtocolSecret,
-    ]:
+    ) -> Callable[[analytics_admin.CreateMeasurementProtocolSecretRequest], resources.MeasurementProtocolSecret]:
         r"""Return a callable for the create measurement protocol
         secret method over gRPC.
 
@@ -966,9 +876,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "create_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateMeasurementProtocolSecret",
                 request_serializer=analytics_admin.CreateMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=resources.MeasurementProtocolSecret.deserialize,
@@ -976,11 +884,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_measurement_protocol_secret"]
 
     @property
-    def delete_measurement_protocol_secret(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteMeasurementProtocolSecretRequest], empty_pb2.Empty
-    ]:
+    def delete_measurement_protocol_secret(self) -> Callable[[analytics_admin.DeleteMeasurementProtocolSecretRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete measurement protocol
         secret method over gRPC.
 
@@ -997,9 +901,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "delete_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteMeasurementProtocolSecret",
                 request_serializer=analytics_admin.DeleteMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1009,10 +911,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
     @property
     def update_measurement_protocol_secret(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateMeasurementProtocolSecretRequest],
-        resources.MeasurementProtocolSecret,
-    ]:
+    ) -> Callable[[analytics_admin.UpdateMeasurementProtocolSecretRequest], resources.MeasurementProtocolSecret]:
         r"""Return a callable for the update measurement protocol
         secret method over gRPC.
 
@@ -1029,9 +928,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "update_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateMeasurementProtocolSecret",
                 request_serializer=analytics_admin.UpdateMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=resources.MeasurementProtocolSecret.deserialize,
@@ -1041,10 +938,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
     @property
     def acknowledge_user_data_collection(
         self,
-    ) -> Callable[
-        [analytics_admin.AcknowledgeUserDataCollectionRequest],
-        analytics_admin.AcknowledgeUserDataCollectionResponse,
-    ]:
+    ) -> Callable[[analytics_admin.AcknowledgeUserDataCollectionRequest], analytics_admin.AcknowledgeUserDataCollectionResponse]:
         r"""Return a callable for the acknowledge user data
         collection method over gRPC.
 
@@ -1065,9 +959,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "acknowledge_user_data_collection" not in self._stubs:
-            self._stubs[
-                "acknowledge_user_data_collection"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["acknowledge_user_data_collection"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/AcknowledgeUserDataCollection",
                 request_serializer=analytics_admin.AcknowledgeUserDataCollectionRequest.serialize,
                 response_deserializer=analytics_admin.AcknowledgeUserDataCollectionResponse.deserialize,
@@ -1077,10 +969,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
     @property
     def search_change_history_events(
         self,
-    ) -> Callable[
-        [analytics_admin.SearchChangeHistoryEventsRequest],
-        analytics_admin.SearchChangeHistoryEventsResponse,
-    ]:
+    ) -> Callable[[analytics_admin.SearchChangeHistoryEventsRequest], analytics_admin.SearchChangeHistoryEventsResponse]:
         r"""Return a callable for the search change history events method over gRPC.
 
         Searches through all changes to an account or its
@@ -1100,9 +989,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_change_history_events" not in self._stubs:
-            self._stubs[
-                "search_change_history_events"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_change_history_events"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/SearchChangeHistoryEvents",
                 request_serializer=analytics_admin.SearchChangeHistoryEventsRequest.serialize,
                 response_deserializer=analytics_admin.SearchChangeHistoryEventsResponse.deserialize,
@@ -1110,11 +997,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["search_change_history_events"]
 
     @property
-    def create_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateConversionEventRequest], resources.ConversionEvent
-    ]:
+    def create_conversion_event(self) -> Callable[[analytics_admin.CreateConversionEventRequest], resources.ConversionEvent]:
         r"""Return a callable for the create conversion event method over gRPC.
 
         Deprecated: Use ``CreateKeyEvent`` instead. Creates a conversion
@@ -1139,11 +1022,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_conversion_event"]
 
     @property
-    def update_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateConversionEventRequest], resources.ConversionEvent
-    ]:
+    def update_conversion_event(self) -> Callable[[analytics_admin.UpdateConversionEventRequest], resources.ConversionEvent]:
         r"""Return a callable for the update conversion event method over gRPC.
 
         Deprecated: Use ``UpdateKeyEvent`` instead. Updates a conversion
@@ -1168,11 +1047,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_conversion_event"]
 
     @property
-    def get_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetConversionEventRequest], resources.ConversionEvent
-    ]:
+    def get_conversion_event(self) -> Callable[[analytics_admin.GetConversionEventRequest], resources.ConversionEvent]:
         r"""Return a callable for the get conversion event method over gRPC.
 
         Deprecated: Use ``GetKeyEvent`` instead. Retrieve a single
@@ -1197,9 +1072,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_conversion_event"]
 
     @property
-    def delete_conversion_event(
-        self,
-    ) -> Callable[[analytics_admin.DeleteConversionEventRequest], empty_pb2.Empty]:
+    def delete_conversion_event(self) -> Callable[[analytics_admin.DeleteConversionEventRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete conversion event method over gRPC.
 
         Deprecated: Use ``DeleteKeyEvent`` instead. Deletes a conversion
@@ -1224,12 +1097,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_conversion_event"]
 
     @property
-    def list_conversion_events(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListConversionEventsRequest],
-        analytics_admin.ListConversionEventsResponse,
-    ]:
+    def list_conversion_events(self) -> Callable[[analytics_admin.ListConversionEventsRequest], analytics_admin.ListConversionEventsResponse]:
         r"""Return a callable for the list conversion events method over gRPC.
 
         Deprecated: Use ``ListKeyEvents`` instead. Returns a list of
@@ -1256,9 +1124,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_conversion_events"]
 
     @property
-    def create_key_event(
-        self,
-    ) -> Callable[[analytics_admin.CreateKeyEventRequest], resources.KeyEvent]:
+    def create_key_event(self) -> Callable[[analytics_admin.CreateKeyEventRequest], resources.KeyEvent]:
         r"""Return a callable for the create key event method over gRPC.
 
         Creates a Key Event.
@@ -1282,9 +1148,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_key_event"]
 
     @property
-    def update_key_event(
-        self,
-    ) -> Callable[[analytics_admin.UpdateKeyEventRequest], resources.KeyEvent]:
+    def update_key_event(self) -> Callable[[analytics_admin.UpdateKeyEventRequest], resources.KeyEvent]:
         r"""Return a callable for the update key event method over gRPC.
 
         Updates a Key Event.
@@ -1308,9 +1172,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_key_event"]
 
     @property
-    def get_key_event(
-        self,
-    ) -> Callable[[analytics_admin.GetKeyEventRequest], resources.KeyEvent]:
+    def get_key_event(self) -> Callable[[analytics_admin.GetKeyEventRequest], resources.KeyEvent]:
         r"""Return a callable for the get key event method over gRPC.
 
         Retrieve a single Key Event.
@@ -1334,9 +1196,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_key_event"]
 
     @property
-    def delete_key_event(
-        self,
-    ) -> Callable[[analytics_admin.DeleteKeyEventRequest], empty_pb2.Empty]:
+    def delete_key_event(self) -> Callable[[analytics_admin.DeleteKeyEventRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete key event method over gRPC.
 
         Deletes a Key Event.
@@ -1360,11 +1220,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_key_event"]
 
     @property
-    def list_key_events(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListKeyEventsRequest], analytics_admin.ListKeyEventsResponse
-    ]:
+    def list_key_events(self) -> Callable[[analytics_admin.ListKeyEventsRequest], analytics_admin.ListKeyEventsResponse]:
         r"""Return a callable for the list key events method over gRPC.
 
         Returns a list of Key Events in the specified parent
@@ -1390,11 +1246,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_key_events"]
 
     @property
-    def create_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateCustomDimensionRequest], resources.CustomDimension
-    ]:
+    def create_custom_dimension(self) -> Callable[[analytics_admin.CreateCustomDimensionRequest], resources.CustomDimension]:
         r"""Return a callable for the create custom dimension method over gRPC.
 
         Creates a CustomDimension.
@@ -1418,11 +1270,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_custom_dimension"]
 
     @property
-    def update_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateCustomDimensionRequest], resources.CustomDimension
-    ]:
+    def update_custom_dimension(self) -> Callable[[analytics_admin.UpdateCustomDimensionRequest], resources.CustomDimension]:
         r"""Return a callable for the update custom dimension method over gRPC.
 
         Updates a CustomDimension on a property.
@@ -1446,12 +1294,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_custom_dimension"]
 
     @property
-    def list_custom_dimensions(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListCustomDimensionsRequest],
-        analytics_admin.ListCustomDimensionsResponse,
-    ]:
+    def list_custom_dimensions(self) -> Callable[[analytics_admin.ListCustomDimensionsRequest], analytics_admin.ListCustomDimensionsResponse]:
         r"""Return a callable for the list custom dimensions method over gRPC.
 
         Lists CustomDimensions on a property.
@@ -1475,9 +1318,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_custom_dimensions"]
 
     @property
-    def archive_custom_dimension(
-        self,
-    ) -> Callable[[analytics_admin.ArchiveCustomDimensionRequest], empty_pb2.Empty]:
+    def archive_custom_dimension(self) -> Callable[[analytics_admin.ArchiveCustomDimensionRequest], empty_pb2.Empty]:
         r"""Return a callable for the archive custom dimension method over gRPC.
 
         Archives a CustomDimension on a property.
@@ -1501,11 +1342,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["archive_custom_dimension"]
 
     @property
-    def get_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetCustomDimensionRequest], resources.CustomDimension
-    ]:
+    def get_custom_dimension(self) -> Callable[[analytics_admin.GetCustomDimensionRequest], resources.CustomDimension]:
         r"""Return a callable for the get custom dimension method over gRPC.
 
         Lookup for a single CustomDimension.
@@ -1529,9 +1366,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_custom_dimension"]
 
     @property
-    def create_custom_metric(
-        self,
-    ) -> Callable[[analytics_admin.CreateCustomMetricRequest], resources.CustomMetric]:
+    def create_custom_metric(self) -> Callable[[analytics_admin.CreateCustomMetricRequest], resources.CustomMetric]:
         r"""Return a callable for the create custom metric method over gRPC.
 
         Creates a CustomMetric.
@@ -1555,9 +1390,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_custom_metric"]
 
     @property
-    def update_custom_metric(
-        self,
-    ) -> Callable[[analytics_admin.UpdateCustomMetricRequest], resources.CustomMetric]:
+    def update_custom_metric(self) -> Callable[[analytics_admin.UpdateCustomMetricRequest], resources.CustomMetric]:
         r"""Return a callable for the update custom metric method over gRPC.
 
         Updates a CustomMetric on a property.
@@ -1581,12 +1414,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_custom_metric"]
 
     @property
-    def list_custom_metrics(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListCustomMetricsRequest],
-        analytics_admin.ListCustomMetricsResponse,
-    ]:
+    def list_custom_metrics(self) -> Callable[[analytics_admin.ListCustomMetricsRequest], analytics_admin.ListCustomMetricsResponse]:
         r"""Return a callable for the list custom metrics method over gRPC.
 
         Lists CustomMetrics on a property.
@@ -1610,9 +1438,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_custom_metrics"]
 
     @property
-    def archive_custom_metric(
-        self,
-    ) -> Callable[[analytics_admin.ArchiveCustomMetricRequest], empty_pb2.Empty]:
+    def archive_custom_metric(self) -> Callable[[analytics_admin.ArchiveCustomMetricRequest], empty_pb2.Empty]:
         r"""Return a callable for the archive custom metric method over gRPC.
 
         Archives a CustomMetric on a property.
@@ -1636,9 +1462,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["archive_custom_metric"]
 
     @property
-    def get_custom_metric(
-        self,
-    ) -> Callable[[analytics_admin.GetCustomMetricRequest], resources.CustomMetric]:
+    def get_custom_metric(self) -> Callable[[analytics_admin.GetCustomMetricRequest], resources.CustomMetric]:
         r"""Return a callable for the get custom metric method over gRPC.
 
         Lookup for a single CustomMetric.
@@ -1662,12 +1486,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_custom_metric"]
 
     @property
-    def get_data_retention_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataRetentionSettingsRequest],
-        resources.DataRetentionSettings,
-    ]:
+    def get_data_retention_settings(self) -> Callable[[analytics_admin.GetDataRetentionSettingsRequest], resources.DataRetentionSettings]:
         r"""Return a callable for the get data retention settings method over gRPC.
 
         Returns the singleton data retention settings for
@@ -1684,9 +1503,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_retention_settings" not in self._stubs:
-            self._stubs[
-                "get_data_retention_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_data_retention_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetDataRetentionSettings",
                 request_serializer=analytics_admin.GetDataRetentionSettingsRequest.serialize,
                 response_deserializer=resources.DataRetentionSettings.deserialize,
@@ -1694,12 +1511,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_data_retention_settings"]
 
     @property
-    def update_data_retention_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateDataRetentionSettingsRequest],
-        resources.DataRetentionSettings,
-    ]:
+    def update_data_retention_settings(self) -> Callable[[analytics_admin.UpdateDataRetentionSettingsRequest], resources.DataRetentionSettings]:
         r"""Return a callable for the update data retention settings method over gRPC.
 
         Updates the singleton data retention settings for
@@ -1716,9 +1528,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_retention_settings" not in self._stubs:
-            self._stubs[
-                "update_data_retention_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_data_retention_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateDataRetentionSettings",
                 request_serializer=analytics_admin.UpdateDataRetentionSettingsRequest.serialize,
                 response_deserializer=resources.DataRetentionSettings.deserialize,
@@ -1726,9 +1536,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_data_retention_settings"]
 
     @property
-    def create_data_stream(
-        self,
-    ) -> Callable[[analytics_admin.CreateDataStreamRequest], resources.DataStream]:
+    def create_data_stream(self) -> Callable[[analytics_admin.CreateDataStreamRequest], resources.DataStream]:
         r"""Return a callable for the create data stream method over gRPC.
 
         Creates a DataStream.
@@ -1752,9 +1560,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_data_stream"]
 
     @property
-    def delete_data_stream(
-        self,
-    ) -> Callable[[analytics_admin.DeleteDataStreamRequest], empty_pb2.Empty]:
+    def delete_data_stream(self) -> Callable[[analytics_admin.DeleteDataStreamRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete data stream method over gRPC.
 
         Deletes a DataStream on a property.
@@ -1778,9 +1584,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_data_stream"]
 
     @property
-    def update_data_stream(
-        self,
-    ) -> Callable[[analytics_admin.UpdateDataStreamRequest], resources.DataStream]:
+    def update_data_stream(self) -> Callable[[analytics_admin.UpdateDataStreamRequest], resources.DataStream]:
         r"""Return a callable for the update data stream method over gRPC.
 
         Updates a DataStream on a property.
@@ -1804,12 +1608,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_data_stream"]
 
     @property
-    def list_data_streams(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListDataStreamsRequest],
-        analytics_admin.ListDataStreamsResponse,
-    ]:
+    def list_data_streams(self) -> Callable[[analytics_admin.ListDataStreamsRequest], analytics_admin.ListDataStreamsResponse]:
         r"""Return a callable for the list data streams method over gRPC.
 
         Lists DataStreams on a property.
@@ -1833,9 +1632,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_data_streams"]
 
     @property
-    def get_data_stream(
-        self,
-    ) -> Callable[[analytics_admin.GetDataStreamRequest], resources.DataStream]:
+    def get_data_stream(self) -> Callable[[analytics_admin.GetDataStreamRequest], resources.DataStream]:
         r"""Return a callable for the get data stream method over gRPC.
 
         Lookup for a single DataStream.
@@ -1859,12 +1656,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_data_stream"]
 
     @property
-    def run_access_report(
-        self,
-    ) -> Callable[
-        [analytics_admin.RunAccessReportRequest],
-        analytics_admin.RunAccessReportResponse,
-    ]:
+    def run_access_report(self) -> Callable[[analytics_admin.RunAccessReportRequest], analytics_admin.RunAccessReportResponse]:
         r"""Return a callable for the run access report method over gRPC.
 
         Returns a customized report of data access records. The report

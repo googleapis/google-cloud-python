@@ -95,13 +95,8 @@ class KeyTrackingServiceRestInterceptor:
     """
 
     def pre_get_protected_resources_summary(
-        self,
-        request: key_tracking_service.GetProtectedResourcesSummaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        key_tracking_service.GetProtectedResourcesSummaryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: key_tracking_service.GetProtectedResourcesSummaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[key_tracking_service.GetProtectedResourcesSummaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_protected_resources_summary
 
         Override in a subclass to manipulate the request or metadata
@@ -125,13 +120,8 @@ class KeyTrackingServiceRestInterceptor:
         return response
 
     def post_get_protected_resources_summary_with_metadata(
-        self,
-        response: key_tracking_service.ProtectedResourcesSummary,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        key_tracking_service.ProtectedResourcesSummary,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: key_tracking_service.ProtectedResourcesSummary, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[key_tracking_service.ProtectedResourcesSummary, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_protected_resources_summary
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -147,13 +137,8 @@ class KeyTrackingServiceRestInterceptor:
         return response, metadata
 
     def pre_search_protected_resources(
-        self,
-        request: key_tracking_service.SearchProtectedResourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        key_tracking_service.SearchProtectedResourcesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: key_tracking_service.SearchProtectedResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[key_tracking_service.SearchProtectedResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_protected_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -177,13 +162,8 @@ class KeyTrackingServiceRestInterceptor:
         return response
 
     def post_search_protected_resources_with_metadata(
-        self,
-        response: key_tracking_service.SearchProtectedResourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        key_tracking_service.SearchProtectedResourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: key_tracking_service.SearchProtectedResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[key_tracking_service.SearchProtectedResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_protected_resources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -279,31 +259,18 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or KeyTrackingServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetProtectedResourcesSummary(
-        _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary,
-        KeyTrackingServiceRestStub,
-    ):
+    class _GetProtectedResourcesSummary(_BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary, KeyTrackingServiceRestStub):
         def __hash__(self):
             return hash("KeyTrackingServiceRestTransport.GetProtectedResourcesSummary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -348,28 +315,16 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary._get_http_options()
-            )
+            http_options = _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_protected_resources_summary(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_protected_resources_summary(request, metadata)
+            transcoded_request = _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyTrackingServiceRestTransport._BaseGetProtectedResourcesSummary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -393,12 +348,7 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
 
             # Send the request
             response = KeyTrackingServiceRestTransport._GetProtectedResourcesSummary._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -414,19 +364,10 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
 
             resp = self._interceptor.post_get_protected_resources_summary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_protected_resources_summary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_protected_resources_summary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        key_tracking_service.ProtectedResourcesSummary.to_json(response)
-                    )
+                    response_payload = key_tracking_service.ProtectedResourcesSummary.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -445,23 +386,12 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
                 )
             return resp
 
-    class _SearchProtectedResources(
-        _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources,
-        KeyTrackingServiceRestStub,
-    ):
+    class _SearchProtectedResources(_BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources, KeyTrackingServiceRestStub):
         def __hash__(self):
             return hash("KeyTrackingServiceRestTransport.SearchProtectedResources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -504,28 +434,16 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources._get_http_options()
-            )
+            http_options = _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_protected_resources(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_protected_resources(request, metadata)
+            transcoded_request = _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyTrackingServiceRestTransport._BaseSearchProtectedResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -548,15 +466,8 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyTrackingServiceRestTransport._SearchProtectedResources._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = KeyTrackingServiceRestTransport._SearchProtectedResources._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -572,18 +483,10 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
 
             resp = self._interceptor.post_search_protected_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_protected_resources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_protected_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        key_tracking_service.SearchProtectedResourcesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = key_tracking_service.SearchProtectedResourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -605,10 +508,7 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
     @property
     def get_protected_resources_summary(
         self,
-    ) -> Callable[
-        [key_tracking_service.GetProtectedResourcesSummaryRequest],
-        key_tracking_service.ProtectedResourcesSummary,
-    ]:
+    ) -> Callable[[key_tracking_service.GetProtectedResourcesSummaryRequest], key_tracking_service.ProtectedResourcesSummary]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProtectedResourcesSummary(self._session, self._host, self._interceptor)  # type: ignore
@@ -616,10 +516,7 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
     @property
     def search_protected_resources(
         self,
-    ) -> Callable[
-        [key_tracking_service.SearchProtectedResourcesRequest],
-        key_tracking_service.SearchProtectedResourcesResponse,
-    ]:
+    ) -> Callable[[key_tracking_service.SearchProtectedResourcesRequest], key_tracking_service.SearchProtectedResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchProtectedResources(self._session, self._host, self._interceptor)  # type: ignore

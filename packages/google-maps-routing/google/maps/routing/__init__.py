@@ -20,24 +20,13 @@ __version__ = package_version.__version__
 
 from google.maps.routing_v2.services.routes.async_client import RoutesAsyncClient
 from google.maps.routing_v2.services.routes.client import RoutesClient
-from google.maps.routing_v2.types.fallback_info import (
-    FallbackInfo,
-    FallbackReason,
-    FallbackRoutingMode,
-)
-from google.maps.routing_v2.types.geocoding_results import (
-    GeocodedWaypoint,
-    GeocodingResults,
-)
+from google.maps.routing_v2.types.fallback_info import FallbackInfo, FallbackReason, FallbackRoutingMode
+from google.maps.routing_v2.types.geocoding_results import GeocodedWaypoint, GeocodingResults
 from google.maps.routing_v2.types.localized_time import LocalizedTime
 from google.maps.routing_v2.types.location import Location
 from google.maps.routing_v2.types.maneuver import Maneuver
 from google.maps.routing_v2.types.navigation_instruction import NavigationInstruction
-from google.maps.routing_v2.types.polyline import (
-    Polyline,
-    PolylineEncoding,
-    PolylineQuality,
-)
+from google.maps.routing_v2.types.polyline import Polyline, PolylineEncoding, PolylineQuality
 from google.maps.routing_v2.types.polyline_details import PolylineDetails
 from google.maps.routing_v2.types.route import (
     Route,
@@ -65,12 +54,7 @@ from google.maps.routing_v2.types.speed_reading_interval import SpeedReadingInte
 from google.maps.routing_v2.types.toll_info import TollInfo
 from google.maps.routing_v2.types.toll_passes import TollPass
 from google.maps.routing_v2.types.traffic_model import TrafficModel
-from google.maps.routing_v2.types.transit import (
-    TransitAgency,
-    TransitLine,
-    TransitStop,
-    TransitVehicle,
-)
+from google.maps.routing_v2.types.transit import TransitAgency, TransitLine, TransitStop, TransitVehicle
 from google.maps.routing_v2.types.transit_preferences import TransitPreferences
 from google.maps.routing_v2.types.units import Units
 from google.maps.routing_v2.types.vehicle_emission_type import VehicleEmissionType

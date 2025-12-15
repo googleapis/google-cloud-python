@@ -18,16 +18,10 @@ from google.maps.fleetengine import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.fleetengine_v1.services.trip_service.async_client import (
-    TripServiceAsyncClient,
-)
+from google.maps.fleetengine_v1.services.trip_service.async_client import TripServiceAsyncClient
 from google.maps.fleetengine_v1.services.trip_service.client import TripServiceClient
-from google.maps.fleetengine_v1.services.vehicle_service.async_client import (
-    VehicleServiceAsyncClient,
-)
-from google.maps.fleetengine_v1.services.vehicle_service.client import (
-    VehicleServiceClient,
-)
+from google.maps.fleetengine_v1.services.vehicle_service.async_client import VehicleServiceAsyncClient
+from google.maps.fleetengine_v1.services.vehicle_service.client import VehicleServiceClient
 from google.maps.fleetengine_v1.types.fleetengine import (
     LocationSensor,
     NavigationStatus,
@@ -42,10 +36,7 @@ from google.maps.fleetengine_v1.types.fleetengine import (
     WaypointType,
 )
 from google.maps.fleetengine_v1.types.header import RequestHeader
-from google.maps.fleetengine_v1.types.traffic import (
-    ConsumableTrafficPolyline,
-    SpeedReadingInterval,
-)
+from google.maps.fleetengine_v1.types.traffic import ConsumableTrafficPolyline, SpeedReadingInterval
 from google.maps.fleetengine_v1.types.trip_api import (
     CreateTripRequest,
     DeleteTripRequest,
@@ -55,13 +46,7 @@ from google.maps.fleetengine_v1.types.trip_api import (
     SearchTripsResponse,
     UpdateTripRequest,
 )
-from google.maps.fleetengine_v1.types.trips import (
-    BillingPlatformIdentifier,
-    StopLocation,
-    Trip,
-    TripStatus,
-    TripView,
-)
+from google.maps.fleetengine_v1.types.trips import BillingPlatformIdentifier, StopLocation, Trip, TripStatus, TripView
 from google.maps.fleetengine_v1.types.vehicle_api import (
     CreateVehicleRequest,
     DeleteVehicleRequest,

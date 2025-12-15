@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -76,30 +65,16 @@ class PolicyTroubleshooterAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = PolicyTroubleshooterClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = PolicyTroubleshooterClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(
-        PolicyTroubleshooterClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        PolicyTroubleshooterClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(PolicyTroubleshooterClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(PolicyTroubleshooterClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(PolicyTroubleshooterClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        PolicyTroubleshooterClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        PolicyTroubleshooterClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        PolicyTroubleshooterClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(PolicyTroubleshooterClient.parse_common_folder_path)
+    common_organization_path = staticmethod(PolicyTroubleshooterClient.common_organization_path)
+    parse_common_organization_path = staticmethod(PolicyTroubleshooterClient.parse_common_organization_path)
     common_project_path = staticmethod(PolicyTroubleshooterClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        PolicyTroubleshooterClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(PolicyTroubleshooterClient.parse_common_project_path)
     common_location_path = staticmethod(PolicyTroubleshooterClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        PolicyTroubleshooterClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(PolicyTroubleshooterClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -135,9 +110,7 @@ class PolicyTroubleshooterAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -204,13 +177,7 @@ class PolicyTroubleshooterAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                PolicyTroubleshooterTransport,
-                Callable[..., PolicyTroubleshooterTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, PolicyTroubleshooterTransport, Callable[..., PolicyTroubleshooterTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -270,20 +237,14 @@ class PolicyTroubleshooterAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.policytroubleshooter.iam_v3.PolicyTroubleshooterAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.policytroubleshooter.iam.v3.PolicyTroubleshooter",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -294,9 +255,7 @@ class PolicyTroubleshooterAsyncClient:
 
     async def troubleshoot_iam_policy(
         self,
-        request: Optional[
-            Union[troubleshooter.TroubleshootIamPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[troubleshooter.TroubleshootIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -357,9 +316,7 @@ class PolicyTroubleshooterAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.troubleshoot_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.troubleshoot_iam_policy]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -382,9 +339,7 @@ class PolicyTroubleshooterAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

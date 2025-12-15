@@ -22,9 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import import_strategy, page, validation_message
-from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
+from google.cloud.dialogflowcx_v3.types import advanced_settings as gcdc_advanced_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -605,9 +603,7 @@ class FlowValidationResult(proto.Message):
         proto.STRING,
         number=1,
     )
-    validation_messages: MutableSequence[
-        validation_message.ValidationMessage
-    ] = proto.RepeatedField(
+    validation_messages: MutableSequence[validation_message.ValidationMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=validation_message.ValidationMessage,

@@ -44,9 +44,7 @@ def sample_list_descendant_security_health_analytics_custom_modules():
     )
 
     # Make the request
-    page_result = client.list_descendant_security_health_analytics_custom_modules(
-        request=request
-    )
+    page_result = client.list_descendant_security_health_analytics_custom_modules(request=request)
 
     # Handle the response
     for response in page_result:

@@ -2326,13 +2326,11 @@ class DataSchemaDetails(proto.Message):
                 number=2,
             )
 
-        search_strategy_type: "DataSchemaDetails.SearchStrategy.SearchStrategyType" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                optional=True,
-                enum="DataSchemaDetails.SearchStrategy.SearchStrategyType",
-            )
+        search_strategy_type: "DataSchemaDetails.SearchStrategy.SearchStrategyType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="DataSchemaDetails.SearchStrategy.SearchStrategyType",
         )
         confidence_score_index_config: "DataSchemaDetails.SearchStrategy.ConfidenceScoreIndexConfig" = proto.Field(
             proto.MESSAGE,
@@ -4239,12 +4237,10 @@ class IngestAssetRequest(proto.Message):
                 CONTAINER_FORMAT_UNSPECIFIED = 0
                 CONTAINER_FORMAT_MP4 = 1
 
-            container_format: "IngestAssetRequest.Config.VideoType.ContainerFormat" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="IngestAssetRequest.Config.VideoType.ContainerFormat",
-                )
+            container_format: "IngestAssetRequest.Config.VideoType.ContainerFormat" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="IngestAssetRequest.Config.VideoType.ContainerFormat",
             )
 
         video_type: "IngestAssetRequest.Config.VideoType" = proto.Field(
@@ -4391,9 +4387,7 @@ class GenerateHlsUriRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Partition.TemporalPartition",
@@ -4420,9 +4414,7 @@ class GenerateHlsUriResponse(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Partition.TemporalPartition",
@@ -4685,13 +4677,11 @@ class SchemaKeySortingStrategy(proto.Message):
             proto.BOOL,
             number=2,
         )
-        aggregate_method: "SchemaKeySortingStrategy.Option.AggregateMethod" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                optional=True,
-                enum="SchemaKeySortingStrategy.Option.AggregateMethod",
-            )
+        aggregate_method: "SchemaKeySortingStrategy.Option.AggregateMethod" = proto.Field(
+            proto.ENUM,
+            number=3,
+            optional=True,
+            enum="SchemaKeySortingStrategy.Option.AggregateMethod",
         )
 
     options: MutableSequence[Option] = proto.RepeatedField(
@@ -4796,9 +4786,7 @@ class SearchResultItem(proto.Message):
         number=3,
         message="Annotation",
     )
-    annotation_matching_results: MutableSequence[
-        "AnnotationMatchingResult"
-    ] = proto.RepeatedField(
+    annotation_matching_results: MutableSequence["AnnotationMatchingResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="AnnotationMatchingResult",

@@ -95,9 +95,7 @@ class AlertConfig(proto.Message):
             number=2,
             enum="AlertConfig.AlertPolicy.EnrollStatus",
         )
-        recipients: MutableSequence[
-            "AlertConfig.AlertPolicy.Recipient"
-        ] = proto.RepeatedField(
+        recipients: MutableSequence["AlertConfig.AlertPolicy.Recipient"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="AlertConfig.AlertPolicy.Recipient",

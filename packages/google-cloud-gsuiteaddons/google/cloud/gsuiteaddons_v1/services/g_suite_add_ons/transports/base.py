@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.gsuiteaddons_v1 import gapic_version as package_version
 from google.cloud.gsuiteaddons_v1.types import gsuiteaddons
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class GSuiteAddOnsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -193,85 +183,49 @@ class GSuiteAddOnsTransport(abc.ABC):
     @property
     def get_authorization(
         self,
-    ) -> Callable[
-        [gsuiteaddons.GetAuthorizationRequest],
-        Union[gsuiteaddons.Authorization, Awaitable[gsuiteaddons.Authorization]],
-    ]:
+    ) -> Callable[[gsuiteaddons.GetAuthorizationRequest], Union[gsuiteaddons.Authorization, Awaitable[gsuiteaddons.Authorization]]]:
         raise NotImplementedError()
 
     @property
     def create_deployment(
         self,
-    ) -> Callable[
-        [gsuiteaddons.CreateDeploymentRequest],
-        Union[gsuiteaddons.Deployment, Awaitable[gsuiteaddons.Deployment]],
-    ]:
+    ) -> Callable[[gsuiteaddons.CreateDeploymentRequest], Union[gsuiteaddons.Deployment, Awaitable[gsuiteaddons.Deployment]]]:
         raise NotImplementedError()
 
     @property
     def replace_deployment(
         self,
-    ) -> Callable[
-        [gsuiteaddons.ReplaceDeploymentRequest],
-        Union[gsuiteaddons.Deployment, Awaitable[gsuiteaddons.Deployment]],
-    ]:
+    ) -> Callable[[gsuiteaddons.ReplaceDeploymentRequest], Union[gsuiteaddons.Deployment, Awaitable[gsuiteaddons.Deployment]]]:
         raise NotImplementedError()
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[
-        [gsuiteaddons.GetDeploymentRequest],
-        Union[gsuiteaddons.Deployment, Awaitable[gsuiteaddons.Deployment]],
-    ]:
+    def get_deployment(self) -> Callable[[gsuiteaddons.GetDeploymentRequest], Union[gsuiteaddons.Deployment, Awaitable[gsuiteaddons.Deployment]]]:
         raise NotImplementedError()
 
     @property
     def list_deployments(
         self,
     ) -> Callable[
-        [gsuiteaddons.ListDeploymentsRequest],
-        Union[
-            gsuiteaddons.ListDeploymentsResponse,
-            Awaitable[gsuiteaddons.ListDeploymentsResponse],
-        ],
+        [gsuiteaddons.ListDeploymentsRequest], Union[gsuiteaddons.ListDeploymentsResponse, Awaitable[gsuiteaddons.ListDeploymentsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[
-        [gsuiteaddons.DeleteDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_deployment(self) -> Callable[[gsuiteaddons.DeleteDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def install_deployment(
-        self,
-    ) -> Callable[
-        [gsuiteaddons.InstallDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def install_deployment(self) -> Callable[[gsuiteaddons.InstallDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def uninstall_deployment(
-        self,
-    ) -> Callable[
-        [gsuiteaddons.UninstallDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def uninstall_deployment(self) -> Callable[[gsuiteaddons.UninstallDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_install_status(
         self,
-    ) -> Callable[
-        [gsuiteaddons.GetInstallStatusRequest],
-        Union[gsuiteaddons.InstallStatus, Awaitable[gsuiteaddons.InstallStatus]],
-    ]:
+    ) -> Callable[[gsuiteaddons.GetInstallStatusRequest], Union[gsuiteaddons.InstallStatus, Awaitable[gsuiteaddons.InstallStatus]]]:
         raise NotImplementedError()
 
     @property

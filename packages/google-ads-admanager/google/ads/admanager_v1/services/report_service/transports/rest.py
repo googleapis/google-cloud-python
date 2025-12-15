@@ -128,12 +128,8 @@ class ReportServiceRestInterceptor:
     """
 
     def pre_create_report(
-        self,
-        request: report_service.CreateReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.CreateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: report_service.CreateReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.CreateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_report
 
         Override in a subclass to manipulate the request or metadata
@@ -141,9 +137,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_report(
-        self, response: report_messages.Report
-    ) -> report_messages.Report:
+    def post_create_report(self, response: report_messages.Report) -> report_messages.Report:
         """Post-rpc interceptor for create_report
 
         DEPRECATED. Please use the `post_create_report_with_metadata`
@@ -157,9 +151,7 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_create_report_with_metadata(
-        self,
-        response: report_messages.Report,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: report_messages.Report, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[report_messages.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_report
 
@@ -176,13 +168,8 @@ class ReportServiceRestInterceptor:
         return response, metadata
 
     def pre_fetch_report_result_rows(
-        self,
-        request: report_service.FetchReportResultRowsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.FetchReportResultRowsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: report_service.FetchReportResultRowsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.FetchReportResultRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_report_result_rows
 
         Override in a subclass to manipulate the request or metadata
@@ -190,9 +177,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_report_result_rows(
-        self, response: report_service.FetchReportResultRowsResponse
-    ) -> report_service.FetchReportResultRowsResponse:
+    def post_fetch_report_result_rows(self, response: report_service.FetchReportResultRowsResponse) -> report_service.FetchReportResultRowsResponse:
         """Post-rpc interceptor for fetch_report_result_rows
 
         DEPRECATED. Please use the `post_fetch_report_result_rows_with_metadata`
@@ -206,13 +191,8 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_fetch_report_result_rows_with_metadata(
-        self,
-        response: report_service.FetchReportResultRowsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.FetchReportResultRowsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: report_service.FetchReportResultRowsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.FetchReportResultRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_report_result_rows
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -228,12 +208,8 @@ class ReportServiceRestInterceptor:
         return response, metadata
 
     def pre_get_report(
-        self,
-        request: report_service.GetReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.GetReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: report_service.GetReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.GetReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_report
 
         Override in a subclass to manipulate the request or metadata
@@ -241,9 +217,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report(
-        self, response: report_messages.Report
-    ) -> report_messages.Report:
+    def post_get_report(self, response: report_messages.Report) -> report_messages.Report:
         """Post-rpc interceptor for get_report
 
         DEPRECATED. Please use the `post_get_report_with_metadata`
@@ -257,9 +231,7 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_get_report_with_metadata(
-        self,
-        response: report_messages.Report,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: report_messages.Report, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[report_messages.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report
 
@@ -276,12 +248,8 @@ class ReportServiceRestInterceptor:
         return response, metadata
 
     def pre_list_reports(
-        self,
-        request: report_service.ListReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.ListReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: report_service.ListReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.ListReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +257,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_reports(
-        self, response: report_service.ListReportsResponse
-    ) -> report_service.ListReportsResponse:
+    def post_list_reports(self, response: report_service.ListReportsResponse) -> report_service.ListReportsResponse:
         """Post-rpc interceptor for list_reports
 
         DEPRECATED. Please use the `post_list_reports_with_metadata`
@@ -305,12 +271,8 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_list_reports_with_metadata(
-        self,
-        response: report_service.ListReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.ListReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: report_service.ListReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.ListReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -326,12 +288,8 @@ class ReportServiceRestInterceptor:
         return response, metadata
 
     def pre_run_report(
-        self,
-        request: report_service.RunReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.RunReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: report_service.RunReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.RunReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_report
 
         Override in a subclass to manipulate the request or metadata
@@ -339,9 +297,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_run_report(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_report(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_report
 
         DEPRECATED. Please use the `post_run_report_with_metadata`
@@ -355,9 +311,7 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_run_report_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_report
 
@@ -374,12 +328,8 @@ class ReportServiceRestInterceptor:
         return response, metadata
 
     def pre_update_report(
-        self,
-        request: report_service.UpdateReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        report_service.UpdateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: report_service.UpdateReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[report_service.UpdateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_report
 
         Override in a subclass to manipulate the request or metadata
@@ -387,9 +337,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_report(
-        self, response: report_messages.Report
-    ) -> report_messages.Report:
+    def post_update_report(self, response: report_messages.Report) -> report_messages.Report:
         """Post-rpc interceptor for update_report
 
         DEPRECATED. Please use the `post_update_report_with_metadata`
@@ -403,9 +351,7 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_update_report_with_metadata(
-        self,
-        response: report_messages.Report,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: report_messages.Report, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[report_messages.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_report
 
@@ -422,12 +368,8 @@ class ReportServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -435,9 +377,7 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -526,9 +466,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -562,29 +500,17 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateReport(
-        _BaseReportServiceRestTransport._BaseCreateReport, ReportServiceRestStub
-    ):
+    class _CreateReport(_BaseReportServiceRestTransport._BaseCreateReport, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.CreateReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -624,30 +550,18 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     The ``Report`` resource.
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseCreateReport._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseCreateReport._get_http_options()
 
             request, metadata = self._interceptor.pre_create_report(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseCreateReport._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseCreateReport._get_transcoded_request(http_options, request)
 
-            body = _BaseReportServiceRestTransport._BaseCreateReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReportServiceRestTransport._BaseCreateReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseCreateReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReportServiceRestTransport._BaseCreateReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -671,13 +585,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._CreateReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -693,12 +601,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_create_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = report_messages.Report.to_json(response)
                 except:
@@ -719,23 +623,12 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 )
             return resp
 
-    class _FetchReportResultRows(
-        _BaseReportServiceRestTransport._BaseFetchReportResultRows,
-        ReportServiceRestStub,
-    ):
+    class _FetchReportResultRows(_BaseReportServiceRestTransport._BaseFetchReportResultRows, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.FetchReportResultRows")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -777,28 +670,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_report_result_rows(
-                request, metadata
-            )
-            transcoded_request = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_report_result_rows(request, metadata)
+            transcoded_request = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -822,12 +703,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._FetchReportResultRows._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -843,16 +719,10 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_fetch_report_result_rows(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_report_result_rows_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_report_result_rows_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        report_service.FetchReportResultRowsResponse.to_json(response)
-                    )
+                    response_payload = report_service.FetchReportResultRowsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -871,22 +741,12 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 )
             return resp
 
-    class _GetReport(
-        _BaseReportServiceRestTransport._BaseGetReport, ReportServiceRestStub
-    ):
+    class _GetReport(_BaseReportServiceRestTransport._BaseGetReport, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.GetReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -925,30 +785,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     The ``Report`` resource.
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseGetReport._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseGetReport._get_http_options()
 
             request, metadata = self._interceptor.pre_get_report(request, metadata)
-            transcoded_request = (
-                _BaseReportServiceRestTransport._BaseGetReport._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseGetReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseGetReport._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReportServiceRestTransport._BaseGetReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -972,12 +818,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._GetReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -993,12 +834,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_get_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = report_messages.Report.to_json(response)
                 except:
@@ -1019,22 +856,12 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 )
             return resp
 
-    class _ListReports(
-        _BaseReportServiceRestTransport._BaseListReports, ReportServiceRestStub
-    ):
+    class _ListReports(_BaseReportServiceRestTransport._BaseListReports, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.ListReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1075,28 +902,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseListReports._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseListReports._get_http_options()
 
             request, metadata = self._interceptor.pre_list_reports(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseListReports._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseListReports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseListReports._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReportServiceRestTransport._BaseListReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1120,12 +935,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._ListReports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1141,16 +951,10 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_list_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = report_service.ListReportsResponse.to_json(
-                        response
-                    )
+                    response_payload = report_service.ListReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1169,22 +973,12 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 )
             return resp
 
-    class _RunReport(
-        _BaseReportServiceRestTransport._BaseRunReport, ReportServiceRestStub
-    ):
+    class _RunReport(_BaseReportServiceRestTransport._BaseRunReport, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.RunReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1228,36 +1022,18 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseRunReport._get_http_options()
 
             request, metadata = self._interceptor.pre_run_report(request, metadata)
-            transcoded_request = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseRunReport._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseReportServiceRestTransport._BaseRunReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReportServiceRestTransport._BaseRunReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1281,13 +1057,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._RunReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1301,12 +1071,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_run_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1327,22 +1093,12 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 )
             return resp
 
-    class _UpdateReport(
-        _BaseReportServiceRestTransport._BaseUpdateReport, ReportServiceRestStub
-    ):
+    class _UpdateReport(_BaseReportServiceRestTransport._BaseUpdateReport, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.UpdateReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1382,30 +1138,18 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     The ``Report`` resource.
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseUpdateReport._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseUpdateReport._get_http_options()
 
             request, metadata = self._interceptor.pre_update_report(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseUpdateReport._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseUpdateReport._get_transcoded_request(http_options, request)
 
-            body = _BaseReportServiceRestTransport._BaseUpdateReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReportServiceRestTransport._BaseUpdateReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseUpdateReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReportServiceRestTransport._BaseUpdateReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1429,13 +1173,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._UpdateReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1451,12 +1189,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_update_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = report_messages.Report.to_json(response)
                 except:
@@ -1478,54 +1212,37 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             return resp
 
     @property
-    def create_report(
-        self,
-    ) -> Callable[[report_service.CreateReportRequest], report_messages.Report]:
+    def create_report(self) -> Callable[[report_service.CreateReportRequest], report_messages.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_report_result_rows(
-        self,
-    ) -> Callable[
-        [report_service.FetchReportResultRowsRequest],
-        report_service.FetchReportResultRowsResponse,
-    ]:
+    def fetch_report_result_rows(self) -> Callable[[report_service.FetchReportResultRowsRequest], report_service.FetchReportResultRowsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchReportResultRows(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_report(
-        self,
-    ) -> Callable[[report_service.GetReportRequest], report_messages.Report]:
+    def get_report(self) -> Callable[[report_service.GetReportRequest], report_messages.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_reports(
-        self,
-    ) -> Callable[
-        [report_service.ListReportsRequest], report_service.ListReportsResponse
-    ]:
+    def list_reports(self) -> Callable[[report_service.ListReportsRequest], report_service.ListReportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_report(
-        self,
-    ) -> Callable[[report_service.RunReportRequest], operations_pb2.Operation]:
+    def run_report(self) -> Callable[[report_service.RunReportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_report(
-        self,
-    ) -> Callable[[report_service.UpdateReportRequest], report_messages.Report]:
+    def update_report(self) -> Callable[[report_service.UpdateReportRequest], report_messages.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReport(self._session, self._host, self._interceptor)  # type: ignore
@@ -1534,22 +1251,12 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseReportServiceRestTransport._BaseGetOperation, ReportServiceRestStub
-    ):
+    class _GetOperation(_BaseReportServiceRestTransport._BaseGetOperation, ReportServiceRestStub):
         def __hash__(self):
             return hash("ReportServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1587,26 +1294,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReportServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1630,12 +1327,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1647,9 +1339,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

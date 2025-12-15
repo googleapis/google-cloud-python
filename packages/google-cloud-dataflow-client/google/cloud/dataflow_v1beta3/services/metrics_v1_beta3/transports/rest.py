@@ -103,12 +103,8 @@ class MetricsV1Beta3RestInterceptor:
     """
 
     def pre_get_job_execution_details(
-        self,
-        request: metrics.GetJobExecutionDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metrics.GetJobExecutionDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metrics.GetJobExecutionDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metrics.GetJobExecutionDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_execution_details
 
         Override in a subclass to manipulate the request or metadata
@@ -116,9 +112,7 @@ class MetricsV1Beta3RestInterceptor:
         """
         return request, metadata
 
-    def post_get_job_execution_details(
-        self, response: metrics.JobExecutionDetails
-    ) -> metrics.JobExecutionDetails:
+    def post_get_job_execution_details(self, response: metrics.JobExecutionDetails) -> metrics.JobExecutionDetails:
         """Post-rpc interceptor for get_job_execution_details
 
         DEPRECATED. Please use the `post_get_job_execution_details_with_metadata`
@@ -132,9 +126,7 @@ class MetricsV1Beta3RestInterceptor:
         return response
 
     def post_get_job_execution_details_with_metadata(
-        self,
-        response: metrics.JobExecutionDetails,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metrics.JobExecutionDetails, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metrics.JobExecutionDetails, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_job_execution_details
 
@@ -151,9 +143,7 @@ class MetricsV1Beta3RestInterceptor:
         return response, metadata
 
     def pre_get_job_metrics(
-        self,
-        request: metrics.GetJobMetricsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metrics.GetJobMetricsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metrics.GetJobMetricsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_metrics
 
@@ -176,9 +166,7 @@ class MetricsV1Beta3RestInterceptor:
         return response
 
     def post_get_job_metrics_with_metadata(
-        self,
-        response: metrics.JobMetrics,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metrics.JobMetrics, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metrics.JobMetrics, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_job_metrics
 
@@ -195,12 +183,8 @@ class MetricsV1Beta3RestInterceptor:
         return response, metadata
 
     def pre_get_stage_execution_details(
-        self,
-        request: metrics.GetStageExecutionDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metrics.GetStageExecutionDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metrics.GetStageExecutionDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metrics.GetStageExecutionDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_stage_execution_details
 
         Override in a subclass to manipulate the request or metadata
@@ -208,9 +192,7 @@ class MetricsV1Beta3RestInterceptor:
         """
         return request, metadata
 
-    def post_get_stage_execution_details(
-        self, response: metrics.StageExecutionDetails
-    ) -> metrics.StageExecutionDetails:
+    def post_get_stage_execution_details(self, response: metrics.StageExecutionDetails) -> metrics.StageExecutionDetails:
         """Post-rpc interceptor for get_stage_execution_details
 
         DEPRECATED. Please use the `post_get_stage_execution_details_with_metadata`
@@ -224,9 +206,7 @@ class MetricsV1Beta3RestInterceptor:
         return response
 
     def post_get_stage_execution_details_with_metadata(
-        self,
-        response: metrics.StageExecutionDetails,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metrics.StageExecutionDetails, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metrics.StageExecutionDetails, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_stage_execution_details
 
@@ -323,31 +303,18 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MetricsV1Beta3RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetJobExecutionDetails(
-        _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails,
-        MetricsV1Beta3RestStub,
-    ):
+    class _GetJobExecutionDetails(_BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails, MetricsV1Beta3RestStub):
         def __hash__(self):
             return hash("MetricsV1Beta3RestTransport.GetJobExecutionDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -388,28 +355,16 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             """
 
-            http_options = (
-                _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_http_options()
-            )
+            http_options = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_job_execution_details(
-                request, metadata
-            )
-            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_job_execution_details(request, metadata)
+            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -432,15 +387,8 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                 )
 
             # Send the request
-            response = (
-                MetricsV1Beta3RestTransport._GetJobExecutionDetails._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MetricsV1Beta3RestTransport._GetJobExecutionDetails._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -456,12 +404,8 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             resp = self._interceptor.post_get_job_execution_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_execution_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_execution_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metrics.JobExecutionDetails.to_json(response)
                 except:
@@ -482,22 +426,12 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                 )
             return resp
 
-    class _GetJobMetrics(
-        _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics, MetricsV1Beta3RestStub
-    ):
+    class _GetJobMetrics(_BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics, MetricsV1Beta3RestStub):
         def __hash__(self):
             return hash("MetricsV1Beta3RestTransport.GetJobMetrics")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -546,26 +480,16 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             """
 
-            http_options = (
-                _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_http_options()
-            )
+            http_options = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job_metrics(request, metadata)
-            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -589,12 +513,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             # Send the request
             response = MetricsV1Beta3RestTransport._GetJobMetrics._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -610,12 +529,8 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             resp = self._interceptor.post_get_job_metrics(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_metrics_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_metrics_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metrics.JobMetrics.to_json(response)
                 except:
@@ -636,23 +551,12 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                 )
             return resp
 
-    class _GetStageExecutionDetails(
-        _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails,
-        MetricsV1Beta3RestStub,
-    ):
+    class _GetStageExecutionDetails(_BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails, MetricsV1Beta3RestStub):
         def __hash__(self):
             return hash("MetricsV1Beta3RestTransport.GetStageExecutionDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -696,28 +600,16 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             """
 
-            http_options = (
-                _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_http_options()
-            )
+            http_options = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_stage_execution_details(
-                request, metadata
-            )
-            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_stage_execution_details(request, metadata)
+            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -740,15 +632,8 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                 )
 
             # Send the request
-            response = (
-                MetricsV1Beta3RestTransport._GetStageExecutionDetails._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MetricsV1Beta3RestTransport._GetStageExecutionDetails._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -764,12 +649,8 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
 
             resp = self._interceptor.post_get_stage_execution_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_stage_execution_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_stage_execution_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metrics.StageExecutionDetails.to_json(response)
                 except:
@@ -791,27 +672,19 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             return resp
 
     @property
-    def get_job_execution_details(
-        self,
-    ) -> Callable[[metrics.GetJobExecutionDetailsRequest], metrics.JobExecutionDetails]:
+    def get_job_execution_details(self) -> Callable[[metrics.GetJobExecutionDetailsRequest], metrics.JobExecutionDetails]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetJobExecutionDetails(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_job_metrics(
-        self,
-    ) -> Callable[[metrics.GetJobMetricsRequest], metrics.JobMetrics]:
+    def get_job_metrics(self) -> Callable[[metrics.GetJobMetricsRequest], metrics.JobMetrics]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetJobMetrics(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_stage_execution_details(
-        self,
-    ) -> Callable[
-        [metrics.GetStageExecutionDetailsRequest], metrics.StageExecutionDetails
-    ]:
+    def get_stage_execution_details(self) -> Callable[[metrics.GetStageExecutionDetailsRequest], metrics.StageExecutionDetails]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStageExecutionDetails(self._session, self._host, self._interceptor)  # type: ignore

@@ -76,11 +76,7 @@ from .environments import (
     WebServerNetworkAccessControl,
     WorkloadsConfig,
 )
-from .image_versions import (
-    ImageVersion,
-    ListImageVersionsRequest,
-    ListImageVersionsResponse,
-)
+from .image_versions import ImageVersion, ListImageVersionsRequest, ListImageVersionsResponse
 from .operations import OperationMetadata
 
 __all__ = (

@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datalabeling_v1beta1.types import (
-    annotation_spec_set as gcd_annotation_spec_set,
-)
+from google.cloud.datalabeling_v1beta1.types import annotation_spec_set as gcd_annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
 from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
@@ -424,9 +422,7 @@ class ListAnnotatedDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    annotated_datasets: MutableSequence[
-        gcd_dataset.AnnotatedDataset
-    ] = proto.RepeatedField(
+    annotated_datasets: MutableSequence[gcd_dataset.AnnotatedDataset] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_dataset.AnnotatedDataset,
@@ -532,13 +528,11 @@ class LabelImageRequest(proto.Message):
         POLYLINE = 4
         SEGMENTATION = 5
 
-    image_classification_config: human_annotation_config.ImageClassificationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=4,
-            oneof="request_config",
-            message=human_annotation_config.ImageClassificationConfig,
-        )
+    image_classification_config: human_annotation_config.ImageClassificationConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="request_config",
+        message=human_annotation_config.ImageClassificationConfig,
     )
     bounding_poly_config: human_annotation_config.BoundingPolyConfig = proto.Field(
         proto.MESSAGE,
@@ -642,21 +636,17 @@ class LabelVideoRequest(proto.Message):
         OBJECT_TRACKING = 3
         EVENT = 4
 
-    video_classification_config: human_annotation_config.VideoClassificationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=4,
-            oneof="request_config",
-            message=human_annotation_config.VideoClassificationConfig,
-        )
+    video_classification_config: human_annotation_config.VideoClassificationConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="request_config",
+        message=human_annotation_config.VideoClassificationConfig,
     )
-    object_detection_config: human_annotation_config.ObjectDetectionConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="request_config",
-            message=human_annotation_config.ObjectDetectionConfig,
-        )
+    object_detection_config: human_annotation_config.ObjectDetectionConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="request_config",
+        message=human_annotation_config.ObjectDetectionConfig,
     )
     object_tracking_config: human_annotation_config.ObjectTrackingConfig = proto.Field(
         proto.MESSAGE,
@@ -733,13 +723,11 @@ class LabelTextRequest(proto.Message):
         TEXT_CLASSIFICATION = 1
         TEXT_ENTITY_EXTRACTION = 2
 
-    text_classification_config: human_annotation_config.TextClassificationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=4,
-            oneof="request_config",
-            message=human_annotation_config.TextClassificationConfig,
-        )
+    text_classification_config: human_annotation_config.TextClassificationConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="request_config",
+        message=human_annotation_config.TextClassificationConfig,
     )
     text_entity_extraction_config: human_annotation_config.TextEntityExtractionConfig = proto.Field(
         proto.MESSAGE,
@@ -946,9 +934,7 @@ class ListAnnotationSpecSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    annotation_spec_sets: MutableSequence[
-        gcd_annotation_spec_set.AnnotationSpecSet
-    ] = proto.RepeatedField(
+    annotation_spec_sets: MutableSequence[gcd_annotation_spec_set.AnnotationSpecSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_annotation_spec_set.AnnotationSpecSet,
@@ -1269,9 +1255,7 @@ class SearchExampleComparisonsResponse(proto.Message):
             number=1,
             message=gcd_dataset.Example,
         )
-        model_created_examples: MutableSequence[
-            gcd_dataset.Example
-        ] = proto.RepeatedField(
+        model_created_examples: MutableSequence[gcd_dataset.Example] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gcd_dataset.Example,
@@ -1474,9 +1458,7 @@ class ListEvaluationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    evaluation_jobs: MutableSequence[
-        gcd_evaluation_job.EvaluationJob
-    ] = proto.RepeatedField(
+    evaluation_jobs: MutableSequence[gcd_evaluation_job.EvaluationJob] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_evaluation_job.EvaluationJob,

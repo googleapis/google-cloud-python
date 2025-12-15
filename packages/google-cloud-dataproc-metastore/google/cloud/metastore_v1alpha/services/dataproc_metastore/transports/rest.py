@@ -235,13 +235,8 @@ class DataprocMetastoreRestInterceptor:
     """
 
     def pre_alter_metadata_resource_location(
-        self,
-        request: metastore.AlterMetadataResourceLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.AlterMetadataResourceLocationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: metastore.AlterMetadataResourceLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.AlterMetadataResourceLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for alter_metadata_resource_location
 
         Override in a subclass to manipulate the request or metadata
@@ -249,9 +244,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_alter_metadata_resource_location(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_alter_metadata_resource_location(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for alter_metadata_resource_location
 
         DEPRECATED. Please use the `post_alter_metadata_resource_location_with_metadata`
@@ -265,9 +258,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_alter_metadata_resource_location_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for alter_metadata_resource_location
 
@@ -284,9 +275,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_create_backup(
-        self,
-        request: metastore.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.CreateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
@@ -295,9 +284,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
         DEPRECATED. Please use the `post_create_backup_with_metadata`
@@ -311,9 +298,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_create_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup
 
@@ -330,12 +315,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_create_metadata_import(
-        self,
-        request: metastore.CreateMetadataImportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.CreateMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.CreateMetadataImportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.CreateMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_metadata_import
 
         Override in a subclass to manipulate the request or metadata
@@ -343,9 +324,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_create_metadata_import(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_metadata_import(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_metadata_import
 
         DEPRECATED. Please use the `post_create_metadata_import_with_metadata`
@@ -359,9 +338,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_create_metadata_import_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_metadata_import
 
@@ -378,9 +355,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_create_service(
-        self,
-        request: metastore.CreateServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.CreateServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.CreateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_service
 
@@ -389,9 +364,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_create_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_service
 
         DEPRECATED. Please use the `post_create_service_with_metadata`
@@ -405,9 +378,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_create_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_service
 
@@ -424,9 +395,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: metastore.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
@@ -435,9 +404,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -451,9 +418,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -470,9 +435,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_delete_service(
-        self,
-        request: metastore.DeleteServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.DeleteServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.DeleteServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_service
 
@@ -481,9 +444,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_service
 
         DEPRECATED. Please use the `post_delete_service_with_metadata`
@@ -497,9 +458,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_delete_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_service
 
@@ -516,12 +475,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_export_metadata(
-        self,
-        request: metastore.ExportMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.ExportMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.ExportMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.ExportMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -529,9 +484,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_export_metadata(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_metadata(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_metadata
 
         DEPRECATED. Please use the `post_export_metadata_with_metadata`
@@ -545,9 +498,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_export_metadata_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_metadata
 
@@ -564,9 +515,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: metastore.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
@@ -589,9 +538,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_get_backup_with_metadata(
-        self,
-        response: metastore.Backup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup
 
@@ -608,12 +555,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_get_metadata_import(
-        self,
-        request: metastore.GetMetadataImportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.GetMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.GetMetadataImportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.GetMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_metadata_import
 
         Override in a subclass to manipulate the request or metadata
@@ -621,9 +564,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_metadata_import(
-        self, response: metastore.MetadataImport
-    ) -> metastore.MetadataImport:
+    def post_get_metadata_import(self, response: metastore.MetadataImport) -> metastore.MetadataImport:
         """Post-rpc interceptor for get_metadata_import
 
         DEPRECATED. Please use the `post_get_metadata_import_with_metadata`
@@ -637,9 +578,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_get_metadata_import_with_metadata(
-        self,
-        response: metastore.MetadataImport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.MetadataImport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.MetadataImport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_metadata_import
 
@@ -656,9 +595,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_get_service(
-        self,
-        request: metastore.GetServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.GetServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_service
 
@@ -681,9 +618,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_get_service_with_metadata(
-        self,
-        response: metastore.Service,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Service, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Service, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_service
 
@@ -700,9 +635,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: metastore.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
@@ -711,9 +644,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: metastore.ListBackupsResponse
-    ) -> metastore.ListBackupsResponse:
+    def post_list_backups(self, response: metastore.ListBackupsResponse) -> metastore.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -727,9 +658,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: metastore.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
@@ -746,12 +675,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_list_metadata_imports(
-        self,
-        request: metastore.ListMetadataImportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.ListMetadataImportsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.ListMetadataImportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.ListMetadataImportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_metadata_imports
 
         Override in a subclass to manipulate the request or metadata
@@ -759,9 +684,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_metadata_imports(
-        self, response: metastore.ListMetadataImportsResponse
-    ) -> metastore.ListMetadataImportsResponse:
+    def post_list_metadata_imports(self, response: metastore.ListMetadataImportsResponse) -> metastore.ListMetadataImportsResponse:
         """Post-rpc interceptor for list_metadata_imports
 
         DEPRECATED. Please use the `post_list_metadata_imports_with_metadata`
@@ -775,12 +698,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_list_metadata_imports_with_metadata(
-        self,
-        response: metastore.ListMetadataImportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.ListMetadataImportsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: metastore.ListMetadataImportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.ListMetadataImportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_metadata_imports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -796,9 +715,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_list_services(
-        self,
-        request: metastore.ListServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.ListServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_services
 
@@ -807,9 +724,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_services(
-        self, response: metastore.ListServicesResponse
-    ) -> metastore.ListServicesResponse:
+    def post_list_services(self, response: metastore.ListServicesResponse) -> metastore.ListServicesResponse:
         """Post-rpc interceptor for list_services
 
         DEPRECATED. Please use the `post_list_services_with_metadata`
@@ -823,9 +738,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_list_services_with_metadata(
-        self,
-        response: metastore.ListServicesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.ListServicesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_services
 
@@ -842,12 +755,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_move_table_to_database(
-        self,
-        request: metastore.MoveTableToDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.MoveTableToDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.MoveTableToDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.MoveTableToDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_table_to_database
 
         Override in a subclass to manipulate the request or metadata
@@ -855,9 +764,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_move_table_to_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_move_table_to_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for move_table_to_database
 
         DEPRECATED. Please use the `post_move_table_to_database_with_metadata`
@@ -871,9 +778,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_move_table_to_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_table_to_database
 
@@ -890,9 +795,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_query_metadata(
-        self,
-        request: metastore.QueryMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.QueryMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.QueryMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_metadata
 
@@ -901,9 +804,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_query_metadata(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_query_metadata(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for query_metadata
 
         DEPRECATED. Please use the `post_query_metadata_with_metadata`
@@ -917,9 +818,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_query_metadata_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_metadata
 
@@ -936,12 +835,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_remove_iam_policy(
-        self,
-        request: metastore.RemoveIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.RemoveIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.RemoveIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.RemoveIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -949,9 +844,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_iam_policy(
-        self, response: metastore.RemoveIamPolicyResponse
-    ) -> metastore.RemoveIamPolicyResponse:
+    def post_remove_iam_policy(self, response: metastore.RemoveIamPolicyResponse) -> metastore.RemoveIamPolicyResponse:
         """Post-rpc interceptor for remove_iam_policy
 
         DEPRECATED. Please use the `post_remove_iam_policy_with_metadata`
@@ -965,12 +858,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_remove_iam_policy_with_metadata(
-        self,
-        response: metastore.RemoveIamPolicyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.RemoveIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: metastore.RemoveIamPolicyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.RemoveIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_iam_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -986,12 +875,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_restore_service(
-        self,
-        request: metastore.RestoreServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.RestoreServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.RestoreServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.RestoreServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_service
 
         Override in a subclass to manipulate the request or metadata
@@ -999,9 +884,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_service
 
         DEPRECATED. Please use the `post_restore_service_with_metadata`
@@ -1015,9 +898,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_restore_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_service
 
@@ -1034,12 +915,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_update_metadata_import(
-        self,
-        request: metastore.UpdateMetadataImportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.UpdateMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.UpdateMetadataImportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.UpdateMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_metadata_import
 
         Override in a subclass to manipulate the request or metadata
@@ -1047,9 +924,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_update_metadata_import(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_metadata_import(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_metadata_import
 
         DEPRECATED. Please use the `post_update_metadata_import_with_metadata`
@@ -1063,9 +938,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_update_metadata_import_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_metadata_import
 
@@ -1082,9 +955,7 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_update_service(
-        self,
-        request: metastore.UpdateServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.UpdateServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.UpdateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_service
 
@@ -1093,9 +964,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_update_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_service
 
         DEPRECATED. Please use the `post_update_service_with_metadata`
@@ -1109,9 +978,7 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def post_update_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_service
 
@@ -1128,12 +995,8 @@ class DataprocMetastoreRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1141,9 +1004,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1153,12 +1014,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1166,9 +1023,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1178,12 +1033,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1201,12 +1052,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1224,13 +1071,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1238,9 +1080,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1250,12 +1090,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1273,12 +1109,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1296,12 +1128,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1309,9 +1137,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1321,12 +1147,8 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1334,9 +1156,7 @@ class DataprocMetastoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1445,9 +1265,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1500,30 +1318,17 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AlterMetadataResourceLocation(
-        _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation,
-        DataprocMetastoreRestStub,
-    ):
+    class _AlterMetadataResourceLocation(_BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.AlterMetadataResourceLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1568,32 +1373,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_http_options()
 
-            request, metadata = self._interceptor.pre_alter_metadata_resource_location(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_alter_metadata_resource_location(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1617,13 +1408,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._AlterMetadataResourceLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1637,15 +1422,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_alter_metadata_resource_location(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_alter_metadata_resource_location_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_alter_metadata_resource_location_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1666,22 +1444,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _CreateBackup(
-        _BaseDataprocMetastoreRestTransport._BaseCreateBackup, DataprocMetastoreRestStub
-    ):
+    class _CreateBackup(_BaseDataprocMetastoreRestTransport._BaseCreateBackup, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.CreateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1725,30 +1493,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1772,13 +1528,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._CreateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1792,12 +1542,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_create_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1818,23 +1564,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _CreateMetadataImport(
-        _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport,
-        DataprocMetastoreRestStub,
-    ):
+    class _CreateMetadataImport(_BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.CreateMetadataImport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1878,32 +1613,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_metadata_import(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_metadata_import(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1926,16 +1647,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreRestTransport._CreateMetadataImport._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataprocMetastoreRestTransport._CreateMetadataImport._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1949,12 +1662,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_create_metadata_import(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_metadata_import_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_metadata_import_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1975,23 +1684,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _CreateService(
-        _BaseDataprocMetastoreRestTransport._BaseCreateService,
-        DataprocMetastoreRestStub,
-    ):
+    class _CreateService(_BaseDataprocMetastoreRestTransport._BaseCreateService, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.CreateService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2035,30 +1733,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCreateService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2082,13 +1768,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._CreateService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2102,12 +1782,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_create_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2128,22 +1804,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _DeleteBackup(
-        _BaseDataprocMetastoreRestTransport._BaseDeleteBackup, DataprocMetastoreRestStub
-    ):
+    class _DeleteBackup(_BaseDataprocMetastoreRestTransport._BaseDeleteBackup, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2186,26 +1852,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2229,12 +1885,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2248,12 +1899,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2274,23 +1921,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _DeleteService(
-        _BaseDataprocMetastoreRestTransport._BaseDeleteService,
-        DataprocMetastoreRestStub,
-    ):
+    class _DeleteService(_BaseDataprocMetastoreRestTransport._BaseDeleteService, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.DeleteService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2333,26 +1969,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2376,12 +2002,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._DeleteService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2395,12 +2016,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_delete_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2421,23 +2038,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _ExportMetadata(
-        _BaseDataprocMetastoreRestTransport._BaseExportMetadata,
-        DataprocMetastoreRestStub,
-    ):
+    class _ExportMetadata(_BaseDataprocMetastoreRestTransport._BaseExportMetadata, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.ExportMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2481,30 +2087,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_http_options()
 
             request, metadata = self._interceptor.pre_export_metadata(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2528,13 +2122,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._ExportMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2548,12 +2136,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_export_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2574,22 +2158,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _GetBackup(
-        _BaseDataprocMetastoreRestTransport._BaseGetBackup, DataprocMetastoreRestStub
-    ):
+    class _GetBackup(_BaseDataprocMetastoreRestTransport._BaseGetBackup, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2629,26 +2203,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     The details of a backup resource.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2672,12 +2236,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2693,12 +2252,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Backup.to_json(response)
                 except:
@@ -2719,23 +2274,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _GetMetadataImport(
-        _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport,
-        DataprocMetastoreRestStub,
-    ):
+    class _GetMetadataImport(_BaseDataprocMetastoreRestTransport._BaseGetMetadataImport, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.GetMetadataImport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2777,28 +2321,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_metadata_import(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_metadata_import(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2822,12 +2354,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetMetadataImport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2843,12 +2370,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_get_metadata_import(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_metadata_import_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_metadata_import_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.MetadataImport.to_json(response)
                 except:
@@ -2869,22 +2392,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _GetService(
-        _BaseDataprocMetastoreRestTransport._BaseGetService, DataprocMetastoreRestStub
-    ):
+    class _GetService(_BaseDataprocMetastoreRestTransport._BaseGetService, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.GetService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2926,26 +2439,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetService._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseGetService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2969,12 +2472,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2990,12 +2488,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_get_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Service.to_json(response)
                 except:
@@ -3016,22 +2510,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _ListBackups(
-        _BaseDataprocMetastoreRestTransport._BaseListBackups, DataprocMetastoreRestStub
-    ):
+    class _ListBackups(_BaseDataprocMetastoreRestTransport._BaseListBackups, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3073,26 +2557,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3116,12 +2590,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3137,12 +2606,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListBackupsResponse.to_json(response)
                 except:
@@ -3163,23 +2628,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _ListMetadataImports(
-        _BaseDataprocMetastoreRestTransport._BaseListMetadataImports,
-        DataprocMetastoreRestStub,
-    ):
+    class _ListMetadataImports(_BaseDataprocMetastoreRestTransport._BaseListMetadataImports, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.ListMetadataImports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3221,28 +2675,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_metadata_imports(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_metadata_imports(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3265,15 +2707,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreRestTransport._ListMetadataImports._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreRestTransport._ListMetadataImports._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3289,16 +2724,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_list_metadata_imports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_metadata_imports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_metadata_imports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = metastore.ListMetadataImportsResponse.to_json(
-                        response
-                    )
+                    response_payload = metastore.ListMetadataImportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3317,22 +2746,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _ListServices(
-        _BaseDataprocMetastoreRestTransport._BaseListServices, DataprocMetastoreRestStub
-    ):
+    class _ListServices(_BaseDataprocMetastoreRestTransport._BaseListServices, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.ListServices")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3374,26 +2793,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListServices._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListServices._get_http_options()
 
             request, metadata = self._interceptor.pre_list_services(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListServices._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListServices._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseListServices._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListServices._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3417,12 +2826,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListServices._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3438,12 +2842,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_list_services(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_services_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_services_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListServicesResponse.to_json(response)
                 except:
@@ -3464,23 +2864,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _MoveTableToDatabase(
-        _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase,
-        DataprocMetastoreRestStub,
-    ):
+    class _MoveTableToDatabase(_BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.MoveTableToDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3524,32 +2913,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_move_table_to_database(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_move_table_to_database(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3572,16 +2947,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreRestTransport._MoveTableToDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataprocMetastoreRestTransport._MoveTableToDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3595,12 +2962,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_move_table_to_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_table_to_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_table_to_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3621,23 +2984,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _QueryMetadata(
-        _BaseDataprocMetastoreRestTransport._BaseQueryMetadata,
-        DataprocMetastoreRestStub,
-    ):
+    class _QueryMetadata(_BaseDataprocMetastoreRestTransport._BaseQueryMetadata, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.QueryMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3681,30 +3033,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_http_options()
 
             request, metadata = self._interceptor.pre_query_metadata(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3728,13 +3068,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._QueryMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3748,12 +3082,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_query_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3774,23 +3104,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _RemoveIamPolicy(
-        _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy,
-        DataprocMetastoreRestStub,
-    ):
+    class _RemoveIamPolicy(_BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.RemoveIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3833,32 +3152,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_iam_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_iam_policy(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3882,13 +3187,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._RemoveIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3904,16 +3203,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_remove_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = metastore.RemoveIamPolicyResponse.to_json(
-                        response
-                    )
+                    response_payload = metastore.RemoveIamPolicyResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3932,23 +3225,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _RestoreService(
-        _BaseDataprocMetastoreRestTransport._BaseRestoreService,
-        DataprocMetastoreRestStub,
-    ):
+    class _RestoreService(_BaseDataprocMetastoreRestTransport._BaseRestoreService, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.RestoreService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3991,30 +3273,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_service(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4038,13 +3308,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._RestoreService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4058,12 +3322,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_restore_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4084,23 +3344,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _UpdateMetadataImport(
-        _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport,
-        DataprocMetastoreRestStub,
-    ):
+    class _UpdateMetadataImport(_BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.UpdateMetadataImport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4144,32 +3393,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_metadata_import(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_metadata_import(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4192,16 +3427,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreRestTransport._UpdateMetadataImport._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataprocMetastoreRestTransport._UpdateMetadataImport._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4215,12 +3442,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_update_metadata_import(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_metadata_import_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_metadata_import_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4241,23 +3464,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 )
             return resp
 
-    class _UpdateService(
-        _BaseDataprocMetastoreRestTransport._BaseUpdateService,
-        DataprocMetastoreRestStub,
-    ):
+    class _UpdateService(_BaseDataprocMetastoreRestTransport._BaseUpdateService, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.UpdateService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4301,30 +3513,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_http_options()
 
             request, metadata = self._interceptor.pre_update_service(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4348,13 +3548,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._UpdateService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4368,12 +3562,8 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_update_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4395,59 +3585,43 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             return resp
 
     @property
-    def alter_metadata_resource_location(
-        self,
-    ) -> Callable[
-        [metastore.AlterMetadataResourceLocationRequest], operations_pb2.Operation
-    ]:
+    def alter_metadata_resource_location(self) -> Callable[[metastore.AlterMetadataResourceLocationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AlterMetadataResourceLocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[metastore.CreateBackupRequest], operations_pb2.Operation]:
+    def create_backup(self) -> Callable[[metastore.CreateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_metadata_import(
-        self,
-    ) -> Callable[[metastore.CreateMetadataImportRequest], operations_pb2.Operation]:
+    def create_metadata_import(self) -> Callable[[metastore.CreateMetadataImportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMetadataImport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[[metastore.CreateServiceRequest], operations_pb2.Operation]:
+    def create_service(self) -> Callable[[metastore.CreateServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[metastore.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[metastore.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[[metastore.DeleteServiceRequest], operations_pb2.Operation]:
+    def delete_service(self) -> Callable[[metastore.DeleteServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_metadata(
-        self,
-    ) -> Callable[[metastore.ExportMetadataRequest], operations_pb2.Operation]:
+    def export_metadata(self) -> Callable[[metastore.ExportMetadataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportMetadata(self._session, self._host, self._interceptor)  # type: ignore
@@ -4459,9 +3633,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_metadata_import(
-        self,
-    ) -> Callable[[metastore.GetMetadataImportRequest], metastore.MetadataImport]:
+    def get_metadata_import(self) -> Callable[[metastore.GetMetadataImportRequest], metastore.MetadataImport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMetadataImport(self._session, self._host, self._interceptor)  # type: ignore
@@ -4473,77 +3645,55 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
         return self._GetService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[metastore.ListBackupsRequest], metastore.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[metastore.ListBackupsRequest], metastore.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_metadata_imports(
-        self,
-    ) -> Callable[
-        [metastore.ListMetadataImportsRequest], metastore.ListMetadataImportsResponse
-    ]:
+    def list_metadata_imports(self) -> Callable[[metastore.ListMetadataImportsRequest], metastore.ListMetadataImportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMetadataImports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[[metastore.ListServicesRequest], metastore.ListServicesResponse]:
+    def list_services(self) -> Callable[[metastore.ListServicesRequest], metastore.ListServicesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListServices(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_table_to_database(
-        self,
-    ) -> Callable[[metastore.MoveTableToDatabaseRequest], operations_pb2.Operation]:
+    def move_table_to_database(self) -> Callable[[metastore.MoveTableToDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveTableToDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_metadata(
-        self,
-    ) -> Callable[[metastore.QueryMetadataRequest], operations_pb2.Operation]:
+    def query_metadata(self) -> Callable[[metastore.QueryMetadataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_iam_policy(
-        self,
-    ) -> Callable[
-        [metastore.RemoveIamPolicyRequest], metastore.RemoveIamPolicyResponse
-    ]:
+    def remove_iam_policy(self) -> Callable[[metastore.RemoveIamPolicyRequest], metastore.RemoveIamPolicyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_service(
-        self,
-    ) -> Callable[[metastore.RestoreServiceRequest], operations_pb2.Operation]:
+    def restore_service(self) -> Callable[[metastore.RestoreServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_metadata_import(
-        self,
-    ) -> Callable[[metastore.UpdateMetadataImportRequest], operations_pb2.Operation]:
+    def update_metadata_import(self) -> Callable[[metastore.UpdateMetadataImportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMetadataImport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[[metastore.UpdateServiceRequest], operations_pb2.Operation]:
+    def update_service(self) -> Callable[[metastore.UpdateServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateService(self._session, self._host, self._interceptor)  # type: ignore
@@ -4552,22 +3702,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataprocMetastoreRestTransport._BaseGetLocation, DataprocMetastoreRestStub
-    ):
+    class _GetLocation(_BaseDataprocMetastoreRestTransport._BaseGetLocation, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4605,26 +3745,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4648,12 +3778,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4665,9 +3790,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4692,23 +3815,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataprocMetastoreRestTransport._BaseListLocations,
-        DataprocMetastoreRestStub,
-    ):
+    class _ListLocations(_BaseDataprocMetastoreRestTransport._BaseListLocations, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4746,26 +3858,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4789,12 +3891,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4806,9 +3903,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4833,22 +3928,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy, DataprocMetastoreRestStub
-    ):
+    class _GetIamPolicy(_BaseDataprocMetastoreRestTransport._BaseGetIamPolicy, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4886,26 +3971,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4929,12 +4004,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4946,9 +4016,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4973,22 +4041,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy, DataprocMetastoreRestStub
-    ):
+    class _SetIamPolicy(_BaseDataprocMetastoreRestTransport._BaseSetIamPolicy, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5027,30 +4085,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5074,13 +4120,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5092,9 +4132,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5119,23 +4157,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions,
-        DataprocMetastoreRestStub,
-    ):
+    class _TestIamPermissions(_BaseDataprocMetastoreRestTransport._BaseTestIamPermissions, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5174,32 +4201,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5223,13 +4236,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5241,9 +4248,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5268,23 +4273,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataprocMetastoreRestTransport._BaseCancelOperation,
-        DataprocMetastoreRestStub,
-    ):
+    class _CancelOperation(_BaseDataprocMetastoreRestTransport._BaseCancelOperation, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5320,32 +4314,18 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5369,13 +4349,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5389,23 +4363,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataprocMetastoreRestTransport._BaseDeleteOperation,
-        DataprocMetastoreRestStub,
-    ):
+    class _DeleteOperation(_BaseDataprocMetastoreRestTransport._BaseDeleteOperation, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5440,28 +4403,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5485,12 +4436,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5504,22 +4450,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataprocMetastoreRestTransport._BaseGetOperation, DataprocMetastoreRestStub
-    ):
+    class _GetOperation(_BaseDataprocMetastoreRestTransport._BaseGetOperation, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5557,26 +4493,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5600,12 +4526,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5617,9 +4538,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5644,23 +4563,12 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataprocMetastoreRestTransport._BaseListOperations,
-        DataprocMetastoreRestStub,
-    ):
+    class _ListOperations(_BaseDataprocMetastoreRestTransport._BaseListOperations, DataprocMetastoreRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5698,26 +4606,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5741,12 +4639,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5758,9 +4651,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

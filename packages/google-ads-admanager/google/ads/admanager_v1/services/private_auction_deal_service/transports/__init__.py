@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import PrivateAuctionDealServiceTransport
-from .rest import (
-    PrivateAuctionDealServiceRestInterceptor,
-    PrivateAuctionDealServiceRestTransport,
-)
+from .rest import PrivateAuctionDealServiceRestInterceptor, PrivateAuctionDealServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PrivateAuctionDealServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PrivateAuctionDealServiceTransport]]
 _transport_registry["rest"] = PrivateAuctionDealServiceRestTransport
 
 __all__ = (

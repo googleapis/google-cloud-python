@@ -218,12 +218,10 @@ class InterpretError(proto.Message):
             number=1,
             message="InterpretError.InterpretUnsupportedDetails",
         )
-        incomplete_query_details: "InterpretError.InterpretIncompleteQueryDetails" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="InterpretError.InterpretIncompleteQueryDetails",
-            )
+        incomplete_query_details: "InterpretError.InterpretIncompleteQueryDetails" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="InterpretError.InterpretIncompleteQueryDetails",
         )
         ambiguity_details: "InterpretError.InterpretAmbiguityDetails" = proto.Field(
             proto.MESSAGE,

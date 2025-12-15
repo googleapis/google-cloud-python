@@ -22,13 +22,7 @@ from .attack_path import AttackPath
 from .backup_disaster_recovery import BackupDisasterRecovery
 from .bigquery_export import BigQueryExport
 from .chokepoint import Chokepoint
-from .cloud_armor import (
-    AdaptiveProtection,
-    Attack,
-    CloudArmor,
-    Requests,
-    SecurityPolicy,
-)
+from .cloud_armor import AdaptiveProtection, Attack, CloudArmor, Requests, SecurityPolicy
 from .cloud_dlp_data_profile import CloudDlpDataProfile
 from .cloud_dlp_inspection import CloudDlpInspection
 from .compliance import Compliance
@@ -63,14 +57,7 @@ from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
 from .org_policy import OrgPolicy
 from .process import EnvironmentVariable, Process
-from .resource import (
-    AwsMetadata,
-    AzureMetadata,
-    CloudProvider,
-    GcpMetadata,
-    Resource,
-    ResourcePath,
-)
+from .resource import AwsMetadata, AzureMetadata, CloudProvider, GcpMetadata, Resource, ResourcePath
 from .resource_value_config import ResourceValue, ResourceValueConfig
 from .security_marks import SecurityMarks
 from .security_posture import SecurityPosture
@@ -134,15 +121,7 @@ from .source import Source
 from .toxic_combination import ToxicCombination
 from .valued_resource import ResourceValueConfigMetadata, ValuedResource
 from .vertex_ai import VertexAi
-from .vulnerability import (
-    Cve,
-    Cvssv3,
-    Cwe,
-    Package,
-    Reference,
-    SecurityBulletin,
-    Vulnerability,
-)
+from .vulnerability import Cve, Cvssv3, Cwe, Package, Reference, SecurityBulletin, Vulnerability
 
 __all__ = (
     "Access",

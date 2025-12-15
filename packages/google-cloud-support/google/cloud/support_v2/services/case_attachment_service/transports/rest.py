@@ -87,13 +87,8 @@ class CaseAttachmentServiceRestInterceptor:
     """
 
     def pre_list_attachments(
-        self,
-        request: attachment_service.ListAttachmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attachment_service.ListAttachmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attachment_service.ListAttachmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attachment_service.ListAttachmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_attachments
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +96,7 @@ class CaseAttachmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_attachments(
-        self, response: attachment_service.ListAttachmentsResponse
-    ) -> attachment_service.ListAttachmentsResponse:
+    def post_list_attachments(self, response: attachment_service.ListAttachmentsResponse) -> attachment_service.ListAttachmentsResponse:
         """Post-rpc interceptor for list_attachments
 
         DEPRECATED. Please use the `post_list_attachments_with_metadata`
@@ -117,13 +110,8 @@ class CaseAttachmentServiceRestInterceptor:
         return response
 
     def post_list_attachments_with_metadata(
-        self,
-        response: attachment_service.ListAttachmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attachment_service.ListAttachmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: attachment_service.ListAttachmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attachment_service.ListAttachmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_attachments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -219,31 +207,18 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CaseAttachmentServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListAttachments(
-        _BaseCaseAttachmentServiceRestTransport._BaseListAttachments,
-        CaseAttachmentServiceRestStub,
-    ):
+    class _ListAttachments(_BaseCaseAttachmentServiceRestTransport._BaseListAttachments, CaseAttachmentServiceRestStub):
         def __hash__(self):
             return hash("CaseAttachmentServiceRestTransport.ListAttachments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -285,28 +260,16 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_http_options()
-            )
+            http_options = _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_attachments(
-                request, metadata
-            )
-            transcoded_request = _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_attachments(request, metadata)
+            transcoded_request = _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -329,15 +292,8 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                CaseAttachmentServiceRestTransport._ListAttachments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CaseAttachmentServiceRestTransport._ListAttachments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -353,16 +309,10 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
 
             resp = self._interceptor.post_list_attachments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_attachments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_attachments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        attachment_service.ListAttachmentsResponse.to_json(response)
-                    )
+                    response_payload = attachment_service.ListAttachmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -382,12 +332,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             return resp
 
     @property
-    def list_attachments(
-        self,
-    ) -> Callable[
-        [attachment_service.ListAttachmentsRequest],
-        attachment_service.ListAttachmentsResponse,
-    ]:
+    def list_attachments(self) -> Callable[[attachment_service.ListAttachmentsRequest], attachment_service.ListAttachmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAttachments(self._session, self._host, self._interceptor)  # type: ignore

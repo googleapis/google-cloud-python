@@ -18,31 +18,15 @@ from google.cloud.chronicle import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.chronicle_v1.services.data_access_control_service.async_client import (
-    DataAccessControlServiceAsyncClient,
-)
-from google.cloud.chronicle_v1.services.data_access_control_service.client import (
-    DataAccessControlServiceClient,
-)
-from google.cloud.chronicle_v1.services.entity_service.async_client import (
-    EntityServiceAsyncClient,
-)
+from google.cloud.chronicle_v1.services.data_access_control_service.async_client import DataAccessControlServiceAsyncClient
+from google.cloud.chronicle_v1.services.data_access_control_service.client import DataAccessControlServiceClient
+from google.cloud.chronicle_v1.services.entity_service.async_client import EntityServiceAsyncClient
 from google.cloud.chronicle_v1.services.entity_service.client import EntityServiceClient
-from google.cloud.chronicle_v1.services.instance_service.async_client import (
-    InstanceServiceAsyncClient,
-)
-from google.cloud.chronicle_v1.services.instance_service.client import (
-    InstanceServiceClient,
-)
-from google.cloud.chronicle_v1.services.reference_list_service.async_client import (
-    ReferenceListServiceAsyncClient,
-)
-from google.cloud.chronicle_v1.services.reference_list_service.client import (
-    ReferenceListServiceClient,
-)
-from google.cloud.chronicle_v1.services.rule_service.async_client import (
-    RuleServiceAsyncClient,
-)
+from google.cloud.chronicle_v1.services.instance_service.async_client import InstanceServiceAsyncClient
+from google.cloud.chronicle_v1.services.instance_service.client import InstanceServiceClient
+from google.cloud.chronicle_v1.services.reference_list_service.async_client import ReferenceListServiceAsyncClient
+from google.cloud.chronicle_v1.services.reference_list_service.client import ReferenceListServiceClient
+from google.cloud.chronicle_v1.services.rule_service.async_client import RuleServiceAsyncClient
 from google.cloud.chronicle_v1.services.rule_service.client import RuleServiceClient
 from google.cloud.chronicle_v1.types.data_access_control import (
     CreateDataAccessLabelRequest,

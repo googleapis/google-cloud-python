@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -324,11 +309,7 @@ class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_checkout_settings(
-        self,
-    ) -> Callable[
-        [checkoutsettings.GetCheckoutSettingsRequest], checkoutsettings.CheckoutSettings
-    ]:
+    def get_checkout_settings(self) -> Callable[[checkoutsettings.GetCheckoutSettingsRequest], checkoutsettings.CheckoutSettings]:
         r"""Return a callable for the get checkout settings method over gRPC.
 
         Gets ``CheckoutSettings`` for the given merchant. This includes
@@ -354,12 +335,7 @@ class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
         return self._stubs["get_checkout_settings"]
 
     @property
-    def create_checkout_settings(
-        self,
-    ) -> Callable[
-        [checkoutsettings.CreateCheckoutSettingsRequest],
-        checkoutsettings.CheckoutSettings,
-    ]:
+    def create_checkout_settings(self) -> Callable[[checkoutsettings.CreateCheckoutSettingsRequest], checkoutsettings.CheckoutSettings]:
         r"""Return a callable for the create checkout settings method over gRPC.
 
         Creates ``CheckoutSettings`` for the given merchant.
@@ -383,12 +359,7 @@ class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
         return self._stubs["create_checkout_settings"]
 
     @property
-    def update_checkout_settings(
-        self,
-    ) -> Callable[
-        [checkoutsettings.UpdateCheckoutSettingsRequest],
-        checkoutsettings.CheckoutSettings,
-    ]:
+    def update_checkout_settings(self) -> Callable[[checkoutsettings.UpdateCheckoutSettingsRequest], checkoutsettings.CheckoutSettings]:
         r"""Return a callable for the update checkout settings method over gRPC.
 
         Updates ``CheckoutSettings`` for the given merchant.
@@ -412,9 +383,7 @@ class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
         return self._stubs["update_checkout_settings"]
 
     @property
-    def delete_checkout_settings(
-        self,
-    ) -> Callable[[checkoutsettings.DeleteCheckoutSettingsRequest], empty_pb2.Empty]:
+    def delete_checkout_settings(self) -> Callable[[checkoutsettings.DeleteCheckoutSettingsRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete checkout settings method over gRPC.
 
         Deletes ``CheckoutSettings`` and unenrolls merchant from

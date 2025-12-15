@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -112,32 +101,16 @@ class CloudFilestoreManagerAsyncClient:
     parse_instance_path = staticmethod(CloudFilestoreManagerClient.parse_instance_path)
     snapshot_path = staticmethod(CloudFilestoreManagerClient.snapshot_path)
     parse_snapshot_path = staticmethod(CloudFilestoreManagerClient.parse_snapshot_path)
-    common_billing_account_path = staticmethod(
-        CloudFilestoreManagerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CloudFilestoreManagerClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(CloudFilestoreManagerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CloudFilestoreManagerClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(CloudFilestoreManagerClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        CloudFilestoreManagerClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        CloudFilestoreManagerClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        CloudFilestoreManagerClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(CloudFilestoreManagerClient.parse_common_folder_path)
+    common_organization_path = staticmethod(CloudFilestoreManagerClient.common_organization_path)
+    parse_common_organization_path = staticmethod(CloudFilestoreManagerClient.parse_common_organization_path)
     common_project_path = staticmethod(CloudFilestoreManagerClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        CloudFilestoreManagerClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        CloudFilestoreManagerClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        CloudFilestoreManagerClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(CloudFilestoreManagerClient.parse_common_project_path)
+    common_location_path = staticmethod(CloudFilestoreManagerClient.common_location_path)
+    parse_common_location_path = staticmethod(CloudFilestoreManagerClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -173,9 +146,7 @@ class CloudFilestoreManagerAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -242,13 +213,7 @@ class CloudFilestoreManagerAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                CloudFilestoreManagerTransport,
-                Callable[..., CloudFilestoreManagerTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, CloudFilestoreManagerTransport, Callable[..., CloudFilestoreManagerTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -308,20 +273,14 @@ class CloudFilestoreManagerAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.filestore_v1.CloudFilestoreManagerAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -332,9 +291,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def list_instances(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.ListInstancesRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.ListInstancesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -406,14 +363,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -427,15 +379,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_instances
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_instances]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -464,9 +412,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def get_instance(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.GetInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.GetInstanceRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -528,14 +474,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -549,15 +490,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -575,9 +512,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def create_instance(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.CreateInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.CreateInstanceRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         instance: Optional[cloud_filestore_service.Instance] = None,
@@ -672,14 +607,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, instance, instance_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -697,15 +627,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -731,9 +657,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def update_instance(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.UpdateInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.UpdateInstanceRequest, dict]] = None,
         *,
         instance: Optional[cloud_filestore_service.Instance] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -817,14 +741,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [instance, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -840,17 +759,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("instance.name", request.instance.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("instance.name", request.instance.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -876,9 +789,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def restore_instance(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.RestoreInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.RestoreInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -952,15 +863,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.restore_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.restore_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -986,9 +893,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def revert_instance(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.RevertInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.RevertInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1058,15 +963,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.revert_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.revert_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1092,9 +993,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def delete_instance(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.DeleteInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.DeleteInstanceRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1172,14 +1071,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1193,15 +1087,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1227,9 +1117,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def list_snapshots(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.ListSnapshotsRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.ListSnapshotsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1298,14 +1186,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1319,15 +1202,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_snapshots
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_snapshots]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1356,9 +1235,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def get_snapshot(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.GetSnapshotRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.GetSnapshotRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1420,14 +1297,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1441,15 +1313,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_snapshot
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_snapshot]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1467,9 +1335,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def create_snapshot(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.CreateSnapshotRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.CreateSnapshotRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         snapshot: Optional[cloud_filestore_service.Snapshot] = None,
@@ -1562,14 +1428,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, snapshot, snapshot_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1587,15 +1448,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_snapshot
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_snapshot]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1621,9 +1478,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def delete_snapshot(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.DeleteSnapshotRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.DeleteSnapshotRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1701,14 +1556,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1722,15 +1572,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_snapshot
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_snapshot]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1756,9 +1602,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def update_snapshot(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.UpdateSnapshotRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.UpdateSnapshotRequest, dict]] = None,
         *,
         snapshot: Optional[cloud_filestore_service.Snapshot] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1836,14 +1680,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [snapshot, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1859,17 +1698,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_snapshot
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_snapshot]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("snapshot.name", request.snapshot.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("snapshot.name", request.snapshot.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1895,9 +1728,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def list_backups(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.ListBackupsRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.ListBackupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1969,14 +1800,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1990,15 +1816,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_backups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_backups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2089,14 +1911,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2110,15 +1927,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_backup
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_backup]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2136,9 +1949,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def create_backup(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.CreateBackupRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.CreateBackupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         backup: Optional[cloud_filestore_service.Backup] = None,
@@ -2233,14 +2044,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, backup, backup_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2258,15 +2064,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_backup
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_backup]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2292,9 +2094,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def delete_backup(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.DeleteBackupRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.DeleteBackupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2371,14 +2171,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2392,15 +2187,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_backup
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_backup]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2426,9 +2217,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def update_backup(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.UpdateBackupRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.UpdateBackupRequest, dict]] = None,
         *,
         backup: Optional[cloud_filestore_service.Backup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2507,14 +2296,9 @@ class CloudFilestoreManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [backup, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2530,17 +2314,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_backup
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_backup]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("backup.name", request.backup.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("backup.name", request.backup.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2566,9 +2344,7 @@ class CloudFilestoreManagerAsyncClient:
 
     async def promote_replica(
         self,
-        request: Optional[
-            Union[cloud_filestore_service.PromoteReplicaRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_filestore_service.PromoteReplicaRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2635,15 +2411,11 @@ class CloudFilestoreManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.promote_replica
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.promote_replica]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2704,9 +2476,7 @@ class CloudFilestoreManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2759,9 +2529,7 @@ class CloudFilestoreManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2818,9 +2586,7 @@ class CloudFilestoreManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2873,9 +2639,7 @@ class CloudFilestoreManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2925,9 +2689,7 @@ class CloudFilestoreManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2980,9 +2742,7 @@ class CloudFilestoreManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3005,9 +2765,7 @@ class CloudFilestoreManagerAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

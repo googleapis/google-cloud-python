@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class TextServiceGrpcTransport(TextServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class TextServiceGrpcTransport(TextServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -326,11 +311,7 @@ class TextServiceGrpcTransport(TextServiceTransport):
         return self._grpc_channel
 
     @property
-    def generate_text(
-        self,
-    ) -> Callable[
-        [text_service.GenerateTextRequest], text_service.GenerateTextResponse
-    ]:
+    def generate_text(self) -> Callable[[text_service.GenerateTextRequest], text_service.GenerateTextResponse]:
         r"""Return a callable for the generate text method over gRPC.
 
         Generates a response from the model given an input
@@ -355,9 +336,7 @@ class TextServiceGrpcTransport(TextServiceTransport):
         return self._stubs["generate_text"]
 
     @property
-    def embed_text(
-        self,
-    ) -> Callable[[text_service.EmbedTextRequest], text_service.EmbedTextResponse]:
+    def embed_text(self) -> Callable[[text_service.EmbedTextRequest], text_service.EmbedTextResponse]:
         r"""Return a callable for the embed text method over gRPC.
 
         Generates an embedding from the model given an input
@@ -382,11 +361,7 @@ class TextServiceGrpcTransport(TextServiceTransport):
         return self._stubs["embed_text"]
 
     @property
-    def batch_embed_text(
-        self,
-    ) -> Callable[
-        [text_service.BatchEmbedTextRequest], text_service.BatchEmbedTextResponse
-    ]:
+    def batch_embed_text(self) -> Callable[[text_service.BatchEmbedTextRequest], text_service.BatchEmbedTextResponse]:
         r"""Return a callable for the batch embed text method over gRPC.
 
         Generates multiple embeddings from the model given
@@ -411,11 +386,7 @@ class TextServiceGrpcTransport(TextServiceTransport):
         return self._stubs["batch_embed_text"]
 
     @property
-    def count_text_tokens(
-        self,
-    ) -> Callable[
-        [text_service.CountTextTokensRequest], text_service.CountTextTokensResponse
-    ]:
+    def count_text_tokens(self) -> Callable[[text_service.CountTextTokensRequest], text_service.CountTextTokensResponse]:
         r"""Return a callable for the count text tokens method over gRPC.
 
         Runs a model's tokenizer on a text and returns the
@@ -496,9 +467,7 @@ class TextServiceGrpcTransport(TextServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

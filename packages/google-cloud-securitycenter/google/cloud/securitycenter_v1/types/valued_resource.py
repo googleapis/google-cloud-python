@@ -101,9 +101,7 @@ class ValuedResource(proto.Message):
         proto.DOUBLE,
         number=6,
     )
-    resource_value_configs_used: MutableSequence[
-        "ResourceValueConfigMetadata"
-    ] = proto.RepeatedField(
+    resource_value_configs_used: MutableSequence["ResourceValueConfigMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ResourceValueConfigMetadata",

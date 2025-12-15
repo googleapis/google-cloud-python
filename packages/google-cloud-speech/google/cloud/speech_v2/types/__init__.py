@@ -79,14 +79,7 @@ from .cloud_speech import (
     VttOutputFileFormatConfig,
     WordInfo,
 )
-from .locations_metadata import (
-    AccessMetadata,
-    LanguageMetadata,
-    LocationsMetadata,
-    ModelFeature,
-    ModelFeatures,
-    ModelMetadata,
-)
+from .locations_metadata import AccessMetadata, LanguageMetadata, LocationsMetadata, ModelFeature, ModelFeatures, ModelMetadata
 
 __all__ = (
     "AutoDetectDecodingConfig",

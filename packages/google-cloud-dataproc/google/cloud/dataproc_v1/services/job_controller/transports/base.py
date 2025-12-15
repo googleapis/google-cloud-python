@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.dataproc_v1 import gapic_version as package_version
 from google.cloud.dataproc_v1.types import jobs
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class JobControllerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -293,53 +283,31 @@ class JobControllerTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def submit_job(
-        self,
-    ) -> Callable[[jobs.SubmitJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
+    def submit_job(self) -> Callable[[jobs.SubmitJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
         raise NotImplementedError()
 
     @property
-    def submit_job_as_operation(
-        self,
-    ) -> Callable[
-        [jobs.SubmitJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def submit_job_as_operation(self) -> Callable[[jobs.SubmitJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_job(
-        self,
-    ) -> Callable[[jobs.GetJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
+    def get_job(self) -> Callable[[jobs.GetJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
         raise NotImplementedError()
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[
-        [jobs.ListJobsRequest],
-        Union[jobs.ListJobsResponse, Awaitable[jobs.ListJobsResponse]],
-    ]:
+    def list_jobs(self) -> Callable[[jobs.ListJobsRequest], Union[jobs.ListJobsResponse, Awaitable[jobs.ListJobsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_job(
-        self,
-    ) -> Callable[[jobs.UpdateJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
+    def update_job(self) -> Callable[[jobs.UpdateJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_job(
-        self,
-    ) -> Callable[[jobs.CancelJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
+    def cancel_job(self) -> Callable[[jobs.CancelJobRequest], Union[jobs.Job, Awaitable[jobs.Job]]]:
         raise NotImplementedError()
 
     @property
-    def delete_job(
-        self,
-    ) -> Callable[
-        [jobs.DeleteJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_job(self) -> Callable[[jobs.DeleteJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -347,20 +315,14 @@ class JobControllerTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -378,19 +340,13 @@ class JobControllerTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property

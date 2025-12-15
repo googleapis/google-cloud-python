@@ -33,12 +33,8 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
-from google.analytics.admin_v1alpha.types import (
-    expanded_data_set as gaa_expanded_data_set,
-)
-from google.analytics.admin_v1alpha.types import (
-    subproperty_event_filter as gaa_subproperty_event_filter,
-)
+from google.analytics.admin_v1alpha.types import expanded_data_set as gaa_expanded_data_set
+from google.analytics.admin_v1alpha.types import subproperty_event_filter as gaa_subproperty_event_filter
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -61,13 +57,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -77,10 +69,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -99,11 +88,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -281,18 +266,14 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -328,9 +309,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -345,9 +324,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_account(
-        self,
-    ) -> Callable[[analytics_admin.GetAccountRequest], Awaitable[resources.Account]]:
+    def get_account(self) -> Callable[[analytics_admin.GetAccountRequest], Awaitable[resources.Account]]:
         r"""Return a callable for the get account method over gRPC.
 
         Lookup for a single Account.
@@ -371,12 +348,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_account"]
 
     @property
-    def list_accounts(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAccountsRequest],
-        Awaitable[analytics_admin.ListAccountsResponse],
-    ]:
+    def list_accounts(self) -> Callable[[analytics_admin.ListAccountsRequest], Awaitable[analytics_admin.ListAccountsResponse]]:
         r"""Return a callable for the list accounts method over gRPC.
 
         Returns all accounts accessible by the caller.
@@ -405,9 +377,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_accounts"]
 
     @property
-    def delete_account(
-        self,
-    ) -> Callable[[analytics_admin.DeleteAccountRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_account(self) -> Callable[[analytics_admin.DeleteAccountRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete account method over gRPC.
 
         Marks target Account as soft-deleted (ie: "trashed")
@@ -443,9 +413,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_account"]
 
     @property
-    def update_account(
-        self,
-    ) -> Callable[[analytics_admin.UpdateAccountRequest], Awaitable[resources.Account]]:
+    def update_account(self) -> Callable[[analytics_admin.UpdateAccountRequest], Awaitable[resources.Account]]:
         r"""Return a callable for the update account method over gRPC.
 
         Updates an account.
@@ -471,10 +439,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def provision_account_ticket(
         self,
-    ) -> Callable[
-        [analytics_admin.ProvisionAccountTicketRequest],
-        Awaitable[analytics_admin.ProvisionAccountTicketResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ProvisionAccountTicketRequest], Awaitable[analytics_admin.ProvisionAccountTicketResponse]]:
         r"""Return a callable for the provision account ticket method over gRPC.
 
         Requests a ticket for creating an account.
@@ -500,10 +465,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_account_summaries(
         self,
-    ) -> Callable[
-        [analytics_admin.ListAccountSummariesRequest],
-        Awaitable[analytics_admin.ListAccountSummariesResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListAccountSummariesRequest], Awaitable[analytics_admin.ListAccountSummariesResponse]]:
         r"""Return a callable for the list account summaries method over gRPC.
 
         Returns summaries of all accounts accessible by the
@@ -528,9 +490,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_account_summaries"]
 
     @property
-    def get_property(
-        self,
-    ) -> Callable[[analytics_admin.GetPropertyRequest], Awaitable[resources.Property]]:
+    def get_property(self) -> Callable[[analytics_admin.GetPropertyRequest], Awaitable[resources.Property]]:
         r"""Return a callable for the get property method over gRPC.
 
         Lookup for a single GA Property.
@@ -554,12 +514,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_property"]
 
     @property
-    def list_properties(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListPropertiesRequest],
-        Awaitable[analytics_admin.ListPropertiesResponse],
-    ]:
+    def list_properties(self) -> Callable[[analytics_admin.ListPropertiesRequest], Awaitable[analytics_admin.ListPropertiesResponse]]:
         r"""Return a callable for the list properties method over gRPC.
 
         Returns child Properties under the specified parent
@@ -588,11 +543,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_properties"]
 
     @property
-    def create_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreatePropertyRequest], Awaitable[resources.Property]
-    ]:
+    def create_property(self) -> Callable[[analytics_admin.CreatePropertyRequest], Awaitable[resources.Property]]:
         r"""Return a callable for the create property method over gRPC.
 
         Creates a Google Analytics property with the
@@ -617,11 +568,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_property"]
 
     @property
-    def delete_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeletePropertyRequest], Awaitable[resources.Property]
-    ]:
+    def delete_property(self) -> Callable[[analytics_admin.DeletePropertyRequest], Awaitable[resources.Property]]:
         r"""Return a callable for the delete property method over gRPC.
 
         Marks target Property as soft-deleted (ie: "trashed")
@@ -657,11 +604,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_property"]
 
     @property
-    def update_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdatePropertyRequest], Awaitable[resources.Property]
-    ]:
+    def update_property(self) -> Callable[[analytics_admin.UpdatePropertyRequest], Awaitable[resources.Property]]:
         r"""Return a callable for the update property method over gRPC.
 
         Updates a property.
@@ -685,11 +628,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_property"]
 
     @property
-    def create_firebase_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateFirebaseLinkRequest], Awaitable[resources.FirebaseLink]
-    ]:
+    def create_firebase_link(self) -> Callable[[analytics_admin.CreateFirebaseLinkRequest], Awaitable[resources.FirebaseLink]]:
         r"""Return a callable for the create firebase link method over gRPC.
 
         Creates a FirebaseLink.
@@ -715,11 +654,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_firebase_link"]
 
     @property
-    def delete_firebase_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteFirebaseLinkRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_firebase_link(self) -> Callable[[analytics_admin.DeleteFirebaseLinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete firebase link method over gRPC.
 
         Deletes a FirebaseLink on a property
@@ -743,12 +678,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_firebase_link"]
 
     @property
-    def list_firebase_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListFirebaseLinksRequest],
-        Awaitable[analytics_admin.ListFirebaseLinksResponse],
-    ]:
+    def list_firebase_links(self) -> Callable[[analytics_admin.ListFirebaseLinksRequest], Awaitable[analytics_admin.ListFirebaseLinksResponse]]:
         r"""Return a callable for the list firebase links method over gRPC.
 
         Lists FirebaseLinks on a property.
@@ -773,11 +703,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_firebase_links"]
 
     @property
-    def get_global_site_tag(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetGlobalSiteTagRequest], Awaitable[resources.GlobalSiteTag]
-    ]:
+    def get_global_site_tag(self) -> Callable[[analytics_admin.GetGlobalSiteTagRequest], Awaitable[resources.GlobalSiteTag]]:
         r"""Return a callable for the get global site tag method over gRPC.
 
         Returns the Site Tag for the specified web stream.
@@ -802,11 +728,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_global_site_tag"]
 
     @property
-    def create_google_ads_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateGoogleAdsLinkRequest], Awaitable[resources.GoogleAdsLink]
-    ]:
+    def create_google_ads_link(self) -> Callable[[analytics_admin.CreateGoogleAdsLinkRequest], Awaitable[resources.GoogleAdsLink]]:
         r"""Return a callable for the create google ads link method over gRPC.
 
         Creates a GoogleAdsLink.
@@ -830,11 +752,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_google_ads_link"]
 
     @property
-    def update_google_ads_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateGoogleAdsLinkRequest], Awaitable[resources.GoogleAdsLink]
-    ]:
+    def update_google_ads_link(self) -> Callable[[analytics_admin.UpdateGoogleAdsLinkRequest], Awaitable[resources.GoogleAdsLink]]:
         r"""Return a callable for the update google ads link method over gRPC.
 
         Updates a GoogleAdsLink on a property
@@ -858,11 +776,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_google_ads_link"]
 
     @property
-    def delete_google_ads_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteGoogleAdsLinkRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_google_ads_link(self) -> Callable[[analytics_admin.DeleteGoogleAdsLinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete google ads link method over gRPC.
 
         Deletes a GoogleAdsLink on a property
@@ -886,12 +800,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_google_ads_link"]
 
     @property
-    def list_google_ads_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListGoogleAdsLinksRequest],
-        Awaitable[analytics_admin.ListGoogleAdsLinksResponse],
-    ]:
+    def list_google_ads_links(self) -> Callable[[analytics_admin.ListGoogleAdsLinksRequest], Awaitable[analytics_admin.ListGoogleAdsLinksResponse]]:
         r"""Return a callable for the list google ads links method over gRPC.
 
         Lists GoogleAdsLinks on a property.
@@ -915,12 +824,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_google_ads_links"]
 
     @property
-    def get_data_sharing_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataSharingSettingsRequest],
-        Awaitable[resources.DataSharingSettings],
-    ]:
+    def get_data_sharing_settings(self) -> Callable[[analytics_admin.GetDataSharingSettingsRequest], Awaitable[resources.DataSharingSettings]]:
         r"""Return a callable for the get data sharing settings method over gRPC.
 
         Get data sharing settings on an account.
@@ -947,10 +851,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_measurement_protocol_secret(
         self,
-    ) -> Callable[
-        [analytics_admin.GetMeasurementProtocolSecretRequest],
-        Awaitable[resources.MeasurementProtocolSecret],
-    ]:
+    ) -> Callable[[analytics_admin.GetMeasurementProtocolSecretRequest], Awaitable[resources.MeasurementProtocolSecret]]:
         r"""Return a callable for the get measurement protocol
         secret method over gRPC.
 
@@ -967,9 +868,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "get_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetMeasurementProtocolSecret",
                 request_serializer=analytics_admin.GetMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=resources.MeasurementProtocolSecret.deserialize,
@@ -979,10 +878,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_measurement_protocol_secrets(
         self,
-    ) -> Callable[
-        [analytics_admin.ListMeasurementProtocolSecretsRequest],
-        Awaitable[analytics_admin.ListMeasurementProtocolSecretsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListMeasurementProtocolSecretsRequest], Awaitable[analytics_admin.ListMeasurementProtocolSecretsResponse]]:
         r"""Return a callable for the list measurement protocol
         secrets method over gRPC.
 
@@ -1000,9 +896,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_measurement_protocol_secrets" not in self._stubs:
-            self._stubs[
-                "list_measurement_protocol_secrets"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_measurement_protocol_secrets"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListMeasurementProtocolSecrets",
                 request_serializer=analytics_admin.ListMeasurementProtocolSecretsRequest.serialize,
                 response_deserializer=analytics_admin.ListMeasurementProtocolSecretsResponse.deserialize,
@@ -1012,10 +906,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_measurement_protocol_secret(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateMeasurementProtocolSecretRequest],
-        Awaitable[resources.MeasurementProtocolSecret],
-    ]:
+    ) -> Callable[[analytics_admin.CreateMeasurementProtocolSecretRequest], Awaitable[resources.MeasurementProtocolSecret]]:
         r"""Return a callable for the create measurement protocol
         secret method over gRPC.
 
@@ -1032,9 +923,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "create_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateMeasurementProtocolSecret",
                 request_serializer=analytics_admin.CreateMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=resources.MeasurementProtocolSecret.deserialize,
@@ -1042,12 +931,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_measurement_protocol_secret"]
 
     @property
-    def delete_measurement_protocol_secret(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteMeasurementProtocolSecretRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_measurement_protocol_secret(self) -> Callable[[analytics_admin.DeleteMeasurementProtocolSecretRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete measurement protocol
         secret method over gRPC.
 
@@ -1064,9 +948,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "delete_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteMeasurementProtocolSecret",
                 request_serializer=analytics_admin.DeleteMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1076,10 +958,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_measurement_protocol_secret(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateMeasurementProtocolSecretRequest],
-        Awaitable[resources.MeasurementProtocolSecret],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateMeasurementProtocolSecretRequest], Awaitable[resources.MeasurementProtocolSecret]]:
         r"""Return a callable for the update measurement protocol
         secret method over gRPC.
 
@@ -1096,9 +975,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_measurement_protocol_secret" not in self._stubs:
-            self._stubs[
-                "update_measurement_protocol_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_measurement_protocol_secret"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateMeasurementProtocolSecret",
                 request_serializer=analytics_admin.UpdateMeasurementProtocolSecretRequest.serialize,
                 response_deserializer=resources.MeasurementProtocolSecret.deserialize,
@@ -1108,10 +985,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def acknowledge_user_data_collection(
         self,
-    ) -> Callable[
-        [analytics_admin.AcknowledgeUserDataCollectionRequest],
-        Awaitable[analytics_admin.AcknowledgeUserDataCollectionResponse],
-    ]:
+    ) -> Callable[[analytics_admin.AcknowledgeUserDataCollectionRequest], Awaitable[analytics_admin.AcknowledgeUserDataCollectionResponse]]:
         r"""Return a callable for the acknowledge user data
         collection method over gRPC.
 
@@ -1132,9 +1006,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "acknowledge_user_data_collection" not in self._stubs:
-            self._stubs[
-                "acknowledge_user_data_collection"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["acknowledge_user_data_collection"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/AcknowledgeUserDataCollection",
                 request_serializer=analytics_admin.AcknowledgeUserDataCollectionRequest.serialize,
                 response_deserializer=analytics_admin.AcknowledgeUserDataCollectionResponse.deserialize,
@@ -1144,10 +1016,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_sk_ad_network_conversion_value_schema(
         self,
-    ) -> Callable[
-        [analytics_admin.GetSKAdNetworkConversionValueSchemaRequest],
-        Awaitable[resources.SKAdNetworkConversionValueSchema],
-    ]:
+    ) -> Callable[[analytics_admin.GetSKAdNetworkConversionValueSchemaRequest], Awaitable[resources.SKAdNetworkConversionValueSchema]]:
         r"""Return a callable for the get sk ad network conversion
         value schema method over gRPC.
 
@@ -1164,9 +1033,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_sk_ad_network_conversion_value_schema" not in self._stubs:
-            self._stubs[
-                "get_sk_ad_network_conversion_value_schema"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_sk_ad_network_conversion_value_schema"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSKAdNetworkConversionValueSchema",
                 request_serializer=analytics_admin.GetSKAdNetworkConversionValueSchemaRequest.serialize,
                 response_deserializer=resources.SKAdNetworkConversionValueSchema.deserialize,
@@ -1176,10 +1043,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_sk_ad_network_conversion_value_schema(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest],
-        Awaitable[resources.SKAdNetworkConversionValueSchema],
-    ]:
+    ) -> Callable[[analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest], Awaitable[resources.SKAdNetworkConversionValueSchema]]:
         r"""Return a callable for the create sk ad network
         conversion value schema method over gRPC.
 
@@ -1196,9 +1060,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_sk_ad_network_conversion_value_schema" not in self._stubs:
-            self._stubs[
-                "create_sk_ad_network_conversion_value_schema"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_sk_ad_network_conversion_value_schema"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSKAdNetworkConversionValueSchema",
                 request_serializer=analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest.serialize,
                 response_deserializer=resources.SKAdNetworkConversionValueSchema.deserialize,
@@ -1208,10 +1070,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def delete_sk_ad_network_conversion_value_schema(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete sk ad network
         conversion value schema method over gRPC.
 
@@ -1228,9 +1087,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_sk_ad_network_conversion_value_schema" not in self._stubs:
-            self._stubs[
-                "delete_sk_ad_network_conversion_value_schema"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_sk_ad_network_conversion_value_schema"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSKAdNetworkConversionValueSchema",
                 request_serializer=analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1240,10 +1097,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_sk_ad_network_conversion_value_schema(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest],
-        Awaitable[resources.SKAdNetworkConversionValueSchema],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest], Awaitable[resources.SKAdNetworkConversionValueSchema]]:
         r"""Return a callable for the update sk ad network
         conversion value schema method over gRPC.
 
@@ -1260,9 +1114,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_sk_ad_network_conversion_value_schema" not in self._stubs:
-            self._stubs[
-                "update_sk_ad_network_conversion_value_schema"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_sk_ad_network_conversion_value_schema"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSKAdNetworkConversionValueSchema",
                 request_serializer=analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest.serialize,
                 response_deserializer=resources.SKAdNetworkConversionValueSchema.deserialize,
@@ -1273,8 +1125,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     def list_sk_ad_network_conversion_value_schemas(
         self,
     ) -> Callable[
-        [analytics_admin.ListSKAdNetworkConversionValueSchemasRequest],
-        Awaitable[analytics_admin.ListSKAdNetworkConversionValueSchemasResponse],
+        [analytics_admin.ListSKAdNetworkConversionValueSchemasRequest], Awaitable[analytics_admin.ListSKAdNetworkConversionValueSchemasResponse]
     ]:
         r"""Return a callable for the list sk ad network conversion
         value schemas method over gRPC.
@@ -1294,9 +1145,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sk_ad_network_conversion_value_schemas" not in self._stubs:
-            self._stubs[
-                "list_sk_ad_network_conversion_value_schemas"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_sk_ad_network_conversion_value_schemas"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSKAdNetworkConversionValueSchemas",
                 request_serializer=analytics_admin.ListSKAdNetworkConversionValueSchemasRequest.serialize,
                 response_deserializer=analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.deserialize,
@@ -1306,10 +1155,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def search_change_history_events(
         self,
-    ) -> Callable[
-        [analytics_admin.SearchChangeHistoryEventsRequest],
-        Awaitable[analytics_admin.SearchChangeHistoryEventsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.SearchChangeHistoryEventsRequest], Awaitable[analytics_admin.SearchChangeHistoryEventsResponse]]:
         r"""Return a callable for the search change history events method over gRPC.
 
         Searches through all changes to an account or its
@@ -1329,9 +1175,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_change_history_events" not in self._stubs:
-            self._stubs[
-                "search_change_history_events"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_change_history_events"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/SearchChangeHistoryEvents",
                 request_serializer=analytics_admin.SearchChangeHistoryEventsRequest.serialize,
                 response_deserializer=analytics_admin.SearchChangeHistoryEventsResponse.deserialize,
@@ -1339,12 +1183,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["search_change_history_events"]
 
     @property
-    def get_google_signals_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetGoogleSignalsSettingsRequest],
-        Awaitable[resources.GoogleSignalsSettings],
-    ]:
+    def get_google_signals_settings(self) -> Callable[[analytics_admin.GetGoogleSignalsSettingsRequest], Awaitable[resources.GoogleSignalsSettings]]:
         r"""Return a callable for the get google signals settings method over gRPC.
 
         Lookup for Google Signals settings for a property.
@@ -1360,9 +1199,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_google_signals_settings" not in self._stubs:
-            self._stubs[
-                "get_google_signals_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_google_signals_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetGoogleSignalsSettings",
                 request_serializer=analytics_admin.GetGoogleSignalsSettingsRequest.serialize,
                 response_deserializer=resources.GoogleSignalsSettings.deserialize,
@@ -1372,10 +1209,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_google_signals_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateGoogleSignalsSettingsRequest],
-        Awaitable[resources.GoogleSignalsSettings],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateGoogleSignalsSettingsRequest], Awaitable[resources.GoogleSignalsSettings]]:
         r"""Return a callable for the update google signals settings method over gRPC.
 
         Updates Google Signals settings for a property.
@@ -1391,9 +1225,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_google_signals_settings" not in self._stubs:
-            self._stubs[
-                "update_google_signals_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_google_signals_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateGoogleSignalsSettings",
                 request_serializer=analytics_admin.UpdateGoogleSignalsSettingsRequest.serialize,
                 response_deserializer=resources.GoogleSignalsSettings.deserialize,
@@ -1401,12 +1233,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_google_signals_settings"]
 
     @property
-    def create_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateConversionEventRequest],
-        Awaitable[resources.ConversionEvent],
-    ]:
+    def create_conversion_event(self) -> Callable[[analytics_admin.CreateConversionEventRequest], Awaitable[resources.ConversionEvent]]:
         r"""Return a callable for the create conversion event method over gRPC.
 
         Deprecated: Use ``CreateKeyEvent`` instead. Creates a conversion
@@ -1431,12 +1258,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_conversion_event"]
 
     @property
-    def update_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateConversionEventRequest],
-        Awaitable[resources.ConversionEvent],
-    ]:
+    def update_conversion_event(self) -> Callable[[analytics_admin.UpdateConversionEventRequest], Awaitable[resources.ConversionEvent]]:
         r"""Return a callable for the update conversion event method over gRPC.
 
         Deprecated: Use ``UpdateKeyEvent`` instead. Updates a conversion
@@ -1461,12 +1283,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_conversion_event"]
 
     @property
-    def get_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetConversionEventRequest],
-        Awaitable[resources.ConversionEvent],
-    ]:
+    def get_conversion_event(self) -> Callable[[analytics_admin.GetConversionEventRequest], Awaitable[resources.ConversionEvent]]:
         r"""Return a callable for the get conversion event method over gRPC.
 
         Deprecated: Use ``GetKeyEvent`` instead. Retrieve a single
@@ -1491,11 +1308,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_conversion_event"]
 
     @property
-    def delete_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteConversionEventRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_conversion_event(self) -> Callable[[analytics_admin.DeleteConversionEventRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete conversion event method over gRPC.
 
         Deprecated: Use ``DeleteKeyEvent`` instead. Deletes a conversion
@@ -1522,10 +1335,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_conversion_events(
         self,
-    ) -> Callable[
-        [analytics_admin.ListConversionEventsRequest],
-        Awaitable[analytics_admin.ListConversionEventsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListConversionEventsRequest], Awaitable[analytics_admin.ListConversionEventsResponse]]:
         r"""Return a callable for the list conversion events method over gRPC.
 
         Deprecated: Use ``ListKeyEvents`` instead. Returns a list of
@@ -1552,11 +1362,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_conversion_events"]
 
     @property
-    def create_key_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateKeyEventRequest], Awaitable[resources.KeyEvent]
-    ]:
+    def create_key_event(self) -> Callable[[analytics_admin.CreateKeyEventRequest], Awaitable[resources.KeyEvent]]:
         r"""Return a callable for the create key event method over gRPC.
 
         Creates a Key Event.
@@ -1580,11 +1386,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_key_event"]
 
     @property
-    def update_key_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateKeyEventRequest], Awaitable[resources.KeyEvent]
-    ]:
+    def update_key_event(self) -> Callable[[analytics_admin.UpdateKeyEventRequest], Awaitable[resources.KeyEvent]]:
         r"""Return a callable for the update key event method over gRPC.
 
         Updates a Key Event.
@@ -1608,9 +1410,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_key_event"]
 
     @property
-    def get_key_event(
-        self,
-    ) -> Callable[[analytics_admin.GetKeyEventRequest], Awaitable[resources.KeyEvent]]:
+    def get_key_event(self) -> Callable[[analytics_admin.GetKeyEventRequest], Awaitable[resources.KeyEvent]]:
         r"""Return a callable for the get key event method over gRPC.
 
         Retrieve a single Key Event.
@@ -1634,9 +1434,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_key_event"]
 
     @property
-    def delete_key_event(
-        self,
-    ) -> Callable[[analytics_admin.DeleteKeyEventRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_key_event(self) -> Callable[[analytics_admin.DeleteKeyEventRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete key event method over gRPC.
 
         Deletes a Key Event.
@@ -1660,12 +1458,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_key_event"]
 
     @property
-    def list_key_events(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListKeyEventsRequest],
-        Awaitable[analytics_admin.ListKeyEventsResponse],
-    ]:
+    def list_key_events(self) -> Callable[[analytics_admin.ListKeyEventsRequest], Awaitable[analytics_admin.ListKeyEventsResponse]]:
         r"""Return a callable for the list key events method over gRPC.
 
         Returns a list of Key Events in the specified parent
@@ -1693,10 +1486,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_display_video360_advertiser_link(
         self,
-    ) -> Callable[
-        [analytics_admin.GetDisplayVideo360AdvertiserLinkRequest],
-        Awaitable[resources.DisplayVideo360AdvertiserLink],
-    ]:
+    ) -> Callable[[analytics_admin.GetDisplayVideo360AdvertiserLinkRequest], Awaitable[resources.DisplayVideo360AdvertiserLink]]:
         r"""Return a callable for the get display video360
         advertiser link method over gRPC.
 
@@ -1713,9 +1503,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_display_video360_advertiser_link" not in self._stubs:
-            self._stubs[
-                "get_display_video360_advertiser_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_display_video360_advertiser_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDisplayVideo360AdvertiserLink",
                 request_serializer=analytics_admin.GetDisplayVideo360AdvertiserLinkRequest.serialize,
                 response_deserializer=resources.DisplayVideo360AdvertiserLink.deserialize,
@@ -1725,10 +1513,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_display_video360_advertiser_links(
         self,
-    ) -> Callable[
-        [analytics_admin.ListDisplayVideo360AdvertiserLinksRequest],
-        Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListDisplayVideo360AdvertiserLinksRequest], Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]]:
         r"""Return a callable for the list display video360
         advertiser links method over gRPC.
 
@@ -1746,9 +1531,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_display_video360_advertiser_links" not in self._stubs:
-            self._stubs[
-                "list_display_video360_advertiser_links"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_display_video360_advertiser_links"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListDisplayVideo360AdvertiserLinks",
                 request_serializer=analytics_admin.ListDisplayVideo360AdvertiserLinksRequest.serialize,
                 response_deserializer=analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.deserialize,
@@ -1758,10 +1541,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_display_video360_advertiser_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest],
-        Awaitable[resources.DisplayVideo360AdvertiserLink],
-    ]:
+    ) -> Callable[[analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest], Awaitable[resources.DisplayVideo360AdvertiserLink]]:
         r"""Return a callable for the create display video360
         advertiser link method over gRPC.
 
@@ -1783,9 +1563,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_display_video360_advertiser_link" not in self._stubs:
-            self._stubs[
-                "create_display_video360_advertiser_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_display_video360_advertiser_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateDisplayVideo360AdvertiserLink",
                 request_serializer=analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest.serialize,
                 response_deserializer=resources.DisplayVideo360AdvertiserLink.deserialize,
@@ -1795,10 +1573,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def delete_display_video360_advertiser_link(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete display video360
         advertiser link method over gRPC.
 
@@ -1816,9 +1591,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_display_video360_advertiser_link" not in self._stubs:
-            self._stubs[
-                "delete_display_video360_advertiser_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_display_video360_advertiser_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteDisplayVideo360AdvertiserLink",
                 request_serializer=analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1828,10 +1601,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_display_video360_advertiser_link(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest],
-        Awaitable[resources.DisplayVideo360AdvertiserLink],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest], Awaitable[resources.DisplayVideo360AdvertiserLink]]:
         r"""Return a callable for the update display video360
         advertiser link method over gRPC.
 
@@ -1849,9 +1619,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_display_video360_advertiser_link" not in self._stubs:
-            self._stubs[
-                "update_display_video360_advertiser_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_display_video360_advertiser_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDisplayVideo360AdvertiserLink",
                 request_serializer=analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest.serialize,
                 response_deserializer=resources.DisplayVideo360AdvertiserLink.deserialize,
@@ -1861,10 +1629,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_display_video360_advertiser_link_proposal(
         self,
-    ) -> Callable[
-        [analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest],
-        Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
-    ]:
+    ) -> Callable[[analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest], Awaitable[resources.DisplayVideo360AdvertiserLinkProposal]]:
         r"""Return a callable for the get display video360
         advertiser link proposal method over gRPC.
 
@@ -1882,9 +1647,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_display_video360_advertiser_link_proposal" not in self._stubs:
-            self._stubs[
-                "get_display_video360_advertiser_link_proposal"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_display_video360_advertiser_link_proposal"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDisplayVideo360AdvertiserLinkProposal",
                 request_serializer=analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest.serialize,
                 response_deserializer=resources.DisplayVideo360AdvertiserLinkProposal.deserialize,
@@ -1915,9 +1678,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_display_video360_advertiser_link_proposals" not in self._stubs:
-            self._stubs[
-                "list_display_video360_advertiser_link_proposals"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_display_video360_advertiser_link_proposals"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListDisplayVideo360AdvertiserLinkProposals",
                 request_serializer=analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest.serialize,
                 response_deserializer=analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.deserialize,
@@ -1927,10 +1688,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_display_video360_advertiser_link_proposal(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest],
-        Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
-    ]:
+    ) -> Callable[[analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest], Awaitable[resources.DisplayVideo360AdvertiserLinkProposal]]:
         r"""Return a callable for the create display video360
         advertiser link proposal method over gRPC.
 
@@ -1947,9 +1705,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_display_video360_advertiser_link_proposal" not in self._stubs:
-            self._stubs[
-                "create_display_video360_advertiser_link_proposal"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_display_video360_advertiser_link_proposal"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateDisplayVideo360AdvertiserLinkProposal",
                 request_serializer=analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest.serialize,
                 response_deserializer=resources.DisplayVideo360AdvertiserLinkProposal.deserialize,
@@ -1959,10 +1715,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def delete_display_video360_advertiser_link_proposal(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete display video360
         advertiser link proposal method over gRPC.
 
@@ -1980,9 +1733,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_display_video360_advertiser_link_proposal" not in self._stubs:
-            self._stubs[
-                "delete_display_video360_advertiser_link_proposal"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_display_video360_advertiser_link_proposal"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteDisplayVideo360AdvertiserLinkProposal",
                 request_serializer=analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -2015,9 +1766,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "approve_display_video360_advertiser_link_proposal" not in self._stubs:
-            self._stubs[
-                "approve_display_video360_advertiser_link_proposal"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["approve_display_video360_advertiser_link_proposal"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ApproveDisplayVideo360AdvertiserLinkProposal",
                 request_serializer=analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest.serialize,
                 response_deserializer=analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse.deserialize,
@@ -2027,10 +1776,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def cancel_display_video360_advertiser_link_proposal(
         self,
-    ) -> Callable[
-        [analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest],
-        Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
-    ]:
+    ) -> Callable[[analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest], Awaitable[resources.DisplayVideo360AdvertiserLinkProposal]]:
         r"""Return a callable for the cancel display video360
         advertiser link proposal method over gRPC.
 
@@ -2054,9 +1800,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_display_video360_advertiser_link_proposal" not in self._stubs:
-            self._stubs[
-                "cancel_display_video360_advertiser_link_proposal"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["cancel_display_video360_advertiser_link_proposal"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CancelDisplayVideo360AdvertiserLinkProposal",
                 request_serializer=analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest.serialize,
                 response_deserializer=resources.DisplayVideo360AdvertiserLinkProposal.deserialize,
@@ -2064,12 +1808,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["cancel_display_video360_advertiser_link_proposal"]
 
     @property
-    def create_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateCustomDimensionRequest],
-        Awaitable[resources.CustomDimension],
-    ]:
+    def create_custom_dimension(self) -> Callable[[analytics_admin.CreateCustomDimensionRequest], Awaitable[resources.CustomDimension]]:
         r"""Return a callable for the create custom dimension method over gRPC.
 
         Creates a CustomDimension.
@@ -2093,12 +1832,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_custom_dimension"]
 
     @property
-    def update_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateCustomDimensionRequest],
-        Awaitable[resources.CustomDimension],
-    ]:
+    def update_custom_dimension(self) -> Callable[[analytics_admin.UpdateCustomDimensionRequest], Awaitable[resources.CustomDimension]]:
         r"""Return a callable for the update custom dimension method over gRPC.
 
         Updates a CustomDimension on a property.
@@ -2124,10 +1858,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_custom_dimensions(
         self,
-    ) -> Callable[
-        [analytics_admin.ListCustomDimensionsRequest],
-        Awaitable[analytics_admin.ListCustomDimensionsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListCustomDimensionsRequest], Awaitable[analytics_admin.ListCustomDimensionsResponse]]:
         r"""Return a callable for the list custom dimensions method over gRPC.
 
         Lists CustomDimensions on a property.
@@ -2151,11 +1882,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_custom_dimensions"]
 
     @property
-    def archive_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.ArchiveCustomDimensionRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def archive_custom_dimension(self) -> Callable[[analytics_admin.ArchiveCustomDimensionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the archive custom dimension method over gRPC.
 
         Archives a CustomDimension on a property.
@@ -2179,12 +1906,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["archive_custom_dimension"]
 
     @property
-    def get_custom_dimension(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetCustomDimensionRequest],
-        Awaitable[resources.CustomDimension],
-    ]:
+    def get_custom_dimension(self) -> Callable[[analytics_admin.GetCustomDimensionRequest], Awaitable[resources.CustomDimension]]:
         r"""Return a callable for the get custom dimension method over gRPC.
 
         Lookup for a single CustomDimension.
@@ -2208,11 +1930,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_custom_dimension"]
 
     @property
-    def create_custom_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateCustomMetricRequest], Awaitable[resources.CustomMetric]
-    ]:
+    def create_custom_metric(self) -> Callable[[analytics_admin.CreateCustomMetricRequest], Awaitable[resources.CustomMetric]]:
         r"""Return a callable for the create custom metric method over gRPC.
 
         Creates a CustomMetric.
@@ -2236,11 +1954,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_custom_metric"]
 
     @property
-    def update_custom_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateCustomMetricRequest], Awaitable[resources.CustomMetric]
-    ]:
+    def update_custom_metric(self) -> Callable[[analytics_admin.UpdateCustomMetricRequest], Awaitable[resources.CustomMetric]]:
         r"""Return a callable for the update custom metric method over gRPC.
 
         Updates a CustomMetric on a property.
@@ -2264,12 +1978,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_custom_metric"]
 
     @property
-    def list_custom_metrics(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListCustomMetricsRequest],
-        Awaitable[analytics_admin.ListCustomMetricsResponse],
-    ]:
+    def list_custom_metrics(self) -> Callable[[analytics_admin.ListCustomMetricsRequest], Awaitable[analytics_admin.ListCustomMetricsResponse]]:
         r"""Return a callable for the list custom metrics method over gRPC.
 
         Lists CustomMetrics on a property.
@@ -2293,11 +2002,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_custom_metrics"]
 
     @property
-    def archive_custom_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.ArchiveCustomMetricRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def archive_custom_metric(self) -> Callable[[analytics_admin.ArchiveCustomMetricRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the archive custom metric method over gRPC.
 
         Archives a CustomMetric on a property.
@@ -2321,11 +2026,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["archive_custom_metric"]
 
     @property
-    def get_custom_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetCustomMetricRequest], Awaitable[resources.CustomMetric]
-    ]:
+    def get_custom_metric(self) -> Callable[[analytics_admin.GetCustomMetricRequest], Awaitable[resources.CustomMetric]]:
         r"""Return a callable for the get custom metric method over gRPC.
 
         Lookup for a single CustomMetric.
@@ -2349,12 +2050,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_custom_metric"]
 
     @property
-    def get_data_retention_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataRetentionSettingsRequest],
-        Awaitable[resources.DataRetentionSettings],
-    ]:
+    def get_data_retention_settings(self) -> Callable[[analytics_admin.GetDataRetentionSettingsRequest], Awaitable[resources.DataRetentionSettings]]:
         r"""Return a callable for the get data retention settings method over gRPC.
 
         Returns the singleton data retention settings for
@@ -2371,9 +2067,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_retention_settings" not in self._stubs:
-            self._stubs[
-                "get_data_retention_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_data_retention_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataRetentionSettings",
                 request_serializer=analytics_admin.GetDataRetentionSettingsRequest.serialize,
                 response_deserializer=resources.DataRetentionSettings.deserialize,
@@ -2383,10 +2077,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_data_retention_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateDataRetentionSettingsRequest],
-        Awaitable[resources.DataRetentionSettings],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateDataRetentionSettingsRequest], Awaitable[resources.DataRetentionSettings]]:
         r"""Return a callable for the update data retention settings method over gRPC.
 
         Updates the singleton data retention settings for
@@ -2403,9 +2094,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_retention_settings" not in self._stubs:
-            self._stubs[
-                "update_data_retention_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_data_retention_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataRetentionSettings",
                 request_serializer=analytics_admin.UpdateDataRetentionSettingsRequest.serialize,
                 response_deserializer=resources.DataRetentionSettings.deserialize,
@@ -2413,11 +2102,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_data_retention_settings"]
 
     @property
-    def create_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateDataStreamRequest], Awaitable[resources.DataStream]
-    ]:
+    def create_data_stream(self) -> Callable[[analytics_admin.CreateDataStreamRequest], Awaitable[resources.DataStream]]:
         r"""Return a callable for the create data stream method over gRPC.
 
         Creates a DataStream.
@@ -2441,11 +2126,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_data_stream"]
 
     @property
-    def delete_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteDataStreamRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_data_stream(self) -> Callable[[analytics_admin.DeleteDataStreamRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete data stream method over gRPC.
 
         Deletes a DataStream on a property.
@@ -2469,11 +2150,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_data_stream"]
 
     @property
-    def update_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateDataStreamRequest], Awaitable[resources.DataStream]
-    ]:
+    def update_data_stream(self) -> Callable[[analytics_admin.UpdateDataStreamRequest], Awaitable[resources.DataStream]]:
         r"""Return a callable for the update data stream method over gRPC.
 
         Updates a DataStream on a property.
@@ -2497,12 +2174,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_data_stream"]
 
     @property
-    def list_data_streams(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListDataStreamsRequest],
-        Awaitable[analytics_admin.ListDataStreamsResponse],
-    ]:
+    def list_data_streams(self) -> Callable[[analytics_admin.ListDataStreamsRequest], Awaitable[analytics_admin.ListDataStreamsResponse]]:
         r"""Return a callable for the list data streams method over gRPC.
 
         Lists DataStreams on a property.
@@ -2526,11 +2198,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_data_streams"]
 
     @property
-    def get_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataStreamRequest], Awaitable[resources.DataStream]
-    ]:
+    def get_data_stream(self) -> Callable[[analytics_admin.GetDataStreamRequest], Awaitable[resources.DataStream]]:
         r"""Return a callable for the get data stream method over gRPC.
 
         Lookup for a single DataStream.
@@ -2554,9 +2222,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_data_stream"]
 
     @property
-    def get_audience(
-        self,
-    ) -> Callable[[analytics_admin.GetAudienceRequest], Awaitable[audience.Audience]]:
+    def get_audience(self) -> Callable[[analytics_admin.GetAudienceRequest], Awaitable[audience.Audience]]:
         r"""Return a callable for the get audience method over gRPC.
 
         Lookup for a single Audience.
@@ -2582,12 +2248,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_audience"]
 
     @property
-    def list_audiences(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAudiencesRequest],
-        Awaitable[analytics_admin.ListAudiencesResponse],
-    ]:
+    def list_audiences(self) -> Callable[[analytics_admin.ListAudiencesRequest], Awaitable[analytics_admin.ListAudiencesResponse]]:
         r"""Return a callable for the list audiences method over gRPC.
 
         Lists Audiences on a property.
@@ -2613,11 +2274,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_audiences"]
 
     @property
-    def create_audience(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateAudienceRequest], Awaitable[gaa_audience.Audience]
-    ]:
+    def create_audience(self) -> Callable[[analytics_admin.CreateAudienceRequest], Awaitable[gaa_audience.Audience]]:
         r"""Return a callable for the create audience method over gRPC.
 
         Creates an Audience.
@@ -2641,11 +2298,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_audience"]
 
     @property
-    def update_audience(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateAudienceRequest], Awaitable[gaa_audience.Audience]
-    ]:
+    def update_audience(self) -> Callable[[analytics_admin.UpdateAudienceRequest], Awaitable[gaa_audience.Audience]]:
         r"""Return a callable for the update audience method over gRPC.
 
         Updates an Audience on a property.
@@ -2669,9 +2322,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_audience"]
 
     @property
-    def archive_audience(
-        self,
-    ) -> Callable[[analytics_admin.ArchiveAudienceRequest], Awaitable[empty_pb2.Empty]]:
+    def archive_audience(self) -> Callable[[analytics_admin.ArchiveAudienceRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the archive audience method over gRPC.
 
         Archives an Audience on a property.
@@ -2695,12 +2346,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["archive_audience"]
 
     @property
-    def get_search_ads360_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetSearchAds360LinkRequest],
-        Awaitable[resources.SearchAds360Link],
-    ]:
+    def get_search_ads360_link(self) -> Callable[[analytics_admin.GetSearchAds360LinkRequest], Awaitable[resources.SearchAds360Link]]:
         r"""Return a callable for the get search ads360 link method over gRPC.
 
         Look up a single SearchAds360Link
@@ -2726,10 +2372,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_search_ads360_links(
         self,
-    ) -> Callable[
-        [analytics_admin.ListSearchAds360LinksRequest],
-        Awaitable[analytics_admin.ListSearchAds360LinksResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListSearchAds360LinksRequest], Awaitable[analytics_admin.ListSearchAds360LinksResponse]]:
         r"""Return a callable for the list search ads360 links method over gRPC.
 
         Lists all SearchAds360Links on a property.
@@ -2753,12 +2396,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_search_ads360_links"]
 
     @property
-    def create_search_ads360_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateSearchAds360LinkRequest],
-        Awaitable[resources.SearchAds360Link],
-    ]:
+    def create_search_ads360_link(self) -> Callable[[analytics_admin.CreateSearchAds360LinkRequest], Awaitable[resources.SearchAds360Link]]:
         r"""Return a callable for the create search ads360 link method over gRPC.
 
         Creates a SearchAds360Link.
@@ -2782,11 +2420,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_search_ads360_link"]
 
     @property
-    def delete_search_ads360_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteSearchAds360LinkRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_search_ads360_link(self) -> Callable[[analytics_admin.DeleteSearchAds360LinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete search ads360 link method over gRPC.
 
         Deletes a SearchAds360Link on a property.
@@ -2810,12 +2444,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_search_ads360_link"]
 
     @property
-    def update_search_ads360_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateSearchAds360LinkRequest],
-        Awaitable[resources.SearchAds360Link],
-    ]:
+    def update_search_ads360_link(self) -> Callable[[analytics_admin.UpdateSearchAds360LinkRequest], Awaitable[resources.SearchAds360Link]]:
         r"""Return a callable for the update search ads360 link method over gRPC.
 
         Updates a SearchAds360Link on a property.
@@ -2839,12 +2468,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_search_ads360_link"]
 
     @property
-    def get_attribution_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAttributionSettingsRequest],
-        Awaitable[resources.AttributionSettings],
-    ]:
+    def get_attribution_settings(self) -> Callable[[analytics_admin.GetAttributionSettingsRequest], Awaitable[resources.AttributionSettings]]:
         r"""Return a callable for the get attribution settings method over gRPC.
 
         Lookup for a AttributionSettings singleton.
@@ -2868,12 +2492,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_attribution_settings"]
 
     @property
-    def update_attribution_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateAttributionSettingsRequest],
-        Awaitable[resources.AttributionSettings],
-    ]:
+    def update_attribution_settings(self) -> Callable[[analytics_admin.UpdateAttributionSettingsRequest], Awaitable[resources.AttributionSettings]]:
         r"""Return a callable for the update attribution settings method over gRPC.
 
         Updates attribution settings on a property.
@@ -2889,9 +2508,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_attribution_settings" not in self._stubs:
-            self._stubs[
-                "update_attribution_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_attribution_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateAttributionSettings",
                 request_serializer=analytics_admin.UpdateAttributionSettingsRequest.serialize,
                 response_deserializer=resources.AttributionSettings.deserialize,
@@ -2899,12 +2516,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_attribution_settings"]
 
     @property
-    def run_access_report(
-        self,
-    ) -> Callable[
-        [analytics_admin.RunAccessReportRequest],
-        Awaitable[analytics_admin.RunAccessReportResponse],
-    ]:
+    def run_access_report(self) -> Callable[[analytics_admin.RunAccessReportRequest], Awaitable[analytics_admin.RunAccessReportResponse]]:
         r"""Return a callable for the run access report method over gRPC.
 
         Returns a customized report of data access records. The report
@@ -2948,11 +2560,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["run_access_report"]
 
     @property
-    def create_access_binding(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateAccessBindingRequest], Awaitable[resources.AccessBinding]
-    ]:
+    def create_access_binding(self) -> Callable[[analytics_admin.CreateAccessBindingRequest], Awaitable[resources.AccessBinding]]:
         r"""Return a callable for the create access binding method over gRPC.
 
         Creates an access binding on an account or property.
@@ -2976,11 +2584,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_access_binding"]
 
     @property
-    def get_access_binding(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAccessBindingRequest], Awaitable[resources.AccessBinding]
-    ]:
+    def get_access_binding(self) -> Callable[[analytics_admin.GetAccessBindingRequest], Awaitable[resources.AccessBinding]]:
         r"""Return a callable for the get access binding method over gRPC.
 
         Gets information about an access binding.
@@ -3004,11 +2608,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_access_binding"]
 
     @property
-    def update_access_binding(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateAccessBindingRequest], Awaitable[resources.AccessBinding]
-    ]:
+    def update_access_binding(self) -> Callable[[analytics_admin.UpdateAccessBindingRequest], Awaitable[resources.AccessBinding]]:
         r"""Return a callable for the update access binding method over gRPC.
 
         Updates an access binding on an account or property.
@@ -3032,11 +2632,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_access_binding"]
 
     @property
-    def delete_access_binding(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteAccessBindingRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_access_binding(self) -> Callable[[analytics_admin.DeleteAccessBindingRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete access binding method over gRPC.
 
         Deletes an access binding on an account or property.
@@ -3060,12 +2656,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_access_binding"]
 
     @property
-    def list_access_bindings(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAccessBindingsRequest],
-        Awaitable[analytics_admin.ListAccessBindingsResponse],
-    ]:
+    def list_access_bindings(self) -> Callable[[analytics_admin.ListAccessBindingsRequest], Awaitable[analytics_admin.ListAccessBindingsResponse]]:
         r"""Return a callable for the list access bindings method over gRPC.
 
         Lists all access bindings on an account or property.
@@ -3091,10 +2682,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def batch_create_access_bindings(
         self,
-    ) -> Callable[
-        [analytics_admin.BatchCreateAccessBindingsRequest],
-        Awaitable[analytics_admin.BatchCreateAccessBindingsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.BatchCreateAccessBindingsRequest], Awaitable[analytics_admin.BatchCreateAccessBindingsResponse]]:
         r"""Return a callable for the batch create access bindings method over gRPC.
 
         Creates information about multiple access bindings to
@@ -3115,9 +2703,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_access_bindings" not in self._stubs:
-            self._stubs[
-                "batch_create_access_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_create_access_bindings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchCreateAccessBindings",
                 request_serializer=analytics_admin.BatchCreateAccessBindingsRequest.serialize,
                 response_deserializer=analytics_admin.BatchCreateAccessBindingsResponse.deserialize,
@@ -3127,10 +2713,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def batch_get_access_bindings(
         self,
-    ) -> Callable[
-        [analytics_admin.BatchGetAccessBindingsRequest],
-        Awaitable[analytics_admin.BatchGetAccessBindingsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.BatchGetAccessBindingsRequest], Awaitable[analytics_admin.BatchGetAccessBindingsResponse]]:
         r"""Return a callable for the batch get access bindings method over gRPC.
 
         Gets information about multiple access bindings to an
@@ -3157,10 +2740,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def batch_update_access_bindings(
         self,
-    ) -> Callable[
-        [analytics_admin.BatchUpdateAccessBindingsRequest],
-        Awaitable[analytics_admin.BatchUpdateAccessBindingsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.BatchUpdateAccessBindingsRequest], Awaitable[analytics_admin.BatchUpdateAccessBindingsResponse]]:
         r"""Return a callable for the batch update access bindings method over gRPC.
 
         Updates information about multiple access bindings to
@@ -3177,9 +2757,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_access_bindings" not in self._stubs:
-            self._stubs[
-                "batch_update_access_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_update_access_bindings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchUpdateAccessBindings",
                 request_serializer=analytics_admin.BatchUpdateAccessBindingsRequest.serialize,
                 response_deserializer=analytics_admin.BatchUpdateAccessBindingsResponse.deserialize,
@@ -3187,11 +2765,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["batch_update_access_bindings"]
 
     @property
-    def batch_delete_access_bindings(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchDeleteAccessBindingsRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def batch_delete_access_bindings(self) -> Callable[[analytics_admin.BatchDeleteAccessBindingsRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the batch delete access bindings method over gRPC.
 
         Deletes information about multiple users' links to an
@@ -3208,9 +2782,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_delete_access_bindings" not in self._stubs:
-            self._stubs[
-                "batch_delete_access_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_delete_access_bindings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchDeleteAccessBindings",
                 request_serializer=analytics_admin.BatchDeleteAccessBindingsRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -3218,12 +2790,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["batch_delete_access_bindings"]
 
     @property
-    def get_expanded_data_set(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetExpandedDataSetRequest],
-        Awaitable[expanded_data_set.ExpandedDataSet],
-    ]:
+    def get_expanded_data_set(self) -> Callable[[analytics_admin.GetExpandedDataSetRequest], Awaitable[expanded_data_set.ExpandedDataSet]]:
         r"""Return a callable for the get expanded data set method over gRPC.
 
         Lookup for a single ExpandedDataSet.
@@ -3249,10 +2816,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_expanded_data_sets(
         self,
-    ) -> Callable[
-        [analytics_admin.ListExpandedDataSetsRequest],
-        Awaitable[analytics_admin.ListExpandedDataSetsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListExpandedDataSetsRequest], Awaitable[analytics_admin.ListExpandedDataSetsResponse]]:
         r"""Return a callable for the list expanded data sets method over gRPC.
 
         Lists ExpandedDataSets on a property.
@@ -3276,12 +2840,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_expanded_data_sets"]
 
     @property
-    def create_expanded_data_set(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateExpandedDataSetRequest],
-        Awaitable[gaa_expanded_data_set.ExpandedDataSet],
-    ]:
+    def create_expanded_data_set(self) -> Callable[[analytics_admin.CreateExpandedDataSetRequest], Awaitable[gaa_expanded_data_set.ExpandedDataSet]]:
         r"""Return a callable for the create expanded data set method over gRPC.
 
         Creates a ExpandedDataSet.
@@ -3305,12 +2864,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_expanded_data_set"]
 
     @property
-    def update_expanded_data_set(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateExpandedDataSetRequest],
-        Awaitable[gaa_expanded_data_set.ExpandedDataSet],
-    ]:
+    def update_expanded_data_set(self) -> Callable[[analytics_admin.UpdateExpandedDataSetRequest], Awaitable[gaa_expanded_data_set.ExpandedDataSet]]:
         r"""Return a callable for the update expanded data set method over gRPC.
 
         Updates a ExpandedDataSet on a property.
@@ -3334,11 +2888,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_expanded_data_set"]
 
     @property
-    def delete_expanded_data_set(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteExpandedDataSetRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_expanded_data_set(self) -> Callable[[analytics_admin.DeleteExpandedDataSetRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete expanded data set method over gRPC.
 
         Deletes a ExpandedDataSet on a property.
@@ -3362,11 +2912,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_expanded_data_set"]
 
     @property
-    def get_channel_group(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetChannelGroupRequest], Awaitable[channel_group.ChannelGroup]
-    ]:
+    def get_channel_group(self) -> Callable[[analytics_admin.GetChannelGroupRequest], Awaitable[channel_group.ChannelGroup]]:
         r"""Return a callable for the get channel group method over gRPC.
 
         Lookup for a single ChannelGroup.
@@ -3390,12 +2936,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_channel_group"]
 
     @property
-    def list_channel_groups(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListChannelGroupsRequest],
-        Awaitable[analytics_admin.ListChannelGroupsResponse],
-    ]:
+    def list_channel_groups(self) -> Callable[[analytics_admin.ListChannelGroupsRequest], Awaitable[analytics_admin.ListChannelGroupsResponse]]:
         r"""Return a callable for the list channel groups method over gRPC.
 
         Lists ChannelGroups on a property.
@@ -3419,12 +2960,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_channel_groups"]
 
     @property
-    def create_channel_group(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateChannelGroupRequest],
-        Awaitable[gaa_channel_group.ChannelGroup],
-    ]:
+    def create_channel_group(self) -> Callable[[analytics_admin.CreateChannelGroupRequest], Awaitable[gaa_channel_group.ChannelGroup]]:
         r"""Return a callable for the create channel group method over gRPC.
 
         Creates a ChannelGroup.
@@ -3448,12 +2984,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_channel_group"]
 
     @property
-    def update_channel_group(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateChannelGroupRequest],
-        Awaitable[gaa_channel_group.ChannelGroup],
-    ]:
+    def update_channel_group(self) -> Callable[[analytics_admin.UpdateChannelGroupRequest], Awaitable[gaa_channel_group.ChannelGroup]]:
         r"""Return a callable for the update channel group method over gRPC.
 
         Updates a ChannelGroup.
@@ -3477,11 +3008,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_channel_group"]
 
     @property
-    def delete_channel_group(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteChannelGroupRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_channel_group(self) -> Callable[[analytics_admin.DeleteChannelGroupRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete channel group method over gRPC.
 
         Deletes a ChannelGroup on a property.
@@ -3505,11 +3032,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_channel_group"]
 
     @property
-    def create_big_query_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateBigQueryLinkRequest], Awaitable[resources.BigQueryLink]
-    ]:
+    def create_big_query_link(self) -> Callable[[analytics_admin.CreateBigQueryLinkRequest], Awaitable[resources.BigQueryLink]]:
         r"""Return a callable for the create big query link method over gRPC.
 
         Creates a BigQueryLink.
@@ -3533,11 +3056,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_big_query_link"]
 
     @property
-    def get_big_query_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetBigQueryLinkRequest], Awaitable[resources.BigQueryLink]
-    ]:
+    def get_big_query_link(self) -> Callable[[analytics_admin.GetBigQueryLinkRequest], Awaitable[resources.BigQueryLink]]:
         r"""Return a callable for the get big query link method over gRPC.
 
         Lookup for a single BigQuery Link.
@@ -3561,12 +3080,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_big_query_link"]
 
     @property
-    def list_big_query_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListBigQueryLinksRequest],
-        Awaitable[analytics_admin.ListBigQueryLinksResponse],
-    ]:
+    def list_big_query_links(self) -> Callable[[analytics_admin.ListBigQueryLinksRequest], Awaitable[analytics_admin.ListBigQueryLinksResponse]]:
         r"""Return a callable for the list big query links method over gRPC.
 
         Lists BigQuery Links on a property.
@@ -3590,11 +3104,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_big_query_links"]
 
     @property
-    def delete_big_query_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteBigQueryLinkRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_big_query_link(self) -> Callable[[analytics_admin.DeleteBigQueryLinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete big query link method over gRPC.
 
         Deletes a BigQueryLink on a property.
@@ -3618,11 +3128,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_big_query_link"]
 
     @property
-    def update_big_query_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateBigQueryLinkRequest], Awaitable[resources.BigQueryLink]
-    ]:
+    def update_big_query_link(self) -> Callable[[analytics_admin.UpdateBigQueryLinkRequest], Awaitable[resources.BigQueryLink]]:
         r"""Return a callable for the update big query link method over gRPC.
 
         Updates a BigQueryLink.
@@ -3648,10 +3154,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_enhanced_measurement_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.GetEnhancedMeasurementSettingsRequest],
-        Awaitable[resources.EnhancedMeasurementSettings],
-    ]:
+    ) -> Callable[[analytics_admin.GetEnhancedMeasurementSettingsRequest], Awaitable[resources.EnhancedMeasurementSettings]]:
         r"""Return a callable for the get enhanced measurement
         settings method over gRPC.
 
@@ -3670,9 +3173,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_enhanced_measurement_settings" not in self._stubs:
-            self._stubs[
-                "get_enhanced_measurement_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_enhanced_measurement_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEnhancedMeasurementSettings",
                 request_serializer=analytics_admin.GetEnhancedMeasurementSettingsRequest.serialize,
                 response_deserializer=resources.EnhancedMeasurementSettings.deserialize,
@@ -3682,10 +3183,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_enhanced_measurement_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateEnhancedMeasurementSettingsRequest],
-        Awaitable[resources.EnhancedMeasurementSettings],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateEnhancedMeasurementSettingsRequest], Awaitable[resources.EnhancedMeasurementSettings]]:
         r"""Return a callable for the update enhanced measurement
         settings method over gRPC.
 
@@ -3704,9 +3202,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_enhanced_measurement_settings" not in self._stubs:
-            self._stubs[
-                "update_enhanced_measurement_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_enhanced_measurement_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEnhancedMeasurementSettings",
                 request_serializer=analytics_admin.UpdateEnhancedMeasurementSettingsRequest.serialize,
                 response_deserializer=resources.EnhancedMeasurementSettings.deserialize,
@@ -3714,11 +3210,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_enhanced_measurement_settings"]
 
     @property
-    def get_ad_sense_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAdSenseLinkRequest], Awaitable[resources.AdSenseLink]
-    ]:
+    def get_ad_sense_link(self) -> Callable[[analytics_admin.GetAdSenseLinkRequest], Awaitable[resources.AdSenseLink]]:
         r"""Return a callable for the get ad sense link method over gRPC.
 
         Looks up a single AdSenseLink.
@@ -3742,11 +3234,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_ad_sense_link"]
 
     @property
-    def create_ad_sense_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateAdSenseLinkRequest], Awaitable[resources.AdSenseLink]
-    ]:
+    def create_ad_sense_link(self) -> Callable[[analytics_admin.CreateAdSenseLinkRequest], Awaitable[resources.AdSenseLink]]:
         r"""Return a callable for the create ad sense link method over gRPC.
 
         Creates an AdSenseLink.
@@ -3770,11 +3258,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_ad_sense_link"]
 
     @property
-    def delete_ad_sense_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteAdSenseLinkRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_ad_sense_link(self) -> Callable[[analytics_admin.DeleteAdSenseLinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete ad sense link method over gRPC.
 
         Deletes an AdSenseLink.
@@ -3798,12 +3282,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_ad_sense_link"]
 
     @property
-    def list_ad_sense_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAdSenseLinksRequest],
-        Awaitable[analytics_admin.ListAdSenseLinksResponse],
-    ]:
+    def list_ad_sense_links(self) -> Callable[[analytics_admin.ListAdSenseLinksRequest], Awaitable[analytics_admin.ListAdSenseLinksResponse]]:
         r"""Return a callable for the list ad sense links method over gRPC.
 
         Lists AdSenseLinks on a property.
@@ -3827,12 +3306,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_ad_sense_links"]
 
     @property
-    def get_event_create_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetEventCreateRuleRequest],
-        Awaitable[event_create_and_edit.EventCreateRule],
-    ]:
+    def get_event_create_rule(self) -> Callable[[analytics_admin.GetEventCreateRuleRequest], Awaitable[event_create_and_edit.EventCreateRule]]:
         r"""Return a callable for the get event create rule method over gRPC.
 
         Lookup for a single EventCreateRule.
@@ -3858,10 +3332,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_event_create_rules(
         self,
-    ) -> Callable[
-        [analytics_admin.ListEventCreateRulesRequest],
-        Awaitable[analytics_admin.ListEventCreateRulesResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListEventCreateRulesRequest], Awaitable[analytics_admin.ListEventCreateRulesResponse]]:
         r"""Return a callable for the list event create rules method over gRPC.
 
         Lists EventCreateRules on a web data stream.
@@ -3885,12 +3356,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_event_create_rules"]
 
     @property
-    def create_event_create_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateEventCreateRuleRequest],
-        Awaitable[event_create_and_edit.EventCreateRule],
-    ]:
+    def create_event_create_rule(self) -> Callable[[analytics_admin.CreateEventCreateRuleRequest], Awaitable[event_create_and_edit.EventCreateRule]]:
         r"""Return a callable for the create event create rule method over gRPC.
 
         Creates an EventCreateRule.
@@ -3914,12 +3380,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_event_create_rule"]
 
     @property
-    def update_event_create_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateEventCreateRuleRequest],
-        Awaitable[event_create_and_edit.EventCreateRule],
-    ]:
+    def update_event_create_rule(self) -> Callable[[analytics_admin.UpdateEventCreateRuleRequest], Awaitable[event_create_and_edit.EventCreateRule]]:
         r"""Return a callable for the update event create rule method over gRPC.
 
         Updates an EventCreateRule.
@@ -3943,11 +3404,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_event_create_rule"]
 
     @property
-    def delete_event_create_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteEventCreateRuleRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_event_create_rule(self) -> Callable[[analytics_admin.DeleteEventCreateRuleRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete event create rule method over gRPC.
 
         Deletes an EventCreateRule.
@@ -3971,12 +3428,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_event_create_rule"]
 
     @property
-    def get_event_edit_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetEventEditRuleRequest],
-        Awaitable[event_create_and_edit.EventEditRule],
-    ]:
+    def get_event_edit_rule(self) -> Callable[[analytics_admin.GetEventEditRuleRequest], Awaitable[event_create_and_edit.EventEditRule]]:
         r"""Return a callable for the get event edit rule method over gRPC.
 
         Lookup for a single EventEditRule.
@@ -4000,12 +3452,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_event_edit_rule"]
 
     @property
-    def list_event_edit_rules(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListEventEditRulesRequest],
-        Awaitable[analytics_admin.ListEventEditRulesResponse],
-    ]:
+    def list_event_edit_rules(self) -> Callable[[analytics_admin.ListEventEditRulesRequest], Awaitable[analytics_admin.ListEventEditRulesResponse]]:
         r"""Return a callable for the list event edit rules method over gRPC.
 
         Lists EventEditRules on a web data stream.
@@ -4029,12 +3476,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_event_edit_rules"]
 
     @property
-    def create_event_edit_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateEventEditRuleRequest],
-        Awaitable[event_create_and_edit.EventEditRule],
-    ]:
+    def create_event_edit_rule(self) -> Callable[[analytics_admin.CreateEventEditRuleRequest], Awaitable[event_create_and_edit.EventEditRule]]:
         r"""Return a callable for the create event edit rule method over gRPC.
 
         Creates an EventEditRule.
@@ -4058,12 +3500,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_event_edit_rule"]
 
     @property
-    def update_event_edit_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateEventEditRuleRequest],
-        Awaitable[event_create_and_edit.EventEditRule],
-    ]:
+    def update_event_edit_rule(self) -> Callable[[analytics_admin.UpdateEventEditRuleRequest], Awaitable[event_create_and_edit.EventEditRule]]:
         r"""Return a callable for the update event edit rule method over gRPC.
 
         Updates an EventEditRule.
@@ -4087,11 +3524,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_event_edit_rule"]
 
     @property
-    def delete_event_edit_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteEventEditRuleRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_event_edit_rule(self) -> Callable[[analytics_admin.DeleteEventEditRuleRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete event edit rule method over gRPC.
 
         Deletes an EventEditRule.
@@ -4115,11 +3548,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_event_edit_rule"]
 
     @property
-    def reorder_event_edit_rules(
-        self,
-    ) -> Callable[
-        [analytics_admin.ReorderEventEditRulesRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def reorder_event_edit_rules(self) -> Callable[[analytics_admin.ReorderEventEditRulesRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the reorder event edit rules method over gRPC.
 
         Changes the processing order of event edit rules on
@@ -4146,10 +3575,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_data_redaction_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateDataRedactionSettingsRequest],
-        Awaitable[resources.DataRedactionSettings],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateDataRedactionSettingsRequest], Awaitable[resources.DataRedactionSettings]]:
         r"""Return a callable for the update data redaction settings method over gRPC.
 
         Updates a DataRedactionSettings on a property.
@@ -4165,9 +3591,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_redaction_settings" not in self._stubs:
-            self._stubs[
-                "update_data_redaction_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_data_redaction_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataRedactionSettings",
                 request_serializer=analytics_admin.UpdateDataRedactionSettingsRequest.serialize,
                 response_deserializer=resources.DataRedactionSettings.deserialize,
@@ -4175,12 +3599,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_data_redaction_settings"]
 
     @property
-    def get_data_redaction_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataRedactionSettingsRequest],
-        Awaitable[resources.DataRedactionSettings],
-    ]:
+    def get_data_redaction_settings(self) -> Callable[[analytics_admin.GetDataRedactionSettingsRequest], Awaitable[resources.DataRedactionSettings]]:
         r"""Return a callable for the get data redaction settings method over gRPC.
 
         Lookup for a single DataRedactionSettings.
@@ -4196,9 +3615,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_redaction_settings" not in self._stubs:
-            self._stubs[
-                "get_data_redaction_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_data_redaction_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataRedactionSettings",
                 request_serializer=analytics_admin.GetDataRedactionSettingsRequest.serialize,
                 response_deserializer=resources.DataRedactionSettings.deserialize,
@@ -4206,12 +3623,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_data_redaction_settings"]
 
     @property
-    def get_calculated_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetCalculatedMetricRequest],
-        Awaitable[resources.CalculatedMetric],
-    ]:
+    def get_calculated_metric(self) -> Callable[[analytics_admin.GetCalculatedMetricRequest], Awaitable[resources.CalculatedMetric]]:
         r"""Return a callable for the get calculated metric method over gRPC.
 
         Lookup for a single CalculatedMetric.
@@ -4235,12 +3647,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_calculated_metric"]
 
     @property
-    def create_calculated_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateCalculatedMetricRequest],
-        Awaitable[resources.CalculatedMetric],
-    ]:
+    def create_calculated_metric(self) -> Callable[[analytics_admin.CreateCalculatedMetricRequest], Awaitable[resources.CalculatedMetric]]:
         r"""Return a callable for the create calculated metric method over gRPC.
 
         Creates a CalculatedMetric.
@@ -4266,10 +3673,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_calculated_metrics(
         self,
-    ) -> Callable[
-        [analytics_admin.ListCalculatedMetricsRequest],
-        Awaitable[analytics_admin.ListCalculatedMetricsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListCalculatedMetricsRequest], Awaitable[analytics_admin.ListCalculatedMetricsResponse]]:
         r"""Return a callable for the list calculated metrics method over gRPC.
 
         Lists CalculatedMetrics on a property.
@@ -4293,12 +3697,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["list_calculated_metrics"]
 
     @property
-    def update_calculated_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateCalculatedMetricRequest],
-        Awaitable[resources.CalculatedMetric],
-    ]:
+    def update_calculated_metric(self) -> Callable[[analytics_admin.UpdateCalculatedMetricRequest], Awaitable[resources.CalculatedMetric]]:
         r"""Return a callable for the update calculated metric method over gRPC.
 
         Updates a CalculatedMetric on a property.
@@ -4322,11 +3721,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_calculated_metric"]
 
     @property
-    def delete_calculated_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteCalculatedMetricRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_calculated_metric(self) -> Callable[[analytics_admin.DeleteCalculatedMetricRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete calculated metric method over gRPC.
 
         Deletes a CalculatedMetric on a property.
@@ -4352,10 +3747,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_rollup_property(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateRollupPropertyRequest],
-        Awaitable[analytics_admin.CreateRollupPropertyResponse],
-    ]:
+    ) -> Callable[[analytics_admin.CreateRollupPropertyRequest], Awaitable[analytics_admin.CreateRollupPropertyResponse]]:
         r"""Return a callable for the create rollup property method over gRPC.
 
         Create a roll-up property and all roll-up property
@@ -4382,10 +3774,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_rollup_property_source_link(
         self,
-    ) -> Callable[
-        [analytics_admin.GetRollupPropertySourceLinkRequest],
-        Awaitable[resources.RollupPropertySourceLink],
-    ]:
+    ) -> Callable[[analytics_admin.GetRollupPropertySourceLinkRequest], Awaitable[resources.RollupPropertySourceLink]]:
         r"""Return a callable for the get rollup property source
         link method over gRPC.
 
@@ -4405,9 +3794,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_rollup_property_source_link" not in self._stubs:
-            self._stubs[
-                "get_rollup_property_source_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_rollup_property_source_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetRollupPropertySourceLink",
                 request_serializer=analytics_admin.GetRollupPropertySourceLinkRequest.serialize,
                 response_deserializer=resources.RollupPropertySourceLink.deserialize,
@@ -4417,10 +3804,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_rollup_property_source_links(
         self,
-    ) -> Callable[
-        [analytics_admin.ListRollupPropertySourceLinksRequest],
-        Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListRollupPropertySourceLinksRequest], Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse]]:
         r"""Return a callable for the list rollup property source
         links method over gRPC.
 
@@ -4440,9 +3824,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_rollup_property_source_links" not in self._stubs:
-            self._stubs[
-                "list_rollup_property_source_links"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_rollup_property_source_links"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListRollupPropertySourceLinks",
                 request_serializer=analytics_admin.ListRollupPropertySourceLinksRequest.serialize,
                 response_deserializer=analytics_admin.ListRollupPropertySourceLinksResponse.deserialize,
@@ -4452,10 +3834,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_rollup_property_source_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateRollupPropertySourceLinkRequest],
-        Awaitable[resources.RollupPropertySourceLink],
-    ]:
+    ) -> Callable[[analytics_admin.CreateRollupPropertySourceLinkRequest], Awaitable[resources.RollupPropertySourceLink]]:
         r"""Return a callable for the create rollup property source
         link method over gRPC.
 
@@ -4475,9 +3854,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_rollup_property_source_link" not in self._stubs:
-            self._stubs[
-                "create_rollup_property_source_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_rollup_property_source_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateRollupPropertySourceLink",
                 request_serializer=analytics_admin.CreateRollupPropertySourceLinkRequest.serialize,
                 response_deserializer=resources.RollupPropertySourceLink.deserialize,
@@ -4485,12 +3862,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_rollup_property_source_link"]
 
     @property
-    def delete_rollup_property_source_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteRollupPropertySourceLinkRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_rollup_property_source_link(self) -> Callable[[analytics_admin.DeleteRollupPropertySourceLinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete rollup property source
         link method over gRPC.
 
@@ -4510,9 +3882,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_rollup_property_source_link" not in self._stubs:
-            self._stubs[
-                "delete_rollup_property_source_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_rollup_property_source_link"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteRollupPropertySourceLink",
                 request_serializer=analytics_admin.DeleteRollupPropertySourceLinkRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -4522,10 +3892,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def provision_subproperty(
         self,
-    ) -> Callable[
-        [analytics_admin.ProvisionSubpropertyRequest],
-        Awaitable[analytics_admin.ProvisionSubpropertyResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ProvisionSubpropertyRequest], Awaitable[analytics_admin.ProvisionSubpropertyResponse]]:
         r"""Return a callable for the provision subproperty method over gRPC.
 
         Create a subproperty and a subproperty event filter
@@ -4552,10 +3919,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_subproperty_event_filter(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateSubpropertyEventFilterRequest],
-        Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
-    ]:
+    ) -> Callable[[analytics_admin.CreateSubpropertyEventFilterRequest], Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter]]:
         r"""Return a callable for the create subproperty event
         filter method over gRPC.
 
@@ -4572,9 +3936,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_subproperty_event_filter" not in self._stubs:
-            self._stubs[
-                "create_subproperty_event_filter"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_subproperty_event_filter"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubpropertyEventFilter",
                 request_serializer=analytics_admin.CreateSubpropertyEventFilterRequest.serialize,
                 response_deserializer=gaa_subproperty_event_filter.SubpropertyEventFilter.deserialize,
@@ -4584,10 +3946,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_subproperty_event_filter(
         self,
-    ) -> Callable[
-        [analytics_admin.GetSubpropertyEventFilterRequest],
-        Awaitable[subproperty_event_filter.SubpropertyEventFilter],
-    ]:
+    ) -> Callable[[analytics_admin.GetSubpropertyEventFilterRequest], Awaitable[subproperty_event_filter.SubpropertyEventFilter]]:
         r"""Return a callable for the get subproperty event filter method over gRPC.
 
         Lookup for a single subproperty Event Filter.
@@ -4603,9 +3962,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_subproperty_event_filter" not in self._stubs:
-            self._stubs[
-                "get_subproperty_event_filter"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_subproperty_event_filter"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSubpropertyEventFilter",
                 request_serializer=analytics_admin.GetSubpropertyEventFilterRequest.serialize,
                 response_deserializer=subproperty_event_filter.SubpropertyEventFilter.deserialize,
@@ -4615,10 +3972,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_subproperty_event_filters(
         self,
-    ) -> Callable[
-        [analytics_admin.ListSubpropertyEventFiltersRequest],
-        Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListSubpropertyEventFiltersRequest], Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse]]:
         r"""Return a callable for the list subproperty event filters method over gRPC.
 
         List all subproperty Event Filters on a property.
@@ -4634,9 +3988,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subproperty_event_filters" not in self._stubs:
-            self._stubs[
-                "list_subproperty_event_filters"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_subproperty_event_filters"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSubpropertyEventFilters",
                 request_serializer=analytics_admin.ListSubpropertyEventFiltersRequest.serialize,
                 response_deserializer=analytics_admin.ListSubpropertyEventFiltersResponse.deserialize,
@@ -4646,10 +3998,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_subproperty_event_filter(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateSubpropertyEventFilterRequest],
-        Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateSubpropertyEventFilterRequest], Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter]]:
         r"""Return a callable for the update subproperty event
         filter method over gRPC.
 
@@ -4666,9 +4015,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_subproperty_event_filter" not in self._stubs:
-            self._stubs[
-                "update_subproperty_event_filter"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_subproperty_event_filter"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSubpropertyEventFilter",
                 request_serializer=analytics_admin.UpdateSubpropertyEventFilterRequest.serialize,
                 response_deserializer=gaa_subproperty_event_filter.SubpropertyEventFilter.deserialize,
@@ -4676,12 +4023,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_subproperty_event_filter"]
 
     @property
-    def delete_subproperty_event_filter(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteSubpropertyEventFilterRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_subproperty_event_filter(self) -> Callable[[analytics_admin.DeleteSubpropertyEventFilterRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete subproperty event
         filter method over gRPC.
 
@@ -4698,9 +4040,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_subproperty_event_filter" not in self._stubs:
-            self._stubs[
-                "delete_subproperty_event_filter"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_subproperty_event_filter"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
                 request_serializer=analytics_admin.DeleteSubpropertyEventFilterRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -4710,10 +4050,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def create_reporting_data_annotation(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateReportingDataAnnotationRequest],
-        Awaitable[resources.ReportingDataAnnotation],
-    ]:
+    ) -> Callable[[analytics_admin.CreateReportingDataAnnotationRequest], Awaitable[resources.ReportingDataAnnotation]]:
         r"""Return a callable for the create reporting data
         annotation method over gRPC.
 
@@ -4730,9 +4067,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_reporting_data_annotation" not in self._stubs:
-            self._stubs[
-                "create_reporting_data_annotation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_reporting_data_annotation"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateReportingDataAnnotation",
                 request_serializer=analytics_admin.CreateReportingDataAnnotationRequest.serialize,
                 response_deserializer=resources.ReportingDataAnnotation.deserialize,
@@ -4742,10 +4077,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_reporting_data_annotation(
         self,
-    ) -> Callable[
-        [analytics_admin.GetReportingDataAnnotationRequest],
-        Awaitable[resources.ReportingDataAnnotation],
-    ]:
+    ) -> Callable[[analytics_admin.GetReportingDataAnnotationRequest], Awaitable[resources.ReportingDataAnnotation]]:
         r"""Return a callable for the get reporting data annotation method over gRPC.
 
         Lookup a single Reporting Data Annotation.
@@ -4761,9 +4093,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_reporting_data_annotation" not in self._stubs:
-            self._stubs[
-                "get_reporting_data_annotation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_reporting_data_annotation"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetReportingDataAnnotation",
                 request_serializer=analytics_admin.GetReportingDataAnnotationRequest.serialize,
                 response_deserializer=resources.ReportingDataAnnotation.deserialize,
@@ -4773,10 +4103,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_reporting_data_annotations(
         self,
-    ) -> Callable[
-        [analytics_admin.ListReportingDataAnnotationsRequest],
-        Awaitable[analytics_admin.ListReportingDataAnnotationsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListReportingDataAnnotationsRequest], Awaitable[analytics_admin.ListReportingDataAnnotationsResponse]]:
         r"""Return a callable for the list reporting data
         annotations method over gRPC.
 
@@ -4793,9 +4120,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_reporting_data_annotations" not in self._stubs:
-            self._stubs[
-                "list_reporting_data_annotations"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_reporting_data_annotations"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListReportingDataAnnotations",
                 request_serializer=analytics_admin.ListReportingDataAnnotationsRequest.serialize,
                 response_deserializer=analytics_admin.ListReportingDataAnnotationsResponse.deserialize,
@@ -4805,10 +4130,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_reporting_data_annotation(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateReportingDataAnnotationRequest],
-        Awaitable[resources.ReportingDataAnnotation],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateReportingDataAnnotationRequest], Awaitable[resources.ReportingDataAnnotation]]:
         r"""Return a callable for the update reporting data
         annotation method over gRPC.
 
@@ -4825,9 +4147,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_reporting_data_annotation" not in self._stubs:
-            self._stubs[
-                "update_reporting_data_annotation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_reporting_data_annotation"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateReportingDataAnnotation",
                 request_serializer=analytics_admin.UpdateReportingDataAnnotationRequest.serialize,
                 response_deserializer=resources.ReportingDataAnnotation.deserialize,
@@ -4835,12 +4155,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_reporting_data_annotation"]
 
     @property
-    def delete_reporting_data_annotation(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteReportingDataAnnotationRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_reporting_data_annotation(self) -> Callable[[analytics_admin.DeleteReportingDataAnnotationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete reporting data
         annotation method over gRPC.
 
@@ -4857,9 +4172,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_reporting_data_annotation" not in self._stubs:
-            self._stubs[
-                "delete_reporting_data_annotation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_reporting_data_annotation"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteReportingDataAnnotation",
                 request_serializer=analytics_admin.DeleteReportingDataAnnotationRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -4867,12 +4180,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_reporting_data_annotation"]
 
     @property
-    def submit_user_deletion(
-        self,
-    ) -> Callable[
-        [analytics_admin.SubmitUserDeletionRequest],
-        Awaitable[analytics_admin.SubmitUserDeletionResponse],
-    ]:
+    def submit_user_deletion(self) -> Callable[[analytics_admin.SubmitUserDeletionRequest], Awaitable[analytics_admin.SubmitUserDeletionResponse]]:
         r"""Return a callable for the submit user deletion method over gRPC.
 
         Submits a request for user deletion for a property.
@@ -4898,10 +4206,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def list_subproperty_sync_configs(
         self,
-    ) -> Callable[
-        [analytics_admin.ListSubpropertySyncConfigsRequest],
-        Awaitable[analytics_admin.ListSubpropertySyncConfigsResponse],
-    ]:
+    ) -> Callable[[analytics_admin.ListSubpropertySyncConfigsRequest], Awaitable[analytics_admin.ListSubpropertySyncConfigsResponse]]:
         r"""Return a callable for the list subproperty sync configs method over gRPC.
 
         List all ``SubpropertySyncConfig`` resources for a property.
@@ -4917,9 +4222,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subproperty_sync_configs" not in self._stubs:
-            self._stubs[
-                "list_subproperty_sync_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_subproperty_sync_configs"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSubpropertySyncConfigs",
                 request_serializer=analytics_admin.ListSubpropertySyncConfigsRequest.serialize,
                 response_deserializer=analytics_admin.ListSubpropertySyncConfigsResponse.deserialize,
@@ -4929,10 +4232,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def update_subproperty_sync_config(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateSubpropertySyncConfigRequest],
-        Awaitable[resources.SubpropertySyncConfig],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateSubpropertySyncConfigRequest], Awaitable[resources.SubpropertySyncConfig]]:
         r"""Return a callable for the update subproperty sync config method over gRPC.
 
         Updates a ``SubpropertySyncConfig``.
@@ -4948,9 +4248,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_subproperty_sync_config" not in self._stubs:
-            self._stubs[
-                "update_subproperty_sync_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_subproperty_sync_config"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSubpropertySyncConfig",
                 request_serializer=analytics_admin.UpdateSubpropertySyncConfigRequest.serialize,
                 response_deserializer=resources.SubpropertySyncConfig.deserialize,
@@ -4958,12 +4256,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["update_subproperty_sync_config"]
 
     @property
-    def get_subproperty_sync_config(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetSubpropertySyncConfigRequest],
-        Awaitable[resources.SubpropertySyncConfig],
-    ]:
+    def get_subproperty_sync_config(self) -> Callable[[analytics_admin.GetSubpropertySyncConfigRequest], Awaitable[resources.SubpropertySyncConfig]]:
         r"""Return a callable for the get subproperty sync config method over gRPC.
 
         Lookup for a single ``SubpropertySyncConfig``.
@@ -4979,9 +4272,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_subproperty_sync_config" not in self._stubs:
-            self._stubs[
-                "get_subproperty_sync_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_subproperty_sync_config"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSubpropertySyncConfig",
                 request_serializer=analytics_admin.GetSubpropertySyncConfigRequest.serialize,
                 response_deserializer=resources.SubpropertySyncConfig.deserialize,
@@ -4991,10 +4282,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     @property
     def get_reporting_identity_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.GetReportingIdentitySettingsRequest],
-        Awaitable[resources.ReportingIdentitySettings],
-    ]:
+    ) -> Callable[[analytics_admin.GetReportingIdentitySettingsRequest], Awaitable[resources.ReportingIdentitySettings]]:
         r"""Return a callable for the get reporting identity
         settings method over gRPC.
 
@@ -5012,9 +4300,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_reporting_identity_settings" not in self._stubs:
-            self._stubs[
-                "get_reporting_identity_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_reporting_identity_settings"] = self._logged_channel.unary_unary(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetReportingIdentitySettings",
                 request_serializer=analytics_admin.GetReportingIdentitySettingsRequest.serialize,
                 response_deserializer=resources.ReportingIdentitySettings.deserialize,

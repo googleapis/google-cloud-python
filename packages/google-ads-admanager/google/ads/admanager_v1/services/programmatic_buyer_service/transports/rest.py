@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    programmatic_buyer_messages,
-    programmatic_buyer_service,
-)
+from google.ads.admanager_v1.types import programmatic_buyer_messages, programmatic_buyer_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseProgrammaticBuyerServiceRestTransport
@@ -99,13 +96,8 @@ class ProgrammaticBuyerServiceRestInterceptor:
     """
 
     def pre_get_programmatic_buyer(
-        self,
-        request: programmatic_buyer_service.GetProgrammaticBuyerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        programmatic_buyer_service.GetProgrammaticBuyerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: programmatic_buyer_service.GetProgrammaticBuyerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[programmatic_buyer_service.GetProgrammaticBuyerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_programmatic_buyer
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class ProgrammaticBuyerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_programmatic_buyer(
-        self, response: programmatic_buyer_messages.ProgrammaticBuyer
-    ) -> programmatic_buyer_messages.ProgrammaticBuyer:
+    def post_get_programmatic_buyer(self, response: programmatic_buyer_messages.ProgrammaticBuyer) -> programmatic_buyer_messages.ProgrammaticBuyer:
         """Post-rpc interceptor for get_programmatic_buyer
 
         DEPRECATED. Please use the `post_get_programmatic_buyer_with_metadata`
@@ -129,13 +119,8 @@ class ProgrammaticBuyerServiceRestInterceptor:
         return response
 
     def post_get_programmatic_buyer_with_metadata(
-        self,
-        response: programmatic_buyer_messages.ProgrammaticBuyer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        programmatic_buyer_messages.ProgrammaticBuyer,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: programmatic_buyer_messages.ProgrammaticBuyer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[programmatic_buyer_messages.ProgrammaticBuyer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_programmatic_buyer
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +136,8 @@ class ProgrammaticBuyerServiceRestInterceptor:
         return response, metadata
 
     def pre_list_programmatic_buyers(
-        self,
-        request: programmatic_buyer_service.ListProgrammaticBuyersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        programmatic_buyer_service.ListProgrammaticBuyersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: programmatic_buyer_service.ListProgrammaticBuyersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[programmatic_buyer_service.ListProgrammaticBuyersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_programmatic_buyers
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +161,8 @@ class ProgrammaticBuyerServiceRestInterceptor:
         return response
 
     def post_list_programmatic_buyers_with_metadata(
-        self,
-        response: programmatic_buyer_service.ListProgrammaticBuyersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        programmatic_buyer_service.ListProgrammaticBuyersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: programmatic_buyer_service.ListProgrammaticBuyersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[programmatic_buyer_service.ListProgrammaticBuyersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_programmatic_buyers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +178,8 @@ class ProgrammaticBuyerServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +187,7 @@ class ProgrammaticBuyerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -307,31 +276,18 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ProgrammaticBuyerServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetProgrammaticBuyer(
-        _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer,
-        ProgrammaticBuyerServiceRestStub,
-    ):
+    class _GetProgrammaticBuyer(_BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer, ProgrammaticBuyerServiceRestStub):
         def __hash__(self):
             return hash("ProgrammaticBuyerServiceRestTransport.GetProgrammaticBuyer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -370,28 +326,16 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
                     Represents a programmatic buyer.
             """
 
-            http_options = (
-                _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer._get_http_options()
-            )
+            http_options = _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_programmatic_buyer(
-                request, metadata
-            )
-            transcoded_request = _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_programmatic_buyer(request, metadata)
+            transcoded_request = _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgrammaticBuyerServiceRestTransport._BaseGetProgrammaticBuyer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -415,12 +359,7 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
 
             # Send the request
             response = ProgrammaticBuyerServiceRestTransport._GetProgrammaticBuyer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -436,16 +375,10 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
 
             resp = self._interceptor.post_get_programmatic_buyer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_programmatic_buyer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_programmatic_buyer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        programmatic_buyer_messages.ProgrammaticBuyer.to_json(response)
-                    )
+                    response_payload = programmatic_buyer_messages.ProgrammaticBuyer.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -464,23 +397,12 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
                 )
             return resp
 
-    class _ListProgrammaticBuyers(
-        _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers,
-        ProgrammaticBuyerServiceRestStub,
-    ):
+    class _ListProgrammaticBuyers(_BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers, ProgrammaticBuyerServiceRestStub):
         def __hash__(self):
             return hash("ProgrammaticBuyerServiceRestTransport.ListProgrammaticBuyers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -521,28 +443,16 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
 
             """
 
-            http_options = (
-                _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers._get_http_options()
-            )
+            http_options = _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_programmatic_buyers(
-                request, metadata
-            )
-            transcoded_request = _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_programmatic_buyers(request, metadata)
+            transcoded_request = _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgrammaticBuyerServiceRestTransport._BaseListProgrammaticBuyers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -566,12 +476,7 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
 
             # Send the request
             response = ProgrammaticBuyerServiceRestTransport._ListProgrammaticBuyers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -587,16 +492,10 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
 
             resp = self._interceptor.post_list_programmatic_buyers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_programmatic_buyers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_programmatic_buyers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = programmatic_buyer_service.ListProgrammaticBuyersResponse.to_json(
-                        response
-                    )
+                    response_payload = programmatic_buyer_service.ListProgrammaticBuyersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -618,10 +517,7 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
     @property
     def get_programmatic_buyer(
         self,
-    ) -> Callable[
-        [programmatic_buyer_service.GetProgrammaticBuyerRequest],
-        programmatic_buyer_messages.ProgrammaticBuyer,
-    ]:
+    ) -> Callable[[programmatic_buyer_service.GetProgrammaticBuyerRequest], programmatic_buyer_messages.ProgrammaticBuyer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProgrammaticBuyer(self._session, self._host, self._interceptor)  # type: ignore
@@ -629,10 +525,7 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
     @property
     def list_programmatic_buyers(
         self,
-    ) -> Callable[
-        [programmatic_buyer_service.ListProgrammaticBuyersRequest],
-        programmatic_buyer_service.ListProgrammaticBuyersResponse,
-    ]:
+    ) -> Callable[[programmatic_buyer_service.ListProgrammaticBuyersRequest], programmatic_buyer_service.ListProgrammaticBuyersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProgrammaticBuyers(self._session, self._host, self._interceptor)  # type: ignore
@@ -641,23 +534,12 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation,
-        ProgrammaticBuyerServiceRestStub,
-    ):
+    class _GetOperation(_BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation, ProgrammaticBuyerServiceRestStub):
         def __hash__(self):
             return hash("ProgrammaticBuyerServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -695,26 +577,16 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProgrammaticBuyerServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -737,15 +609,8 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ProgrammaticBuyerServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ProgrammaticBuyerServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -757,9 +622,7 @@ class ProgrammaticBuyerServiceRestTransport(_BaseProgrammaticBuyerServiceRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

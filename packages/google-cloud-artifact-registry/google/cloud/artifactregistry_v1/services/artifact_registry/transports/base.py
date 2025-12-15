@@ -52,9 +52,7 @@ from google.cloud.artifactregistry_v1.types import version as gda_version
 from google.cloud.artifactregistry_v1.types import vpcsc_config
 from google.cloud.artifactregistry_v1.types import yum_artifact
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -119,23 +117,15 @@ class ArtifactRegistryTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -444,349 +434,179 @@ class ArtifactRegistryTransport(abc.ABC):
     @property
     def list_docker_images(
         self,
-    ) -> Callable[
-        [artifact.ListDockerImagesRequest],
-        Union[
-            artifact.ListDockerImagesResponse,
-            Awaitable[artifact.ListDockerImagesResponse],
-        ],
-    ]:
+    ) -> Callable[[artifact.ListDockerImagesRequest], Union[artifact.ListDockerImagesResponse, Awaitable[artifact.ListDockerImagesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_docker_image(
-        self,
-    ) -> Callable[
-        [artifact.GetDockerImageRequest],
-        Union[artifact.DockerImage, Awaitable[artifact.DockerImage]],
-    ]:
+    def get_docker_image(self) -> Callable[[artifact.GetDockerImageRequest], Union[artifact.DockerImage, Awaitable[artifact.DockerImage]]]:
         raise NotImplementedError()
 
     @property
     def list_maven_artifacts(
         self,
-    ) -> Callable[
-        [artifact.ListMavenArtifactsRequest],
-        Union[
-            artifact.ListMavenArtifactsResponse,
-            Awaitable[artifact.ListMavenArtifactsResponse],
-        ],
-    ]:
+    ) -> Callable[[artifact.ListMavenArtifactsRequest], Union[artifact.ListMavenArtifactsResponse, Awaitable[artifact.ListMavenArtifactsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_maven_artifact(
-        self,
-    ) -> Callable[
-        [artifact.GetMavenArtifactRequest],
-        Union[artifact.MavenArtifact, Awaitable[artifact.MavenArtifact]],
-    ]:
+    def get_maven_artifact(self) -> Callable[[artifact.GetMavenArtifactRequest], Union[artifact.MavenArtifact, Awaitable[artifact.MavenArtifact]]]:
         raise NotImplementedError()
 
     @property
     def list_npm_packages(
         self,
-    ) -> Callable[
-        [artifact.ListNpmPackagesRequest],
-        Union[
-            artifact.ListNpmPackagesResponse,
-            Awaitable[artifact.ListNpmPackagesResponse],
-        ],
-    ]:
+    ) -> Callable[[artifact.ListNpmPackagesRequest], Union[artifact.ListNpmPackagesResponse, Awaitable[artifact.ListNpmPackagesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_npm_package(
-        self,
-    ) -> Callable[
-        [artifact.GetNpmPackageRequest],
-        Union[artifact.NpmPackage, Awaitable[artifact.NpmPackage]],
-    ]:
+    def get_npm_package(self) -> Callable[[artifact.GetNpmPackageRequest], Union[artifact.NpmPackage, Awaitable[artifact.NpmPackage]]]:
         raise NotImplementedError()
 
     @property
     def list_python_packages(
         self,
-    ) -> Callable[
-        [artifact.ListPythonPackagesRequest],
-        Union[
-            artifact.ListPythonPackagesResponse,
-            Awaitable[artifact.ListPythonPackagesResponse],
-        ],
-    ]:
+    ) -> Callable[[artifact.ListPythonPackagesRequest], Union[artifact.ListPythonPackagesResponse, Awaitable[artifact.ListPythonPackagesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_python_package(
-        self,
-    ) -> Callable[
-        [artifact.GetPythonPackageRequest],
-        Union[artifact.PythonPackage, Awaitable[artifact.PythonPackage]],
-    ]:
+    def get_python_package(self) -> Callable[[artifact.GetPythonPackageRequest], Union[artifact.PythonPackage, Awaitable[artifact.PythonPackage]]]:
         raise NotImplementedError()
 
     @property
     def import_apt_artifacts(
         self,
-    ) -> Callable[
-        [apt_artifact.ImportAptArtifactsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apt_artifact.ImportAptArtifactsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_yum_artifacts(
         self,
-    ) -> Callable[
-        [yum_artifact.ImportYumArtifactsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[yum_artifact.ImportYumArtifactsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_repositories(
         self,
-    ) -> Callable[
-        [repository.ListRepositoriesRequest],
-        Union[
-            repository.ListRepositoriesResponse,
-            Awaitable[repository.ListRepositoriesResponse],
-        ],
-    ]:
+    ) -> Callable[[repository.ListRepositoriesRequest], Union[repository.ListRepositoriesResponse, Awaitable[repository.ListRepositoriesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[
-        [repository.GetRepositoryRequest],
-        Union[repository.Repository, Awaitable[repository.Repository]],
-    ]:
+    def get_repository(self) -> Callable[[repository.GetRepositoryRequest], Union[repository.Repository, Awaitable[repository.Repository]]]:
         raise NotImplementedError()
 
     @property
     def create_repository(
         self,
-    ) -> Callable[
-        [gda_repository.CreateRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gda_repository.CreateRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_repository(
         self,
-    ) -> Callable[
-        [gda_repository.UpdateRepositoryRequest],
-        Union[gda_repository.Repository, Awaitable[gda_repository.Repository]],
-    ]:
+    ) -> Callable[[gda_repository.UpdateRepositoryRequest], Union[gda_repository.Repository, Awaitable[gda_repository.Repository]]]:
         raise NotImplementedError()
 
     @property
     def delete_repository(
         self,
-    ) -> Callable[
-        [repository.DeleteRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repository.DeleteRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_packages(
-        self,
-    ) -> Callable[
-        [package.ListPackagesRequest],
-        Union[package.ListPackagesResponse, Awaitable[package.ListPackagesResponse]],
-    ]:
+    def list_packages(self) -> Callable[[package.ListPackagesRequest], Union[package.ListPackagesResponse, Awaitable[package.ListPackagesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_package(
-        self,
-    ) -> Callable[
-        [package.GetPackageRequest], Union[package.Package, Awaitable[package.Package]]
-    ]:
+    def get_package(self) -> Callable[[package.GetPackageRequest], Union[package.Package, Awaitable[package.Package]]]:
         raise NotImplementedError()
 
     @property
-    def delete_package(
-        self,
-    ) -> Callable[
-        [package.DeletePackageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_package(self) -> Callable[[package.DeletePackageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [version.ListVersionsRequest],
-        Union[version.ListVersionsResponse, Awaitable[version.ListVersionsResponse]],
-    ]:
+    def list_versions(self) -> Callable[[version.ListVersionsRequest], Union[version.ListVersionsResponse, Awaitable[version.ListVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[
-        [version.GetVersionRequest], Union[version.Version, Awaitable[version.Version]]
-    ]:
+    def get_version(self) -> Callable[[version.GetVersionRequest], Union[version.Version, Awaitable[version.Version]]]:
         raise NotImplementedError()
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[
-        [version.DeleteVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_version(self) -> Callable[[version.DeleteVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_delete_versions(
         self,
-    ) -> Callable[
-        [version.BatchDeleteVersionsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[version.BatchDeleteVersionsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[
-        [gda_version.UpdateVersionRequest],
-        Union[gda_version.Version, Awaitable[gda_version.Version]],
-    ]:
+    def update_version(self) -> Callable[[gda_version.UpdateVersionRequest], Union[gda_version.Version, Awaitable[gda_version.Version]]]:
         raise NotImplementedError()
 
     @property
-    def list_files(
-        self,
-    ) -> Callable[
-        [file.ListFilesRequest],
-        Union[file.ListFilesResponse, Awaitable[file.ListFilesResponse]],
-    ]:
+    def list_files(self) -> Callable[[file.ListFilesRequest], Union[file.ListFilesResponse, Awaitable[file.ListFilesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_file(
-        self,
-    ) -> Callable[[file.GetFileRequest], Union[file.File, Awaitable[file.File]]]:
+    def get_file(self) -> Callable[[file.GetFileRequest], Union[file.File, Awaitable[file.File]]]:
         raise NotImplementedError()
 
     @property
-    def delete_file(
-        self,
-    ) -> Callable[
-        [file.DeleteFileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_file(self) -> Callable[[file.DeleteFileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_file(
-        self,
-    ) -> Callable[
-        [gda_file.UpdateFileRequest], Union[gda_file.File, Awaitable[gda_file.File]]
-    ]:
+    def update_file(self) -> Callable[[gda_file.UpdateFileRequest], Union[gda_file.File, Awaitable[gda_file.File]]]:
         raise NotImplementedError()
 
     @property
-    def list_tags(
-        self,
-    ) -> Callable[
-        [tag.ListTagsRequest],
-        Union[tag.ListTagsResponse, Awaitable[tag.ListTagsResponse]],
-    ]:
+    def list_tags(self) -> Callable[[tag.ListTagsRequest], Union[tag.ListTagsResponse, Awaitable[tag.ListTagsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_tag(
-        self,
-    ) -> Callable[[tag.GetTagRequest], Union[tag.Tag, Awaitable[tag.Tag]]]:
+    def get_tag(self) -> Callable[[tag.GetTagRequest], Union[tag.Tag, Awaitable[tag.Tag]]]:
         raise NotImplementedError()
 
     @property
-    def create_tag(
-        self,
-    ) -> Callable[
-        [gda_tag.CreateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]
-    ]:
+    def create_tag(self) -> Callable[[gda_tag.CreateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]]:
         raise NotImplementedError()
 
     @property
-    def update_tag(
-        self,
-    ) -> Callable[
-        [gda_tag.UpdateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]
-    ]:
+    def update_tag(self) -> Callable[[gda_tag.UpdateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tag(
-        self,
-    ) -> Callable[
-        [tag.DeleteTagRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_tag(self) -> Callable[[tag.DeleteTagRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_rule(
-        self,
-    ) -> Callable[
-        [gda_rule.CreateRuleRequest], Union[gda_rule.Rule, Awaitable[gda_rule.Rule]]
-    ]:
+    def create_rule(self) -> Callable[[gda_rule.CreateRuleRequest], Union[gda_rule.Rule, Awaitable[gda_rule.Rule]]]:
         raise NotImplementedError()
 
     @property
-    def list_rules(
-        self,
-    ) -> Callable[
-        [rule.ListRulesRequest],
-        Union[rule.ListRulesResponse, Awaitable[rule.ListRulesResponse]],
-    ]:
+    def list_rules(self) -> Callable[[rule.ListRulesRequest], Union[rule.ListRulesResponse, Awaitable[rule.ListRulesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_rule(
-        self,
-    ) -> Callable[[rule.GetRuleRequest], Union[rule.Rule, Awaitable[rule.Rule]]]:
+    def get_rule(self) -> Callable[[rule.GetRuleRequest], Union[rule.Rule, Awaitable[rule.Rule]]]:
         raise NotImplementedError()
 
     @property
-    def update_rule(
-        self,
-    ) -> Callable[
-        [gda_rule.UpdateRuleRequest], Union[gda_rule.Rule, Awaitable[gda_rule.Rule]]
-    ]:
+    def update_rule(self) -> Callable[[gda_rule.UpdateRuleRequest], Union[gda_rule.Rule, Awaitable[gda_rule.Rule]]]:
         raise NotImplementedError()
 
     @property
-    def delete_rule(
-        self,
-    ) -> Callable[
-        [rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_rule(self) -> Callable[[rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -794,134 +614,80 @@ class ArtifactRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_project_settings(
         self,
-    ) -> Callable[
-        [settings.GetProjectSettingsRequest],
-        Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
-    ]:
+    ) -> Callable[[settings.GetProjectSettingsRequest], Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]]]:
         raise NotImplementedError()
 
     @property
     def update_project_settings(
         self,
-    ) -> Callable[
-        [settings.UpdateProjectSettingsRequest],
-        Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
-    ]:
+    ) -> Callable[[settings.UpdateProjectSettingsRequest], Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]]]:
         raise NotImplementedError()
 
     @property
     def get_vpcsc_config(
         self,
-    ) -> Callable[
-        [vpcsc_config.GetVPCSCConfigRequest],
-        Union[vpcsc_config.VPCSCConfig, Awaitable[vpcsc_config.VPCSCConfig]],
-    ]:
+    ) -> Callable[[vpcsc_config.GetVPCSCConfigRequest], Union[vpcsc_config.VPCSCConfig, Awaitable[vpcsc_config.VPCSCConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_vpcsc_config(
         self,
-    ) -> Callable[
-        [gda_vpcsc_config.UpdateVPCSCConfigRequest],
-        Union[gda_vpcsc_config.VPCSCConfig, Awaitable[gda_vpcsc_config.VPCSCConfig]],
-    ]:
+    ) -> Callable[[gda_vpcsc_config.UpdateVPCSCConfigRequest], Union[gda_vpcsc_config.VPCSCConfig, Awaitable[gda_vpcsc_config.VPCSCConfig]]]:
         raise NotImplementedError()
 
     @property
-    def update_package(
-        self,
-    ) -> Callable[
-        [gda_package.UpdatePackageRequest],
-        Union[gda_package.Package, Awaitable[gda_package.Package]],
-    ]:
+    def update_package(self) -> Callable[[gda_package.UpdatePackageRequest], Union[gda_package.Package, Awaitable[gda_package.Package]]]:
         raise NotImplementedError()
 
     @property
     def list_attachments(
         self,
-    ) -> Callable[
-        [attachment.ListAttachmentsRequest],
-        Union[
-            attachment.ListAttachmentsResponse,
-            Awaitable[attachment.ListAttachmentsResponse],
-        ],
-    ]:
+    ) -> Callable[[attachment.ListAttachmentsRequest], Union[attachment.ListAttachmentsResponse, Awaitable[attachment.ListAttachmentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_attachment(
-        self,
-    ) -> Callable[
-        [attachment.GetAttachmentRequest],
-        Union[attachment.Attachment, Awaitable[attachment.Attachment]],
-    ]:
+    def get_attachment(self) -> Callable[[attachment.GetAttachmentRequest], Union[attachment.Attachment, Awaitable[attachment.Attachment]]]:
         raise NotImplementedError()
 
     @property
     def create_attachment(
         self,
-    ) -> Callable[
-        [gda_attachment.CreateAttachmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gda_attachment.CreateAttachmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_attachment(
         self,
-    ) -> Callable[
-        [attachment.DeleteAttachmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[attachment.DeleteAttachmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_artifact(
-        self,
-    ) -> Callable[
-        [export.ExportArtifactRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_artifact(self) -> Callable[[export.ExportArtifactRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

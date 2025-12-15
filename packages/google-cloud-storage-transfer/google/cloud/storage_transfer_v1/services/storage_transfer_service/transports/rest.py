@@ -177,12 +177,8 @@ class StorageTransferServiceRestInterceptor:
     """
 
     def pre_create_agent_pool(
-        self,
-        request: transfer.CreateAgentPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.CreateAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.CreateAgentPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.CreateAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -190,9 +186,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_agent_pool(
-        self, response: transfer_types.AgentPool
-    ) -> transfer_types.AgentPool:
+    def post_create_agent_pool(self, response: transfer_types.AgentPool) -> transfer_types.AgentPool:
         """Post-rpc interceptor for create_agent_pool
 
         DEPRECATED. Please use the `post_create_agent_pool_with_metadata`
@@ -206,9 +200,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_create_agent_pool_with_metadata(
-        self,
-        response: transfer_types.AgentPool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer_types.AgentPool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer_types.AgentPool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_agent_pool
 
@@ -225,12 +217,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_create_transfer_job(
-        self,
-        request: transfer.CreateTransferJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.CreateTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.CreateTransferJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.CreateTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -238,9 +226,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_transfer_job(
-        self, response: transfer_types.TransferJob
-    ) -> transfer_types.TransferJob:
+    def post_create_transfer_job(self, response: transfer_types.TransferJob) -> transfer_types.TransferJob:
         """Post-rpc interceptor for create_transfer_job
 
         DEPRECATED. Please use the `post_create_transfer_job_with_metadata`
@@ -254,9 +240,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_create_transfer_job_with_metadata(
-        self,
-        response: transfer_types.TransferJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer_types.TransferJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer_types.TransferJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_transfer_job
 
@@ -273,12 +257,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_agent_pool(
-        self,
-        request: transfer.DeleteAgentPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.DeleteAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.DeleteAgentPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.DeleteAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -287,12 +267,8 @@ class StorageTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_transfer_job(
-        self,
-        request: transfer.DeleteTransferJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.DeleteTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.DeleteTransferJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.DeleteTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -301,9 +277,7 @@ class StorageTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_get_agent_pool(
-        self,
-        request: transfer.GetAgentPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: transfer.GetAgentPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.GetAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_agent_pool
 
@@ -312,9 +286,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_agent_pool(
-        self, response: transfer_types.AgentPool
-    ) -> transfer_types.AgentPool:
+    def post_get_agent_pool(self, response: transfer_types.AgentPool) -> transfer_types.AgentPool:
         """Post-rpc interceptor for get_agent_pool
 
         DEPRECATED. Please use the `post_get_agent_pool_with_metadata`
@@ -328,9 +300,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_get_agent_pool_with_metadata(
-        self,
-        response: transfer_types.AgentPool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer_types.AgentPool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer_types.AgentPool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_agent_pool
 
@@ -347,12 +317,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_get_google_service_account(
-        self,
-        request: transfer.GetGoogleServiceAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.GetGoogleServiceAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.GetGoogleServiceAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.GetGoogleServiceAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_google_service_account
 
         Override in a subclass to manipulate the request or metadata
@@ -360,9 +326,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_google_service_account(
-        self, response: transfer_types.GoogleServiceAccount
-    ) -> transfer_types.GoogleServiceAccount:
+    def post_get_google_service_account(self, response: transfer_types.GoogleServiceAccount) -> transfer_types.GoogleServiceAccount:
         """Post-rpc interceptor for get_google_service_account
 
         DEPRECATED. Please use the `post_get_google_service_account_with_metadata`
@@ -376,12 +340,8 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_get_google_service_account_with_metadata(
-        self,
-        response: transfer_types.GoogleServiceAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer_types.GoogleServiceAccount, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: transfer_types.GoogleServiceAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer_types.GoogleServiceAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_google_service_account
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -397,9 +357,7 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_get_transfer_job(
-        self,
-        request: transfer.GetTransferJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: transfer.GetTransferJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.GetTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_transfer_job
 
@@ -408,9 +366,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_transfer_job(
-        self, response: transfer_types.TransferJob
-    ) -> transfer_types.TransferJob:
+    def post_get_transfer_job(self, response: transfer_types.TransferJob) -> transfer_types.TransferJob:
         """Post-rpc interceptor for get_transfer_job
 
         DEPRECATED. Please use the `post_get_transfer_job_with_metadata`
@@ -424,9 +380,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_get_transfer_job_with_metadata(
-        self,
-        response: transfer_types.TransferJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer_types.TransferJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer_types.TransferJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_transfer_job
 
@@ -443,9 +397,7 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_list_agent_pools(
-        self,
-        request: transfer.ListAgentPoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: transfer.ListAgentPoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.ListAgentPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_agent_pools
 
@@ -454,9 +406,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_agent_pools(
-        self, response: transfer.ListAgentPoolsResponse
-    ) -> transfer.ListAgentPoolsResponse:
+    def post_list_agent_pools(self, response: transfer.ListAgentPoolsResponse) -> transfer.ListAgentPoolsResponse:
         """Post-rpc interceptor for list_agent_pools
 
         DEPRECATED. Please use the `post_list_agent_pools_with_metadata`
@@ -470,12 +420,8 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_list_agent_pools_with_metadata(
-        self,
-        response: transfer.ListAgentPoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.ListAgentPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: transfer.ListAgentPoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.ListAgentPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_agent_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -491,12 +437,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_list_transfer_jobs(
-        self,
-        request: transfer.ListTransferJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.ListTransferJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.ListTransferJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.ListTransferJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_transfer_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -504,9 +446,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_transfer_jobs(
-        self, response: transfer.ListTransferJobsResponse
-    ) -> transfer.ListTransferJobsResponse:
+    def post_list_transfer_jobs(self, response: transfer.ListTransferJobsResponse) -> transfer.ListTransferJobsResponse:
         """Post-rpc interceptor for list_transfer_jobs
 
         DEPRECATED. Please use the `post_list_transfer_jobs_with_metadata`
@@ -520,12 +460,8 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_list_transfer_jobs_with_metadata(
-        self,
-        response: transfer.ListTransferJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.ListTransferJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: transfer.ListTransferJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.ListTransferJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_transfer_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -541,12 +477,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_pause_transfer_operation(
-        self,
-        request: transfer.PauseTransferOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.PauseTransferOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.PauseTransferOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.PauseTransferOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_transfer_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -555,12 +487,8 @@ class StorageTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_resume_transfer_operation(
-        self,
-        request: transfer.ResumeTransferOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.ResumeTransferOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.ResumeTransferOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.ResumeTransferOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_transfer_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -569,9 +497,7 @@ class StorageTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_run_transfer_job(
-        self,
-        request: transfer.RunTransferJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: transfer.RunTransferJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.RunTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_transfer_job
 
@@ -580,9 +506,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_run_transfer_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_transfer_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_transfer_job
 
         DEPRECATED. Please use the `post_run_transfer_job_with_metadata`
@@ -596,9 +520,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_run_transfer_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_transfer_job
 
@@ -615,12 +537,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_update_agent_pool(
-        self,
-        request: transfer.UpdateAgentPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.UpdateAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.UpdateAgentPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.UpdateAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -628,9 +546,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_agent_pool(
-        self, response: transfer_types.AgentPool
-    ) -> transfer_types.AgentPool:
+    def post_update_agent_pool(self, response: transfer_types.AgentPool) -> transfer_types.AgentPool:
         """Post-rpc interceptor for update_agent_pool
 
         DEPRECATED. Please use the `post_update_agent_pool_with_metadata`
@@ -644,9 +560,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_update_agent_pool_with_metadata(
-        self,
-        response: transfer_types.AgentPool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer_types.AgentPool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer_types.AgentPool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_agent_pool
 
@@ -663,12 +577,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_update_transfer_job(
-        self,
-        request: transfer.UpdateTransferJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        transfer.UpdateTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: transfer.UpdateTransferJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[transfer.UpdateTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -676,9 +586,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_transfer_job(
-        self, response: transfer_types.TransferJob
-    ) -> transfer_types.TransferJob:
+    def post_update_transfer_job(self, response: transfer_types.TransferJob) -> transfer_types.TransferJob:
         """Post-rpc interceptor for update_transfer_job
 
         DEPRECATED. Please use the `post_update_transfer_job_with_metadata`
@@ -692,9 +600,7 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def post_update_transfer_job_with_metadata(
-        self,
-        response: transfer_types.TransferJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer_types.TransferJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer_types.TransferJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_transfer_job
 
@@ -711,12 +617,8 @@ class StorageTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -734,12 +636,8 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -747,9 +645,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -759,12 +655,8 @@ class StorageTransferServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -772,9 +664,7 @@ class StorageTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -865,9 +755,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -914,30 +802,17 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAgentPool(
-        _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool,
-        StorageTransferServiceRestStub,
-    ):
+    class _CreateAgentPool(_BaseStorageTransferServiceRestTransport._BaseCreateAgentPool, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.CreateAgentPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -978,32 +853,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Represents an agent pool.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_agent_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_agent_pool(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1026,16 +887,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._CreateAgentPool._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = StorageTransferServiceRestTransport._CreateAgentPool._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1051,12 +904,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_create_agent_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_agent_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_agent_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer_types.AgentPool.to_json(response)
                 except:
@@ -1077,23 +926,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _CreateTransferJob(
-        _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob,
-        StorageTransferServiceRestStub,
-    ):
+    class _CreateTransferJob(_BaseStorageTransferServiceRestTransport._BaseCreateTransferJob, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.CreateTransferJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1136,32 +974,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_transfer_job(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_transfer_job(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1184,16 +1008,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._CreateTransferJob._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = StorageTransferServiceRestTransport._CreateTransferJob._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1209,12 +1025,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_create_transfer_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_transfer_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_transfer_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer_types.TransferJob.to_json(response)
                 except:
@@ -1235,23 +1047,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _DeleteAgentPool(
-        _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool,
-        StorageTransferServiceRestStub,
-    ):
+    class _DeleteAgentPool(_BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.DeleteAgentPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1287,28 +1088,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_agent_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_agent_pool(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1331,15 +1120,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._DeleteAgentPool._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageTransferServiceRestTransport._DeleteAgentPool._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1347,23 +1129,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteTransferJob(
-        _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob,
-        StorageTransferServiceRestStub,
-    ):
+    class _DeleteTransferJob(_BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.DeleteTransferJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1398,28 +1169,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_transfer_job(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_transfer_job(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1442,15 +1201,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._DeleteTransferJob._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageTransferServiceRestTransport._DeleteTransferJob._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1458,23 +1210,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAgentPool(
-        _BaseStorageTransferServiceRestTransport._BaseGetAgentPool,
-        StorageTransferServiceRestStub,
-    ):
+    class _GetAgentPool(_BaseStorageTransferServiceRestTransport._BaseGetAgentPool, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.GetAgentPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1514,26 +1255,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Represents an agent pool.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_agent_pool(request, metadata)
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1557,12 +1288,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             # Send the request
             response = StorageTransferServiceRestTransport._GetAgentPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1578,12 +1304,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_get_agent_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_agent_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_agent_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer_types.AgentPool.to_json(response)
                 except:
@@ -1604,23 +1326,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _GetGoogleServiceAccount(
-        _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount,
-        StorageTransferServiceRestStub,
-    ):
+    class _GetGoogleServiceAccount(_BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.GetGoogleServiceAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1661,28 +1372,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                         Google service account
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_google_service_account(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_google_service_account(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1706,12 +1405,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             # Send the request
             response = StorageTransferServiceRestTransport._GetGoogleServiceAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1727,16 +1421,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_get_google_service_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_google_service_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_google_service_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = transfer_types.GoogleServiceAccount.to_json(
-                        response
-                    )
+                    response_payload = transfer_types.GoogleServiceAccount.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1755,23 +1443,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _GetTransferJob(
-        _BaseStorageTransferServiceRestTransport._BaseGetTransferJob,
-        StorageTransferServiceRestStub,
-    ):
+    class _GetTransferJob(_BaseStorageTransferServiceRestTransport._BaseGetTransferJob, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.GetTransferJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1813,28 +1490,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_transfer_job(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_transfer_job(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1857,15 +1522,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._GetTransferJob._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageTransferServiceRestTransport._GetTransferJob._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1881,12 +1539,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_get_transfer_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_transfer_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_transfer_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer_types.TransferJob.to_json(response)
                 except:
@@ -1907,23 +1561,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _ListAgentPools(
-        _BaseStorageTransferServiceRestTransport._BaseListAgentPools,
-        StorageTransferServiceRestStub,
-    ):
+    class _ListAgentPools(_BaseStorageTransferServiceRestTransport._BaseListAgentPools, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.ListAgentPools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1962,28 +1605,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Response from ListAgentPools.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_agent_pools(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_agent_pools(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2006,15 +1637,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._ListAgentPools._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageTransferServiceRestTransport._ListAgentPools._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2030,12 +1654,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_list_agent_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_agent_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_agent_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer.ListAgentPoolsResponse.to_json(response)
                 except:
@@ -2056,23 +1676,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _ListTransferJobs(
-        _BaseStorageTransferServiceRestTransport._BaseListTransferJobs,
-        StorageTransferServiceRestStub,
-    ):
+    class _ListTransferJobs(_BaseStorageTransferServiceRestTransport._BaseListTransferJobs, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.ListTransferJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2113,28 +1722,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Response from ListTransferJobs.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_transfer_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_transfer_jobs(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2157,15 +1754,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._ListTransferJobs._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageTransferServiceRestTransport._ListTransferJobs._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2181,16 +1771,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_list_transfer_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_transfer_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_transfer_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = transfer.ListTransferJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = transfer.ListTransferJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2209,23 +1793,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _PauseTransferOperation(
-        _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation,
-        StorageTransferServiceRestStub,
-    ):
+    class _PauseTransferOperation(_BaseStorageTransferServiceRestTransport._BasePauseTransferOperation, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.PauseTransferOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2262,32 +1835,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_pause_transfer_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_pause_transfer_operation(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2311,13 +1870,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             # Send the request
             response = StorageTransferServiceRestTransport._PauseTransferOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2325,23 +1878,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ResumeTransferOperation(
-        _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation,
-        StorageTransferServiceRestStub,
-    ):
+    class _ResumeTransferOperation(_BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.ResumeTransferOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2378,32 +1920,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_transfer_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_resume_transfer_operation(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2427,13 +1955,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             # Send the request
             response = StorageTransferServiceRestTransport._ResumeTransferOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2441,23 +1963,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _RunTransferJob(
-        _BaseStorageTransferServiceRestTransport._BaseRunTransferJob,
-        StorageTransferServiceRestStub,
-    ):
+    class _RunTransferJob(_BaseStorageTransferServiceRestTransport._BaseRunTransferJob, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.RunTransferJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2500,32 +2011,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_transfer_job(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_transfer_job(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2548,16 +2045,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._RunTransferJob._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = StorageTransferServiceRestTransport._RunTransferJob._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2571,12 +2060,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_run_transfer_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_transfer_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_transfer_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2597,23 +2082,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _UpdateAgentPool(
-        _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool,
-        StorageTransferServiceRestStub,
-    ):
+    class _UpdateAgentPool(_BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.UpdateAgentPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2654,32 +2128,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Represents an agent pool.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_agent_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_agent_pool(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2702,16 +2162,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._UpdateAgentPool._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = StorageTransferServiceRestTransport._UpdateAgentPool._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2727,12 +2179,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_update_agent_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_agent_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_agent_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer_types.AgentPool.to_json(response)
                 except:
@@ -2753,23 +2201,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
             return resp
 
-    class _UpdateTransferJob(
-        _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob,
-        StorageTransferServiceRestStub,
-    ):
+    class _UpdateTransferJob(_BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.UpdateTransferJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2812,32 +2249,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_transfer_job(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_transfer_job(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2860,16 +2283,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._UpdateTransferJob._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = StorageTransferServiceRestTransport._UpdateTransferJob._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2885,12 +2300,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             resp = self._interceptor.post_update_transfer_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_transfer_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_transfer_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer_types.TransferJob.to_json(response)
                 except:
@@ -2912,117 +2323,85 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             return resp
 
     @property
-    def create_agent_pool(
-        self,
-    ) -> Callable[[transfer.CreateAgentPoolRequest], transfer_types.AgentPool]:
+    def create_agent_pool(self) -> Callable[[transfer.CreateAgentPoolRequest], transfer_types.AgentPool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAgentPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_transfer_job(
-        self,
-    ) -> Callable[[transfer.CreateTransferJobRequest], transfer_types.TransferJob]:
+    def create_transfer_job(self) -> Callable[[transfer.CreateTransferJobRequest], transfer_types.TransferJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTransferJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_agent_pool(
-        self,
-    ) -> Callable[[transfer.DeleteAgentPoolRequest], empty_pb2.Empty]:
+    def delete_agent_pool(self) -> Callable[[transfer.DeleteAgentPoolRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAgentPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_transfer_job(
-        self,
-    ) -> Callable[[transfer.DeleteTransferJobRequest], empty_pb2.Empty]:
+    def delete_transfer_job(self) -> Callable[[transfer.DeleteTransferJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTransferJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_agent_pool(
-        self,
-    ) -> Callable[[transfer.GetAgentPoolRequest], transfer_types.AgentPool]:
+    def get_agent_pool(self) -> Callable[[transfer.GetAgentPoolRequest], transfer_types.AgentPool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAgentPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_google_service_account(
-        self,
-    ) -> Callable[
-        [transfer.GetGoogleServiceAccountRequest], transfer_types.GoogleServiceAccount
-    ]:
+    def get_google_service_account(self) -> Callable[[transfer.GetGoogleServiceAccountRequest], transfer_types.GoogleServiceAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGoogleServiceAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_transfer_job(
-        self,
-    ) -> Callable[[transfer.GetTransferJobRequest], transfer_types.TransferJob]:
+    def get_transfer_job(self) -> Callable[[transfer.GetTransferJobRequest], transfer_types.TransferJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTransferJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_agent_pools(
-        self,
-    ) -> Callable[[transfer.ListAgentPoolsRequest], transfer.ListAgentPoolsResponse]:
+    def list_agent_pools(self) -> Callable[[transfer.ListAgentPoolsRequest], transfer.ListAgentPoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAgentPools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_transfer_jobs(
-        self,
-    ) -> Callable[
-        [transfer.ListTransferJobsRequest], transfer.ListTransferJobsResponse
-    ]:
+    def list_transfer_jobs(self) -> Callable[[transfer.ListTransferJobsRequest], transfer.ListTransferJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTransferJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pause_transfer_operation(
-        self,
-    ) -> Callable[[transfer.PauseTransferOperationRequest], empty_pb2.Empty]:
+    def pause_transfer_operation(self) -> Callable[[transfer.PauseTransferOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PauseTransferOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_transfer_operation(
-        self,
-    ) -> Callable[[transfer.ResumeTransferOperationRequest], empty_pb2.Empty]:
+    def resume_transfer_operation(self) -> Callable[[transfer.ResumeTransferOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeTransferOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_transfer_job(
-        self,
-    ) -> Callable[[transfer.RunTransferJobRequest], operations_pb2.Operation]:
+    def run_transfer_job(self) -> Callable[[transfer.RunTransferJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunTransferJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_agent_pool(
-        self,
-    ) -> Callable[[transfer.UpdateAgentPoolRequest], transfer_types.AgentPool]:
+    def update_agent_pool(self) -> Callable[[transfer.UpdateAgentPoolRequest], transfer_types.AgentPool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAgentPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_transfer_job(
-        self,
-    ) -> Callable[[transfer.UpdateTransferJobRequest], transfer_types.TransferJob]:
+    def update_transfer_job(self) -> Callable[[transfer.UpdateTransferJobRequest], transfer_types.TransferJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTransferJob(self._session, self._host, self._interceptor)  # type: ignore
@@ -3031,23 +2410,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseStorageTransferServiceRestTransport._BaseCancelOperation,
-        StorageTransferServiceRestStub,
-    ):
+    class _CancelOperation(_BaseStorageTransferServiceRestTransport._BaseCancelOperation, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3083,32 +2451,18 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3131,16 +2485,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = StorageTransferServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3154,23 +2500,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseStorageTransferServiceRestTransport._BaseGetOperation,
-        StorageTransferServiceRestStub,
-    ):
+    class _GetOperation(_BaseStorageTransferServiceRestTransport._BaseGetOperation, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3208,26 +2543,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3251,12 +2576,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             # Send the request
             response = StorageTransferServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3268,9 +2588,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3295,23 +2613,12 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseStorageTransferServiceRestTransport._BaseListOperations,
-        StorageTransferServiceRestStub,
-    ):
+    class _ListOperations(_BaseStorageTransferServiceRestTransport._BaseListOperations, StorageTransferServiceRestStub):
         def __hash__(self):
             return hash("StorageTransferServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3349,26 +2656,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3391,15 +2688,8 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                StorageTransferServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageTransferServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3411,9 +2701,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

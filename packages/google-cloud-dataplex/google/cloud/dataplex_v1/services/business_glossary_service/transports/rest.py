@@ -196,12 +196,8 @@ class BusinessGlossaryServiceRestInterceptor:
     """
 
     def pre_create_glossary(
-        self,
-        request: business_glossary.CreateGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.CreateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: business_glossary.CreateGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.CreateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +205,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_glossary(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_glossary(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_glossary
 
         DEPRECATED. Please use the `post_create_glossary_with_metadata`
@@ -225,9 +219,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_create_glossary_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_glossary
 
@@ -244,13 +236,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_create_glossary_category(
-        self,
-        request: business_glossary.CreateGlossaryCategoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.CreateGlossaryCategoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.CreateGlossaryCategoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.CreateGlossaryCategoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_glossary_category
 
         Override in a subclass to manipulate the request or metadata
@@ -258,9 +245,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_glossary_category(
-        self, response: business_glossary.GlossaryCategory
-    ) -> business_glossary.GlossaryCategory:
+    def post_create_glossary_category(self, response: business_glossary.GlossaryCategory) -> business_glossary.GlossaryCategory:
         """Post-rpc interceptor for create_glossary_category
 
         DEPRECATED. Please use the `post_create_glossary_category_with_metadata`
@@ -274,12 +259,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_create_glossary_category_with_metadata(
-        self,
-        response: business_glossary.GlossaryCategory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: business_glossary.GlossaryCategory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_glossary_category
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -295,13 +276,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_create_glossary_term(
-        self,
-        request: business_glossary.CreateGlossaryTermRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.CreateGlossaryTermRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.CreateGlossaryTermRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.CreateGlossaryTermRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_glossary_term
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +285,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_glossary_term(
-        self, response: business_glossary.GlossaryTerm
-    ) -> business_glossary.GlossaryTerm:
+    def post_create_glossary_term(self, response: business_glossary.GlossaryTerm) -> business_glossary.GlossaryTerm:
         """Post-rpc interceptor for create_glossary_term
 
         DEPRECATED. Please use the `post_create_glossary_term_with_metadata`
@@ -325,9 +299,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_create_glossary_term_with_metadata(
-        self,
-        response: business_glossary.GlossaryTerm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: business_glossary.GlossaryTerm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[business_glossary.GlossaryTerm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_glossary_term
 
@@ -344,12 +316,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_glossary(
-        self,
-        request: business_glossary.DeleteGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.DeleteGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: business_glossary.DeleteGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.DeleteGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +325,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_glossary(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_glossary(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_glossary
 
         DEPRECATED. Please use the `post_delete_glossary_with_metadata`
@@ -373,9 +339,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_delete_glossary_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_glossary
 
@@ -392,13 +356,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_glossary_category(
-        self,
-        request: business_glossary.DeleteGlossaryCategoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.DeleteGlossaryCategoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.DeleteGlossaryCategoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.DeleteGlossaryCategoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_glossary_category
 
         Override in a subclass to manipulate the request or metadata
@@ -407,13 +366,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_glossary_term(
-        self,
-        request: business_glossary.DeleteGlossaryTermRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.DeleteGlossaryTermRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.DeleteGlossaryTermRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.DeleteGlossaryTermRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_glossary_term
 
         Override in a subclass to manipulate the request or metadata
@@ -422,12 +376,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return request, metadata
 
     def pre_get_glossary(
-        self,
-        request: business_glossary.GetGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.GetGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: business_glossary.GetGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.GetGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -435,9 +385,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_glossary(
-        self, response: business_glossary.Glossary
-    ) -> business_glossary.Glossary:
+    def post_get_glossary(self, response: business_glossary.Glossary) -> business_glossary.Glossary:
         """Post-rpc interceptor for get_glossary
 
         DEPRECATED. Please use the `post_get_glossary_with_metadata`
@@ -451,9 +399,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_get_glossary_with_metadata(
-        self,
-        response: business_glossary.Glossary,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: business_glossary.Glossary, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[business_glossary.Glossary, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_glossary
 
@@ -470,13 +416,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_glossary_category(
-        self,
-        request: business_glossary.GetGlossaryCategoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.GetGlossaryCategoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.GetGlossaryCategoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.GetGlossaryCategoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_glossary_category
 
         Override in a subclass to manipulate the request or metadata
@@ -484,9 +425,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_glossary_category(
-        self, response: business_glossary.GlossaryCategory
-    ) -> business_glossary.GlossaryCategory:
+    def post_get_glossary_category(self, response: business_glossary.GlossaryCategory) -> business_glossary.GlossaryCategory:
         """Post-rpc interceptor for get_glossary_category
 
         DEPRECATED. Please use the `post_get_glossary_category_with_metadata`
@@ -500,12 +439,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_get_glossary_category_with_metadata(
-        self,
-        response: business_glossary.GlossaryCategory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: business_glossary.GlossaryCategory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_glossary_category
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -521,13 +456,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_glossary_term(
-        self,
-        request: business_glossary.GetGlossaryTermRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.GetGlossaryTermRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.GetGlossaryTermRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.GetGlossaryTermRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_glossary_term
 
         Override in a subclass to manipulate the request or metadata
@@ -535,9 +465,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_glossary_term(
-        self, response: business_glossary.GlossaryTerm
-    ) -> business_glossary.GlossaryTerm:
+    def post_get_glossary_term(self, response: business_glossary.GlossaryTerm) -> business_glossary.GlossaryTerm:
         """Post-rpc interceptor for get_glossary_term
 
         DEPRECATED. Please use the `post_get_glossary_term_with_metadata`
@@ -551,9 +479,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_get_glossary_term_with_metadata(
-        self,
-        response: business_glossary.GlossaryTerm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: business_glossary.GlossaryTerm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[business_glossary.GlossaryTerm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_glossary_term
 
@@ -570,12 +496,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_glossaries(
-        self,
-        request: business_glossary.ListGlossariesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.ListGlossariesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: business_glossary.ListGlossariesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.ListGlossariesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_glossaries
 
         Override in a subclass to manipulate the request or metadata
@@ -583,9 +505,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_glossaries(
-        self, response: business_glossary.ListGlossariesResponse
-    ) -> business_glossary.ListGlossariesResponse:
+    def post_list_glossaries(self, response: business_glossary.ListGlossariesResponse) -> business_glossary.ListGlossariesResponse:
         """Post-rpc interceptor for list_glossaries
 
         DEPRECATED. Please use the `post_list_glossaries_with_metadata`
@@ -599,13 +519,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_list_glossaries_with_metadata(
-        self,
-        response: business_glossary.ListGlossariesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.ListGlossariesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: business_glossary.ListGlossariesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.ListGlossariesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_glossaries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -621,13 +536,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_glossary_categories(
-        self,
-        request: business_glossary.ListGlossaryCategoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.ListGlossaryCategoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.ListGlossaryCategoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.ListGlossaryCategoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_glossary_categories
 
         Override in a subclass to manipulate the request or metadata
@@ -651,13 +561,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_list_glossary_categories_with_metadata(
-        self,
-        response: business_glossary.ListGlossaryCategoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.ListGlossaryCategoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: business_glossary.ListGlossaryCategoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.ListGlossaryCategoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_glossary_categories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -673,13 +578,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_glossary_terms(
-        self,
-        request: business_glossary.ListGlossaryTermsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.ListGlossaryTermsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.ListGlossaryTermsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.ListGlossaryTermsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_glossary_terms
 
         Override in a subclass to manipulate the request or metadata
@@ -687,9 +587,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_glossary_terms(
-        self, response: business_glossary.ListGlossaryTermsResponse
-    ) -> business_glossary.ListGlossaryTermsResponse:
+    def post_list_glossary_terms(self, response: business_glossary.ListGlossaryTermsResponse) -> business_glossary.ListGlossaryTermsResponse:
         """Post-rpc interceptor for list_glossary_terms
 
         DEPRECATED. Please use the `post_list_glossary_terms_with_metadata`
@@ -703,13 +601,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_list_glossary_terms_with_metadata(
-        self,
-        response: business_glossary.ListGlossaryTermsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.ListGlossaryTermsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: business_glossary.ListGlossaryTermsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.ListGlossaryTermsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_glossary_terms
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -725,12 +618,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_update_glossary(
-        self,
-        request: business_glossary.UpdateGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.UpdateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: business_glossary.UpdateGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.UpdateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -738,9 +627,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_glossary(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_glossary(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_glossary
 
         DEPRECATED. Please use the `post_update_glossary_with_metadata`
@@ -754,9 +641,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_update_glossary_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_glossary
 
@@ -773,13 +658,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_update_glossary_category(
-        self,
-        request: business_glossary.UpdateGlossaryCategoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.UpdateGlossaryCategoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.UpdateGlossaryCategoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.UpdateGlossaryCategoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_glossary_category
 
         Override in a subclass to manipulate the request or metadata
@@ -787,9 +667,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_glossary_category(
-        self, response: business_glossary.GlossaryCategory
-    ) -> business_glossary.GlossaryCategory:
+    def post_update_glossary_category(self, response: business_glossary.GlossaryCategory) -> business_glossary.GlossaryCategory:
         """Post-rpc interceptor for update_glossary_category
 
         DEPRECATED. Please use the `post_update_glossary_category_with_metadata`
@@ -803,12 +681,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_update_glossary_category_with_metadata(
-        self,
-        response: business_glossary.GlossaryCategory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: business_glossary.GlossaryCategory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_glossary_category
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -824,13 +698,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_update_glossary_term(
-        self,
-        request: business_glossary.UpdateGlossaryTermRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        business_glossary.UpdateGlossaryTermRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: business_glossary.UpdateGlossaryTermRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[business_glossary.UpdateGlossaryTermRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_glossary_term
 
         Override in a subclass to manipulate the request or metadata
@@ -838,9 +707,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_glossary_term(
-        self, response: business_glossary.GlossaryTerm
-    ) -> business_glossary.GlossaryTerm:
+    def post_update_glossary_term(self, response: business_glossary.GlossaryTerm) -> business_glossary.GlossaryTerm:
         """Post-rpc interceptor for update_glossary_term
 
         DEPRECATED. Please use the `post_update_glossary_term_with_metadata`
@@ -854,9 +721,7 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def post_update_glossary_term_with_metadata(
-        self,
-        response: business_glossary.GlossaryTerm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: business_glossary.GlossaryTerm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[business_glossary.GlossaryTerm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_glossary_term
 
@@ -873,12 +738,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -886,9 +747,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -898,12 +757,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -911,9 +766,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -923,12 +776,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -946,12 +795,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -969,12 +814,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -982,9 +823,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -994,12 +833,8 @@ class BusinessGlossaryServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1007,9 +842,7 @@ class BusinessGlossaryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1104,9 +937,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1176,30 +1007,17 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateGlossary(
-        _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _CreateGlossary(_BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.CreateGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1242,30 +1060,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_create_glossary(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1288,16 +1094,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._CreateGlossary._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BusinessGlossaryServiceRestTransport._CreateGlossary._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1311,12 +1109,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_create_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1337,23 +1131,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _CreateGlossaryCategory(
-        _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _CreateGlossaryCategory(_BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.CreateGlossaryCategory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1398,32 +1181,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_glossary_category(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_glossary_category(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1447,13 +1216,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._CreateGlossaryCategory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1469,16 +1232,10 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_create_glossary_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_glossary_category_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_glossary_category_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = business_glossary.GlossaryCategory.to_json(
-                        response
-                    )
+                    response_payload = business_glossary.GlossaryCategory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1497,23 +1254,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _CreateGlossaryTerm(
-        _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _CreateGlossaryTerm(_BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.CreateGlossaryTerm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1559,32 +1305,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_glossary_term(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_glossary_term(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1607,16 +1339,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._CreateGlossaryTerm._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BusinessGlossaryServiceRestTransport._CreateGlossaryTerm._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1632,12 +1356,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_create_glossary_term(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_glossary_term_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_glossary_term_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.GlossaryTerm.to_json(response)
                 except:
@@ -1658,23 +1378,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _DeleteGlossary(
-        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _DeleteGlossary(_BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.DeleteGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1716,26 +1425,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_glossary(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1758,15 +1457,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._DeleteGlossary._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._DeleteGlossary._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1780,12 +1472,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_delete_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1806,23 +1494,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _DeleteGlossaryCategory(
-        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _DeleteGlossaryCategory(_BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.DeleteGlossaryCategory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1857,28 +1534,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_glossary_category(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_glossary_category(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1902,12 +1567,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._DeleteGlossaryCategory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1915,23 +1575,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteGlossaryTerm(
-        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _DeleteGlossaryTerm(_BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.DeleteGlossaryTerm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1966,28 +1615,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_glossary_term(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_glossary_term(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2010,15 +1647,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._DeleteGlossaryTerm._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._DeleteGlossaryTerm._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2026,23 +1656,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetGlossary(
-        _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _GetGlossary(_BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.GetGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2088,26 +1707,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_get_glossary(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2131,12 +1740,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._GetGlossary._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2152,12 +1756,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_get_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.Glossary.to_json(response)
                 except:
@@ -2178,23 +1778,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _GetGlossaryCategory(
-        _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _GetGlossaryCategory(_BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.GetGlossaryCategory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2237,28 +1826,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_glossary_category(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_glossary_category(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2281,15 +1858,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._GetGlossaryCategory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._GetGlossaryCategory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2305,16 +1875,10 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_get_glossary_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_glossary_category_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_glossary_category_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = business_glossary.GlossaryCategory.to_json(
-                        response
-                    )
+                    response_payload = business_glossary.GlossaryCategory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2333,23 +1897,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _GetGlossaryTerm(
-        _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _GetGlossaryTerm(_BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.GetGlossaryTerm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2393,28 +1946,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_glossary_term(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_glossary_term(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2437,15 +1978,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._GetGlossaryTerm._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._GetGlossaryTerm._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2461,12 +1995,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_get_glossary_term(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_glossary_term_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_glossary_term_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.GlossaryTerm.to_json(response)
                 except:
@@ -2487,23 +2017,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _ListGlossaries(
-        _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _ListGlossaries(_BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.ListGlossaries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2542,26 +2061,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     List Glossaries Response
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_glossaries(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2584,15 +2093,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._ListGlossaries._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._ListGlossaries._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2608,16 +2110,10 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_list_glossaries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_glossaries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_glossaries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = business_glossary.ListGlossariesResponse.to_json(
-                        response
-                    )
+                    response_payload = business_glossary.ListGlossariesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2636,23 +2132,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _ListGlossaryCategories(
-        _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _ListGlossaryCategories(_BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.ListGlossaryCategories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2691,28 +2176,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     List GlossaryCategories Response
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_glossary_categories(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_glossary_categories(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2736,12 +2209,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._ListGlossaryCategories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2757,18 +2225,10 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_list_glossary_categories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_glossary_categories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_glossary_categories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        business_glossary.ListGlossaryCategoriesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = business_glossary.ListGlossaryCategoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2787,23 +2247,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _ListGlossaryTerms(
-        _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _ListGlossaryTerms(_BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.ListGlossaryTerms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2842,28 +2291,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     List GlossaryTerms Response
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_glossary_terms(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_glossary_terms(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2886,15 +2323,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._ListGlossaryTerms._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._ListGlossaryTerms._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2910,16 +2340,10 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_list_glossary_terms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_glossary_terms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_glossary_terms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        business_glossary.ListGlossaryTermsResponse.to_json(response)
-                    )
+                    response_payload = business_glossary.ListGlossaryTermsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2938,23 +2362,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _UpdateGlossary(
-        _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _UpdateGlossary(_BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.UpdateGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2997,30 +2410,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_update_glossary(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3043,16 +2444,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._UpdateGlossary._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BusinessGlossaryServiceRestTransport._UpdateGlossary._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3066,12 +2459,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_update_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3092,23 +2481,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _UpdateGlossaryCategory(
-        _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _UpdateGlossaryCategory(_BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.UpdateGlossaryCategory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3152,32 +2530,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_glossary_category(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_glossary_category(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3201,13 +2565,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._UpdateGlossaryCategory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3223,16 +2581,10 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_update_glossary_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_glossary_category_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_glossary_category_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = business_glossary.GlossaryCategory.to_json(
-                        response
-                    )
+                    response_payload = business_glossary.GlossaryCategory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3251,23 +2603,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
             return resp
 
-    class _UpdateGlossaryTerm(
-        _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _UpdateGlossaryTerm(_BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.UpdateGlossaryTerm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3312,32 +2653,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_glossary_term(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_glossary_term(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3360,16 +2687,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._UpdateGlossaryTerm._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BusinessGlossaryServiceRestTransport._UpdateGlossaryTerm._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3385,12 +2704,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             resp = self._interceptor.post_update_glossary_term(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_glossary_term_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_glossary_term_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.GlossaryTerm.to_json(response)
                 except:
@@ -3412,94 +2727,61 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             return resp
 
     @property
-    def create_glossary(
-        self,
-    ) -> Callable[[business_glossary.CreateGlossaryRequest], operations_pb2.Operation]:
+    def create_glossary(self) -> Callable[[business_glossary.CreateGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_glossary_category(
-        self,
-    ) -> Callable[
-        [business_glossary.CreateGlossaryCategoryRequest],
-        business_glossary.GlossaryCategory,
-    ]:
+    def create_glossary_category(self) -> Callable[[business_glossary.CreateGlossaryCategoryRequest], business_glossary.GlossaryCategory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.CreateGlossaryTermRequest], business_glossary.GlossaryTerm
-    ]:
+    def create_glossary_term(self) -> Callable[[business_glossary.CreateGlossaryTermRequest], business_glossary.GlossaryTerm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_glossary(
-        self,
-    ) -> Callable[[business_glossary.DeleteGlossaryRequest], operations_pb2.Operation]:
+    def delete_glossary(self) -> Callable[[business_glossary.DeleteGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_glossary_category(
-        self,
-    ) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], empty_pb2.Empty]:
+    def delete_glossary_category(self) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_glossary_term(
-        self,
-    ) -> Callable[[business_glossary.DeleteGlossaryTermRequest], empty_pb2.Empty]:
+    def delete_glossary_term(self) -> Callable[[business_glossary.DeleteGlossaryTermRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_glossary(
-        self,
-    ) -> Callable[[business_glossary.GetGlossaryRequest], business_glossary.Glossary]:
+    def get_glossary(self) -> Callable[[business_glossary.GetGlossaryRequest], business_glossary.Glossary]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_glossary_category(
-        self,
-    ) -> Callable[
-        [business_glossary.GetGlossaryCategoryRequest],
-        business_glossary.GlossaryCategory,
-    ]:
+    def get_glossary_category(self) -> Callable[[business_glossary.GetGlossaryCategoryRequest], business_glossary.GlossaryCategory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.GetGlossaryTermRequest], business_glossary.GlossaryTerm
-    ]:
+    def get_glossary_term(self) -> Callable[[business_glossary.GetGlossaryTermRequest], business_glossary.GlossaryTerm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_glossaries(
-        self,
-    ) -> Callable[
-        [business_glossary.ListGlossariesRequest],
-        business_glossary.ListGlossariesResponse,
-    ]:
+    def list_glossaries(self) -> Callable[[business_glossary.ListGlossariesRequest], business_glossary.ListGlossariesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGlossaries(self._session, self._host, self._interceptor)  # type: ignore
@@ -3507,50 +2789,31 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     @property
     def list_glossary_categories(
         self,
-    ) -> Callable[
-        [business_glossary.ListGlossaryCategoriesRequest],
-        business_glossary.ListGlossaryCategoriesResponse,
-    ]:
+    ) -> Callable[[business_glossary.ListGlossaryCategoriesRequest], business_glossary.ListGlossaryCategoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGlossaryCategories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_glossary_terms(
-        self,
-    ) -> Callable[
-        [business_glossary.ListGlossaryTermsRequest],
-        business_glossary.ListGlossaryTermsResponse,
-    ]:
+    def list_glossary_terms(self) -> Callable[[business_glossary.ListGlossaryTermsRequest], business_glossary.ListGlossaryTermsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGlossaryTerms(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_glossary(
-        self,
-    ) -> Callable[[business_glossary.UpdateGlossaryRequest], operations_pb2.Operation]:
+    def update_glossary(self) -> Callable[[business_glossary.UpdateGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_glossary_category(
-        self,
-    ) -> Callable[
-        [business_glossary.UpdateGlossaryCategoryRequest],
-        business_glossary.GlossaryCategory,
-    ]:
+    def update_glossary_category(self) -> Callable[[business_glossary.UpdateGlossaryCategoryRequest], business_glossary.GlossaryCategory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.UpdateGlossaryTermRequest], business_glossary.GlossaryTerm
-    ]:
+    def update_glossary_term(self) -> Callable[[business_glossary.UpdateGlossaryTermRequest], business_glossary.GlossaryTerm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
@@ -3559,23 +2822,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _GetLocation(_BaseBusinessGlossaryServiceRestTransport._BaseGetLocation, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3613,26 +2865,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3656,12 +2898,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3673,9 +2910,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3700,23 +2935,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseBusinessGlossaryServiceRestTransport._BaseListLocations,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _ListLocations(_BaseBusinessGlossaryServiceRestTransport._BaseListLocations, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3754,26 +2978,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3796,15 +3010,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3816,9 +3023,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3843,23 +3048,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _CancelOperation(_BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3895,32 +3089,18 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3943,16 +3123,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BusinessGlossaryServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3966,23 +3138,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4017,28 +3178,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4061,15 +3210,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4083,23 +3225,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _GetOperation(_BaseBusinessGlossaryServiceRestTransport._BaseGetOperation, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4137,26 +3268,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4180,12 +3301,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
 
             # Send the request
             response = BusinessGlossaryServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4197,9 +3313,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4224,23 +3338,12 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseBusinessGlossaryServiceRestTransport._BaseListOperations,
-        BusinessGlossaryServiceRestStub,
-    ):
+    class _ListOperations(_BaseBusinessGlossaryServiceRestTransport._BaseListOperations, BusinessGlossaryServiceRestStub):
         def __hash__(self):
             return hash("BusinessGlossaryServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4278,26 +3381,16 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4320,15 +3413,8 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessGlossaryServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessGlossaryServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4340,9 +3426,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

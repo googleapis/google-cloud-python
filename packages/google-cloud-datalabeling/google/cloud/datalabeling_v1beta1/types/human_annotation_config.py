@@ -284,9 +284,7 @@ class VideoClassificationConfig(proto.Message):
             number=2,
         )
 
-    annotation_spec_set_configs: MutableSequence[
-        AnnotationSpecSetConfig
-    ] = proto.RepeatedField(
+    annotation_spec_set_configs: MutableSequence[AnnotationSpecSetConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=AnnotationSpecSetConfig,

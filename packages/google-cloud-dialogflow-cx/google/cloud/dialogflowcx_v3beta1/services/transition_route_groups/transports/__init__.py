@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import TransitionRouteGroupsTransport
 from .grpc import TransitionRouteGroupsGrpcTransport
 from .grpc_asyncio import TransitionRouteGroupsGrpcAsyncIOTransport
-from .rest import (
-    TransitionRouteGroupsRestInterceptor,
-    TransitionRouteGroupsRestTransport,
-)
+from .rest import TransitionRouteGroupsRestInterceptor, TransitionRouteGroupsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[TransitionRouteGroupsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TransitionRouteGroupsTransport]]
 _transport_registry["grpc"] = TransitionRouteGroupsGrpcTransport
 _transport_registry["grpc_asyncio"] = TransitionRouteGroupsGrpcAsyncIOTransport
 _transport_registry["rest"] = TransitionRouteGroupsRestTransport

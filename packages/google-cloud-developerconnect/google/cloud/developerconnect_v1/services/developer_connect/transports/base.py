@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.developerconnect_v1 import gapic_version as package_version
 from google.cloud.developerconnect_v1.types import developer_connect
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class DeveloperConnectTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -414,65 +404,44 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.ListConnectionsRequest],
-        Union[
-            developer_connect.ListConnectionsResponse,
-            Awaitable[developer_connect.ListConnectionsResponse],
-        ],
+        Union[developer_connect.ListConnectionsResponse, Awaitable[developer_connect.ListConnectionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_connection(
         self,
-    ) -> Callable[
-        [developer_connect.GetConnectionRequest],
-        Union[developer_connect.Connection, Awaitable[developer_connect.Connection]],
-    ]:
+    ) -> Callable[[developer_connect.GetConnectionRequest], Union[developer_connect.Connection, Awaitable[developer_connect.Connection]]]:
         raise NotImplementedError()
 
     @property
     def create_connection(
         self,
-    ) -> Callable[
-        [developer_connect.CreateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.CreateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_connection(
         self,
-    ) -> Callable[
-        [developer_connect.UpdateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.UpdateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_connection(
         self,
-    ) -> Callable[
-        [developer_connect.DeleteConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.DeleteConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_git_repository_link(
         self,
-    ) -> Callable[
-        [developer_connect.CreateGitRepositoryLinkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.CreateGitRepositoryLinkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_git_repository_link(
         self,
-    ) -> Callable[
-        [developer_connect.DeleteGitRepositoryLinkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.DeleteGitRepositoryLinkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -480,10 +449,7 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.ListGitRepositoryLinksRequest],
-        Union[
-            developer_connect.ListGitRepositoryLinksResponse,
-            Awaitable[developer_connect.ListGitRepositoryLinksResponse],
-        ],
+        Union[developer_connect.ListGitRepositoryLinksResponse, Awaitable[developer_connect.ListGitRepositoryLinksResponse]],
     ]:
         raise NotImplementedError()
 
@@ -491,11 +457,7 @@ class DeveloperConnectTransport(abc.ABC):
     def get_git_repository_link(
         self,
     ) -> Callable[
-        [developer_connect.GetGitRepositoryLinkRequest],
-        Union[
-            developer_connect.GitRepositoryLink,
-            Awaitable[developer_connect.GitRepositoryLink],
-        ],
+        [developer_connect.GetGitRepositoryLinkRequest], Union[developer_connect.GitRepositoryLink, Awaitable[developer_connect.GitRepositoryLink]]
     ]:
         raise NotImplementedError()
 
@@ -504,10 +466,7 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.FetchReadWriteTokenRequest],
-        Union[
-            developer_connect.FetchReadWriteTokenResponse,
-            Awaitable[developer_connect.FetchReadWriteTokenResponse],
-        ],
+        Union[developer_connect.FetchReadWriteTokenResponse, Awaitable[developer_connect.FetchReadWriteTokenResponse]],
     ]:
         raise NotImplementedError()
 
@@ -516,10 +475,7 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.FetchReadTokenRequest],
-        Union[
-            developer_connect.FetchReadTokenResponse,
-            Awaitable[developer_connect.FetchReadTokenResponse],
-        ],
+        Union[developer_connect.FetchReadTokenResponse, Awaitable[developer_connect.FetchReadTokenResponse]],
     ]:
         raise NotImplementedError()
 
@@ -528,10 +484,7 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.FetchLinkableGitRepositoriesRequest],
-        Union[
-            developer_connect.FetchLinkableGitRepositoriesResponse,
-            Awaitable[developer_connect.FetchLinkableGitRepositoriesResponse],
-        ],
+        Union[developer_connect.FetchLinkableGitRepositoriesResponse, Awaitable[developer_connect.FetchLinkableGitRepositoriesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -540,10 +493,7 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.FetchGitHubInstallationsRequest],
-        Union[
-            developer_connect.FetchGitHubInstallationsResponse,
-            Awaitable[developer_connect.FetchGitHubInstallationsResponse],
-        ],
+        Union[developer_connect.FetchGitHubInstallationsResponse, Awaitable[developer_connect.FetchGitHubInstallationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -551,11 +501,7 @@ class DeveloperConnectTransport(abc.ABC):
     def fetch_git_refs(
         self,
     ) -> Callable[
-        [developer_connect.FetchGitRefsRequest],
-        Union[
-            developer_connect.FetchGitRefsResponse,
-            Awaitable[developer_connect.FetchGitRefsResponse],
-        ],
+        [developer_connect.FetchGitRefsRequest], Union[developer_connect.FetchGitRefsResponse, Awaitable[developer_connect.FetchGitRefsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -564,10 +510,7 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.ListAccountConnectorsRequest],
-        Union[
-            developer_connect.ListAccountConnectorsResponse,
-            Awaitable[developer_connect.ListAccountConnectorsResponse],
-        ],
+        Union[developer_connect.ListAccountConnectorsResponse, Awaitable[developer_connect.ListAccountConnectorsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -575,39 +518,26 @@ class DeveloperConnectTransport(abc.ABC):
     def get_account_connector(
         self,
     ) -> Callable[
-        [developer_connect.GetAccountConnectorRequest],
-        Union[
-            developer_connect.AccountConnector,
-            Awaitable[developer_connect.AccountConnector],
-        ],
+        [developer_connect.GetAccountConnectorRequest], Union[developer_connect.AccountConnector, Awaitable[developer_connect.AccountConnector]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_account_connector(
         self,
-    ) -> Callable[
-        [developer_connect.CreateAccountConnectorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.CreateAccountConnectorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_account_connector(
         self,
-    ) -> Callable[
-        [developer_connect.UpdateAccountConnectorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.UpdateAccountConnectorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_account_connector(
         self,
-    ) -> Callable[
-        [developer_connect.DeleteAccountConnectorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[developer_connect.DeleteAccountConnectorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -615,50 +545,26 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [developer_connect.FetchAccessTokenRequest],
-        Union[
-            developer_connect.FetchAccessTokenResponse,
-            Awaitable[developer_connect.FetchAccessTokenResponse],
-        ],
+        Union[developer_connect.FetchAccessTokenResponse, Awaitable[developer_connect.FetchAccessTokenResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_users(
         self,
-    ) -> Callable[
-        [developer_connect.ListUsersRequest],
-        Union[
-            developer_connect.ListUsersResponse,
-            Awaitable[developer_connect.ListUsersResponse],
-        ],
-    ]:
+    ) -> Callable[[developer_connect.ListUsersRequest], Union[developer_connect.ListUsersResponse, Awaitable[developer_connect.ListUsersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_user(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteUserRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_user(self) -> Callable[[developer_connect.DeleteUserRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def fetch_self(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchSelfRequest],
-        Union[developer_connect.User, Awaitable[developer_connect.User]],
-    ]:
+    def fetch_self(self) -> Callable[[developer_connect.FetchSelfRequest], Union[developer_connect.User, Awaitable[developer_connect.User]]]:
         raise NotImplementedError()
 
     @property
-    def delete_self(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteSelfRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_self(self) -> Callable[[developer_connect.DeleteSelfRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -666,20 +572,14 @@ class DeveloperConnectTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -697,22 +597,13 @@ class DeveloperConnectTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

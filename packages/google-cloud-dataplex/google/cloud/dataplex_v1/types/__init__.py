@@ -96,14 +96,7 @@ from .cmek import (
     ListEncryptionConfigsResponse,
     UpdateEncryptionConfigRequest,
 )
-from .content import (
-    CreateContentRequest,
-    DeleteContentRequest,
-    GetContentRequest,
-    ListContentRequest,
-    ListContentResponse,
-    UpdateContentRequest,
-)
+from .content import CreateContentRequest, DeleteContentRequest, GetContentRequest, ListContentRequest, ListContentResponse, UpdateContentRequest
 from .data_discovery import DataDiscoveryResult, DataDiscoverySpec
 from .data_documentation import DataDocumentationResult, DataDocumentationSpec
 from .data_profile import DataProfileResult, DataProfileSpec

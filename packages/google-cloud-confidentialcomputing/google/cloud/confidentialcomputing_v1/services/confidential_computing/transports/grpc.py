@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -217,18 +208,14 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -262,9 +249,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -323,9 +308,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
         return self._grpc_channel
 
     @property
-    def create_challenge(
-        self,
-    ) -> Callable[[service.CreateChallengeRequest], service.Challenge]:
+    def create_challenge(self) -> Callable[[service.CreateChallengeRequest], service.Challenge]:
         r"""Return a callable for the create challenge method over gRPC.
 
         Creates a new Challenge in a given project and
@@ -350,11 +333,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
         return self._stubs["create_challenge"]
 
     @property
-    def verify_attestation(
-        self,
-    ) -> Callable[
-        [service.VerifyAttestationRequest], service.VerifyAttestationResponse
-    ]:
+    def verify_attestation(self) -> Callable[[service.VerifyAttestationRequest], service.VerifyAttestationResponse]:
         r"""Return a callable for the verify attestation method over gRPC.
 
         Verifies the provided attestation info, returning a
@@ -379,12 +358,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
         return self._stubs["verify_attestation"]
 
     @property
-    def verify_confidential_space(
-        self,
-    ) -> Callable[
-        [service.VerifyConfidentialSpaceRequest],
-        service.VerifyConfidentialSpaceResponse,
-    ]:
+    def verify_confidential_space(self) -> Callable[[service.VerifyConfidentialSpaceRequest], service.VerifyConfidentialSpaceResponse]:
         r"""Return a callable for the verify confidential space method over gRPC.
 
         Verifies whether the provided attestation info is
@@ -409,11 +383,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
         return self._stubs["verify_confidential_space"]
 
     @property
-    def verify_confidential_gke(
-        self,
-    ) -> Callable[
-        [service.VerifyConfidentialGkeRequest], service.VerifyConfidentialGkeResponse
-    ]:
+    def verify_confidential_gke(self) -> Callable[[service.VerifyConfidentialGkeRequest], service.VerifyConfidentialGkeResponse]:
         r"""Return a callable for the verify confidential gke method over gRPC.
 
         Verifies the provided Confidential GKE attestation
@@ -443,9 +413,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

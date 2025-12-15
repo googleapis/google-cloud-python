@@ -299,26 +299,20 @@ class SpaceConfig(proto.Message):
             ON = 1
             OFF = 2
 
-        chat_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="SpaceConfig.ModerationRestrictions.RestrictionType",
-            )
+        chat_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SpaceConfig.ModerationRestrictions.RestrictionType",
         )
-        reaction_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="SpaceConfig.ModerationRestrictions.RestrictionType",
-            )
+        reaction_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="SpaceConfig.ModerationRestrictions.RestrictionType",
         )
-        present_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                enum="SpaceConfig.ModerationRestrictions.RestrictionType",
-            )
+        present_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="SpaceConfig.ModerationRestrictions.RestrictionType",
         )
         default_join_as_viewer_type: "SpaceConfig.ModerationRestrictions.DefaultJoinAsViewerType" = proto.Field(
             proto.ENUM,
@@ -413,12 +407,10 @@ class SpaceConfig(proto.Message):
             number=1,
             message="SpaceConfig.ArtifactConfig.RecordingConfig",
         )
-        transcription_config: "SpaceConfig.ArtifactConfig.TranscriptionConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="SpaceConfig.ArtifactConfig.TranscriptionConfig",
-            )
+        transcription_config: "SpaceConfig.ArtifactConfig.TranscriptionConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="SpaceConfig.ArtifactConfig.TranscriptionConfig",
         )
         smart_notes_config: "SpaceConfig.ArtifactConfig.SmartNotesConfig" = proto.Field(
             proto.MESSAGE,

@@ -22,9 +22,7 @@ from .grpc_asyncio import LiveVideoAnalyticsGrpcAsyncIOTransport
 from .rest import LiveVideoAnalyticsRestInterceptor, LiveVideoAnalyticsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[LiveVideoAnalyticsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[LiveVideoAnalyticsTransport]]
 _transport_registry["grpc"] = LiveVideoAnalyticsGrpcTransport
 _transport_registry["grpc_asyncio"] = LiveVideoAnalyticsGrpcAsyncIOTransport
 _transport_registry["rest"] = LiveVideoAnalyticsRestTransport

@@ -1004,16 +1004,12 @@ class PipelineDescription(proto.Message):
             portable graph step names if exists.
     """
 
-    original_pipeline_transform: MutableSequence[
-        "TransformSummary"
-    ] = proto.RepeatedField(
+    original_pipeline_transform: MutableSequence["TransformSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TransformSummary",
     )
-    execution_pipeline_stage: MutableSequence[
-        "ExecutionStageSummary"
-    ] = proto.RepeatedField(
+    execution_pipeline_stage: MutableSequence["ExecutionStageSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ExecutionStageSummary",

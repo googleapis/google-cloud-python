@@ -686,9 +686,7 @@ class ModerateTextResponse(proto.Message):
             effort basis.
     """
 
-    moderation_categories: MutableSequence[
-        "ClassificationCategory"
-    ] = proto.RepeatedField(
+    moderation_categories: MutableSequence["ClassificationCategory"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ClassificationCategory",
@@ -828,9 +826,7 @@ class AnnotateTextResponse(proto.Message):
         number=5,
         message="ClassificationCategory",
     )
-    moderation_categories: MutableSequence[
-        "ClassificationCategory"
-    ] = proto.RepeatedField(
+    moderation_categories: MutableSequence["ClassificationCategory"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="ClassificationCategory",

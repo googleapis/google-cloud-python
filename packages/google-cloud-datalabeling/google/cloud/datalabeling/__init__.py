@@ -18,12 +18,8 @@ from google.cloud.datalabeling import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.datalabeling_v1beta1.services.data_labeling_service.async_client import (
-    DataLabelingServiceAsyncClient,
-)
-from google.cloud.datalabeling_v1beta1.services.data_labeling_service.client import (
-    DataLabelingServiceClient,
-)
+from google.cloud.datalabeling_v1beta1.services.data_labeling_service.async_client import DataLabelingServiceAsyncClient
+from google.cloud.datalabeling_v1beta1.services.data_labeling_service.client import DataLabelingServiceClient
 from google.cloud.datalabeling_v1beta1.types.annotation import (
     Annotation,
     AnnotationMetadata,
@@ -51,10 +47,7 @@ from google.cloud.datalabeling_v1beta1.types.annotation import (
     VideoEventAnnotation,
     VideoObjectTrackingAnnotation,
 )
-from google.cloud.datalabeling_v1beta1.types.annotation_spec_set import (
-    AnnotationSpec,
-    AnnotationSpecSet,
-)
+from google.cloud.datalabeling_v1beta1.types.annotation_spec_set import AnnotationSpec, AnnotationSpecSet
 from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     CreateAnnotationSpecSetRequest,
     CreateDatasetRequest,
@@ -100,12 +93,7 @@ from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     SearchExampleComparisonsResponse,
     UpdateEvaluationJobRequest,
 )
-from google.cloud.datalabeling_v1beta1.types.data_payloads import (
-    ImagePayload,
-    TextPayload,
-    VideoPayload,
-    VideoThumbnail,
-)
+from google.cloud.datalabeling_v1beta1.types.data_payloads import ImagePayload, TextPayload, VideoPayload, VideoThumbnail
 from google.cloud.datalabeling_v1beta1.types.dataset import (
     AnnotatedDataset,
     AnnotatedDatasetMetadata,
@@ -133,12 +121,7 @@ from google.cloud.datalabeling_v1beta1.types.evaluation import (
     ObjectDetectionMetrics,
     PrCurve,
 )
-from google.cloud.datalabeling_v1beta1.types.evaluation_job import (
-    Attempt,
-    EvaluationJob,
-    EvaluationJobAlertConfig,
-    EvaluationJobConfig,
-)
+from google.cloud.datalabeling_v1beta1.types.evaluation_job import Attempt, EvaluationJob, EvaluationJobAlertConfig, EvaluationJobConfig
 from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     BoundingPolyConfig,
     EventConfig,
@@ -154,11 +137,7 @@ from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     TextEntityExtractionConfig,
     VideoClassificationConfig,
 )
-from google.cloud.datalabeling_v1beta1.types.instruction import (
-    CsvInstruction,
-    Instruction,
-    PdfInstruction,
-)
+from google.cloud.datalabeling_v1beta1.types.instruction import CsvInstruction, Instruction, PdfInstruction
 from google.cloud.datalabeling_v1beta1.types.operations import (
     CreateInstructionMetadata,
     ExportDataOperationMetadata,

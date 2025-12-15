@@ -1888,9 +1888,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             number=1,
             message="IamPolicyAnalysisQuery",
         )
-        analysis_results: MutableSequence[
-            gca_assets.IamPolicyAnalysisResult
-        ] = proto.RepeatedField(
+        analysis_results: MutableSequence[gca_assets.IamPolicyAnalysisResult] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gca_assets.IamPolicyAnalysisResult,
@@ -1899,9 +1897,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             proto.BOOL,
             number=3,
         )
-        non_critical_errors: MutableSequence[
-            gca_assets.IamPolicyAnalysisState
-        ] = proto.RepeatedField(
+        non_critical_errors: MutableSequence[gca_assets.IamPolicyAnalysisState] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=gca_assets.IamPolicyAnalysisState,
@@ -1912,9 +1908,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         number=1,
         message=IamPolicyAnalysis,
     )
-    service_account_impersonation_analysis: MutableSequence[
-        IamPolicyAnalysis
-    ] = proto.RepeatedField(
+    service_account_impersonation_analysis: MutableSequence[IamPolicyAnalysis] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=IamPolicyAnalysis,
@@ -3054,9 +3048,7 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        policies: MutableSequence[
-            "BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo"
-        ] = proto.RepeatedField(
+        policies: MutableSequence["BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo",
@@ -3379,13 +3371,11 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             number=4,
             enum="AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault",
         )
-        list_constraint: "AnalyzerOrgPolicyConstraint.Constraint.ListConstraint" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                oneof="constraint_type",
-                message="AnalyzerOrgPolicyConstraint.Constraint.ListConstraint",
-            )
+        list_constraint: "AnalyzerOrgPolicyConstraint.Constraint.ListConstraint" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="constraint_type",
+            message="AnalyzerOrgPolicyConstraint.Constraint.ListConstraint",
         )
         boolean_constraint: "AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint" = proto.Field(
             proto.MESSAGE,
@@ -3482,9 +3472,7 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             proto.STRING,
             number=2,
         )
-        method_types: MutableSequence[
-            "AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType"
-        ] = proto.RepeatedField(
+        method_types: MutableSequence["AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType"] = proto.RepeatedField(
             proto.ENUM,
             number=3,
             enum="AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType",
@@ -3493,12 +3481,10 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             proto.STRING,
             number=4,
         )
-        action_type: "AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType" = (
-            proto.Field(
-                proto.ENUM,
-                number=5,
-                enum="AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType",
-            )
+        action_type: "AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType",
         )
         display_name: str = proto.Field(
             proto.STRING,
@@ -3849,9 +3835,7 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
             proto.STRING,
             number=7,
         )
-        effective_tags: MutableSequence[
-            gca_assets.EffectiveTagDetails
-        ] = proto.RepeatedField(
+        effective_tags: MutableSequence[gca_assets.EffectiveTagDetails] = proto.RepeatedField(
             proto.MESSAGE,
             number=8,
             message=gca_assets.EffectiveTagDetails,
@@ -4045,9 +4029,7 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
             proto.STRING,
             number=8,
         )
-        effective_tags: MutableSequence[
-            gca_assets.EffectiveTagDetails
-        ] = proto.RepeatedField(
+        effective_tags: MutableSequence[gca_assets.EffectiveTagDetails] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message=gca_assets.EffectiveTagDetails,
@@ -4157,13 +4139,11 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 also appear in the list.
         """
 
-        governed_resource: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="governed_asset",
-                message="AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource",
-            )
+        governed_resource: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="governed_asset",
+            message="AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource",
         )
         governed_iam_policy: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy" = proto.Field(
             proto.MESSAGE,

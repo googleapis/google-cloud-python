@@ -360,12 +360,8 @@ class ClusterManagerRestInterceptor:
     """
 
     def pre_cancel_operation(
-        self,
-        request: cluster_service.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -374,13 +370,8 @@ class ClusterManagerRestInterceptor:
         return request, metadata
 
     def pre_check_autopilot_compatibility(
-        self,
-        request: cluster_service.CheckAutopilotCompatibilityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CheckAutopilotCompatibilityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.CheckAutopilotCompatibilityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CheckAutopilotCompatibilityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check_autopilot_compatibility
 
         Override in a subclass to manipulate the request or metadata
@@ -404,13 +395,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_check_autopilot_compatibility_with_metadata(
-        self,
-        response: cluster_service.CheckAutopilotCompatibilityResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CheckAutopilotCompatibilityResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cluster_service.CheckAutopilotCompatibilityResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CheckAutopilotCompatibilityResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check_autopilot_compatibility
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -426,13 +412,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_complete_ip_rotation(
-        self,
-        request: cluster_service.CompleteIPRotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CompleteIPRotationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.CompleteIPRotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CompleteIPRotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for complete_ip_rotation
 
         Override in a subclass to manipulate the request or metadata
@@ -440,9 +421,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_complete_ip_rotation(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_complete_ip_rotation(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for complete_ip_rotation
 
         DEPRECATED. Please use the `post_complete_ip_rotation_with_metadata`
@@ -456,9 +435,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_complete_ip_rotation_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for complete_ip_rotation
 
@@ -475,13 +452,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_complete_node_pool_upgrade(
-        self,
-        request: cluster_service.CompleteNodePoolUpgradeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CompleteNodePoolUpgradeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.CompleteNodePoolUpgradeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CompleteNodePoolUpgradeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for complete_node_pool_upgrade
 
         Override in a subclass to manipulate the request or metadata
@@ -490,12 +462,8 @@ class ClusterManagerRestInterceptor:
         return request, metadata
 
     def pre_create_cluster(
-        self,
-        request: cluster_service.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.CreateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -503,9 +471,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cluster(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_create_cluster(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for create_cluster
 
         DEPRECATED. Please use the `post_create_cluster_with_metadata`
@@ -519,9 +485,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_create_cluster_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cluster
 
@@ -538,12 +502,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_create_node_pool(
-        self,
-        request: cluster_service.CreateNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.CreateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.CreateNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.CreateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -551,9 +511,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_node_pool(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_create_node_pool(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for create_node_pool
 
         DEPRECATED. Please use the `post_create_node_pool_with_metadata`
@@ -567,9 +525,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_create_node_pool_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_node_pool
 
@@ -586,12 +542,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_cluster(
-        self,
-        request: cluster_service.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.DeleteClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -599,9 +551,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cluster(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_delete_cluster(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for delete_cluster
 
         DEPRECATED. Please use the `post_delete_cluster_with_metadata`
@@ -615,9 +565,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_delete_cluster_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cluster
 
@@ -634,12 +582,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_node_pool(
-        self,
-        request: cluster_service.DeleteNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.DeleteNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.DeleteNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.DeleteNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -647,9 +591,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_node_pool(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_delete_node_pool(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for delete_node_pool
 
         DEPRECATED. Please use the `post_delete_node_pool_with_metadata`
@@ -663,9 +605,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_delete_node_pool_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_node_pool
 
@@ -682,13 +622,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_fetch_cluster_upgrade_info(
-        self,
-        request: cluster_service.FetchClusterUpgradeInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.FetchClusterUpgradeInfoRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.FetchClusterUpgradeInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.FetchClusterUpgradeInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_cluster_upgrade_info
 
         Override in a subclass to manipulate the request or metadata
@@ -696,9 +631,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_cluster_upgrade_info(
-        self, response: cluster_service.ClusterUpgradeInfo
-    ) -> cluster_service.ClusterUpgradeInfo:
+    def post_fetch_cluster_upgrade_info(self, response: cluster_service.ClusterUpgradeInfo) -> cluster_service.ClusterUpgradeInfo:
         """Post-rpc interceptor for fetch_cluster_upgrade_info
 
         DEPRECATED. Please use the `post_fetch_cluster_upgrade_info_with_metadata`
@@ -712,12 +645,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_fetch_cluster_upgrade_info_with_metadata(
-        self,
-        response: cluster_service.ClusterUpgradeInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ClusterUpgradeInfo, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cluster_service.ClusterUpgradeInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ClusterUpgradeInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_cluster_upgrade_info
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -733,13 +662,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_fetch_node_pool_upgrade_info(
-        self,
-        request: cluster_service.FetchNodePoolUpgradeInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.FetchNodePoolUpgradeInfoRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.FetchNodePoolUpgradeInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.FetchNodePoolUpgradeInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_node_pool_upgrade_info
 
         Override in a subclass to manipulate the request or metadata
@@ -747,9 +671,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_node_pool_upgrade_info(
-        self, response: cluster_service.NodePoolUpgradeInfo
-    ) -> cluster_service.NodePoolUpgradeInfo:
+    def post_fetch_node_pool_upgrade_info(self, response: cluster_service.NodePoolUpgradeInfo) -> cluster_service.NodePoolUpgradeInfo:
         """Post-rpc interceptor for fetch_node_pool_upgrade_info
 
         DEPRECATED. Please use the `post_fetch_node_pool_upgrade_info_with_metadata`
@@ -763,12 +685,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_fetch_node_pool_upgrade_info_with_metadata(
-        self,
-        response: cluster_service.NodePoolUpgradeInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.NodePoolUpgradeInfo, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cluster_service.NodePoolUpgradeInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.NodePoolUpgradeInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_node_pool_upgrade_info
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -784,12 +702,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_cluster(
-        self,
-        request: cluster_service.GetClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.GetClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -797,9 +711,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cluster(
-        self, response: cluster_service.Cluster
-    ) -> cluster_service.Cluster:
+    def post_get_cluster(self, response: cluster_service.Cluster) -> cluster_service.Cluster:
         """Post-rpc interceptor for get_cluster
 
         DEPRECATED. Please use the `post_get_cluster_with_metadata`
@@ -813,9 +725,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_get_cluster_with_metadata(
-        self,
-        response: cluster_service.Cluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Cluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cluster
 
@@ -832,12 +742,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_json_web_keys(
-        self,
-        request: cluster_service.GetJSONWebKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.GetJSONWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.GetJSONWebKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.GetJSONWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_json_web_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -845,9 +751,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_json_web_keys(
-        self, response: cluster_service.GetJSONWebKeysResponse
-    ) -> cluster_service.GetJSONWebKeysResponse:
+    def post_get_json_web_keys(self, response: cluster_service.GetJSONWebKeysResponse) -> cluster_service.GetJSONWebKeysResponse:
         """Post-rpc interceptor for get_json_web_keys
 
         DEPRECATED. Please use the `post_get_json_web_keys_with_metadata`
@@ -861,12 +765,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_get_json_web_keys_with_metadata(
-        self,
-        response: cluster_service.GetJSONWebKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.GetJSONWebKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cluster_service.GetJSONWebKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.GetJSONWebKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_json_web_keys
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -882,12 +782,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_node_pool(
-        self,
-        request: cluster_service.GetNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.GetNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.GetNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.GetNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -895,9 +791,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_node_pool(
-        self, response: cluster_service.NodePool
-    ) -> cluster_service.NodePool:
+    def post_get_node_pool(self, response: cluster_service.NodePool) -> cluster_service.NodePool:
         """Post-rpc interceptor for get_node_pool
 
         DEPRECATED. Please use the `post_get_node_pool_with_metadata`
@@ -911,9 +805,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_get_node_pool_with_metadata(
-        self,
-        response: cluster_service.NodePool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.NodePool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.NodePool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_node_pool
 
@@ -930,12 +822,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: cluster_service.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -943,9 +831,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_get_operation(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for get_operation
 
         DEPRECATED. Please use the `post_get_operation_with_metadata`
@@ -959,9 +845,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_get_operation_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_operation
 
@@ -978,12 +862,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_get_server_config(
-        self,
-        request: cluster_service.GetServerConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.GetServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.GetServerConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.GetServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -991,9 +871,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_server_config(
-        self, response: cluster_service.ServerConfig
-    ) -> cluster_service.ServerConfig:
+    def post_get_server_config(self, response: cluster_service.ServerConfig) -> cluster_service.ServerConfig:
         """Post-rpc interceptor for get_server_config
 
         DEPRECATED. Please use the `post_get_server_config_with_metadata`
@@ -1007,9 +885,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_get_server_config_with_metadata(
-        self,
-        response: cluster_service.ServerConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.ServerConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.ServerConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_server_config
 
@@ -1026,12 +902,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_list_clusters(
-        self,
-        request: cluster_service.ListClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.ListClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -1039,9 +911,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_clusters(
-        self, response: cluster_service.ListClustersResponse
-    ) -> cluster_service.ListClustersResponse:
+    def post_list_clusters(self, response: cluster_service.ListClustersResponse) -> cluster_service.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
         DEPRECATED. Please use the `post_list_clusters_with_metadata`
@@ -1055,12 +925,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_list_clusters_with_metadata(
-        self,
-        response: cluster_service.ListClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cluster_service.ListClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1076,12 +942,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_list_node_pools(
-        self,
-        request: cluster_service.ListNodePoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.ListNodePoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -1089,9 +951,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_node_pools(
-        self, response: cluster_service.ListNodePoolsResponse
-    ) -> cluster_service.ListNodePoolsResponse:
+    def post_list_node_pools(self, response: cluster_service.ListNodePoolsResponse) -> cluster_service.ListNodePoolsResponse:
         """Post-rpc interceptor for list_node_pools
 
         DEPRECATED. Please use the `post_list_node_pools_with_metadata`
@@ -1105,12 +965,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_list_node_pools_with_metadata(
-        self,
-        response: cluster_service.ListNodePoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cluster_service.ListNodePoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_node_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1126,12 +982,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_list_operations(
-        self,
-        request: cluster_service.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1139,9 +991,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: cluster_service.ListOperationsResponse
-    ) -> cluster_service.ListOperationsResponse:
+    def post_list_operations(self, response: cluster_service.ListOperationsResponse) -> cluster_service.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         DEPRECATED. Please use the `post_list_operations_with_metadata`
@@ -1155,12 +1005,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_list_operations_with_metadata(
-        self,
-        response: cluster_service.ListOperationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cluster_service.ListOperationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1176,13 +1022,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_list_usable_subnetworks(
-        self,
-        request: cluster_service.ListUsableSubnetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListUsableSubnetworksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.ListUsableSubnetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListUsableSubnetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_usable_subnetworks
 
         Override in a subclass to manipulate the request or metadata
@@ -1190,9 +1031,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_usable_subnetworks(
-        self, response: cluster_service.ListUsableSubnetworksResponse
-    ) -> cluster_service.ListUsableSubnetworksResponse:
+    def post_list_usable_subnetworks(self, response: cluster_service.ListUsableSubnetworksResponse) -> cluster_service.ListUsableSubnetworksResponse:
         """Post-rpc interceptor for list_usable_subnetworks
 
         DEPRECATED. Please use the `post_list_usable_subnetworks_with_metadata`
@@ -1206,13 +1045,8 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_list_usable_subnetworks_with_metadata(
-        self,
-        response: cluster_service.ListUsableSubnetworksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.ListUsableSubnetworksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cluster_service.ListUsableSubnetworksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.ListUsableSubnetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_usable_subnetworks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1228,13 +1062,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_rollback_node_pool_upgrade(
-        self,
-        request: cluster_service.RollbackNodePoolUpgradeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.RollbackNodePoolUpgradeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.RollbackNodePoolUpgradeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.RollbackNodePoolUpgradeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback_node_pool_upgrade
 
         Override in a subclass to manipulate the request or metadata
@@ -1242,9 +1071,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_rollback_node_pool_upgrade(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_rollback_node_pool_upgrade(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for rollback_node_pool_upgrade
 
         DEPRECATED. Please use the `post_rollback_node_pool_upgrade_with_metadata`
@@ -1258,9 +1085,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_rollback_node_pool_upgrade_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rollback_node_pool_upgrade
 
@@ -1277,12 +1102,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_addons_config(
-        self,
-        request: cluster_service.SetAddonsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetAddonsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetAddonsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetAddonsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_addons_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1290,9 +1111,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_addons_config(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_addons_config(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_addons_config
 
         DEPRECATED. Please use the `post_set_addons_config_with_metadata`
@@ -1306,9 +1125,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_addons_config_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_addons_config
 
@@ -1325,12 +1142,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: cluster_service.SetLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -1338,9 +1151,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_labels(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_labels(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_labels
 
         DEPRECATED. Please use the `post_set_labels_with_metadata`
@@ -1354,9 +1165,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -1373,12 +1182,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_legacy_abac(
-        self,
-        request: cluster_service.SetLegacyAbacRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetLegacyAbacRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetLegacyAbacRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetLegacyAbacRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_legacy_abac
 
         Override in a subclass to manipulate the request or metadata
@@ -1386,9 +1191,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_legacy_abac(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_legacy_abac(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_legacy_abac
 
         DEPRECATED. Please use the `post_set_legacy_abac_with_metadata`
@@ -1402,9 +1205,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_legacy_abac_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_legacy_abac
 
@@ -1421,12 +1222,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_locations(
-        self,
-        request: cluster_service.SetLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1434,9 +1231,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_locations(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_locations(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_locations
 
         DEPRECATED. Please use the `post_set_locations_with_metadata`
@@ -1450,9 +1245,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_locations_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_locations
 
@@ -1469,13 +1262,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_logging_service(
-        self,
-        request: cluster_service.SetLoggingServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetLoggingServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.SetLoggingServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetLoggingServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_logging_service
 
         Override in a subclass to manipulate the request or metadata
@@ -1483,9 +1271,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_logging_service(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_logging_service(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_logging_service
 
         DEPRECATED. Please use the `post_set_logging_service_with_metadata`
@@ -1499,9 +1285,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_logging_service_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_logging_service
 
@@ -1518,13 +1302,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_maintenance_policy(
-        self,
-        request: cluster_service.SetMaintenancePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetMaintenancePolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.SetMaintenancePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetMaintenancePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_maintenance_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1532,9 +1311,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_maintenance_policy(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_maintenance_policy(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_maintenance_policy
 
         DEPRECATED. Please use the `post_set_maintenance_policy_with_metadata`
@@ -1548,9 +1325,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_maintenance_policy_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_maintenance_policy
 
@@ -1567,12 +1342,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_master_auth(
-        self,
-        request: cluster_service.SetMasterAuthRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetMasterAuthRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetMasterAuthRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetMasterAuthRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_master_auth
 
         Override in a subclass to manipulate the request or metadata
@@ -1580,9 +1351,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_master_auth(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_master_auth(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_master_auth
 
         DEPRECATED. Please use the `post_set_master_auth_with_metadata`
@@ -1596,9 +1365,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_master_auth_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_master_auth
 
@@ -1615,13 +1382,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_monitoring_service(
-        self,
-        request: cluster_service.SetMonitoringServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetMonitoringServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.SetMonitoringServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetMonitoringServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_monitoring_service
 
         Override in a subclass to manipulate the request or metadata
@@ -1629,9 +1391,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_monitoring_service(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_monitoring_service(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_monitoring_service
 
         DEPRECATED. Please use the `post_set_monitoring_service_with_metadata`
@@ -1645,9 +1405,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_monitoring_service_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_monitoring_service
 
@@ -1664,12 +1422,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_network_policy(
-        self,
-        request: cluster_service.SetNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1677,9 +1431,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_network_policy(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_network_policy(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_network_policy
 
         DEPRECATED. Please use the `post_set_network_policy_with_metadata`
@@ -1693,9 +1445,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_network_policy_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_network_policy
 
@@ -1712,13 +1462,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_node_pool_autoscaling(
-        self,
-        request: cluster_service.SetNodePoolAutoscalingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetNodePoolAutoscalingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.SetNodePoolAutoscalingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetNodePoolAutoscalingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_node_pool_autoscaling
 
         Override in a subclass to manipulate the request or metadata
@@ -1726,9 +1471,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_node_pool_autoscaling(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_node_pool_autoscaling(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_node_pool_autoscaling
 
         DEPRECATED. Please use the `post_set_node_pool_autoscaling_with_metadata`
@@ -1742,9 +1485,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_node_pool_autoscaling_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_node_pool_autoscaling
 
@@ -1761,13 +1502,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_node_pool_management(
-        self,
-        request: cluster_service.SetNodePoolManagementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetNodePoolManagementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cluster_service.SetNodePoolManagementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetNodePoolManagementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_node_pool_management
 
         Override in a subclass to manipulate the request or metadata
@@ -1775,9 +1511,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_node_pool_management(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_node_pool_management(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_node_pool_management
 
         DEPRECATED. Please use the `post_set_node_pool_management_with_metadata`
@@ -1791,9 +1525,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_node_pool_management_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_node_pool_management
 
@@ -1810,12 +1542,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_set_node_pool_size(
-        self,
-        request: cluster_service.SetNodePoolSizeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.SetNodePoolSizeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.SetNodePoolSizeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.SetNodePoolSizeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_node_pool_size
 
         Override in a subclass to manipulate the request or metadata
@@ -1823,9 +1551,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_node_pool_size(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_set_node_pool_size(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for set_node_pool_size
 
         DEPRECATED. Please use the `post_set_node_pool_size_with_metadata`
@@ -1839,9 +1565,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_set_node_pool_size_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_node_pool_size
 
@@ -1858,12 +1582,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_start_ip_rotation(
-        self,
-        request: cluster_service.StartIPRotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.StartIPRotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.StartIPRotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.StartIPRotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_ip_rotation
 
         Override in a subclass to manipulate the request or metadata
@@ -1871,9 +1591,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_start_ip_rotation(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_start_ip_rotation(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for start_ip_rotation
 
         DEPRECATED. Please use the `post_start_ip_rotation_with_metadata`
@@ -1887,9 +1605,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_start_ip_rotation_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_ip_rotation
 
@@ -1906,12 +1622,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_update_cluster(
-        self,
-        request: cluster_service.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.UpdateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1919,9 +1631,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cluster(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_update_cluster(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for update_cluster
 
         DEPRECATED. Please use the `post_update_cluster_with_metadata`
@@ -1935,9 +1645,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_update_cluster_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cluster
 
@@ -1954,12 +1662,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_update_master(
-        self,
-        request: cluster_service.UpdateMasterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.UpdateMasterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.UpdateMasterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.UpdateMasterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_master
 
         Override in a subclass to manipulate the request or metadata
@@ -1967,9 +1671,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_master(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_update_master(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for update_master
 
         DEPRECATED. Please use the `post_update_master_with_metadata`
@@ -1983,9 +1685,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_update_master_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_master
 
@@ -2002,12 +1702,8 @@ class ClusterManagerRestInterceptor:
         return response, metadata
 
     def pre_update_node_pool(
-        self,
-        request: cluster_service.UpdateNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cluster_service.UpdateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cluster_service.UpdateNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cluster_service.UpdateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -2015,9 +1711,7 @@ class ClusterManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_node_pool(
-        self, response: cluster_service.Operation
-    ) -> cluster_service.Operation:
+    def post_update_node_pool(self, response: cluster_service.Operation) -> cluster_service.Operation:
         """Post-rpc interceptor for update_node_pool
 
         DEPRECATED. Please use the `post_update_node_pool_with_metadata`
@@ -2031,9 +1725,7 @@ class ClusterManagerRestInterceptor:
         return response
 
     def post_update_node_pool_with_metadata(
-        self,
-        response: cluster_service.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cluster_service.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_node_pool
 
@@ -2129,30 +1821,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ClusterManagerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CancelOperation(
-        _BaseClusterManagerRestTransport._BaseCancelOperation, ClusterManagerRestStub
-    ):
+    class _CancelOperation(_BaseClusterManagerRestTransport._BaseCancelOperation, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2189,32 +1869,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2238,13 +1904,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2252,23 +1912,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CheckAutopilotCompatibility(
-        _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility,
-        ClusterManagerRestStub,
-    ):
+    class _CheckAutopilotCompatibility(_BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.CheckAutopilotCompatibility")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2312,28 +1961,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_http_options()
 
-            request, metadata = self._interceptor.pre_check_autopilot_compatibility(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_check_autopilot_compatibility(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2356,15 +1993,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ClusterManagerRestTransport._CheckAutopilotCompatibility._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ClusterManagerRestTransport._CheckAutopilotCompatibility._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2380,21 +2010,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_check_autopilot_compatibility(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_check_autopilot_compatibility_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_autopilot_compatibility_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cluster_service.CheckAutopilotCompatibilityResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = cluster_service.CheckAutopilotCompatibilityResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2413,22 +2032,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _CompleteIPRotation(
-        _BaseClusterManagerRestTransport._BaseCompleteIPRotation, ClusterManagerRestStub
-    ):
+    class _CompleteIPRotation(_BaseClusterManagerRestTransport._BaseCompleteIPRotation, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.CompleteIPRotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2473,32 +2082,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_http_options()
 
-            request, metadata = self._interceptor.pre_complete_ip_rotation(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_complete_ip_rotation(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2522,13 +2117,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._CompleteIPRotation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2544,12 +2133,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_complete_ip_rotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_complete_ip_rotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_complete_ip_rotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -2570,23 +2155,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _CompleteNodePoolUpgrade(
-        _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade,
-        ClusterManagerRestStub,
-    ):
+    class _CompleteNodePoolUpgrade(_BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.CompleteNodePoolUpgrade")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2625,32 +2199,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_http_options()
 
-            request, metadata = self._interceptor.pre_complete_node_pool_upgrade(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_complete_node_pool_upgrade(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2673,16 +2233,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ClusterManagerRestTransport._CompleteNodePoolUpgrade._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ClusterManagerRestTransport._CompleteNodePoolUpgrade._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2690,22 +2242,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateCluster(
-        _BaseClusterManagerRestTransport._BaseCreateCluster, ClusterManagerRestStub
-    ):
+    class _CreateCluster(_BaseClusterManagerRestTransport._BaseCreateCluster, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.CreateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2750,30 +2292,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseCreateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCreateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseCreateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseCreateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseCreateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseCreateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2797,13 +2327,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._CreateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2819,12 +2343,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_create_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -2845,22 +2365,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _CreateNodePool(
-        _BaseClusterManagerRestTransport._BaseCreateNodePool, ClusterManagerRestStub
-    ):
+    class _CreateNodePool(_BaseClusterManagerRestTransport._BaseCreateNodePool, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.CreateNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2905,32 +2415,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCreateNodePool._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_node_pool(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2954,13 +2450,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._CreateNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2976,12 +2466,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_create_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -3002,22 +2488,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _DeleteCluster(
-        _BaseClusterManagerRestTransport._BaseDeleteCluster, ClusterManagerRestStub
-    ):
+    class _DeleteCluster(_BaseClusterManagerRestTransport._BaseDeleteCluster, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.DeleteCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3061,26 +2537,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3104,12 +2570,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._DeleteCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3125,12 +2586,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_delete_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -3151,22 +2608,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _DeleteNodePool(
-        _BaseClusterManagerRestTransport._BaseDeleteNodePool, ClusterManagerRestStub
-    ):
+    class _DeleteNodePool(_BaseClusterManagerRestTransport._BaseDeleteNodePool, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.DeleteNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3210,28 +2657,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_node_pool(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3255,12 +2690,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._DeleteNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3276,12 +2706,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_delete_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -3302,23 +2728,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _FetchClusterUpgradeInfo(
-        _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo,
-        ClusterManagerRestStub,
-    ):
+    class _FetchClusterUpgradeInfo(_BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.FetchClusterUpgradeInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3362,28 +2777,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_cluster_upgrade_info(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_cluster_upgrade_info(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3406,15 +2809,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ClusterManagerRestTransport._FetchClusterUpgradeInfo._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ClusterManagerRestTransport._FetchClusterUpgradeInfo._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3430,16 +2826,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_fetch_cluster_upgrade_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_cluster_upgrade_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_cluster_upgrade_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cluster_service.ClusterUpgradeInfo.to_json(
-                        response
-                    )
+                    response_payload = cluster_service.ClusterUpgradeInfo.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3458,23 +2848,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _FetchNodePoolUpgradeInfo(
-        _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo,
-        ClusterManagerRestStub,
-    ):
+    class _FetchNodePoolUpgradeInfo(_BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.FetchNodePoolUpgradeInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3518,28 +2897,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_node_pool_upgrade_info(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_node_pool_upgrade_info(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3562,15 +2929,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ClusterManagerRestTransport._FetchNodePoolUpgradeInfo._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ClusterManagerRestTransport._FetchNodePoolUpgradeInfo._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3586,16 +2946,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_fetch_node_pool_upgrade_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_node_pool_upgrade_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_node_pool_upgrade_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cluster_service.NodePoolUpgradeInfo.to_json(
-                        response
-                    )
+                    response_payload = cluster_service.NodePoolUpgradeInfo.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3614,22 +2968,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _GetCluster(
-        _BaseClusterManagerRestTransport._BaseGetCluster, ClusterManagerRestStub
-    ):
+    class _GetCluster(_BaseClusterManagerRestTransport._BaseGetCluster, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.GetCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3669,28 +3013,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     A Google Kubernetes Engine cluster.
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseGetCluster._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseGetCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseGetCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseClusterManagerRestTransport._BaseGetCluster._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseGetCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3714,12 +3046,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._GetCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3735,12 +3062,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_get_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Cluster.to_json(response)
                 except:
@@ -3761,22 +3084,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _GetJSONWebKeys(
-        _BaseClusterManagerRestTransport._BaseGetJSONWebKeys, ClusterManagerRestStub
-    ):
+    class _GetJSONWebKeys(_BaseClusterManagerRestTransport._BaseGetJSONWebKeys, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.GetJSONWebKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3822,28 +3135,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_json_web_keys(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_json_web_keys(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3867,12 +3168,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._GetJSONWebKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3888,16 +3184,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_get_json_web_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_json_web_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_json_web_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cluster_service.GetJSONWebKeysResponse.to_json(
-                        response
-                    )
+                    response_payload = cluster_service.GetJSONWebKeysResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3916,22 +3206,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _GetNodePool(
-        _BaseClusterManagerRestTransport._BaseGetNodePool, ClusterManagerRestStub
-    ):
+    class _GetNodePool(_BaseClusterManagerRestTransport._BaseGetNodePool, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.GetNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3981,26 +3261,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseGetNodePool._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseGetNodePool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_node_pool(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseGetNodePool._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetNodePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseGetNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseGetNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4024,12 +3294,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._GetNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4045,12 +3310,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_get_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.NodePool.to_json(response)
                 except:
@@ -4071,22 +3332,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _GetOperation(
-        _BaseClusterManagerRestTransport._BaseGetOperation, ClusterManagerRestStub
-    ):
+    class _GetOperation(_BaseClusterManagerRestTransport._BaseGetOperation, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4130,26 +3381,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4173,12 +3414,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4194,12 +3430,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_get_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -4220,22 +3452,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _GetServerConfig(
-        _BaseClusterManagerRestTransport._BaseGetServerConfig, ClusterManagerRestStub
-    ):
+    class _GetServerConfig(_BaseClusterManagerRestTransport._BaseGetServerConfig, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.GetServerConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4277,28 +3499,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseGetServerConfig._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_server_config(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_server_config(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4322,12 +3532,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._GetServerConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4343,12 +3548,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_get_server_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_server_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_server_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.ServerConfig.to_json(response)
                 except:
@@ -4369,22 +3570,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _ListClusters(
-        _BaseClusterManagerRestTransport._BaseListClusters, ClusterManagerRestStub
-    ):
+    class _ListClusters(_BaseClusterManagerRestTransport._BaseListClusters, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.ListClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4425,26 +3616,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseListClusters._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseListClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseListClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4468,12 +3649,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._ListClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4489,16 +3665,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_list_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cluster_service.ListClustersResponse.to_json(
-                        response
-                    )
+                    response_payload = cluster_service.ListClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4517,22 +3687,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _ListNodePools(
-        _BaseClusterManagerRestTransport._BaseListNodePools, ClusterManagerRestStub
-    ):
+    class _ListNodePools(_BaseClusterManagerRestTransport._BaseListNodePools, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.ListNodePools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4574,26 +3734,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseListNodePools._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseListNodePools._get_http_options()
 
             request, metadata = self._interceptor.pre_list_node_pools(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseListNodePools._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListNodePools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseListNodePools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseListNodePools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4617,12 +3767,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._ListNodePools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4638,16 +3783,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_list_node_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_node_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_node_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cluster_service.ListNodePoolsResponse.to_json(
-                        response
-                    )
+                    response_payload = cluster_service.ListNodePoolsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4666,22 +3805,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _ListOperations(
-        _BaseClusterManagerRestTransport._BaseListOperations, ClusterManagerRestStub
-    ):
+    class _ListOperations(_BaseClusterManagerRestTransport._BaseListOperations, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4723,26 +3852,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4766,12 +3885,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4787,16 +3901,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_list_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_operations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_operations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cluster_service.ListOperationsResponse.to_json(
-                        response
-                    )
+                    response_payload = cluster_service.ListOperationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4815,23 +3923,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _ListUsableSubnetworks(
-        _BaseClusterManagerRestTransport._BaseListUsableSubnetworks,
-        ClusterManagerRestStub,
-    ):
+    class _ListUsableSubnetworks(_BaseClusterManagerRestTransport._BaseListUsableSubnetworks, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.ListUsableSubnetworks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4875,28 +3972,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_usable_subnetworks(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_usable_subnetworks(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4920,12 +4005,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._ListUsableSubnetworks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4941,16 +4021,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_list_usable_subnetworks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_usable_subnetworks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_usable_subnetworks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cluster_service.ListUsableSubnetworksResponse.to_json(response)
-                    )
+                    response_payload = cluster_service.ListUsableSubnetworksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4969,23 +4043,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _RollbackNodePoolUpgrade(
-        _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade,
-        ClusterManagerRestStub,
-    ):
+    class _RollbackNodePoolUpgrade(_BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.RollbackNodePoolUpgrade")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5034,32 +4097,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_http_options()
 
-            request, metadata = self._interceptor.pre_rollback_node_pool_upgrade(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_rollback_node_pool_upgrade(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5082,16 +4131,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ClusterManagerRestTransport._RollbackNodePoolUpgrade._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ClusterManagerRestTransport._RollbackNodePoolUpgrade._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5107,12 +4148,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_rollback_node_pool_upgrade(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rollback_node_pool_upgrade_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rollback_node_pool_upgrade_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -5133,22 +4170,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetAddonsConfig(
-        _BaseClusterManagerRestTransport._BaseSetAddonsConfig, ClusterManagerRestStub
-    ):
+    class _SetAddonsConfig(_BaseClusterManagerRestTransport._BaseSetAddonsConfig, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetAddonsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5193,32 +4220,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_addons_config(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_addons_config(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5242,13 +4255,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetAddonsConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5264,12 +4271,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_addons_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_addons_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_addons_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -5290,22 +4293,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetLabels(
-        _BaseClusterManagerRestTransport._BaseSetLabels, ClusterManagerRestStub
-    ):
+    class _SetLabels(_BaseClusterManagerRestTransport._BaseSetLabels, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5353,36 +4346,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = (
-                _BaseClusterManagerRestTransport._BaseSetLabels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseClusterManagerRestTransport._BaseSetLabels._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseClusterManagerRestTransport._BaseSetLabels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5406,13 +4381,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5428,12 +4397,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -5454,22 +4419,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetLegacyAbac(
-        _BaseClusterManagerRestTransport._BaseSetLegacyAbac, ClusterManagerRestStub
-    ):
+    class _SetLegacyAbac(_BaseClusterManagerRestTransport._BaseSetLegacyAbac, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetLegacyAbac")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5515,30 +4470,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_http_options()
 
             request, metadata = self._interceptor.pre_set_legacy_abac(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5562,13 +4505,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetLegacyAbac._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5584,12 +4521,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_legacy_abac(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_legacy_abac_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_legacy_abac_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -5610,22 +4543,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetLocations(
-        _BaseClusterManagerRestTransport._BaseSetLocations, ClusterManagerRestStub
-    ):
+    class _SetLocations(_BaseClusterManagerRestTransport._BaseSetLocations, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5670,30 +4593,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetLocations._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_set_locations(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLocations._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetLocations._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetLocations._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5717,13 +4628,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5739,12 +4644,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_locations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_locations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_locations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -5765,22 +4666,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetLoggingService(
-        _BaseClusterManagerRestTransport._BaseSetLoggingService, ClusterManagerRestStub
-    ):
+    class _SetLoggingService(_BaseClusterManagerRestTransport._BaseSetLoggingService, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetLoggingService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5825,32 +4716,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetLoggingService._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_logging_service(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_logging_service(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5874,13 +4751,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetLoggingService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5896,12 +4767,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_logging_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_logging_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_logging_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -5922,23 +4789,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetMaintenancePolicy(
-        _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy,
-        ClusterManagerRestStub,
-    ):
+    class _SetMaintenancePolicy(_BaseClusterManagerRestTransport._BaseSetMaintenancePolicy, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetMaintenancePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5983,32 +4839,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_maintenance_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_maintenance_policy(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6032,13 +4874,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetMaintenancePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6054,12 +4890,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_maintenance_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_maintenance_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_maintenance_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -6080,22 +4912,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetMasterAuth(
-        _BaseClusterManagerRestTransport._BaseSetMasterAuth, ClusterManagerRestStub
-    ):
+    class _SetMasterAuth(_BaseClusterManagerRestTransport._BaseSetMasterAuth, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetMasterAuth")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6140,30 +4962,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_http_options()
 
             request, metadata = self._interceptor.pre_set_master_auth(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6187,13 +4997,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetMasterAuth._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6209,12 +5013,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_master_auth(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_master_auth_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_master_auth_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -6235,23 +5035,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetMonitoringService(
-        _BaseClusterManagerRestTransport._BaseSetMonitoringService,
-        ClusterManagerRestStub,
-    ):
+    class _SetMonitoringService(_BaseClusterManagerRestTransport._BaseSetMonitoringService, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetMonitoringService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6296,32 +5085,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_monitoring_service(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_monitoring_service(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6345,13 +5120,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetMonitoringService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6367,12 +5136,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_monitoring_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_monitoring_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_monitoring_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -6393,22 +5158,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetNetworkPolicy(
-        _BaseClusterManagerRestTransport._BaseSetNetworkPolicy, ClusterManagerRestStub
-    ):
+    class _SetNetworkPolicy(_BaseClusterManagerRestTransport._BaseSetNetworkPolicy, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetNetworkPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6454,32 +5209,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_network_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_network_policy(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6503,13 +5244,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetNetworkPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6525,12 +5260,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_network_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_network_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_network_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -6551,23 +5282,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetNodePoolAutoscaling(
-        _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling,
-        ClusterManagerRestStub,
-    ):
+    class _SetNodePoolAutoscaling(_BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetNodePoolAutoscaling")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6612,32 +5332,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_node_pool_autoscaling(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_node_pool_autoscaling(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6660,16 +5366,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                ClusterManagerRestTransport._SetNodePoolAutoscaling._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ClusterManagerRestTransport._SetNodePoolAutoscaling._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6685,12 +5383,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_node_pool_autoscaling(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_node_pool_autoscaling_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_node_pool_autoscaling_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -6711,23 +5405,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetNodePoolManagement(
-        _BaseClusterManagerRestTransport._BaseSetNodePoolManagement,
-        ClusterManagerRestStub,
-    ):
+    class _SetNodePoolManagement(_BaseClusterManagerRestTransport._BaseSetNodePoolManagement, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetNodePoolManagement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6773,32 +5456,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_node_pool_management(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_node_pool_management(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6822,13 +5491,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetNodePoolManagement._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6844,12 +5507,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_node_pool_management(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_node_pool_management_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_node_pool_management_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -6870,22 +5529,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _SetNodePoolSize(
-        _BaseClusterManagerRestTransport._BaseSetNodePoolSize, ClusterManagerRestStub
-    ):
+    class _SetNodePoolSize(_BaseClusterManagerRestTransport._BaseSetNodePoolSize, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.SetNodePoolSize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6930,32 +5579,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_node_pool_size(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_node_pool_size(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6979,13 +5614,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._SetNodePoolSize._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7001,12 +5630,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_set_node_pool_size(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_node_pool_size_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_node_pool_size_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -7027,22 +5652,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _StartIPRotation(
-        _BaseClusterManagerRestTransport._BaseStartIPRotation, ClusterManagerRestStub
-    ):
+    class _StartIPRotation(_BaseClusterManagerRestTransport._BaseStartIPRotation, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.StartIPRotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7089,32 +5704,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseStartIPRotation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_ip_rotation(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_ip_rotation(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7138,13 +5739,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._StartIPRotation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7160,12 +5755,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_start_ip_rotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_ip_rotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_ip_rotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -7186,22 +5777,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _UpdateCluster(
-        _BaseClusterManagerRestTransport._BaseUpdateCluster, ClusterManagerRestStub
-    ):
+    class _UpdateCluster(_BaseClusterManagerRestTransport._BaseUpdateCluster, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.UpdateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7246,30 +5827,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7293,13 +5862,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._UpdateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7315,12 +5878,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_update_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -7341,22 +5900,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _UpdateMaster(
-        _BaseClusterManagerRestTransport._BaseUpdateMaster, ClusterManagerRestStub
-    ):
+    class _UpdateMaster(_BaseClusterManagerRestTransport._BaseUpdateMaster, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.UpdateMaster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7401,30 +5950,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseUpdateMaster._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_master(request, metadata)
-            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7448,13 +5985,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._UpdateMaster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7470,12 +6001,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_update_master(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_master_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_master_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -7496,22 +6023,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
-    class _UpdateNodePool(
-        _BaseClusterManagerRestTransport._BaseUpdateNodePool, ClusterManagerRestStub
-    ):
+    class _UpdateNodePool(_BaseClusterManagerRestTransport._BaseUpdateNodePool, ClusterManagerRestStub):
         def __hash__(self):
             return hash("ClusterManagerRestTransport.UpdateNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7556,32 +6073,18 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_node_pool(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7605,13 +6108,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             # Send the request
             response = ClusterManagerRestTransport._UpdateNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7627,12 +6124,8 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_update_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
                 except:
@@ -7654,9 +6147,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             return resp
 
     @property
-    def cancel_operation(
-        self,
-    ) -> Callable[[cluster_service.CancelOperationRequest], empty_pb2.Empty]:
+    def cancel_operation(self) -> Callable[[cluster_service.CancelOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
@@ -7664,315 +6155,211 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     @property
     def check_autopilot_compatibility(
         self,
-    ) -> Callable[
-        [cluster_service.CheckAutopilotCompatibilityRequest],
-        cluster_service.CheckAutopilotCompatibilityResponse,
-    ]:
+    ) -> Callable[[cluster_service.CheckAutopilotCompatibilityRequest], cluster_service.CheckAutopilotCompatibilityResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckAutopilotCompatibility(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def complete_ip_rotation(
-        self,
-    ) -> Callable[
-        [cluster_service.CompleteIPRotationRequest], cluster_service.Operation
-    ]:
+    def complete_ip_rotation(self) -> Callable[[cluster_service.CompleteIPRotationRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CompleteIPRotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def complete_node_pool_upgrade(
-        self,
-    ) -> Callable[[cluster_service.CompleteNodePoolUpgradeRequest], empty_pb2.Empty]:
+    def complete_node_pool_upgrade(self) -> Callable[[cluster_service.CompleteNodePoolUpgradeRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CompleteNodePoolUpgrade(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[cluster_service.CreateClusterRequest], cluster_service.Operation]:
+    def create_cluster(self) -> Callable[[cluster_service.CreateClusterRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_node_pool(
-        self,
-    ) -> Callable[[cluster_service.CreateNodePoolRequest], cluster_service.Operation]:
+    def create_node_pool(self) -> Callable[[cluster_service.CreateNodePoolRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[cluster_service.DeleteClusterRequest], cluster_service.Operation]:
+    def delete_cluster(self) -> Callable[[cluster_service.DeleteClusterRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_node_pool(
-        self,
-    ) -> Callable[[cluster_service.DeleteNodePoolRequest], cluster_service.Operation]:
+    def delete_node_pool(self) -> Callable[[cluster_service.DeleteNodePoolRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_cluster_upgrade_info(
-        self,
-    ) -> Callable[
-        [cluster_service.FetchClusterUpgradeInfoRequest],
-        cluster_service.ClusterUpgradeInfo,
-    ]:
+    def fetch_cluster_upgrade_info(self) -> Callable[[cluster_service.FetchClusterUpgradeInfoRequest], cluster_service.ClusterUpgradeInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchClusterUpgradeInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_node_pool_upgrade_info(
-        self,
-    ) -> Callable[
-        [cluster_service.FetchNodePoolUpgradeInfoRequest],
-        cluster_service.NodePoolUpgradeInfo,
-    ]:
+    def fetch_node_pool_upgrade_info(self) -> Callable[[cluster_service.FetchNodePoolUpgradeInfoRequest], cluster_service.NodePoolUpgradeInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchNodePoolUpgradeInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[cluster_service.GetClusterRequest], cluster_service.Cluster]:
+    def get_cluster(self) -> Callable[[cluster_service.GetClusterRequest], cluster_service.Cluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_json_web_keys(
-        self,
-    ) -> Callable[
-        [cluster_service.GetJSONWebKeysRequest], cluster_service.GetJSONWebKeysResponse
-    ]:
+    def get_json_web_keys(self) -> Callable[[cluster_service.GetJSONWebKeysRequest], cluster_service.GetJSONWebKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetJSONWebKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_node_pool(
-        self,
-    ) -> Callable[[cluster_service.GetNodePoolRequest], cluster_service.NodePool]:
+    def get_node_pool(self) -> Callable[[cluster_service.GetNodePoolRequest], cluster_service.NodePool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_operation(
-        self,
-    ) -> Callable[[cluster_service.GetOperationRequest], cluster_service.Operation]:
+    def get_operation(self) -> Callable[[cluster_service.GetOperationRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_server_config(
-        self,
-    ) -> Callable[
-        [cluster_service.GetServerConfigRequest], cluster_service.ServerConfig
-    ]:
+    def get_server_config(self) -> Callable[[cluster_service.GetServerConfigRequest], cluster_service.ServerConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [cluster_service.ListClustersRequest], cluster_service.ListClustersResponse
-    ]:
+    def list_clusters(self) -> Callable[[cluster_service.ListClustersRequest], cluster_service.ListClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_node_pools(
-        self,
-    ) -> Callable[
-        [cluster_service.ListNodePoolsRequest], cluster_service.ListNodePoolsResponse
-    ]:
+    def list_node_pools(self) -> Callable[[cluster_service.ListNodePoolsRequest], cluster_service.ListNodePoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNodePools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_operations(
-        self,
-    ) -> Callable[
-        [cluster_service.ListOperationsRequest], cluster_service.ListOperationsResponse
-    ]:
+    def list_operations(self) -> Callable[[cluster_service.ListOperationsRequest], cluster_service.ListOperationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_usable_subnetworks(
-        self,
-    ) -> Callable[
-        [cluster_service.ListUsableSubnetworksRequest],
-        cluster_service.ListUsableSubnetworksResponse,
-    ]:
+    def list_usable_subnetworks(self) -> Callable[[cluster_service.ListUsableSubnetworksRequest], cluster_service.ListUsableSubnetworksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUsableSubnetworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rollback_node_pool_upgrade(
-        self,
-    ) -> Callable[
-        [cluster_service.RollbackNodePoolUpgradeRequest], cluster_service.Operation
-    ]:
+    def rollback_node_pool_upgrade(self) -> Callable[[cluster_service.RollbackNodePoolUpgradeRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RollbackNodePoolUpgrade(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_addons_config(
-        self,
-    ) -> Callable[[cluster_service.SetAddonsConfigRequest], cluster_service.Operation]:
+    def set_addons_config(self) -> Callable[[cluster_service.SetAddonsConfigRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetAddonsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[cluster_service.SetLabelsRequest], cluster_service.Operation]:
+    def set_labels(self) -> Callable[[cluster_service.SetLabelsRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_legacy_abac(
-        self,
-    ) -> Callable[[cluster_service.SetLegacyAbacRequest], cluster_service.Operation]:
+    def set_legacy_abac(self) -> Callable[[cluster_service.SetLegacyAbacRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLegacyAbac(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_locations(
-        self,
-    ) -> Callable[[cluster_service.SetLocationsRequest], cluster_service.Operation]:
+    def set_locations(self) -> Callable[[cluster_service.SetLocationsRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLocations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_logging_service(
-        self,
-    ) -> Callable[
-        [cluster_service.SetLoggingServiceRequest], cluster_service.Operation
-    ]:
+    def set_logging_service(self) -> Callable[[cluster_service.SetLoggingServiceRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLoggingService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_maintenance_policy(
-        self,
-    ) -> Callable[
-        [cluster_service.SetMaintenancePolicyRequest], cluster_service.Operation
-    ]:
+    def set_maintenance_policy(self) -> Callable[[cluster_service.SetMaintenancePolicyRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetMaintenancePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_master_auth(
-        self,
-    ) -> Callable[[cluster_service.SetMasterAuthRequest], cluster_service.Operation]:
+    def set_master_auth(self) -> Callable[[cluster_service.SetMasterAuthRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetMasterAuth(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_monitoring_service(
-        self,
-    ) -> Callable[
-        [cluster_service.SetMonitoringServiceRequest], cluster_service.Operation
-    ]:
+    def set_monitoring_service(self) -> Callable[[cluster_service.SetMonitoringServiceRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetMonitoringService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_network_policy(
-        self,
-    ) -> Callable[[cluster_service.SetNetworkPolicyRequest], cluster_service.Operation]:
+    def set_network_policy(self) -> Callable[[cluster_service.SetNetworkPolicyRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetNetworkPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_node_pool_autoscaling(
-        self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolAutoscalingRequest], cluster_service.Operation
-    ]:
+    def set_node_pool_autoscaling(self) -> Callable[[cluster_service.SetNodePoolAutoscalingRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetNodePoolAutoscaling(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_node_pool_management(
-        self,
-    ) -> Callable[
-        [cluster_service.SetNodePoolManagementRequest], cluster_service.Operation
-    ]:
+    def set_node_pool_management(self) -> Callable[[cluster_service.SetNodePoolManagementRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetNodePoolManagement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_node_pool_size(
-        self,
-    ) -> Callable[[cluster_service.SetNodePoolSizeRequest], cluster_service.Operation]:
+    def set_node_pool_size(self) -> Callable[[cluster_service.SetNodePoolSizeRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetNodePoolSize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_ip_rotation(
-        self,
-    ) -> Callable[[cluster_service.StartIPRotationRequest], cluster_service.Operation]:
+    def start_ip_rotation(self) -> Callable[[cluster_service.StartIPRotationRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartIPRotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[cluster_service.UpdateClusterRequest], cluster_service.Operation]:
+    def update_cluster(self) -> Callable[[cluster_service.UpdateClusterRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_master(
-        self,
-    ) -> Callable[[cluster_service.UpdateMasterRequest], cluster_service.Operation]:
+    def update_master(self) -> Callable[[cluster_service.UpdateMasterRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMaster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_node_pool(
-        self,
-    ) -> Callable[[cluster_service.UpdateNodePoolRequest], cluster_service.Operation]:
+    def update_node_pool(self) -> Callable[[cluster_service.UpdateNodePoolRequest], cluster_service.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNodePool(self._session, self._host, self._interceptor)  # type: ignore

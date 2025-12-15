@@ -32,10 +32,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.geminidataanalytics_v1alpha.types import (
-    data_agent,
-    data_agent_service,
-)
+from google.cloud.geminidataanalytics_v1alpha.types import data_agent, data_agent_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDataAgentServiceRestTransport
@@ -150,13 +147,8 @@ class DataAgentServiceRestInterceptor:
     """
 
     def pre_create_data_agent(
-        self,
-        request: data_agent_service.CreateDataAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.CreateDataAgentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_agent_service.CreateDataAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.CreateDataAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_agent
 
         Override in a subclass to manipulate the request or metadata
@@ -164,9 +156,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_data_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_data_agent
 
         DEPRECATED. Please use the `post_create_data_agent_with_metadata`
@@ -180,9 +170,7 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_create_data_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_agent
 
@@ -199,13 +187,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_agent(
-        self,
-        request: data_agent_service.DeleteDataAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.DeleteDataAgentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_agent_service.DeleteDataAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.DeleteDataAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_agent
 
         Override in a subclass to manipulate the request or metadata
@@ -213,9 +196,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_data_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_data_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_data_agent
 
         DEPRECATED. Please use the `post_delete_data_agent_with_metadata`
@@ -229,9 +210,7 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_delete_data_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_data_agent
 
@@ -248,12 +227,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_agent(
-        self,
-        request: data_agent_service.GetDataAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.GetDataAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_agent_service.GetDataAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.GetDataAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_agent
 
         Override in a subclass to manipulate the request or metadata
@@ -261,9 +236,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_agent(
-        self, response: data_agent.DataAgent
-    ) -> data_agent.DataAgent:
+    def post_get_data_agent(self, response: data_agent.DataAgent) -> data_agent.DataAgent:
         """Post-rpc interceptor for get_data_agent
 
         DEPRECATED. Please use the `post_get_data_agent_with_metadata`
@@ -277,9 +250,7 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_get_data_agent_with_metadata(
-        self,
-        response: data_agent.DataAgent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: data_agent.DataAgent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[data_agent.DataAgent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_agent
 
@@ -296,12 +267,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -323,9 +290,7 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -342,13 +307,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_list_accessible_data_agents(
-        self,
-        request: data_agent_service.ListAccessibleDataAgentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.ListAccessibleDataAgentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_agent_service.ListAccessibleDataAgentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.ListAccessibleDataAgentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_accessible_data_agents
 
         Override in a subclass to manipulate the request or metadata
@@ -372,13 +332,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_list_accessible_data_agents_with_metadata(
-        self,
-        response: data_agent_service.ListAccessibleDataAgentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.ListAccessibleDataAgentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_agent_service.ListAccessibleDataAgentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.ListAccessibleDataAgentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_accessible_data_agents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -394,13 +349,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_agents(
-        self,
-        request: data_agent_service.ListDataAgentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.ListDataAgentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_agent_service.ListDataAgentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.ListDataAgentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_agents
 
         Override in a subclass to manipulate the request or metadata
@@ -408,9 +358,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_agents(
-        self, response: data_agent_service.ListDataAgentsResponse
-    ) -> data_agent_service.ListDataAgentsResponse:
+    def post_list_data_agents(self, response: data_agent_service.ListDataAgentsResponse) -> data_agent_service.ListDataAgentsResponse:
         """Post-rpc interceptor for list_data_agents
 
         DEPRECATED. Please use the `post_list_data_agents_with_metadata`
@@ -424,13 +372,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_list_data_agents_with_metadata(
-        self,
-        response: data_agent_service.ListDataAgentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.ListDataAgentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_agent_service.ListDataAgentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.ListDataAgentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_agents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -446,12 +389,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -473,9 +412,7 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -492,13 +429,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_agent(
-        self,
-        request: data_agent_service.UpdateDataAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_agent_service.UpdateDataAgentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_agent_service.UpdateDataAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_agent_service.UpdateDataAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_agent
 
         Override in a subclass to manipulate the request or metadata
@@ -506,9 +438,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_data_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_data_agent
 
         DEPRECATED. Please use the `post_update_data_agent_with_metadata`
@@ -522,9 +452,7 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def post_update_data_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_agent
 
@@ -541,12 +469,8 @@ class DataAgentServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +478,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -566,12 +488,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -579,9 +497,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -591,12 +507,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -614,12 +526,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -637,12 +545,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -650,9 +554,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -662,12 +564,8 @@ class DataAgentServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -675,9 +573,7 @@ class DataAgentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -766,9 +662,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -821,30 +715,17 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataAgent(
-        _BaseDataAgentServiceRestTransport._BaseCreateDataAgent,
-        DataAgentServiceRestStub,
-    ):
+    class _CreateDataAgent(_BaseDataAgentServiceRestTransport._BaseCreateDataAgent, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.CreateDataAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -887,32 +768,18 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_agent(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_agent(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -936,13 +803,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._CreateDataAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -956,12 +817,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_create_data_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -982,23 +839,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataAgent(
-        _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent,
-        DataAgentServiceRestStub,
-    ):
+    class _DeleteDataAgent(_BaseDataAgentServiceRestTransport._BaseDeleteDataAgent, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.DeleteDataAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1040,28 +886,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_agent(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_agent(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1085,12 +919,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._DeleteDataAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1104,12 +933,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_data_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1130,22 +955,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _GetDataAgent(
-        _BaseDataAgentServiceRestTransport._BaseGetDataAgent, DataAgentServiceRestStub
-    ):
+    class _GetDataAgent(_BaseDataAgentServiceRestTransport._BaseGetDataAgent, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.GetDataAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1186,26 +1001,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseGetDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseGetDataAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_agent(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetDataAgent._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetDataAgent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseGetDataAgent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseGetDataAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1229,12 +1034,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._GetDataAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1250,12 +1050,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_get_data_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = data_agent.DataAgent.to_json(response)
                 except:
@@ -1276,22 +1072,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseDataAgentServiceRestTransport._BaseGetIamPolicy, DataAgentServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseDataAgentServiceRestTransport._BaseGetIamPolicy, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1406,30 +1192,18 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1453,13 +1227,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1475,12 +1243,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1501,23 +1265,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _ListAccessibleDataAgents(
-        _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents,
-        DataAgentServiceRestStub,
-    ):
+    class _ListAccessibleDataAgents(_BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.ListAccessibleDataAgents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1560,28 +1313,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_accessible_data_agents(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_accessible_data_agents(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1604,15 +1345,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataAgentServiceRestTransport._ListAccessibleDataAgents._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataAgentServiceRestTransport._ListAccessibleDataAgents._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1628,18 +1362,10 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_list_accessible_data_agents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_accessible_data_agents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_accessible_data_agents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        data_agent_service.ListAccessibleDataAgentsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = data_agent_service.ListAccessibleDataAgentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1658,22 +1384,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _ListDataAgents(
-        _BaseDataAgentServiceRestTransport._BaseListDataAgents, DataAgentServiceRestStub
-    ):
+    class _ListDataAgents(_BaseDataAgentServiceRestTransport._BaseListDataAgents, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.ListDataAgents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1715,28 +1431,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_agents(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_agents(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1760,12 +1464,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._ListDataAgents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1781,16 +1480,10 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_list_data_agents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_agents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_agents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        data_agent_service.ListDataAgentsResponse.to_json(response)
-                    )
+                    response_payload = data_agent_service.ListDataAgentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1809,22 +1502,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseDataAgentServiceRestTransport._BaseSetIamPolicy, DataAgentServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseDataAgentServiceRestTransport._BaseSetIamPolicy, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1939,30 +1622,18 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1986,13 +1657,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2008,12 +1673,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2034,23 +1695,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataAgent(
-        _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent,
-        DataAgentServiceRestStub,
-    ):
+    class _UpdateDataAgent(_BaseDataAgentServiceRestTransport._BaseUpdateDataAgent, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.UpdateDataAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2093,32 +1743,18 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_agent(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_agent(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2142,13 +1778,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._UpdateDataAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2162,12 +1792,8 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             resp = self._interceptor.post_update_data_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2189,37 +1815,25 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
             return resp
 
     @property
-    def create_data_agent(
-        self,
-    ) -> Callable[
-        [data_agent_service.CreateDataAgentRequest], operations_pb2.Operation
-    ]:
+    def create_data_agent(self) -> Callable[[data_agent_service.CreateDataAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_agent(
-        self,
-    ) -> Callable[
-        [data_agent_service.DeleteDataAgentRequest], operations_pb2.Operation
-    ]:
+    def delete_data_agent(self) -> Callable[[data_agent_service.DeleteDataAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_agent(
-        self,
-    ) -> Callable[[data_agent_service.GetDataAgentRequest], data_agent.DataAgent]:
+    def get_data_agent(self) -> Callable[[data_agent_service.GetDataAgentRequest], data_agent.DataAgent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -2227,39 +1841,25 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     @property
     def list_accessible_data_agents(
         self,
-    ) -> Callable[
-        [data_agent_service.ListAccessibleDataAgentsRequest],
-        data_agent_service.ListAccessibleDataAgentsResponse,
-    ]:
+    ) -> Callable[[data_agent_service.ListAccessibleDataAgentsRequest], data_agent_service.ListAccessibleDataAgentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccessibleDataAgents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_agents(
-        self,
-    ) -> Callable[
-        [data_agent_service.ListDataAgentsRequest],
-        data_agent_service.ListDataAgentsResponse,
-    ]:
+    def list_data_agents(self) -> Callable[[data_agent_service.ListDataAgentsRequest], data_agent_service.ListDataAgentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataAgents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_agent(
-        self,
-    ) -> Callable[
-        [data_agent_service.UpdateDataAgentRequest], operations_pb2.Operation
-    ]:
+    def update_data_agent(self) -> Callable[[data_agent_service.UpdateDataAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataAgent(self._session, self._host, self._interceptor)  # type: ignore
@@ -2268,22 +1868,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataAgentServiceRestTransport._BaseGetLocation, DataAgentServiceRestStub
-    ):
+    class _GetLocation(_BaseDataAgentServiceRestTransport._BaseGetLocation, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2321,26 +1911,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2364,12 +1944,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2381,9 +1956,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2408,22 +1981,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataAgentServiceRestTransport._BaseListLocations, DataAgentServiceRestStub
-    ):
+    class _ListLocations(_BaseDataAgentServiceRestTransport._BaseListLocations, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2461,26 +2024,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2504,12 +2057,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2521,9 +2069,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2548,23 +2094,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataAgentServiceRestTransport._BaseCancelOperation,
-        DataAgentServiceRestStub,
-    ):
+    class _CancelOperation(_BaseDataAgentServiceRestTransport._BaseCancelOperation, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2600,32 +2135,18 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2649,13 +2170,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2669,23 +2184,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataAgentServiceRestTransport._BaseDeleteOperation,
-        DataAgentServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseDataAgentServiceRestTransport._BaseDeleteOperation, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2720,28 +2224,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2765,12 +2257,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2784,22 +2271,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataAgentServiceRestTransport._BaseGetOperation, DataAgentServiceRestStub
-    ):
+    class _GetOperation(_BaseDataAgentServiceRestTransport._BaseGetOperation, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2837,26 +2314,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2880,12 +2347,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2897,9 +2359,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2924,22 +2384,12 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataAgentServiceRestTransport._BaseListOperations, DataAgentServiceRestStub
-    ):
+    class _ListOperations(_BaseDataAgentServiceRestTransport._BaseListOperations, DataAgentServiceRestStub):
         def __hash__(self):
             return hash("DataAgentServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2977,26 +2427,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataAgentServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataAgentServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3020,12 +2460,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             # Send the request
             response = DataAgentServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3037,9 +2472,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

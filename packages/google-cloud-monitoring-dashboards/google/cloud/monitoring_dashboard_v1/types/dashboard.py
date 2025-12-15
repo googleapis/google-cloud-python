@@ -120,9 +120,7 @@ class Dashboard(proto.Message):
         oneof="layout",
         message=layouts.ColumnLayout,
     )
-    dashboard_filters: MutableSequence[
-        dashboard_filter.DashboardFilter
-    ] = proto.RepeatedField(
+    dashboard_filters: MutableSequence[dashboard_filter.DashboardFilter] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=dashboard_filter.DashboardFilter,

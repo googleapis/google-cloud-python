@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.deploy_v1 import gapic_version as package_version
 from google.cloud.deploy_v1.types import cloud_deploy
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class CloudDeployTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -599,107 +589,60 @@ class CloudDeployTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_deploy.ListDeliveryPipelinesRequest],
-        Union[
-            cloud_deploy.ListDeliveryPipelinesResponse,
-            Awaitable[cloud_deploy.ListDeliveryPipelinesResponse],
-        ],
+        Union[cloud_deploy.ListDeliveryPipelinesResponse, Awaitable[cloud_deploy.ListDeliveryPipelinesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_delivery_pipeline(
         self,
-    ) -> Callable[
-        [cloud_deploy.GetDeliveryPipelineRequest],
-        Union[cloud_deploy.DeliveryPipeline, Awaitable[cloud_deploy.DeliveryPipeline]],
-    ]:
+    ) -> Callable[[cloud_deploy.GetDeliveryPipelineRequest], Union[cloud_deploy.DeliveryPipeline, Awaitable[cloud_deploy.DeliveryPipeline]]]:
         raise NotImplementedError()
 
     @property
     def create_delivery_pipeline(
         self,
-    ) -> Callable[
-        [cloud_deploy.CreateDeliveryPipelineRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.CreateDeliveryPipelineRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_delivery_pipeline(
         self,
-    ) -> Callable[
-        [cloud_deploy.UpdateDeliveryPipelineRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.UpdateDeliveryPipelineRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_delivery_pipeline(
         self,
-    ) -> Callable[
-        [cloud_deploy.DeleteDeliveryPipelineRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.DeleteDeliveryPipelineRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_targets(
         self,
-    ) -> Callable[
-        [cloud_deploy.ListTargetsRequest],
-        Union[
-            cloud_deploy.ListTargetsResponse,
-            Awaitable[cloud_deploy.ListTargetsResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.ListTargetsRequest], Union[cloud_deploy.ListTargetsResponse, Awaitable[cloud_deploy.ListTargetsResponse]]]:
         raise NotImplementedError()
 
     @property
     def rollback_target(
         self,
-    ) -> Callable[
-        [cloud_deploy.RollbackTargetRequest],
-        Union[
-            cloud_deploy.RollbackTargetResponse,
-            Awaitable[cloud_deploy.RollbackTargetResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.RollbackTargetRequest], Union[cloud_deploy.RollbackTargetResponse, Awaitable[cloud_deploy.RollbackTargetResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_target(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetTargetRequest],
-        Union[cloud_deploy.Target, Awaitable[cloud_deploy.Target]],
-    ]:
+    def get_target(self) -> Callable[[cloud_deploy.GetTargetRequest], Union[cloud_deploy.Target, Awaitable[cloud_deploy.Target]]]:
         raise NotImplementedError()
 
     @property
-    def create_target(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateTargetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_target(self) -> Callable[[cloud_deploy.CreateTargetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_target(
-        self,
-    ) -> Callable[
-        [cloud_deploy.UpdateTargetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_target(self) -> Callable[[cloud_deploy.UpdateTargetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_target(
-        self,
-    ) -> Callable[
-        [cloud_deploy.DeleteTargetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_target(self) -> Callable[[cloud_deploy.DeleteTargetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -707,333 +650,191 @@ class CloudDeployTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_deploy.ListCustomTargetTypesRequest],
-        Union[
-            cloud_deploy.ListCustomTargetTypesResponse,
-            Awaitable[cloud_deploy.ListCustomTargetTypesResponse],
-        ],
+        Union[cloud_deploy.ListCustomTargetTypesResponse, Awaitable[cloud_deploy.ListCustomTargetTypesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_custom_target_type(
         self,
-    ) -> Callable[
-        [cloud_deploy.GetCustomTargetTypeRequest],
-        Union[cloud_deploy.CustomTargetType, Awaitable[cloud_deploy.CustomTargetType]],
-    ]:
+    ) -> Callable[[cloud_deploy.GetCustomTargetTypeRequest], Union[cloud_deploy.CustomTargetType, Awaitable[cloud_deploy.CustomTargetType]]]:
         raise NotImplementedError()
 
     @property
     def create_custom_target_type(
         self,
-    ) -> Callable[
-        [cloud_deploy.CreateCustomTargetTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.CreateCustomTargetTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_custom_target_type(
         self,
-    ) -> Callable[
-        [cloud_deploy.UpdateCustomTargetTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.UpdateCustomTargetTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_custom_target_type(
         self,
-    ) -> Callable[
-        [cloud_deploy.DeleteCustomTargetTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.DeleteCustomTargetTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_releases(
         self,
-    ) -> Callable[
-        [cloud_deploy.ListReleasesRequest],
-        Union[
-            cloud_deploy.ListReleasesResponse,
-            Awaitable[cloud_deploy.ListReleasesResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.ListReleasesRequest], Union[cloud_deploy.ListReleasesResponse, Awaitable[cloud_deploy.ListReleasesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetReleaseRequest],
-        Union[cloud_deploy.Release, Awaitable[cloud_deploy.Release]],
-    ]:
+    def get_release(self) -> Callable[[cloud_deploy.GetReleaseRequest], Union[cloud_deploy.Release, Awaitable[cloud_deploy.Release]]]:
         raise NotImplementedError()
 
     @property
-    def create_release(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateReleaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_release(self) -> Callable[[cloud_deploy.CreateReleaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def abandon_release(
         self,
-    ) -> Callable[
-        [cloud_deploy.AbandonReleaseRequest],
-        Union[
-            cloud_deploy.AbandonReleaseResponse,
-            Awaitable[cloud_deploy.AbandonReleaseResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.AbandonReleaseRequest], Union[cloud_deploy.AbandonReleaseResponse, Awaitable[cloud_deploy.AbandonReleaseResponse]]]:
         raise NotImplementedError()
 
     @property
     def create_deploy_policy(
         self,
-    ) -> Callable[
-        [cloud_deploy.CreateDeployPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.CreateDeployPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_deploy_policy(
         self,
-    ) -> Callable[
-        [cloud_deploy.UpdateDeployPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.UpdateDeployPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_deploy_policy(
         self,
-    ) -> Callable[
-        [cloud_deploy.DeleteDeployPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.DeleteDeployPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_deploy_policies(
         self,
     ) -> Callable[
-        [cloud_deploy.ListDeployPoliciesRequest],
-        Union[
-            cloud_deploy.ListDeployPoliciesResponse,
-            Awaitable[cloud_deploy.ListDeployPoliciesResponse],
-        ],
+        [cloud_deploy.ListDeployPoliciesRequest], Union[cloud_deploy.ListDeployPoliciesResponse, Awaitable[cloud_deploy.ListDeployPoliciesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_deploy_policy(
         self,
-    ) -> Callable[
-        [cloud_deploy.GetDeployPolicyRequest],
-        Union[cloud_deploy.DeployPolicy, Awaitable[cloud_deploy.DeployPolicy]],
-    ]:
+    ) -> Callable[[cloud_deploy.GetDeployPolicyRequest], Union[cloud_deploy.DeployPolicy, Awaitable[cloud_deploy.DeployPolicy]]]:
         raise NotImplementedError()
 
     @property
     def approve_rollout(
         self,
-    ) -> Callable[
-        [cloud_deploy.ApproveRolloutRequest],
-        Union[
-            cloud_deploy.ApproveRolloutResponse,
-            Awaitable[cloud_deploy.ApproveRolloutResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.ApproveRolloutRequest], Union[cloud_deploy.ApproveRolloutResponse, Awaitable[cloud_deploy.ApproveRolloutResponse]]]:
         raise NotImplementedError()
 
     @property
     def advance_rollout(
         self,
-    ) -> Callable[
-        [cloud_deploy.AdvanceRolloutRequest],
-        Union[
-            cloud_deploy.AdvanceRolloutResponse,
-            Awaitable[cloud_deploy.AdvanceRolloutResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.AdvanceRolloutRequest], Union[cloud_deploy.AdvanceRolloutResponse, Awaitable[cloud_deploy.AdvanceRolloutResponse]]]:
         raise NotImplementedError()
 
     @property
     def cancel_rollout(
         self,
-    ) -> Callable[
-        [cloud_deploy.CancelRolloutRequest],
-        Union[
-            cloud_deploy.CancelRolloutResponse,
-            Awaitable[cloud_deploy.CancelRolloutResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.CancelRolloutRequest], Union[cloud_deploy.CancelRolloutResponse, Awaitable[cloud_deploy.CancelRolloutResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_rollouts(
         self,
-    ) -> Callable[
-        [cloud_deploy.ListRolloutsRequest],
-        Union[
-            cloud_deploy.ListRolloutsResponse,
-            Awaitable[cloud_deploy.ListRolloutsResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.ListRolloutsRequest], Union[cloud_deploy.ListRolloutsResponse, Awaitable[cloud_deploy.ListRolloutsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetRolloutRequest],
-        Union[cloud_deploy.Rollout, Awaitable[cloud_deploy.Rollout]],
-    ]:
+    def get_rollout(self) -> Callable[[cloud_deploy.GetRolloutRequest], Union[cloud_deploy.Rollout, Awaitable[cloud_deploy.Rollout]]]:
         raise NotImplementedError()
 
     @property
-    def create_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateRolloutRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_rollout(self) -> Callable[[cloud_deploy.CreateRolloutRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def ignore_job(
         self,
-    ) -> Callable[
-        [cloud_deploy.IgnoreJobRequest],
-        Union[
-            cloud_deploy.IgnoreJobResponse, Awaitable[cloud_deploy.IgnoreJobResponse]
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.IgnoreJobRequest], Union[cloud_deploy.IgnoreJobResponse, Awaitable[cloud_deploy.IgnoreJobResponse]]]:
         raise NotImplementedError()
 
     @property
-    def retry_job(
-        self,
-    ) -> Callable[
-        [cloud_deploy.RetryJobRequest],
-        Union[cloud_deploy.RetryJobResponse, Awaitable[cloud_deploy.RetryJobResponse]],
-    ]:
+    def retry_job(self) -> Callable[[cloud_deploy.RetryJobRequest], Union[cloud_deploy.RetryJobResponse, Awaitable[cloud_deploy.RetryJobResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_job_runs(
         self,
-    ) -> Callable[
-        [cloud_deploy.ListJobRunsRequest],
-        Union[
-            cloud_deploy.ListJobRunsResponse,
-            Awaitable[cloud_deploy.ListJobRunsResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_deploy.ListJobRunsRequest], Union[cloud_deploy.ListJobRunsResponse, Awaitable[cloud_deploy.ListJobRunsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_job_run(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetJobRunRequest],
-        Union[cloud_deploy.JobRun, Awaitable[cloud_deploy.JobRun]],
-    ]:
+    def get_job_run(self) -> Callable[[cloud_deploy.GetJobRunRequest], Union[cloud_deploy.JobRun, Awaitable[cloud_deploy.JobRun]]]:
         raise NotImplementedError()
 
     @property
     def terminate_job_run(
         self,
     ) -> Callable[
-        [cloud_deploy.TerminateJobRunRequest],
-        Union[
-            cloud_deploy.TerminateJobRunResponse,
-            Awaitable[cloud_deploy.TerminateJobRunResponse],
-        ],
+        [cloud_deploy.TerminateJobRunRequest], Union[cloud_deploy.TerminateJobRunResponse, Awaitable[cloud_deploy.TerminateJobRunResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetConfigRequest],
-        Union[cloud_deploy.Config, Awaitable[cloud_deploy.Config]],
-    ]:
+    def get_config(self) -> Callable[[cloud_deploy.GetConfigRequest], Union[cloud_deploy.Config, Awaitable[cloud_deploy.Config]]]:
         raise NotImplementedError()
 
     @property
     def create_automation(
         self,
-    ) -> Callable[
-        [cloud_deploy.CreateAutomationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.CreateAutomationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_automation(
         self,
-    ) -> Callable[
-        [cloud_deploy.UpdateAutomationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.UpdateAutomationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_automation(
         self,
-    ) -> Callable[
-        [cloud_deploy.DeleteAutomationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_deploy.DeleteAutomationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_automation(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetAutomationRequest],
-        Union[cloud_deploy.Automation, Awaitable[cloud_deploy.Automation]],
-    ]:
+    def get_automation(self) -> Callable[[cloud_deploy.GetAutomationRequest], Union[cloud_deploy.Automation, Awaitable[cloud_deploy.Automation]]]:
         raise NotImplementedError()
 
     @property
     def list_automations(
         self,
     ) -> Callable[
-        [cloud_deploy.ListAutomationsRequest],
-        Union[
-            cloud_deploy.ListAutomationsResponse,
-            Awaitable[cloud_deploy.ListAutomationsResponse],
-        ],
+        [cloud_deploy.ListAutomationsRequest], Union[cloud_deploy.ListAutomationsResponse, Awaitable[cloud_deploy.ListAutomationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_automation_run(
         self,
-    ) -> Callable[
-        [cloud_deploy.GetAutomationRunRequest],
-        Union[cloud_deploy.AutomationRun, Awaitable[cloud_deploy.AutomationRun]],
-    ]:
+    ) -> Callable[[cloud_deploy.GetAutomationRunRequest], Union[cloud_deploy.AutomationRun, Awaitable[cloud_deploy.AutomationRun]]]:
         raise NotImplementedError()
 
     @property
     def list_automation_runs(
         self,
     ) -> Callable[
-        [cloud_deploy.ListAutomationRunsRequest],
-        Union[
-            cloud_deploy.ListAutomationRunsResponse,
-            Awaitable[cloud_deploy.ListAutomationRunsResponse],
-        ],
+        [cloud_deploy.ListAutomationRunsRequest], Union[cloud_deploy.ListAutomationRunsResponse, Awaitable[cloud_deploy.ListAutomationRunsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -1042,10 +843,7 @@ class CloudDeployTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_deploy.CancelAutomationRunRequest],
-        Union[
-            cloud_deploy.CancelAutomationRunResponse,
-            Awaitable[cloud_deploy.CancelAutomationRunResponse],
-        ],
+        Union[cloud_deploy.CancelAutomationRunResponse, Awaitable[cloud_deploy.CancelAutomationRunResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1054,20 +852,14 @@ class CloudDeployTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1085,19 +877,13 @@ class CloudDeployTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1115,22 +901,13 @@ class CloudDeployTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -18,17 +18,9 @@ from google.cloud.beyondcorp_appconnectors import gapic_version as package_versi
 __version__ = package_version.__version__
 
 
-from google.cloud.beyondcorp_appconnectors_v1.services.app_connectors_service.async_client import (
-    AppConnectorsServiceAsyncClient,
-)
-from google.cloud.beyondcorp_appconnectors_v1.services.app_connectors_service.client import (
-    AppConnectorsServiceClient,
-)
-from google.cloud.beyondcorp_appconnectors_v1.types.app_connector_instance_config import (
-    AppConnectorInstanceConfig,
-    ImageConfig,
-    NotificationConfig,
-)
+from google.cloud.beyondcorp_appconnectors_v1.services.app_connectors_service.async_client import AppConnectorsServiceAsyncClient
+from google.cloud.beyondcorp_appconnectors_v1.services.app_connectors_service.client import AppConnectorsServiceClient
+from google.cloud.beyondcorp_appconnectors_v1.types.app_connector_instance_config import AppConnectorInstanceConfig, ImageConfig, NotificationConfig
 from google.cloud.beyondcorp_appconnectors_v1.types.app_connectors_service import (
     AppConnector,
     AppConnectorOperationMetadata,
@@ -40,10 +32,7 @@ from google.cloud.beyondcorp_appconnectors_v1.types.app_connectors_service impor
     ReportStatusRequest,
     UpdateAppConnectorRequest,
 )
-from google.cloud.beyondcorp_appconnectors_v1.types.resource_info import (
-    HealthStatus,
-    ResourceInfo,
-)
+from google.cloud.beyondcorp_appconnectors_v1.types.resource_info import HealthStatus, ResourceInfo
 
 __all__ = (
     "AppConnectorsServiceClient",

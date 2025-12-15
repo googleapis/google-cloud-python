@@ -277,9 +277,7 @@ class Restore(proto.Message):
         number=18,
         message=Filter,
     )
-    volume_data_restore_policy_overrides: MutableSequence[
-        "VolumeDataRestorePolicyOverride"
-    ] = proto.RepeatedField(
+    volume_data_restore_policy_overrides: MutableSequence["VolumeDataRestorePolicyOverride"] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message="VolumeDataRestorePolicyOverride",
@@ -580,16 +578,12 @@ class RestoreConfig(proto.Message):
                 message.
         """
 
-        selected_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
+        selected_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RestoreConfig.GroupKind",
         )
-        excluded_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
+        excluded_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="RestoreConfig.GroupKind",
@@ -663,9 +657,7 @@ class RestoreConfig(proto.Message):
             proto.STRING,
             number=1,
         )
-        target_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
+        target_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="RestoreConfig.GroupKind",
@@ -847,9 +839,7 @@ class RestoreConfig(proto.Message):
                 string description of the transformation rule.
         """
 
-        field_actions: MutableSequence[
-            "RestoreConfig.TransformationRuleAction"
-        ] = proto.RepeatedField(
+        field_actions: MutableSequence["RestoreConfig.TransformationRuleAction"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RestoreConfig.TransformationRuleAction",
@@ -931,9 +921,7 @@ class RestoreConfig(proto.Message):
                 message="RestoreConfig.GroupKind",
             )
 
-        group_kind_dependencies: MutableSequence[
-            "RestoreConfig.RestoreOrder.GroupKindDependency"
-        ] = proto.RepeatedField(
+        group_kind_dependencies: MutableSequence["RestoreConfig.RestoreOrder.GroupKindDependency"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RestoreConfig.RestoreOrder.GroupKindDependency",
@@ -997,9 +985,7 @@ class RestoreConfig(proto.Message):
         number=11,
         message=TransformationRule,
     )
-    volume_data_restore_policy_bindings: MutableSequence[
-        VolumeDataRestorePolicyBinding
-    ] = proto.RepeatedField(
+    volume_data_restore_policy_bindings: MutableSequence[VolumeDataRestorePolicyBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=VolumeDataRestorePolicyBinding,

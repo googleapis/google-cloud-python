@@ -478,12 +478,10 @@ class Tool(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                operation: "Tool.ConnectorTool.Action.EntityOperation.OperationType" = (
-                    proto.Field(
-                        proto.ENUM,
-                        number=2,
-                        enum="Tool.ConnectorTool.Action.EntityOperation.OperationType",
-                    )
+                operation: "Tool.ConnectorTool.Action.EntityOperation.OperationType" = proto.Field(
+                    proto.ENUM,
+                    number=2,
+                    enum="Tool.ConnectorTool.Action.EntityOperation.OperationType",
                 )
 
             connection_action_id: str = proto.Field(
@@ -641,12 +639,10 @@ class Tool(proto.Message):
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
 
-            oauth_grant_type: "Tool.Authentication.OAuthConfig.OauthGrantType" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="Tool.Authentication.OAuthConfig.OauthGrantType",
-                )
+            oauth_grant_type: "Tool.Authentication.OAuthConfig.OauthGrantType" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Tool.Authentication.OAuthConfig.OauthGrantType",
             )
             client_id: str = proto.Field(
                 proto.STRING,
@@ -749,13 +745,11 @@ class Tool(proto.Message):
             oneof="auth_config",
             message="Tool.Authentication.OAuthConfig",
         )
-        service_agent_auth_config: "Tool.Authentication.ServiceAgentAuthConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="auth_config",
-                message="Tool.Authentication.ServiceAgentAuthConfig",
-            )
+        service_agent_auth_config: "Tool.Authentication.ServiceAgentAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="auth_config",
+            message="Tool.Authentication.ServiceAgentAuthConfig",
         )
         bearer_token_config: "Tool.Authentication.BearerTokenConfig" = proto.Field(
             proto.MESSAGE,
@@ -847,9 +841,7 @@ class Tool(proto.Message):
         proto.STRING,
         number=3,
     )
-    action_confirmation_requirement: MutableMapping[
-        str, ConfirmationRequirement
-    ] = proto.MapField(
+    action_confirmation_requirement: MutableMapping[str, ConfirmationRequirement] = proto.MapField(
         proto.STRING,
         proto.ENUM,
         number=17,

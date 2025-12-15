@@ -18,50 +18,22 @@ from google.cloud.monitoring import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.monitoring_v3.services.alert_policy_service.async_client import (
-    AlertPolicyServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.alert_policy_service.client import (
-    AlertPolicyServiceClient,
-)
-from google.cloud.monitoring_v3.services.group_service.async_client import (
-    GroupServiceAsyncClient,
-)
+from google.cloud.monitoring_v3.services.alert_policy_service.async_client import AlertPolicyServiceAsyncClient
+from google.cloud.monitoring_v3.services.alert_policy_service.client import AlertPolicyServiceClient
+from google.cloud.monitoring_v3.services.group_service.async_client import GroupServiceAsyncClient
 from google.cloud.monitoring_v3.services.group_service.client import GroupServiceClient
-from google.cloud.monitoring_v3.services.metric_service.async_client import (
-    MetricServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.metric_service.client import (
-    MetricServiceClient,
-)
-from google.cloud.monitoring_v3.services.notification_channel_service.async_client import (
-    NotificationChannelServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.notification_channel_service.client import (
-    NotificationChannelServiceClient,
-)
-from google.cloud.monitoring_v3.services.query_service.async_client import (
-    QueryServiceAsyncClient,
-)
+from google.cloud.monitoring_v3.services.metric_service.async_client import MetricServiceAsyncClient
+from google.cloud.monitoring_v3.services.metric_service.client import MetricServiceClient
+from google.cloud.monitoring_v3.services.notification_channel_service.async_client import NotificationChannelServiceAsyncClient
+from google.cloud.monitoring_v3.services.notification_channel_service.client import NotificationChannelServiceClient
+from google.cloud.monitoring_v3.services.query_service.async_client import QueryServiceAsyncClient
 from google.cloud.monitoring_v3.services.query_service.client import QueryServiceClient
-from google.cloud.monitoring_v3.services.service_monitoring_service.async_client import (
-    ServiceMonitoringServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.service_monitoring_service.client import (
-    ServiceMonitoringServiceClient,
-)
-from google.cloud.monitoring_v3.services.snooze_service.async_client import (
-    SnoozeServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.snooze_service.client import (
-    SnoozeServiceClient,
-)
-from google.cloud.monitoring_v3.services.uptime_check_service.async_client import (
-    UptimeCheckServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.uptime_check_service.client import (
-    UptimeCheckServiceClient,
-)
+from google.cloud.monitoring_v3.services.service_monitoring_service.async_client import ServiceMonitoringServiceAsyncClient
+from google.cloud.monitoring_v3.services.service_monitoring_service.client import ServiceMonitoringServiceClient
+from google.cloud.monitoring_v3.services.snooze_service.async_client import SnoozeServiceAsyncClient
+from google.cloud.monitoring_v3.services.snooze_service.client import SnoozeServiceClient
+from google.cloud.monitoring_v3.services.uptime_check_service.async_client import UptimeCheckServiceAsyncClient
+from google.cloud.monitoring_v3.services.uptime_check_service.client import UptimeCheckServiceClient
 from google.cloud.monitoring_v3.types.alert import AlertPolicy
 from google.cloud.monitoring_v3.types.alert_service import (
     CreateAlertPolicyRequest,
@@ -71,13 +43,7 @@ from google.cloud.monitoring_v3.types.alert_service import (
     ListAlertPoliciesResponse,
     UpdateAlertPolicyRequest,
 )
-from google.cloud.monitoring_v3.types.common import (
-    Aggregation,
-    ComparisonType,
-    ServiceTier,
-    TimeInterval,
-    TypedValue,
-)
+from google.cloud.monitoring_v3.types.common import Aggregation, ComparisonType, ServiceTier, TimeInterval, TypedValue
 from google.cloud.monitoring_v3.types.dropped_labels import DroppedLabels
 from google.cloud.monitoring_v3.types.group import Group
 from google.cloud.monitoring_v3.types.group_service import (
@@ -90,15 +56,7 @@ from google.cloud.monitoring_v3.types.group_service import (
     ListGroupsResponse,
     UpdateGroupRequest,
 )
-from google.cloud.monitoring_v3.types.metric import (
-    LabelValue,
-    Point,
-    QueryError,
-    TextLocator,
-    TimeSeries,
-    TimeSeriesData,
-    TimeSeriesDescriptor,
-)
+from google.cloud.monitoring_v3.types.metric import LabelValue, Point, QueryError, TextLocator, TimeSeries, TimeSeriesData, TimeSeriesDescriptor
 from google.cloud.monitoring_v3.types.metric_service import (
     CreateMetricDescriptorRequest,
     CreateTimeSeriesError,
@@ -118,10 +76,7 @@ from google.cloud.monitoring_v3.types.metric_service import (
     QueryTimeSeriesResponse,
 )
 from google.cloud.monitoring_v3.types.mutation_record import MutationRecord
-from google.cloud.monitoring_v3.types.notification import (
-    NotificationChannel,
-    NotificationChannelDescriptor,
-)
+from google.cloud.monitoring_v3.types.notification import NotificationChannel, NotificationChannelDescriptor
 from google.cloud.monitoring_v3.types.notification_service import (
     CreateNotificationChannelRequest,
     DeleteNotificationChannelRequest,

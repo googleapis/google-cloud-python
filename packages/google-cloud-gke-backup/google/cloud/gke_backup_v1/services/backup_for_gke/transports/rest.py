@@ -406,9 +406,7 @@ class BackupForGKERestInterceptor:
     """
 
     def pre_create_backup(
-        self,
-        request: gkebackup.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.CreateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
@@ -417,9 +415,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
         DEPRECATED. Please use the `post_create_backup_with_metadata`
@@ -433,9 +429,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_create_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup
 
@@ -452,12 +446,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_create_backup_channel(
-        self,
-        request: gkebackup.CreateBackupChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.CreateBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.CreateBackupChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.CreateBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -465,9 +455,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_channel
 
         DEPRECATED. Please use the `post_create_backup_channel_with_metadata`
@@ -481,9 +469,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_create_backup_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_channel
 
@@ -500,12 +486,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_create_backup_plan(
-        self,
-        request: gkebackup.CreateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.CreateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.CreateBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.CreateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -513,9 +495,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_plan
 
         DEPRECATED. Please use the `post_create_backup_plan_with_metadata`
@@ -529,9 +509,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_create_backup_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_plan
 
@@ -548,9 +526,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_create_restore(
-        self,
-        request: gkebackup.CreateRestoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.CreateRestoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.CreateRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_restore
 
@@ -559,9 +535,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_create_restore(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_restore(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_restore
 
         DEPRECATED. Please use the `post_create_restore_with_metadata`
@@ -575,9 +549,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_create_restore_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_restore
 
@@ -594,12 +566,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_create_restore_channel(
-        self,
-        request: gkebackup.CreateRestoreChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.CreateRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.CreateRestoreChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.CreateRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_restore_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -607,9 +575,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_create_restore_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_restore_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_restore_channel
 
         DEPRECATED. Please use the `post_create_restore_channel_with_metadata`
@@ -623,9 +589,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_create_restore_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_restore_channel
 
@@ -642,12 +606,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_create_restore_plan(
-        self,
-        request: gkebackup.CreateRestorePlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.CreateRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.CreateRestorePlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.CreateRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -655,9 +615,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_create_restore_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_restore_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_restore_plan
 
         DEPRECATED. Please use the `post_create_restore_plan_with_metadata`
@@ -671,9 +629,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_create_restore_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_restore_plan
 
@@ -690,9 +646,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: gkebackup.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
@@ -701,9 +655,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -717,9 +669,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -736,12 +686,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_delete_backup_channel(
-        self,
-        request: gkebackup.DeleteBackupChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.DeleteBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.DeleteBackupChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.DeleteBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -749,9 +695,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_channel
 
         DEPRECATED. Please use the `post_delete_backup_channel_with_metadata`
@@ -765,9 +709,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_delete_backup_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_channel
 
@@ -784,12 +726,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_delete_backup_plan(
-        self,
-        request: gkebackup.DeleteBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.DeleteBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.DeleteBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.DeleteBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -797,9 +735,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_plan
 
         DEPRECATED. Please use the `post_delete_backup_plan_with_metadata`
@@ -813,9 +749,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_delete_backup_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_plan
 
@@ -832,9 +766,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_delete_restore(
-        self,
-        request: gkebackup.DeleteRestoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.DeleteRestoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.DeleteRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_restore
 
@@ -843,9 +775,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_delete_restore(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_restore(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_restore
 
         DEPRECATED. Please use the `post_delete_restore_with_metadata`
@@ -859,9 +789,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_delete_restore_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_restore
 
@@ -878,12 +806,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_delete_restore_channel(
-        self,
-        request: gkebackup.DeleteRestoreChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.DeleteRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.DeleteRestoreChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.DeleteRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_restore_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -891,9 +815,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_delete_restore_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_restore_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_restore_channel
 
         DEPRECATED. Please use the `post_delete_restore_channel_with_metadata`
@@ -907,9 +829,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_delete_restore_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_restore_channel
 
@@ -926,12 +846,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_delete_restore_plan(
-        self,
-        request: gkebackup.DeleteRestorePlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.DeleteRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.DeleteRestorePlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.DeleteRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -939,9 +855,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_delete_restore_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_restore_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_restore_plan
 
         DEPRECATED. Please use the `post_delete_restore_plan_with_metadata`
@@ -955,9 +869,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_delete_restore_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_restore_plan
 
@@ -974,9 +886,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: gkebackup.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
@@ -1016,12 +926,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_backup_channel(
-        self,
-        request: gkebackup.GetBackupChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetBackupChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -1029,9 +935,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_channel(
-        self, response: backup_channel.BackupChannel
-    ) -> backup_channel.BackupChannel:
+    def post_get_backup_channel(self, response: backup_channel.BackupChannel) -> backup_channel.BackupChannel:
         """Post-rpc interceptor for get_backup_channel
 
         DEPRECATED. Please use the `post_get_backup_channel_with_metadata`
@@ -1045,9 +949,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_backup_channel_with_metadata(
-        self,
-        response: backup_channel.BackupChannel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backup_channel.BackupChannel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup_channel.BackupChannel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_channel
 
@@ -1064,13 +966,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_backup_index_download_url(
-        self,
-        request: gkebackup.GetBackupIndexDownloadUrlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetBackupIndexDownloadUrlRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gkebackup.GetBackupIndexDownloadUrlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetBackupIndexDownloadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_index_download_url
 
         Override in a subclass to manipulate the request or metadata
@@ -1094,13 +991,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_backup_index_download_url_with_metadata(
-        self,
-        response: gkebackup.GetBackupIndexDownloadUrlResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetBackupIndexDownloadUrlResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkebackup.GetBackupIndexDownloadUrlResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetBackupIndexDownloadUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_index_download_url
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1116,9 +1008,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_backup_plan(
-        self,
-        request: gkebackup.GetBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.GetBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.GetBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_plan
 
@@ -1127,9 +1017,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_plan(
-        self, response: backup_plan.BackupPlan
-    ) -> backup_plan.BackupPlan:
+    def post_get_backup_plan(self, response: backup_plan.BackupPlan) -> backup_plan.BackupPlan:
         """Post-rpc interceptor for get_backup_plan
 
         DEPRECATED. Please use the `post_get_backup_plan_with_metadata`
@@ -1143,9 +1031,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_backup_plan_with_metadata(
-        self,
-        response: backup_plan.BackupPlan,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backup_plan.BackupPlan, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup_plan.BackupPlan, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_plan
 
@@ -1162,12 +1048,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_backup_plan_binding(
-        self,
-        request: gkebackup.GetBackupPlanBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetBackupPlanBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetBackupPlanBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetBackupPlanBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_plan_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -1175,9 +1057,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_plan_binding(
-        self, response: backup_plan_binding.BackupPlanBinding
-    ) -> backup_plan_binding.BackupPlanBinding:
+    def post_get_backup_plan_binding(self, response: backup_plan_binding.BackupPlanBinding) -> backup_plan_binding.BackupPlanBinding:
         """Post-rpc interceptor for get_backup_plan_binding
 
         DEPRECATED. Please use the `post_get_backup_plan_binding_with_metadata`
@@ -1191,12 +1071,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_backup_plan_binding_with_metadata(
-        self,
-        response: backup_plan_binding.BackupPlanBinding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_plan_binding.BackupPlanBinding, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backup_plan_binding.BackupPlanBinding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_plan_binding.BackupPlanBinding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_plan_binding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1212,9 +1088,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_restore(
-        self,
-        request: gkebackup.GetRestoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.GetRestoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.GetRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_restore
 
@@ -1237,9 +1111,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_restore_with_metadata(
-        self,
-        response: restore.Restore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: restore.Restore, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[restore.Restore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_restore
 
@@ -1256,12 +1128,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_restore_channel(
-        self,
-        request: gkebackup.GetRestoreChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetRestoreChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_restore_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -1269,9 +1137,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_restore_channel(
-        self, response: restore_channel.RestoreChannel
-    ) -> restore_channel.RestoreChannel:
+    def post_get_restore_channel(self, response: restore_channel.RestoreChannel) -> restore_channel.RestoreChannel:
         """Post-rpc interceptor for get_restore_channel
 
         DEPRECATED. Please use the `post_get_restore_channel_with_metadata`
@@ -1285,9 +1151,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_restore_channel_with_metadata(
-        self,
-        response: restore_channel.RestoreChannel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: restore_channel.RestoreChannel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[restore_channel.RestoreChannel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_restore_channel
 
@@ -1304,12 +1168,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_restore_plan(
-        self,
-        request: gkebackup.GetRestorePlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetRestorePlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -1317,9 +1177,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_restore_plan(
-        self, response: restore_plan.RestorePlan
-    ) -> restore_plan.RestorePlan:
+    def post_get_restore_plan(self, response: restore_plan.RestorePlan) -> restore_plan.RestorePlan:
         """Post-rpc interceptor for get_restore_plan
 
         DEPRECATED. Please use the `post_get_restore_plan_with_metadata`
@@ -1333,9 +1191,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_restore_plan_with_metadata(
-        self,
-        response: restore_plan.RestorePlan,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: restore_plan.RestorePlan, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[restore_plan.RestorePlan, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_restore_plan
 
@@ -1352,12 +1208,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_restore_plan_binding(
-        self,
-        request: gkebackup.GetRestorePlanBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetRestorePlanBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetRestorePlanBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetRestorePlanBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_restore_plan_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -1365,9 +1217,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_restore_plan_binding(
-        self, response: restore_plan_binding.RestorePlanBinding
-    ) -> restore_plan_binding.RestorePlanBinding:
+    def post_get_restore_plan_binding(self, response: restore_plan_binding.RestorePlanBinding) -> restore_plan_binding.RestorePlanBinding:
         """Post-rpc interceptor for get_restore_plan_binding
 
         DEPRECATED. Please use the `post_get_restore_plan_binding_with_metadata`
@@ -1381,12 +1231,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_restore_plan_binding_with_metadata(
-        self,
-        response: restore_plan_binding.RestorePlanBinding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        restore_plan_binding.RestorePlanBinding, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: restore_plan_binding.RestorePlanBinding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[restore_plan_binding.RestorePlanBinding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_restore_plan_binding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1402,12 +1248,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_volume_backup(
-        self,
-        request: gkebackup.GetVolumeBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetVolumeBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetVolumeBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetVolumeBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -1415,9 +1257,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_volume_backup(
-        self, response: volume.VolumeBackup
-    ) -> volume.VolumeBackup:
+    def post_get_volume_backup(self, response: volume.VolumeBackup) -> volume.VolumeBackup:
         """Post-rpc interceptor for get_volume_backup
 
         DEPRECATED. Please use the `post_get_volume_backup_with_metadata`
@@ -1431,9 +1271,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_volume_backup_with_metadata(
-        self,
-        response: volume.VolumeBackup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: volume.VolumeBackup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.VolumeBackup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_volume_backup
 
@@ -1450,12 +1288,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_volume_restore(
-        self,
-        request: gkebackup.GetVolumeRestoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.GetVolumeRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.GetVolumeRestoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.GetVolumeRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume_restore
 
         Override in a subclass to manipulate the request or metadata
@@ -1463,9 +1297,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_volume_restore(
-        self, response: volume.VolumeRestore
-    ) -> volume.VolumeRestore:
+    def post_get_volume_restore(self, response: volume.VolumeRestore) -> volume.VolumeRestore:
         """Post-rpc interceptor for get_volume_restore
 
         DEPRECATED. Please use the `post_get_volume_restore_with_metadata`
@@ -1479,9 +1311,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_get_volume_restore_with_metadata(
-        self,
-        response: volume.VolumeRestore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: volume.VolumeRestore, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.VolumeRestore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_volume_restore
 
@@ -1498,12 +1328,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_backup_channels(
-        self,
-        request: gkebackup.ListBackupChannelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListBackupChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListBackupChannelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListBackupChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_channels
 
         Override in a subclass to manipulate the request or metadata
@@ -1511,9 +1337,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_channels(
-        self, response: gkebackup.ListBackupChannelsResponse
-    ) -> gkebackup.ListBackupChannelsResponse:
+    def post_list_backup_channels(self, response: gkebackup.ListBackupChannelsResponse) -> gkebackup.ListBackupChannelsResponse:
         """Post-rpc interceptor for list_backup_channels
 
         DEPRECATED. Please use the `post_list_backup_channels_with_metadata`
@@ -1527,12 +1351,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_backup_channels_with_metadata(
-        self,
-        response: gkebackup.ListBackupChannelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListBackupChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkebackup.ListBackupChannelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListBackupChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_channels
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1548,12 +1368,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_backup_plan_bindings(
-        self,
-        request: gkebackup.ListBackupPlanBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListBackupPlanBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListBackupPlanBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListBackupPlanBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_plan_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -1561,9 +1377,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_plan_bindings(
-        self, response: gkebackup.ListBackupPlanBindingsResponse
-    ) -> gkebackup.ListBackupPlanBindingsResponse:
+    def post_list_backup_plan_bindings(self, response: gkebackup.ListBackupPlanBindingsResponse) -> gkebackup.ListBackupPlanBindingsResponse:
         """Post-rpc interceptor for list_backup_plan_bindings
 
         DEPRECATED. Please use the `post_list_backup_plan_bindings_with_metadata`
@@ -1577,13 +1391,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_backup_plan_bindings_with_metadata(
-        self,
-        response: gkebackup.ListBackupPlanBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListBackupPlanBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkebackup.ListBackupPlanBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListBackupPlanBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_plan_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1599,12 +1408,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_backup_plans(
-        self,
-        request: gkebackup.ListBackupPlansRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListBackupPlansRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListBackupPlansRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListBackupPlansRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_plans
 
         Override in a subclass to manipulate the request or metadata
@@ -1612,9 +1417,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_plans(
-        self, response: gkebackup.ListBackupPlansResponse
-    ) -> gkebackup.ListBackupPlansResponse:
+    def post_list_backup_plans(self, response: gkebackup.ListBackupPlansResponse) -> gkebackup.ListBackupPlansResponse:
         """Post-rpc interceptor for list_backup_plans
 
         DEPRECATED. Please use the `post_list_backup_plans_with_metadata`
@@ -1628,12 +1431,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_backup_plans_with_metadata(
-        self,
-        response: gkebackup.ListBackupPlansResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListBackupPlansResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkebackup.ListBackupPlansResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListBackupPlansResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_plans
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1649,9 +1448,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: gkebackup.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
@@ -1660,9 +1457,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: gkebackup.ListBackupsResponse
-    ) -> gkebackup.ListBackupsResponse:
+    def post_list_backups(self, response: gkebackup.ListBackupsResponse) -> gkebackup.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -1676,9 +1471,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: gkebackup.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gkebackup.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
@@ -1695,12 +1488,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_restore_channels(
-        self,
-        request: gkebackup.ListRestoreChannelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListRestoreChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListRestoreChannelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListRestoreChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_restore_channels
 
         Override in a subclass to manipulate the request or metadata
@@ -1708,9 +1497,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_restore_channels(
-        self, response: gkebackup.ListRestoreChannelsResponse
-    ) -> gkebackup.ListRestoreChannelsResponse:
+    def post_list_restore_channels(self, response: gkebackup.ListRestoreChannelsResponse) -> gkebackup.ListRestoreChannelsResponse:
         """Post-rpc interceptor for list_restore_channels
 
         DEPRECATED. Please use the `post_list_restore_channels_with_metadata`
@@ -1724,12 +1511,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_restore_channels_with_metadata(
-        self,
-        response: gkebackup.ListRestoreChannelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListRestoreChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkebackup.ListRestoreChannelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListRestoreChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_restore_channels
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1745,13 +1528,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_restore_plan_bindings(
-        self,
-        request: gkebackup.ListRestorePlanBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListRestorePlanBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gkebackup.ListRestorePlanBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListRestorePlanBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_restore_plan_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -1759,9 +1537,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_restore_plan_bindings(
-        self, response: gkebackup.ListRestorePlanBindingsResponse
-    ) -> gkebackup.ListRestorePlanBindingsResponse:
+    def post_list_restore_plan_bindings(self, response: gkebackup.ListRestorePlanBindingsResponse) -> gkebackup.ListRestorePlanBindingsResponse:
         """Post-rpc interceptor for list_restore_plan_bindings
 
         DEPRECATED. Please use the `post_list_restore_plan_bindings_with_metadata`
@@ -1775,13 +1551,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_restore_plan_bindings_with_metadata(
-        self,
-        response: gkebackup.ListRestorePlanBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListRestorePlanBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkebackup.ListRestorePlanBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListRestorePlanBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_restore_plan_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1797,12 +1568,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_restore_plans(
-        self,
-        request: gkebackup.ListRestorePlansRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListRestorePlansRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListRestorePlansRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListRestorePlansRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_restore_plans
 
         Override in a subclass to manipulate the request or metadata
@@ -1810,9 +1577,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_restore_plans(
-        self, response: gkebackup.ListRestorePlansResponse
-    ) -> gkebackup.ListRestorePlansResponse:
+    def post_list_restore_plans(self, response: gkebackup.ListRestorePlansResponse) -> gkebackup.ListRestorePlansResponse:
         """Post-rpc interceptor for list_restore_plans
 
         DEPRECATED. Please use the `post_list_restore_plans_with_metadata`
@@ -1826,12 +1591,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_restore_plans_with_metadata(
-        self,
-        response: gkebackup.ListRestorePlansResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListRestorePlansResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkebackup.ListRestorePlansResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListRestorePlansResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_restore_plans
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1847,9 +1608,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_restores(
-        self,
-        request: gkebackup.ListRestoresRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.ListRestoresRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.ListRestoresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_restores
 
@@ -1858,9 +1617,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_restores(
-        self, response: gkebackup.ListRestoresResponse
-    ) -> gkebackup.ListRestoresResponse:
+    def post_list_restores(self, response: gkebackup.ListRestoresResponse) -> gkebackup.ListRestoresResponse:
         """Post-rpc interceptor for list_restores
 
         DEPRECATED. Please use the `post_list_restores_with_metadata`
@@ -1874,9 +1631,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_restores_with_metadata(
-        self,
-        response: gkebackup.ListRestoresResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gkebackup.ListRestoresResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.ListRestoresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_restores
 
@@ -1893,12 +1648,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_volume_backups(
-        self,
-        request: gkebackup.ListVolumeBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListVolumeBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListVolumeBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListVolumeBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volume_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -1906,9 +1657,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_volume_backups(
-        self, response: gkebackup.ListVolumeBackupsResponse
-    ) -> gkebackup.ListVolumeBackupsResponse:
+    def post_list_volume_backups(self, response: gkebackup.ListVolumeBackupsResponse) -> gkebackup.ListVolumeBackupsResponse:
         """Post-rpc interceptor for list_volume_backups
 
         DEPRECATED. Please use the `post_list_volume_backups_with_metadata`
@@ -1922,12 +1671,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_volume_backups_with_metadata(
-        self,
-        response: gkebackup.ListVolumeBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListVolumeBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkebackup.ListVolumeBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListVolumeBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_volume_backups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1943,12 +1688,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_list_volume_restores(
-        self,
-        request: gkebackup.ListVolumeRestoresRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListVolumeRestoresRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.ListVolumeRestoresRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListVolumeRestoresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volume_restores
 
         Override in a subclass to manipulate the request or metadata
@@ -1956,9 +1697,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_volume_restores(
-        self, response: gkebackup.ListVolumeRestoresResponse
-    ) -> gkebackup.ListVolumeRestoresResponse:
+    def post_list_volume_restores(self, response: gkebackup.ListVolumeRestoresResponse) -> gkebackup.ListVolumeRestoresResponse:
         """Post-rpc interceptor for list_volume_restores
 
         DEPRECATED. Please use the `post_list_volume_restores_with_metadata`
@@ -1972,12 +1711,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_list_volume_restores_with_metadata(
-        self,
-        response: gkebackup.ListVolumeRestoresResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.ListVolumeRestoresResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkebackup.ListVolumeRestoresResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.ListVolumeRestoresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_volume_restores
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1993,9 +1728,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_update_backup(
-        self,
-        request: gkebackup.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.UpdateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
@@ -2004,9 +1737,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup
 
         DEPRECATED. Please use the `post_update_backup_with_metadata`
@@ -2020,9 +1751,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_update_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup
 
@@ -2039,12 +1768,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_update_backup_channel(
-        self,
-        request: gkebackup.UpdateBackupChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.UpdateBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.UpdateBackupChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.UpdateBackupChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -2052,9 +1777,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_channel
 
         DEPRECATED. Please use the `post_update_backup_channel_with_metadata`
@@ -2068,9 +1791,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_update_backup_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_channel
 
@@ -2087,12 +1808,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_update_backup_plan(
-        self,
-        request: gkebackup.UpdateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.UpdateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.UpdateBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.UpdateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -2100,9 +1817,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_plan
 
         DEPRECATED. Please use the `post_update_backup_plan_with_metadata`
@@ -2116,9 +1831,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_update_backup_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_plan
 
@@ -2135,9 +1848,7 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_update_restore(
-        self,
-        request: gkebackup.UpdateRestoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gkebackup.UpdateRestoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gkebackup.UpdateRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_restore
 
@@ -2146,9 +1857,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_update_restore(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_restore(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_restore
 
         DEPRECATED. Please use the `post_update_restore_with_metadata`
@@ -2162,9 +1871,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_update_restore_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_restore
 
@@ -2181,12 +1888,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_update_restore_channel(
-        self,
-        request: gkebackup.UpdateRestoreChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.UpdateRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.UpdateRestoreChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.UpdateRestoreChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_restore_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -2194,9 +1897,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_update_restore_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_restore_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_restore_channel
 
         DEPRECATED. Please use the `post_update_restore_channel_with_metadata`
@@ -2210,9 +1911,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_update_restore_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_restore_channel
 
@@ -2229,12 +1928,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_update_restore_plan(
-        self,
-        request: gkebackup.UpdateRestorePlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkebackup.UpdateRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkebackup.UpdateRestorePlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkebackup.UpdateRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -2242,9 +1937,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_update_restore_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_restore_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_restore_plan
 
         DEPRECATED. Please use the `post_update_restore_plan_with_metadata`
@@ -2258,9 +1951,7 @@ class BackupForGKERestInterceptor:
         return response
 
     def post_update_restore_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_restore_plan
 
@@ -2277,12 +1968,8 @@ class BackupForGKERestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2290,9 +1977,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2302,12 +1987,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2315,9 +1996,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2327,12 +2006,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2350,12 +2025,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2373,13 +2044,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -2387,9 +2053,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -2399,12 +2063,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2422,12 +2082,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2445,12 +2101,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2458,9 +2110,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2470,12 +2120,8 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2483,9 +2129,7 @@ class BackupForGKERestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2576,9 +2220,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2631,29 +2273,17 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateBackup(
-        _BaseBackupForGKERestTransport._BaseCreateBackup, BackupForGKERestStub
-    ):
+    class _CreateBackup(_BaseBackupForGKERestTransport._BaseCreateBackup, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CreateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2696,34 +2326,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupForGKERestTransport._BaseCreateBackup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupForGKERestTransport._BaseCreateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseCreateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCreateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2747,13 +2361,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CreateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2767,12 +2375,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_create_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2793,22 +2397,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _CreateBackupChannel(
-        _BaseBackupForGKERestTransport._BaseCreateBackupChannel, BackupForGKERestStub
-    ):
+    class _CreateBackupChannel(_BaseBackupForGKERestTransport._BaseCreateBackupChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CreateBackupChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2852,32 +2446,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_backup_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2901,13 +2481,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CreateBackupChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2921,12 +2495,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_create_backup_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2947,22 +2517,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _CreateBackupPlan(
-        _BaseBackupForGKERestTransport._BaseCreateBackupPlan, BackupForGKERestStub
-    ):
+    class _CreateBackupPlan(_BaseBackupForGKERestTransport._BaseCreateBackupPlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CreateBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3005,32 +2565,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_backup_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3054,13 +2600,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CreateBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3074,12 +2614,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_create_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3100,22 +2636,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _CreateRestore(
-        _BaseBackupForGKERestTransport._BaseCreateRestore, BackupForGKERestStub
-    ):
+    class _CreateRestore(_BaseBackupForGKERestTransport._BaseCreateRestore, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CreateRestore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3158,30 +2684,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateRestore._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateRestore._get_http_options()
 
             request, metadata = self._interceptor.pre_create_restore(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestore._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestore._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseCreateRestore._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseCreateRestore._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseCreateRestore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCreateRestore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3205,13 +2719,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CreateRestore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3225,12 +2733,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_create_restore(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_restore_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_restore_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3251,22 +2755,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _CreateRestoreChannel(
-        _BaseBackupForGKERestTransport._BaseCreateRestoreChannel, BackupForGKERestStub
-    ):
+    class _CreateRestoreChannel(_BaseBackupForGKERestTransport._BaseCreateRestoreChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CreateRestoreChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3310,32 +2804,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_restore_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_restore_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3359,13 +2839,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CreateRestoreChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3379,12 +2853,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_create_restore_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_restore_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_restore_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3405,22 +2875,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _CreateRestorePlan(
-        _BaseBackupForGKERestTransport._BaseCreateRestorePlan, BackupForGKERestStub
-    ):
+    class _CreateRestorePlan(_BaseBackupForGKERestTransport._BaseCreateRestorePlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CreateRestorePlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3464,32 +2924,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_restore_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_restore_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3513,13 +2959,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CreateRestorePlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3533,12 +2973,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_create_restore_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_restore_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_restore_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3559,22 +2995,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _DeleteBackup(
-        _BaseBackupForGKERestTransport._BaseDeleteBackup, BackupForGKERestStub
-    ):
+    class _DeleteBackup(_BaseBackupForGKERestTransport._BaseDeleteBackup, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3616,28 +3042,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseDeleteBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3661,12 +3075,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3680,12 +3089,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3706,22 +3111,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _DeleteBackupChannel(
-        _BaseBackupForGKERestTransport._BaseDeleteBackupChannel, BackupForGKERestStub
-    ):
+    class _DeleteBackupChannel(_BaseBackupForGKERestTransport._BaseDeleteBackupChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteBackupChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3764,28 +3159,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_backup_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3809,12 +3192,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteBackupChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3828,12 +3206,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_delete_backup_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3854,22 +3228,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _DeleteBackupPlan(
-        _BaseBackupForGKERestTransport._BaseDeleteBackupPlan, BackupForGKERestStub
-    ):
+    class _DeleteBackupPlan(_BaseBackupForGKERestTransport._BaseDeleteBackupPlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3911,28 +3275,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_backup_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3956,12 +3308,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3975,12 +3322,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_delete_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4001,22 +3344,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _DeleteRestore(
-        _BaseBackupForGKERestTransport._BaseDeleteRestore, BackupForGKERestStub
-    ):
+    class _DeleteRestore(_BaseBackupForGKERestTransport._BaseDeleteRestore, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteRestore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4058,26 +3391,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteRestore._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_restore(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4101,12 +3424,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteRestore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4120,12 +3438,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_delete_restore(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_restore_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_restore_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4146,22 +3460,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _DeleteRestoreChannel(
-        _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel, BackupForGKERestStub
-    ):
+    class _DeleteRestoreChannel(_BaseBackupForGKERestTransport._BaseDeleteRestoreChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteRestoreChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4204,28 +3508,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_restore_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_restore_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4249,12 +3541,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteRestoreChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4268,12 +3555,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_delete_restore_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_restore_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_restore_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4294,22 +3577,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _DeleteRestorePlan(
-        _BaseBackupForGKERestTransport._BaseDeleteRestorePlan, BackupForGKERestStub
-    ):
+    class _DeleteRestorePlan(_BaseBackupForGKERestTransport._BaseDeleteRestorePlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteRestorePlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4352,28 +3625,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_restore_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_restore_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4397,12 +3658,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteRestorePlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4416,12 +3672,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_delete_restore_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_restore_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_restore_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4442,22 +3694,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetBackup(
-        _BaseBackupForGKERestTransport._BaseGetBackup, BackupForGKERestStub
-    ):
+    class _GetBackup(_BaseBackupForGKERestTransport._BaseGetBackup, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4503,30 +3745,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackup._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupForGKERestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4550,12 +3778,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4571,12 +3794,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup.Backup.to_json(response)
                 except:
@@ -4597,22 +3816,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetBackupChannel(
-        _BaseBackupForGKERestTransport._BaseGetBackupChannel, BackupForGKERestStub
-    ):
+    class _GetBackupChannel(_BaseBackupForGKERestTransport._BaseGetBackupChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetBackupChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4655,28 +3864,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_backup_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetBackupChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4700,12 +3897,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetBackupChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4721,12 +3913,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_backup_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup_channel.BackupChannel.to_json(response)
                 except:
@@ -4747,23 +3935,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetBackupIndexDownloadUrl(
-        _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl,
-        BackupForGKERestStub,
-    ):
+    class _GetBackupIndexDownloadUrl(_BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetBackupIndexDownloadUrl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4806,28 +3983,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_index_download_url(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_backup_index_download_url(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4850,15 +4015,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
 
             # Send the request
-            response = (
-                BackupForGKERestTransport._GetBackupIndexDownloadUrl._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BackupForGKERestTransport._GetBackupIndexDownloadUrl._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4874,19 +4032,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_backup_index_download_url(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_backup_index_download_url_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_index_download_url_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gkebackup.GetBackupIndexDownloadUrlResponse.to_json(response)
-                    )
+                    response_payload = gkebackup.GetBackupIndexDownloadUrlResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4905,22 +4054,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetBackupPlan(
-        _BaseBackupForGKERestTransport._BaseGetBackupPlan, BackupForGKERestStub
-    ):
+    class _GetBackupPlan(_BaseBackupForGKERestTransport._BaseGetBackupPlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4961,26 +4100,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_plan(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5004,12 +4133,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5025,12 +4149,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup_plan.BackupPlan.to_json(response)
                 except:
@@ -5051,22 +4171,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetBackupPlanBinding(
-        _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding, BackupForGKERestStub
-    ):
+    class _GetBackupPlanBinding(_BaseBackupForGKERestTransport._BaseGetBackupPlanBinding, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetBackupPlanBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5114,28 +4224,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_plan_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_backup_plan_binding(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5159,12 +4257,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetBackupPlanBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5180,16 +4273,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_backup_plan_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_plan_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_plan_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backup_plan_binding.BackupPlanBinding.to_json(
-                        response
-                    )
+                    response_payload = backup_plan_binding.BackupPlanBinding.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5208,22 +4295,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetRestore(
-        _BaseBackupForGKERestTransport._BaseGetRestore, BackupForGKERestStub
-    ):
+    class _GetRestore(_BaseBackupForGKERestTransport._BaseGetRestore, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetRestore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5266,30 +4343,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetRestore._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetRestore._get_http_options()
 
             request, metadata = self._interceptor.pre_get_restore(request, metadata)
-            transcoded_request = (
-                _BaseBackupForGKERestTransport._BaseGetRestore._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseGetRestore._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetRestore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5313,12 +4376,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetRestore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5334,12 +4392,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_restore(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_restore_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_restore_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = restore.Restore.to_json(response)
                 except:
@@ -5360,22 +4414,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetRestoreChannel(
-        _BaseBackupForGKERestTransport._BaseGetRestoreChannel, BackupForGKERestStub
-    ):
+    class _GetRestoreChannel(_BaseBackupForGKERestTransport._BaseGetRestoreChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetRestoreChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5419,28 +4463,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_restore_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_restore_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5464,12 +4496,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetRestoreChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5485,12 +4512,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_restore_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_restore_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_restore_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = restore_channel.RestoreChannel.to_json(response)
                 except:
@@ -5511,22 +4534,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetRestorePlan(
-        _BaseBackupForGKERestTransport._BaseGetRestorePlan, BackupForGKERestStub
-    ):
+    class _GetRestorePlan(_BaseBackupForGKERestTransport._BaseGetRestorePlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetRestorePlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5569,28 +4582,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_restore_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_restore_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5614,12 +4615,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetRestorePlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5635,12 +4631,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_restore_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_restore_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_restore_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = restore_plan.RestorePlan.to_json(response)
                 except:
@@ -5661,22 +4653,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetRestorePlanBinding(
-        _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding, BackupForGKERestStub
-    ):
+    class _GetRestorePlanBinding(_BaseBackupForGKERestTransport._BaseGetRestorePlanBinding, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetRestorePlanBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5724,28 +4706,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_restore_plan_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_restore_plan_binding(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5769,12 +4739,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetRestorePlanBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5790,16 +4755,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_restore_plan_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_restore_plan_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_restore_plan_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = restore_plan_binding.RestorePlanBinding.to_json(
-                        response
-                    )
+                    response_payload = restore_plan_binding.RestorePlanBinding.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5818,22 +4777,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetVolumeBackup(
-        _BaseBackupForGKERestTransport._BaseGetVolumeBackup, BackupForGKERestStub
-    ):
+    class _GetVolumeBackup(_BaseBackupForGKERestTransport._BaseGetVolumeBackup, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetVolumeBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5877,28 +4826,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_volume_backup(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_volume_backup(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5922,12 +4859,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetVolumeBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5943,12 +4875,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_volume_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_volume_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_volume_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.VolumeBackup.to_json(response)
                 except:
@@ -5969,22 +4897,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _GetVolumeRestore(
-        _BaseBackupForGKERestTransport._BaseGetVolumeRestore, BackupForGKERestStub
-    ):
+    class _GetVolumeRestore(_BaseBackupForGKERestTransport._BaseGetVolumeRestore, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetVolumeRestore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6025,28 +4943,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_volume_restore(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_volume_restore(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6070,12 +4976,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetVolumeRestore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6091,12 +4992,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_volume_restore(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_volume_restore_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_volume_restore_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.VolumeRestore.to_json(response)
                 except:
@@ -6117,22 +5014,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListBackupChannels(
-        _BaseBackupForGKERestTransport._BaseListBackupChannels, BackupForGKERestStub
-    ):
+    class _ListBackupChannels(_BaseBackupForGKERestTransport._BaseListBackupChannels, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListBackupChannels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6174,28 +5061,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListBackupChannels._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListBackupChannels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_channels(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackupChannels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_channels(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackupChannels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListBackupChannels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListBackupChannels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6219,12 +5094,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListBackupChannels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6240,16 +5110,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_backup_channels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_channels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_channels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListBackupChannelsResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListBackupChannelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6268,22 +5132,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListBackupPlanBindings(
-        _BaseBackupForGKERestTransport._BaseListBackupPlanBindings, BackupForGKERestStub
-    ):
+    class _ListBackupPlanBindings(_BaseBackupForGKERestTransport._BaseListBackupPlanBindings, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListBackupPlanBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6325,28 +5179,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_plan_bindings(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_plan_bindings(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6370,12 +5212,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListBackupPlanBindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6391,16 +5228,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_backup_plan_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_plan_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_plan_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListBackupPlanBindingsResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListBackupPlanBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6419,22 +5250,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListBackupPlans(
-        _BaseBackupForGKERestTransport._BaseListBackupPlans, BackupForGKERestStub
-    ):
+    class _ListBackupPlans(_BaseBackupForGKERestTransport._BaseListBackupPlans, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListBackupPlans")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6473,28 +5294,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     Response message for ListBackupPlans.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListBackupPlans._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListBackupPlans._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_plans(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackupPlans._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_plans(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackupPlans._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListBackupPlans._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListBackupPlans._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6518,12 +5327,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListBackupPlans._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6539,16 +5343,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_backup_plans(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_plans_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_plans_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListBackupPlansResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListBackupPlansResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6567,22 +5365,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListBackups(
-        _BaseBackupForGKERestTransport._BaseListBackups, BackupForGKERestStub
-    ):
+    class _ListBackups(_BaseBackupForGKERestTransport._BaseListBackups, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6621,30 +5409,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     Response message for ListBackups.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = (
-                _BaseBackupForGKERestTransport._BaseListBackups._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseListBackups._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6668,12 +5442,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6689,12 +5458,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gkebackup.ListBackupsResponse.to_json(response)
                 except:
@@ -6715,22 +5480,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListRestoreChannels(
-        _BaseBackupForGKERestTransport._BaseListRestoreChannels, BackupForGKERestStub
-    ):
+    class _ListRestoreChannels(_BaseBackupForGKERestTransport._BaseListRestoreChannels, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListRestoreChannels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6772,28 +5527,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_restore_channels(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_restore_channels(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6817,12 +5560,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListRestoreChannels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6838,16 +5576,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_restore_channels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_restore_channels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_restore_channels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListRestoreChannelsResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListRestoreChannelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6866,23 +5598,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListRestorePlanBindings(
-        _BaseBackupForGKERestTransport._BaseListRestorePlanBindings,
-        BackupForGKERestStub,
-    ):
+    class _ListRestorePlanBindings(_BaseBackupForGKERestTransport._BaseListRestorePlanBindings, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListRestorePlanBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6925,28 +5646,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_restore_plan_bindings(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_restore_plan_bindings(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6970,12 +5679,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListRestorePlanBindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6991,16 +5695,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_restore_plan_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_restore_plan_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_restore_plan_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gkebackup.ListRestorePlanBindingsResponse.to_json(response)
-                    )
+                    response_payload = gkebackup.ListRestorePlanBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7019,22 +5717,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListRestorePlans(
-        _BaseBackupForGKERestTransport._BaseListRestorePlans, BackupForGKERestStub
-    ):
+    class _ListRestorePlans(_BaseBackupForGKERestTransport._BaseListRestorePlans, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListRestorePlans")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7075,28 +5763,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListRestorePlans._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListRestorePlans._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_restore_plans(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestorePlans._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_restore_plans(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestorePlans._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListRestorePlans._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListRestorePlans._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7120,12 +5796,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListRestorePlans._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7141,16 +5812,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_restore_plans(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_restore_plans_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_restore_plans_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListRestorePlansResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListRestorePlansResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7169,22 +5834,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListRestores(
-        _BaseBackupForGKERestTransport._BaseListRestores, BackupForGKERestStub
-    ):
+    class _ListRestores(_BaseBackupForGKERestTransport._BaseListRestores, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListRestores")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7223,28 +5878,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     Response message for ListRestores.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListRestores._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListRestores._get_http_options()
 
             request, metadata = self._interceptor.pre_list_restores(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestores._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListRestores._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseListRestores._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListRestores._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7268,12 +5911,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListRestores._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7289,12 +5927,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_restores(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_restores_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_restores_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gkebackup.ListRestoresResponse.to_json(response)
                 except:
@@ -7315,22 +5949,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListVolumeBackups(
-        _BaseBackupForGKERestTransport._BaseListVolumeBackups, BackupForGKERestStub
-    ):
+    class _ListVolumeBackups(_BaseBackupForGKERestTransport._BaseListVolumeBackups, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListVolumeBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7372,28 +5996,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_volume_backups(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_volume_backups(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7417,12 +6029,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListVolumeBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7438,16 +6045,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_volume_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_volume_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_volume_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListVolumeBackupsResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListVolumeBackupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7466,22 +6067,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _ListVolumeRestores(
-        _BaseBackupForGKERestTransport._BaseListVolumeRestores, BackupForGKERestStub
-    ):
+    class _ListVolumeRestores(_BaseBackupForGKERestTransport._BaseListVolumeRestores, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListVolumeRestores")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7523,28 +6114,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_volume_restores(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_volume_restores(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7568,12 +6147,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListVolumeRestores._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7589,16 +6163,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_list_volume_restores(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_volume_restores_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_volume_restores_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkebackup.ListVolumeRestoresResponse.to_json(
-                        response
-                    )
+                    response_payload = gkebackup.ListVolumeRestoresResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7617,22 +6185,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _UpdateBackup(
-        _BaseBackupForGKERestTransport._BaseUpdateBackup, BackupForGKERestStub
-    ):
+    class _UpdateBackup(_BaseBackupForGKERestTransport._BaseUpdateBackup, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.UpdateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7675,34 +6233,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupForGKERestTransport._BaseUpdateBackup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupForGKERestTransport._BaseUpdateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseUpdateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseUpdateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7726,13 +6268,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._UpdateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7746,12 +6282,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_update_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7772,22 +6304,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _UpdateBackupChannel(
-        _BaseBackupForGKERestTransport._BaseUpdateBackupChannel, BackupForGKERestStub
-    ):
+    class _UpdateBackupChannel(_BaseBackupForGKERestTransport._BaseUpdateBackupChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.UpdateBackupChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7831,32 +6353,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_backup_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7880,13 +6388,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._UpdateBackupChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7900,12 +6402,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_update_backup_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7926,22 +6424,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _UpdateBackupPlan(
-        _BaseBackupForGKERestTransport._BaseUpdateBackupPlan, BackupForGKERestStub
-    ):
+    class _UpdateBackupPlan(_BaseBackupForGKERestTransport._BaseUpdateBackupPlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.UpdateBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7984,32 +6472,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_backup_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8033,13 +6507,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._UpdateBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8053,12 +6521,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_update_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8079,22 +6543,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _UpdateRestore(
-        _BaseBackupForGKERestTransport._BaseUpdateRestore, BackupForGKERestStub
-    ):
+    class _UpdateRestore(_BaseBackupForGKERestTransport._BaseUpdateRestore, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.UpdateRestore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8137,30 +6591,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateRestore._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_http_options()
 
             request, metadata = self._interceptor.pre_update_restore(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8184,13 +6626,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._UpdateRestore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8204,12 +6640,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_update_restore(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_restore_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_restore_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8230,22 +6662,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _UpdateRestoreChannel(
-        _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel, BackupForGKERestStub
-    ):
+    class _UpdateRestoreChannel(_BaseBackupForGKERestTransport._BaseUpdateRestoreChannel, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.UpdateRestoreChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8289,32 +6711,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_restore_channel(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_restore_channel(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8338,13 +6746,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._UpdateRestoreChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8358,12 +6760,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_update_restore_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_restore_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_restore_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8384,22 +6782,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 )
             return resp
 
-    class _UpdateRestorePlan(
-        _BaseBackupForGKERestTransport._BaseUpdateRestorePlan, BackupForGKERestStub
-    ):
+    class _UpdateRestorePlan(_BaseBackupForGKERestTransport._BaseUpdateRestorePlan, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.UpdateRestorePlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8443,32 +6831,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_restore_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_restore_plan(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8492,13 +6866,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._UpdateRestorePlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8512,12 +6880,8 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_update_restore_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_restore_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_restore_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8539,97 +6903,73 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             return resp
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[gkebackup.CreateBackupRequest], operations_pb2.Operation]:
+    def create_backup(self) -> Callable[[gkebackup.CreateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup_channel(
-        self,
-    ) -> Callable[[gkebackup.CreateBackupChannelRequest], operations_pb2.Operation]:
+    def create_backup_channel(self) -> Callable[[gkebackup.CreateBackupChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup_plan(
-        self,
-    ) -> Callable[[gkebackup.CreateBackupPlanRequest], operations_pb2.Operation]:
+    def create_backup_plan(self) -> Callable[[gkebackup.CreateBackupPlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_restore(
-        self,
-    ) -> Callable[[gkebackup.CreateRestoreRequest], operations_pb2.Operation]:
+    def create_restore(self) -> Callable[[gkebackup.CreateRestoreRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRestore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_restore_channel(
-        self,
-    ) -> Callable[[gkebackup.CreateRestoreChannelRequest], operations_pb2.Operation]:
+    def create_restore_channel(self) -> Callable[[gkebackup.CreateRestoreChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRestoreChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_restore_plan(
-        self,
-    ) -> Callable[[gkebackup.CreateRestorePlanRequest], operations_pb2.Operation]:
+    def create_restore_plan(self) -> Callable[[gkebackup.CreateRestorePlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRestorePlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[gkebackup.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[gkebackup.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_channel(
-        self,
-    ) -> Callable[[gkebackup.DeleteBackupChannelRequest], operations_pb2.Operation]:
+    def delete_backup_channel(self) -> Callable[[gkebackup.DeleteBackupChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_plan(
-        self,
-    ) -> Callable[[gkebackup.DeleteBackupPlanRequest], operations_pb2.Operation]:
+    def delete_backup_plan(self) -> Callable[[gkebackup.DeleteBackupPlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_restore(
-        self,
-    ) -> Callable[[gkebackup.DeleteRestoreRequest], operations_pb2.Operation]:
+    def delete_restore(self) -> Callable[[gkebackup.DeleteRestoreRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRestore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_restore_channel(
-        self,
-    ) -> Callable[[gkebackup.DeleteRestoreChannelRequest], operations_pb2.Operation]:
+    def delete_restore_channel(self) -> Callable[[gkebackup.DeleteRestoreChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRestoreChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_restore_plan(
-        self,
-    ) -> Callable[[gkebackup.DeleteRestorePlanRequest], operations_pb2.Operation]:
+    def delete_restore_plan(self) -> Callable[[gkebackup.DeleteRestorePlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRestorePlan(self._session, self._host, self._interceptor)  # type: ignore
@@ -8641,38 +6981,25 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_channel(
-        self,
-    ) -> Callable[[gkebackup.GetBackupChannelRequest], backup_channel.BackupChannel]:
+    def get_backup_channel(self) -> Callable[[gkebackup.GetBackupChannelRequest], backup_channel.BackupChannel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_index_download_url(
-        self,
-    ) -> Callable[
-        [gkebackup.GetBackupIndexDownloadUrlRequest],
-        gkebackup.GetBackupIndexDownloadUrlResponse,
-    ]:
+    def get_backup_index_download_url(self) -> Callable[[gkebackup.GetBackupIndexDownloadUrlRequest], gkebackup.GetBackupIndexDownloadUrlResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupIndexDownloadUrl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_plan(
-        self,
-    ) -> Callable[[gkebackup.GetBackupPlanRequest], backup_plan.BackupPlan]:
+    def get_backup_plan(self) -> Callable[[gkebackup.GetBackupPlanRequest], backup_plan.BackupPlan]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_plan_binding(
-        self,
-    ) -> Callable[
-        [gkebackup.GetBackupPlanBindingRequest], backup_plan_binding.BackupPlanBinding
-    ]:
+    def get_backup_plan_binding(self) -> Callable[[gkebackup.GetBackupPlanBindingRequest], backup_plan_binding.BackupPlanBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupPlanBinding(self._session, self._host, self._interceptor)  # type: ignore
@@ -8684,190 +7011,127 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
         return self._GetRestore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_restore_channel(
-        self,
-    ) -> Callable[[gkebackup.GetRestoreChannelRequest], restore_channel.RestoreChannel]:
+    def get_restore_channel(self) -> Callable[[gkebackup.GetRestoreChannelRequest], restore_channel.RestoreChannel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRestoreChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_restore_plan(
-        self,
-    ) -> Callable[[gkebackup.GetRestorePlanRequest], restore_plan.RestorePlan]:
+    def get_restore_plan(self) -> Callable[[gkebackup.GetRestorePlanRequest], restore_plan.RestorePlan]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRestorePlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_restore_plan_binding(
-        self,
-    ) -> Callable[
-        [gkebackup.GetRestorePlanBindingRequest],
-        restore_plan_binding.RestorePlanBinding,
-    ]:
+    def get_restore_plan_binding(self) -> Callable[[gkebackup.GetRestorePlanBindingRequest], restore_plan_binding.RestorePlanBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRestorePlanBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_volume_backup(
-        self,
-    ) -> Callable[[gkebackup.GetVolumeBackupRequest], volume.VolumeBackup]:
+    def get_volume_backup(self) -> Callable[[gkebackup.GetVolumeBackupRequest], volume.VolumeBackup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVolumeBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_volume_restore(
-        self,
-    ) -> Callable[[gkebackup.GetVolumeRestoreRequest], volume.VolumeRestore]:
+    def get_volume_restore(self) -> Callable[[gkebackup.GetVolumeRestoreRequest], volume.VolumeRestore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVolumeRestore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_channels(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupChannelsRequest], gkebackup.ListBackupChannelsResponse
-    ]:
+    def list_backup_channels(self) -> Callable[[gkebackup.ListBackupChannelsRequest], gkebackup.ListBackupChannelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupChannels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_plan_bindings(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupPlanBindingsRequest],
-        gkebackup.ListBackupPlanBindingsResponse,
-    ]:
+    def list_backup_plan_bindings(self) -> Callable[[gkebackup.ListBackupPlanBindingsRequest], gkebackup.ListBackupPlanBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPlanBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_plans(
-        self,
-    ) -> Callable[
-        [gkebackup.ListBackupPlansRequest], gkebackup.ListBackupPlansResponse
-    ]:
+    def list_backup_plans(self) -> Callable[[gkebackup.ListBackupPlansRequest], gkebackup.ListBackupPlansResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPlans(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[gkebackup.ListBackupsRequest], gkebackup.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[gkebackup.ListBackupsRequest], gkebackup.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_restore_channels(
-        self,
-    ) -> Callable[
-        [gkebackup.ListRestoreChannelsRequest], gkebackup.ListRestoreChannelsResponse
-    ]:
+    def list_restore_channels(self) -> Callable[[gkebackup.ListRestoreChannelsRequest], gkebackup.ListRestoreChannelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRestoreChannels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_restore_plan_bindings(
-        self,
-    ) -> Callable[
-        [gkebackup.ListRestorePlanBindingsRequest],
-        gkebackup.ListRestorePlanBindingsResponse,
-    ]:
+    def list_restore_plan_bindings(self) -> Callable[[gkebackup.ListRestorePlanBindingsRequest], gkebackup.ListRestorePlanBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRestorePlanBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_restore_plans(
-        self,
-    ) -> Callable[
-        [gkebackup.ListRestorePlansRequest], gkebackup.ListRestorePlansResponse
-    ]:
+    def list_restore_plans(self) -> Callable[[gkebackup.ListRestorePlansRequest], gkebackup.ListRestorePlansResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRestorePlans(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_restores(
-        self,
-    ) -> Callable[[gkebackup.ListRestoresRequest], gkebackup.ListRestoresResponse]:
+    def list_restores(self) -> Callable[[gkebackup.ListRestoresRequest], gkebackup.ListRestoresResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRestores(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_volume_backups(
-        self,
-    ) -> Callable[
-        [gkebackup.ListVolumeBackupsRequest], gkebackup.ListVolumeBackupsResponse
-    ]:
+    def list_volume_backups(self) -> Callable[[gkebackup.ListVolumeBackupsRequest], gkebackup.ListVolumeBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumeBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_volume_restores(
-        self,
-    ) -> Callable[
-        [gkebackup.ListVolumeRestoresRequest], gkebackup.ListVolumeRestoresResponse
-    ]:
+    def list_volume_restores(self) -> Callable[[gkebackup.ListVolumeRestoresRequest], gkebackup.ListVolumeRestoresResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumeRestores(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[gkebackup.UpdateBackupRequest], operations_pb2.Operation]:
+    def update_backup(self) -> Callable[[gkebackup.UpdateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_channel(
-        self,
-    ) -> Callable[[gkebackup.UpdateBackupChannelRequest], operations_pb2.Operation]:
+    def update_backup_channel(self) -> Callable[[gkebackup.UpdateBackupChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_plan(
-        self,
-    ) -> Callable[[gkebackup.UpdateBackupPlanRequest], operations_pb2.Operation]:
+    def update_backup_plan(self) -> Callable[[gkebackup.UpdateBackupPlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_restore(
-        self,
-    ) -> Callable[[gkebackup.UpdateRestoreRequest], operations_pb2.Operation]:
+    def update_restore(self) -> Callable[[gkebackup.UpdateRestoreRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRestore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_restore_channel(
-        self,
-    ) -> Callable[[gkebackup.UpdateRestoreChannelRequest], operations_pb2.Operation]:
+    def update_restore_channel(self) -> Callable[[gkebackup.UpdateRestoreChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRestoreChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_restore_plan(
-        self,
-    ) -> Callable[[gkebackup.UpdateRestorePlanRequest], operations_pb2.Operation]:
+    def update_restore_plan(self) -> Callable[[gkebackup.UpdateRestorePlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRestorePlan(self._session, self._host, self._interceptor)  # type: ignore
@@ -8876,22 +7140,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseBackupForGKERestTransport._BaseGetLocation, BackupForGKERestStub
-    ):
+    class _GetLocation(_BaseBackupForGKERestTransport._BaseGetLocation, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8929,30 +7183,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseBackupForGKERestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8976,12 +7216,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8993,9 +7228,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9020,22 +7253,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseBackupForGKERestTransport._BaseListLocations, BackupForGKERestStub
-    ):
+    class _ListLocations(_BaseBackupForGKERestTransport._BaseListLocations, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9073,26 +7296,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9116,12 +7329,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9133,9 +7341,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9160,22 +7366,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseBackupForGKERestTransport._BaseGetIamPolicy, BackupForGKERestStub
-    ):
+    class _GetIamPolicy(_BaseBackupForGKERestTransport._BaseGetIamPolicy, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9213,28 +7409,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9258,12 +7442,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9275,9 +7454,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9302,22 +7479,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseBackupForGKERestTransport._BaseSetIamPolicy, BackupForGKERestStub
-    ):
+    class _SetIamPolicy(_BaseBackupForGKERestTransport._BaseSetIamPolicy, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9356,34 +7523,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9407,13 +7558,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9425,9 +7570,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9452,22 +7595,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseBackupForGKERestTransport._BaseTestIamPermissions, BackupForGKERestStub
-    ):
+    class _TestIamPermissions(_BaseBackupForGKERestTransport._BaseTestIamPermissions, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9506,32 +7639,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9555,13 +7674,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9573,9 +7686,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9600,22 +7711,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseBackupForGKERestTransport._BaseCancelOperation, BackupForGKERestStub
-    ):
+    class _CancelOperation(_BaseBackupForGKERestTransport._BaseCancelOperation, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9651,32 +7752,18 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupForGKERestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupForGKERestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9700,13 +7787,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9720,22 +7801,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseBackupForGKERestTransport._BaseDeleteOperation, BackupForGKERestStub
-    ):
+    class _DeleteOperation(_BaseBackupForGKERestTransport._BaseDeleteOperation, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9770,28 +7841,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9815,12 +7874,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9834,22 +7888,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseBackupForGKERestTransport._BaseGetOperation, BackupForGKERestStub
-    ):
+    class _GetOperation(_BaseBackupForGKERestTransport._BaseGetOperation, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9887,28 +7931,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupForGKERestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9932,12 +7964,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9949,9 +7976,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9976,22 +8001,12 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseBackupForGKERestTransport._BaseListOperations, BackupForGKERestStub
-    ):
+    class _ListOperations(_BaseBackupForGKERestTransport._BaseListOperations, BackupForGKERestStub):
         def __hash__(self):
             return hash("BackupForGKERestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10029,26 +8044,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseBackupForGKERestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackupForGKERestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupForGKERestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupForGKERestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10072,12 +8077,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             # Send the request
             response = BackupForGKERestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10089,9 +8089,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

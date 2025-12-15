@@ -18,24 +18,12 @@ from google.cloud.binaryauthorization import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1.async_client import (
-    BinauthzManagementServiceV1AsyncClient,
-)
-from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1.client import (
-    BinauthzManagementServiceV1Client,
-)
-from google.cloud.binaryauthorization_v1.services.system_policy_v1.async_client import (
-    SystemPolicyV1AsyncClient,
-)
-from google.cloud.binaryauthorization_v1.services.system_policy_v1.client import (
-    SystemPolicyV1Client,
-)
-from google.cloud.binaryauthorization_v1.services.validation_helper_v1.async_client import (
-    ValidationHelperV1AsyncClient,
-)
-from google.cloud.binaryauthorization_v1.services.validation_helper_v1.client import (
-    ValidationHelperV1Client,
-)
+from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1.async_client import BinauthzManagementServiceV1AsyncClient
+from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1.client import BinauthzManagementServiceV1Client
+from google.cloud.binaryauthorization_v1.services.system_policy_v1.async_client import SystemPolicyV1AsyncClient
+from google.cloud.binaryauthorization_v1.services.system_policy_v1.client import SystemPolicyV1Client
+from google.cloud.binaryauthorization_v1.services.validation_helper_v1.async_client import ValidationHelperV1AsyncClient
+from google.cloud.binaryauthorization_v1.services.validation_helper_v1.client import ValidationHelperV1Client
 from google.cloud.binaryauthorization_v1.types.resources import (
     AdmissionRule,
     AdmissionWhitelistPattern,

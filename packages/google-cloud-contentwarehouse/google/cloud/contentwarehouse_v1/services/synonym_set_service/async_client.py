@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -47,10 +36,7 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.synonym_set_service import pagers
-from google.cloud.contentwarehouse_v1.types import (
-    synonymset,
-    synonymset_service_request,
-)
+from google.cloud.contentwarehouse_v1.types import synonymset, synonymset_service_request
 
 from .client import SynonymSetServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, SynonymSetServiceTransport
@@ -81,33 +67,17 @@ class SynonymSetServiceAsyncClient:
     location_path = staticmethod(SynonymSetServiceClient.location_path)
     parse_location_path = staticmethod(SynonymSetServiceClient.parse_location_path)
     synonym_set_path = staticmethod(SynonymSetServiceClient.synonym_set_path)
-    parse_synonym_set_path = staticmethod(
-        SynonymSetServiceClient.parse_synonym_set_path
-    )
-    common_billing_account_path = staticmethod(
-        SynonymSetServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        SynonymSetServiceClient.parse_common_billing_account_path
-    )
+    parse_synonym_set_path = staticmethod(SynonymSetServiceClient.parse_synonym_set_path)
+    common_billing_account_path = staticmethod(SynonymSetServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(SynonymSetServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SynonymSetServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        SynonymSetServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        SynonymSetServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        SynonymSetServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(SynonymSetServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(SynonymSetServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(SynonymSetServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(SynonymSetServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        SynonymSetServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(SynonymSetServiceClient.parse_common_project_path)
     common_location_path = staticmethod(SynonymSetServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        SynonymSetServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(SynonymSetServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -143,9 +113,7 @@ class SynonymSetServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -212,13 +180,7 @@ class SynonymSetServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                SynonymSetServiceTransport,
-                Callable[..., SynonymSetServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, SynonymSetServiceTransport, Callable[..., SynonymSetServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -278,20 +240,14 @@ class SynonymSetServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.contentwarehouse_v1.SynonymSetServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -302,9 +258,7 @@ class SynonymSetServiceAsyncClient:
 
     async def create_synonym_set(
         self,
-        request: Optional[
-            Union[synonymset_service_request.CreateSynonymSetRequest, dict]
-        ] = None,
+        request: Optional[Union[synonymset_service_request.CreateSynonymSetRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         synonym_set: Optional[synonymset.SynonymSet] = None,
@@ -385,14 +339,9 @@ class SynonymSetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, synonym_set]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -408,15 +357,11 @@ class SynonymSetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_synonym_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_synonym_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -434,9 +379,7 @@ class SynonymSetServiceAsyncClient:
 
     async def get_synonym_set(
         self,
-        request: Optional[
-            Union[synonymset_service_request.GetSynonymSetRequest, dict]
-        ] = None,
+        request: Optional[Union[synonymset_service_request.GetSynonymSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -509,14 +452,9 @@ class SynonymSetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -530,15 +468,11 @@ class SynonymSetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_synonym_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_synonym_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -556,9 +490,7 @@ class SynonymSetServiceAsyncClient:
 
     async def update_synonym_set(
         self,
-        request: Optional[
-            Union[synonymset_service_request.UpdateSynonymSetRequest, dict]
-        ] = None,
+        request: Optional[Union[synonymset_service_request.UpdateSynonymSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         synonym_set: Optional[synonymset.SynonymSet] = None,
@@ -642,14 +574,9 @@ class SynonymSetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, synonym_set]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -665,15 +592,11 @@ class SynonymSetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_synonym_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_synonym_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -691,9 +614,7 @@ class SynonymSetServiceAsyncClient:
 
     async def delete_synonym_set(
         self,
-        request: Optional[
-            Union[synonymset_service_request.DeleteSynonymSetRequest, dict]
-        ] = None,
+        request: Optional[Union[synonymset_service_request.DeleteSynonymSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -749,14 +670,9 @@ class SynonymSetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -770,15 +686,11 @@ class SynonymSetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_synonym_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_synonym_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -793,9 +705,7 @@ class SynonymSetServiceAsyncClient:
 
     async def list_synonym_sets(
         self,
-        request: Optional[
-            Union[synonymset_service_request.ListSynonymSetsRequest, dict]
-        ] = None,
+        request: Optional[Union[synonymset_service_request.ListSynonymSetsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -866,14 +776,9 @@ class SynonymSetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -887,15 +792,11 @@ class SynonymSetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_synonym_sets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_synonym_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -959,9 +860,7 @@ class SynonymSetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -984,9 +883,7 @@ class SynonymSetServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

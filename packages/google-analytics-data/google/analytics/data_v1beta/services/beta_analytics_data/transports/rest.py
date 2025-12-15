@@ -168,13 +168,8 @@ class BetaAnalyticsDataRestInterceptor:
     """
 
     def pre_batch_run_pivot_reports(
-        self,
-        request: analytics_data_api.BatchRunPivotReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.BatchRunPivotReportsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.BatchRunPivotReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.BatchRunPivotReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_run_pivot_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -198,13 +193,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_batch_run_pivot_reports_with_metadata(
-        self,
-        response: analytics_data_api.BatchRunPivotReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.BatchRunPivotReportsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.BatchRunPivotReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.BatchRunPivotReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_run_pivot_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -220,13 +210,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_batch_run_reports(
-        self,
-        request: analytics_data_api.BatchRunReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.BatchRunReportsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.BatchRunReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.BatchRunReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_run_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +219,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_run_reports(
-        self, response: analytics_data_api.BatchRunReportsResponse
-    ) -> analytics_data_api.BatchRunReportsResponse:
+    def post_batch_run_reports(self, response: analytics_data_api.BatchRunReportsResponse) -> analytics_data_api.BatchRunReportsResponse:
         """Post-rpc interceptor for batch_run_reports
 
         DEPRECATED. Please use the `post_batch_run_reports_with_metadata`
@@ -250,13 +233,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_batch_run_reports_with_metadata(
-        self,
-        response: analytics_data_api.BatchRunReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.BatchRunReportsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.BatchRunReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.BatchRunReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_run_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -272,13 +250,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_check_compatibility(
-        self,
-        request: analytics_data_api.CheckCompatibilityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.CheckCompatibilityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.CheckCompatibilityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.CheckCompatibilityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check_compatibility
 
         Override in a subclass to manipulate the request or metadata
@@ -286,9 +259,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_check_compatibility(
-        self, response: analytics_data_api.CheckCompatibilityResponse
-    ) -> analytics_data_api.CheckCompatibilityResponse:
+    def post_check_compatibility(self, response: analytics_data_api.CheckCompatibilityResponse) -> analytics_data_api.CheckCompatibilityResponse:
         """Post-rpc interceptor for check_compatibility
 
         DEPRECATED. Please use the `post_check_compatibility_with_metadata`
@@ -302,13 +273,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_check_compatibility_with_metadata(
-        self,
-        response: analytics_data_api.CheckCompatibilityResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.CheckCompatibilityResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.CheckCompatibilityResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.CheckCompatibilityResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check_compatibility
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -324,13 +290,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_create_audience_export(
-        self,
-        request: analytics_data_api.CreateAudienceExportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.CreateAudienceExportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.CreateAudienceExportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.CreateAudienceExportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_audience_export
 
         Override in a subclass to manipulate the request or metadata
@@ -338,9 +299,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_create_audience_export(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_audience_export(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_audience_export
 
         DEPRECATED. Please use the `post_create_audience_export_with_metadata`
@@ -354,9 +313,7 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_create_audience_export_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_audience_export
 
@@ -373,13 +330,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_get_audience_export(
-        self,
-        request: analytics_data_api.GetAudienceExportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.GetAudienceExportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.GetAudienceExportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.GetAudienceExportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_audience_export
 
         Override in a subclass to manipulate the request or metadata
@@ -387,9 +339,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_get_audience_export(
-        self, response: analytics_data_api.AudienceExport
-    ) -> analytics_data_api.AudienceExport:
+    def post_get_audience_export(self, response: analytics_data_api.AudienceExport) -> analytics_data_api.AudienceExport:
         """Post-rpc interceptor for get_audience_export
 
         DEPRECATED. Please use the `post_get_audience_export_with_metadata`
@@ -403,12 +353,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_get_audience_export_with_metadata(
-        self,
-        response: analytics_data_api.AudienceExport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.AudienceExport, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: analytics_data_api.AudienceExport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.AudienceExport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_audience_export
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -424,12 +370,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_get_metadata(
-        self,
-        request: analytics_data_api.GetMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.GetMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: analytics_data_api.GetMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.GetMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -437,9 +379,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_get_metadata(
-        self, response: analytics_data_api.Metadata
-    ) -> analytics_data_api.Metadata:
+    def post_get_metadata(self, response: analytics_data_api.Metadata) -> analytics_data_api.Metadata:
         """Post-rpc interceptor for get_metadata
 
         DEPRECATED. Please use the `post_get_metadata_with_metadata`
@@ -453,9 +393,7 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_get_metadata_with_metadata(
-        self,
-        response: analytics_data_api.Metadata,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: analytics_data_api.Metadata, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[analytics_data_api.Metadata, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_metadata
 
@@ -472,13 +410,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_list_audience_exports(
-        self,
-        request: analytics_data_api.ListAudienceExportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListAudienceExportsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.ListAudienceExportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListAudienceExportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_audience_exports
 
         Override in a subclass to manipulate the request or metadata
@@ -486,9 +419,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_list_audience_exports(
-        self, response: analytics_data_api.ListAudienceExportsResponse
-    ) -> analytics_data_api.ListAudienceExportsResponse:
+    def post_list_audience_exports(self, response: analytics_data_api.ListAudienceExportsResponse) -> analytics_data_api.ListAudienceExportsResponse:
         """Post-rpc interceptor for list_audience_exports
 
         DEPRECATED. Please use the `post_list_audience_exports_with_metadata`
@@ -502,13 +433,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_list_audience_exports_with_metadata(
-        self,
-        response: analytics_data_api.ListAudienceExportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListAudienceExportsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.ListAudienceExportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListAudienceExportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_audience_exports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -524,13 +450,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_query_audience_export(
-        self,
-        request: analytics_data_api.QueryAudienceExportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.QueryAudienceExportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.QueryAudienceExportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.QueryAudienceExportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_audience_export
 
         Override in a subclass to manipulate the request or metadata
@@ -538,9 +459,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_query_audience_export(
-        self, response: analytics_data_api.QueryAudienceExportResponse
-    ) -> analytics_data_api.QueryAudienceExportResponse:
+    def post_query_audience_export(self, response: analytics_data_api.QueryAudienceExportResponse) -> analytics_data_api.QueryAudienceExportResponse:
         """Post-rpc interceptor for query_audience_export
 
         DEPRECATED. Please use the `post_query_audience_export_with_metadata`
@@ -554,13 +473,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_query_audience_export_with_metadata(
-        self,
-        response: analytics_data_api.QueryAudienceExportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.QueryAudienceExportResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.QueryAudienceExportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.QueryAudienceExportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_audience_export
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -576,13 +490,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_run_pivot_report(
-        self,
-        request: analytics_data_api.RunPivotReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunPivotReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.RunPivotReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunPivotReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_pivot_report
 
         Override in a subclass to manipulate the request or metadata
@@ -590,9 +499,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_run_pivot_report(
-        self, response: analytics_data_api.RunPivotReportResponse
-    ) -> analytics_data_api.RunPivotReportResponse:
+    def post_run_pivot_report(self, response: analytics_data_api.RunPivotReportResponse) -> analytics_data_api.RunPivotReportResponse:
         """Post-rpc interceptor for run_pivot_report
 
         DEPRECATED. Please use the `post_run_pivot_report_with_metadata`
@@ -606,13 +513,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_run_pivot_report_with_metadata(
-        self,
-        response: analytics_data_api.RunPivotReportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunPivotReportResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.RunPivotReportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunPivotReportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_pivot_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -628,13 +530,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_run_realtime_report(
-        self,
-        request: analytics_data_api.RunRealtimeReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunRealtimeReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.RunRealtimeReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunRealtimeReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_realtime_report
 
         Override in a subclass to manipulate the request or metadata
@@ -642,9 +539,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_run_realtime_report(
-        self, response: analytics_data_api.RunRealtimeReportResponse
-    ) -> analytics_data_api.RunRealtimeReportResponse:
+    def post_run_realtime_report(self, response: analytics_data_api.RunRealtimeReportResponse) -> analytics_data_api.RunRealtimeReportResponse:
         """Post-rpc interceptor for run_realtime_report
 
         DEPRECATED. Please use the `post_run_realtime_report_with_metadata`
@@ -658,13 +553,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_run_realtime_report_with_metadata(
-        self,
-        response: analytics_data_api.RunRealtimeReportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunRealtimeReportResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.RunRealtimeReportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunRealtimeReportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_realtime_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -680,12 +570,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_run_report(
-        self,
-        request: analytics_data_api.RunReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: analytics_data_api.RunReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_report
 
         Override in a subclass to manipulate the request or metadata
@@ -693,9 +579,7 @@ class BetaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_run_report(
-        self, response: analytics_data_api.RunReportResponse
-    ) -> analytics_data_api.RunReportResponse:
+    def post_run_report(self, response: analytics_data_api.RunReportResponse) -> analytics_data_api.RunReportResponse:
         """Post-rpc interceptor for run_report
 
         DEPRECATED. Please use the `post_run_report_with_metadata`
@@ -709,12 +593,8 @@ class BetaAnalyticsDataRestInterceptor:
         return response
 
     def post_run_report_with_metadata(
-        self,
-        response: analytics_data_api.RunReportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunReportResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: analytics_data_api.RunReportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunReportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -809,9 +689,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -838,30 +716,17 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchRunPivotReports(
-        _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _BatchRunPivotReports(_BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.BatchRunPivotReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -904,32 +769,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_run_pivot_reports(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_run_pivot_reports(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -952,16 +803,8 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                BetaAnalyticsDataRestTransport._BatchRunPivotReports._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BetaAnalyticsDataRestTransport._BatchRunPivotReports._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -977,18 +820,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_batch_run_pivot_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_run_pivot_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_run_pivot_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.BatchRunPivotReportsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = analytics_data_api.BatchRunPivotReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1007,23 +842,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _BatchRunReports(
-        _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _BatchRunReports(_BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.BatchRunReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1066,32 +890,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_run_reports(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_run_reports(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1115,13 +925,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._BatchRunReports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1137,16 +941,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_batch_run_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_run_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_run_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.BatchRunReportsResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.BatchRunReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1165,23 +963,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _CheckCompatibility(
-        _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _CheckCompatibility(_BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.CheckCompatibility")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1228,32 +1015,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_http_options()
 
-            request, metadata = self._interceptor.pre_check_compatibility(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_check_compatibility(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1277,13 +1050,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._CheckCompatibility._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1299,16 +1066,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_check_compatibility(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_check_compatibility_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_compatibility_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.CheckCompatibilityResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.CheckCompatibilityResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1327,23 +1088,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _CreateAudienceExport(
-        _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _CreateAudienceExport(_BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.CreateAudienceExport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1387,32 +1137,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_audience_export(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_audience_export(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1435,16 +1171,8 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                BetaAnalyticsDataRestTransport._CreateAudienceExport._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BetaAnalyticsDataRestTransport._CreateAudienceExport._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1458,12 +1186,8 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_create_audience_export(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_audience_export_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_audience_export_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1484,23 +1208,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _GetAudienceExport(
-        _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _GetAudienceExport(_BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.GetAudienceExport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1546,28 +1259,16 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_audience_export(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_audience_export(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1591,12 +1292,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._GetAudienceExport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1612,16 +1308,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_get_audience_export(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_audience_export_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_audience_export_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = analytics_data_api.AudienceExport.to_json(
-                        response
-                    )
+                    response_payload = analytics_data_api.AudienceExport.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1640,22 +1330,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _GetMetadata(
-        _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata, BetaAnalyticsDataRestStub
-    ):
+    class _GetMetadata(_BaseBetaAnalyticsDataRestTransport._BaseGetMetadata, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.GetMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1698,26 +1378,16 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_http_options()
 
             request, metadata = self._interceptor.pre_get_metadata(request, metadata)
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1741,12 +1411,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._GetMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1762,12 +1427,8 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_get_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = analytics_data_api.Metadata.to_json(response)
                 except:
@@ -1788,23 +1449,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _ListAudienceExports(
-        _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _ListAudienceExports(_BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.ListAudienceExports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1846,28 +1496,16 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_audience_exports(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_audience_exports(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1890,15 +1528,8 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                BetaAnalyticsDataRestTransport._ListAudienceExports._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BetaAnalyticsDataRestTransport._ListAudienceExports._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1914,16 +1545,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_list_audience_exports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_audience_exports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_audience_exports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.ListAudienceExportsResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.ListAudienceExportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1942,23 +1567,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _QueryAudienceExport(
-        _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _QueryAudienceExport(_BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.QueryAudienceExport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2001,32 +1615,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_audience_export(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_audience_export(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2049,16 +1649,8 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                BetaAnalyticsDataRestTransport._QueryAudienceExport._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BetaAnalyticsDataRestTransport._QueryAudienceExport._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2074,16 +1666,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_query_audience_export(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_audience_export_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_audience_export_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.QueryAudienceExportResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.QueryAudienceExportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2102,23 +1688,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _RunPivotReport(
-        _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _RunPivotReport(_BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.RunPivotReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2161,32 +1736,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_pivot_report(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_pivot_report(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2210,13 +1771,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._RunPivotReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2232,16 +1787,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_run_pivot_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_pivot_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_pivot_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.RunPivotReportResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.RunPivotReportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2260,23 +1809,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _RunRealtimeReport(
-        _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport,
-        BetaAnalyticsDataRestStub,
-    ):
+    class _RunRealtimeReport(_BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.RunRealtimeReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2319,32 +1857,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_realtime_report(
-                request, metadata
-            )
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_realtime_report(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2368,13 +1892,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._RunRealtimeReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2390,16 +1908,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_run_realtime_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_realtime_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_realtime_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.RunRealtimeReportResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.RunRealtimeReportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2418,22 +1930,12 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _RunReport(
-        _BaseBetaAnalyticsDataRestTransport._BaseRunReport, BetaAnalyticsDataRestStub
-    ):
+    class _RunReport(_BaseBetaAnalyticsDataRestTransport._BaseRunReport, BetaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("BetaAnalyticsDataRestTransport.RunReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2475,30 +1977,18 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_http_options()
-            )
+            http_options = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_http_options()
 
             request, metadata = self._interceptor.pre_run_report(request, metadata)
-            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_transcoded_request(http_options, request)
 
-            body = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2522,13 +2012,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             # Send the request
             response = BetaAnalyticsDataRestTransport._RunReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2544,16 +2028,10 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_run_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = analytics_data_api.RunReportResponse.to_json(
-                        response
-                    )
+                    response_payload = analytics_data_api.RunReportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2573,116 +2051,67 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             return resp
 
     @property
-    def batch_run_pivot_reports(
-        self,
-    ) -> Callable[
-        [analytics_data_api.BatchRunPivotReportsRequest],
-        analytics_data_api.BatchRunPivotReportsResponse,
-    ]:
+    def batch_run_pivot_reports(self) -> Callable[[analytics_data_api.BatchRunPivotReportsRequest], analytics_data_api.BatchRunPivotReportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchRunPivotReports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_run_reports(
-        self,
-    ) -> Callable[
-        [analytics_data_api.BatchRunReportsRequest],
-        analytics_data_api.BatchRunReportsResponse,
-    ]:
+    def batch_run_reports(self) -> Callable[[analytics_data_api.BatchRunReportsRequest], analytics_data_api.BatchRunReportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchRunReports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def check_compatibility(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CheckCompatibilityRequest],
-        analytics_data_api.CheckCompatibilityResponse,
-    ]:
+    def check_compatibility(self) -> Callable[[analytics_data_api.CheckCompatibilityRequest], analytics_data_api.CheckCompatibilityResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckCompatibility(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_audience_export(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CreateAudienceExportRequest], operations_pb2.Operation
-    ]:
+    def create_audience_export(self) -> Callable[[analytics_data_api.CreateAudienceExportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAudienceExport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_audience_export(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetAudienceExportRequest], analytics_data_api.AudienceExport
-    ]:
+    def get_audience_export(self) -> Callable[[analytics_data_api.GetAudienceExportRequest], analytics_data_api.AudienceExport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudienceExport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_metadata(
-        self,
-    ) -> Callable[[analytics_data_api.GetMetadataRequest], analytics_data_api.Metadata]:
+    def get_metadata(self) -> Callable[[analytics_data_api.GetMetadataRequest], analytics_data_api.Metadata]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_audience_exports(
-        self,
-    ) -> Callable[
-        [analytics_data_api.ListAudienceExportsRequest],
-        analytics_data_api.ListAudienceExportsResponse,
-    ]:
+    def list_audience_exports(self) -> Callable[[analytics_data_api.ListAudienceExportsRequest], analytics_data_api.ListAudienceExportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAudienceExports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_audience_export(
-        self,
-    ) -> Callable[
-        [analytics_data_api.QueryAudienceExportRequest],
-        analytics_data_api.QueryAudienceExportResponse,
-    ]:
+    def query_audience_export(self) -> Callable[[analytics_data_api.QueryAudienceExportRequest], analytics_data_api.QueryAudienceExportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryAudienceExport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_pivot_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunPivotReportRequest],
-        analytics_data_api.RunPivotReportResponse,
-    ]:
+    def run_pivot_report(self) -> Callable[[analytics_data_api.RunPivotReportRequest], analytics_data_api.RunPivotReportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunPivotReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_realtime_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunRealtimeReportRequest],
-        analytics_data_api.RunRealtimeReportResponse,
-    ]:
+    def run_realtime_report(self) -> Callable[[analytics_data_api.RunRealtimeReportRequest], analytics_data_api.RunRealtimeReportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunRealtimeReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunReportRequest], analytics_data_api.RunReportResponse
-    ]:
+    def run_report(self) -> Callable[[analytics_data_api.RunReportRequest], analytics_data_api.RunReportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunReport(self._session, self._host, self._interceptor)  # type: ignore

@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.chronicle_v1 import gapic_version as package_version
 from google.cloud.chronicle_v1.types import data_access_control
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class DataAccessControlServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -256,11 +246,7 @@ class DataAccessControlServiceTransport(abc.ABC):
     def create_data_access_label(
         self,
     ) -> Callable[
-        [data_access_control.CreateDataAccessLabelRequest],
-        Union[
-            data_access_control.DataAccessLabel,
-            Awaitable[data_access_control.DataAccessLabel],
-        ],
+        [data_access_control.CreateDataAccessLabelRequest], Union[data_access_control.DataAccessLabel, Awaitable[data_access_control.DataAccessLabel]]
     ]:
         raise NotImplementedError()
 
@@ -268,11 +254,7 @@ class DataAccessControlServiceTransport(abc.ABC):
     def get_data_access_label(
         self,
     ) -> Callable[
-        [data_access_control.GetDataAccessLabelRequest],
-        Union[
-            data_access_control.DataAccessLabel,
-            Awaitable[data_access_control.DataAccessLabel],
-        ],
+        [data_access_control.GetDataAccessLabelRequest], Union[data_access_control.DataAccessLabel, Awaitable[data_access_control.DataAccessLabel]]
     ]:
         raise NotImplementedError()
 
@@ -281,10 +263,7 @@ class DataAccessControlServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_access_control.ListDataAccessLabelsRequest],
-        Union[
-            data_access_control.ListDataAccessLabelsResponse,
-            Awaitable[data_access_control.ListDataAccessLabelsResponse],
-        ],
+        Union[data_access_control.ListDataAccessLabelsResponse, Awaitable[data_access_control.ListDataAccessLabelsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -292,32 +271,21 @@ class DataAccessControlServiceTransport(abc.ABC):
     def update_data_access_label(
         self,
     ) -> Callable[
-        [data_access_control.UpdateDataAccessLabelRequest],
-        Union[
-            data_access_control.DataAccessLabel,
-            Awaitable[data_access_control.DataAccessLabel],
-        ],
+        [data_access_control.UpdateDataAccessLabelRequest], Union[data_access_control.DataAccessLabel, Awaitable[data_access_control.DataAccessLabel]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_data_access_label(
         self,
-    ) -> Callable[
-        [data_access_control.DeleteDataAccessLabelRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[data_access_control.DeleteDataAccessLabelRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_data_access_scope(
         self,
     ) -> Callable[
-        [data_access_control.CreateDataAccessScopeRequest],
-        Union[
-            data_access_control.DataAccessScope,
-            Awaitable[data_access_control.DataAccessScope],
-        ],
+        [data_access_control.CreateDataAccessScopeRequest], Union[data_access_control.DataAccessScope, Awaitable[data_access_control.DataAccessScope]]
     ]:
         raise NotImplementedError()
 
@@ -325,11 +293,7 @@ class DataAccessControlServiceTransport(abc.ABC):
     def get_data_access_scope(
         self,
     ) -> Callable[
-        [data_access_control.GetDataAccessScopeRequest],
-        Union[
-            data_access_control.DataAccessScope,
-            Awaitable[data_access_control.DataAccessScope],
-        ],
+        [data_access_control.GetDataAccessScopeRequest], Union[data_access_control.DataAccessScope, Awaitable[data_access_control.DataAccessScope]]
     ]:
         raise NotImplementedError()
 
@@ -338,10 +302,7 @@ class DataAccessControlServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_access_control.ListDataAccessScopesRequest],
-        Union[
-            data_access_control.ListDataAccessScopesResponse,
-            Awaitable[data_access_control.ListDataAccessScopesResponse],
-        ],
+        Union[data_access_control.ListDataAccessScopesResponse, Awaitable[data_access_control.ListDataAccessScopesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -349,21 +310,14 @@ class DataAccessControlServiceTransport(abc.ABC):
     def update_data_access_scope(
         self,
     ) -> Callable[
-        [data_access_control.UpdateDataAccessScopeRequest],
-        Union[
-            data_access_control.DataAccessScope,
-            Awaitable[data_access_control.DataAccessScope],
-        ],
+        [data_access_control.UpdateDataAccessScopeRequest], Union[data_access_control.DataAccessScope, Awaitable[data_access_control.DataAccessScope]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_data_access_scope(
         self,
-    ) -> Callable[
-        [data_access_control.DeleteDataAccessScopeRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[data_access_control.DeleteDataAccessScopeRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -371,20 +325,14 @@ class DataAccessControlServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

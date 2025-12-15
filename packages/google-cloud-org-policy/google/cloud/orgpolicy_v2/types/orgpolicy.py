@@ -692,9 +692,7 @@ class ListCustomConstraintsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_constraints: MutableSequence[
-        constraint.CustomConstraint
-    ] = proto.RepeatedField(
+    custom_constraints: MutableSequence[constraint.CustomConstraint] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=constraint.CustomConstraint,

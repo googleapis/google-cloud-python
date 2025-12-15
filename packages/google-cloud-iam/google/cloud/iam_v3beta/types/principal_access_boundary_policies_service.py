@@ -20,10 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.iam_v3beta.types import (
-    policy_binding_resources,
-    principal_access_boundary_policy_resources,
-)
+from google.cloud.iam_v3beta.types import policy_binding_resources, principal_access_boundary_policy_resources
 
 __protobuf__ = proto.module(
     package="google.iam.v3beta",
@@ -316,9 +313,7 @@ class SearchPrincipalAccessBoundaryPolicyBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policy_bindings: MutableSequence[
-        policy_binding_resources.PolicyBinding
-    ] = proto.RepeatedField(
+    policy_bindings: MutableSequence[policy_binding_resources.PolicyBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=policy_binding_resources.PolicyBinding,

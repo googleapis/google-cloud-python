@@ -1068,12 +1068,10 @@ class AwsNodeConfig(proto.Message):
         number=14,
         message="AwsInstancePlacement",
     )
-    autoscaling_metrics_collection: "AwsAutoscalingGroupMetricsCollection" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=15,
-            message="AwsAutoscalingGroupMetricsCollection",
-        )
+    autoscaling_metrics_collection: "AwsAutoscalingGroupMetricsCollection" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="AwsAutoscalingGroupMetricsCollection",
     )
     spot_config: "SpotConfig" = proto.Field(
         proto.MESSAGE,

@@ -149,9 +149,7 @@ class StreamAssistRequest(proto.Message):
                     `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
             """
 
-            data_store_specs: MutableSequence[
-                search_service.SearchRequest.DataStoreSpec
-            ] = proto.RepeatedField(
+            data_store_specs: MutableSequence[search_service.SearchRequest.DataStoreSpec] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message=search_service.SearchRequest.DataStoreSpec,
@@ -170,33 +168,25 @@ class StreamAssistRequest(proto.Message):
         class VideoGenerationSpec(proto.Message):
             r"""Specification of the video generation tool."""
 
-        vertex_ai_search_spec: "StreamAssistRequest.ToolsSpec.VertexAiSearchSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="StreamAssistRequest.ToolsSpec.VertexAiSearchSpec",
-            )
+        vertex_ai_search_spec: "StreamAssistRequest.ToolsSpec.VertexAiSearchSpec" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="StreamAssistRequest.ToolsSpec.VertexAiSearchSpec",
         )
-        web_grounding_spec: "StreamAssistRequest.ToolsSpec.WebGroundingSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="StreamAssistRequest.ToolsSpec.WebGroundingSpec",
-            )
+        web_grounding_spec: "StreamAssistRequest.ToolsSpec.WebGroundingSpec" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="StreamAssistRequest.ToolsSpec.WebGroundingSpec",
         )
-        image_generation_spec: "StreamAssistRequest.ToolsSpec.ImageGenerationSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="StreamAssistRequest.ToolsSpec.ImageGenerationSpec",
-            )
+        image_generation_spec: "StreamAssistRequest.ToolsSpec.ImageGenerationSpec" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="StreamAssistRequest.ToolsSpec.ImageGenerationSpec",
         )
-        video_generation_spec: "StreamAssistRequest.ToolsSpec.VideoGenerationSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="StreamAssistRequest.ToolsSpec.VideoGenerationSpec",
-            )
+        video_generation_spec: "StreamAssistRequest.ToolsSpec.VideoGenerationSpec" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="StreamAssistRequest.ToolsSpec.VideoGenerationSpec",
         )
 
     class GenerationSpec(proto.Message):

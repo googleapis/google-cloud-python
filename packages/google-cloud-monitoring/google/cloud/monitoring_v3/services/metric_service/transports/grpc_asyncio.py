@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -337,10 +320,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     @property
     def list_monitored_resource_descriptors(
         self,
-    ) -> Callable[
-        [metric_service.ListMonitoredResourceDescriptorsRequest],
-        Awaitable[metric_service.ListMonitoredResourceDescriptorsResponse],
-    ]:
+    ) -> Callable[[metric_service.ListMonitoredResourceDescriptorsRequest], Awaitable[metric_service.ListMonitoredResourceDescriptorsResponse]]:
         r"""Return a callable for the list monitored resource
         descriptors method over gRPC.
 
@@ -358,9 +338,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_monitored_resource_descriptors" not in self._stubs:
-            self._stubs[
-                "list_monitored_resource_descriptors"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_monitored_resource_descriptors"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/ListMonitoredResourceDescriptors",
                 request_serializer=metric_service.ListMonitoredResourceDescriptorsRequest.serialize,
                 response_deserializer=metric_service.ListMonitoredResourceDescriptorsResponse.deserialize,
@@ -370,10 +348,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     @property
     def get_monitored_resource_descriptor(
         self,
-    ) -> Callable[
-        [metric_service.GetMonitoredResourceDescriptorRequest],
-        Awaitable[monitored_resource_pb2.MonitoredResourceDescriptor],
-    ]:
+    ) -> Callable[[metric_service.GetMonitoredResourceDescriptorRequest], Awaitable[monitored_resource_pb2.MonitoredResourceDescriptor]]:
         r"""Return a callable for the get monitored resource
         descriptor method over gRPC.
 
@@ -390,9 +365,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_monitored_resource_descriptor" not in self._stubs:
-            self._stubs[
-                "get_monitored_resource_descriptor"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_monitored_resource_descriptor"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/GetMonitoredResourceDescriptor",
                 request_serializer=metric_service.GetMonitoredResourceDescriptorRequest.serialize,
                 response_deserializer=monitored_resource_pb2.MonitoredResourceDescriptor.FromString,
@@ -402,10 +375,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     @property
     def list_metric_descriptors(
         self,
-    ) -> Callable[
-        [metric_service.ListMetricDescriptorsRequest],
-        Awaitable[metric_service.ListMetricDescriptorsResponse],
-    ]:
+    ) -> Callable[[metric_service.ListMetricDescriptorsRequest], Awaitable[metric_service.ListMetricDescriptorsResponse]]:
         r"""Return a callable for the list metric descriptors method over gRPC.
 
         Lists metric descriptors that match a filter.
@@ -429,12 +399,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         return self._stubs["list_metric_descriptors"]
 
     @property
-    def get_metric_descriptor(
-        self,
-    ) -> Callable[
-        [metric_service.GetMetricDescriptorRequest],
-        Awaitable[metric_pb2.MetricDescriptor],
-    ]:
+    def get_metric_descriptor(self) -> Callable[[metric_service.GetMetricDescriptorRequest], Awaitable[metric_pb2.MetricDescriptor]]:
         r"""Return a callable for the get metric descriptor method over gRPC.
 
         Gets a single metric descriptor.
@@ -458,12 +423,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         return self._stubs["get_metric_descriptor"]
 
     @property
-    def create_metric_descriptor(
-        self,
-    ) -> Callable[
-        [metric_service.CreateMetricDescriptorRequest],
-        Awaitable[metric_pb2.MetricDescriptor],
-    ]:
+    def create_metric_descriptor(self) -> Callable[[metric_service.CreateMetricDescriptorRequest], Awaitable[metric_pb2.MetricDescriptor]]:
         r"""Return a callable for the create metric descriptor method over gRPC.
 
         Creates a new metric descriptor. The creation is executed
@@ -491,11 +451,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         return self._stubs["create_metric_descriptor"]
 
     @property
-    def delete_metric_descriptor(
-        self,
-    ) -> Callable[
-        [metric_service.DeleteMetricDescriptorRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_metric_descriptor(self) -> Callable[[metric_service.DeleteMetricDescriptorRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete metric descriptor method over gRPC.
 
         Deletes a metric descriptor. Only user-created `custom
@@ -521,12 +477,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         return self._stubs["delete_metric_descriptor"]
 
     @property
-    def list_time_series(
-        self,
-    ) -> Callable[
-        [metric_service.ListTimeSeriesRequest],
-        Awaitable[metric_service.ListTimeSeriesResponse],
-    ]:
+    def list_time_series(self) -> Callable[[metric_service.ListTimeSeriesRequest], Awaitable[metric_service.ListTimeSeriesResponse]]:
         r"""Return a callable for the list time series method over gRPC.
 
         Lists time series that match a filter.
@@ -550,9 +501,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         return self._stubs["list_time_series"]
 
     @property
-    def create_time_series(
-        self,
-    ) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
+    def create_time_series(self) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the create time series method over gRPC.
 
         Creates or adds data to one or more time series. The response is
@@ -581,9 +530,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         return self._stubs["create_time_series"]
 
     @property
-    def create_service_time_series(
-        self,
-    ) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
+    def create_service_time_series(self) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the create service time series method over gRPC.
 
         Creates or adds data to one or more service time series. A
@@ -607,9 +554,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_time_series" not in self._stubs:
-            self._stubs[
-                "create_service_time_series"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_service_time_series"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/CreateServiceTimeSeries",
                 request_serializer=metric_service.CreateTimeSeriesRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,

@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import LfpMerchantStateServiceTransport
 from .grpc import LfpMerchantStateServiceGrpcTransport
 from .grpc_asyncio import LfpMerchantStateServiceGrpcAsyncIOTransport
-from .rest import (
-    LfpMerchantStateServiceRestInterceptor,
-    LfpMerchantStateServiceRestTransport,
-)
+from .rest import LfpMerchantStateServiceRestInterceptor, LfpMerchantStateServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[LfpMerchantStateServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[LfpMerchantStateServiceTransport]]
 _transport_registry["grpc"] = LfpMerchantStateServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = LfpMerchantStateServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = LfpMerchantStateServiceRestTransport

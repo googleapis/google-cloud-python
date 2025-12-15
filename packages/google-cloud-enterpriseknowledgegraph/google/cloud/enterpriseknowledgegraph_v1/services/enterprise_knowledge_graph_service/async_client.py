@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -49,16 +38,11 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-from google.cloud.enterpriseknowledgegraph_v1.services.enterprise_knowledge_graph_service import (
-    pagers,
-)
+from google.cloud.enterpriseknowledgegraph_v1.services.enterprise_knowledge_graph_service import pagers
 from google.cloud.enterpriseknowledgegraph_v1.types import job_state, service
 
 from .client import EnterpriseKnowledgeGraphServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    EnterpriseKnowledgeGraphServiceTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, EnterpriseKnowledgeGraphServiceTransport
 from .transports.grpc_asyncio import EnterpriseKnowledgeGraphServiceGrpcAsyncIOTransport
 
 try:
@@ -80,67 +64,29 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = EnterpriseKnowledgeGraphServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = EnterpriseKnowledgeGraphServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        EnterpriseKnowledgeGraphServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = EnterpriseKnowledgeGraphServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = EnterpriseKnowledgeGraphServiceClient._DEFAULT_UNIVERSE
 
-    cloud_knowledge_graph_entity_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.cloud_knowledge_graph_entity_path
-    )
-    parse_cloud_knowledge_graph_entity_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_cloud_knowledge_graph_entity_path
-    )
+    cloud_knowledge_graph_entity_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.cloud_knowledge_graph_entity_path)
+    parse_cloud_knowledge_graph_entity_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_cloud_knowledge_graph_entity_path)
     dataset_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.dataset_path)
-    parse_dataset_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_dataset_path
-    )
-    entity_reconciliation_job_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.entity_reconciliation_job_path
-    )
-    parse_entity_reconciliation_job_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_entity_reconciliation_job_path
-    )
-    public_knowledge_graph_entity_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.public_knowledge_graph_entity_path
-    )
-    parse_public_knowledge_graph_entity_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_public_knowledge_graph_entity_path
-    )
+    parse_dataset_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_dataset_path)
+    entity_reconciliation_job_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.entity_reconciliation_job_path)
+    parse_entity_reconciliation_job_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_entity_reconciliation_job_path)
+    public_knowledge_graph_entity_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.public_knowledge_graph_entity_path)
+    parse_public_knowledge_graph_entity_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_public_knowledge_graph_entity_path)
     table_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.table_path)
-    parse_table_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_table_path
-    )
-    common_billing_account_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        EnterpriseKnowledgeGraphServiceClient.parse_common_location_path
-    )
+    parse_table_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_table_path)
+    common_billing_account_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -176,9 +122,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -246,11 +190,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                EnterpriseKnowledgeGraphServiceTransport,
-                Callable[..., EnterpriseKnowledgeGraphServiceTransport],
-            ]
+            Union[str, EnterpriseKnowledgeGraphServiceTransport, Callable[..., EnterpriseKnowledgeGraphServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -311,20 +251,14 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -335,9 +269,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
     async def create_entity_reconciliation_job(
         self,
-        request: Optional[
-            Union[service.CreateEntityReconciliationJobRequest, dict]
-        ] = None,
+        request: Optional[Union[service.CreateEntityReconciliationJobRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         entity_reconciliation_job: Optional[service.EntityReconciliationJob] = None,
@@ -410,14 +342,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, entity_reconciliation_job]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -433,15 +360,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_entity_reconciliation_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_entity_reconciliation_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -459,9 +382,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
     async def get_entity_reconciliation_job(
         self,
-        request: Optional[
-            Union[service.GetEntityReconciliationJobRequest, dict]
-        ] = None,
+        request: Optional[Union[service.GetEntityReconciliationJobRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -524,14 +445,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -545,15 +461,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_entity_reconciliation_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_entity_reconciliation_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -571,9 +483,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
     async def list_entity_reconciliation_jobs(
         self,
-        request: Optional[
-            Union[service.ListEntityReconciliationJobsRequest, dict]
-        ] = None,
+        request: Optional[Union[service.ListEntityReconciliationJobsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -642,14 +552,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -663,15 +568,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_entity_reconciliation_jobs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_entity_reconciliation_jobs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -700,9 +601,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
     async def cancel_entity_reconciliation_job(
         self,
-        request: Optional[
-            Union[service.CancelEntityReconciliationJobRequest, dict]
-        ] = None,
+        request: Optional[Union[service.CancelEntityReconciliationJobRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -759,14 +658,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -780,15 +674,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_entity_reconciliation_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.cancel_entity_reconciliation_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -803,9 +693,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
     async def delete_entity_reconciliation_job(
         self,
-        request: Optional[
-            Union[service.DeleteEntityReconciliationJobRequest, dict]
-        ] = None,
+        request: Optional[Union[service.DeleteEntityReconciliationJobRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -863,14 +751,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -884,15 +767,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_entity_reconciliation_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_entity_reconciliation_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -980,14 +859,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, ids]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1007,9 +881,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1100,14 +972,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, query]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1127,9 +994,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1220,14 +1085,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, ids]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1243,15 +1103,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lookup_public_kg
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.lookup_public_kg]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1342,14 +1198,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, query]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1365,15 +1216,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_public_kg
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_public_kg]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1396,9 +1243,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

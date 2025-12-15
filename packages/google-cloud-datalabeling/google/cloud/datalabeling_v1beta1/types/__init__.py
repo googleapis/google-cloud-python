@@ -114,12 +114,7 @@ from .evaluation import (
     ObjectDetectionMetrics,
     PrCurve,
 )
-from .evaluation_job import (
-    Attempt,
-    EvaluationJob,
-    EvaluationJobAlertConfig,
-    EvaluationJobConfig,
-)
+from .evaluation_job import Attempt, EvaluationJob, EvaluationJobAlertConfig, EvaluationJobConfig
 from .human_annotation_config import (
     BoundingPolyConfig,
     EventConfig,

@@ -18,17 +18,9 @@ from google.maps.addressvalidation import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.addressvalidation_v1.services.address_validation.async_client import (
-    AddressValidationAsyncClient,
-)
-from google.maps.addressvalidation_v1.services.address_validation.client import (
-    AddressValidationClient,
-)
-from google.maps.addressvalidation_v1.types.address import (
-    Address,
-    AddressComponent,
-    ComponentName,
-)
+from google.maps.addressvalidation_v1.services.address_validation.async_client import AddressValidationAsyncClient
+from google.maps.addressvalidation_v1.services.address_validation.client import AddressValidationClient
+from google.maps.addressvalidation_v1.types.address import Address, AddressComponent, ComponentName
 from google.maps.addressvalidation_v1.types.address_validation_service import (
     ProvideValidationFeedbackRequest,
     ProvideValidationFeedbackResponse,

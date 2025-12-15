@@ -174,9 +174,7 @@ class WebhookResponse(proto.Message):
         number=6,
         message=gcd_session.EventInput,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=session_entity_type.SessionEntityType,

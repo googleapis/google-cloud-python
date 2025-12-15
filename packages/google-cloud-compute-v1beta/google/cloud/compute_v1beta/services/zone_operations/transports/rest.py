@@ -111,12 +111,8 @@ class ZoneOperationsRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteZoneOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteZoneOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -124,9 +120,7 @@ class ZoneOperationsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete(
-        self, response: compute.DeleteZoneOperationResponse
-    ) -> compute.DeleteZoneOperationResponse:
+    def post_delete(self, response: compute.DeleteZoneOperationResponse) -> compute.DeleteZoneOperationResponse:
         """Post-rpc interceptor for delete
 
         DEPRECATED. Please use the `post_delete_with_metadata`
@@ -140,12 +134,8 @@ class ZoneOperationsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.DeleteZoneOperationResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteZoneOperationResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.DeleteZoneOperationResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteZoneOperationResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -161,12 +151,8 @@ class ZoneOperationsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetZoneOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetZoneOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -188,9 +174,7 @@ class ZoneOperationsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -207,12 +191,8 @@ class ZoneOperationsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListZoneOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListZoneOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListZoneOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListZoneOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +214,7 @@ class ZoneOperationsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.OperationList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.OperationList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.OperationList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -253,12 +231,8 @@ class ZoneOperationsRestInterceptor:
         return response, metadata
 
     def pre_wait(
-        self,
-        request: compute.WaitZoneOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.WaitZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.WaitZoneOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.WaitZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for wait
 
         Override in a subclass to manipulate the request or metadata
@@ -280,9 +254,7 @@ class ZoneOperationsRestInterceptor:
         return response
 
     def post_wait_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for wait
 
@@ -382,9 +354,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ZoneOperationsRestInterceptor()
@@ -395,15 +365,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             return hash("ZoneOperationsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -447,30 +409,16 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseZoneOperationsRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseZoneOperationsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseZoneOperationsRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseZoneOperationsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseZoneOperationsRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseZoneOperationsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -494,12 +442,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
 
             # Send the request
             response = ZoneOperationsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -515,16 +458,10 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.DeleteZoneOperationResponse.to_json(
-                        response
-                    )
+                    response_payload = compute.DeleteZoneOperationResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -548,15 +485,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             return hash("ZoneOperationsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -617,25 +546,13 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             http_options = _BaseZoneOperationsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseZoneOperationsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseZoneOperationsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseZoneOperationsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseZoneOperationsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -658,14 +575,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 )
 
             # Send the request
-            response = ZoneOperationsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ZoneOperationsRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -681,9 +591,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -709,15 +617,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             return hash("ZoneOperationsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -760,30 +660,16 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseZoneOperationsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseZoneOperationsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseZoneOperationsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseZoneOperationsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseZoneOperationsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseZoneOperationsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -806,14 +692,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 )
 
             # Send the request
-            response = ZoneOperationsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ZoneOperationsRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -829,9 +708,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.OperationList.to_json(response)
                 except:
@@ -857,15 +734,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             return hash("ZoneOperationsRestTransport.Wait")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -923,30 +792,16 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseZoneOperationsRestTransport._BaseWait._get_http_options()
-            )
+            http_options = _BaseZoneOperationsRestTransport._BaseWait._get_http_options()
 
             request, metadata = self._interceptor.pre_wait(request, metadata)
-            transcoded_request = (
-                _BaseZoneOperationsRestTransport._BaseWait._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseZoneOperationsRestTransport._BaseWait._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseZoneOperationsRestTransport._BaseWait._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseZoneOperationsRestTransport._BaseWait._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -969,14 +824,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 )
 
             # Send the request
-            response = ZoneOperationsRestTransport._Wait._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ZoneOperationsRestTransport._Wait._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -992,9 +840,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             resp = self._interceptor.post_wait(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_wait_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1016,11 +862,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteZoneOperationRequest], compute.DeleteZoneOperationResponse
-    ]:
+    def delete(self) -> Callable[[compute.DeleteZoneOperationRequest], compute.DeleteZoneOperationResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
@@ -1032,9 +874,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListZoneOperationsRequest], compute.OperationList]:
+    def list(self) -> Callable[[compute.ListZoneOperationsRequest], compute.OperationList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore

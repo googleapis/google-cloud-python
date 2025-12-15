@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.area120.tables_v1alpha1 import gapic_version as package_version
 from google.area120.tables_v1alpha1.types import tables
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +98,15 @@ class TablesServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -213,104 +203,57 @@ class TablesServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_table(
-        self,
-    ) -> Callable[
-        [tables.GetTableRequest], Union[tables.Table, Awaitable[tables.Table]]
-    ]:
+    def get_table(self) -> Callable[[tables.GetTableRequest], Union[tables.Table, Awaitable[tables.Table]]]:
         raise NotImplementedError()
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[
-        [tables.ListTablesRequest],
-        Union[tables.ListTablesResponse, Awaitable[tables.ListTablesResponse]],
-    ]:
+    def list_tables(self) -> Callable[[tables.ListTablesRequest], Union[tables.ListTablesResponse, Awaitable[tables.ListTablesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_workspace(
-        self,
-    ) -> Callable[
-        [tables.GetWorkspaceRequest],
-        Union[tables.Workspace, Awaitable[tables.Workspace]],
-    ]:
+    def get_workspace(self) -> Callable[[tables.GetWorkspaceRequest], Union[tables.Workspace, Awaitable[tables.Workspace]]]:
         raise NotImplementedError()
 
     @property
     def list_workspaces(
         self,
-    ) -> Callable[
-        [tables.ListWorkspacesRequest],
-        Union[tables.ListWorkspacesResponse, Awaitable[tables.ListWorkspacesResponse]],
-    ]:
+    ) -> Callable[[tables.ListWorkspacesRequest], Union[tables.ListWorkspacesResponse, Awaitable[tables.ListWorkspacesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_row(
-        self,
-    ) -> Callable[[tables.GetRowRequest], Union[tables.Row, Awaitable[tables.Row]]]:
+    def get_row(self) -> Callable[[tables.GetRowRequest], Union[tables.Row, Awaitable[tables.Row]]]:
         raise NotImplementedError()
 
     @property
-    def list_rows(
-        self,
-    ) -> Callable[
-        [tables.ListRowsRequest],
-        Union[tables.ListRowsResponse, Awaitable[tables.ListRowsResponse]],
-    ]:
+    def list_rows(self) -> Callable[[tables.ListRowsRequest], Union[tables.ListRowsResponse, Awaitable[tables.ListRowsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_row(
-        self,
-    ) -> Callable[[tables.CreateRowRequest], Union[tables.Row, Awaitable[tables.Row]]]:
+    def create_row(self) -> Callable[[tables.CreateRowRequest], Union[tables.Row, Awaitable[tables.Row]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_rows(
         self,
-    ) -> Callable[
-        [tables.BatchCreateRowsRequest],
-        Union[
-            tables.BatchCreateRowsResponse, Awaitable[tables.BatchCreateRowsResponse]
-        ],
-    ]:
+    ) -> Callable[[tables.BatchCreateRowsRequest], Union[tables.BatchCreateRowsResponse, Awaitable[tables.BatchCreateRowsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_row(
-        self,
-    ) -> Callable[[tables.UpdateRowRequest], Union[tables.Row, Awaitable[tables.Row]]]:
+    def update_row(self) -> Callable[[tables.UpdateRowRequest], Union[tables.Row, Awaitable[tables.Row]]]:
         raise NotImplementedError()
 
     @property
     def batch_update_rows(
         self,
-    ) -> Callable[
-        [tables.BatchUpdateRowsRequest],
-        Union[
-            tables.BatchUpdateRowsResponse, Awaitable[tables.BatchUpdateRowsResponse]
-        ],
-    ]:
+    ) -> Callable[[tables.BatchUpdateRowsRequest], Union[tables.BatchUpdateRowsResponse, Awaitable[tables.BatchUpdateRowsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_row(
-        self,
-    ) -> Callable[
-        [tables.DeleteRowRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_row(self) -> Callable[[tables.DeleteRowRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def batch_delete_rows(
-        self,
-    ) -> Callable[
-        [tables.BatchDeleteRowsRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def batch_delete_rows(self) -> Callable[[tables.BatchDeleteRowsRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -37,9 +26,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-from google.shopping.merchant_notifications_v1beta import (
-    gapic_version as package_version,
-)
+from google.shopping.merchant_notifications_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,9 +35,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.shopping.merchant_notifications_v1beta.services.notifications_api_service import (
-    pagers,
-)
+from google.shopping.merchant_notifications_v1beta.services.notifications_api_service import pagers
 from google.shopping.merchant_notifications_v1beta.types import notificationsapi
 
 from .client import NotificationsApiServiceClient
@@ -76,45 +61,21 @@ class NotificationsApiServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = NotificationsApiServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = NotificationsApiServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        NotificationsApiServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = NotificationsApiServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = NotificationsApiServiceClient._DEFAULT_UNIVERSE
 
-    notification_subscription_path = staticmethod(
-        NotificationsApiServiceClient.notification_subscription_path
-    )
-    parse_notification_subscription_path = staticmethod(
-        NotificationsApiServiceClient.parse_notification_subscription_path
-    )
-    common_billing_account_path = staticmethod(
-        NotificationsApiServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        NotificationsApiServiceClient.parse_common_billing_account_path
-    )
+    notification_subscription_path = staticmethod(NotificationsApiServiceClient.notification_subscription_path)
+    parse_notification_subscription_path = staticmethod(NotificationsApiServiceClient.parse_notification_subscription_path)
+    common_billing_account_path = staticmethod(NotificationsApiServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(NotificationsApiServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(NotificationsApiServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        NotificationsApiServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        NotificationsApiServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        NotificationsApiServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        NotificationsApiServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        NotificationsApiServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        NotificationsApiServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        NotificationsApiServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(NotificationsApiServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(NotificationsApiServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(NotificationsApiServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(NotificationsApiServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(NotificationsApiServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(NotificationsApiServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(NotificationsApiServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -150,9 +111,7 @@ class NotificationsApiServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -219,13 +178,7 @@ class NotificationsApiServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                NotificationsApiServiceTransport,
-                Callable[..., NotificationsApiServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, NotificationsApiServiceTransport, Callable[..., NotificationsApiServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -285,20 +238,14 @@ class NotificationsApiServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.shopping.merchant.notifications_v1beta.NotificationsApiServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.shopping.merchant.notifications.v1beta.NotificationsApiService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -309,9 +256,7 @@ class NotificationsApiServiceAsyncClient:
 
     async def get_notification_subscription(
         self,
-        request: Optional[
-            Union[notificationsapi.GetNotificationSubscriptionRequest, dict]
-        ] = None,
+        request: Optional[Union[notificationsapi.GetNotificationSubscriptionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -374,14 +319,9 @@ class NotificationsApiServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -395,15 +335,11 @@ class NotificationsApiServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_notification_subscription
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_notification_subscription]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -421,14 +357,10 @@ class NotificationsApiServiceAsyncClient:
 
     async def create_notification_subscription(
         self,
-        request: Optional[
-            Union[notificationsapi.CreateNotificationSubscriptionRequest, dict]
-        ] = None,
+        request: Optional[Union[notificationsapi.CreateNotificationSubscriptionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        notification_subscription: Optional[
-            notificationsapi.NotificationSubscription
-        ] = None,
+        notification_subscription: Optional[notificationsapi.NotificationSubscription] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -520,20 +452,13 @@ class NotificationsApiServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, notification_subscription]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notificationsapi.CreateNotificationSubscriptionRequest
-        ):
+        if not isinstance(request, notificationsapi.CreateNotificationSubscriptionRequest):
             request = notificationsapi.CreateNotificationSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -545,15 +470,11 @@ class NotificationsApiServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_notification_subscription
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_notification_subscription]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -571,13 +492,9 @@ class NotificationsApiServiceAsyncClient:
 
     async def update_notification_subscription(
         self,
-        request: Optional[
-            Union[notificationsapi.UpdateNotificationSubscriptionRequest, dict]
-        ] = None,
+        request: Optional[Union[notificationsapi.UpdateNotificationSubscriptionRequest, dict]] = None,
         *,
-        notification_subscription: Optional[
-            notificationsapi.NotificationSubscription
-        ] = None,
+        notification_subscription: Optional[notificationsapi.NotificationSubscription] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -651,20 +568,13 @@ class NotificationsApiServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [notification_subscription, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notificationsapi.UpdateNotificationSubscriptionRequest
-        ):
+        if not isinstance(request, notificationsapi.UpdateNotificationSubscriptionRequest):
             request = notificationsapi.UpdateNotificationSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -676,21 +586,12 @@ class NotificationsApiServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_notification_subscription
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_notification_subscription]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "notification_subscription.name",
-                        request.notification_subscription.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("notification_subscription.name", request.notification_subscription.name),)),
         )
 
         # Validate the universe domain.
@@ -709,9 +610,7 @@ class NotificationsApiServiceAsyncClient:
 
     async def delete_notification_subscription(
         self,
-        request: Optional[
-            Union[notificationsapi.DeleteNotificationSubscriptionRequest, dict]
-        ] = None,
+        request: Optional[Union[notificationsapi.DeleteNotificationSubscriptionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -766,20 +665,13 @@ class NotificationsApiServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notificationsapi.DeleteNotificationSubscriptionRequest
-        ):
+        if not isinstance(request, notificationsapi.DeleteNotificationSubscriptionRequest):
             request = notificationsapi.DeleteNotificationSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -789,15 +681,11 @@ class NotificationsApiServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_notification_subscription
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_notification_subscription]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -812,9 +700,7 @@ class NotificationsApiServiceAsyncClient:
 
     async def list_notification_subscriptions(
         self,
-        request: Optional[
-            Union[notificationsapi.ListNotificationSubscriptionsRequest, dict]
-        ] = None,
+        request: Optional[Union[notificationsapi.ListNotificationSubscriptionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -883,20 +769,13 @@ class NotificationsApiServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notificationsapi.ListNotificationSubscriptionsRequest
-        ):
+        if not isinstance(request, notificationsapi.ListNotificationSubscriptionsRequest):
             request = notificationsapi.ListNotificationSubscriptionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -906,15 +785,11 @@ class NotificationsApiServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_notification_subscriptions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_notification_subscriptions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -948,9 +823,7 @@ class NotificationsApiServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

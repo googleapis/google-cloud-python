@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -324,9 +309,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._grpc_channel
 
     @property
-    def list_parameters(
-        self,
-    ) -> Callable[[service.ListParametersRequest], service.ListParametersResponse]:
+    def list_parameters(self) -> Callable[[service.ListParametersRequest], service.ListParametersResponse]:
         r"""Return a callable for the list parameters method over gRPC.
 
         Lists Parameters in a given project and location.
@@ -350,9 +333,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["list_parameters"]
 
     @property
-    def get_parameter(
-        self,
-    ) -> Callable[[service.GetParameterRequest], service.Parameter]:
+    def get_parameter(self) -> Callable[[service.GetParameterRequest], service.Parameter]:
         r"""Return a callable for the get parameter method over gRPC.
 
         Gets details of a single Parameter.
@@ -376,9 +357,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["get_parameter"]
 
     @property
-    def create_parameter(
-        self,
-    ) -> Callable[[service.CreateParameterRequest], service.Parameter]:
+    def create_parameter(self) -> Callable[[service.CreateParameterRequest], service.Parameter]:
         r"""Return a callable for the create parameter method over gRPC.
 
         Creates a new Parameter in a given project and
@@ -403,9 +382,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["create_parameter"]
 
     @property
-    def update_parameter(
-        self,
-    ) -> Callable[[service.UpdateParameterRequest], service.Parameter]:
+    def update_parameter(self) -> Callable[[service.UpdateParameterRequest], service.Parameter]:
         r"""Return a callable for the update parameter method over gRPC.
 
         Updates a single Parameter.
@@ -429,9 +406,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["update_parameter"]
 
     @property
-    def delete_parameter(
-        self,
-    ) -> Callable[[service.DeleteParameterRequest], empty_pb2.Empty]:
+    def delete_parameter(self) -> Callable[[service.DeleteParameterRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete parameter method over gRPC.
 
         Deletes a single Parameter.
@@ -455,11 +430,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["delete_parameter"]
 
     @property
-    def list_parameter_versions(
-        self,
-    ) -> Callable[
-        [service.ListParameterVersionsRequest], service.ListParameterVersionsResponse
-    ]:
+    def list_parameter_versions(self) -> Callable[[service.ListParameterVersionsRequest], service.ListParameterVersionsResponse]:
         r"""Return a callable for the list parameter versions method over gRPC.
 
         Lists ParameterVersions in a given project, location,
@@ -484,9 +455,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["list_parameter_versions"]
 
     @property
-    def get_parameter_version(
-        self,
-    ) -> Callable[[service.GetParameterVersionRequest], service.ParameterVersion]:
+    def get_parameter_version(self) -> Callable[[service.GetParameterVersionRequest], service.ParameterVersion]:
         r"""Return a callable for the get parameter version method over gRPC.
 
         Gets details of a single ParameterVersion.
@@ -510,11 +479,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["get_parameter_version"]
 
     @property
-    def render_parameter_version(
-        self,
-    ) -> Callable[
-        [service.RenderParameterVersionRequest], service.RenderParameterVersionResponse
-    ]:
+    def render_parameter_version(self) -> Callable[[service.RenderParameterVersionRequest], service.RenderParameterVersionResponse]:
         r"""Return a callable for the render parameter version method over gRPC.
 
         Gets rendered version of a ParameterVersion.
@@ -538,9 +503,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["render_parameter_version"]
 
     @property
-    def create_parameter_version(
-        self,
-    ) -> Callable[[service.CreateParameterVersionRequest], service.ParameterVersion]:
+    def create_parameter_version(self) -> Callable[[service.CreateParameterVersionRequest], service.ParameterVersion]:
         r"""Return a callable for the create parameter version method over gRPC.
 
         Creates a new ParameterVersion in a given project,
@@ -565,9 +528,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["create_parameter_version"]
 
     @property
-    def update_parameter_version(
-        self,
-    ) -> Callable[[service.UpdateParameterVersionRequest], service.ParameterVersion]:
+    def update_parameter_version(self) -> Callable[[service.UpdateParameterVersionRequest], service.ParameterVersion]:
         r"""Return a callable for the update parameter version method over gRPC.
 
         Updates a single ParameterVersion.
@@ -591,9 +552,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
         return self._stubs["update_parameter_version"]
 
     @property
-    def delete_parameter_version(
-        self,
-    ) -> Callable[[service.DeleteParameterVersionRequest], empty_pb2.Empty]:
+    def delete_parameter_version(self) -> Callable[[service.DeleteParameterVersionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete parameter version method over gRPC.
 
         Deletes a single ParameterVersion.
@@ -622,9 +581,7 @@ class ParameterManagerGrpcTransport(ParameterManagerTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

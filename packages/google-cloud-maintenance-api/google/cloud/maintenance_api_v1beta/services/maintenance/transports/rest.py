@@ -104,13 +104,8 @@ class MaintenanceRestInterceptor:
     """
 
     def pre_get_resource_maintenance(
-        self,
-        request: maintenance_service.GetResourceMaintenanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maintenance_service.GetResourceMaintenanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maintenance_service.GetResourceMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maintenance_service.GetResourceMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_resource_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -118,9 +113,7 @@ class MaintenanceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_resource_maintenance(
-        self, response: maintenance_service.ResourceMaintenance
-    ) -> maintenance_service.ResourceMaintenance:
+    def post_get_resource_maintenance(self, response: maintenance_service.ResourceMaintenance) -> maintenance_service.ResourceMaintenance:
         """Post-rpc interceptor for get_resource_maintenance
 
         DEPRECATED. Please use the `post_get_resource_maintenance_with_metadata`
@@ -134,12 +127,8 @@ class MaintenanceRestInterceptor:
         return response
 
     def post_get_resource_maintenance_with_metadata(
-        self,
-        response: maintenance_service.ResourceMaintenance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maintenance_service.ResourceMaintenance, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: maintenance_service.ResourceMaintenance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maintenance_service.ResourceMaintenance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_resource_maintenance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -155,13 +144,8 @@ class MaintenanceRestInterceptor:
         return response, metadata
 
     def pre_list_resource_maintenances(
-        self,
-        request: maintenance_service.ListResourceMaintenancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maintenance_service.ListResourceMaintenancesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maintenance_service.ListResourceMaintenancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maintenance_service.ListResourceMaintenancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_resource_maintenances
 
         Override in a subclass to manipulate the request or metadata
@@ -185,13 +169,8 @@ class MaintenanceRestInterceptor:
         return response
 
     def post_list_resource_maintenances_with_metadata(
-        self,
-        response: maintenance_service.ListResourceMaintenancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maintenance_service.ListResourceMaintenancesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: maintenance_service.ListResourceMaintenancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maintenance_service.ListResourceMaintenancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_resource_maintenances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -207,13 +186,8 @@ class MaintenanceRestInterceptor:
         return response, metadata
 
     def pre_summarize_maintenances(
-        self,
-        request: maintenance_service.SummarizeMaintenancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maintenance_service.SummarizeMaintenancesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maintenance_service.SummarizeMaintenancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maintenance_service.SummarizeMaintenancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for summarize_maintenances
 
         Override in a subclass to manipulate the request or metadata
@@ -237,13 +211,8 @@ class MaintenanceRestInterceptor:
         return response
 
     def post_summarize_maintenances_with_metadata(
-        self,
-        response: maintenance_service.SummarizeMaintenancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maintenance_service.SummarizeMaintenancesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: maintenance_service.SummarizeMaintenancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maintenance_service.SummarizeMaintenancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for summarize_maintenances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -259,12 +228,8 @@ class MaintenanceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -272,9 +237,7 @@ class MaintenanceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -284,12 +247,8 @@ class MaintenanceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -297,9 +256,7 @@ class MaintenanceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -388,30 +345,18 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MaintenanceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetResourceMaintenance(
-        _BaseMaintenanceRestTransport._BaseGetResourceMaintenance, MaintenanceRestStub
-    ):
+    class _GetResourceMaintenance(_BaseMaintenanceRestTransport._BaseGetResourceMaintenance, MaintenanceRestStub):
         def __hash__(self):
             return hash("MaintenanceRestTransport.GetResourceMaintenance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -454,28 +399,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_http_options()
-            )
+            http_options = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_resource_maintenance(
-                request, metadata
-            )
-            transcoded_request = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_resource_maintenance(request, metadata)
+            transcoded_request = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMaintenanceRestTransport._BaseGetResourceMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -499,12 +432,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             # Send the request
             response = MaintenanceRestTransport._GetResourceMaintenance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -520,16 +448,10 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             resp = self._interceptor.post_get_resource_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_resource_maintenance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_resource_maintenance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = maintenance_service.ResourceMaintenance.to_json(
-                        response
-                    )
+                    response_payload = maintenance_service.ResourceMaintenance.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -548,22 +470,12 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
                 )
             return resp
 
-    class _ListResourceMaintenances(
-        _BaseMaintenanceRestTransport._BaseListResourceMaintenances, MaintenanceRestStub
-    ):
+    class _ListResourceMaintenances(_BaseMaintenanceRestTransport._BaseListResourceMaintenances, MaintenanceRestStub):
         def __hash__(self):
             return hash("MaintenanceRestTransport.ListResourceMaintenances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -606,28 +518,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_http_options()
-            )
+            http_options = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_resource_maintenances(
-                request, metadata
-            )
-            transcoded_request = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_resource_maintenances(request, metadata)
+            transcoded_request = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMaintenanceRestTransport._BaseListResourceMaintenances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -651,12 +551,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             # Send the request
             response = MaintenanceRestTransport._ListResourceMaintenances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -672,18 +567,10 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             resp = self._interceptor.post_list_resource_maintenances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_resource_maintenances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_resource_maintenances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        maintenance_service.ListResourceMaintenancesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = maintenance_service.ListResourceMaintenancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -702,22 +589,12 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
                 )
             return resp
 
-    class _SummarizeMaintenances(
-        _BaseMaintenanceRestTransport._BaseSummarizeMaintenances, MaintenanceRestStub
-    ):
+    class _SummarizeMaintenances(_BaseMaintenanceRestTransport._BaseSummarizeMaintenances, MaintenanceRestStub):
         def __hash__(self):
             return hash("MaintenanceRestTransport.SummarizeMaintenances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -759,28 +636,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_http_options()
-            )
+            http_options = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_http_options()
 
-            request, metadata = self._interceptor.pre_summarize_maintenances(
-                request, metadata
-            )
-            transcoded_request = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_summarize_maintenances(request, metadata)
+            transcoded_request = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMaintenanceRestTransport._BaseSummarizeMaintenances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -804,12 +669,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             # Send the request
             response = MaintenanceRestTransport._SummarizeMaintenances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -825,18 +685,10 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             resp = self._interceptor.post_summarize_maintenances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_summarize_maintenances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_summarize_maintenances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        maintenance_service.SummarizeMaintenancesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = maintenance_service.SummarizeMaintenancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -856,12 +708,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             return resp
 
     @property
-    def get_resource_maintenance(
-        self,
-    ) -> Callable[
-        [maintenance_service.GetResourceMaintenanceRequest],
-        maintenance_service.ResourceMaintenance,
-    ]:
+    def get_resource_maintenance(self) -> Callable[[maintenance_service.GetResourceMaintenanceRequest], maintenance_service.ResourceMaintenance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetResourceMaintenance(self._session, self._host, self._interceptor)  # type: ignore
@@ -869,10 +716,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
     @property
     def list_resource_maintenances(
         self,
-    ) -> Callable[
-        [maintenance_service.ListResourceMaintenancesRequest],
-        maintenance_service.ListResourceMaintenancesResponse,
-    ]:
+    ) -> Callable[[maintenance_service.ListResourceMaintenancesRequest], maintenance_service.ListResourceMaintenancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListResourceMaintenances(self._session, self._host, self._interceptor)  # type: ignore
@@ -880,10 +724,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
     @property
     def summarize_maintenances(
         self,
-    ) -> Callable[
-        [maintenance_service.SummarizeMaintenancesRequest],
-        maintenance_service.SummarizeMaintenancesResponse,
-    ]:
+    ) -> Callable[[maintenance_service.SummarizeMaintenancesRequest], maintenance_service.SummarizeMaintenancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SummarizeMaintenances(self._session, self._host, self._interceptor)  # type: ignore
@@ -892,22 +733,12 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseMaintenanceRestTransport._BaseGetLocation, MaintenanceRestStub
-    ):
+    class _GetLocation(_BaseMaintenanceRestTransport._BaseGetLocation, MaintenanceRestStub):
         def __hash__(self):
             return hash("MaintenanceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -945,30 +776,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseMaintenanceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseMaintenanceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseMaintenanceRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMaintenanceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMaintenanceRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMaintenanceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -992,12 +809,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             # Send the request
             response = MaintenanceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1009,9 +821,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1036,22 +846,12 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseMaintenanceRestTransport._BaseListLocations, MaintenanceRestStub
-    ):
+    class _ListLocations(_BaseMaintenanceRestTransport._BaseListLocations, MaintenanceRestStub):
         def __hash__(self):
             return hash("MaintenanceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1089,28 +889,16 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseMaintenanceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseMaintenanceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseMaintenanceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMaintenanceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMaintenanceRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMaintenanceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1134,12 +922,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             # Send the request
             response = MaintenanceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1151,9 +934,7 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

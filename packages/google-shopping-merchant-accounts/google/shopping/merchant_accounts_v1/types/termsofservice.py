@@ -19,10 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.shopping.merchant_accounts_v1.types import (
-    termsofserviceagreementstate,
-    termsofservicekind,
-)
+from google.shopping.merchant_accounts_v1.types import termsofserviceagreementstate, termsofservicekind
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1",

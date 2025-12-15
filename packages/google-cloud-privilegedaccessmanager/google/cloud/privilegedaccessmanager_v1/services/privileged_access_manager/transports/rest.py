@@ -193,13 +193,8 @@ class PrivilegedAccessManagerRestInterceptor:
     """
 
     def pre_approve_grant(
-        self,
-        request: privilegedaccessmanager.ApproveGrantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.ApproveGrantRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.ApproveGrantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.ApproveGrantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_grant
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +202,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_approve_grant(
-        self, response: privilegedaccessmanager.Grant
-    ) -> privilegedaccessmanager.Grant:
+    def post_approve_grant(self, response: privilegedaccessmanager.Grant) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for approve_grant
 
         DEPRECATED. Please use the `post_approve_grant_with_metadata`
@@ -223,9 +216,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_approve_grant_with_metadata(
-        self,
-        response: privilegedaccessmanager.Grant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: privilegedaccessmanager.Grant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for approve_grant
 
@@ -242,13 +233,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_check_onboarding_status(
-        self,
-        request: privilegedaccessmanager.CheckOnboardingStatusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.CheckOnboardingStatusRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.CheckOnboardingStatusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.CheckOnboardingStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check_onboarding_status
 
         Override in a subclass to manipulate the request or metadata
@@ -272,13 +258,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_check_onboarding_status_with_metadata(
-        self,
-        response: privilegedaccessmanager.CheckOnboardingStatusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.CheckOnboardingStatusResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: privilegedaccessmanager.CheckOnboardingStatusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.CheckOnboardingStatusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check_onboarding_status
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -294,13 +275,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_create_entitlement(
-        self,
-        request: privilegedaccessmanager.CreateEntitlementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.CreateEntitlementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.CreateEntitlementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.CreateEntitlementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entitlement
 
         Override in a subclass to manipulate the request or metadata
@@ -308,9 +284,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_entitlement(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_entitlement(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_entitlement
 
         DEPRECATED. Please use the `post_create_entitlement_with_metadata`
@@ -324,9 +298,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_create_entitlement_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entitlement
 
@@ -343,13 +315,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_create_grant(
-        self,
-        request: privilegedaccessmanager.CreateGrantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.CreateGrantRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.CreateGrantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.CreateGrantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_grant
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +324,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_grant(
-        self, response: privilegedaccessmanager.Grant
-    ) -> privilegedaccessmanager.Grant:
+    def post_create_grant(self, response: privilegedaccessmanager.Grant) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for create_grant
 
         DEPRECATED. Please use the `post_create_grant_with_metadata`
@@ -373,9 +338,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_create_grant_with_metadata(
-        self,
-        response: privilegedaccessmanager.Grant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: privilegedaccessmanager.Grant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_grant
 
@@ -392,13 +355,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_entitlement(
-        self,
-        request: privilegedaccessmanager.DeleteEntitlementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.DeleteEntitlementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.DeleteEntitlementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.DeleteEntitlementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entitlement
 
         Override in a subclass to manipulate the request or metadata
@@ -406,9 +364,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_entitlement(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_entitlement(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_entitlement
 
         DEPRECATED. Please use the `post_delete_entitlement_with_metadata`
@@ -422,9 +378,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_delete_entitlement_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_entitlement
 
@@ -441,13 +395,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_deny_grant(
-        self,
-        request: privilegedaccessmanager.DenyGrantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.DenyGrantRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.DenyGrantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.DenyGrantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deny_grant
 
         Override in a subclass to manipulate the request or metadata
@@ -455,9 +404,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_deny_grant(
-        self, response: privilegedaccessmanager.Grant
-    ) -> privilegedaccessmanager.Grant:
+    def post_deny_grant(self, response: privilegedaccessmanager.Grant) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for deny_grant
 
         DEPRECATED. Please use the `post_deny_grant_with_metadata`
@@ -471,9 +418,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_deny_grant_with_metadata(
-        self,
-        response: privilegedaccessmanager.Grant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: privilegedaccessmanager.Grant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deny_grant
 
@@ -490,13 +435,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_get_entitlement(
-        self,
-        request: privilegedaccessmanager.GetEntitlementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.GetEntitlementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.GetEntitlementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.GetEntitlementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entitlement
 
         Override in a subclass to manipulate the request or metadata
@@ -504,9 +444,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_entitlement(
-        self, response: privilegedaccessmanager.Entitlement
-    ) -> privilegedaccessmanager.Entitlement:
+    def post_get_entitlement(self, response: privilegedaccessmanager.Entitlement) -> privilegedaccessmanager.Entitlement:
         """Post-rpc interceptor for get_entitlement
 
         DEPRECATED. Please use the `post_get_entitlement_with_metadata`
@@ -520,12 +458,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_get_entitlement_with_metadata(
-        self,
-        response: privilegedaccessmanager.Entitlement,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.Entitlement, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: privilegedaccessmanager.Entitlement, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.Entitlement, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entitlement
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -541,12 +475,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_get_grant(
-        self,
-        request: privilegedaccessmanager.GetGrantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.GetGrantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: privilegedaccessmanager.GetGrantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.GetGrantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_grant
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +484,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_grant(
-        self, response: privilegedaccessmanager.Grant
-    ) -> privilegedaccessmanager.Grant:
+    def post_get_grant(self, response: privilegedaccessmanager.Grant) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for get_grant
 
         DEPRECATED. Please use the `post_get_grant_with_metadata`
@@ -570,9 +498,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_get_grant_with_metadata(
-        self,
-        response: privilegedaccessmanager.Grant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: privilegedaccessmanager.Grant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_grant
 
@@ -589,13 +515,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_list_entitlements(
-        self,
-        request: privilegedaccessmanager.ListEntitlementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.ListEntitlementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.ListEntitlementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.ListEntitlementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entitlements
 
         Override in a subclass to manipulate the request or metadata
@@ -603,9 +524,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_entitlements(
-        self, response: privilegedaccessmanager.ListEntitlementsResponse
-    ) -> privilegedaccessmanager.ListEntitlementsResponse:
+    def post_list_entitlements(self, response: privilegedaccessmanager.ListEntitlementsResponse) -> privilegedaccessmanager.ListEntitlementsResponse:
         """Post-rpc interceptor for list_entitlements
 
         DEPRECATED. Please use the `post_list_entitlements_with_metadata`
@@ -619,13 +538,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_list_entitlements_with_metadata(
-        self,
-        response: privilegedaccessmanager.ListEntitlementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.ListEntitlementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: privilegedaccessmanager.ListEntitlementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.ListEntitlementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entitlements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -641,13 +555,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_list_grants(
-        self,
-        request: privilegedaccessmanager.ListGrantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.ListGrantsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.ListGrantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.ListGrantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_grants
 
         Override in a subclass to manipulate the request or metadata
@@ -655,9 +564,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_grants(
-        self, response: privilegedaccessmanager.ListGrantsResponse
-    ) -> privilegedaccessmanager.ListGrantsResponse:
+    def post_list_grants(self, response: privilegedaccessmanager.ListGrantsResponse) -> privilegedaccessmanager.ListGrantsResponse:
         """Post-rpc interceptor for list_grants
 
         DEPRECATED. Please use the `post_list_grants_with_metadata`
@@ -671,13 +578,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_list_grants_with_metadata(
-        self,
-        response: privilegedaccessmanager.ListGrantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.ListGrantsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: privilegedaccessmanager.ListGrantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.ListGrantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_grants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -693,13 +595,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_revoke_grant(
-        self,
-        request: privilegedaccessmanager.RevokeGrantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.RevokeGrantRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.RevokeGrantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.RevokeGrantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for revoke_grant
 
         Override in a subclass to manipulate the request or metadata
@@ -707,9 +604,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_revoke_grant(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_revoke_grant(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for revoke_grant
 
         DEPRECATED. Please use the `post_revoke_grant_with_metadata`
@@ -723,9 +618,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_revoke_grant_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for revoke_grant
 
@@ -742,13 +635,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_search_entitlements(
-        self,
-        request: privilegedaccessmanager.SearchEntitlementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.SearchEntitlementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.SearchEntitlementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.SearchEntitlementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_entitlements
 
         Override in a subclass to manipulate the request or metadata
@@ -772,13 +660,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_search_entitlements_with_metadata(
-        self,
-        response: privilegedaccessmanager.SearchEntitlementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.SearchEntitlementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: privilegedaccessmanager.SearchEntitlementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.SearchEntitlementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_entitlements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -794,13 +677,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_search_grants(
-        self,
-        request: privilegedaccessmanager.SearchGrantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.SearchGrantsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.SearchGrantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.SearchGrantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_grants
 
         Override in a subclass to manipulate the request or metadata
@@ -808,9 +686,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_search_grants(
-        self, response: privilegedaccessmanager.SearchGrantsResponse
-    ) -> privilegedaccessmanager.SearchGrantsResponse:
+    def post_search_grants(self, response: privilegedaccessmanager.SearchGrantsResponse) -> privilegedaccessmanager.SearchGrantsResponse:
         """Post-rpc interceptor for search_grants
 
         DEPRECATED. Please use the `post_search_grants_with_metadata`
@@ -824,13 +700,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_search_grants_with_metadata(
-        self,
-        response: privilegedaccessmanager.SearchGrantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.SearchGrantsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: privilegedaccessmanager.SearchGrantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.SearchGrantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_grants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -846,13 +717,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_update_entitlement(
-        self,
-        request: privilegedaccessmanager.UpdateEntitlementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        privilegedaccessmanager.UpdateEntitlementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: privilegedaccessmanager.UpdateEntitlementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[privilegedaccessmanager.UpdateEntitlementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_entitlement
 
         Override in a subclass to manipulate the request or metadata
@@ -860,9 +726,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_entitlement(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_entitlement(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_entitlement
 
         DEPRECATED. Please use the `post_update_entitlement_with_metadata`
@@ -876,9 +740,7 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def post_update_entitlement_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_entitlement
 
@@ -895,12 +757,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -908,9 +766,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -920,12 +776,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -933,9 +785,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -945,12 +795,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -968,12 +814,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -981,9 +823,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -993,12 +833,8 @@ class PrivilegedAccessManagerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1006,9 +842,7 @@ class PrivilegedAccessManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1118,9 +952,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1190,30 +1022,17 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ApproveGrant(
-        _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _ApproveGrant(_BasePrivilegedAccessManagerRestTransport._BaseApproveGrant, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.ApproveGrant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1256,30 +1075,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_approve_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_transcoded_request(http_options, request)
 
-            body = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1303,13 +1110,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._ApproveGrant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1325,12 +1126,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_approve_grant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_approve_grant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_approve_grant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = privilegedaccessmanager.Grant.to_json(response)
                 except:
@@ -1351,23 +1148,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _CheckOnboardingStatus(
-        _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _CheckOnboardingStatus(_BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.CheckOnboardingStatus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1406,28 +1192,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     Response message for ``CheckOnboardingStatus`` method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_http_options()
 
-            request, metadata = self._interceptor.pre_check_onboarding_status(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_check_onboarding_status(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1451,12 +1225,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._CheckOnboardingStatus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1472,18 +1241,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_check_onboarding_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_check_onboarding_status_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_onboarding_status_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        privilegedaccessmanager.CheckOnboardingStatusResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = privilegedaccessmanager.CheckOnboardingStatusResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1502,23 +1263,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _CreateEntitlement(
-        _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _CreateEntitlement(_BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.CreateEntitlement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1561,32 +1311,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_entitlement(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_entitlement(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_transcoded_request(http_options, request)
 
-            body = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1609,16 +1345,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._CreateEntitlement._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PrivilegedAccessManagerRestTransport._CreateEntitlement._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1632,12 +1360,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_create_entitlement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_entitlement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entitlement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1658,23 +1382,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _CreateGrant(
-        _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _CreateGrant(_BasePrivilegedAccessManagerRestTransport._BaseCreateGrant, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.CreateGrant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1717,30 +1430,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_create_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_transcoded_request(http_options, request)
 
-            body = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1764,13 +1465,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._CreateGrant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1786,12 +1481,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_create_grant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_grant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_grant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = privilegedaccessmanager.Grant.to_json(response)
                 except:
@@ -1812,23 +1503,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _DeleteEntitlement(
-        _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _DeleteEntitlement(_BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.DeleteEntitlement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1870,28 +1550,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_entitlement(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_entitlement(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1914,15 +1582,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._DeleteEntitlement._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._DeleteEntitlement._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1936,12 +1597,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_delete_entitlement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_entitlement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_entitlement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1962,23 +1619,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _DenyGrant(
-        _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _DenyGrant(_BasePrivilegedAccessManagerRestTransport._BaseDenyGrant, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.DenyGrant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2021,30 +1667,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_deny_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_transcoded_request(http_options, request)
 
-            body = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2068,13 +1702,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._DenyGrant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2090,12 +1718,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_deny_grant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deny_grant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deny_grant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = privilegedaccessmanager.Grant.to_json(response)
                 except:
@@ -2116,23 +1740,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _GetEntitlement(
-        _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _GetEntitlement(_BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.GetEntitlement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2176,26 +1789,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entitlement(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2218,15 +1821,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._GetEntitlement._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._GetEntitlement._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2242,16 +1838,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_get_entitlement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entitlement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entitlement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = privilegedaccessmanager.Entitlement.to_json(
-                        response
-                    )
+                    response_payload = privilegedaccessmanager.Entitlement.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2270,23 +1860,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _GetGrant(
-        _BasePrivilegedAccessManagerRestTransport._BaseGetGrant,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _GetGrant(_BasePrivilegedAccessManagerRestTransport._BaseGetGrant, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.GetGrant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2328,26 +1907,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2371,12 +1940,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._GetGrant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2392,12 +1956,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_get_grant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_grant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_grant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = privilegedaccessmanager.Grant.to_json(response)
                 except:
@@ -2418,23 +1978,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _ListEntitlements(
-        _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _ListEntitlements(_BasePrivilegedAccessManagerRestTransport._BaseListEntitlements, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.ListEntitlements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2476,28 +2025,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_entitlements(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_entitlements(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2520,15 +2057,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._ListEntitlements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._ListEntitlements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2544,18 +2074,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_list_entitlements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entitlements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entitlements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        privilegedaccessmanager.ListEntitlementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = privilegedaccessmanager.ListEntitlementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2574,23 +2096,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _ListGrants(
-        _BasePrivilegedAccessManagerRestTransport._BaseListGrants,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _ListGrants(_BasePrivilegedAccessManagerRestTransport._BaseListGrants, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.ListGrants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2632,26 +2143,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_http_options()
 
             request, metadata = self._interceptor.pre_list_grants(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2675,12 +2176,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._ListGrants._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2696,16 +2192,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_list_grants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_grants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_grants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        privilegedaccessmanager.ListGrantsResponse.to_json(response)
-                    )
+                    response_payload = privilegedaccessmanager.ListGrantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2724,23 +2214,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _RevokeGrant(
-        _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _RevokeGrant(_BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.RevokeGrant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2783,30 +2262,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_revoke_grant(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_transcoded_request(http_options, request)
 
-            body = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2830,13 +2297,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._RevokeGrant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2850,12 +2311,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_revoke_grant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_revoke_grant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_revoke_grant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2876,23 +2333,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _SearchEntitlements(
-        _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _SearchEntitlements(_BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.SearchEntitlements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2931,28 +2377,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     Response message for ``SearchEntitlements`` method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_entitlements(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_entitlements(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2975,15 +2409,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._SearchEntitlements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._SearchEntitlements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2999,18 +2426,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_search_entitlements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_entitlements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_entitlements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        privilegedaccessmanager.SearchEntitlementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = privilegedaccessmanager.SearchEntitlementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3029,23 +2448,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _SearchGrants(
-        _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _SearchGrants(_BasePrivilegedAccessManagerRestTransport._BaseSearchGrants, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.SearchGrants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3084,26 +2492,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     Response message for ``SearchGrants`` method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_http_options()
 
             request, metadata = self._interceptor.pre_search_grants(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3127,12 +2525,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._SearchGrants._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3148,16 +2541,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_search_grants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_grants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_grants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        privilegedaccessmanager.SearchGrantsResponse.to_json(response)
-                    )
+                    response_payload = privilegedaccessmanager.SearchGrantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3176,23 +2563,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
             return resp
 
-    class _UpdateEntitlement(
-        _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _UpdateEntitlement(_BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.UpdateEntitlement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3235,32 +2611,18 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_entitlement(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_entitlement(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_transcoded_request(http_options, request)
 
-            body = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3283,16 +2645,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._UpdateEntitlement._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PrivilegedAccessManagerRestTransport._UpdateEntitlement._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3306,12 +2660,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             resp = self._interceptor.post_update_entitlement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_entitlement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_entitlement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3333,11 +2683,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             return resp
 
     @property
-    def approve_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.ApproveGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def approve_grant(self) -> Callable[[privilegedaccessmanager.ApproveGrantRequest], privilegedaccessmanager.Grant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveGrant(self._session, self._host, self._interceptor)  # type: ignore
@@ -3345,103 +2691,61 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     @property
     def check_onboarding_status(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.CheckOnboardingStatusRequest],
-        privilegedaccessmanager.CheckOnboardingStatusResponse,
-    ]:
+    ) -> Callable[[privilegedaccessmanager.CheckOnboardingStatusRequest], privilegedaccessmanager.CheckOnboardingStatusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckOnboardingStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.CreateEntitlementRequest], operations_pb2.Operation
-    ]:
+    def create_entitlement(self) -> Callable[[privilegedaccessmanager.CreateEntitlementRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntitlement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.CreateGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def create_grant(self) -> Callable[[privilegedaccessmanager.CreateGrantRequest], privilegedaccessmanager.Grant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGrant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.DeleteEntitlementRequest], operations_pb2.Operation
-    ]:
+    def delete_entitlement(self) -> Callable[[privilegedaccessmanager.DeleteEntitlementRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEntitlement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deny_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.DenyGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def deny_grant(self) -> Callable[[privilegedaccessmanager.DenyGrantRequest], privilegedaccessmanager.Grant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DenyGrant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.GetEntitlementRequest],
-        privilegedaccessmanager.Entitlement,
-    ]:
+    def get_entitlement(self) -> Callable[[privilegedaccessmanager.GetEntitlementRequest], privilegedaccessmanager.Entitlement]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntitlement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.GetGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def get_grant(self) -> Callable[[privilegedaccessmanager.GetGrantRequest], privilegedaccessmanager.Grant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGrant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_entitlements(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.ListEntitlementsRequest],
-        privilegedaccessmanager.ListEntitlementsResponse,
-    ]:
+    def list_entitlements(self) -> Callable[[privilegedaccessmanager.ListEntitlementsRequest], privilegedaccessmanager.ListEntitlementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntitlements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_grants(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.ListGrantsRequest],
-        privilegedaccessmanager.ListGrantsResponse,
-    ]:
+    def list_grants(self) -> Callable[[privilegedaccessmanager.ListGrantsRequest], privilegedaccessmanager.ListGrantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGrants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def revoke_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.RevokeGrantRequest], operations_pb2.Operation
-    ]:
+    def revoke_grant(self) -> Callable[[privilegedaccessmanager.RevokeGrantRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RevokeGrant(self._session, self._host, self._interceptor)  # type: ignore
@@ -3449,31 +2753,19 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     @property
     def search_entitlements(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.SearchEntitlementsRequest],
-        privilegedaccessmanager.SearchEntitlementsResponse,
-    ]:
+    ) -> Callable[[privilegedaccessmanager.SearchEntitlementsRequest], privilegedaccessmanager.SearchEntitlementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchEntitlements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_grants(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.SearchGrantsRequest],
-        privilegedaccessmanager.SearchGrantsResponse,
-    ]:
+    def search_grants(self) -> Callable[[privilegedaccessmanager.SearchGrantsRequest], privilegedaccessmanager.SearchGrantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchGrants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.UpdateEntitlementRequest], operations_pb2.Operation
-    ]:
+    def update_entitlement(self) -> Callable[[privilegedaccessmanager.UpdateEntitlementRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntitlement(self._session, self._host, self._interceptor)  # type: ignore
@@ -3482,23 +2774,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BasePrivilegedAccessManagerRestTransport._BaseGetLocation,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _GetLocation(_BasePrivilegedAccessManagerRestTransport._BaseGetLocation, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3536,26 +2817,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3579,12 +2850,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3596,9 +2862,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3623,23 +2887,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BasePrivilegedAccessManagerRestTransport._BaseListLocations,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _ListLocations(_BasePrivilegedAccessManagerRestTransport._BaseListLocations, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3677,26 +2930,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3719,15 +2962,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3739,9 +2975,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3766,23 +3000,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _DeleteOperation(_BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3817,28 +3040,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3861,15 +3072,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3883,23 +3087,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePrivilegedAccessManagerRestTransport._BaseGetOperation,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _GetOperation(_BasePrivilegedAccessManagerRestTransport._BaseGetOperation, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3937,26 +3130,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3980,12 +3163,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             # Send the request
             response = PrivilegedAccessManagerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3997,9 +3175,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4024,23 +3200,12 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BasePrivilegedAccessManagerRestTransport._BaseListOperations,
-        PrivilegedAccessManagerRestStub,
-    ):
+    class _ListOperations(_BasePrivilegedAccessManagerRestTransport._BaseListOperations, PrivilegedAccessManagerRestStub):
         def __hash__(self):
             return hash("PrivilegedAccessManagerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4078,26 +3243,16 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4120,15 +3275,8 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 )
 
             # Send the request
-            response = (
-                PrivilegedAccessManagerRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivilegedAccessManagerRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4140,9 +3288,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

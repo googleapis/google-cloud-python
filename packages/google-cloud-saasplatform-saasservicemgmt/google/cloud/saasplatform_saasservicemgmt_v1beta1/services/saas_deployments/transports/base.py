@@ -28,17 +28,10 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1 import (
-    gapic_version as package_version,
-)
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import (
-    deployments_resources,
-    deployments_service,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1 import gapic_version as package_version
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import deployments_resources, deployments_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +93,15 @@ class SaasDeploymentsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -478,96 +463,58 @@ class SaasDeploymentsTransport(abc.ABC):
     def list_saas(
         self,
     ) -> Callable[
-        [deployments_service.ListSaasRequest],
-        Union[
-            deployments_service.ListSaasResponse,
-            Awaitable[deployments_service.ListSaasResponse],
-        ],
+        [deployments_service.ListSaasRequest], Union[deployments_service.ListSaasResponse, Awaitable[deployments_service.ListSaasResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_saas(
-        self,
-    ) -> Callable[
-        [deployments_service.GetSaasRequest],
-        Union[deployments_resources.Saas, Awaitable[deployments_resources.Saas]],
-    ]:
+    def get_saas(self) -> Callable[[deployments_service.GetSaasRequest], Union[deployments_resources.Saas, Awaitable[deployments_resources.Saas]]]:
         raise NotImplementedError()
 
     @property
     def create_saas(
         self,
-    ) -> Callable[
-        [deployments_service.CreateSaasRequest],
-        Union[deployments_resources.Saas, Awaitable[deployments_resources.Saas]],
-    ]:
+    ) -> Callable[[deployments_service.CreateSaasRequest], Union[deployments_resources.Saas, Awaitable[deployments_resources.Saas]]]:
         raise NotImplementedError()
 
     @property
     def update_saas(
         self,
-    ) -> Callable[
-        [deployments_service.UpdateSaasRequest],
-        Union[deployments_resources.Saas, Awaitable[deployments_resources.Saas]],
-    ]:
+    ) -> Callable[[deployments_service.UpdateSaasRequest], Union[deployments_resources.Saas, Awaitable[deployments_resources.Saas]]]:
         raise NotImplementedError()
 
     @property
-    def delete_saas(
-        self,
-    ) -> Callable[
-        [deployments_service.DeleteSaasRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_saas(self) -> Callable[[deployments_service.DeleteSaasRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_tenants(
         self,
     ) -> Callable[
-        [deployments_service.ListTenantsRequest],
-        Union[
-            deployments_service.ListTenantsResponse,
-            Awaitable[deployments_service.ListTenantsResponse],
-        ],
+        [deployments_service.ListTenantsRequest], Union[deployments_service.ListTenantsResponse, Awaitable[deployments_service.ListTenantsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_tenant(
         self,
-    ) -> Callable[
-        [deployments_service.GetTenantRequest],
-        Union[deployments_resources.Tenant, Awaitable[deployments_resources.Tenant]],
-    ]:
+    ) -> Callable[[deployments_service.GetTenantRequest], Union[deployments_resources.Tenant, Awaitable[deployments_resources.Tenant]]]:
         raise NotImplementedError()
 
     @property
     def create_tenant(
         self,
-    ) -> Callable[
-        [deployments_service.CreateTenantRequest],
-        Union[deployments_resources.Tenant, Awaitable[deployments_resources.Tenant]],
-    ]:
+    ) -> Callable[[deployments_service.CreateTenantRequest], Union[deployments_resources.Tenant, Awaitable[deployments_resources.Tenant]]]:
         raise NotImplementedError()
 
     @property
     def update_tenant(
         self,
-    ) -> Callable[
-        [deployments_service.UpdateTenantRequest],
-        Union[deployments_resources.Tenant, Awaitable[deployments_resources.Tenant]],
-    ]:
+    ) -> Callable[[deployments_service.UpdateTenantRequest], Union[deployments_resources.Tenant, Awaitable[deployments_resources.Tenant]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tenant(
-        self,
-    ) -> Callable[
-        [deployments_service.DeleteTenantRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_tenant(self) -> Callable[[deployments_service.DeleteTenantRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -575,101 +522,58 @@ class SaasDeploymentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [deployments_service.ListUnitKindsRequest],
-        Union[
-            deployments_service.ListUnitKindsResponse,
-            Awaitable[deployments_service.ListUnitKindsResponse],
-        ],
+        Union[deployments_service.ListUnitKindsResponse, Awaitable[deployments_service.ListUnitKindsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_unit_kind(
         self,
-    ) -> Callable[
-        [deployments_service.GetUnitKindRequest],
-        Union[
-            deployments_resources.UnitKind, Awaitable[deployments_resources.UnitKind]
-        ],
-    ]:
+    ) -> Callable[[deployments_service.GetUnitKindRequest], Union[deployments_resources.UnitKind, Awaitable[deployments_resources.UnitKind]]]:
         raise NotImplementedError()
 
     @property
     def create_unit_kind(
         self,
-    ) -> Callable[
-        [deployments_service.CreateUnitKindRequest],
-        Union[
-            deployments_resources.UnitKind, Awaitable[deployments_resources.UnitKind]
-        ],
-    ]:
+    ) -> Callable[[deployments_service.CreateUnitKindRequest], Union[deployments_resources.UnitKind, Awaitable[deployments_resources.UnitKind]]]:
         raise NotImplementedError()
 
     @property
     def update_unit_kind(
         self,
-    ) -> Callable[
-        [deployments_service.UpdateUnitKindRequest],
-        Union[
-            deployments_resources.UnitKind, Awaitable[deployments_resources.UnitKind]
-        ],
-    ]:
+    ) -> Callable[[deployments_service.UpdateUnitKindRequest], Union[deployments_resources.UnitKind, Awaitable[deployments_resources.UnitKind]]]:
         raise NotImplementedError()
 
     @property
-    def delete_unit_kind(
-        self,
-    ) -> Callable[
-        [deployments_service.DeleteUnitKindRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_unit_kind(self) -> Callable[[deployments_service.DeleteUnitKindRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_units(
         self,
     ) -> Callable[
-        [deployments_service.ListUnitsRequest],
-        Union[
-            deployments_service.ListUnitsResponse,
-            Awaitable[deployments_service.ListUnitsResponse],
-        ],
+        [deployments_service.ListUnitsRequest], Union[deployments_service.ListUnitsResponse, Awaitable[deployments_service.ListUnitsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_unit(
-        self,
-    ) -> Callable[
-        [deployments_service.GetUnitRequest],
-        Union[deployments_resources.Unit, Awaitable[deployments_resources.Unit]],
-    ]:
+    def get_unit(self) -> Callable[[deployments_service.GetUnitRequest], Union[deployments_resources.Unit, Awaitable[deployments_resources.Unit]]]:
         raise NotImplementedError()
 
     @property
     def create_unit(
         self,
-    ) -> Callable[
-        [deployments_service.CreateUnitRequest],
-        Union[deployments_resources.Unit, Awaitable[deployments_resources.Unit]],
-    ]:
+    ) -> Callable[[deployments_service.CreateUnitRequest], Union[deployments_resources.Unit, Awaitable[deployments_resources.Unit]]]:
         raise NotImplementedError()
 
     @property
     def update_unit(
         self,
-    ) -> Callable[
-        [deployments_service.UpdateUnitRequest],
-        Union[deployments_resources.Unit, Awaitable[deployments_resources.Unit]],
-    ]:
+    ) -> Callable[[deployments_service.UpdateUnitRequest], Union[deployments_resources.Unit, Awaitable[deployments_resources.Unit]]]:
         raise NotImplementedError()
 
     @property
-    def delete_unit(
-        self,
-    ) -> Callable[
-        [deployments_service.DeleteUnitRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_unit(self) -> Callable[[deployments_service.DeleteUnitRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -677,10 +581,7 @@ class SaasDeploymentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [deployments_service.ListUnitOperationsRequest],
-        Union[
-            deployments_service.ListUnitOperationsResponse,
-            Awaitable[deployments_service.ListUnitOperationsResponse],
-        ],
+        Union[deployments_service.ListUnitOperationsResponse, Awaitable[deployments_service.ListUnitOperationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -688,11 +589,7 @@ class SaasDeploymentsTransport(abc.ABC):
     def get_unit_operation(
         self,
     ) -> Callable[
-        [deployments_service.GetUnitOperationRequest],
-        Union[
-            deployments_resources.UnitOperation,
-            Awaitable[deployments_resources.UnitOperation],
-        ],
+        [deployments_service.GetUnitOperationRequest], Union[deployments_resources.UnitOperation, Awaitable[deployments_resources.UnitOperation]]
     ]:
         raise NotImplementedError()
 
@@ -700,11 +597,7 @@ class SaasDeploymentsTransport(abc.ABC):
     def create_unit_operation(
         self,
     ) -> Callable[
-        [deployments_service.CreateUnitOperationRequest],
-        Union[
-            deployments_resources.UnitOperation,
-            Awaitable[deployments_resources.UnitOperation],
-        ],
+        [deployments_service.CreateUnitOperationRequest], Union[deployments_resources.UnitOperation, Awaitable[deployments_resources.UnitOperation]]
     ]:
         raise NotImplementedError()
 
@@ -712,21 +605,12 @@ class SaasDeploymentsTransport(abc.ABC):
     def update_unit_operation(
         self,
     ) -> Callable[
-        [deployments_service.UpdateUnitOperationRequest],
-        Union[
-            deployments_resources.UnitOperation,
-            Awaitable[deployments_resources.UnitOperation],
-        ],
+        [deployments_service.UpdateUnitOperationRequest], Union[deployments_resources.UnitOperation, Awaitable[deployments_resources.UnitOperation]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_unit_operation(
-        self,
-    ) -> Callable[
-        [deployments_service.DeleteUnitOperationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_unit_operation(self) -> Callable[[deployments_service.DeleteUnitOperationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -734,68 +618,42 @@ class SaasDeploymentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [deployments_service.ListReleasesRequest],
-        Union[
-            deployments_service.ListReleasesResponse,
-            Awaitable[deployments_service.ListReleasesResponse],
-        ],
+        Union[deployments_service.ListReleasesResponse, Awaitable[deployments_service.ListReleasesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_release(
         self,
-    ) -> Callable[
-        [deployments_service.GetReleaseRequest],
-        Union[deployments_resources.Release, Awaitable[deployments_resources.Release]],
-    ]:
+    ) -> Callable[[deployments_service.GetReleaseRequest], Union[deployments_resources.Release, Awaitable[deployments_resources.Release]]]:
         raise NotImplementedError()
 
     @property
     def create_release(
         self,
-    ) -> Callable[
-        [deployments_service.CreateReleaseRequest],
-        Union[deployments_resources.Release, Awaitable[deployments_resources.Release]],
-    ]:
+    ) -> Callable[[deployments_service.CreateReleaseRequest], Union[deployments_resources.Release, Awaitable[deployments_resources.Release]]]:
         raise NotImplementedError()
 
     @property
     def update_release(
         self,
-    ) -> Callable[
-        [deployments_service.UpdateReleaseRequest],
-        Union[deployments_resources.Release, Awaitable[deployments_resources.Release]],
-    ]:
+    ) -> Callable[[deployments_service.UpdateReleaseRequest], Union[deployments_resources.Release, Awaitable[deployments_resources.Release]]]:
         raise NotImplementedError()
 
     @property
-    def delete_release(
-        self,
-    ) -> Callable[
-        [deployments_service.DeleteReleaseRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_release(self) -> Callable[[deployments_service.DeleteReleaseRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

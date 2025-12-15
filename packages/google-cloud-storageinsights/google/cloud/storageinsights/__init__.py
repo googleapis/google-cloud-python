@@ -18,12 +18,8 @@ from google.cloud.storageinsights import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.storageinsights_v1.services.storage_insights.async_client import (
-    StorageInsightsAsyncClient,
-)
-from google.cloud.storageinsights_v1.services.storage_insights.client import (
-    StorageInsightsClient,
-)
+from google.cloud.storageinsights_v1.services.storage_insights.async_client import StorageInsightsAsyncClient
+from google.cloud.storageinsights_v1.services.storage_insights.client import StorageInsightsClient
 from google.cloud.storageinsights_v1.types.storageinsights import (
     CloudStorageDestinationOptions,
     CloudStorageFilters,

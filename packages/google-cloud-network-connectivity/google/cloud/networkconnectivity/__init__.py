@@ -18,36 +18,16 @@ from google.cloud.networkconnectivity import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.async_client import (
-    CrossNetworkAutomationServiceAsyncClient,
-)
-from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.client import (
-    CrossNetworkAutomationServiceClient,
-)
-from google.cloud.networkconnectivity_v1.services.data_transfer_service.async_client import (
-    DataTransferServiceAsyncClient,
-)
-from google.cloud.networkconnectivity_v1.services.data_transfer_service.client import (
-    DataTransferServiceClient,
-)
-from google.cloud.networkconnectivity_v1.services.hub_service.async_client import (
-    HubServiceAsyncClient,
-)
-from google.cloud.networkconnectivity_v1.services.hub_service.client import (
-    HubServiceClient,
-)
-from google.cloud.networkconnectivity_v1.services.internal_range_service.async_client import (
-    InternalRangeServiceAsyncClient,
-)
-from google.cloud.networkconnectivity_v1.services.internal_range_service.client import (
-    InternalRangeServiceClient,
-)
-from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.async_client import (
-    PolicyBasedRoutingServiceAsyncClient,
-)
-from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.client import (
-    PolicyBasedRoutingServiceClient,
-)
+from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.async_client import CrossNetworkAutomationServiceAsyncClient
+from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.client import CrossNetworkAutomationServiceClient
+from google.cloud.networkconnectivity_v1.services.data_transfer_service.async_client import DataTransferServiceAsyncClient
+from google.cloud.networkconnectivity_v1.services.data_transfer_service.client import DataTransferServiceClient
+from google.cloud.networkconnectivity_v1.services.hub_service.async_client import HubServiceAsyncClient
+from google.cloud.networkconnectivity_v1.services.hub_service.client import HubServiceClient
+from google.cloud.networkconnectivity_v1.services.internal_range_service.async_client import InternalRangeServiceAsyncClient
+from google.cloud.networkconnectivity_v1.services.internal_range_service.client import InternalRangeServiceClient
+from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.async_client import PolicyBasedRoutingServiceAsyncClient
+from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.client import PolicyBasedRoutingServiceClient
 from google.cloud.networkconnectivity_v1.types.common import OperationMetadata
 from google.cloud.networkconnectivity_v1.types.cross_network_automation import (
     ConnectionErrorType,

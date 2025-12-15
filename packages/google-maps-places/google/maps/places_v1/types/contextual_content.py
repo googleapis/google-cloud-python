@@ -186,13 +186,11 @@ class ContextualContent(proto.Message):
                 number=3,
             )
 
-        review_justification: "ContextualContent.Justification.ReviewJustification" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="justification",
-                message="ContextualContent.Justification.ReviewJustification",
-            )
+        review_justification: "ContextualContent.Justification.ReviewJustification" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="justification",
+            message="ContextualContent.Justification.ReviewJustification",
         )
         business_availability_attributes_justification: "ContextualContent.Justification.BusinessAvailabilityAttributesJustification" = proto.Field(
             proto.MESSAGE,

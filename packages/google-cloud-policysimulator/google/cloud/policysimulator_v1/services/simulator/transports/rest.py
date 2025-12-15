@@ -104,9 +104,7 @@ class SimulatorRestInterceptor:
     """
 
     def pre_create_replay(
-        self,
-        request: simulator.CreateReplayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: simulator.CreateReplayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[simulator.CreateReplayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_replay
 
@@ -115,9 +113,7 @@ class SimulatorRestInterceptor:
         """
         return request, metadata
 
-    def post_create_replay(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_replay(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_replay
 
         DEPRECATED. Please use the `post_create_replay_with_metadata`
@@ -131,9 +127,7 @@ class SimulatorRestInterceptor:
         return response
 
     def post_create_replay_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_replay
 
@@ -150,9 +144,7 @@ class SimulatorRestInterceptor:
         return response, metadata
 
     def pre_get_replay(
-        self,
-        request: simulator.GetReplayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: simulator.GetReplayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[simulator.GetReplayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_replay
 
@@ -175,9 +167,7 @@ class SimulatorRestInterceptor:
         return response
 
     def post_get_replay_with_metadata(
-        self,
-        response: simulator.Replay,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: simulator.Replay, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[simulator.Replay, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_replay
 
@@ -194,12 +184,8 @@ class SimulatorRestInterceptor:
         return response, metadata
 
     def pre_list_replay_results(
-        self,
-        request: simulator.ListReplayResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        simulator.ListReplayResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: simulator.ListReplayResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[simulator.ListReplayResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_replay_results
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +193,7 @@ class SimulatorRestInterceptor:
         """
         return request, metadata
 
-    def post_list_replay_results(
-        self, response: simulator.ListReplayResultsResponse
-    ) -> simulator.ListReplayResultsResponse:
+    def post_list_replay_results(self, response: simulator.ListReplayResultsResponse) -> simulator.ListReplayResultsResponse:
         """Post-rpc interceptor for list_replay_results
 
         DEPRECATED. Please use the `post_list_replay_results_with_metadata`
@@ -223,12 +207,8 @@ class SimulatorRestInterceptor:
         return response
 
     def post_list_replay_results_with_metadata(
-        self,
-        response: simulator.ListReplayResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        simulator.ListReplayResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: simulator.ListReplayResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[simulator.ListReplayResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_replay_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -244,12 +224,8 @@ class SimulatorRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +233,7 @@ class SimulatorRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -269,12 +243,8 @@ class SimulatorRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -282,9 +252,7 @@ class SimulatorRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -385,9 +353,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -475,29 +441,17 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateReplay(
-        _BaseSimulatorRestTransport._BaseCreateReplay, SimulatorRestStub
-    ):
+    class _CreateReplay(_BaseSimulatorRestTransport._BaseCreateReplay, SimulatorRestStub):
         def __hash__(self):
             return hash("SimulatorRestTransport.CreateReplay")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -541,34 +495,18 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             """
 
-            http_options = (
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_http_options()
-            )
+            http_options = _BaseSimulatorRestTransport._BaseCreateReplay._get_http_options()
 
             request, metadata = self._interceptor.pre_create_replay(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSimulatorRestTransport._BaseCreateReplay._get_transcoded_request(http_options, request)
 
-            body = _BaseSimulatorRestTransport._BaseCreateReplay._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSimulatorRestTransport._BaseCreateReplay._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSimulatorRestTransport._BaseCreateReplay._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -592,13 +530,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             # Send the request
             response = SimulatorRestTransport._CreateReplay._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -612,12 +544,8 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             resp = self._interceptor.post_create_replay(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_replay_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_replay_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -643,15 +571,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             return hash("SimulatorRestTransport.GetReplay")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -691,30 +611,16 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     A resource describing a ``Replay``, or simulation.
             """
 
-            http_options = (
-                _BaseSimulatorRestTransport._BaseGetReplay._get_http_options()
-            )
+            http_options = _BaseSimulatorRestTransport._BaseGetReplay._get_http_options()
 
             request, metadata = self._interceptor.pre_get_replay(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseGetReplay._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSimulatorRestTransport._BaseGetReplay._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseGetReplay._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSimulatorRestTransport._BaseGetReplay._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -737,14 +643,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 )
 
             # Send the request
-            response = SimulatorRestTransport._GetReplay._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SimulatorRestTransport._GetReplay._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -759,12 +658,8 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             resp = self._interceptor.post_get_replay(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_replay_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_replay_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = simulator.Replay.to_json(response)
                 except:
@@ -785,22 +680,12 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 )
             return resp
 
-    class _ListReplayResults(
-        _BaseSimulatorRestTransport._BaseListReplayResults, SimulatorRestStub
-    ):
+    class _ListReplayResults(_BaseSimulatorRestTransport._BaseListReplayResults, SimulatorRestStub):
         def __hash__(self):
             return hash("SimulatorRestTransport.ListReplayResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -842,28 +727,16 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             """
 
-            http_options = (
-                _BaseSimulatorRestTransport._BaseListReplayResults._get_http_options()
-            )
+            http_options = _BaseSimulatorRestTransport._BaseListReplayResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_replay_results(
-                request, metadata
-            )
-            transcoded_request = _BaseSimulatorRestTransport._BaseListReplayResults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_replay_results(request, metadata)
+            transcoded_request = _BaseSimulatorRestTransport._BaseListReplayResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSimulatorRestTransport._BaseListReplayResults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSimulatorRestTransport._BaseListReplayResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -887,12 +760,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             # Send the request
             response = SimulatorRestTransport._ListReplayResults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -908,16 +776,10 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             resp = self._interceptor.post_list_replay_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_replay_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_replay_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = simulator.ListReplayResultsResponse.to_json(
-                        response
-                    )
+                    response_payload = simulator.ListReplayResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -937,9 +799,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             return resp
 
     @property
-    def create_replay(
-        self,
-    ) -> Callable[[simulator.CreateReplayRequest], operations_pb2.Operation]:
+    def create_replay(self) -> Callable[[simulator.CreateReplayRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReplay(self._session, self._host, self._interceptor)  # type: ignore
@@ -951,11 +811,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
         return self._GetReplay(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_replay_results(
-        self,
-    ) -> Callable[
-        [simulator.ListReplayResultsRequest], simulator.ListReplayResultsResponse
-    ]:
+    def list_replay_results(self) -> Callable[[simulator.ListReplayResultsRequest], simulator.ListReplayResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReplayResults(self._session, self._host, self._interceptor)  # type: ignore
@@ -964,22 +820,12 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSimulatorRestTransport._BaseGetOperation, SimulatorRestStub
-    ):
+    class _GetOperation(_BaseSimulatorRestTransport._BaseGetOperation, SimulatorRestStub):
         def __hash__(self):
             return hash("SimulatorRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1017,30 +863,16 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSimulatorRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSimulatorRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSimulatorRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSimulatorRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1064,12 +896,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             # Send the request
             response = SimulatorRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1081,9 +908,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1108,22 +933,12 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSimulatorRestTransport._BaseListOperations, SimulatorRestStub
-    ):
+    class _ListOperations(_BaseSimulatorRestTransport._BaseListOperations, SimulatorRestStub):
         def __hash__(self):
             return hash("SimulatorRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1161,30 +976,16 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSimulatorRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSimulatorRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSimulatorRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSimulatorRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1208,12 +1009,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
             # Send the request
             response = SimulatorRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1225,9 +1021,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -195,13 +195,8 @@ class RepositoryManagerRestInterceptor:
     """
 
     def pre_batch_create_repositories(
-        self,
-        request: repositories.BatchCreateRepositoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.BatchCreateRepositoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: repositories.BatchCreateRepositoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.BatchCreateRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +204,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_repositories(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_create_repositories(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_create_repositories
 
         DEPRECATED. Please use the `post_batch_create_repositories_with_metadata`
@@ -225,9 +218,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_batch_create_repositories_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_repositories
 
@@ -244,12 +235,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_create_connection(
-        self,
-        request: repositories.CreateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.CreateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +244,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connection
 
         DEPRECATED. Please use the `post_create_connection_with_metadata`
@@ -273,9 +258,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_create_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connection
 
@@ -292,12 +275,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_create_repository(
-        self,
-        request: repositories.CreateRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.CreateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.CreateRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.CreateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -305,9 +284,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_repository(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_repository(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_repository
 
         DEPRECATED. Please use the `post_create_repository_with_metadata`
@@ -321,9 +298,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_create_repository_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_repository
 
@@ -340,12 +315,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_connection(
-        self,
-        request: repositories.DeleteConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.DeleteConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -353,9 +324,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connection
 
         DEPRECATED. Please use the `post_delete_connection_with_metadata`
@@ -369,9 +338,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_delete_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_connection
 
@@ -388,12 +355,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_repository(
-        self,
-        request: repositories.DeleteRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.DeleteRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.DeleteRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.DeleteRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -401,9 +364,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_repository(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_repository(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_repository
 
         DEPRECATED. Please use the `post_delete_repository_with_metadata`
@@ -417,9 +378,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_delete_repository_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_repository
 
@@ -436,12 +395,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_fetch_git_refs(
-        self,
-        request: repositories.FetchGitRefsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchGitRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.FetchGitRefsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchGitRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_git_refs
 
         Override in a subclass to manipulate the request or metadata
@@ -449,9 +404,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_git_refs(
-        self, response: repositories.FetchGitRefsResponse
-    ) -> repositories.FetchGitRefsResponse:
+    def post_fetch_git_refs(self, response: repositories.FetchGitRefsResponse) -> repositories.FetchGitRefsResponse:
         """Post-rpc interceptor for fetch_git_refs
 
         DEPRECATED. Please use the `post_fetch_git_refs_with_metadata`
@@ -465,12 +418,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_fetch_git_refs_with_metadata(
-        self,
-        response: repositories.FetchGitRefsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchGitRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: repositories.FetchGitRefsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchGitRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_git_refs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -486,13 +435,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_fetch_linkable_repositories(
-        self,
-        request: repositories.FetchLinkableRepositoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchLinkableRepositoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: repositories.FetchLinkableRepositoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchLinkableRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_linkable_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -516,13 +460,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_fetch_linkable_repositories_with_metadata(
-        self,
-        response: repositories.FetchLinkableRepositoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchLinkableRepositoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: repositories.FetchLinkableRepositoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchLinkableRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_linkable_repositories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -538,12 +477,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_fetch_read_token(
-        self,
-        request: repositories.FetchReadTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchReadTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.FetchReadTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchReadTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_read_token
 
         Override in a subclass to manipulate the request or metadata
@@ -551,9 +486,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_read_token(
-        self, response: repositories.FetchReadTokenResponse
-    ) -> repositories.FetchReadTokenResponse:
+    def post_fetch_read_token(self, response: repositories.FetchReadTokenResponse) -> repositories.FetchReadTokenResponse:
         """Post-rpc interceptor for fetch_read_token
 
         DEPRECATED. Please use the `post_fetch_read_token_with_metadata`
@@ -567,12 +500,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_fetch_read_token_with_metadata(
-        self,
-        response: repositories.FetchReadTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchReadTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: repositories.FetchReadTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchReadTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_read_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -588,12 +517,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_fetch_read_write_token(
-        self,
-        request: repositories.FetchReadWriteTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchReadWriteTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.FetchReadWriteTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchReadWriteTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_read_write_token
 
         Override in a subclass to manipulate the request or metadata
@@ -601,9 +526,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_read_write_token(
-        self, response: repositories.FetchReadWriteTokenResponse
-    ) -> repositories.FetchReadWriteTokenResponse:
+    def post_fetch_read_write_token(self, response: repositories.FetchReadWriteTokenResponse) -> repositories.FetchReadWriteTokenResponse:
         """Post-rpc interceptor for fetch_read_write_token
 
         DEPRECATED. Please use the `post_fetch_read_write_token_with_metadata`
@@ -617,13 +540,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_fetch_read_write_token_with_metadata(
-        self,
-        response: repositories.FetchReadWriteTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.FetchReadWriteTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: repositories.FetchReadWriteTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.FetchReadWriteTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_read_write_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -639,12 +557,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_get_connection(
-        self,
-        request: repositories.GetConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.GetConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -652,9 +566,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_connection(
-        self, response: repositories.Connection
-    ) -> repositories.Connection:
+    def post_get_connection(self, response: repositories.Connection) -> repositories.Connection:
         """Post-rpc interceptor for get_connection
 
         DEPRECATED. Please use the `post_get_connection_with_metadata`
@@ -668,9 +580,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_get_connection_with_metadata(
-        self,
-        response: repositories.Connection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: repositories.Connection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[repositories.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connection
 
@@ -687,12 +597,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_get_repository(
-        self,
-        request: repositories.GetRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.GetRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.GetRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.GetRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -700,9 +606,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_repository(
-        self, response: repositories.Repository
-    ) -> repositories.Repository:
+    def post_get_repository(self, response: repositories.Repository) -> repositories.Repository:
         """Post-rpc interceptor for get_repository
 
         DEPRECATED. Please use the `post_get_repository_with_metadata`
@@ -716,9 +620,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_get_repository_with_metadata(
-        self,
-        response: repositories.Repository,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: repositories.Repository, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[repositories.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_repository
 
@@ -735,12 +637,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_list_connections(
-        self,
-        request: repositories.ListConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.ListConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -748,9 +646,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_connections(
-        self, response: repositories.ListConnectionsResponse
-    ) -> repositories.ListConnectionsResponse:
+    def post_list_connections(self, response: repositories.ListConnectionsResponse) -> repositories.ListConnectionsResponse:
         """Post-rpc interceptor for list_connections
 
         DEPRECATED. Please use the `post_list_connections_with_metadata`
@@ -764,12 +660,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_list_connections_with_metadata(
-        self,
-        response: repositories.ListConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.ListConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: repositories.ListConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.ListConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -785,12 +677,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_list_repositories(
-        self,
-        request: repositories.ListRepositoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.ListRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.ListRepositoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.ListRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -798,9 +686,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_repositories(
-        self, response: repositories.ListRepositoriesResponse
-    ) -> repositories.ListRepositoriesResponse:
+    def post_list_repositories(self, response: repositories.ListRepositoriesResponse) -> repositories.ListRepositoriesResponse:
         """Post-rpc interceptor for list_repositories
 
         DEPRECATED. Please use the `post_list_repositories_with_metadata`
@@ -814,12 +700,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_list_repositories_with_metadata(
-        self,
-        response: repositories.ListRepositoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.ListRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: repositories.ListRepositoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.ListRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_repositories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -835,12 +717,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_update_connection(
-        self,
-        request: repositories.UpdateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        repositories.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: repositories.UpdateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[repositories.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -848,9 +726,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connection
 
         DEPRECATED. Please use the `post_update_connection_with_metadata`
@@ -864,9 +740,7 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def post_update_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connection
 
@@ -883,12 +757,8 @@ class RepositoryManagerRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -906,12 +776,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -929,13 +795,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -943,9 +804,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -955,12 +814,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -978,12 +833,8 @@ class RepositoryManagerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -991,9 +842,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1082,9 +931,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1125,30 +972,17 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchCreateRepositories(
-        _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories,
-        RepositoryManagerRestStub,
-    ):
+    class _BatchCreateRepositories(_BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.BatchCreateRepositories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1192,32 +1026,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_repositories(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_repositories(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1240,16 +1060,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                RepositoryManagerRestTransport._BatchCreateRepositories._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RepositoryManagerRestTransport._BatchCreateRepositories._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1263,12 +1075,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_batch_create_repositories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_repositories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_repositories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1289,23 +1097,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _CreateConnection(
-        _BaseRepositoryManagerRestTransport._BaseCreateConnection,
-        RepositoryManagerRestStub,
-    ):
+    class _CreateConnection(_BaseRepositoryManagerRestTransport._BaseCreateConnection, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.CreateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1348,32 +1145,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connection(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1397,13 +1180,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._CreateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1417,12 +1194,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_create_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1443,23 +1216,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _CreateRepository(
-        _BaseRepositoryManagerRestTransport._BaseCreateRepository,
-        RepositoryManagerRestStub,
-    ):
+    class _CreateRepository(_BaseRepositoryManagerRestTransport._BaseCreateRepository, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.CreateRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1502,32 +1264,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_repository(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_repository(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1551,13 +1299,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._CreateRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1571,12 +1313,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_create_repository(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_repository_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_repository_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1597,23 +1335,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _DeleteConnection(
-        _BaseRepositoryManagerRestTransport._BaseDeleteConnection,
-        RepositoryManagerRestStub,
-    ):
+    class _DeleteConnection(_BaseRepositoryManagerRestTransport._BaseDeleteConnection, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.DeleteConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1655,28 +1382,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connection(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1700,12 +1415,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._DeleteConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1719,12 +1429,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_delete_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1745,23 +1451,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _DeleteRepository(
-        _BaseRepositoryManagerRestTransport._BaseDeleteRepository,
-        RepositoryManagerRestStub,
-    ):
+    class _DeleteRepository(_BaseRepositoryManagerRestTransport._BaseDeleteRepository, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.DeleteRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1803,28 +1498,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_repository(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_repository(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1848,12 +1531,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._DeleteRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1867,12 +1545,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_delete_repository(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_repository_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_repository_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1893,22 +1567,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _FetchGitRefs(
-        _BaseRepositoryManagerRestTransport._BaseFetchGitRefs, RepositoryManagerRestStub
-    ):
+    class _FetchGitRefs(_BaseRepositoryManagerRestTransport._BaseFetchGitRefs, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.FetchGitRefs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1947,26 +1611,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                     Response for fetching git refs
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_git_refs(request, metadata)
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1990,12 +1644,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._FetchGitRefs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2011,16 +1660,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_fetch_git_refs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_git_refs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_git_refs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = repositories.FetchGitRefsResponse.to_json(
-                        response
-                    )
+                    response_payload = repositories.FetchGitRefsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2039,23 +1682,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _FetchLinkableRepositories(
-        _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories,
-        RepositoryManagerRestStub,
-    ):
+    class _FetchLinkableRepositories(_BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.FetchLinkableRepositories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2098,28 +1730,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_linkable_repositories(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_linkable_repositories(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2142,15 +1762,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                RepositoryManagerRestTransport._FetchLinkableRepositories._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RepositoryManagerRestTransport._FetchLinkableRepositories._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2166,16 +1779,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_fetch_linkable_repositories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_linkable_repositories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_linkable_repositories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        repositories.FetchLinkableRepositoriesResponse.to_json(response)
-                    )
+                    response_payload = repositories.FetchLinkableRepositoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2194,23 +1801,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _FetchReadToken(
-        _BaseRepositoryManagerRestTransport._BaseFetchReadToken,
-        RepositoryManagerRestStub,
-    ):
+    class _FetchReadToken(_BaseRepositoryManagerRestTransport._BaseFetchReadToken, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.FetchReadToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2252,32 +1848,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_read_token(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_read_token(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2301,13 +1883,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._FetchReadToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2323,16 +1899,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_fetch_read_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_read_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_read_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = repositories.FetchReadTokenResponse.to_json(
-                        response
-                    )
+                    response_payload = repositories.FetchReadTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2351,23 +1921,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _FetchReadWriteToken(
-        _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken,
-        RepositoryManagerRestStub,
-    ):
+    class _FetchReadWriteToken(_BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.FetchReadWriteToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2410,32 +1969,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_read_write_token(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_read_write_token(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2458,16 +2003,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                RepositoryManagerRestTransport._FetchReadWriteToken._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RepositoryManagerRestTransport._FetchReadWriteToken._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2483,16 +2020,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_fetch_read_write_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_read_write_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_read_write_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = repositories.FetchReadWriteTokenResponse.to_json(
-                        response
-                    )
+                    response_payload = repositories.FetchReadWriteTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2511,23 +2042,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _GetConnection(
-        _BaseRepositoryManagerRestTransport._BaseGetConnection,
-        RepositoryManagerRestStub,
-    ):
+    class _GetConnection(_BaseRepositoryManagerRestTransport._BaseGetConnection, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.GetConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2570,26 +2090,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseGetConnection._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2613,12 +2123,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._GetConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2634,12 +2139,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_get_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = repositories.Connection.to_json(response)
                 except:
@@ -2660,23 +2161,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _GetRepository(
-        _BaseRepositoryManagerRestTransport._BaseGetRepository,
-        RepositoryManagerRestStub,
-    ):
+    class _GetRepository(_BaseRepositoryManagerRestTransport._BaseGetRepository, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.GetRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2718,26 +2208,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseGetRepository._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2761,12 +2241,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._GetRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2782,12 +2257,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_get_repository(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_repository_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_repository_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = repositories.Repository.to_json(response)
                 except:
@@ -2808,23 +2279,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _ListConnections(
-        _BaseRepositoryManagerRestTransport._BaseListConnections,
-        RepositoryManagerRestStub,
-    ):
+    class _ListConnections(_BaseRepositoryManagerRestTransport._BaseListConnections, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.ListConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2866,28 +2326,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseListConnections._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseListConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseListConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_connections(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseListConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseListConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseListConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2911,12 +2359,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._ListConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2932,16 +2375,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_list_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = repositories.ListConnectionsResponse.to_json(
-                        response
-                    )
+                    response_payload = repositories.ListConnectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2960,23 +2397,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _ListRepositories(
-        _BaseRepositoryManagerRestTransport._BaseListRepositories,
-        RepositoryManagerRestStub,
-    ):
+    class _ListRepositories(_BaseRepositoryManagerRestTransport._BaseListRepositories, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.ListRepositories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3018,28 +2444,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseListRepositories._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseListRepositories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_repositories(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseListRepositories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_repositories(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseListRepositories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseListRepositories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseListRepositories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3063,12 +2477,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._ListRepositories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3084,16 +2493,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_list_repositories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_repositories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_repositories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = repositories.ListRepositoriesResponse.to_json(
-                        response
-                    )
+                    response_payload = repositories.ListRepositoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3112,23 +2515,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 )
             return resp
 
-    class _UpdateConnection(
-        _BaseRepositoryManagerRestTransport._BaseUpdateConnection,
-        RepositoryManagerRestStub,
-    ):
+    class _UpdateConnection(_BaseRepositoryManagerRestTransport._BaseUpdateConnection, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.UpdateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3171,32 +2563,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connection(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3220,13 +2598,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._UpdateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3240,12 +2612,8 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             resp = self._interceptor.post_update_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3267,53 +2635,37 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             return resp
 
     @property
-    def batch_create_repositories(
-        self,
-    ) -> Callable[
-        [repositories.BatchCreateRepositoriesRequest], operations_pb2.Operation
-    ]:
+    def batch_create_repositories(self) -> Callable[[repositories.BatchCreateRepositoriesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateRepositories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[[repositories.CreateConnectionRequest], operations_pb2.Operation]:
+    def create_connection(self) -> Callable[[repositories.CreateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[[repositories.CreateRepositoryRequest], operations_pb2.Operation]:
+    def create_repository(self) -> Callable[[repositories.CreateRepositoryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[[repositories.DeleteConnectionRequest], operations_pb2.Operation]:
+    def delete_connection(self) -> Callable[[repositories.DeleteConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[[repositories.DeleteRepositoryRequest], operations_pb2.Operation]:
+    def delete_repository(self) -> Callable[[repositories.DeleteRepositoryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_git_refs(
-        self,
-    ) -> Callable[
-        [repositories.FetchGitRefsRequest], repositories.FetchGitRefsResponse
-    ]:
+    def fetch_git_refs(self) -> Callable[[repositories.FetchGitRefsRequest], repositories.FetchGitRefsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchGitRefs(self._session, self._host, self._interceptor)  # type: ignore
@@ -3321,75 +2673,49 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
     @property
     def fetch_linkable_repositories(
         self,
-    ) -> Callable[
-        [repositories.FetchLinkableRepositoriesRequest],
-        repositories.FetchLinkableRepositoriesResponse,
-    ]:
+    ) -> Callable[[repositories.FetchLinkableRepositoriesRequest], repositories.FetchLinkableRepositoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchLinkableRepositories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_read_token(
-        self,
-    ) -> Callable[
-        [repositories.FetchReadTokenRequest], repositories.FetchReadTokenResponse
-    ]:
+    def fetch_read_token(self) -> Callable[[repositories.FetchReadTokenRequest], repositories.FetchReadTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchReadToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_read_write_token(
-        self,
-    ) -> Callable[
-        [repositories.FetchReadWriteTokenRequest],
-        repositories.FetchReadWriteTokenResponse,
-    ]:
+    def fetch_read_write_token(self) -> Callable[[repositories.FetchReadWriteTokenRequest], repositories.FetchReadWriteTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchReadWriteToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[[repositories.GetConnectionRequest], repositories.Connection]:
+    def get_connection(self) -> Callable[[repositories.GetConnectionRequest], repositories.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[[repositories.GetRepositoryRequest], repositories.Repository]:
+    def get_repository(self) -> Callable[[repositories.GetRepositoryRequest], repositories.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[
-        [repositories.ListConnectionsRequest], repositories.ListConnectionsResponse
-    ]:
+    def list_connections(self) -> Callable[[repositories.ListConnectionsRequest], repositories.ListConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_repositories(
-        self,
-    ) -> Callable[
-        [repositories.ListRepositoriesRequest], repositories.ListRepositoriesResponse
-    ]:
+    def list_repositories(self) -> Callable[[repositories.ListRepositoriesRequest], repositories.ListRepositoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRepositories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[[repositories.UpdateConnectionRequest], operations_pb2.Operation]:
+    def update_connection(self) -> Callable[[repositories.UpdateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnection(self._session, self._host, self._interceptor)  # type: ignore
@@ -3398,22 +2724,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseRepositoryManagerRestTransport._BaseGetIamPolicy, RepositoryManagerRestStub
-    ):
+    class _GetIamPolicy(_BaseRepositoryManagerRestTransport._BaseGetIamPolicy, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3451,26 +2767,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3494,12 +2800,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3511,9 +2812,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3538,22 +2837,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseRepositoryManagerRestTransport._BaseSetIamPolicy, RepositoryManagerRestStub
-    ):
+    class _SetIamPolicy(_BaseRepositoryManagerRestTransport._BaseSetIamPolicy, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3592,30 +2881,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3639,13 +2916,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3657,9 +2928,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3684,23 +2953,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseRepositoryManagerRestTransport._BaseTestIamPermissions,
-        RepositoryManagerRestStub,
-    ):
+    class _TestIamPermissions(_BaseRepositoryManagerRestTransport._BaseTestIamPermissions, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3739,32 +2997,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3788,13 +3032,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3806,9 +3044,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3833,23 +3069,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseRepositoryManagerRestTransport._BaseCancelOperation,
-        RepositoryManagerRestStub,
-    ):
+    class _CancelOperation(_BaseRepositoryManagerRestTransport._BaseCancelOperation, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3885,32 +3110,18 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3934,13 +3145,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3954,22 +3159,12 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseRepositoryManagerRestTransport._BaseGetOperation, RepositoryManagerRestStub
-    ):
+    class _GetOperation(_BaseRepositoryManagerRestTransport._BaseGetOperation, RepositoryManagerRestStub):
         def __hash__(self):
             return hash("RepositoryManagerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4007,26 +3202,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRepositoryManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4050,12 +3235,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
 
             # Send the request
             response = RepositoryManagerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4067,9 +3247,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

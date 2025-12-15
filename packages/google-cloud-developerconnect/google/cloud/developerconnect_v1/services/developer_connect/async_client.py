@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -82,51 +71,29 @@ class DeveloperConnectAsyncClient:
     _DEFAULT_UNIVERSE = DeveloperConnectClient._DEFAULT_UNIVERSE
 
     account_connector_path = staticmethod(DeveloperConnectClient.account_connector_path)
-    parse_account_connector_path = staticmethod(
-        DeveloperConnectClient.parse_account_connector_path
-    )
+    parse_account_connector_path = staticmethod(DeveloperConnectClient.parse_account_connector_path)
     connection_path = staticmethod(DeveloperConnectClient.connection_path)
     parse_connection_path = staticmethod(DeveloperConnectClient.parse_connection_path)
     crypto_key_path = staticmethod(DeveloperConnectClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(DeveloperConnectClient.parse_crypto_key_path)
-    git_repository_link_path = staticmethod(
-        DeveloperConnectClient.git_repository_link_path
-    )
-    parse_git_repository_link_path = staticmethod(
-        DeveloperConnectClient.parse_git_repository_link_path
-    )
+    git_repository_link_path = staticmethod(DeveloperConnectClient.git_repository_link_path)
+    parse_git_repository_link_path = staticmethod(DeveloperConnectClient.parse_git_repository_link_path)
     secret_version_path = staticmethod(DeveloperConnectClient.secret_version_path)
-    parse_secret_version_path = staticmethod(
-        DeveloperConnectClient.parse_secret_version_path
-    )
+    parse_secret_version_path = staticmethod(DeveloperConnectClient.parse_secret_version_path)
     service_path = staticmethod(DeveloperConnectClient.service_path)
     parse_service_path = staticmethod(DeveloperConnectClient.parse_service_path)
     user_path = staticmethod(DeveloperConnectClient.user_path)
     parse_user_path = staticmethod(DeveloperConnectClient.parse_user_path)
-    common_billing_account_path = staticmethod(
-        DeveloperConnectClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DeveloperConnectClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DeveloperConnectClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DeveloperConnectClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DeveloperConnectClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DeveloperConnectClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DeveloperConnectClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DeveloperConnectClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DeveloperConnectClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DeveloperConnectClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DeveloperConnectClient.parse_common_organization_path)
     common_project_path = staticmethod(DeveloperConnectClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DeveloperConnectClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DeveloperConnectClient.parse_common_project_path)
     common_location_path = staticmethod(DeveloperConnectClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DeveloperConnectClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DeveloperConnectClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -162,9 +129,7 @@ class DeveloperConnectAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -231,11 +196,7 @@ class DeveloperConnectAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, DeveloperConnectTransport, Callable[..., DeveloperConnectTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DeveloperConnectTransport, Callable[..., DeveloperConnectTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -295,20 +256,14 @@ class DeveloperConnectAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.developerconnect_v1.DeveloperConnectAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -387,14 +342,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -408,15 +358,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_connections
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_connections]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -504,14 +450,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -525,15 +466,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_connection
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -551,9 +488,7 @@ class DeveloperConnectAsyncClient:
 
     async def create_connection(
         self,
-        request: Optional[
-            Union[developer_connect.CreateConnectionRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.CreateConnectionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         connection: Optional[developer_connect.Connection] = None,
@@ -642,14 +577,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, connection, connection_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -667,15 +597,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_connection
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -701,9 +627,7 @@ class DeveloperConnectAsyncClient:
 
     async def update_connection(
         self,
-        request: Optional[
-            Union[developer_connect.UpdateConnectionRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.UpdateConnectionRequest, dict]] = None,
         *,
         connection: Optional[developer_connect.Connection] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -786,14 +710,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [connection, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -809,17 +728,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_connection
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("connection.name", request.connection.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("connection.name", request.connection.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -845,9 +758,7 @@ class DeveloperConnectAsyncClient:
 
     async def delete_connection(
         self,
-        request: Optional[
-            Union[developer_connect.DeleteConnectionRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.DeleteConnectionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -922,14 +833,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -943,15 +849,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_connection
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -977,9 +879,7 @@ class DeveloperConnectAsyncClient:
 
     async def create_git_repository_link(
         self,
-        request: Optional[
-            Union[developer_connect.CreateGitRepositoryLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.CreateGitRepositoryLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         git_repository_link: Optional[developer_connect.GitRepositoryLink] = None,
@@ -1074,14 +974,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, git_repository_link, git_repository_link_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1099,15 +994,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_git_repository_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_git_repository_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1133,9 +1024,7 @@ class DeveloperConnectAsyncClient:
 
     async def delete_git_repository_link(
         self,
-        request: Optional[
-            Union[developer_connect.DeleteGitRepositoryLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.DeleteGitRepositoryLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1211,14 +1100,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1232,15 +1116,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_git_repository_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_git_repository_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1266,9 +1146,7 @@ class DeveloperConnectAsyncClient:
 
     async def list_git_repository_links(
         self,
-        request: Optional[
-            Union[developer_connect.ListGitRepositoryLinksRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.ListGitRepositoryLinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1337,14 +1215,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1358,15 +1231,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_git_repository_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_git_repository_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1395,9 +1264,7 @@ class DeveloperConnectAsyncClient:
 
     async def get_git_repository_link(
         self,
-        request: Optional[
-            Union[developer_connect.GetGitRepositoryLinkRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.GetGitRepositoryLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1459,14 +1326,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1480,15 +1342,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_git_repository_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_git_repository_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1506,9 +1364,7 @@ class DeveloperConnectAsyncClient:
 
     async def fetch_read_write_token(
         self,
-        request: Optional[
-            Union[developer_connect.FetchReadWriteTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.FetchReadWriteTokenRequest, dict]] = None,
         *,
         git_repository_link: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1574,14 +1430,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [git_repository_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1595,17 +1446,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_read_write_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_read_write_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("git_repository_link", request.git_repository_link),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("git_repository_link", request.git_repository_link),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1687,14 +1532,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [git_repository_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1708,17 +1548,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_read_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_read_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("git_repository_link", request.git_repository_link),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("git_repository_link", request.git_repository_link),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1736,9 +1570,7 @@ class DeveloperConnectAsyncClient:
 
     async def fetch_linkable_git_repositories(
         self,
-        request: Optional[
-            Union[developer_connect.FetchLinkableGitRepositoriesRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.FetchLinkableGitRepositoriesRequest, dict]] = None,
         *,
         connection: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1808,20 +1640,13 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [connection]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, developer_connect.FetchLinkableGitRepositoriesRequest
-        ):
+        if not isinstance(request, developer_connect.FetchLinkableGitRepositoriesRequest):
             request = developer_connect.FetchLinkableGitRepositoriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1831,17 +1656,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_linkable_git_repositories
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_linkable_git_repositories]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("connection", request.connection),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("connection", request.connection),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1870,9 +1689,7 @@ class DeveloperConnectAsyncClient:
 
     async def fetch_git_hub_installations(
         self,
-        request: Optional[
-            Union[developer_connect.FetchGitHubInstallationsRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.FetchGitHubInstallationsRequest, dict]] = None,
         *,
         connection: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1940,14 +1757,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [connection]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1961,17 +1773,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_git_hub_installations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_git_hub_installations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("connection", request.connection),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("connection", request.connection),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2065,14 +1871,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [git_repository_link, ref_type]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2088,17 +1889,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_git_refs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_git_refs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("git_repository_link", request.git_repository_link),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("git_repository_link", request.git_repository_link),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2127,9 +1922,7 @@ class DeveloperConnectAsyncClient:
 
     async def list_account_connectors(
         self,
-        request: Optional[
-            Union[developer_connect.ListAccountConnectorsRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.ListAccountConnectorsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2198,14 +1991,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2219,15 +2007,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_account_connectors
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_account_connectors]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2256,9 +2040,7 @@ class DeveloperConnectAsyncClient:
 
     async def get_account_connector(
         self,
-        request: Optional[
-            Union[developer_connect.GetAccountConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.GetAccountConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2325,14 +2107,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2346,15 +2123,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_account_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_account_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2372,9 +2145,7 @@ class DeveloperConnectAsyncClient:
 
     async def create_account_connector(
         self,
-        request: Optional[
-            Union[developer_connect.CreateAccountConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.CreateAccountConnectorRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         account_connector: Optional[developer_connect.AccountConnector] = None,
@@ -2475,14 +2246,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, account_connector, account_connector_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2500,15 +2266,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_account_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_account_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2534,9 +2296,7 @@ class DeveloperConnectAsyncClient:
 
     async def update_account_connector(
         self,
-        request: Optional[
-            Union[developer_connect.UpdateAccountConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.UpdateAccountConnectorRequest, dict]] = None,
         *,
         account_connector: Optional[developer_connect.AccountConnector] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2621,14 +2381,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [account_connector, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2644,17 +2399,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_account_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_account_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("account_connector.name", request.account_connector.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account_connector.name", request.account_connector.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2680,9 +2429,7 @@ class DeveloperConnectAsyncClient:
 
     async def delete_account_connector(
         self,
-        request: Optional[
-            Union[developer_connect.DeleteAccountConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.DeleteAccountConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2758,14 +2505,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2779,15 +2521,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_account_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_account_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2813,9 +2551,7 @@ class DeveloperConnectAsyncClient:
 
     async def fetch_access_token(
         self,
-        request: Optional[
-            Union[developer_connect.FetchAccessTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[developer_connect.FetchAccessTokenRequest, dict]] = None,
         *,
         account_connector: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2881,14 +2617,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [account_connector]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2902,17 +2633,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_access_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_access_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("account_connector", request.account_connector),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account_connector", request.account_connector),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2998,14 +2723,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3019,15 +2739,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_users
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_users]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3131,14 +2847,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3152,15 +2863,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_user
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_user]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3251,14 +2958,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3272,15 +2974,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_self
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_self]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3376,14 +3074,9 @@ class DeveloperConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3397,15 +3090,11 @@ class DeveloperConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_self
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_self]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3466,9 +3155,7 @@ class DeveloperConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3521,9 +3208,7 @@ class DeveloperConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3580,9 +3265,7 @@ class DeveloperConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3635,9 +3318,7 @@ class DeveloperConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3687,9 +3368,7 @@ class DeveloperConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3742,9 +3421,7 @@ class DeveloperConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3767,9 +3444,7 @@ class DeveloperConnectAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

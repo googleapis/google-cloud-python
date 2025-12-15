@@ -18,12 +18,8 @@ from google.cloud.privilegedaccessmanager import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.async_client import (
-    PrivilegedAccessManagerAsyncClient,
-)
-from google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.client import (
-    PrivilegedAccessManagerClient,
-)
+from google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.async_client import PrivilegedAccessManagerAsyncClient
+from google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.client import PrivilegedAccessManagerClient
 from google.cloud.privilegedaccessmanager_v1.types.privilegedaccessmanager import (
     AccessControlEntry,
     ApprovalWorkflow,

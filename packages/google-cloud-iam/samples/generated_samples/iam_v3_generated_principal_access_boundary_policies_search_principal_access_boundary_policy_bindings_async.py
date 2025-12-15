@@ -44,9 +44,7 @@ async def sample_search_principal_access_boundary_policy_bindings():
     )
 
     # Make the request
-    page_result = client.search_principal_access_boundary_policy_bindings(
-        request=request
-    )
+    page_result = client.search_principal_access_boundary_policy_bindings(request=request)
 
     # Handle the response
     async for response in page_result:

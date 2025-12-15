@@ -147,9 +147,7 @@ class ListCustomFieldsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_fields: MutableSequence[
-        custom_field_messages.CustomField
-    ] = proto.RepeatedField(
+    custom_fields: MutableSequence[custom_field_messages.CustomField] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_field_messages.CustomField,
@@ -218,9 +216,7 @@ class BatchCreateCustomFieldsResponse(proto.Message):
             The ``CustomField`` objects created.
     """
 
-    custom_fields: MutableSequence[
-        custom_field_messages.CustomField
-    ] = proto.RepeatedField(
+    custom_fields: MutableSequence[custom_field_messages.CustomField] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_field_messages.CustomField,
@@ -284,9 +280,7 @@ class BatchUpdateCustomFieldsResponse(proto.Message):
             The ``CustomField`` objects updated.
     """
 
-    custom_fields: MutableSequence[
-        custom_field_messages.CustomField
-    ] = proto.RepeatedField(
+    custom_fields: MutableSequence[custom_field_messages.CustomField] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_field_messages.CustomField,

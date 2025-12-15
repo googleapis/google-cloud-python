@@ -114,9 +114,7 @@ class Item(proto.Message):
         proto.STRING,
         number=4,
     )
-    additional_item_parameters: MutableSequence[
-        item_parameter.ItemParameter
-    ] = proto.RepeatedField(
+    additional_item_parameters: MutableSequence[item_parameter.ItemParameter] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=item_parameter.ItemParameter,

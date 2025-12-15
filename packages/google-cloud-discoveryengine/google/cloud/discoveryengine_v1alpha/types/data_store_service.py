@@ -22,9 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
-from google.cloud.discoveryengine_v1alpha.types import (
-    document_processing_config as gcd_document_processing_config,
-)
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config as gcd_document_processing_config
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",

@@ -334,9 +334,7 @@ class UsageResourceAllowanceStatus(proto.Message):
                 currently supports HOUR, DAY, MONTH and YEAR.
         """
 
-        latest_period_consumptions: MutableMapping[
-            str, "UsageResourceAllowanceStatus.PeriodConsumption"
-        ] = proto.MapField(
+        latest_period_consumptions: MutableMapping[str, "UsageResourceAllowanceStatus.PeriodConsumption"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,

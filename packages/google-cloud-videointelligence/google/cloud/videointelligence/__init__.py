@@ -18,12 +18,8 @@ from google.cloud.videointelligence import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.videointelligence_v1.services.video_intelligence_service.async_client import (
-    VideoIntelligenceServiceAsyncClient,
-)
-from google.cloud.videointelligence_v1.services.video_intelligence_service.client import (
-    VideoIntelligenceServiceClient,
-)
+from google.cloud.videointelligence_v1.services.video_intelligence_service.async_client import VideoIntelligenceServiceAsyncClient
+from google.cloud.videointelligence_v1.services.video_intelligence_service.client import VideoIntelligenceServiceClient
 from google.cloud.videointelligence_v1.types.video_intelligence import (
     AnnotateVideoProgress,
     AnnotateVideoRequest,

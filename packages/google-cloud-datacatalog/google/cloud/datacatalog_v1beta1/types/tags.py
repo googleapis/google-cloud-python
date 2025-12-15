@@ -411,9 +411,7 @@ class FieldType(proto.Message):
                 number=1,
             )
 
-        allowed_values: MutableSequence[
-            "FieldType.EnumType.EnumValue"
-        ] = proto.RepeatedField(
+        allowed_values: MutableSequence["FieldType.EnumType.EnumValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="FieldType.EnumType.EnumValue",

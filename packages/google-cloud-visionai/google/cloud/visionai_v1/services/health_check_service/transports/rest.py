@@ -91,12 +91,8 @@ class HealthCheckServiceRestInterceptor:
     """
 
     def pre_health_check(
-        self,
-        request: health_service.HealthCheckRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        health_service.HealthCheckRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: health_service.HealthCheckRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[health_service.HealthCheckRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for health_check
 
         Override in a subclass to manipulate the request or metadata
@@ -104,9 +100,7 @@ class HealthCheckServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_health_check(
-        self, response: health_service.HealthCheckResponse
-    ) -> health_service.HealthCheckResponse:
+    def post_health_check(self, response: health_service.HealthCheckResponse) -> health_service.HealthCheckResponse:
         """Post-rpc interceptor for health_check
 
         DEPRECATED. Please use the `post_health_check_with_metadata`
@@ -120,12 +114,8 @@ class HealthCheckServiceRestInterceptor:
         return response
 
     def post_health_check_with_metadata(
-        self,
-        response: health_service.HealthCheckResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        health_service.HealthCheckResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: health_service.HealthCheckResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[health_service.HealthCheckResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for health_check
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -141,12 +131,8 @@ class HealthCheckServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -164,12 +150,8 @@ class HealthCheckServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -187,12 +169,8 @@ class HealthCheckServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -200,9 +178,7 @@ class HealthCheckServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -212,12 +188,8 @@ class HealthCheckServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -225,9 +197,7 @@ class HealthCheckServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -317,31 +287,18 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or HealthCheckServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _HealthCheck(
-        _BaseHealthCheckServiceRestTransport._BaseHealthCheck,
-        HealthCheckServiceRestStub,
-    ):
+    class _HealthCheck(_BaseHealthCheckServiceRestTransport._BaseHealthCheck, HealthCheckServiceRestStub):
         def __hash__(self):
             return hash("HealthCheckServiceRestTransport.HealthCheck")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -383,26 +340,16 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_http_options()
 
             request, metadata = self._interceptor.pre_health_check(request, metadata)
-            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -426,12 +373,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             # Send the request
             response = HealthCheckServiceRestTransport._HealthCheck._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -447,16 +389,10 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             resp = self._interceptor.post_health_check(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_health_check_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_health_check_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = health_service.HealthCheckResponse.to_json(
-                        response
-                    )
+                    response_payload = health_service.HealthCheckResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -476,11 +412,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
             return resp
 
     @property
-    def health_check(
-        self,
-    ) -> Callable[
-        [health_service.HealthCheckRequest], health_service.HealthCheckResponse
-    ]:
+    def health_check(self) -> Callable[[health_service.HealthCheckRequest], health_service.HealthCheckResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._HealthCheck(self._session, self._host, self._interceptor)  # type: ignore
@@ -489,23 +421,12 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseHealthCheckServiceRestTransport._BaseCancelOperation,
-        HealthCheckServiceRestStub,
-    ):
+    class _CancelOperation(_BaseHealthCheckServiceRestTransport._BaseCancelOperation, HealthCheckServiceRestStub):
         def __hash__(self):
             return hash("HealthCheckServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -541,32 +462,18 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -590,13 +497,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             # Send the request
             response = HealthCheckServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -610,23 +511,12 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseHealthCheckServiceRestTransport._BaseDeleteOperation,
-        HealthCheckServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseHealthCheckServiceRestTransport._BaseDeleteOperation, HealthCheckServiceRestStub):
         def __hash__(self):
             return hash("HealthCheckServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -661,28 +551,16 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -706,12 +584,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             # Send the request
             response = HealthCheckServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -725,23 +598,12 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseHealthCheckServiceRestTransport._BaseGetOperation,
-        HealthCheckServiceRestStub,
-    ):
+    class _GetOperation(_BaseHealthCheckServiceRestTransport._BaseGetOperation, HealthCheckServiceRestStub):
         def __hash__(self):
             return hash("HealthCheckServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -779,26 +641,16 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -822,12 +674,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             # Send the request
             response = HealthCheckServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -839,9 +686,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -866,23 +711,12 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseHealthCheckServiceRestTransport._BaseListOperations,
-        HealthCheckServiceRestStub,
-    ):
+    class _ListOperations(_BaseHealthCheckServiceRestTransport._BaseListOperations, HealthCheckServiceRestStub):
         def __hash__(self):
             return hash("HealthCheckServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -920,26 +754,16 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -963,12 +787,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             # Send the request
             response = HealthCheckServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -980,9 +799,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

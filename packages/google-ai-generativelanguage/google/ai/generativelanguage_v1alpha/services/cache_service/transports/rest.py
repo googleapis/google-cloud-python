@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ai.generativelanguage_v1alpha.types import (
-    cached_content as gag_cached_content,
-)
+from google.ai.generativelanguage_v1alpha.types import cached_content as gag_cached_content
 from google.ai.generativelanguage_v1alpha.types import cache_service
 from google.ai.generativelanguage_v1alpha.types import cached_content
 
@@ -121,13 +119,8 @@ class CacheServiceRestInterceptor:
     """
 
     def pre_create_cached_content(
-        self,
-        request: cache_service.CreateCachedContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cache_service.CreateCachedContentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cache_service.CreateCachedContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cache_service.CreateCachedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cached_content
 
         Override in a subclass to manipulate the request or metadata
@@ -135,9 +128,7 @@ class CacheServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cached_content(
-        self, response: gag_cached_content.CachedContent
-    ) -> gag_cached_content.CachedContent:
+    def post_create_cached_content(self, response: gag_cached_content.CachedContent) -> gag_cached_content.CachedContent:
         """Post-rpc interceptor for create_cached_content
 
         DEPRECATED. Please use the `post_create_cached_content_with_metadata`
@@ -151,12 +142,8 @@ class CacheServiceRestInterceptor:
         return response
 
     def post_create_cached_content_with_metadata(
-        self,
-        response: gag_cached_content.CachedContent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gag_cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gag_cached_content.CachedContent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gag_cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cached_content
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -172,13 +159,8 @@ class CacheServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_cached_content(
-        self,
-        request: cache_service.DeleteCachedContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cache_service.DeleteCachedContentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cache_service.DeleteCachedContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cache_service.DeleteCachedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cached_content
 
         Override in a subclass to manipulate the request or metadata
@@ -187,12 +169,8 @@ class CacheServiceRestInterceptor:
         return request, metadata
 
     def pre_get_cached_content(
-        self,
-        request: cache_service.GetCachedContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cache_service.GetCachedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cache_service.GetCachedContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cache_service.GetCachedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cached_content
 
         Override in a subclass to manipulate the request or metadata
@@ -200,9 +178,7 @@ class CacheServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cached_content(
-        self, response: cached_content.CachedContent
-    ) -> cached_content.CachedContent:
+    def post_get_cached_content(self, response: cached_content.CachedContent) -> cached_content.CachedContent:
         """Post-rpc interceptor for get_cached_content
 
         DEPRECATED. Please use the `post_get_cached_content_with_metadata`
@@ -216,9 +192,7 @@ class CacheServiceRestInterceptor:
         return response
 
     def post_get_cached_content_with_metadata(
-        self,
-        response: cached_content.CachedContent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cached_content.CachedContent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cached_content
 
@@ -235,12 +209,8 @@ class CacheServiceRestInterceptor:
         return response, metadata
 
     def pre_list_cached_contents(
-        self,
-        request: cache_service.ListCachedContentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cache_service.ListCachedContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cache_service.ListCachedContentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cache_service.ListCachedContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cached_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -248,9 +218,7 @@ class CacheServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cached_contents(
-        self, response: cache_service.ListCachedContentsResponse
-    ) -> cache_service.ListCachedContentsResponse:
+    def post_list_cached_contents(self, response: cache_service.ListCachedContentsResponse) -> cache_service.ListCachedContentsResponse:
         """Post-rpc interceptor for list_cached_contents
 
         DEPRECATED. Please use the `post_list_cached_contents_with_metadata`
@@ -264,13 +232,8 @@ class CacheServiceRestInterceptor:
         return response
 
     def post_list_cached_contents_with_metadata(
-        self,
-        response: cache_service.ListCachedContentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cache_service.ListCachedContentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cache_service.ListCachedContentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cache_service.ListCachedContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cached_contents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -286,13 +249,8 @@ class CacheServiceRestInterceptor:
         return response, metadata
 
     def pre_update_cached_content(
-        self,
-        request: cache_service.UpdateCachedContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cache_service.UpdateCachedContentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cache_service.UpdateCachedContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cache_service.UpdateCachedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cached_content
 
         Override in a subclass to manipulate the request or metadata
@@ -300,9 +258,7 @@ class CacheServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cached_content(
-        self, response: gag_cached_content.CachedContent
-    ) -> gag_cached_content.CachedContent:
+    def post_update_cached_content(self, response: gag_cached_content.CachedContent) -> gag_cached_content.CachedContent:
         """Post-rpc interceptor for update_cached_content
 
         DEPRECATED. Please use the `post_update_cached_content_with_metadata`
@@ -316,12 +272,8 @@ class CacheServiceRestInterceptor:
         return response
 
     def post_update_cached_content_with_metadata(
-        self,
-        response: gag_cached_content.CachedContent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gag_cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gag_cached_content.CachedContent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gag_cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cached_content
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -337,12 +289,8 @@ class CacheServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -350,9 +298,7 @@ class CacheServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -362,12 +308,8 @@ class CacheServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -375,9 +317,7 @@ class CacheServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -470,30 +410,18 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CacheServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateCachedContent(
-        _BaseCacheServiceRestTransport._BaseCreateCachedContent, CacheServiceRestStub
-    ):
+    class _CreateCachedContent(_BaseCacheServiceRestTransport._BaseCreateCachedContent, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.CreateCachedContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -539,32 +467,18 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_cached_content(
-                request, metadata
-            )
-            transcoded_request = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_cached_content(request, metadata)
+            transcoded_request = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_transcoded_request(http_options, request)
 
-            body = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseCreateCachedContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -588,13 +502,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._CreateCachedContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -610,16 +518,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             resp = self._interceptor.post_create_cached_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cached_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cached_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gag_cached_content.CachedContent.to_json(
-                        response
-                    )
+                    response_payload = gag_cached_content.CachedContent.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -638,22 +540,12 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                 )
             return resp
 
-    class _DeleteCachedContent(
-        _BaseCacheServiceRestTransport._BaseDeleteCachedContent, CacheServiceRestStub
-    ):
+    class _DeleteCachedContent(_BaseCacheServiceRestTransport._BaseDeleteCachedContent, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.DeleteCachedContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -688,28 +580,16 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseDeleteCachedContent._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseDeleteCachedContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_cached_content(
-                request, metadata
-            )
-            transcoded_request = _BaseCacheServiceRestTransport._BaseDeleteCachedContent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_cached_content(request, metadata)
+            transcoded_request = _BaseCacheServiceRestTransport._BaseDeleteCachedContent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCacheServiceRestTransport._BaseDeleteCachedContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseDeleteCachedContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -733,12 +613,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._DeleteCachedContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -746,22 +621,12 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetCachedContent(
-        _BaseCacheServiceRestTransport._BaseGetCachedContent, CacheServiceRestStub
-    ):
+    class _GetCachedContent(_BaseCacheServiceRestTransport._BaseGetCachedContent, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.GetCachedContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -806,28 +671,16 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseGetCachedContent._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseGetCachedContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_cached_content(
-                request, metadata
-            )
-            transcoded_request = _BaseCacheServiceRestTransport._BaseGetCachedContent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_cached_content(request, metadata)
+            transcoded_request = _BaseCacheServiceRestTransport._BaseGetCachedContent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCacheServiceRestTransport._BaseGetCachedContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseGetCachedContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -851,12 +704,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._GetCachedContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -872,12 +720,8 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             resp = self._interceptor.post_get_cached_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cached_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cached_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cached_content.CachedContent.to_json(response)
                 except:
@@ -898,22 +742,12 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                 )
             return resp
 
-    class _ListCachedContents(
-        _BaseCacheServiceRestTransport._BaseListCachedContents, CacheServiceRestStub
-    ):
+    class _ListCachedContents(_BaseCacheServiceRestTransport._BaseListCachedContents, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.ListCachedContents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -952,28 +786,16 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                     Response with CachedContents list.
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseListCachedContents._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseListCachedContents._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cached_contents(
-                request, metadata
-            )
-            transcoded_request = _BaseCacheServiceRestTransport._BaseListCachedContents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cached_contents(request, metadata)
+            transcoded_request = _BaseCacheServiceRestTransport._BaseListCachedContents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCacheServiceRestTransport._BaseListCachedContents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseListCachedContents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -997,12 +819,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._ListCachedContents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1018,16 +835,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             resp = self._interceptor.post_list_cached_contents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cached_contents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cached_contents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cache_service.ListCachedContentsResponse.to_json(
-                        response
-                    )
+                    response_payload = cache_service.ListCachedContentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1046,22 +857,12 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCachedContent(
-        _BaseCacheServiceRestTransport._BaseUpdateCachedContent, CacheServiceRestStub
-    ):
+    class _UpdateCachedContent(_BaseCacheServiceRestTransport._BaseUpdateCachedContent, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.UpdateCachedContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1107,32 +908,18 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_cached_content(
-                request, metadata
-            )
-            transcoded_request = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_cached_content(request, metadata)
+            transcoded_request = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_transcoded_request(http_options, request)
 
-            body = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseUpdateCachedContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1156,13 +943,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._UpdateCachedContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1178,16 +959,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             resp = self._interceptor.post_update_cached_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cached_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cached_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gag_cached_content.CachedContent.to_json(
-                        response
-                    )
+                    response_payload = gag_cached_content.CachedContent.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1207,50 +982,31 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             return resp
 
     @property
-    def create_cached_content(
-        self,
-    ) -> Callable[
-        [cache_service.CreateCachedContentRequest], gag_cached_content.CachedContent
-    ]:
+    def create_cached_content(self) -> Callable[[cache_service.CreateCachedContentRequest], gag_cached_content.CachedContent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cached_content(
-        self,
-    ) -> Callable[[cache_service.DeleteCachedContentRequest], empty_pb2.Empty]:
+    def delete_cached_content(self) -> Callable[[cache_service.DeleteCachedContentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cached_content(
-        self,
-    ) -> Callable[
-        [cache_service.GetCachedContentRequest], cached_content.CachedContent
-    ]:
+    def get_cached_content(self) -> Callable[[cache_service.GetCachedContentRequest], cached_content.CachedContent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_cached_contents(
-        self,
-    ) -> Callable[
-        [cache_service.ListCachedContentsRequest],
-        cache_service.ListCachedContentsResponse,
-    ]:
+    def list_cached_contents(self) -> Callable[[cache_service.ListCachedContentsRequest], cache_service.ListCachedContentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCachedContents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cached_content(
-        self,
-    ) -> Callable[
-        [cache_service.UpdateCachedContentRequest], gag_cached_content.CachedContent
-    ]:
+    def update_cached_content(self) -> Callable[[cache_service.UpdateCachedContentRequest], gag_cached_content.CachedContent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCachedContent(self._session, self._host, self._interceptor)  # type: ignore
@@ -1259,22 +1015,12 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCacheServiceRestTransport._BaseGetOperation, CacheServiceRestStub
-    ):
+    class _GetOperation(_BaseCacheServiceRestTransport._BaseGetOperation, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1312,28 +1058,16 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCacheServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCacheServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCacheServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1357,12 +1091,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1374,9 +1103,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1401,22 +1128,12 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCacheServiceRestTransport._BaseListOperations, CacheServiceRestStub
-    ):
+    class _ListOperations(_BaseCacheServiceRestTransport._BaseListOperations, CacheServiceRestStub):
         def __hash__(self):
             return hash("CacheServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1454,26 +1171,16 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCacheServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCacheServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCacheServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCacheServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCacheServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCacheServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1497,12 +1204,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
 
             # Send the request
             response = CacheServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1514,9 +1216,7 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

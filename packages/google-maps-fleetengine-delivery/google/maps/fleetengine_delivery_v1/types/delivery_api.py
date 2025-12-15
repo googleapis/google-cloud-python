@@ -21,9 +21,7 @@ from google.geo.type.types import viewport as ggt_viewport
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.fleetengine_delivery_v1.types import (
-    delivery_vehicles as mfd_delivery_vehicles,
-)
+from google.maps.fleetengine_delivery_v1.types import delivery_vehicles as mfd_delivery_vehicles
 from google.maps.fleetengine_delivery_v1.types import header as mfd_header
 from google.maps.fleetengine_delivery_v1.types import tasks as mfd_tasks
 
@@ -261,9 +259,7 @@ class ListDeliveryVehiclesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    delivery_vehicles: MutableSequence[
-        mfd_delivery_vehicles.DeliveryVehicle
-    ] = proto.RepeatedField(
+    delivery_vehicles: MutableSequence[mfd_delivery_vehicles.DeliveryVehicle] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=mfd_delivery_vehicles.DeliveryVehicle,

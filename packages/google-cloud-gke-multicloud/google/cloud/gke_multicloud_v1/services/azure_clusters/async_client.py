@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -53,11 +42,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.gke_multicloud_v1.services.azure_clusters import pagers
-from google.cloud.gke_multicloud_v1.types import (
-    azure_resources,
-    azure_service,
-    common_resources,
-)
+from google.cloud.gke_multicloud_v1.types import azure_resources, azure_service, common_resources
 
 from .client import AzureClustersClient
 from .transports.base import DEFAULT_CLIENT_INFO, AzureClustersTransport
@@ -91,43 +76,21 @@ class AzureClustersAsyncClient:
     azure_client_path = staticmethod(AzureClustersClient.azure_client_path)
     parse_azure_client_path = staticmethod(AzureClustersClient.parse_azure_client_path)
     azure_cluster_path = staticmethod(AzureClustersClient.azure_cluster_path)
-    parse_azure_cluster_path = staticmethod(
-        AzureClustersClient.parse_azure_cluster_path
-    )
+    parse_azure_cluster_path = staticmethod(AzureClustersClient.parse_azure_cluster_path)
     azure_node_pool_path = staticmethod(AzureClustersClient.azure_node_pool_path)
-    parse_azure_node_pool_path = staticmethod(
-        AzureClustersClient.parse_azure_node_pool_path
-    )
-    azure_server_config_path = staticmethod(
-        AzureClustersClient.azure_server_config_path
-    )
-    parse_azure_server_config_path = staticmethod(
-        AzureClustersClient.parse_azure_server_config_path
-    )
-    common_billing_account_path = staticmethod(
-        AzureClustersClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AzureClustersClient.parse_common_billing_account_path
-    )
+    parse_azure_node_pool_path = staticmethod(AzureClustersClient.parse_azure_node_pool_path)
+    azure_server_config_path = staticmethod(AzureClustersClient.azure_server_config_path)
+    parse_azure_server_config_path = staticmethod(AzureClustersClient.parse_azure_server_config_path)
+    common_billing_account_path = staticmethod(AzureClustersClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AzureClustersClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AzureClustersClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AzureClustersClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AzureClustersClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AzureClustersClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(AzureClustersClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AzureClustersClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AzureClustersClient.parse_common_organization_path)
     common_project_path = staticmethod(AzureClustersClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        AzureClustersClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(AzureClustersClient.parse_common_project_path)
     common_location_path = staticmethod(AzureClustersClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        AzureClustersClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(AzureClustersClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -163,9 +126,7 @@ class AzureClustersAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -232,9 +193,7 @@ class AzureClustersAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, AzureClustersTransport, Callable[..., AzureClustersTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AzureClustersTransport, Callable[..., AzureClustersTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,20 +256,14 @@ class AzureClustersAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.gkemulticloud_v1.AzureClustersAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -450,23 +403,15 @@ class AzureClustersAsyncClient:
                    Active Directory Application and tenant.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.create_azure_client is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.create_azure_client is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, azure_client, azure_client_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -484,15 +429,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_azure_client
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_azure_client]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -603,23 +544,15 @@ class AzureClustersAsyncClient:
                    Active Directory Application and tenant.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.get_azure_client is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.get_azure_client is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -633,15 +566,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_azure_client
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_azure_client]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -735,23 +664,15 @@ class AzureClustersAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.list_azure_clients is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.list_azure_clients is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -765,15 +686,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_azure_clients
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_azure_clients]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -894,23 +811,15 @@ class AzureClustersAsyncClient:
                       }
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.delete_azure_client is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.delete_azure_client is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -924,15 +833,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_azure_client
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_azure_client]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1076,23 +981,15 @@ class AzureClustersAsyncClient:
                 An Anthos cluster running on Azure.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.create_azure_cluster is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.create_azure_cluster is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, azure_cluster, azure_cluster_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1110,15 +1007,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_azure_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_azure_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1251,23 +1144,15 @@ class AzureClustersAsyncClient:
                 An Anthos cluster running on Azure.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.update_azure_cluster is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.update_azure_cluster is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [azure_cluster, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1283,17 +1168,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_azure_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_azure_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("azure_cluster.name", request.azure_cluster.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("azure_cluster.name", request.azure_cluster.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1388,23 +1267,15 @@ class AzureClustersAsyncClient:
             google.cloud.gke_multicloud_v1.types.AzureCluster:
                 An Anthos cluster running on Azure.
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.get_azure_cluster is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.get_azure_cluster is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1418,15 +1289,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_azure_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_azure_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1520,23 +1387,15 @@ class AzureClustersAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.list_azure_clusters is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.list_azure_clusters is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1550,15 +1409,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_azure_clusters
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_azure_clusters]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1680,23 +1535,15 @@ class AzureClustersAsyncClient:
                       }
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.delete_azure_cluster is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.delete_azure_cluster is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1710,15 +1557,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_azure_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_azure_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1744,9 +1587,7 @@ class AzureClustersAsyncClient:
 
     async def generate_azure_cluster_agent_token(
         self,
-        request: Optional[
-            Union[azure_service.GenerateAzureClusterAgentTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[azure_service.GenerateAzureClusterAgentTokenRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1798,10 +1639,7 @@ class AzureClustersAsyncClient:
             google.cloud.gke_multicloud_v1.types.GenerateAzureClusterAgentTokenResponse:
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.generate_azure_cluster_agent_token is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.generate_azure_cluster_agent_token is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -1811,17 +1649,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_azure_cluster_agent_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_azure_cluster_agent_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("azure_cluster", request.azure_cluster),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("azure_cluster", request.azure_cluster),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1839,9 +1671,7 @@ class AzureClustersAsyncClient:
 
     async def generate_azure_access_token(
         self,
-        request: Optional[
-            Union[azure_service.GenerateAzureAccessTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[azure_service.GenerateAzureAccessTokenRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1895,10 +1725,7 @@ class AzureClustersAsyncClient:
                 AzureClusters.GenerateAzureAccessToken method.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.generate_azure_access_token is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.generate_azure_access_token is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -1908,17 +1735,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_azure_access_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_azure_access_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("azure_cluster", request.azure_cluster),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("azure_cluster", request.azure_cluster),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2053,23 +1874,15 @@ class AzureClustersAsyncClient:
                 An Anthos node pool running on Azure.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.create_azure_node_pool is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.create_azure_node_pool is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, azure_node_pool, azure_node_pool_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2087,15 +1900,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_azure_node_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_azure_node_pool]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2217,23 +2026,15 @@ class AzureClustersAsyncClient:
                 An Anthos node pool running on Azure.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.update_azure_node_pool is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.update_azure_node_pool is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [azure_node_pool, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2249,17 +2050,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_azure_node_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_azure_node_pool]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("azure_node_pool.name", request.azure_node_pool.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("azure_node_pool.name", request.azure_node_pool.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2353,23 +2148,15 @@ class AzureClustersAsyncClient:
             google.cloud.gke_multicloud_v1.types.AzureNodePool:
                 An Anthos node pool running on Azure.
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.get_azure_node_pool is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.get_azure_node_pool is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2383,15 +2170,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_azure_node_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_azure_node_pool]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2485,23 +2268,15 @@ class AzureClustersAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.list_azure_node_pools is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.list_azure_node_pools is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2515,15 +2290,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_azure_node_pools
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_azure_node_pools]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2640,23 +2411,15 @@ class AzureClustersAsyncClient:
                       }
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.delete_azure_node_pool is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.delete_azure_node_pool is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2670,15 +2433,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_azure_node_pool
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_azure_node_pool]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2704,9 +2463,7 @@ class AzureClustersAsyncClient:
 
     async def get_azure_open_id_config(
         self,
-        request: Optional[
-            Union[azure_service.GetAzureOpenIdConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[azure_service.GetAzureOpenIdConfigRequest, dict]] = None,
         *,
         azure_cluster: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2776,23 +2533,15 @@ class AzureClustersAsyncClient:
                 specification for details.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.get_azure_open_id_config is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.get_azure_open_id_config is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [azure_cluster]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2806,17 +2555,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_azure_open_id_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_azure_open_id_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("azure_cluster", request.azure_cluster),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("azure_cluster", request.azure_cluster),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2899,23 +2642,15 @@ class AzureClustersAsyncClient:
                 Key Set as specififed in RFC 7517.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.get_azure_json_web_keys is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.get_azure_json_web_keys is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [azure_cluster]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2929,17 +2664,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_azure_json_web_keys
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_azure_json_web_keys]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("azure_cluster", request.azure_cluster),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("azure_cluster", request.azure_cluster),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2957,9 +2686,7 @@ class AzureClustersAsyncClient:
 
     async def get_azure_server_config(
         self,
-        request: Optional[
-            Union[azure_service.GetAzureServerConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[azure_service.GetAzureServerConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3031,23 +2758,15 @@ class AzureClustersAsyncClient:
                 regions and Kubernetes versions.
 
         """
-        warnings.warn(
-            "AzureClustersAsyncClient.get_azure_server_config is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("AzureClustersAsyncClient.get_azure_server_config is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3061,15 +2780,11 @@ class AzureClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_azure_server_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_azure_server_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3122,9 +2837,7 @@ class AzureClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3177,9 +2890,7 @@ class AzureClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3236,9 +2947,7 @@ class AzureClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3291,9 +3000,7 @@ class AzureClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3313,9 +3020,7 @@ class AzureClustersAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

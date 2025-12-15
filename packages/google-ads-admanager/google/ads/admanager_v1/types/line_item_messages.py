@@ -144,9 +144,7 @@ class LineItem(proto.Message):
         optional=True,
         message=money_pb2.Money,
     )
-    custom_field_values: MutableSequence[
-        custom_field_value.CustomFieldValue
-    ] = proto.RepeatedField(
+    custom_field_values: MutableSequence[custom_field_value.CustomFieldValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=59,
         message=custom_field_value.CustomFieldValue,

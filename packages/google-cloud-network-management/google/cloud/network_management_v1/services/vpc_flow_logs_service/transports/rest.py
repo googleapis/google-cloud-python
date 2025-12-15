@@ -139,13 +139,8 @@ class VpcFlowLogsServiceRestInterceptor:
     """
 
     def pre_create_vpc_flow_logs_config(
-        self,
-        request: vpc_flow_logs.CreateVpcFlowLogsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.CreateVpcFlowLogsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.CreateVpcFlowLogsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.CreateVpcFlowLogsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_vpc_flow_logs_config
 
         Override in a subclass to manipulate the request or metadata
@@ -153,9 +148,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_vpc_flow_logs_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_vpc_flow_logs_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_vpc_flow_logs_config
 
         DEPRECATED. Please use the `post_create_vpc_flow_logs_config_with_metadata`
@@ -169,9 +162,7 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_create_vpc_flow_logs_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_vpc_flow_logs_config
 
@@ -188,13 +179,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_vpc_flow_logs_config(
-        self,
-        request: vpc_flow_logs.DeleteVpcFlowLogsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.DeleteVpcFlowLogsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.DeleteVpcFlowLogsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.DeleteVpcFlowLogsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_vpc_flow_logs_config
 
         Override in a subclass to manipulate the request or metadata
@@ -202,9 +188,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_vpc_flow_logs_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_vpc_flow_logs_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_vpc_flow_logs_config
 
         DEPRECATED. Please use the `post_delete_vpc_flow_logs_config_with_metadata`
@@ -218,9 +202,7 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_delete_vpc_flow_logs_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_vpc_flow_logs_config
 
@@ -237,13 +219,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_vpc_flow_logs_config(
-        self,
-        request: vpc_flow_logs.GetVpcFlowLogsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.GetVpcFlowLogsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.GetVpcFlowLogsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.GetVpcFlowLogsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vpc_flow_logs_config
 
         Override in a subclass to manipulate the request or metadata
@@ -251,9 +228,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vpc_flow_logs_config(
-        self, response: vpc_flow_logs_config.VpcFlowLogsConfig
-    ) -> vpc_flow_logs_config.VpcFlowLogsConfig:
+    def post_get_vpc_flow_logs_config(self, response: vpc_flow_logs_config.VpcFlowLogsConfig) -> vpc_flow_logs_config.VpcFlowLogsConfig:
         """Post-rpc interceptor for get_vpc_flow_logs_config
 
         DEPRECATED. Please use the `post_get_vpc_flow_logs_config_with_metadata`
@@ -267,12 +242,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_get_vpc_flow_logs_config_with_metadata(
-        self,
-        response: vpc_flow_logs_config.VpcFlowLogsConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs_config.VpcFlowLogsConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vpc_flow_logs_config.VpcFlowLogsConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs_config.VpcFlowLogsConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vpc_flow_logs_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -288,13 +259,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_vpc_flow_logs_configs(
-        self,
-        request: vpc_flow_logs.ListVpcFlowLogsConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.ListVpcFlowLogsConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.ListVpcFlowLogsConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.ListVpcFlowLogsConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_vpc_flow_logs_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +268,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_vpc_flow_logs_configs(
-        self, response: vpc_flow_logs.ListVpcFlowLogsConfigsResponse
-    ) -> vpc_flow_logs.ListVpcFlowLogsConfigsResponse:
+    def post_list_vpc_flow_logs_configs(self, response: vpc_flow_logs.ListVpcFlowLogsConfigsResponse) -> vpc_flow_logs.ListVpcFlowLogsConfigsResponse:
         """Post-rpc interceptor for list_vpc_flow_logs_configs
 
         DEPRECATED. Please use the `post_list_vpc_flow_logs_configs_with_metadata`
@@ -318,13 +282,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_list_vpc_flow_logs_configs_with_metadata(
-        self,
-        response: vpc_flow_logs.ListVpcFlowLogsConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.ListVpcFlowLogsConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vpc_flow_logs.ListVpcFlowLogsConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.ListVpcFlowLogsConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_vpc_flow_logs_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -340,13 +299,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_query_org_vpc_flow_logs_configs(
-        self,
-        request: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_org_vpc_flow_logs_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -370,13 +324,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_query_org_vpc_flow_logs_configs_with_metadata(
-        self,
-        response: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_org_vpc_flow_logs_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -392,13 +341,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_show_effective_flow_logs_configs(
-        self,
-        request: vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for show_effective_flow_logs_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -422,13 +366,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_show_effective_flow_logs_configs_with_metadata(
-        self,
-        response: vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for show_effective_flow_logs_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -444,13 +383,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_vpc_flow_logs_config(
-        self,
-        request: vpc_flow_logs.UpdateVpcFlowLogsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vpc_flow_logs.UpdateVpcFlowLogsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vpc_flow_logs.UpdateVpcFlowLogsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vpc_flow_logs.UpdateVpcFlowLogsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_vpc_flow_logs_config
 
         Override in a subclass to manipulate the request or metadata
@@ -458,9 +392,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_vpc_flow_logs_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_vpc_flow_logs_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_vpc_flow_logs_config
 
         DEPRECATED. Please use the `post_update_vpc_flow_logs_config_with_metadata`
@@ -474,9 +406,7 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def post_update_vpc_flow_logs_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_vpc_flow_logs_config
 
@@ -493,12 +423,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -506,9 +432,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -518,12 +442,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -531,9 +451,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -543,12 +461,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -566,12 +480,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -589,13 +499,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -603,9 +508,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -615,12 +518,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -638,12 +537,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -661,12 +556,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -674,9 +565,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -686,12 +575,8 @@ class VpcFlowLogsServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -699,9 +584,7 @@ class VpcFlowLogsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -793,9 +676,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -865,30 +746,17 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateVpcFlowLogsConfig(
-        _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _CreateVpcFlowLogsConfig(_BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.CreateVpcFlowLogsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -932,32 +800,18 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_vpc_flow_logs_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_vpc_flow_logs_config(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -980,16 +834,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VpcFlowLogsServiceRestTransport._CreateVpcFlowLogsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VpcFlowLogsServiceRestTransport._CreateVpcFlowLogsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1003,12 +849,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_create_vpc_flow_logs_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_vpc_flow_logs_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_vpc_flow_logs_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1029,23 +871,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
-    class _DeleteVpcFlowLogsConfig(
-        _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _DeleteVpcFlowLogsConfig(_BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.DeleteVpcFlowLogsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1088,28 +919,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_vpc_flow_logs_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_vpc_flow_logs_config(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1132,15 +951,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VpcFlowLogsServiceRestTransport._DeleteVpcFlowLogsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VpcFlowLogsServiceRestTransport._DeleteVpcFlowLogsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1154,12 +966,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_delete_vpc_flow_logs_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_vpc_flow_logs_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_vpc_flow_logs_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1180,23 +988,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
-    class _GetVpcFlowLogsConfig(
-        _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _GetVpcFlowLogsConfig(_BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.GetVpcFlowLogsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1237,28 +1034,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_vpc_flow_logs_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_vpc_flow_logs_config(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1281,15 +1066,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VpcFlowLogsServiceRestTransport._GetVpcFlowLogsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VpcFlowLogsServiceRestTransport._GetVpcFlowLogsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1305,16 +1083,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_get_vpc_flow_logs_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vpc_flow_logs_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vpc_flow_logs_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vpc_flow_logs_config.VpcFlowLogsConfig.to_json(
-                        response
-                    )
+                    response_payload = vpc_flow_logs_config.VpcFlowLogsConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1333,23 +1105,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
-    class _ListVpcFlowLogsConfigs(
-        _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _ListVpcFlowLogsConfigs(_BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.ListVpcFlowLogsConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1389,28 +1150,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                         Response for the ``ListVpcFlowLogsConfigs`` method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_vpc_flow_logs_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_vpc_flow_logs_configs(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1433,15 +1182,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VpcFlowLogsServiceRestTransport._ListVpcFlowLogsConfigs._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VpcFlowLogsServiceRestTransport._ListVpcFlowLogsConfigs._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1457,16 +1199,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_list_vpc_flow_logs_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_vpc_flow_logs_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_vpc_flow_logs_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vpc_flow_logs.ListVpcFlowLogsConfigsResponse.to_json(response)
-                    )
+                    response_payload = vpc_flow_logs.ListVpcFlowLogsConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1485,23 +1221,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
-    class _QueryOrgVpcFlowLogsConfigs(
-        _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _QueryOrgVpcFlowLogsConfigs(_BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.QueryOrgVpcFlowLogsConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1541,28 +1266,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                         Response for the ``QueryVpcFlowLogsConfigs`` method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_org_vpc_flow_logs_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_org_vpc_flow_logs_configs(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1586,12 +1299,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._QueryOrgVpcFlowLogsConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1607,21 +1315,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_query_org_vpc_flow_logs_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_org_vpc_flow_logs_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_org_vpc_flow_logs_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1640,23 +1337,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
-    class _ShowEffectiveFlowLogsConfigs(
-        _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _ShowEffectiveFlowLogsConfigs(_BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.ShowEffectiveFlowLogsConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1698,28 +1384,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_show_effective_flow_logs_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_show_effective_flow_logs_configs(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1743,12 +1417,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._ShowEffectiveFlowLogsConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1764,21 +1433,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_show_effective_flow_logs_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_show_effective_flow_logs_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_show_effective_flow_logs_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1797,23 +1455,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
-    class _UpdateVpcFlowLogsConfig(
-        _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _UpdateVpcFlowLogsConfig(_BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.UpdateVpcFlowLogsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1857,32 +1504,18 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_vpc_flow_logs_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_vpc_flow_logs_config(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1905,16 +1538,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VpcFlowLogsServiceRestTransport._UpdateVpcFlowLogsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VpcFlowLogsServiceRestTransport._UpdateVpcFlowLogsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1928,12 +1553,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             resp = self._interceptor.post_update_vpc_flow_logs_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_vpc_flow_logs_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_vpc_flow_logs_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1955,43 +1576,25 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             return resp
 
     @property
-    def create_vpc_flow_logs_config(
-        self,
-    ) -> Callable[
-        [vpc_flow_logs.CreateVpcFlowLogsConfigRequest], operations_pb2.Operation
-    ]:
+    def create_vpc_flow_logs_config(self) -> Callable[[vpc_flow_logs.CreateVpcFlowLogsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_vpc_flow_logs_config(
-        self,
-    ) -> Callable[
-        [vpc_flow_logs.DeleteVpcFlowLogsConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_vpc_flow_logs_config(self) -> Callable[[vpc_flow_logs.DeleteVpcFlowLogsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vpc_flow_logs_config(
-        self,
-    ) -> Callable[
-        [vpc_flow_logs.GetVpcFlowLogsConfigRequest],
-        vpc_flow_logs_config.VpcFlowLogsConfig,
-    ]:
+    def get_vpc_flow_logs_config(self) -> Callable[[vpc_flow_logs.GetVpcFlowLogsConfigRequest], vpc_flow_logs_config.VpcFlowLogsConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_vpc_flow_logs_configs(
-        self,
-    ) -> Callable[
-        [vpc_flow_logs.ListVpcFlowLogsConfigsRequest],
-        vpc_flow_logs.ListVpcFlowLogsConfigsResponse,
-    ]:
+    def list_vpc_flow_logs_configs(self) -> Callable[[vpc_flow_logs.ListVpcFlowLogsConfigsRequest], vpc_flow_logs.ListVpcFlowLogsConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVpcFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
@@ -1999,10 +1602,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     @property
     def query_org_vpc_flow_logs_configs(
         self,
-    ) -> Callable[
-        [vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest],
-        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
-    ]:
+    ) -> Callable[[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest], vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryOrgVpcFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
@@ -2010,20 +1610,13 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     @property
     def show_effective_flow_logs_configs(
         self,
-    ) -> Callable[
-        [vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest],
-        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
-    ]:
+    ) -> Callable[[vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest], vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ShowEffectiveFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_vpc_flow_logs_config(
-        self,
-    ) -> Callable[
-        [vpc_flow_logs.UpdateVpcFlowLogsConfigRequest], operations_pb2.Operation
-    ]:
+    def update_vpc_flow_logs_config(self) -> Callable[[vpc_flow_logs.UpdateVpcFlowLogsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -2032,23 +1625,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _GetLocation(_BaseVpcFlowLogsServiceRestTransport._BaseGetLocation, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2086,26 +1668,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2129,12 +1701,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2146,9 +1713,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2173,23 +1738,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseVpcFlowLogsServiceRestTransport._BaseListLocations,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _ListLocations(_BaseVpcFlowLogsServiceRestTransport._BaseListLocations, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2227,26 +1781,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2270,12 +1814,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2287,9 +1826,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2314,23 +1851,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2368,26 +1894,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2411,12 +1927,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2428,9 +1939,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2455,23 +1964,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2510,30 +2008,18 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2557,13 +2043,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2575,9 +2055,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2602,23 +2080,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2657,32 +2124,18 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2705,16 +2158,8 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VpcFlowLogsServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VpcFlowLogsServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2726,9 +2171,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2753,23 +2196,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _CancelOperation(_BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2805,32 +2237,18 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2854,13 +2272,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2874,23 +2286,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2925,28 +2326,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2970,12 +2359,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2989,23 +2373,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _GetOperation(_BaseVpcFlowLogsServiceRestTransport._BaseGetOperation, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3043,26 +2416,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3086,12 +2449,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3103,9 +2461,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3130,23 +2486,12 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVpcFlowLogsServiceRestTransport._BaseListOperations,
-        VpcFlowLogsServiceRestStub,
-    ):
+    class _ListOperations(_BaseVpcFlowLogsServiceRestTransport._BaseListOperations, VpcFlowLogsServiceRestStub):
         def __hash__(self):
             return hash("VpcFlowLogsServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3184,26 +2529,16 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVpcFlowLogsServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVpcFlowLogsServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3227,12 +2562,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
 
             # Send the request
             response = VpcFlowLogsServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3244,9 +2574,7 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

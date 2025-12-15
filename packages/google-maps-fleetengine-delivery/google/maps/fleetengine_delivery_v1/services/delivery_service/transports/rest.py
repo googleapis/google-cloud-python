@@ -29,12 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.maps.fleetengine_delivery_v1.types import (
-    delivery_api,
-    delivery_vehicles,
-    task_tracking_info,
-    tasks,
-)
+from google.maps.fleetengine_delivery_v1.types import delivery_api, delivery_vehicles, task_tracking_info, tasks
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDeliveryServiceRestTransport
@@ -173,12 +168,8 @@ class DeliveryServiceRestInterceptor:
     """
 
     def pre_batch_create_tasks(
-        self,
-        request: delivery_api.BatchCreateTasksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.BatchCreateTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: delivery_api.BatchCreateTasksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.BatchCreateTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_tasks
 
         Override in a subclass to manipulate the request or metadata
@@ -186,9 +177,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_tasks(
-        self, response: delivery_api.BatchCreateTasksResponse
-    ) -> delivery_api.BatchCreateTasksResponse:
+    def post_batch_create_tasks(self, response: delivery_api.BatchCreateTasksResponse) -> delivery_api.BatchCreateTasksResponse:
         """Post-rpc interceptor for batch_create_tasks
 
         DEPRECATED. Please use the `post_batch_create_tasks_with_metadata`
@@ -202,12 +191,8 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_batch_create_tasks_with_metadata(
-        self,
-        response: delivery_api.BatchCreateTasksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.BatchCreateTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: delivery_api.BatchCreateTasksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.BatchCreateTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_tasks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -223,13 +208,8 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_create_delivery_vehicle(
-        self,
-        request: delivery_api.CreateDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.CreateDeliveryVehicleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: delivery_api.CreateDeliveryVehicleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.CreateDeliveryVehicleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -237,9 +217,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_delivery_vehicle(
-        self, response: delivery_vehicles.DeliveryVehicle
-    ) -> delivery_vehicles.DeliveryVehicle:
+    def post_create_delivery_vehicle(self, response: delivery_vehicles.DeliveryVehicle) -> delivery_vehicles.DeliveryVehicle:
         """Post-rpc interceptor for create_delivery_vehicle
 
         DEPRECATED. Please use the `post_create_delivery_vehicle_with_metadata`
@@ -253,12 +231,8 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_create_delivery_vehicle_with_metadata(
-        self,
-        response: delivery_vehicles.DeliveryVehicle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: delivery_vehicles.DeliveryVehicle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_delivery_vehicle
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -274,9 +248,7 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_create_task(
-        self,
-        request: delivery_api.CreateTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: delivery_api.CreateTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[delivery_api.CreateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_task
 
@@ -316,13 +288,8 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_delivery_vehicle(
-        self,
-        request: delivery_api.DeleteDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.DeleteDeliveryVehicleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: delivery_api.DeleteDeliveryVehicleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.DeleteDeliveryVehicleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -331,9 +298,7 @@ class DeliveryServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_task(
-        self,
-        request: delivery_api.DeleteTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: delivery_api.DeleteTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[delivery_api.DeleteTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_task
 
@@ -343,12 +308,8 @@ class DeliveryServiceRestInterceptor:
         return request, metadata
 
     def pre_get_delivery_vehicle(
-        self,
-        request: delivery_api.GetDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.GetDeliveryVehicleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: delivery_api.GetDeliveryVehicleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.GetDeliveryVehicleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -356,9 +317,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_delivery_vehicle(
-        self, response: delivery_vehicles.DeliveryVehicle
-    ) -> delivery_vehicles.DeliveryVehicle:
+    def post_get_delivery_vehicle(self, response: delivery_vehicles.DeliveryVehicle) -> delivery_vehicles.DeliveryVehicle:
         """Post-rpc interceptor for get_delivery_vehicle
 
         DEPRECATED. Please use the `post_get_delivery_vehicle_with_metadata`
@@ -372,12 +331,8 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_get_delivery_vehicle_with_metadata(
-        self,
-        response: delivery_vehicles.DeliveryVehicle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: delivery_vehicles.DeliveryVehicle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_delivery_vehicle
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -393,9 +348,7 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_task(
-        self,
-        request: delivery_api.GetTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: delivery_api.GetTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[delivery_api.GetTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_task
 
@@ -435,12 +388,8 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_task_tracking_info(
-        self,
-        request: delivery_api.GetTaskTrackingInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.GetTaskTrackingInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: delivery_api.GetTaskTrackingInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.GetTaskTrackingInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_task_tracking_info
 
         Override in a subclass to manipulate the request or metadata
@@ -448,9 +397,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_task_tracking_info(
-        self, response: task_tracking_info.TaskTrackingInfo
-    ) -> task_tracking_info.TaskTrackingInfo:
+    def post_get_task_tracking_info(self, response: task_tracking_info.TaskTrackingInfo) -> task_tracking_info.TaskTrackingInfo:
         """Post-rpc interceptor for get_task_tracking_info
 
         DEPRECATED. Please use the `post_get_task_tracking_info_with_metadata`
@@ -464,12 +411,8 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_get_task_tracking_info_with_metadata(
-        self,
-        response: task_tracking_info.TaskTrackingInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        task_tracking_info.TaskTrackingInfo, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: task_tracking_info.TaskTrackingInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[task_tracking_info.TaskTrackingInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_task_tracking_info
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -485,13 +428,8 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_delivery_vehicles(
-        self,
-        request: delivery_api.ListDeliveryVehiclesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.ListDeliveryVehiclesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: delivery_api.ListDeliveryVehiclesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.ListDeliveryVehiclesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_delivery_vehicles
 
         Override in a subclass to manipulate the request or metadata
@@ -499,9 +437,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_delivery_vehicles(
-        self, response: delivery_api.ListDeliveryVehiclesResponse
-    ) -> delivery_api.ListDeliveryVehiclesResponse:
+    def post_list_delivery_vehicles(self, response: delivery_api.ListDeliveryVehiclesResponse) -> delivery_api.ListDeliveryVehiclesResponse:
         """Post-rpc interceptor for list_delivery_vehicles
 
         DEPRECATED. Please use the `post_list_delivery_vehicles_with_metadata`
@@ -515,13 +451,8 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_list_delivery_vehicles_with_metadata(
-        self,
-        response: delivery_api.ListDeliveryVehiclesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.ListDeliveryVehiclesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: delivery_api.ListDeliveryVehiclesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.ListDeliveryVehiclesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_delivery_vehicles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -537,9 +468,7 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_tasks(
-        self,
-        request: delivery_api.ListTasksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: delivery_api.ListTasksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[delivery_api.ListTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tasks
 
@@ -548,9 +477,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tasks(
-        self, response: delivery_api.ListTasksResponse
-    ) -> delivery_api.ListTasksResponse:
+    def post_list_tasks(self, response: delivery_api.ListTasksResponse) -> delivery_api.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
         DEPRECATED. Please use the `post_list_tasks_with_metadata`
@@ -564,9 +491,7 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_list_tasks_with_metadata(
-        self,
-        response: delivery_api.ListTasksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: delivery_api.ListTasksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[delivery_api.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tasks
 
@@ -583,13 +508,8 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_update_delivery_vehicle(
-        self,
-        request: delivery_api.UpdateDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_api.UpdateDeliveryVehicleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: delivery_api.UpdateDeliveryVehicleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_api.UpdateDeliveryVehicleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -597,9 +517,7 @@ class DeliveryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_delivery_vehicle(
-        self, response: delivery_vehicles.DeliveryVehicle
-    ) -> delivery_vehicles.DeliveryVehicle:
+    def post_update_delivery_vehicle(self, response: delivery_vehicles.DeliveryVehicle) -> delivery_vehicles.DeliveryVehicle:
         """Post-rpc interceptor for update_delivery_vehicle
 
         DEPRECATED. Please use the `post_update_delivery_vehicle_with_metadata`
@@ -613,12 +531,8 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def post_update_delivery_vehicle_with_metadata(
-        self,
-        response: delivery_vehicles.DeliveryVehicle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: delivery_vehicles.DeliveryVehicle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_delivery_vehicle
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -634,9 +548,7 @@ class DeliveryServiceRestInterceptor:
         return response, metadata
 
     def pre_update_task(
-        self,
-        request: delivery_api.UpdateTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: delivery_api.UpdateTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[delivery_api.UpdateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_task
 
@@ -755,30 +667,18 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DeliveryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchCreateTasks(
-        _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks, DeliveryServiceRestStub
-    ):
+    class _BatchCreateTasks(_BaseDeliveryServiceRestTransport._BaseBatchCreateTasks, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.BatchCreateTasks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -818,32 +718,18 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     The ``BatchCreateTask`` response message.
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_tasks(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_tasks(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_transcoded_request(http_options, request)
 
-            body = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -867,13 +753,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._BatchCreateTasks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -889,16 +769,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_tasks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_tasks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_tasks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = delivery_api.BatchCreateTasksResponse.to_json(
-                        response
-                    )
+                    response_payload = delivery_api.BatchCreateTasksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -917,23 +791,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _CreateDeliveryVehicle(
-        _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle,
-        DeliveryServiceRestStub,
-    ):
+    class _CreateDeliveryVehicle(_BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.CreateDeliveryVehicle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -985,32 +848,18 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_delivery_vehicle(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_delivery_vehicle(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_transcoded_request(http_options, request)
 
-            body = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1033,16 +882,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeliveryServiceRestTransport._CreateDeliveryVehicle._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeliveryServiceRestTransport._CreateDeliveryVehicle._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1058,16 +899,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_create_delivery_vehicle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_delivery_vehicle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_delivery_vehicle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(
-                        response
-                    )
+                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1086,22 +921,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _CreateTask(
-        _BaseDeliveryServiceRestTransport._BaseCreateTask, DeliveryServiceRestStub
-    ):
+    class _CreateTask(_BaseDeliveryServiceRestTransport._BaseCreateTask, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.CreateTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1157,30 +982,18 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseCreateTask._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_http_options()
 
             request, metadata = self._interceptor.pre_create_task(request, metadata)
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_transcoded_request(http_options, request)
 
-            body = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1204,13 +1017,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._CreateTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1226,12 +1033,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_create_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
                 except:
@@ -1252,23 +1055,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDeliveryVehicle(
-        _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle,
-        DeliveryServiceRestStub,
-    ):
+    class _DeleteDeliveryVehicle(_BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.DeleteDeliveryVehicle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1304,28 +1096,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_delivery_vehicle(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_delivery_vehicle(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1348,15 +1128,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeliveryServiceRestTransport._DeleteDeliveryVehicle._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeliveryServiceRestTransport._DeleteDeliveryVehicle._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1364,22 +1137,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteTask(
-        _BaseDeliveryServiceRestTransport._BaseDeleteTask, DeliveryServiceRestStub
-    ):
+    class _DeleteTask(_BaseDeliveryServiceRestTransport._BaseDeleteTask, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.DeleteTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1414,26 +1177,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_task(request, metadata)
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1457,12 +1210,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._DeleteTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1470,23 +1218,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDeliveryVehicle(
-        _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle,
-        DeliveryServiceRestStub,
-    ):
+    class _GetDeliveryVehicle(_BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.GetDeliveryVehicle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1537,28 +1274,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_delivery_vehicle(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_delivery_vehicle(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1582,12 +1307,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._GetDeliveryVehicle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1603,16 +1323,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_get_delivery_vehicle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_delivery_vehicle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_delivery_vehicle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(
-                        response
-                    )
+                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1631,22 +1345,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _GetTask(
-        _BaseDeliveryServiceRestTransport._BaseGetTask, DeliveryServiceRestStub
-    ):
+    class _GetTask(_BaseDeliveryServiceRestTransport._BaseGetTask, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.GetTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1701,30 +1405,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseGetTask._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseGetTask._get_http_options()
 
             request, metadata = self._interceptor.pre_get_task(request, metadata)
-            transcoded_request = (
-                _BaseDeliveryServiceRestTransport._BaseGetTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDeliveryServiceRestTransport._BaseGetTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseGetTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1748,12 +1438,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._GetTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1769,12 +1454,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_get_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
                 except:
@@ -1795,23 +1476,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _GetTaskTrackingInfo(
-        _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo,
-        DeliveryServiceRestStub,
-    ):
+    class _GetTaskTrackingInfo(_BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.GetTaskTrackingInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1855,28 +1525,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_task_tracking_info(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_task_tracking_info(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1900,12 +1558,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._GetTaskTrackingInfo._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1921,16 +1574,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_get_task_tracking_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_task_tracking_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_task_tracking_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = task_tracking_info.TaskTrackingInfo.to_json(
-                        response
-                    )
+                    response_payload = task_tracking_info.TaskTrackingInfo.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1949,23 +1596,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _ListDeliveryVehicles(
-        _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles,
-        DeliveryServiceRestStub,
-    ):
+    class _ListDeliveryVehicles(_BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.ListDeliveryVehicles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2004,28 +1640,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     The ``ListDeliveryVehicles`` response message.
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_delivery_vehicles(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_delivery_vehicles(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2049,12 +1673,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._ListDeliveryVehicles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2070,16 +1689,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_list_delivery_vehicles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_delivery_vehicles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_delivery_vehicles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        delivery_api.ListDeliveryVehiclesResponse.to_json(response)
-                    )
+                    response_payload = delivery_api.ListDeliveryVehiclesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2098,22 +1711,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _ListTasks(
-        _BaseDeliveryServiceRestTransport._BaseListTasks, DeliveryServiceRestStub
-    ):
+    class _ListTasks(_BaseDeliveryServiceRestTransport._BaseListTasks, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.ListTasks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2155,28 +1758,16 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseListTasks._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseListTasks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tasks(request, metadata)
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseListTasks._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseListTasks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDeliveryServiceRestTransport._BaseListTasks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseListTasks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2200,12 +1791,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._ListTasks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2221,12 +1807,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_list_tasks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tasks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = delivery_api.ListTasksResponse.to_json(response)
                 except:
@@ -2247,23 +1829,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDeliveryVehicle(
-        _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle,
-        DeliveryServiceRestStub,
-    ):
+    class _UpdateDeliveryVehicle(_BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.UpdateDeliveryVehicle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2315,32 +1886,18 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_delivery_vehicle(
-                request, metadata
-            )
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_delivery_vehicle(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_transcoded_request(http_options, request)
 
-            body = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2363,16 +1920,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeliveryServiceRestTransport._UpdateDeliveryVehicle._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeliveryServiceRestTransport._UpdateDeliveryVehicle._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2388,16 +1937,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_update_delivery_vehicle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_delivery_vehicle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_delivery_vehicle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(
-                        response
-                    )
+                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2416,22 +1959,12 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 )
             return resp
 
-    class _UpdateTask(
-        _BaseDeliveryServiceRestTransport._BaseUpdateTask, DeliveryServiceRestStub
-    ):
+    class _UpdateTask(_BaseDeliveryServiceRestTransport._BaseUpdateTask, DeliveryServiceRestStub):
         def __hash__(self):
             return hash("DeliveryServiceRestTransport.UpdateTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2487,30 +2020,18 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_http_options()
-            )
+            http_options = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_http_options()
 
             request, metadata = self._interceptor.pre_update_task(request, metadata)
-            transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_transcoded_request(http_options, request)
 
-            body = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2534,13 +2055,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             # Send the request
             response = DeliveryServiceRestTransport._UpdateTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2556,12 +2071,8 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
 
             resp = self._interceptor.post_update_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
                 except:
@@ -2583,21 +2094,13 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             return resp
 
     @property
-    def batch_create_tasks(
-        self,
-    ) -> Callable[
-        [delivery_api.BatchCreateTasksRequest], delivery_api.BatchCreateTasksResponse
-    ]:
+    def batch_create_tasks(self) -> Callable[[delivery_api.BatchCreateTasksRequest], delivery_api.BatchCreateTasksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateTasks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.CreateDeliveryVehicleRequest], delivery_vehicles.DeliveryVehicle
-    ]:
+    def create_delivery_vehicle(self) -> Callable[[delivery_api.CreateDeliveryVehicleRequest], delivery_vehicles.DeliveryVehicle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeliveryVehicle(self._session, self._host, self._interceptor)  # type: ignore
@@ -2609,27 +2112,19 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
         return self._CreateTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_delivery_vehicle(
-        self,
-    ) -> Callable[[delivery_api.DeleteDeliveryVehicleRequest], empty_pb2.Empty]:
+    def delete_delivery_vehicle(self) -> Callable[[delivery_api.DeleteDeliveryVehicleRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDeliveryVehicle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[[delivery_api.DeleteTaskRequest], empty_pb2.Empty]:
+    def delete_task(self) -> Callable[[delivery_api.DeleteTaskRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.GetDeliveryVehicleRequest], delivery_vehicles.DeliveryVehicle
-    ]:
+    def get_delivery_vehicle(self) -> Callable[[delivery_api.GetDeliveryVehicleRequest], delivery_vehicles.DeliveryVehicle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeliveryVehicle(self._session, self._host, self._interceptor)  # type: ignore
@@ -2641,40 +2136,25 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
         return self._GetTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_task_tracking_info(
-        self,
-    ) -> Callable[
-        [delivery_api.GetTaskTrackingInfoRequest], task_tracking_info.TaskTrackingInfo
-    ]:
+    def get_task_tracking_info(self) -> Callable[[delivery_api.GetTaskTrackingInfoRequest], task_tracking_info.TaskTrackingInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTaskTrackingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_delivery_vehicles(
-        self,
-    ) -> Callable[
-        [delivery_api.ListDeliveryVehiclesRequest],
-        delivery_api.ListDeliveryVehiclesResponse,
-    ]:
+    def list_delivery_vehicles(self) -> Callable[[delivery_api.ListDeliveryVehiclesRequest], delivery_api.ListDeliveryVehiclesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeliveryVehicles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[[delivery_api.ListTasksRequest], delivery_api.ListTasksResponse]:
+    def list_tasks(self) -> Callable[[delivery_api.ListTasksRequest], delivery_api.ListTasksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTasks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.UpdateDeliveryVehicleRequest], delivery_vehicles.DeliveryVehicle
-    ]:
+    def update_delivery_vehicle(self) -> Callable[[delivery_api.UpdateDeliveryVehicleRequest], delivery_vehicles.DeliveryVehicle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeliveryVehicle(self._session, self._host, self._interceptor)  # type: ignore

@@ -329,13 +329,8 @@ class VideoStitcherServiceRestInterceptor:
     """
 
     def pre_create_cdn_key(
-        self,
-        request: video_stitcher_service.CreateCdnKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.CreateCdnKeyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.CreateCdnKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.CreateCdnKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cdn_key
 
         Override in a subclass to manipulate the request or metadata
@@ -343,9 +338,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cdn_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cdn_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cdn_key
 
         DEPRECATED. Please use the `post_create_cdn_key_with_metadata`
@@ -359,9 +352,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_create_cdn_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cdn_key
 
@@ -378,13 +369,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_create_live_config(
-        self,
-        request: video_stitcher_service.CreateLiveConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.CreateLiveConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.CreateLiveConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.CreateLiveConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_live_config
 
         Override in a subclass to manipulate the request or metadata
@@ -392,9 +378,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_live_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_live_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_live_config
 
         DEPRECATED. Please use the `post_create_live_config_with_metadata`
@@ -408,9 +392,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_create_live_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_live_config
 
@@ -427,13 +409,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_create_live_session(
-        self,
-        request: video_stitcher_service.CreateLiveSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.CreateLiveSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.CreateLiveSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.CreateLiveSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_live_session
 
         Override in a subclass to manipulate the request or metadata
@@ -441,9 +418,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_live_session(
-        self, response: sessions.LiveSession
-    ) -> sessions.LiveSession:
+    def post_create_live_session(self, response: sessions.LiveSession) -> sessions.LiveSession:
         """Post-rpc interceptor for create_live_session
 
         DEPRECATED. Please use the `post_create_live_session_with_metadata`
@@ -457,9 +432,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_create_live_session_with_metadata(
-        self,
-        response: sessions.LiveSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sessions.LiveSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.LiveSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_live_session
 
@@ -476,13 +449,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_create_slate(
-        self,
-        request: video_stitcher_service.CreateSlateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.CreateSlateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.CreateSlateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.CreateSlateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_slate
 
         Override in a subclass to manipulate the request or metadata
@@ -490,9 +458,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_slate(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_slate(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_slate
 
         DEPRECATED. Please use the `post_create_slate_with_metadata`
@@ -506,9 +472,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_create_slate_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_slate
 
@@ -525,13 +489,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_create_vod_config(
-        self,
-        request: video_stitcher_service.CreateVodConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.CreateVodConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.CreateVodConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.CreateVodConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_vod_config
 
         Override in a subclass to manipulate the request or metadata
@@ -539,9 +498,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_vod_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_vod_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_vod_config
 
         DEPRECATED. Please use the `post_create_vod_config_with_metadata`
@@ -555,9 +512,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_create_vod_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_vod_config
 
@@ -574,13 +529,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_create_vod_session(
-        self,
-        request: video_stitcher_service.CreateVodSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.CreateVodSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.CreateVodSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.CreateVodSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_vod_session
 
         Override in a subclass to manipulate the request or metadata
@@ -588,9 +538,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_vod_session(
-        self, response: sessions.VodSession
-    ) -> sessions.VodSession:
+    def post_create_vod_session(self, response: sessions.VodSession) -> sessions.VodSession:
         """Post-rpc interceptor for create_vod_session
 
         DEPRECATED. Please use the `post_create_vod_session_with_metadata`
@@ -604,9 +552,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_create_vod_session_with_metadata(
-        self,
-        response: sessions.VodSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sessions.VodSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.VodSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_vod_session
 
@@ -623,13 +569,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_cdn_key(
-        self,
-        request: video_stitcher_service.DeleteCdnKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.DeleteCdnKeyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.DeleteCdnKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.DeleteCdnKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cdn_key
 
         Override in a subclass to manipulate the request or metadata
@@ -637,9 +578,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cdn_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cdn_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cdn_key
 
         DEPRECATED. Please use the `post_delete_cdn_key_with_metadata`
@@ -653,9 +592,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_delete_cdn_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cdn_key
 
@@ -672,13 +609,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_live_config(
-        self,
-        request: video_stitcher_service.DeleteLiveConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.DeleteLiveConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.DeleteLiveConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.DeleteLiveConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_live_config
 
         Override in a subclass to manipulate the request or metadata
@@ -686,9 +618,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_live_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_live_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_live_config
 
         DEPRECATED. Please use the `post_delete_live_config_with_metadata`
@@ -702,9 +632,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_delete_live_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_live_config
 
@@ -721,13 +649,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_slate(
-        self,
-        request: video_stitcher_service.DeleteSlateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.DeleteSlateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.DeleteSlateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.DeleteSlateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_slate
 
         Override in a subclass to manipulate the request or metadata
@@ -735,9 +658,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_slate(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_slate(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_slate
 
         DEPRECATED. Please use the `post_delete_slate_with_metadata`
@@ -751,9 +672,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_delete_slate_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_slate
 
@@ -770,13 +689,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_vod_config(
-        self,
-        request: video_stitcher_service.DeleteVodConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.DeleteVodConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.DeleteVodConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.DeleteVodConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_vod_config
 
         Override in a subclass to manipulate the request or metadata
@@ -784,9 +698,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_vod_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_vod_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_vod_config
 
         DEPRECATED. Please use the `post_delete_vod_config_with_metadata`
@@ -800,9 +712,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_delete_vod_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_vod_config
 
@@ -819,12 +729,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_cdn_key(
-        self,
-        request: video_stitcher_service.GetCdnKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetCdnKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: video_stitcher_service.GetCdnKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetCdnKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cdn_key
 
         Override in a subclass to manipulate the request or metadata
@@ -846,9 +752,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_cdn_key_with_metadata(
-        self,
-        response: cdn_keys.CdnKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cdn_keys.CdnKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cdn_keys.CdnKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cdn_key
 
@@ -865,13 +769,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_live_ad_tag_detail(
-        self,
-        request: video_stitcher_service.GetLiveAdTagDetailRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetLiveAdTagDetailRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetLiveAdTagDetailRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetLiveAdTagDetailRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_live_ad_tag_detail
 
         Override in a subclass to manipulate the request or metadata
@@ -879,9 +778,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_live_ad_tag_detail(
-        self, response: ad_tag_details.LiveAdTagDetail
-    ) -> ad_tag_details.LiveAdTagDetail:
+    def post_get_live_ad_tag_detail(self, response: ad_tag_details.LiveAdTagDetail) -> ad_tag_details.LiveAdTagDetail:
         """Post-rpc interceptor for get_live_ad_tag_detail
 
         DEPRECATED. Please use the `post_get_live_ad_tag_detail_with_metadata`
@@ -895,9 +792,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_live_ad_tag_detail_with_metadata(
-        self,
-        response: ad_tag_details.LiveAdTagDetail,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_tag_details.LiveAdTagDetail, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_tag_details.LiveAdTagDetail, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_live_ad_tag_detail
 
@@ -914,13 +809,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_live_config(
-        self,
-        request: video_stitcher_service.GetLiveConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetLiveConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetLiveConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetLiveConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_live_config
 
         Override in a subclass to manipulate the request or metadata
@@ -928,9 +818,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_live_config(
-        self, response: live_configs.LiveConfig
-    ) -> live_configs.LiveConfig:
+    def post_get_live_config(self, response: live_configs.LiveConfig) -> live_configs.LiveConfig:
         """Post-rpc interceptor for get_live_config
 
         DEPRECATED. Please use the `post_get_live_config_with_metadata`
@@ -944,9 +832,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_live_config_with_metadata(
-        self,
-        response: live_configs.LiveConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: live_configs.LiveConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[live_configs.LiveConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_live_config
 
@@ -963,13 +849,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_live_session(
-        self,
-        request: video_stitcher_service.GetLiveSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetLiveSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetLiveSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetLiveSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_live_session
 
         Override in a subclass to manipulate the request or metadata
@@ -977,9 +858,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_live_session(
-        self, response: sessions.LiveSession
-    ) -> sessions.LiveSession:
+    def post_get_live_session(self, response: sessions.LiveSession) -> sessions.LiveSession:
         """Post-rpc interceptor for get_live_session
 
         DEPRECATED. Please use the `post_get_live_session_with_metadata`
@@ -993,9 +872,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_live_session_with_metadata(
-        self,
-        response: sessions.LiveSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sessions.LiveSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.LiveSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_live_session
 
@@ -1012,12 +889,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_slate(
-        self,
-        request: video_stitcher_service.GetSlateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetSlateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: video_stitcher_service.GetSlateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetSlateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_slate
 
         Override in a subclass to manipulate the request or metadata
@@ -1056,13 +929,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_vod_ad_tag_detail(
-        self,
-        request: video_stitcher_service.GetVodAdTagDetailRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetVodAdTagDetailRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetVodAdTagDetailRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetVodAdTagDetailRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vod_ad_tag_detail
 
         Override in a subclass to manipulate the request or metadata
@@ -1070,9 +938,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vod_ad_tag_detail(
-        self, response: ad_tag_details.VodAdTagDetail
-    ) -> ad_tag_details.VodAdTagDetail:
+    def post_get_vod_ad_tag_detail(self, response: ad_tag_details.VodAdTagDetail) -> ad_tag_details.VodAdTagDetail:
         """Post-rpc interceptor for get_vod_ad_tag_detail
 
         DEPRECATED. Please use the `post_get_vod_ad_tag_detail_with_metadata`
@@ -1086,9 +952,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_vod_ad_tag_detail_with_metadata(
-        self,
-        response: ad_tag_details.VodAdTagDetail,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_tag_details.VodAdTagDetail, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_tag_details.VodAdTagDetail, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vod_ad_tag_detail
 
@@ -1105,13 +969,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_vod_config(
-        self,
-        request: video_stitcher_service.GetVodConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetVodConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetVodConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetVodConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vod_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1119,9 +978,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vod_config(
-        self, response: vod_configs.VodConfig
-    ) -> vod_configs.VodConfig:
+    def post_get_vod_config(self, response: vod_configs.VodConfig) -> vod_configs.VodConfig:
         """Post-rpc interceptor for get_vod_config
 
         DEPRECATED. Please use the `post_get_vod_config_with_metadata`
@@ -1135,9 +992,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_vod_config_with_metadata(
-        self,
-        response: vod_configs.VodConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vod_configs.VodConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vod_configs.VodConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vod_config
 
@@ -1154,13 +1009,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_vod_session(
-        self,
-        request: video_stitcher_service.GetVodSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetVodSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetVodSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetVodSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vod_session
 
         Override in a subclass to manipulate the request or metadata
@@ -1168,9 +1018,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vod_session(
-        self, response: sessions.VodSession
-    ) -> sessions.VodSession:
+    def post_get_vod_session(self, response: sessions.VodSession) -> sessions.VodSession:
         """Post-rpc interceptor for get_vod_session
 
         DEPRECATED. Please use the `post_get_vod_session_with_metadata`
@@ -1184,9 +1032,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_vod_session_with_metadata(
-        self,
-        response: sessions.VodSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sessions.VodSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sessions.VodSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vod_session
 
@@ -1203,13 +1049,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_get_vod_stitch_detail(
-        self,
-        request: video_stitcher_service.GetVodStitchDetailRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.GetVodStitchDetailRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.GetVodStitchDetailRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.GetVodStitchDetailRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vod_stitch_detail
 
         Override in a subclass to manipulate the request or metadata
@@ -1217,9 +1058,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vod_stitch_detail(
-        self, response: stitch_details.VodStitchDetail
-    ) -> stitch_details.VodStitchDetail:
+    def post_get_vod_stitch_detail(self, response: stitch_details.VodStitchDetail) -> stitch_details.VodStitchDetail:
         """Post-rpc interceptor for get_vod_stitch_detail
 
         DEPRECATED. Please use the `post_get_vod_stitch_detail_with_metadata`
@@ -1233,9 +1072,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_get_vod_stitch_detail_with_metadata(
-        self,
-        response: stitch_details.VodStitchDetail,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: stitch_details.VodStitchDetail, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[stitch_details.VodStitchDetail, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vod_stitch_detail
 
@@ -1252,13 +1089,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_cdn_keys(
-        self,
-        request: video_stitcher_service.ListCdnKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListCdnKeysRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListCdnKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListCdnKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cdn_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -1266,9 +1098,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cdn_keys(
-        self, response: video_stitcher_service.ListCdnKeysResponse
-    ) -> video_stitcher_service.ListCdnKeysResponse:
+    def post_list_cdn_keys(self, response: video_stitcher_service.ListCdnKeysResponse) -> video_stitcher_service.ListCdnKeysResponse:
         """Post-rpc interceptor for list_cdn_keys
 
         DEPRECATED. Please use the `post_list_cdn_keys_with_metadata`
@@ -1282,13 +1112,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_cdn_keys_with_metadata(
-        self,
-        response: video_stitcher_service.ListCdnKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListCdnKeysResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListCdnKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListCdnKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cdn_keys
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1304,13 +1129,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_live_ad_tag_details(
-        self,
-        request: video_stitcher_service.ListLiveAdTagDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListLiveAdTagDetailsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListLiveAdTagDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListLiveAdTagDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_live_ad_tag_details
 
         Override in a subclass to manipulate the request or metadata
@@ -1334,13 +1154,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_live_ad_tag_details_with_metadata(
-        self,
-        response: video_stitcher_service.ListLiveAdTagDetailsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListLiveAdTagDetailsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListLiveAdTagDetailsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListLiveAdTagDetailsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_live_ad_tag_details
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1356,13 +1171,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_live_configs(
-        self,
-        request: video_stitcher_service.ListLiveConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListLiveConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListLiveConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListLiveConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_live_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1370,9 +1180,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_live_configs(
-        self, response: video_stitcher_service.ListLiveConfigsResponse
-    ) -> video_stitcher_service.ListLiveConfigsResponse:
+    def post_list_live_configs(self, response: video_stitcher_service.ListLiveConfigsResponse) -> video_stitcher_service.ListLiveConfigsResponse:
         """Post-rpc interceptor for list_live_configs
 
         DEPRECATED. Please use the `post_list_live_configs_with_metadata`
@@ -1386,13 +1194,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_live_configs_with_metadata(
-        self,
-        response: video_stitcher_service.ListLiveConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListLiveConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListLiveConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListLiveConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_live_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1408,13 +1211,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_slates(
-        self,
-        request: video_stitcher_service.ListSlatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListSlatesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListSlatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListSlatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_slates
 
         Override in a subclass to manipulate the request or metadata
@@ -1422,9 +1220,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_slates(
-        self, response: video_stitcher_service.ListSlatesResponse
-    ) -> video_stitcher_service.ListSlatesResponse:
+    def post_list_slates(self, response: video_stitcher_service.ListSlatesResponse) -> video_stitcher_service.ListSlatesResponse:
         """Post-rpc interceptor for list_slates
 
         DEPRECATED. Please use the `post_list_slates_with_metadata`
@@ -1438,13 +1234,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_slates_with_metadata(
-        self,
-        response: video_stitcher_service.ListSlatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListSlatesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListSlatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListSlatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_slates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1460,13 +1251,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_vod_ad_tag_details(
-        self,
-        request: video_stitcher_service.ListVodAdTagDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListVodAdTagDetailsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListVodAdTagDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListVodAdTagDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_vod_ad_tag_details
 
         Override in a subclass to manipulate the request or metadata
@@ -1490,13 +1276,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_vod_ad_tag_details_with_metadata(
-        self,
-        response: video_stitcher_service.ListVodAdTagDetailsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListVodAdTagDetailsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListVodAdTagDetailsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListVodAdTagDetailsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_vod_ad_tag_details
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1512,13 +1293,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_vod_configs(
-        self,
-        request: video_stitcher_service.ListVodConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListVodConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListVodConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListVodConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_vod_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1526,9 +1302,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_vod_configs(
-        self, response: video_stitcher_service.ListVodConfigsResponse
-    ) -> video_stitcher_service.ListVodConfigsResponse:
+    def post_list_vod_configs(self, response: video_stitcher_service.ListVodConfigsResponse) -> video_stitcher_service.ListVodConfigsResponse:
         """Post-rpc interceptor for list_vod_configs
 
         DEPRECATED. Please use the `post_list_vod_configs_with_metadata`
@@ -1542,13 +1316,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_vod_configs_with_metadata(
-        self,
-        response: video_stitcher_service.ListVodConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListVodConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListVodConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListVodConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_vod_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1564,13 +1333,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_list_vod_stitch_details(
-        self,
-        request: video_stitcher_service.ListVodStitchDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListVodStitchDetailsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.ListVodStitchDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListVodStitchDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_vod_stitch_details
 
         Override in a subclass to manipulate the request or metadata
@@ -1594,13 +1358,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_list_vod_stitch_details_with_metadata(
-        self,
-        response: video_stitcher_service.ListVodStitchDetailsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.ListVodStitchDetailsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: video_stitcher_service.ListVodStitchDetailsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.ListVodStitchDetailsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_vod_stitch_details
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1616,13 +1375,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_update_cdn_key(
-        self,
-        request: video_stitcher_service.UpdateCdnKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.UpdateCdnKeyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.UpdateCdnKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.UpdateCdnKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cdn_key
 
         Override in a subclass to manipulate the request or metadata
@@ -1630,9 +1384,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cdn_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_cdn_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cdn_key
 
         DEPRECATED. Please use the `post_update_cdn_key_with_metadata`
@@ -1646,9 +1398,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_update_cdn_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cdn_key
 
@@ -1665,13 +1415,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_update_live_config(
-        self,
-        request: video_stitcher_service.UpdateLiveConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.UpdateLiveConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.UpdateLiveConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.UpdateLiveConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_live_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1679,9 +1424,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_live_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_live_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_live_config
 
         DEPRECATED. Please use the `post_update_live_config_with_metadata`
@@ -1695,9 +1438,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_update_live_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_live_config
 
@@ -1714,13 +1455,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_update_slate(
-        self,
-        request: video_stitcher_service.UpdateSlateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.UpdateSlateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.UpdateSlateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.UpdateSlateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_slate
 
         Override in a subclass to manipulate the request or metadata
@@ -1728,9 +1464,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_slate(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_slate(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_slate
 
         DEPRECATED. Please use the `post_update_slate_with_metadata`
@@ -1744,9 +1478,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_update_slate_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_slate
 
@@ -1763,13 +1495,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_update_vod_config(
-        self,
-        request: video_stitcher_service.UpdateVodConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        video_stitcher_service.UpdateVodConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: video_stitcher_service.UpdateVodConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[video_stitcher_service.UpdateVodConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_vod_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1777,9 +1504,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_vod_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_vod_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_vod_config
 
         DEPRECATED. Please use the `post_update_vod_config_with_metadata`
@@ -1793,9 +1518,7 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def post_update_vod_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_vod_config
 
@@ -1812,12 +1535,8 @@ class VideoStitcherServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1835,12 +1554,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1858,12 +1573,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1871,9 +1582,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1883,12 +1592,8 @@ class VideoStitcherServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1896,9 +1601,7 @@ class VideoStitcherServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1991,9 +1694,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2046,30 +1747,17 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateCdnKey(
-        _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CreateCdnKey(_BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CreateCdnKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2113,30 +1801,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cdn_key(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2160,13 +1836,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._CreateCdnKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2180,12 +1850,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_create_cdn_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cdn_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cdn_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2206,23 +1872,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _CreateLiveConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CreateLiveConfig(_BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CreateLiveConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2266,32 +1921,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_live_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_live_config(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2314,16 +1955,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._CreateLiveConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VideoStitcherServiceRestTransport._CreateLiveConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2337,12 +1970,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_create_live_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_live_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_live_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2363,23 +1992,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _CreateLiveSession(
-        _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CreateLiveSession(_BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CreateLiveSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2424,32 +2042,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_live_session(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_live_session(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2472,16 +2076,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._CreateLiveSession._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VideoStitcherServiceRestTransport._CreateLiveSession._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2497,12 +2093,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_create_live_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_live_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_live_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sessions.LiveSession.to_json(response)
                 except:
@@ -2523,23 +2115,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _CreateSlate(
-        _BaseVideoStitcherServiceRestTransport._BaseCreateSlate,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CreateSlate(_BaseVideoStitcherServiceRestTransport._BaseCreateSlate, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CreateSlate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2583,30 +2164,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_create_slate(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2630,13 +2199,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._CreateSlate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2650,12 +2213,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_create_slate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_slate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_slate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2676,23 +2235,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _CreateVodConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CreateVodConfig(_BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CreateVodConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2736,32 +2284,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_vod_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_vod_config(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2785,13 +2319,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._CreateVodConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2805,12 +2333,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_create_vod_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_vod_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_vod_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2831,23 +2355,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _CreateVodSession(
-        _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CreateVodSession(_BaseVideoStitcherServiceRestTransport._BaseCreateVodSession, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CreateVodSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2891,32 +2404,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_vod_session(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_vod_session(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2939,16 +2438,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._CreateVodSession._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VideoStitcherServiceRestTransport._CreateVodSession._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2964,12 +2455,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_create_vod_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_vod_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_vod_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sessions.VodSession.to_json(response)
                 except:
@@ -2990,23 +2477,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _DeleteCdnKey(
-        _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey,
-        VideoStitcherServiceRestStub,
-    ):
+    class _DeleteCdnKey(_BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.DeleteCdnKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3049,26 +2525,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cdn_key(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3092,12 +2558,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._DeleteCdnKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3111,12 +2572,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_delete_cdn_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cdn_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cdn_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3137,23 +2594,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _DeleteLiveConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _DeleteLiveConfig(_BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.DeleteLiveConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3196,28 +2642,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_live_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_live_config(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3240,15 +2674,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._DeleteLiveConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._DeleteLiveConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3262,12 +2689,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_delete_live_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_live_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_live_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3288,23 +2711,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSlate(
-        _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate,
-        VideoStitcherServiceRestStub,
-    ):
+    class _DeleteSlate(_BaseVideoStitcherServiceRestTransport._BaseDeleteSlate, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.DeleteSlate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3347,26 +2759,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_slate(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3390,12 +2792,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._DeleteSlate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3409,12 +2806,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_delete_slate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_slate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_slate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3435,23 +2828,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _DeleteVodConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _DeleteVodConfig(_BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.DeleteVodConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3494,28 +2876,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_vod_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_vod_config(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3539,12 +2909,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._DeleteVodConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3558,12 +2923,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_delete_vod_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_vod_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_vod_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3584,23 +2945,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetCdnKey(
-        _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetCdnKey(_BaseVideoStitcherServiceRestTransport._BaseGetCdnKey, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetCdnKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3644,26 +2994,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cdn_key(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3687,12 +3027,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetCdnKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3708,12 +3043,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_cdn_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cdn_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cdn_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cdn_keys.CdnKey.to_json(response)
                 except:
@@ -3734,23 +3065,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetLiveAdTagDetail(
-        _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetLiveAdTagDetail(_BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetLiveAdTagDetail")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3795,28 +3115,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_live_ad_tag_detail(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_live_ad_tag_detail(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3839,15 +3147,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._GetLiveAdTagDetail._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._GetLiveAdTagDetail._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3863,12 +3164,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_live_ad_tag_detail(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_live_ad_tag_detail_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_live_ad_tag_detail_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_tag_details.LiveAdTagDetail.to_json(response)
                 except:
@@ -3889,23 +3186,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetLiveConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetLiveConfig(_BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetLiveConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3947,26 +3233,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_live_config(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3990,12 +3266,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetLiveConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4011,12 +3282,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_live_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_live_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_live_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = live_configs.LiveConfig.to_json(response)
                 except:
@@ -4037,23 +3304,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetLiveSession(
-        _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetLiveSession(_BaseVideoStitcherServiceRestTransport._BaseGetLiveSession, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetLiveSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4097,28 +3353,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_live_session(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_live_session(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4142,12 +3386,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetLiveSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4163,12 +3402,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_live_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_live_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_live_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sessions.LiveSession.to_json(response)
                 except:
@@ -4189,23 +3424,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetSlate(
-        _BaseVideoStitcherServiceRestTransport._BaseGetSlate,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetSlate(_BaseVideoStitcherServiceRestTransport._BaseGetSlate, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetSlate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4245,26 +3469,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     Slate object
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_slate(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetSlate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetSlate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetSlate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetSlate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4288,12 +3502,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetSlate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4309,12 +3518,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_slate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_slate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_slate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = slates.Slate.to_json(response)
                 except:
@@ -4335,23 +3540,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetVodAdTagDetail(
-        _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetVodAdTagDetail(_BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetVodAdTagDetail")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4396,28 +3590,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_vod_ad_tag_detail(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_vod_ad_tag_detail(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4440,15 +3622,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._GetVodAdTagDetail._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._GetVodAdTagDetail._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4464,12 +3639,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_vod_ad_tag_detail(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vod_ad_tag_detail_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vod_ad_tag_detail_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_tag_details.VodAdTagDetail.to_json(response)
                 except:
@@ -4490,23 +3661,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetVodConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetVodConfig(_BaseVideoStitcherServiceRestTransport._BaseGetVodConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetVodConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4548,26 +3708,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vod_config(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4591,12 +3741,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetVodConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4612,12 +3757,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_vod_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vod_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vod_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vod_configs.VodConfig.to_json(response)
                 except:
@@ -4638,23 +3779,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetVodSession(
-        _BaseVideoStitcherServiceRestTransport._BaseGetVodSession,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetVodSession(_BaseVideoStitcherServiceRestTransport._BaseGetVodSession, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetVodSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4697,26 +3827,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vod_session(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4740,12 +3860,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetVodSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4761,12 +3876,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_vod_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vod_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vod_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sessions.VodSession.to_json(response)
                 except:
@@ -4787,23 +3898,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _GetVodStitchDetail(
-        _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetVodStitchDetail(_BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetVodStitchDetail")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4848,28 +3948,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_vod_stitch_detail(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_vod_stitch_detail(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4892,15 +3980,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._GetVodStitchDetail._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._GetVodStitchDetail._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4916,12 +3997,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_get_vod_stitch_detail(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vod_stitch_detail_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vod_stitch_detail_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = stitch_details.VodStitchDetail.to_json(response)
                 except:
@@ -4942,23 +4019,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListCdnKeys(
-        _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListCdnKeys(_BaseVideoStitcherServiceRestTransport._BaseListCdnKeys, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListCdnKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5000,26 +4066,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_http_options()
 
             request, metadata = self._interceptor.pre_list_cdn_keys(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5043,12 +4099,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._ListCdnKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5064,16 +4115,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_cdn_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cdn_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cdn_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListCdnKeysResponse.to_json(response)
-                    )
+                    response_payload = video_stitcher_service.ListCdnKeysResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5092,23 +4137,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListLiveAdTagDetails(
-        _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListLiveAdTagDetails(_BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListLiveAdTagDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5150,28 +4184,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_live_ad_tag_details(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_live_ad_tag_details(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5194,15 +4216,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._ListLiveAdTagDetails._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._ListLiveAdTagDetails._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5218,18 +4233,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_live_ad_tag_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_live_ad_tag_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_live_ad_tag_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListLiveAdTagDetailsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = video_stitcher_service.ListLiveAdTagDetailsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5248,23 +4255,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListLiveConfigs(
-        _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListLiveConfigs(_BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListLiveConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5306,28 +4302,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_live_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_live_configs(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5351,12 +4335,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._ListLiveConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5372,16 +4351,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_live_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_live_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_live_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListLiveConfigsResponse.to_json(response)
-                    )
+                    response_payload = video_stitcher_service.ListLiveConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5400,23 +4373,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListSlates(
-        _BaseVideoStitcherServiceRestTransport._BaseListSlates,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListSlates(_BaseVideoStitcherServiceRestTransport._BaseListSlates, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListSlates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5458,26 +4420,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_http_options()
 
             request, metadata = self._interceptor.pre_list_slates(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5501,12 +4453,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._ListSlates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5522,16 +4469,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_slates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_slates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_slates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListSlatesResponse.to_json(response)
-                    )
+                    response_payload = video_stitcher_service.ListSlatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5550,23 +4491,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListVodAdTagDetails(
-        _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListVodAdTagDetails(_BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListVodAdTagDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5608,28 +4538,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_vod_ad_tag_details(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_vod_ad_tag_details(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5652,15 +4570,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._ListVodAdTagDetails._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._ListVodAdTagDetails._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5676,18 +4587,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_vod_ad_tag_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_vod_ad_tag_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_vod_ad_tag_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListVodAdTagDetailsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = video_stitcher_service.ListVodAdTagDetailsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5706,23 +4609,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListVodConfigs(
-        _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListVodConfigs(_BaseVideoStitcherServiceRestTransport._BaseListVodConfigs, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListVodConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5764,28 +4656,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_vod_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_vod_configs(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5809,12 +4689,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._ListVodConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5830,16 +4705,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_vod_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_vod_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_vod_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListVodConfigsResponse.to_json(response)
-                    )
+                    response_payload = video_stitcher_service.ListVodConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5858,23 +4727,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _ListVodStitchDetails(
-        _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListVodStitchDetails(_BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListVodStitchDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5916,28 +4774,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_vod_stitch_details(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_vod_stitch_details(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5960,15 +4806,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._ListVodStitchDetails._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VideoStitcherServiceRestTransport._ListVodStitchDetails._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5984,18 +4823,10 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_list_vod_stitch_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_vod_stitch_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_vod_stitch_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        video_stitcher_service.ListVodStitchDetailsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = video_stitcher_service.ListVodStitchDetailsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6014,23 +4845,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCdnKey(
-        _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey,
-        VideoStitcherServiceRestStub,
-    ):
+    class _UpdateCdnKey(_BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.UpdateCdnKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6074,30 +4894,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cdn_key(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6121,13 +4929,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._UpdateCdnKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6141,12 +4943,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_update_cdn_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cdn_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cdn_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6167,23 +4965,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLiveConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _UpdateLiveConfig(_BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.UpdateLiveConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6227,32 +5014,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_live_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_live_config(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6275,16 +5048,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VideoStitcherServiceRestTransport._UpdateLiveConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VideoStitcherServiceRestTransport._UpdateLiveConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6298,12 +5063,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_update_live_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_live_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_live_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6324,23 +5085,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSlate(
-        _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate,
-        VideoStitcherServiceRestStub,
-    ):
+    class _UpdateSlate(_BaseVideoStitcherServiceRestTransport._BaseUpdateSlate, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.UpdateSlate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6384,30 +5134,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_update_slate(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6431,13 +5169,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._UpdateSlate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6451,12 +5183,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_update_slate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_slate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_slate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6477,23 +5205,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 )
             return resp
 
-    class _UpdateVodConfig(
-        _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig,
-        VideoStitcherServiceRestStub,
-    ):
+    class _UpdateVodConfig(_BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.UpdateVodConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6537,32 +5254,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_vod_config(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_vod_config(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6586,13 +5289,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._UpdateVodConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6606,12 +5303,8 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             resp = self._interceptor.post_update_vod_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_vod_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_vod_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6633,194 +5326,121 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             return resp
 
     @property
-    def create_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateCdnKeyRequest], operations_pb2.Operation
-    ]:
+    def create_cdn_key(self) -> Callable[[video_stitcher_service.CreateCdnKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCdnKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateLiveConfigRequest], operations_pb2.Operation
-    ]:
+    def create_live_config(self) -> Callable[[video_stitcher_service.CreateLiveConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLiveConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_live_session(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateLiveSessionRequest], sessions.LiveSession
-    ]:
+    def create_live_session(self) -> Callable[[video_stitcher_service.CreateLiveSessionRequest], sessions.LiveSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLiveSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateSlateRequest], operations_pb2.Operation
-    ]:
+    def create_slate(self) -> Callable[[video_stitcher_service.CreateSlateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSlate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_vod_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateVodConfigRequest], operations_pb2.Operation
-    ]:
+    def create_vod_config(self) -> Callable[[video_stitcher_service.CreateVodConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVodConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_vod_session(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.CreateVodSessionRequest], sessions.VodSession
-    ]:
+    def create_vod_session(self) -> Callable[[video_stitcher_service.CreateVodSessionRequest], sessions.VodSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVodSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteCdnKeyRequest], operations_pb2.Operation
-    ]:
+    def delete_cdn_key(self) -> Callable[[video_stitcher_service.DeleteCdnKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCdnKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteLiveConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_live_config(self) -> Callable[[video_stitcher_service.DeleteLiveConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLiveConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteSlateRequest], operations_pb2.Operation
-    ]:
+    def delete_slate(self) -> Callable[[video_stitcher_service.DeleteSlateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSlate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_vod_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteVodConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_vod_config(self) -> Callable[[video_stitcher_service.DeleteVodConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVodConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cdn_key(
-        self,
-    ) -> Callable[[video_stitcher_service.GetCdnKeyRequest], cdn_keys.CdnKey]:
+    def get_cdn_key(self) -> Callable[[video_stitcher_service.GetCdnKeyRequest], cdn_keys.CdnKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCdnKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_live_ad_tag_detail(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetLiveAdTagDetailRequest],
-        ad_tag_details.LiveAdTagDetail,
-    ]:
+    def get_live_ad_tag_detail(self) -> Callable[[video_stitcher_service.GetLiveAdTagDetailRequest], ad_tag_details.LiveAdTagDetail]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLiveAdTagDetail(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetLiveConfigRequest], live_configs.LiveConfig
-    ]:
+    def get_live_config(self) -> Callable[[video_stitcher_service.GetLiveConfigRequest], live_configs.LiveConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLiveConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_live_session(
-        self,
-    ) -> Callable[[video_stitcher_service.GetLiveSessionRequest], sessions.LiveSession]:
+    def get_live_session(self) -> Callable[[video_stitcher_service.GetLiveSessionRequest], sessions.LiveSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLiveSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_slate(
-        self,
-    ) -> Callable[[video_stitcher_service.GetSlateRequest], slates.Slate]:
+    def get_slate(self) -> Callable[[video_stitcher_service.GetSlateRequest], slates.Slate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSlate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vod_ad_tag_detail(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodAdTagDetailRequest], ad_tag_details.VodAdTagDetail
-    ]:
+    def get_vod_ad_tag_detail(self) -> Callable[[video_stitcher_service.GetVodAdTagDetailRequest], ad_tag_details.VodAdTagDetail]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVodAdTagDetail(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vod_config(
-        self,
-    ) -> Callable[[video_stitcher_service.GetVodConfigRequest], vod_configs.VodConfig]:
+    def get_vod_config(self) -> Callable[[video_stitcher_service.GetVodConfigRequest], vod_configs.VodConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVodConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vod_session(
-        self,
-    ) -> Callable[[video_stitcher_service.GetVodSessionRequest], sessions.VodSession]:
+    def get_vod_session(self) -> Callable[[video_stitcher_service.GetVodSessionRequest], sessions.VodSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVodSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vod_stitch_detail(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodStitchDetailRequest],
-        stitch_details.VodStitchDetail,
-    ]:
+    def get_vod_stitch_detail(self) -> Callable[[video_stitcher_service.GetVodStitchDetailRequest], stitch_details.VodStitchDetail]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVodStitchDetail(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_cdn_keys(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListCdnKeysRequest],
-        video_stitcher_service.ListCdnKeysResponse,
-    ]:
+    def list_cdn_keys(self) -> Callable[[video_stitcher_service.ListCdnKeysRequest], video_stitcher_service.ListCdnKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCdnKeys(self._session, self._host, self._interceptor)  # type: ignore
@@ -6828,32 +5448,19 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     @property
     def list_live_ad_tag_details(
         self,
-    ) -> Callable[
-        [video_stitcher_service.ListLiveAdTagDetailsRequest],
-        video_stitcher_service.ListLiveAdTagDetailsResponse,
-    ]:
+    ) -> Callable[[video_stitcher_service.ListLiveAdTagDetailsRequest], video_stitcher_service.ListLiveAdTagDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLiveAdTagDetails(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_live_configs(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListLiveConfigsRequest],
-        video_stitcher_service.ListLiveConfigsResponse,
-    ]:
+    def list_live_configs(self) -> Callable[[video_stitcher_service.ListLiveConfigsRequest], video_stitcher_service.ListLiveConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLiveConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_slates(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListSlatesRequest],
-        video_stitcher_service.ListSlatesResponse,
-    ]:
+    def list_slates(self) -> Callable[[video_stitcher_service.ListSlatesRequest], video_stitcher_service.ListSlatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSlates(self._session, self._host, self._interceptor)  # type: ignore
@@ -6861,21 +5468,13 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     @property
     def list_vod_ad_tag_details(
         self,
-    ) -> Callable[
-        [video_stitcher_service.ListVodAdTagDetailsRequest],
-        video_stitcher_service.ListVodAdTagDetailsResponse,
-    ]:
+    ) -> Callable[[video_stitcher_service.ListVodAdTagDetailsRequest], video_stitcher_service.ListVodAdTagDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVodAdTagDetails(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_vod_configs(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.ListVodConfigsRequest],
-        video_stitcher_service.ListVodConfigsResponse,
-    ]:
+    def list_vod_configs(self) -> Callable[[video_stitcher_service.ListVodConfigsRequest], video_stitcher_service.ListVodConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVodConfigs(self._session, self._host, self._interceptor)  # type: ignore
@@ -6883,50 +5482,31 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     @property
     def list_vod_stitch_details(
         self,
-    ) -> Callable[
-        [video_stitcher_service.ListVodStitchDetailsRequest],
-        video_stitcher_service.ListVodStitchDetailsResponse,
-    ]:
+    ) -> Callable[[video_stitcher_service.ListVodStitchDetailsRequest], video_stitcher_service.ListVodStitchDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVodStitchDetails(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateCdnKeyRequest], operations_pb2.Operation
-    ]:
+    def update_cdn_key(self) -> Callable[[video_stitcher_service.UpdateCdnKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCdnKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_live_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateLiveConfigRequest], operations_pb2.Operation
-    ]:
+    def update_live_config(self) -> Callable[[video_stitcher_service.UpdateLiveConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLiveConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateSlateRequest], operations_pb2.Operation
-    ]:
+    def update_slate(self) -> Callable[[video_stitcher_service.UpdateSlateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSlate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_vod_config(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateVodConfigRequest], operations_pb2.Operation
-    ]:
+    def update_vod_config(self) -> Callable[[video_stitcher_service.UpdateVodConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVodConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -6935,23 +5515,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseVideoStitcherServiceRestTransport._BaseCancelOperation,
-        VideoStitcherServiceRestStub,
-    ):
+    class _CancelOperation(_BaseVideoStitcherServiceRestTransport._BaseCancelOperation, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6987,32 +5556,18 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7036,13 +5591,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7056,23 +5605,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation,
-        VideoStitcherServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseVideoStitcherServiceRestTransport._BaseDeleteOperation, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7107,28 +5645,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7152,12 +5678,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7171,23 +5692,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseVideoStitcherServiceRestTransport._BaseGetOperation,
-        VideoStitcherServiceRestStub,
-    ):
+    class _GetOperation(_BaseVideoStitcherServiceRestTransport._BaseGetOperation, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7225,26 +5735,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7268,12 +5768,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7285,9 +5780,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7312,23 +5805,12 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVideoStitcherServiceRestTransport._BaseListOperations,
-        VideoStitcherServiceRestStub,
-    ):
+    class _ListOperations(_BaseVideoStitcherServiceRestTransport._BaseListOperations, VideoStitcherServiceRestStub):
         def __hash__(self):
             return hash("VideoStitcherServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7366,26 +5848,16 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7409,12 +5881,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             # Send the request
             response = VideoStitcherServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7426,9 +5893,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

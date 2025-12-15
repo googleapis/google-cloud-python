@@ -30,22 +30,14 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.network_security_v1beta1 import gapic_version as package_version
-from google.cloud.network_security_v1beta1.types import (
-    authorization_policy as gcn_authorization_policy,
-)
-from google.cloud.network_security_v1beta1.types import (
-    client_tls_policy as gcn_client_tls_policy,
-)
-from google.cloud.network_security_v1beta1.types import (
-    server_tls_policy as gcn_server_tls_policy,
-)
+from google.cloud.network_security_v1beta1.types import authorization_policy as gcn_authorization_policy
+from google.cloud.network_security_v1beta1.types import client_tls_policy as gcn_client_tls_policy
+from google.cloud.network_security_v1beta1.types import server_tls_policy as gcn_server_tls_policy
 from google.cloud.network_security_v1beta1.types import authorization_policy
 from google.cloud.network_security_v1beta1.types import client_tls_policy
 from google.cloud.network_security_v1beta1.types import server_tls_policy
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -107,23 +99,15 @@ class NetworkSecurityTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -289,10 +273,7 @@ class NetworkSecurityTransport(abc.ABC):
         self,
     ) -> Callable[
         [authorization_policy.ListAuthorizationPoliciesRequest],
-        Union[
-            authorization_policy.ListAuthorizationPoliciesResponse,
-            Awaitable[authorization_policy.ListAuthorizationPoliciesResponse],
-        ],
+        Union[authorization_policy.ListAuthorizationPoliciesResponse, Awaitable[authorization_policy.ListAuthorizationPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -301,38 +282,26 @@ class NetworkSecurityTransport(abc.ABC):
         self,
     ) -> Callable[
         [authorization_policy.GetAuthorizationPolicyRequest],
-        Union[
-            authorization_policy.AuthorizationPolicy,
-            Awaitable[authorization_policy.AuthorizationPolicy],
-        ],
+        Union[authorization_policy.AuthorizationPolicy, Awaitable[authorization_policy.AuthorizationPolicy]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_authorization_policy(
         self,
-    ) -> Callable[
-        [gcn_authorization_policy.CreateAuthorizationPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_authorization_policy.CreateAuthorizationPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_authorization_policy(
         self,
-    ) -> Callable[
-        [gcn_authorization_policy.UpdateAuthorizationPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_authorization_policy.UpdateAuthorizationPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_authorization_policy(
         self,
-    ) -> Callable[
-        [authorization_policy.DeleteAuthorizationPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[authorization_policy.DeleteAuthorizationPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -340,10 +309,7 @@ class NetworkSecurityTransport(abc.ABC):
         self,
     ) -> Callable[
         [server_tls_policy.ListServerTlsPoliciesRequest],
-        Union[
-            server_tls_policy.ListServerTlsPoliciesResponse,
-            Awaitable[server_tls_policy.ListServerTlsPoliciesResponse],
-        ],
+        Union[server_tls_policy.ListServerTlsPoliciesResponse, Awaitable[server_tls_policy.ListServerTlsPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -351,39 +317,26 @@ class NetworkSecurityTransport(abc.ABC):
     def get_server_tls_policy(
         self,
     ) -> Callable[
-        [server_tls_policy.GetServerTlsPolicyRequest],
-        Union[
-            server_tls_policy.ServerTlsPolicy,
-            Awaitable[server_tls_policy.ServerTlsPolicy],
-        ],
+        [server_tls_policy.GetServerTlsPolicyRequest], Union[server_tls_policy.ServerTlsPolicy, Awaitable[server_tls_policy.ServerTlsPolicy]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_server_tls_policy(
         self,
-    ) -> Callable[
-        [gcn_server_tls_policy.CreateServerTlsPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_server_tls_policy.CreateServerTlsPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_server_tls_policy(
         self,
-    ) -> Callable[
-        [gcn_server_tls_policy.UpdateServerTlsPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_server_tls_policy.UpdateServerTlsPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_server_tls_policy(
         self,
-    ) -> Callable[
-        [server_tls_policy.DeleteServerTlsPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[server_tls_policy.DeleteServerTlsPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -391,10 +344,7 @@ class NetworkSecurityTransport(abc.ABC):
         self,
     ) -> Callable[
         [client_tls_policy.ListClientTlsPoliciesRequest],
-        Union[
-            client_tls_policy.ListClientTlsPoliciesResponse,
-            Awaitable[client_tls_policy.ListClientTlsPoliciesResponse],
-        ],
+        Union[client_tls_policy.ListClientTlsPoliciesResponse, Awaitable[client_tls_policy.ListClientTlsPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -402,39 +352,26 @@ class NetworkSecurityTransport(abc.ABC):
     def get_client_tls_policy(
         self,
     ) -> Callable[
-        [client_tls_policy.GetClientTlsPolicyRequest],
-        Union[
-            client_tls_policy.ClientTlsPolicy,
-            Awaitable[client_tls_policy.ClientTlsPolicy],
-        ],
+        [client_tls_policy.GetClientTlsPolicyRequest], Union[client_tls_policy.ClientTlsPolicy, Awaitable[client_tls_policy.ClientTlsPolicy]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_client_tls_policy(
         self,
-    ) -> Callable[
-        [gcn_client_tls_policy.CreateClientTlsPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_client_tls_policy.CreateClientTlsPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_client_tls_policy(
         self,
-    ) -> Callable[
-        [gcn_client_tls_policy.UpdateClientTlsPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_client_tls_policy.UpdateClientTlsPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_client_tls_policy(
         self,
-    ) -> Callable[
-        [client_tls_policy.DeleteClientTlsPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[client_tls_policy.DeleteClientTlsPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -442,20 +379,14 @@ class NetworkSecurityTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -473,19 +404,13 @@ class NetworkSecurityTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -503,22 +428,13 @@ class NetworkSecurityTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

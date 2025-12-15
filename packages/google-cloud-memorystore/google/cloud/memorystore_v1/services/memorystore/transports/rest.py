@@ -193,12 +193,8 @@ class MemorystoreRestInterceptor:
     """
 
     def pre_backup_instance(
-        self,
-        request: memorystore.BackupInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.BackupInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.BackupInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.BackupInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for backup_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -206,9 +202,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_backup_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_backup_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for backup_instance
 
         DEPRECATED. Please use the `post_backup_instance_with_metadata`
@@ -222,9 +216,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_backup_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for backup_instance
 
@@ -241,12 +233,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_create_instance(
-        self,
-        request: memorystore.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -254,9 +242,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -270,9 +256,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -289,12 +273,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: memorystore.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +282,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -318,9 +296,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -337,12 +313,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: memorystore.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -350,9 +322,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -366,9 +336,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -385,12 +353,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_export_backup(
-        self,
-        request: memorystore.ExportBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.ExportBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.ExportBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.ExportBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -398,9 +362,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_export_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_backup
 
         DEPRECATED. Please use the `post_export_backup_with_metadata`
@@ -414,9 +376,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_export_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_backup
 
@@ -433,9 +393,7 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: memorystore.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: memorystore.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[memorystore.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
@@ -458,9 +416,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_get_backup_with_metadata(
-        self,
-        response: memorystore.Backup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: memorystore.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[memorystore.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup
 
@@ -477,12 +433,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_get_backup_collection(
-        self,
-        request: memorystore.GetBackupCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.GetBackupCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.GetBackupCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.GetBackupCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -490,9 +442,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_collection(
-        self, response: memorystore.BackupCollection
-    ) -> memorystore.BackupCollection:
+    def post_get_backup_collection(self, response: memorystore.BackupCollection) -> memorystore.BackupCollection:
         """Post-rpc interceptor for get_backup_collection
 
         DEPRECATED. Please use the `post_get_backup_collection_with_metadata`
@@ -506,9 +456,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_get_backup_collection_with_metadata(
-        self,
-        response: memorystore.BackupCollection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: memorystore.BackupCollection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[memorystore.BackupCollection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_collection
 
@@ -525,13 +473,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_get_certificate_authority(
-        self,
-        request: memorystore.GetCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.GetCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: memorystore.GetCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.GetCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -539,9 +482,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_certificate_authority(
-        self, response: memorystore.CertificateAuthority
-    ) -> memorystore.CertificateAuthority:
+    def post_get_certificate_authority(self, response: memorystore.CertificateAuthority) -> memorystore.CertificateAuthority:
         """Post-rpc interceptor for get_certificate_authority
 
         DEPRECATED. Please use the `post_get_certificate_authority_with_metadata`
@@ -555,12 +496,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_get_certificate_authority_with_metadata(
-        self,
-        response: memorystore.CertificateAuthority,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.CertificateAuthority, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: memorystore.CertificateAuthority, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.CertificateAuthority, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_certificate_authority
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -576,9 +513,7 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: memorystore.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: memorystore.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[memorystore.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -601,9 +536,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: memorystore.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: memorystore.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[memorystore.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -620,13 +553,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_list_backup_collections(
-        self,
-        request: memorystore.ListBackupCollectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.ListBackupCollectionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: memorystore.ListBackupCollectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.ListBackupCollectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_collections
 
         Override in a subclass to manipulate the request or metadata
@@ -634,9 +562,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_collections(
-        self, response: memorystore.ListBackupCollectionsResponse
-    ) -> memorystore.ListBackupCollectionsResponse:
+    def post_list_backup_collections(self, response: memorystore.ListBackupCollectionsResponse) -> memorystore.ListBackupCollectionsResponse:
         """Post-rpc interceptor for list_backup_collections
 
         DEPRECATED. Please use the `post_list_backup_collections_with_metadata`
@@ -650,13 +576,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_list_backup_collections_with_metadata(
-        self,
-        response: memorystore.ListBackupCollectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.ListBackupCollectionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: memorystore.ListBackupCollectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.ListBackupCollectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_collections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -672,9 +593,7 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: memorystore.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: memorystore.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[memorystore.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
@@ -683,9 +602,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: memorystore.ListBackupsResponse
-    ) -> memorystore.ListBackupsResponse:
+    def post_list_backups(self, response: memorystore.ListBackupsResponse) -> memorystore.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -699,12 +616,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: memorystore.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: memorystore.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -720,12 +633,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: memorystore.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -733,9 +642,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: memorystore.ListInstancesResponse
-    ) -> memorystore.ListInstancesResponse:
+    def post_list_instances(self, response: memorystore.ListInstancesResponse) -> memorystore.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -749,12 +656,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: memorystore.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: memorystore.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -770,13 +673,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_reschedule_maintenance(
-        self,
-        request: memorystore.RescheduleMaintenanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.RescheduleMaintenanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: memorystore.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.RescheduleMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -784,9 +682,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_reschedule_maintenance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reschedule_maintenance
 
         DEPRECATED. Please use the `post_reschedule_maintenance_with_metadata`
@@ -800,9 +696,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_reschedule_maintenance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reschedule_maintenance
 
@@ -819,12 +713,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: memorystore.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        memorystore.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: memorystore.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[memorystore.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -832,9 +722,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -848,9 +736,7 @@ class MemorystoreRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -867,12 +753,8 @@ class MemorystoreRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -880,9 +762,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -892,12 +772,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -905,9 +781,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -917,12 +791,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -940,12 +810,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -963,12 +829,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -976,9 +838,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -988,12 +848,8 @@ class MemorystoreRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1001,9 +857,7 @@ class MemorystoreRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1092,9 +946,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1146,29 +998,17 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BackupInstance(
-        _BaseMemorystoreRestTransport._BaseBackupInstance, MemorystoreRestStub
-    ):
+    class _BackupInstance(_BaseMemorystoreRestTransport._BaseBackupInstance, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.BackupInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1211,30 +1051,18 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseBackupInstance._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseBackupInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_backup_instance(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseBackupInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseBackupInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseMemorystoreRestTransport._BaseBackupInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMemorystoreRestTransport._BaseBackupInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseBackupInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseBackupInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1258,13 +1086,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._BackupInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1278,12 +1100,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_backup_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_backup_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_backup_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1304,22 +1122,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _CreateInstance(
-        _BaseMemorystoreRestTransport._BaseCreateInstance, MemorystoreRestStub
-    ):
+    class _CreateInstance(_BaseMemorystoreRestTransport._BaseCreateInstance, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1362,30 +1170,18 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseMemorystoreRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMemorystoreRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1409,13 +1205,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1429,12 +1219,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1455,22 +1241,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _DeleteBackup(
-        _BaseMemorystoreRestTransport._BaseDeleteBackup, MemorystoreRestStub
-    ):
+    class _DeleteBackup(_BaseMemorystoreRestTransport._BaseDeleteBackup, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1512,30 +1288,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseDeleteBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseDeleteBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1559,12 +1321,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1578,12 +1335,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1604,22 +1357,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _DeleteInstance(
-        _BaseMemorystoreRestTransport._BaseDeleteInstance, MemorystoreRestStub
-    ):
+    class _DeleteInstance(_BaseMemorystoreRestTransport._BaseDeleteInstance, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1661,26 +1404,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1704,12 +1437,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1723,12 +1451,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1749,22 +1473,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _ExportBackup(
-        _BaseMemorystoreRestTransport._BaseExportBackup, MemorystoreRestStub
-    ):
+    class _ExportBackup(_BaseMemorystoreRestTransport._BaseExportBackup, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.ExportBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1807,36 +1521,18 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseExportBackup._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseExportBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_export_backup(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseExportBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseExportBackup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseMemorystoreRestTransport._BaseExportBackup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseMemorystoreRestTransport._BaseExportBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseExportBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseExportBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1860,13 +1556,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._ExportBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1880,12 +1570,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_export_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1911,15 +1597,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             return hash("MemorystoreRestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1958,30 +1636,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     Backup of an instance.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseGetBackup._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2005,12 +1669,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2026,12 +1685,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = memorystore.Backup.to_json(response)
                 except:
@@ -2052,22 +1707,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _GetBackupCollection(
-        _BaseMemorystoreRestTransport._BaseGetBackupCollection, MemorystoreRestStub
-    ):
+    class _GetBackupCollection(_BaseMemorystoreRestTransport._BaseGetBackupCollection, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetBackupCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2106,28 +1751,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     BackupCollection of an instance.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_backup_collection(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2151,12 +1784,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._GetBackupCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2172,12 +1800,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_get_backup_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = memorystore.BackupCollection.to_json(response)
                 except:
@@ -2198,22 +1822,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _GetCertificateAuthority(
-        _BaseMemorystoreRestTransport._BaseGetCertificateAuthority, MemorystoreRestStub
-    ):
+    class _GetCertificateAuthority(_BaseMemorystoreRestTransport._BaseGetCertificateAuthority, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2254,28 +1868,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_certificate_authority(
-                request, metadata
-            )
-            transcoded_request = _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_certificate_authority(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2299,12 +1901,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._GetCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2320,16 +1917,10 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_get_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = memorystore.CertificateAuthority.to_json(
-                        response
-                    )
+                    response_payload = memorystore.CertificateAuthority.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2348,22 +1939,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseMemorystoreRestTransport._BaseGetInstance, MemorystoreRestStub
-    ):
+    class _GetInstance(_BaseMemorystoreRestTransport._BaseGetInstance, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2402,30 +1983,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     A Memorystore instance.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2449,12 +2016,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2470,12 +2032,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = memorystore.Instance.to_json(response)
                 except:
@@ -2496,22 +2054,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _ListBackupCollections(
-        _BaseMemorystoreRestTransport._BaseListBackupCollections, MemorystoreRestStub
-    ):
+    class _ListBackupCollections(_BaseMemorystoreRestTransport._BaseListBackupCollections, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.ListBackupCollections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2550,28 +2098,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     Response for [ListBackupCollections].
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_collections(
-                request, metadata
-            )
-            transcoded_request = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_collections(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2595,12 +2131,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._ListBackupCollections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2616,16 +2147,10 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_list_backup_collections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_collections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_collections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        memorystore.ListBackupCollectionsResponse.to_json(response)
-                    )
+                    response_payload = memorystore.ListBackupCollectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2644,22 +2169,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _ListBackups(
-        _BaseMemorystoreRestTransport._BaseListBackups, MemorystoreRestStub
-    ):
+    class _ListBackups(_BaseMemorystoreRestTransport._BaseListBackups, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2698,30 +2213,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     Response for [ListBackups].
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseListBackups._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseListBackups._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2745,12 +2246,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2766,12 +2262,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = memorystore.ListBackupsResponse.to_json(response)
                 except:
@@ -2792,22 +2284,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseMemorystoreRestTransport._BaseListInstances, MemorystoreRestStub
-    ):
+    class _ListInstances(_BaseMemorystoreRestTransport._BaseListInstances, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2846,28 +2328,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     Response message for [ListInstances][].
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2891,12 +2361,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2912,16 +2377,10 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = memorystore.ListInstancesResponse.to_json(
-                        response
-                    )
+                    response_payload = memorystore.ListInstancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2940,22 +2399,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _RescheduleMaintenance(
-        _BaseMemorystoreRestTransport._BaseRescheduleMaintenance, MemorystoreRestStub
-    ):
+    class _RescheduleMaintenance(_BaseMemorystoreRestTransport._BaseRescheduleMaintenance, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.RescheduleMaintenance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2999,32 +2448,18 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_http_options()
 
-            request, metadata = self._interceptor.pre_reschedule_maintenance(
-                request, metadata
-            )
-            transcoded_request = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reschedule_maintenance(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_transcoded_request(http_options, request)
 
-            body = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3048,13 +2483,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._RescheduleMaintenance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3068,12 +2497,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_reschedule_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reschedule_maintenance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reschedule_maintenance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3094,22 +2519,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
-    class _UpdateInstance(
-        _BaseMemorystoreRestTransport._BaseUpdateInstance, MemorystoreRestStub
-    ):
+    class _UpdateInstance(_BaseMemorystoreRestTransport._BaseUpdateInstance, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3152,30 +2567,18 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3199,13 +2602,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3219,12 +2616,8 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3246,122 +2639,85 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             return resp
 
     @property
-    def backup_instance(
-        self,
-    ) -> Callable[[memorystore.BackupInstanceRequest], operations_pb2.Operation]:
+    def backup_instance(self) -> Callable[[memorystore.BackupInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BackupInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[memorystore.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[memorystore.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[memorystore.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[memorystore.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[memorystore.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[memorystore.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_backup(
-        self,
-    ) -> Callable[[memorystore.ExportBackupRequest], operations_pb2.Operation]:
+    def export_backup(self) -> Callable[[memorystore.ExportBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[memorystore.GetBackupRequest], memorystore.Backup]:
+    def get_backup(self) -> Callable[[memorystore.GetBackupRequest], memorystore.Backup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_collection(
-        self,
-    ) -> Callable[
-        [memorystore.GetBackupCollectionRequest], memorystore.BackupCollection
-    ]:
+    def get_backup_collection(self) -> Callable[[memorystore.GetBackupCollectionRequest], memorystore.BackupCollection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_certificate_authority(
-        self,
-    ) -> Callable[
-        [memorystore.GetCertificateAuthorityRequest], memorystore.CertificateAuthority
-    ]:
+    def get_certificate_authority(self) -> Callable[[memorystore.GetCertificateAuthorityRequest], memorystore.CertificateAuthority]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[memorystore.GetInstanceRequest], memorystore.Instance]:
+    def get_instance(self) -> Callable[[memorystore.GetInstanceRequest], memorystore.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_collections(
-        self,
-    ) -> Callable[
-        [memorystore.ListBackupCollectionsRequest],
-        memorystore.ListBackupCollectionsResponse,
-    ]:
+    def list_backup_collections(self) -> Callable[[memorystore.ListBackupCollectionsRequest], memorystore.ListBackupCollectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupCollections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[memorystore.ListBackupsRequest], memorystore.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[memorystore.ListBackupsRequest], memorystore.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [memorystore.ListInstancesRequest], memorystore.ListInstancesResponse
-    ]:
+    def list_instances(self) -> Callable[[memorystore.ListInstancesRequest], memorystore.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reschedule_maintenance(
-        self,
-    ) -> Callable[[memorystore.RescheduleMaintenanceRequest], operations_pb2.Operation]:
+    def reschedule_maintenance(self) -> Callable[[memorystore.RescheduleMaintenanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[memorystore.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[memorystore.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -3370,22 +2726,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseMemorystoreRestTransport._BaseGetLocation, MemorystoreRestStub
-    ):
+    class _GetLocation(_BaseMemorystoreRestTransport._BaseGetLocation, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3423,30 +2769,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3470,12 +2802,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3487,9 +2814,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3514,22 +2839,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseMemorystoreRestTransport._BaseListLocations, MemorystoreRestStub
-    ):
+    class _ListLocations(_BaseMemorystoreRestTransport._BaseListLocations, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3567,28 +2882,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3612,12 +2915,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3629,9 +2927,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3656,22 +2952,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseMemorystoreRestTransport._BaseCancelOperation, MemorystoreRestStub
-    ):
+    class _CancelOperation(_BaseMemorystoreRestTransport._BaseCancelOperation, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3706,28 +2992,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMemorystoreRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3751,12 +3025,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3770,22 +3039,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseMemorystoreRestTransport._BaseDeleteOperation, MemorystoreRestStub
-    ):
+    class _DeleteOperation(_BaseMemorystoreRestTransport._BaseDeleteOperation, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3820,28 +3079,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3865,12 +3112,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3884,22 +3126,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMemorystoreRestTransport._BaseGetOperation, MemorystoreRestStub
-    ):
+    class _GetOperation(_BaseMemorystoreRestTransport._BaseGetOperation, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3937,30 +3169,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseMemorystoreRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMemorystoreRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3984,12 +3202,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4001,9 +3214,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4028,22 +3239,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseMemorystoreRestTransport._BaseListOperations, MemorystoreRestStub
-    ):
+    class _ListOperations(_BaseMemorystoreRestTransport._BaseListOperations, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4081,26 +3282,16 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMemorystoreRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMemorystoreRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseMemorystoreRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMemorystoreRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMemorystoreRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4124,12 +3315,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             # Send the request
             response = MemorystoreRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4141,9 +3327,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

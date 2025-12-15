@@ -384,12 +384,8 @@ class AlloyDBAdminRestInterceptor:
     """
 
     def pre_batch_create_instances(
-        self,
-        request: service.BatchCreateInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.BatchCreateInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.BatchCreateInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.BatchCreateInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -397,9 +393,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_instances(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_create_instances(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_create_instances
 
         DEPRECATED. Please use the `post_batch_create_instances_with_metadata`
@@ -413,9 +407,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_batch_create_instances_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_instances
 
@@ -432,9 +424,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_backup(
-        self,
-        request: service.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
@@ -443,9 +433,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
         DEPRECATED. Please use the `post_create_backup_with_metadata`
@@ -459,9 +447,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup
 
@@ -478,9 +464,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_cluster(
-        self,
-        request: service.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cluster
 
@@ -489,9 +473,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
         DEPRECATED. Please use the `post_create_cluster_with_metadata`
@@ -505,9 +487,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cluster
 
@@ -524,9 +504,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_database(
-        self,
-        request: service.CreateDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_database
 
@@ -549,9 +527,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_database_with_metadata(
-        self,
-        response: resources.Database,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Database, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_database
 
@@ -568,9 +544,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_instance(
-        self,
-        request: service.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
@@ -579,9 +553,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -595,9 +567,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -614,12 +584,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_secondary_cluster(
-        self,
-        request: service.CreateSecondaryClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateSecondaryClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateSecondaryClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateSecondaryClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_secondary_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -627,9 +593,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_create_secondary_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_secondary_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_secondary_cluster
 
         DEPRECATED. Please use the `post_create_secondary_cluster_with_metadata`
@@ -643,9 +607,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_secondary_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_secondary_cluster
 
@@ -662,12 +624,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_secondary_instance(
-        self,
-        request: service.CreateSecondaryInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateSecondaryInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateSecondaryInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateSecondaryInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_secondary_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -675,9 +633,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_create_secondary_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_secondary_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_secondary_instance
 
         DEPRECATED. Please use the `post_create_secondary_instance_with_metadata`
@@ -691,9 +647,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_secondary_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_secondary_instance
 
@@ -710,9 +664,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_create_user(
-        self,
-        request: service.CreateUserRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateUserRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_user
 
@@ -735,9 +687,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_create_user_with_metadata(
-        self,
-        response: resources.User,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.User, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.User, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_user
 
@@ -754,9 +704,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: service.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
@@ -765,9 +713,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -781,9 +727,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -800,9 +744,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_delete_cluster(
-        self,
-        request: service.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cluster
 
@@ -811,9 +753,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
         DEPRECATED. Please use the `post_delete_cluster_with_metadata`
@@ -827,9 +767,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_delete_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cluster
 
@@ -846,9 +784,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: service.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
@@ -857,9 +793,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -873,9 +807,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -892,9 +824,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_delete_user(
-        self,
-        request: service.DeleteUserRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteUserRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_user
 
@@ -904,9 +834,7 @@ class AlloyDBAdminRestInterceptor:
         return request, metadata
 
     def pre_execute_sql(
-        self,
-        request: service.ExecuteSqlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ExecuteSqlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ExecuteSqlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_sql
 
@@ -915,9 +843,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_execute_sql(
-        self, response: service.ExecuteSqlResponse
-    ) -> service.ExecuteSqlResponse:
+    def post_execute_sql(self, response: service.ExecuteSqlResponse) -> service.ExecuteSqlResponse:
         """Post-rpc interceptor for execute_sql
 
         DEPRECATED. Please use the `post_execute_sql_with_metadata`
@@ -931,9 +857,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_execute_sql_with_metadata(
-        self,
-        response: service.ExecuteSqlResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ExecuteSqlResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ExecuteSqlResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for execute_sql
 
@@ -950,9 +874,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_export_cluster(
-        self,
-        request: service.ExportClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ExportClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ExportClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_cluster
 
@@ -961,9 +883,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_export_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_cluster
 
         DEPRECATED. Please use the `post_export_cluster_with_metadata`
@@ -977,9 +897,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_export_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_cluster
 
@@ -996,12 +914,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_failover_instance(
-        self,
-        request: service.FailoverInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.FailoverInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for failover_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1009,9 +923,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_failover_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_failover_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for failover_instance
 
         DEPRECATED. Please use the `post_failover_instance_with_metadata`
@@ -1025,9 +937,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_failover_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for failover_instance
 
@@ -1044,13 +954,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_generate_client_certificate(
-        self,
-        request: service.GenerateClientCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GenerateClientCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.GenerateClientCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GenerateClientCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_client_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -1058,9 +963,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_client_certificate(
-        self, response: service.GenerateClientCertificateResponse
-    ) -> service.GenerateClientCertificateResponse:
+    def post_generate_client_certificate(self, response: service.GenerateClientCertificateResponse) -> service.GenerateClientCertificateResponse:
         """Post-rpc interceptor for generate_client_certificate
 
         DEPRECATED. Please use the `post_generate_client_certificate_with_metadata`
@@ -1074,13 +977,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_generate_client_certificate_with_metadata(
-        self,
-        response: service.GenerateClientCertificateResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GenerateClientCertificateResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.GenerateClientCertificateResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GenerateClientCertificateResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_client_certificate
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1096,9 +994,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: service.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
@@ -1121,9 +1017,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_get_backup_with_metadata(
-        self,
-        response: resources.Backup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup
 
@@ -1140,9 +1034,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_get_cluster(
-        self,
-        request: service.GetClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
@@ -1165,9 +1057,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_get_cluster_with_metadata(
-        self,
-        response: resources.Cluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Cluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cluster
 
@@ -1184,12 +1074,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_get_connection_info(
-        self,
-        request: service.GetConnectionInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetConnectionInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetConnectionInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetConnectionInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connection_info
 
         Override in a subclass to manipulate the request or metadata
@@ -1197,9 +1083,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_get_connection_info(
-        self, response: resources.ConnectionInfo
-    ) -> resources.ConnectionInfo:
+    def post_get_connection_info(self, response: resources.ConnectionInfo) -> resources.ConnectionInfo:
         """Post-rpc interceptor for get_connection_info
 
         DEPRECATED. Please use the `post_get_connection_info_with_metadata`
@@ -1213,9 +1097,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_get_connection_info_with_metadata(
-        self,
-        response: resources.ConnectionInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.ConnectionInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.ConnectionInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connection_info
 
@@ -1232,9 +1114,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: service.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -1257,9 +1137,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: resources.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -1276,9 +1154,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_get_user(
-        self,
-        request: service.GetUserRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetUserRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_user
 
@@ -1301,9 +1177,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_get_user_with_metadata(
-        self,
-        response: resources.User,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.User, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.User, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_user
 
@@ -1320,9 +1194,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_import_cluster(
-        self,
-        request: service.ImportClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ImportClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ImportClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_cluster
 
@@ -1331,9 +1203,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_import_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_cluster
 
         DEPRECATED. Please use the `post_import_cluster_with_metadata`
@@ -1347,9 +1217,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_import_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_cluster
 
@@ -1366,9 +1234,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_inject_fault(
-        self,
-        request: service.InjectFaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.InjectFaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.InjectFaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for inject_fault
 
@@ -1377,9 +1243,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_inject_fault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_inject_fault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for inject_fault
 
         DEPRECATED. Please use the `post_inject_fault_with_metadata`
@@ -1393,9 +1257,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_inject_fault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for inject_fault
 
@@ -1412,9 +1274,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: service.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
@@ -1423,9 +1283,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: service.ListBackupsResponse
-    ) -> service.ListBackupsResponse:
+    def post_list_backups(self, response: service.ListBackupsResponse) -> service.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -1439,9 +1297,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: service.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
@@ -1458,9 +1314,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_list_clusters(
-        self,
-        request: service.ListClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clusters
 
@@ -1469,9 +1323,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_clusters(
-        self, response: service.ListClustersResponse
-    ) -> service.ListClustersResponse:
+    def post_list_clusters(self, response: service.ListClustersResponse) -> service.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
         DEPRECATED. Please use the `post_list_clusters_with_metadata`
@@ -1485,9 +1337,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_list_clusters_with_metadata(
-        self,
-        response: service.ListClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_clusters
 
@@ -1504,9 +1354,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_list_databases(
-        self,
-        request: service.ListDatabasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListDatabasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_databases
 
@@ -1515,9 +1363,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_databases(
-        self, response: service.ListDatabasesResponse
-    ) -> service.ListDatabasesResponse:
+    def post_list_databases(self, response: service.ListDatabasesResponse) -> service.ListDatabasesResponse:
         """Post-rpc interceptor for list_databases
 
         DEPRECATED. Please use the `post_list_databases_with_metadata`
@@ -1531,9 +1377,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_list_databases_with_metadata(
-        self,
-        response: service.ListDatabasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListDatabasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_databases
 
@@ -1550,9 +1394,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: service.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
@@ -1561,9 +1403,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: service.ListInstancesResponse
-    ) -> service.ListInstancesResponse:
+    def post_list_instances(self, response: service.ListInstancesResponse) -> service.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -1577,9 +1417,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: service.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
@@ -1596,13 +1434,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_list_supported_database_flags(
-        self,
-        request: service.ListSupportedDatabaseFlagsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListSupportedDatabaseFlagsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ListSupportedDatabaseFlagsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListSupportedDatabaseFlagsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_supported_database_flags
 
         Override in a subclass to manipulate the request or metadata
@@ -1610,9 +1443,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_supported_database_flags(
-        self, response: service.ListSupportedDatabaseFlagsResponse
-    ) -> service.ListSupportedDatabaseFlagsResponse:
+    def post_list_supported_database_flags(self, response: service.ListSupportedDatabaseFlagsResponse) -> service.ListSupportedDatabaseFlagsResponse:
         """Post-rpc interceptor for list_supported_database_flags
 
         DEPRECATED. Please use the `post_list_supported_database_flags_with_metadata`
@@ -1626,13 +1457,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_list_supported_database_flags_with_metadata(
-        self,
-        response: service.ListSupportedDatabaseFlagsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListSupportedDatabaseFlagsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.ListSupportedDatabaseFlagsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListSupportedDatabaseFlagsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_supported_database_flags
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1648,9 +1474,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_list_users(
-        self,
-        request: service.ListUsersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListUsersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListUsersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_users
 
@@ -1659,9 +1483,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_users(
-        self, response: service.ListUsersResponse
-    ) -> service.ListUsersResponse:
+    def post_list_users(self, response: service.ListUsersResponse) -> service.ListUsersResponse:
         """Post-rpc interceptor for list_users
 
         DEPRECATED. Please use the `post_list_users_with_metadata`
@@ -1675,9 +1497,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_list_users_with_metadata(
-        self,
-        response: service.ListUsersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListUsersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListUsersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_users
 
@@ -1694,9 +1514,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_promote_cluster(
-        self,
-        request: service.PromoteClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.PromoteClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.PromoteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for promote_cluster
 
@@ -1705,9 +1523,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_promote_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_promote_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for promote_cluster
 
         DEPRECATED. Please use the `post_promote_cluster_with_metadata`
@@ -1721,9 +1537,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_promote_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for promote_cluster
 
@@ -1740,9 +1554,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_restart_instance(
-        self,
-        request: service.RestartInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.RestartInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RestartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restart_instance
 
@@ -1751,9 +1563,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_restart_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restart_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restart_instance
 
         DEPRECATED. Please use the `post_restart_instance_with_metadata`
@@ -1767,9 +1577,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_restart_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restart_instance
 
@@ -1786,9 +1594,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_restore_cluster(
-        self,
-        request: service.RestoreClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.RestoreClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RestoreClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_cluster
 
@@ -1797,9 +1603,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_cluster
 
         DEPRECATED. Please use the `post_restore_cluster_with_metadata`
@@ -1813,9 +1617,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_restore_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_cluster
 
@@ -1832,12 +1634,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_switchover_cluster(
-        self,
-        request: service.SwitchoverClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SwitchoverClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.SwitchoverClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SwitchoverClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for switchover_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1845,9 +1643,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_switchover_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_switchover_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for switchover_cluster
 
         DEPRECATED. Please use the `post_switchover_cluster_with_metadata`
@@ -1861,9 +1657,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_switchover_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for switchover_cluster
 
@@ -1880,9 +1674,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_update_backup(
-        self,
-        request: service.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
@@ -1891,9 +1683,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup
 
         DEPRECATED. Please use the `post_update_backup_with_metadata`
@@ -1907,9 +1697,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_update_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup
 
@@ -1926,9 +1714,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_update_cluster(
-        self,
-        request: service.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cluster
 
@@ -1937,9 +1723,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
         DEPRECATED. Please use the `post_update_cluster_with_metadata`
@@ -1953,9 +1737,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_update_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cluster
 
@@ -1972,9 +1754,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: service.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
@@ -1983,9 +1763,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -1999,9 +1777,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -2018,9 +1794,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_update_user(
-        self,
-        request: service.UpdateUserRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateUserRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_user
 
@@ -2043,9 +1817,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_update_user_with_metadata(
-        self,
-        response: resources.User,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.User, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.User, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_user
 
@@ -2062,9 +1834,7 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_upgrade_cluster(
-        self,
-        request: service.UpgradeClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpgradeClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpgradeClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upgrade_cluster
 
@@ -2073,9 +1843,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_upgrade_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_upgrade_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_cluster
 
         DEPRECATED. Please use the `post_upgrade_cluster_with_metadata`
@@ -2089,9 +1857,7 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def post_upgrade_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upgrade_cluster
 
@@ -2108,12 +1874,8 @@ class AlloyDBAdminRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2121,9 +1883,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2133,12 +1893,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2146,9 +1902,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2158,12 +1912,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2181,12 +1931,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2204,12 +1950,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2217,9 +1959,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2229,12 +1969,8 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2242,9 +1978,7 @@ class AlloyDBAdminRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2333,9 +2067,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2387,29 +2119,17 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchCreateInstances(
-        _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances, AlloyDBAdminRestStub
-    ):
+    class _BatchCreateInstances(_BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.BatchCreateInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2453,32 +2173,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_instances(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2502,13 +2208,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._BatchCreateInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2522,12 +2222,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_batch_create_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2548,22 +2244,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateBackup(
-        _BaseAlloyDBAdminRestTransport._BaseCreateBackup, AlloyDBAdminRestStub
-    ):
+    class _CreateBackup(_BaseAlloyDBAdminRestTransport._BaseCreateBackup, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2606,34 +2292,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2657,13 +2327,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2677,12 +2341,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2703,22 +2363,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateCluster(
-        _BaseAlloyDBAdminRestTransport._BaseCreateCluster, AlloyDBAdminRestStub
-    ):
+    class _CreateCluster(_BaseAlloyDBAdminRestTransport._BaseCreateCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2761,30 +2411,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2808,13 +2446,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2828,12 +2460,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2854,22 +2482,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateDatabase(
-        _BaseAlloyDBAdminRestTransport._BaseCreateDatabase, AlloyDBAdminRestStub
-    ):
+    class _CreateDatabase(_BaseAlloyDBAdminRestTransport._BaseCreateDatabase, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2909,30 +2527,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message describing Database object.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_create_database(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2956,13 +2562,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2978,12 +2578,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Database.to_json(response)
                 except:
@@ -3004,22 +2600,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateInstance(
-        _BaseAlloyDBAdminRestTransport._BaseCreateInstance, AlloyDBAdminRestStub
-    ):
+    class _CreateInstance(_BaseAlloyDBAdminRestTransport._BaseCreateInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3062,30 +2648,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3109,13 +2683,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3129,12 +2697,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3155,22 +2719,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateSecondaryCluster(
-        _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster, AlloyDBAdminRestStub
-    ):
+    class _CreateSecondaryCluster(_BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateSecondaryCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3213,32 +2767,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_secondary_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_secondary_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3262,13 +2802,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateSecondaryCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3282,12 +2816,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_secondary_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_secondary_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_secondary_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3308,23 +2838,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateSecondaryInstance(
-        _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance,
-        AlloyDBAdminRestStub,
-    ):
+    class _CreateSecondaryInstance(_BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateSecondaryInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3368,32 +2887,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_secondary_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_secondary_instance(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3417,13 +2922,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateSecondaryInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3437,12 +2936,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_secondary_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_secondary_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_secondary_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3463,22 +2958,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _CreateUser(
-        _BaseAlloyDBAdminRestTransport._BaseCreateUser, AlloyDBAdminRestStub
-    ):
+    class _CreateUser(_BaseAlloyDBAdminRestTransport._BaseCreateUser, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CreateUser")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3518,36 +3003,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message describing User object.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_http_options()
 
             request, metadata = self._interceptor.pre_create_user(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3571,13 +3038,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateUser._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3593,12 +3054,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_create_user(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_user_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_user_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.User.to_json(response)
                 except:
@@ -3619,22 +3076,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _DeleteBackup(
-        _BaseAlloyDBAdminRestTransport._BaseDeleteBackup, AlloyDBAdminRestStub
-    ):
+    class _DeleteBackup(_BaseAlloyDBAdminRestTransport._BaseDeleteBackup, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3676,28 +3123,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3721,12 +3156,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3740,12 +3170,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3766,22 +3192,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _DeleteCluster(
-        _BaseAlloyDBAdminRestTransport._BaseDeleteCluster, AlloyDBAdminRestStub
-    ):
+    class _DeleteCluster(_BaseAlloyDBAdminRestTransport._BaseDeleteCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.DeleteCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3823,26 +3239,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3866,12 +3272,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3885,12 +3286,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_delete_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3911,22 +3308,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _DeleteInstance(
-        _BaseAlloyDBAdminRestTransport._BaseDeleteInstance, AlloyDBAdminRestStub
-    ):
+    class _DeleteInstance(_BaseAlloyDBAdminRestTransport._BaseDeleteInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3968,26 +3355,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4011,12 +3388,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4030,12 +3402,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4056,22 +3424,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _DeleteUser(
-        _BaseAlloyDBAdminRestTransport._BaseDeleteUser, AlloyDBAdminRestStub
-    ):
+    class _DeleteUser(_BaseAlloyDBAdminRestTransport._BaseDeleteUser, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.DeleteUser")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4106,30 +3464,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_user(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4153,12 +3497,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteUser._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4166,22 +3505,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExecuteSql(
-        _BaseAlloyDBAdminRestTransport._BaseExecuteSql, AlloyDBAdminRestStub
-    ):
+    class _ExecuteSql(_BaseAlloyDBAdminRestTransport._BaseExecuteSql, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ExecuteSql")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4221,36 +3550,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Execute a SQL statement response.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_http_options()
 
             request, metadata = self._interceptor.pre_execute_sql(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4274,13 +3585,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ExecuteSql._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4296,12 +3601,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_execute_sql(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_execute_sql_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_execute_sql_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ExecuteSqlResponse.to_json(response)
                 except:
@@ -4322,22 +3623,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ExportCluster(
-        _BaseAlloyDBAdminRestTransport._BaseExportCluster, AlloyDBAdminRestStub
-    ):
+    class _ExportCluster(_BaseAlloyDBAdminRestTransport._BaseExportCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ExportCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4380,30 +3671,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_export_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4427,13 +3706,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ExportCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4447,12 +3720,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_export_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4473,22 +3742,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _FailoverInstance(
-        _BaseAlloyDBAdminRestTransport._BaseFailoverInstance, AlloyDBAdminRestStub
-    ):
+    class _FailoverInstance(_BaseAlloyDBAdminRestTransport._BaseFailoverInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.FailoverInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4532,32 +3791,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_failover_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_failover_instance(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4581,13 +3826,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._FailoverInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4601,12 +3840,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_failover_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_failover_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_failover_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4627,23 +3862,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _GenerateClientCertificate(
-        _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate,
-        AlloyDBAdminRestStub,
-    ):
+    class _GenerateClientCertificate(_BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GenerateClientCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4688,32 +3912,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_client_certificate(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_client_certificate(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4736,16 +3946,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
 
             # Send the request
-            response = (
-                AlloyDBAdminRestTransport._GenerateClientCertificate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AlloyDBAdminRestTransport._GenerateClientCertificate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4761,16 +3963,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_generate_client_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_client_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_client_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.GenerateClientCertificateResponse.to_json(response)
-                    )
+                    response_payload = service.GenerateClientCertificateResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4789,22 +3985,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _GetBackup(
-        _BaseAlloyDBAdminRestTransport._BaseGetBackup, AlloyDBAdminRestStub
-    ):
+    class _GetBackup(_BaseAlloyDBAdminRestTransport._BaseGetBackup, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4843,30 +4029,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message describing Backup object
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4890,12 +4062,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4911,12 +4078,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Backup.to_json(response)
                 except:
@@ -4937,22 +4100,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _GetCluster(
-        _BaseAlloyDBAdminRestTransport._BaseGetCluster, AlloyDBAdminRestStub
-    ):
+    class _GetCluster(_BaseAlloyDBAdminRestTransport._BaseGetCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GetCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4997,30 +4150,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5044,12 +4183,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5065,12 +4199,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_get_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Cluster.to_json(response)
                 except:
@@ -5091,22 +4221,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _GetConnectionInfo(
-        _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo, AlloyDBAdminRestStub
-    ):
+    class _GetConnectionInfo(_BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GetConnectionInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5148,28 +4268,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_connection_info(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_connection_info(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5193,12 +4301,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetConnectionInfo._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5214,12 +4317,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_get_connection_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connection_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connection_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.ConnectionInfo.to_json(response)
                 except:
@@ -5240,22 +4339,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseAlloyDBAdminRestTransport._BaseGetInstance, AlloyDBAdminRestStub
-    ):
+    class _GetInstance(_BaseAlloyDBAdminRestTransport._BaseGetInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5298,30 +4387,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5345,12 +4420,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5366,12 +4436,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Instance.to_json(response)
                 except:
@@ -5397,15 +4463,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             return hash("AlloyDBAdminRestTransport.GetUser")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5444,30 +4502,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message describing User object.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetUser._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetUser._get_http_options()
 
             request, metadata = self._interceptor.pre_get_user(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseGetUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetUser._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseGetUser._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetUser._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5491,12 +4535,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetUser._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5512,12 +4551,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_get_user(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_user_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_user_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.User.to_json(response)
                 except:
@@ -5538,22 +4573,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ImportCluster(
-        _BaseAlloyDBAdminRestTransport._BaseImportCluster, AlloyDBAdminRestStub
-    ):
+    class _ImportCluster(_BaseAlloyDBAdminRestTransport._BaseImportCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ImportCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5596,30 +4621,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_import_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5643,13 +4656,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ImportCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5663,12 +4670,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_import_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5689,22 +4692,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _InjectFault(
-        _BaseAlloyDBAdminRestTransport._BaseInjectFault, AlloyDBAdminRestStub
-    ):
+    class _InjectFault(_BaseAlloyDBAdminRestTransport._BaseInjectFault, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.InjectFault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5748,36 +4741,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_http_options()
 
             request, metadata = self._interceptor.pre_inject_fault(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5801,13 +4776,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._InjectFault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5821,12 +4790,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_inject_fault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_inject_fault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_inject_fault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5847,22 +4812,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ListBackups(
-        _BaseAlloyDBAdminRestTransport._BaseListBackups, AlloyDBAdminRestStub
-    ):
+    class _ListBackups(_BaseAlloyDBAdminRestTransport._BaseListBackups, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5904,30 +4859,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseListBackups._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseListBackups._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5951,12 +4892,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5972,12 +4908,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListBackupsResponse.to_json(response)
                 except:
@@ -5998,22 +4930,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ListClusters(
-        _BaseAlloyDBAdminRestTransport._BaseListClusters, AlloyDBAdminRestStub
-    ):
+    class _ListClusters(_BaseAlloyDBAdminRestTransport._BaseListClusters, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6055,28 +4977,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListClusters._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseListClusters._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6100,12 +5010,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6121,12 +5026,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListClustersResponse.to_json(response)
                 except:
@@ -6147,22 +5048,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ListDatabases(
-        _BaseAlloyDBAdminRestTransport._BaseListDatabases, AlloyDBAdminRestStub
-    ):
+    class _ListDatabases(_BaseAlloyDBAdminRestTransport._BaseListDatabases, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListDatabases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6201,26 +5092,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message for ListDatabases response.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6244,12 +5125,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListDatabases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6265,12 +5141,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_databases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_databases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_databases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListDatabasesResponse.to_json(response)
                 except:
@@ -6291,22 +5163,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseAlloyDBAdminRestTransport._BaseListInstances, AlloyDBAdminRestStub
-    ):
+    class _ListInstances(_BaseAlloyDBAdminRestTransport._BaseListInstances, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6348,26 +5210,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6391,12 +5243,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6412,12 +5259,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListInstancesResponse.to_json(response)
                 except:
@@ -6438,23 +5281,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ListSupportedDatabaseFlags(
-        _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags,
-        AlloyDBAdminRestStub,
-    ):
+    class _ListSupportedDatabaseFlags(_BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListSupportedDatabaseFlags")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6497,28 +5329,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_supported_database_flags(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_supported_database_flags(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6541,15 +5361,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
 
             # Send the request
-            response = (
-                AlloyDBAdminRestTransport._ListSupportedDatabaseFlags._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AlloyDBAdminRestTransport._ListSupportedDatabaseFlags._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6565,19 +5378,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_supported_database_flags(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_supported_database_flags_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_supported_database_flags_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.ListSupportedDatabaseFlagsResponse.to_json(response)
-                    )
+                    response_payload = service.ListSupportedDatabaseFlagsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6596,22 +5400,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _ListUsers(
-        _BaseAlloyDBAdminRestTransport._BaseListUsers, AlloyDBAdminRestStub
-    ):
+    class _ListUsers(_BaseAlloyDBAdminRestTransport._BaseListUsers, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListUsers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6650,30 +5444,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message for response to listing Users
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListUsers._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListUsers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_users(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseListUsers._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListUsers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseListUsers._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListUsers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6697,12 +5477,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListUsers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6718,12 +5493,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_users(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_users_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_users_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListUsersResponse.to_json(response)
                 except:
@@ -6744,22 +5515,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _PromoteCluster(
-        _BaseAlloyDBAdminRestTransport._BasePromoteCluster, AlloyDBAdminRestStub
-    ):
+    class _PromoteCluster(_BaseAlloyDBAdminRestTransport._BasePromoteCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.PromoteCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6802,30 +5563,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_promote_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6849,13 +5598,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._PromoteCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6869,12 +5612,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_promote_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_promote_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_promote_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6895,22 +5634,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _RestartInstance(
-        _BaseAlloyDBAdminRestTransport._BaseRestartInstance, AlloyDBAdminRestStub
-    ):
+    class _RestartInstance(_BaseAlloyDBAdminRestTransport._BaseRestartInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.RestartInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6953,32 +5682,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_restart_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restart_instance(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7002,13 +5717,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._RestartInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7022,12 +5731,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_restart_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restart_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restart_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7048,22 +5753,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _RestoreCluster(
-        _BaseAlloyDBAdminRestTransport._BaseRestoreCluster, AlloyDBAdminRestStub
-    ):
+    class _RestoreCluster(_BaseAlloyDBAdminRestTransport._BaseRestoreCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.RestoreCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7107,30 +5802,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7154,13 +5837,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._RestoreCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7174,12 +5851,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_restore_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7200,22 +5873,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _SwitchoverCluster(
-        _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster, AlloyDBAdminRestStub
-    ):
+    class _SwitchoverCluster(_BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.SwitchoverCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7259,32 +5922,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_switchover_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_switchover_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7308,13 +5957,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._SwitchoverCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7328,12 +5971,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_switchover_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_switchover_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_switchover_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7354,22 +5993,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _UpdateBackup(
-        _BaseAlloyDBAdminRestTransport._BaseUpdateBackup, AlloyDBAdminRestStub
-    ):
+    class _UpdateBackup(_BaseAlloyDBAdminRestTransport._BaseUpdateBackup, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.UpdateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7412,34 +6041,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7463,13 +6076,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7483,12 +6090,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_update_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7509,22 +6112,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _UpdateCluster(
-        _BaseAlloyDBAdminRestTransport._BaseUpdateCluster, AlloyDBAdminRestStub
-    ):
+    class _UpdateCluster(_BaseAlloyDBAdminRestTransport._BaseUpdateCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.UpdateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7567,30 +6160,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7614,13 +6195,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7634,12 +6209,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_update_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7660,22 +6231,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _UpdateInstance(
-        _BaseAlloyDBAdminRestTransport._BaseUpdateInstance, AlloyDBAdminRestStub
-    ):
+    class _UpdateInstance(_BaseAlloyDBAdminRestTransport._BaseUpdateInstance, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7718,30 +6279,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7765,13 +6314,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7785,12 +6328,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7811,22 +6350,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _UpdateUser(
-        _BaseAlloyDBAdminRestTransport._BaseUpdateUser, AlloyDBAdminRestStub
-    ):
+    class _UpdateUser(_BaseAlloyDBAdminRestTransport._BaseUpdateUser, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.UpdateUser")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7866,36 +6395,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     Message describing User object.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_http_options()
 
             request, metadata = self._interceptor.pre_update_user(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7919,13 +6430,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateUser._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7941,12 +6446,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_update_user(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_user_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_user_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.User.to_json(response)
                 except:
@@ -7967,22 +6468,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
-    class _UpgradeCluster(
-        _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster, AlloyDBAdminRestStub
-    ):
+    class _UpgradeCluster(_BaseAlloyDBAdminRestTransport._BaseUpgradeCluster, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.UpgradeCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8025,30 +6516,18 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_upgrade_cluster(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8072,13 +6551,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpgradeCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8092,12 +6565,8 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_upgrade_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upgrade_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upgrade_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8119,57 +6588,43 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             return resp
 
     @property
-    def batch_create_instances(
-        self,
-    ) -> Callable[[service.BatchCreateInstancesRequest], operations_pb2.Operation]:
+    def batch_create_instances(self) -> Callable[[service.BatchCreateInstancesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[service.CreateBackupRequest], operations_pb2.Operation]:
+    def create_backup(self) -> Callable[[service.CreateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[service.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[service.CreateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[[service.CreateDatabaseRequest], resources.Database]:
+    def create_database(self) -> Callable[[service.CreateDatabaseRequest], resources.Database]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_secondary_cluster(
-        self,
-    ) -> Callable[[service.CreateSecondaryClusterRequest], operations_pb2.Operation]:
+    def create_secondary_cluster(self) -> Callable[[service.CreateSecondaryClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSecondaryCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_secondary_instance(
-        self,
-    ) -> Callable[[service.CreateSecondaryInstanceRequest], operations_pb2.Operation]:
+    def create_secondary_instance(self) -> Callable[[service.CreateSecondaryInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSecondaryInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -8181,25 +6636,19 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._CreateUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[service.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[service.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[service.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[service.DeleteClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -8211,36 +6660,25 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._DeleteUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def execute_sql(
-        self,
-    ) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
+    def execute_sql(self) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExecuteSql(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_cluster(
-        self,
-    ) -> Callable[[service.ExportClusterRequest], operations_pb2.Operation]:
+    def export_cluster(self) -> Callable[[service.ExportClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def failover_instance(
-        self,
-    ) -> Callable[[service.FailoverInstanceRequest], operations_pb2.Operation]:
+    def failover_instance(self) -> Callable[[service.FailoverInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FailoverInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_client_certificate(
-        self,
-    ) -> Callable[
-        [service.GenerateClientCertificateRequest],
-        service.GenerateClientCertificateResponse,
-    ]:
+    def generate_client_certificate(self) -> Callable[[service.GenerateClientCertificateRequest], service.GenerateClientCertificateResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateClientCertificate(self._session, self._host, self._interceptor)  # type: ignore
@@ -8258,17 +6696,13 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connection_info(
-        self,
-    ) -> Callable[[service.GetConnectionInfoRequest], resources.ConnectionInfo]:
+    def get_connection_info(self) -> Callable[[service.GetConnectionInfoRequest], resources.ConnectionInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnectionInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[service.GetInstanceRequest], resources.Instance]:
+    def get_instance(self) -> Callable[[service.GetInstanceRequest], resources.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -8280,124 +6714,91 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._GetUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_cluster(
-        self,
-    ) -> Callable[[service.ImportClusterRequest], operations_pb2.Operation]:
+    def import_cluster(self) -> Callable[[service.ImportClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def inject_fault(
-        self,
-    ) -> Callable[[service.InjectFaultRequest], operations_pb2.Operation]:
+    def inject_fault(self) -> Callable[[service.InjectFaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InjectFault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[service.ListBackupsRequest], service.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[service.ListBackupsRequest], service.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[[service.ListClustersRequest], service.ListClustersResponse]:
+    def list_clusters(self) -> Callable[[service.ListClustersRequest], service.ListClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[[service.ListDatabasesRequest], service.ListDatabasesResponse]:
+    def list_databases(self) -> Callable[[service.ListDatabasesRequest], service.ListDatabasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatabases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_supported_database_flags(
-        self,
-    ) -> Callable[
-        [service.ListSupportedDatabaseFlagsRequest],
-        service.ListSupportedDatabaseFlagsResponse,
-    ]:
+    def list_supported_database_flags(self) -> Callable[[service.ListSupportedDatabaseFlagsRequest], service.ListSupportedDatabaseFlagsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSupportedDatabaseFlags(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_users(
-        self,
-    ) -> Callable[[service.ListUsersRequest], service.ListUsersResponse]:
+    def list_users(self) -> Callable[[service.ListUsersRequest], service.ListUsersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUsers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def promote_cluster(
-        self,
-    ) -> Callable[[service.PromoteClusterRequest], operations_pb2.Operation]:
+    def promote_cluster(self) -> Callable[[service.PromoteClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PromoteCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restart_instance(
-        self,
-    ) -> Callable[[service.RestartInstanceRequest], operations_pb2.Operation]:
+    def restart_instance(self) -> Callable[[service.RestartInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestartInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_cluster(
-        self,
-    ) -> Callable[[service.RestoreClusterRequest], operations_pb2.Operation]:
+    def restore_cluster(self) -> Callable[[service.RestoreClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def switchover_cluster(
-        self,
-    ) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
+    def switchover_cluster(self) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SwitchoverCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[service.UpdateBackupRequest], operations_pb2.Operation]:
+    def update_backup(self) -> Callable[[service.UpdateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[service.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[service.UpdateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[service.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[service.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -8409,9 +6810,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._UpdateUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upgrade_cluster(
-        self,
-    ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
+    def upgrade_cluster(self) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpgradeCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -8420,22 +6819,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseAlloyDBAdminRestTransport._BaseGetLocation, AlloyDBAdminRestStub
-    ):
+    class _GetLocation(_BaseAlloyDBAdminRestTransport._BaseGetLocation, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8473,30 +6862,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8520,12 +6895,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8537,9 +6907,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8564,22 +6932,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseAlloyDBAdminRestTransport._BaseListLocations, AlloyDBAdminRestStub
-    ):
+    class _ListLocations(_BaseAlloyDBAdminRestTransport._BaseListLocations, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8617,26 +6975,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8660,12 +7008,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8677,9 +7020,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8704,22 +7045,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAlloyDBAdminRestTransport._BaseCancelOperation, AlloyDBAdminRestStub
-    ):
+    class _CancelOperation(_BaseAlloyDBAdminRestTransport._BaseCancelOperation, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8754,28 +7085,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8799,12 +7118,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8818,22 +7132,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseAlloyDBAdminRestTransport._BaseDeleteOperation, AlloyDBAdminRestStub
-    ):
+    class _DeleteOperation(_BaseAlloyDBAdminRestTransport._BaseDeleteOperation, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8868,28 +7172,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8913,12 +7205,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8932,22 +7219,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAlloyDBAdminRestTransport._BaseGetOperation, AlloyDBAdminRestStub
-    ):
+    class _GetOperation(_BaseAlloyDBAdminRestTransport._BaseGetOperation, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8985,28 +7262,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9030,12 +7295,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9047,9 +7307,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9074,22 +7332,12 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAlloyDBAdminRestTransport._BaseListOperations, AlloyDBAdminRestStub
-    ):
+    class _ListOperations(_BaseAlloyDBAdminRestTransport._BaseListOperations, AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("AlloyDBAdminRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9127,26 +7375,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9170,12 +7408,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9187,9 +7420,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

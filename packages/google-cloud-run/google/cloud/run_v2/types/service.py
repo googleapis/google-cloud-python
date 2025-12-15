@@ -22,12 +22,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.run_v2.types import (
-    condition,
-    revision_template,
-    traffic_target,
-    vendor_settings,
-)
+from google.cloud.run_v2.types import condition, revision_template, traffic_target, vendor_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -625,9 +620,7 @@ class Service(proto.Message):
         proto.STRING,
         number=34,
     )
-    traffic_statuses: MutableSequence[
-        traffic_target.TrafficTargetStatus
-    ] = proto.RepeatedField(
+    traffic_statuses: MutableSequence[traffic_target.TrafficTargetStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=35,
         message=traffic_target.TrafficTargetStatus,

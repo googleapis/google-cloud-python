@@ -117,12 +117,8 @@ class AdBreakServiceRestInterceptor:
     """
 
     def pre_create_ad_break(
-        self,
-        request: ad_break_service.CreateAdBreakRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_break_service.CreateAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_break_service.CreateAdBreakRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_break_service.CreateAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_ad_break
 
         Override in a subclass to manipulate the request or metadata
@@ -130,9 +126,7 @@ class AdBreakServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_ad_break(
-        self, response: ad_break_messages.AdBreak
-    ) -> ad_break_messages.AdBreak:
+    def post_create_ad_break(self, response: ad_break_messages.AdBreak) -> ad_break_messages.AdBreak:
         """Post-rpc interceptor for create_ad_break
 
         DEPRECATED. Please use the `post_create_ad_break_with_metadata`
@@ -146,9 +140,7 @@ class AdBreakServiceRestInterceptor:
         return response
 
     def post_create_ad_break_with_metadata(
-        self,
-        response: ad_break_messages.AdBreak,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_break_messages.AdBreak, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_break_messages.AdBreak, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_ad_break
 
@@ -165,12 +157,8 @@ class AdBreakServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_ad_break(
-        self,
-        request: ad_break_service.DeleteAdBreakRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_break_service.DeleteAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_break_service.DeleteAdBreakRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_break_service.DeleteAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_ad_break
 
         Override in a subclass to manipulate the request or metadata
@@ -179,12 +167,8 @@ class AdBreakServiceRestInterceptor:
         return request, metadata
 
     def pre_get_ad_break(
-        self,
-        request: ad_break_service.GetAdBreakRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_break_service.GetAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_break_service.GetAdBreakRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_break_service.GetAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_ad_break
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +176,7 @@ class AdBreakServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_ad_break(
-        self, response: ad_break_messages.AdBreak
-    ) -> ad_break_messages.AdBreak:
+    def post_get_ad_break(self, response: ad_break_messages.AdBreak) -> ad_break_messages.AdBreak:
         """Post-rpc interceptor for get_ad_break
 
         DEPRECATED. Please use the `post_get_ad_break_with_metadata`
@@ -208,9 +190,7 @@ class AdBreakServiceRestInterceptor:
         return response
 
     def post_get_ad_break_with_metadata(
-        self,
-        response: ad_break_messages.AdBreak,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_break_messages.AdBreak, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_break_messages.AdBreak, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_ad_break
 
@@ -227,12 +207,8 @@ class AdBreakServiceRestInterceptor:
         return response, metadata
 
     def pre_list_ad_breaks(
-        self,
-        request: ad_break_service.ListAdBreaksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_break_service.ListAdBreaksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_break_service.ListAdBreaksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_break_service.ListAdBreaksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_ad_breaks
 
         Override in a subclass to manipulate the request or metadata
@@ -240,9 +216,7 @@ class AdBreakServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_ad_breaks(
-        self, response: ad_break_service.ListAdBreaksResponse
-    ) -> ad_break_service.ListAdBreaksResponse:
+    def post_list_ad_breaks(self, response: ad_break_service.ListAdBreaksResponse) -> ad_break_service.ListAdBreaksResponse:
         """Post-rpc interceptor for list_ad_breaks
 
         DEPRECATED. Please use the `post_list_ad_breaks_with_metadata`
@@ -256,12 +230,8 @@ class AdBreakServiceRestInterceptor:
         return response
 
     def post_list_ad_breaks_with_metadata(
-        self,
-        response: ad_break_service.ListAdBreaksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_break_service.ListAdBreaksResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: ad_break_service.ListAdBreaksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_break_service.ListAdBreaksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_ad_breaks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,12 +247,8 @@ class AdBreakServiceRestInterceptor:
         return response, metadata
 
     def pre_update_ad_break(
-        self,
-        request: ad_break_service.UpdateAdBreakRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_break_service.UpdateAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_break_service.UpdateAdBreakRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_break_service.UpdateAdBreakRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_ad_break
 
         Override in a subclass to manipulate the request or metadata
@@ -290,9 +256,7 @@ class AdBreakServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_ad_break(
-        self, response: ad_break_messages.AdBreak
-    ) -> ad_break_messages.AdBreak:
+    def post_update_ad_break(self, response: ad_break_messages.AdBreak) -> ad_break_messages.AdBreak:
         """Post-rpc interceptor for update_ad_break
 
         DEPRECATED. Please use the `post_update_ad_break_with_metadata`
@@ -306,9 +270,7 @@ class AdBreakServiceRestInterceptor:
         return response
 
     def post_update_ad_break_with_metadata(
-        self,
-        response: ad_break_messages.AdBreak,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_break_messages.AdBreak, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_break_messages.AdBreak, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_ad_break
 
@@ -325,12 +287,8 @@ class AdBreakServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -338,9 +296,7 @@ class AdBreakServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -429,30 +385,18 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AdBreakServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAdBreak(
-        _BaseAdBreakServiceRestTransport._BaseCreateAdBreak, AdBreakServiceRestStub
-    ):
+    class _CreateAdBreak(_BaseAdBreakServiceRestTransport._BaseCreateAdBreak, AdBreakServiceRestStub):
         def __hash__(self):
             return hash("AdBreakServiceRestTransport.CreateAdBreak")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -492,30 +436,18 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                     The ``AdBreak`` resource.
             """
 
-            http_options = (
-                _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_http_options()
-            )
+            http_options = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_http_options()
 
             request, metadata = self._interceptor.pre_create_ad_break(request, metadata)
-            transcoded_request = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_transcoded_request(http_options, request)
 
-            body = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdBreakServiceRestTransport._BaseCreateAdBreak._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -539,13 +471,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             # Send the request
             response = AdBreakServiceRestTransport._CreateAdBreak._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -561,12 +487,8 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             resp = self._interceptor.post_create_ad_break(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_ad_break_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_ad_break_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_break_messages.AdBreak.to_json(response)
                 except:
@@ -587,22 +509,12 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                 )
             return resp
 
-    class _DeleteAdBreak(
-        _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak, AdBreakServiceRestStub
-    ):
+    class _DeleteAdBreak(_BaseAdBreakServiceRestTransport._BaseDeleteAdBreak, AdBreakServiceRestStub):
         def __hash__(self):
             return hash("AdBreakServiceRestTransport.DeleteAdBreak")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -637,26 +549,16 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak._get_http_options()
-            )
+            http_options = _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_ad_break(request, metadata)
-            transcoded_request = _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdBreakServiceRestTransport._BaseDeleteAdBreak._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -680,12 +582,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             # Send the request
             response = AdBreakServiceRestTransport._DeleteAdBreak._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -693,22 +590,12 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAdBreak(
-        _BaseAdBreakServiceRestTransport._BaseGetAdBreak, AdBreakServiceRestStub
-    ):
+    class _GetAdBreak(_BaseAdBreakServiceRestTransport._BaseGetAdBreak, AdBreakServiceRestStub):
         def __hash__(self):
             return hash("AdBreakServiceRestTransport.GetAdBreak")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -747,28 +634,16 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                     The ``AdBreak`` resource.
             """
 
-            http_options = (
-                _BaseAdBreakServiceRestTransport._BaseGetAdBreak._get_http_options()
-            )
+            http_options = _BaseAdBreakServiceRestTransport._BaseGetAdBreak._get_http_options()
 
             request, metadata = self._interceptor.pre_get_ad_break(request, metadata)
-            transcoded_request = _BaseAdBreakServiceRestTransport._BaseGetAdBreak._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdBreakServiceRestTransport._BaseGetAdBreak._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdBreakServiceRestTransport._BaseGetAdBreak._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdBreakServiceRestTransport._BaseGetAdBreak._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -792,12 +667,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             # Send the request
             response = AdBreakServiceRestTransport._GetAdBreak._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -813,12 +683,8 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             resp = self._interceptor.post_get_ad_break(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_ad_break_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_ad_break_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_break_messages.AdBreak.to_json(response)
                 except:
@@ -839,22 +705,12 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                 )
             return resp
 
-    class _ListAdBreaks(
-        _BaseAdBreakServiceRestTransport._BaseListAdBreaks, AdBreakServiceRestStub
-    ):
+    class _ListAdBreaks(_BaseAdBreakServiceRestTransport._BaseListAdBreaks, AdBreakServiceRestStub):
         def __hash__(self):
             return hash("AdBreakServiceRestTransport.ListAdBreaks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -895,26 +751,16 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdBreakServiceRestTransport._BaseListAdBreaks._get_http_options()
-            )
+            http_options = _BaseAdBreakServiceRestTransport._BaseListAdBreaks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_ad_breaks(request, metadata)
-            transcoded_request = _BaseAdBreakServiceRestTransport._BaseListAdBreaks._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdBreakServiceRestTransport._BaseListAdBreaks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdBreakServiceRestTransport._BaseListAdBreaks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdBreakServiceRestTransport._BaseListAdBreaks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -938,12 +784,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             # Send the request
             response = AdBreakServiceRestTransport._ListAdBreaks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -959,16 +800,10 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             resp = self._interceptor.post_list_ad_breaks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_ad_breaks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_ad_breaks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ad_break_service.ListAdBreaksResponse.to_json(
-                        response
-                    )
+                    response_payload = ad_break_service.ListAdBreaksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -987,22 +822,12 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAdBreak(
-        _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak, AdBreakServiceRestStub
-    ):
+    class _UpdateAdBreak(_BaseAdBreakServiceRestTransport._BaseUpdateAdBreak, AdBreakServiceRestStub):
         def __hash__(self):
             return hash("AdBreakServiceRestTransport.UpdateAdBreak")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1042,30 +867,18 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                     The ``AdBreak`` resource.
             """
 
-            http_options = (
-                _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_http_options()
-            )
+            http_options = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_http_options()
 
             request, metadata = self._interceptor.pre_update_ad_break(request, metadata)
-            transcoded_request = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_transcoded_request(http_options, request)
 
-            body = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdBreakServiceRestTransport._BaseUpdateAdBreak._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1089,13 +902,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             # Send the request
             response = AdBreakServiceRestTransport._UpdateAdBreak._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1111,12 +918,8 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             resp = self._interceptor.post_update_ad_break(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_ad_break_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_ad_break_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_break_messages.AdBreak.to_json(response)
                 except:
@@ -1138,43 +941,31 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
             return resp
 
     @property
-    def create_ad_break(
-        self,
-    ) -> Callable[[ad_break_service.CreateAdBreakRequest], ad_break_messages.AdBreak]:
+    def create_ad_break(self) -> Callable[[ad_break_service.CreateAdBreakRequest], ad_break_messages.AdBreak]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAdBreak(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_ad_break(
-        self,
-    ) -> Callable[[ad_break_service.DeleteAdBreakRequest], empty_pb2.Empty]:
+    def delete_ad_break(self) -> Callable[[ad_break_service.DeleteAdBreakRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAdBreak(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_ad_break(
-        self,
-    ) -> Callable[[ad_break_service.GetAdBreakRequest], ad_break_messages.AdBreak]:
+    def get_ad_break(self) -> Callable[[ad_break_service.GetAdBreakRequest], ad_break_messages.AdBreak]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAdBreak(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_ad_breaks(
-        self,
-    ) -> Callable[
-        [ad_break_service.ListAdBreaksRequest], ad_break_service.ListAdBreaksResponse
-    ]:
+    def list_ad_breaks(self) -> Callable[[ad_break_service.ListAdBreaksRequest], ad_break_service.ListAdBreaksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAdBreaks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_ad_break(
-        self,
-    ) -> Callable[[ad_break_service.UpdateAdBreakRequest], ad_break_messages.AdBreak]:
+    def update_ad_break(self) -> Callable[[ad_break_service.UpdateAdBreakRequest], ad_break_messages.AdBreak]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAdBreak(self._session, self._host, self._interceptor)  # type: ignore
@@ -1183,22 +974,12 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAdBreakServiceRestTransport._BaseGetOperation, AdBreakServiceRestStub
-    ):
+    class _GetOperation(_BaseAdBreakServiceRestTransport._BaseGetOperation, AdBreakServiceRestStub):
         def __hash__(self):
             return hash("AdBreakServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1236,26 +1017,16 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAdBreakServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAdBreakServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAdBreakServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdBreakServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdBreakServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdBreakServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1279,12 +1050,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
 
             # Send the request
             response = AdBreakServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1296,9 +1062,7 @@ class AdBreakServiceRestTransport(_BaseAdBreakServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

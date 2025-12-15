@@ -19,9 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.contentwarehouse_v1.types import (
-    document_schema as gcc_document_schema,
-)
+from google.cloud.contentwarehouse_v1.types import document_schema as gcc_document_schema
 
 __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
@@ -169,9 +167,7 @@ class ListDocumentSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    document_schemas: MutableSequence[
-        gcc_document_schema.DocumentSchema
-    ] = proto.RepeatedField(
+    document_schemas: MutableSequence[gcc_document_schema.DocumentSchema] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcc_document_schema.DocumentSchema,

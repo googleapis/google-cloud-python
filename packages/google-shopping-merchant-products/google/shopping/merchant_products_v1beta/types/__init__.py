@@ -13,18 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .productinputs import (
-    DeleteProductInputRequest,
-    InsertProductInputRequest,
-    ProductInput,
-    UpdateProductInputRequest,
-)
-from .products import (
-    GetProductRequest,
-    ListProductsRequest,
-    ListProductsResponse,
-    Product,
-)
+from .productinputs import DeleteProductInputRequest, InsertProductInputRequest, ProductInput, UpdateProductInputRequest
+from .products import GetProductRequest, ListProductsRequest, ListProductsResponse, Product
 from .products_common import (
     Attributes,
     AutomatedDiscounts,

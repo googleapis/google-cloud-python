@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.channel_v1.types import (
-    channel_partner_links as gcc_channel_partner_links,
-)
+from google.cloud.channel_v1.types import channel_partner_links as gcc_channel_partner_links
 from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
 from google.cloud.channel_v1.types import billing_accounts
 from google.cloud.channel_v1.types import common
@@ -213,9 +211,7 @@ class CheckCloudIdentityAccountsExistResponse(proto.Message):
             the domain.
     """
 
-    cloud_identity_accounts: MutableSequence[
-        "CloudIdentityCustomerAccount"
-    ] = proto.RepeatedField(
+    cloud_identity_accounts: MutableSequence["CloudIdentityCustomerAccount"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CloudIdentityCustomerAccount",
@@ -676,9 +672,7 @@ class ListTransferableSkusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    transferable_skus: MutableSequence[
-        gcc_entitlements.TransferableSku
-    ] = proto.RepeatedField(
+    transferable_skus: MutableSequence[gcc_entitlements.TransferableSku] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcc_entitlements.TransferableSku,
@@ -912,9 +906,7 @@ class ListChannelPartnerLinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_partner_links: MutableSequence[
-        gcc_channel_partner_links.ChannelPartnerLink
-    ] = proto.RepeatedField(
+    channel_partner_links: MutableSequence[gcc_channel_partner_links.ChannelPartnerLink] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcc_channel_partner_links.ChannelPartnerLink,
@@ -1099,9 +1091,7 @@ class ListCustomerRepricingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    customer_repricing_configs: MutableSequence[
-        repricing.CustomerRepricingConfig
-    ] = proto.RepeatedField(
+    customer_repricing_configs: MutableSequence[repricing.CustomerRepricingConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=repricing.CustomerRepricingConfig,
@@ -1263,9 +1253,7 @@ class ListChannelPartnerRepricingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_partner_repricing_configs: MutableSequence[
-        repricing.ChannelPartnerRepricingConfig
-    ] = proto.RepeatedField(
+    channel_partner_repricing_configs: MutableSequence[repricing.ChannelPartnerRepricingConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=repricing.ChannelPartnerRepricingConfig,
@@ -1294,12 +1282,10 @@ class CreateChannelPartnerRepricingConfigRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=repricing.ChannelPartnerRepricingConfig,
-        )
+    channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=repricing.ChannelPartnerRepricingConfig,
     )
 
 
@@ -1313,12 +1299,10 @@ class UpdateChannelPartnerRepricingConfigRequest(proto.Message):
             object to update.
     """
 
-    channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=repricing.ChannelPartnerRepricingConfig,
-        )
+    channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=repricing.ChannelPartnerRepricingConfig,
     )
 
 
@@ -2349,12 +2333,10 @@ class ListPurchasableSkusRequest(proto.Message):
             proto.STRING,
             number=1,
         )
-        change_type: "ListPurchasableSkusRequest.ChangeOfferPurchase.ChangeType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="ListPurchasableSkusRequest.ChangeOfferPurchase.ChangeType",
-            )
+        change_type: "ListPurchasableSkusRequest.ChangeOfferPurchase.ChangeType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ListPurchasableSkusRequest.ChangeOfferPurchase.ChangeType",
         )
 
     create_entitlement_purchase: CreateEntitlementPurchase = proto.Field(
@@ -2663,9 +2645,7 @@ class SkuPurchaseGroup(proto.Message):
         proto.STRING,
         number=1,
     )
-    billing_account_purchase_infos: MutableSequence[
-        "BillingAccountPurchaseInfo"
-    ] = proto.RepeatedField(
+    billing_account_purchase_infos: MutableSequence["BillingAccountPurchaseInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="BillingAccountPurchaseInfo",
@@ -2939,9 +2919,7 @@ class ListEntitlementChangesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entitlement_changes: MutableSequence[
-        gcc_entitlement_changes.EntitlementChange
-    ] = proto.RepeatedField(
+    entitlement_changes: MutableSequence[gcc_entitlement_changes.EntitlementChange] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcc_entitlement_changes.EntitlementChange,

@@ -28,9 +28,7 @@ import google.protobuf
 from google.cloud.language_v1beta2 import gapic_version as package_version
 from google.cloud.language_v1beta2.types import language_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class LanguageServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -247,10 +237,7 @@ class LanguageServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [language_service.AnalyzeSentimentRequest],
-        Union[
-            language_service.AnalyzeSentimentResponse,
-            Awaitable[language_service.AnalyzeSentimentResponse],
-        ],
+        Union[language_service.AnalyzeSentimentResponse, Awaitable[language_service.AnalyzeSentimentResponse]],
     ]:
         raise NotImplementedError()
 
@@ -259,10 +246,7 @@ class LanguageServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [language_service.AnalyzeEntitiesRequest],
-        Union[
-            language_service.AnalyzeEntitiesResponse,
-            Awaitable[language_service.AnalyzeEntitiesResponse],
-        ],
+        Union[language_service.AnalyzeEntitiesResponse, Awaitable[language_service.AnalyzeEntitiesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -271,10 +255,7 @@ class LanguageServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [language_service.AnalyzeEntitySentimentRequest],
-        Union[
-            language_service.AnalyzeEntitySentimentResponse,
-            Awaitable[language_service.AnalyzeEntitySentimentResponse],
-        ],
+        Union[language_service.AnalyzeEntitySentimentResponse, Awaitable[language_service.AnalyzeEntitySentimentResponse]],
     ]:
         raise NotImplementedError()
 
@@ -282,11 +263,7 @@ class LanguageServiceTransport(abc.ABC):
     def analyze_syntax(
         self,
     ) -> Callable[
-        [language_service.AnalyzeSyntaxRequest],
-        Union[
-            language_service.AnalyzeSyntaxResponse,
-            Awaitable[language_service.AnalyzeSyntaxResponse],
-        ],
+        [language_service.AnalyzeSyntaxRequest], Union[language_service.AnalyzeSyntaxResponse, Awaitable[language_service.AnalyzeSyntaxResponse]]
     ]:
         raise NotImplementedError()
 
@@ -294,11 +271,7 @@ class LanguageServiceTransport(abc.ABC):
     def classify_text(
         self,
     ) -> Callable[
-        [language_service.ClassifyTextRequest],
-        Union[
-            language_service.ClassifyTextResponse,
-            Awaitable[language_service.ClassifyTextResponse],
-        ],
+        [language_service.ClassifyTextRequest], Union[language_service.ClassifyTextResponse, Awaitable[language_service.ClassifyTextResponse]]
     ]:
         raise NotImplementedError()
 
@@ -306,11 +279,7 @@ class LanguageServiceTransport(abc.ABC):
     def moderate_text(
         self,
     ) -> Callable[
-        [language_service.ModerateTextRequest],
-        Union[
-            language_service.ModerateTextResponse,
-            Awaitable[language_service.ModerateTextResponse],
-        ],
+        [language_service.ModerateTextRequest], Union[language_service.ModerateTextResponse, Awaitable[language_service.ModerateTextResponse]]
     ]:
         raise NotImplementedError()
 
@@ -318,11 +287,7 @@ class LanguageServiceTransport(abc.ABC):
     def annotate_text(
         self,
     ) -> Callable[
-        [language_service.AnnotateTextRequest],
-        Union[
-            language_service.AnnotateTextResponse,
-            Awaitable[language_service.AnnotateTextResponse],
-        ],
+        [language_service.AnnotateTextRequest], Union[language_service.AnnotateTextResponse, Awaitable[language_service.AnnotateTextResponse]]
     ]:
         raise NotImplementedError()
 

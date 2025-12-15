@@ -1053,9 +1053,7 @@ class ReportConfig(proto.Message):
         proto.STRING,
         number=5,
     )
-    group_preferenceset_assignments: MutableSequence[
-        GroupPreferenceSetAssignment
-    ] = proto.RepeatedField(
+    group_preferenceset_assignments: MutableSequence[GroupPreferenceSetAssignment] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=GroupPreferenceSetAssignment,
@@ -5222,9 +5220,7 @@ class AssetPerformanceData(proto.Message):
             from oldest to most recent.
     """
 
-    daily_resource_usage_aggregations: MutableSequence[
-        "DailyResourceUsageAggregation"
-    ] = proto.RepeatedField(
+    daily_resource_usage_aggregations: MutableSequence["DailyResourceUsageAggregation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DailyResourceUsageAggregation",
@@ -5794,9 +5790,7 @@ class AggregationResult(proto.Message):
                 number=3,
             )
 
-        buckets: MutableSequence[
-            "AggregationResult.Histogram.Bucket"
-        ] = proto.RepeatedField(
+        buckets: MutableSequence["AggregationResult.Histogram.Bucket"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AggregationResult.Histogram.Bucket",
@@ -6473,9 +6467,7 @@ class ReportSummary(proto.Message):
                 number=2,
             )
 
-        data_points: MutableSequence[
-            "ReportSummary.ChartData.DataPoint"
-        ] = proto.RepeatedField(
+        data_points: MutableSequence["ReportSummary.ChartData.DataPoint"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ReportSummary.ChartData.DataPoint",
@@ -6544,9 +6536,7 @@ class ReportSummary(proto.Message):
                 number=3,
             )
 
-        buckets: MutableSequence[
-            "ReportSummary.HistogramChartData.Bucket"
-        ] = proto.RepeatedField(
+        buckets: MutableSequence["ReportSummary.HistogramChartData.Bucket"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ReportSummary.HistogramChartData.Bucket",
@@ -6680,16 +6670,12 @@ class ReportSummary(proto.Message):
             proto.INT64,
             number=2,
         )
-        machine_series_allocations: MutableSequence[
-            "ReportSummary.MachineSeriesAllocation"
-        ] = proto.RepeatedField(
+        machine_series_allocations: MutableSequence["ReportSummary.MachineSeriesAllocation"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="ReportSummary.MachineSeriesAllocation",
         )
-        allocated_disk_types: MutableSequence[
-            "PersistentDiskType"
-        ] = proto.RepeatedField(
+        allocated_disk_types: MutableSequence["PersistentDiskType"] = proto.RepeatedField(
             proto.ENUM,
             number=4,
             enum="PersistentDiskType",
@@ -6717,9 +6703,7 @@ class ReportSummary(proto.Message):
             proto.INT64,
             number=2,
         )
-        node_allocations: MutableSequence[
-            "ReportSummary.VmwareNodeAllocation"
-        ] = proto.RepeatedField(
+        node_allocations: MutableSequence["ReportSummary.VmwareNodeAllocation"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="ReportSummary.VmwareNodeAllocation",
@@ -6789,9 +6773,7 @@ class ReportSummary(proto.Message):
             proto.INT64,
             number=2,
         )
-        node_allocations: MutableSequence[
-            "ReportSummary.SoleTenantNodeAllocation"
-        ] = proto.RepeatedField(
+        node_allocations: MutableSequence["ReportSummary.SoleTenantNodeAllocation"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="ReportSummary.SoleTenantNodeAllocation",
@@ -6958,9 +6940,7 @@ class ReportSummary(proto.Message):
             proto.INT64,
             number=4,
         )
-        preference_set_findings: MutableSequence[
-            "ReportSummary.GroupPreferenceSetFinding"
-        ] = proto.RepeatedField(
+        preference_set_findings: MutableSequence["ReportSummary.GroupPreferenceSetFinding"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="ReportSummary.GroupPreferenceSetFinding",

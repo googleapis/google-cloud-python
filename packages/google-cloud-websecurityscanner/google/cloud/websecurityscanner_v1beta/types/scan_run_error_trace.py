@@ -19,9 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.websecurityscanner_v1beta.types import (
-    scan_config_error as gcw_scan_config_error,
-)
+from google.cloud.websecurityscanner_v1beta.types import scan_config_error as gcw_scan_config_error
 
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1beta",

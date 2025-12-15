@@ -312,9 +312,7 @@ class TrustConfig(proto.Message):
             number=1,
             message="TrustConfig.TrustAnchor",
         )
-        intermediate_cas: MutableSequence[
-            "TrustConfig.IntermediateCA"
-        ] = proto.RepeatedField(
+        intermediate_cas: MutableSequence["TrustConfig.IntermediateCA"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="TrustConfig.IntermediateCA",

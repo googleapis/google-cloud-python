@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -49,9 +38,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.transition_route_groups import pagers
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
+from google.cloud.dialogflowcx_v3.types import transition_route_group as gcdc_transition_route_group
 from google.cloud.dialogflowcx_v3.types import page
 from google.cloud.dialogflowcx_v3.types import transition_route_group
 
@@ -86,47 +73,25 @@ class TransitionRouteGroupsAsyncClient:
     flow_path = staticmethod(TransitionRouteGroupsClient.flow_path)
     parse_flow_path = staticmethod(TransitionRouteGroupsClient.parse_flow_path)
     generator_path = staticmethod(TransitionRouteGroupsClient.generator_path)
-    parse_generator_path = staticmethod(
-        TransitionRouteGroupsClient.parse_generator_path
-    )
+    parse_generator_path = staticmethod(TransitionRouteGroupsClient.parse_generator_path)
     intent_path = staticmethod(TransitionRouteGroupsClient.intent_path)
     parse_intent_path = staticmethod(TransitionRouteGroupsClient.parse_intent_path)
     page_path = staticmethod(TransitionRouteGroupsClient.page_path)
     parse_page_path = staticmethod(TransitionRouteGroupsClient.parse_page_path)
-    transition_route_group_path = staticmethod(
-        TransitionRouteGroupsClient.transition_route_group_path
-    )
-    parse_transition_route_group_path = staticmethod(
-        TransitionRouteGroupsClient.parse_transition_route_group_path
-    )
+    transition_route_group_path = staticmethod(TransitionRouteGroupsClient.transition_route_group_path)
+    parse_transition_route_group_path = staticmethod(TransitionRouteGroupsClient.parse_transition_route_group_path)
     webhook_path = staticmethod(TransitionRouteGroupsClient.webhook_path)
     parse_webhook_path = staticmethod(TransitionRouteGroupsClient.parse_webhook_path)
-    common_billing_account_path = staticmethod(
-        TransitionRouteGroupsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        TransitionRouteGroupsClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(TransitionRouteGroupsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(TransitionRouteGroupsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(TransitionRouteGroupsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        TransitionRouteGroupsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        TransitionRouteGroupsClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        TransitionRouteGroupsClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(TransitionRouteGroupsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(TransitionRouteGroupsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(TransitionRouteGroupsClient.parse_common_organization_path)
     common_project_path = staticmethod(TransitionRouteGroupsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        TransitionRouteGroupsClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        TransitionRouteGroupsClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        TransitionRouteGroupsClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(TransitionRouteGroupsClient.parse_common_project_path)
+    common_location_path = staticmethod(TransitionRouteGroupsClient.common_location_path)
+    parse_common_location_path = staticmethod(TransitionRouteGroupsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -162,9 +127,7 @@ class TransitionRouteGroupsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -231,13 +194,7 @@ class TransitionRouteGroupsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                TransitionRouteGroupsTransport,
-                Callable[..., TransitionRouteGroupsTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, TransitionRouteGroupsTransport, Callable[..., TransitionRouteGroupsTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,20 +254,14 @@ class TransitionRouteGroupsAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.dialogflow.cx_v3.TransitionRouteGroupsAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.dialogflow.cx.v3.TransitionRouteGroups",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -321,9 +272,7 @@ class TransitionRouteGroupsAsyncClient:
 
     async def list_transition_route_groups(
         self,
-        request: Optional[
-            Union[transition_route_group.ListTransitionRouteGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[transition_route_group.ListTransitionRouteGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -394,20 +343,13 @@ class TransitionRouteGroupsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, transition_route_group.ListTransitionRouteGroupsRequest
-        ):
+        if not isinstance(request, transition_route_group.ListTransitionRouteGroupsRequest):
             request = transition_route_group.ListTransitionRouteGroupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -417,15 +359,11 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_transition_route_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_transition_route_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -454,9 +392,7 @@ class TransitionRouteGroupsAsyncClient:
 
     async def get_transition_route_group(
         self,
-        request: Optional[
-            Union[transition_route_group.GetTransitionRouteGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[transition_route_group.GetTransitionRouteGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -527,20 +463,13 @@ class TransitionRouteGroupsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, transition_route_group.GetTransitionRouteGroupRequest
-        ):
+        if not isinstance(request, transition_route_group.GetTransitionRouteGroupRequest):
             request = transition_route_group.GetTransitionRouteGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -550,15 +479,11 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_transition_route_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_transition_route_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -576,14 +501,10 @@ class TransitionRouteGroupsAsyncClient:
 
     async def create_transition_route_group(
         self,
-        request: Optional[
-            Union[gcdc_transition_route_group.CreateTransitionRouteGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[gcdc_transition_route_group.CreateTransitionRouteGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        transition_route_group: Optional[
-            gcdc_transition_route_group.TransitionRouteGroup
-        ] = None,
+        transition_route_group: Optional[gcdc_transition_route_group.TransitionRouteGroup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -669,23 +590,14 @@ class TransitionRouteGroupsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, transition_route_group]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcdc_transition_route_group.CreateTransitionRouteGroupRequest
-        ):
-            request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest(
-                request
-            )
+        if not isinstance(request, gcdc_transition_route_group.CreateTransitionRouteGroupRequest):
+            request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -696,15 +608,11 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_transition_route_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_transition_route_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -722,13 +630,9 @@ class TransitionRouteGroupsAsyncClient:
 
     async def update_transition_route_group(
         self,
-        request: Optional[
-            Union[gcdc_transition_route_group.UpdateTransitionRouteGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[gcdc_transition_route_group.UpdateTransitionRouteGroupRequest, dict]] = None,
         *,
-        transition_route_group: Optional[
-            gcdc_transition_route_group.TransitionRouteGroup
-        ] = None,
+        transition_route_group: Optional[gcdc_transition_route_group.TransitionRouteGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -808,23 +712,14 @@ class TransitionRouteGroupsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [transition_route_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcdc_transition_route_group.UpdateTransitionRouteGroupRequest
-        ):
-            request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(
-                request
-            )
+        if not isinstance(request, gcdc_transition_route_group.UpdateTransitionRouteGroupRequest):
+            request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -835,16 +730,12 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_transition_route_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_transition_route_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("transition_route_group.name", request.transition_route_group.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("transition_route_group.name", request.transition_route_group.name),)),
         )
 
         # Validate the universe domain.
@@ -863,9 +754,7 @@ class TransitionRouteGroupsAsyncClient:
 
     async def delete_transition_route_group(
         self,
-        request: Optional[
-            Union[transition_route_group.DeleteTransitionRouteGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[transition_route_group.DeleteTransitionRouteGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -929,20 +818,13 @@ class TransitionRouteGroupsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, transition_route_group.DeleteTransitionRouteGroupRequest
-        ):
+        if not isinstance(request, transition_route_group.DeleteTransitionRouteGroupRequest):
             request = transition_route_group.DeleteTransitionRouteGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -952,15 +834,11 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_transition_route_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_transition_route_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1010,9 +888,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1065,9 +941,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1123,9 +997,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1175,9 +1047,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1230,9 +1100,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1255,9 +1123,7 @@ class TransitionRouteGroupsAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

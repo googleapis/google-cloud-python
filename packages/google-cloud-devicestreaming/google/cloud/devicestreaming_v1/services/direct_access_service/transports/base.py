@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.devicestreaming_v1 import gapic_version as package_version
 from google.cloud.devicestreaming_v1.types import adb_service, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class DirectAccessServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -203,60 +193,29 @@ class DirectAccessServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_device_session(
-        self,
-    ) -> Callable[
-        [service.CreateDeviceSessionRequest],
-        Union[service.DeviceSession, Awaitable[service.DeviceSession]],
-    ]:
+    def create_device_session(self) -> Callable[[service.CreateDeviceSessionRequest], Union[service.DeviceSession, Awaitable[service.DeviceSession]]]:
         raise NotImplementedError()
 
     @property
     def list_device_sessions(
         self,
-    ) -> Callable[
-        [service.ListDeviceSessionsRequest],
-        Union[
-            service.ListDeviceSessionsResponse,
-            Awaitable[service.ListDeviceSessionsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListDeviceSessionsRequest], Union[service.ListDeviceSessionsResponse, Awaitable[service.ListDeviceSessionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_device_session(
-        self,
-    ) -> Callable[
-        [service.GetDeviceSessionRequest],
-        Union[service.DeviceSession, Awaitable[service.DeviceSession]],
-    ]:
+    def get_device_session(self) -> Callable[[service.GetDeviceSessionRequest], Union[service.DeviceSession, Awaitable[service.DeviceSession]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_device_session(
-        self,
-    ) -> Callable[
-        [service.CancelDeviceSessionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def cancel_device_session(self) -> Callable[[service.CancelDeviceSessionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def update_device_session(
-        self,
-    ) -> Callable[
-        [service.UpdateDeviceSessionRequest],
-        Union[service.DeviceSession, Awaitable[service.DeviceSession]],
-    ]:
+    def update_device_session(self) -> Callable[[service.UpdateDeviceSessionRequest], Union[service.DeviceSession, Awaitable[service.DeviceSession]]]:
         raise NotImplementedError()
 
     @property
-    def adb_connect(
-        self,
-    ) -> Callable[
-        [adb_service.AdbMessage],
-        Union[adb_service.DeviceMessage, Awaitable[adb_service.DeviceMessage]],
-    ]:
+    def adb_connect(self) -> Callable[[adb_service.AdbMessage], Union[adb_service.DeviceMessage, Awaitable[adb_service.DeviceMessage]]]:
         raise NotImplementedError()
 
     @property

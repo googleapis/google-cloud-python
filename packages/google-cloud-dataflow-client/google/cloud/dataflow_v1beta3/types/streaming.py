@@ -477,9 +477,7 @@ class StreamingComputationRanges(proto.Message):
         proto.STRING,
         number=1,
     )
-    range_assignments: MutableSequence[
-        "KeyRangeDataDiskAssignment"
-    ] = proto.RepeatedField(
+    range_assignments: MutableSequence["KeyRangeDataDiskAssignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="KeyRangeDataDiskAssignment",

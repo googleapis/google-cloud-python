@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    site_search_engine as gcd_site_search_engine,
-)
+from google.cloud.discoveryengine_v1.types import site_search_engine as gcd_site_search_engine
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -371,9 +369,7 @@ class ListTargetSitesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_site_search_engine.TargetSite,
@@ -424,9 +420,7 @@ class BatchCreateTargetSitesResponse(proto.Message):
             TargetSites created.
     """
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_site_search_engine.TargetSite,
@@ -833,12 +827,10 @@ class RecrawlUrisResponse(proto.Message):
                 DESKTOP = 1
                 MOBILE = 2
 
-            corpus_type: "RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType",
-                )
+            corpus_type: "RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType",
             )
             error_message: str = proto.Field(
                 proto.STRING,
@@ -849,9 +841,7 @@ class RecrawlUrisResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        failure_reasons: MutableSequence[
-            "RecrawlUrisResponse.FailureInfo.FailureReason"
-        ] = proto.RepeatedField(
+        failure_reasons: MutableSequence["RecrawlUrisResponse.FailureInfo.FailureReason"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="RecrawlUrisResponse.FailureInfo.FailureReason",
@@ -1084,9 +1074,7 @@ class FetchDomainVerificationStatusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_site_search_engine.TargetSite,

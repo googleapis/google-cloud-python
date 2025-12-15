@@ -93,9 +93,7 @@ class AgentCoachingInstruction(proto.Message):
                 number=4,
             )
 
-        duplicate_suggestions: MutableSequence[
-            "AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion"
-        ] = proto.RepeatedField(
+        duplicate_suggestions: MutableSequence["AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion",

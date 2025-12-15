@@ -215,13 +215,8 @@ class BackendServicesRestInterceptor:
     """
 
     def pre_add_signed_url_key(
-        self,
-        request: compute.AddSignedUrlKeyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddSignedUrlKeyBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AddSignedUrlKeyBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddSignedUrlKeyBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_signed_url_key
 
         Override in a subclass to manipulate the request or metadata
@@ -243,9 +238,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_add_signed_url_key_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_signed_url_key
 
@@ -262,13 +255,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListBackendServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListBackendServicesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListBackendServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListBackendServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +264,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.BackendServiceAggregatedList
-    ) -> compute.BackendServiceAggregatedList:
+    def post_aggregated_list(self, response: compute.BackendServiceAggregatedList) -> compute.BackendServiceAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -292,12 +278,8 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.BackendServiceAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.BackendServiceAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.BackendServiceAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.BackendServiceAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -313,12 +295,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -340,9 +318,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -359,13 +335,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_delete_signed_url_key(
-        self,
-        request: compute.DeleteSignedUrlKeyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteSignedUrlKeyBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteSignedUrlKeyBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteSignedUrlKeyBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_signed_url_key
 
         Override in a subclass to manipulate the request or metadata
@@ -373,9 +344,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_signed_url_key(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_delete_signed_url_key(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete_signed_url_key
 
         DEPRECATED. Please use the `post_delete_signed_url_key_with_metadata`
@@ -389,9 +358,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_delete_signed_url_key_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_signed_url_key
 
@@ -408,12 +375,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -435,9 +398,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.BackendService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.BackendService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.BackendService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -454,13 +415,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_get_effective_security_policies(
-        self,
-        request: compute.GetEffectiveSecurityPoliciesBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetEffectiveSecurityPoliciesBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetEffectiveSecurityPoliciesBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetEffectiveSecurityPoliciesBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_effective_security_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -484,13 +440,8 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_get_effective_security_policies_with_metadata(
-        self,
-        response: compute.GetEffectiveSecurityPoliciesBackendServiceResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetEffectiveSecurityPoliciesBackendServiceResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.GetEffectiveSecurityPoliciesBackendServiceResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetEffectiveSecurityPoliciesBackendServiceResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_effective_security_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -506,12 +457,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_get_health(
-        self,
-        request: compute.GetHealthBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetHealthBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetHealthBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetHealthBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_health
 
         Override in a subclass to manipulate the request or metadata
@@ -519,9 +466,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_health(
-        self, response: compute.BackendServiceGroupHealth
-    ) -> compute.BackendServiceGroupHealth:
+    def post_get_health(self, response: compute.BackendServiceGroupHealth) -> compute.BackendServiceGroupHealth:
         """Post-rpc interceptor for get_health
 
         DEPRECATED. Please use the `post_get_health_with_metadata`
@@ -535,12 +480,8 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_get_health_with_metadata(
-        self,
-        response: compute.BackendServiceGroupHealth,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.BackendServiceGroupHealth, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.BackendServiceGroupHealth, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.BackendServiceGroupHealth, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_health
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -556,13 +497,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetIamPolicyBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -584,9 +520,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -603,12 +537,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -630,9 +560,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -649,12 +577,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListBackendServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListBackendServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListBackendServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListBackendServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -662,9 +586,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.BackendServiceList
-    ) -> compute.BackendServiceList:
+    def post_list(self, response: compute.BackendServiceList) -> compute.BackendServiceList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -678,9 +600,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.BackendServiceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.BackendServiceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.BackendServiceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -697,13 +617,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_list_usable(
-        self,
-        request: compute.ListUsableBackendServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListUsableBackendServicesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListUsableBackendServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListUsableBackendServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_usable
 
         Override in a subclass to manipulate the request or metadata
@@ -711,9 +626,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_usable(
-        self, response: compute.BackendServiceListUsable
-    ) -> compute.BackendServiceListUsable:
+    def post_list_usable(self, response: compute.BackendServiceListUsable) -> compute.BackendServiceListUsable:
         """Post-rpc interceptor for list_usable
 
         DEPRECATED. Please use the `post_list_usable_with_metadata`
@@ -727,12 +640,8 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_list_usable_with_metadata(
-        self,
-        response: compute.BackendServiceListUsable,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.BackendServiceListUsable, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.BackendServiceListUsable, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.BackendServiceListUsable, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_usable
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -748,12 +657,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -775,9 +680,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -794,13 +697,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_set_edge_security_policy(
-        self,
-        request: compute.SetEdgeSecurityPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetEdgeSecurityPolicyBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetEdgeSecurityPolicyBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetEdgeSecurityPolicyBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_edge_security_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -808,9 +706,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_set_edge_security_policy(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_edge_security_policy(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_edge_security_policy
 
         DEPRECATED. Please use the `post_set_edge_security_policy_with_metadata`
@@ -824,9 +720,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_set_edge_security_policy_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_edge_security_policy
 
@@ -843,13 +737,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetIamPolicyBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -871,9 +760,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -890,13 +777,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_set_security_policy(
-        self,
-        request: compute.SetSecurityPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetSecurityPolicyBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetSecurityPolicyBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetSecurityPolicyBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_security_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -904,9 +786,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_set_security_policy(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_security_policy(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_security_policy
 
         DEPRECATED. Please use the `post_set_security_policy_with_metadata`
@@ -920,9 +800,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_set_security_policy_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_security_policy
 
@@ -939,13 +817,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsBackendServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -953,9 +826,7 @@ class BackendServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -969,12 +840,8 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -990,12 +857,8 @@ class BackendServicesRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdateBackendServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdateBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.UpdateBackendServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdateBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -1017,9 +880,7 @@ class BackendServicesRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -1119,30 +980,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or BackendServicesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AddSignedUrlKey(
-        _BaseBackendServicesRestTransport._BaseAddSignedUrlKey, BackendServicesRestStub
-    ):
+    class _AddSignedUrlKey(_BaseBackendServicesRestTransport._BaseAddSignedUrlKey, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.AddSignedUrlKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1201,32 +1050,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_signed_url_key(
-                request, metadata
-            )
-            transcoded_request = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_signed_url_key(request, metadata)
+            transcoded_request = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1250,13 +1085,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._AddSignedUrlKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1272,12 +1101,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_add_signed_url_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_signed_url_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_signed_url_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1298,22 +1123,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _AggregatedList(
-        _BaseBackendServicesRestTransport._BaseAggregatedList, BackendServicesRestStub
-    ):
+    class _AggregatedList(_BaseBackendServicesRestTransport._BaseAggregatedList, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1356,26 +1171,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseBackendServicesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1399,12 +1204,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1420,16 +1220,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.BackendServiceAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.BackendServiceAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1448,22 +1242,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _Delete(
-        _BaseBackendServicesRestTransport._BaseDelete, BackendServicesRestStub
-    ):
+    class _Delete(_BaseBackendServicesRestTransport._BaseDelete, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1521,30 +1305,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseBackendServicesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1568,12 +1338,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1589,12 +1354,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1615,23 +1376,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _DeleteSignedUrlKey(
-        _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey,
-        BackendServicesRestStub,
-    ):
+    class _DeleteSignedUrlKey(_BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.DeleteSignedUrlKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1689,28 +1439,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_signed_url_key(
-                request, metadata
-            )
-            transcoded_request = _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_signed_url_key(request, metadata)
+            transcoded_request = _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1734,12 +1472,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._DeleteSignedUrlKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1755,12 +1488,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_delete_signed_url_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_signed_url_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_signed_url_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1786,15 +1515,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             return hash("BackendServicesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1850,30 +1571,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseBackendServicesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1896,14 +1603,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
 
             # Send the request
-            response = BackendServicesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = BackendServicesRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1919,9 +1619,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.BackendService.to_json(response)
                 except:
@@ -1942,23 +1640,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _GetEffectiveSecurityPolicies(
-        _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies,
-        BackendServicesRestStub,
-    ):
+    class _GetEffectiveSecurityPolicies(_BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.GetEffectiveSecurityPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2003,28 +1690,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_effective_security_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_effective_security_policies(request, metadata)
+            transcoded_request = _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseGetEffectiveSecurityPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2048,12 +1723,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._GetEffectiveSecurityPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2063,27 +1733,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Return the response
             resp = compute.GetEffectiveSecurityPoliciesBackendServiceResponse()
-            pb_resp = compute.GetEffectiveSecurityPoliciesBackendServiceResponse.pb(
-                resp
-            )
+            pb_resp = compute.GetEffectiveSecurityPoliciesBackendServiceResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_effective_security_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_effective_security_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_effective_security_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.GetEffectiveSecurityPoliciesBackendServiceResponse.to_json(
-                        response
-                    )
+                    response_payload = compute.GetEffectiveSecurityPoliciesBackendServiceResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2102,22 +1761,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _GetHealth(
-        _BaseBackendServicesRestTransport._BaseGetHealth, BackendServicesRestStub
-    ):
+    class _GetHealth(_BaseBackendServicesRestTransport._BaseGetHealth, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.GetHealth")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2159,34 +1808,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseGetHealth._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseGetHealth._get_http_options()
 
             request, metadata = self._interceptor.pre_get_health(request, metadata)
-            transcoded_request = _BaseBackendServicesRestTransport._BaseGetHealth._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseGetHealth._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackendServicesRestTransport._BaseGetHealth._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackendServicesRestTransport._BaseGetHealth._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BaseGetHealth._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseGetHealth._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2210,13 +1843,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._GetHealth._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2232,16 +1859,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_get_health(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_health_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_health_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.BackendServiceGroupHealth.to_json(
-                        response
-                    )
+                    response_payload = compute.BackendServiceGroupHealth.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2260,22 +1881,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseBackendServicesRestTransport._BaseGetIamPolicy, BackendServicesRestStub
-    ):
+    class _GetIamPolicy(_BaseBackendServicesRestTransport._BaseGetIamPolicy, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2339,26 +1950,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2382,12 +1983,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2403,12 +1999,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2429,22 +2021,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseBackendServicesRestTransport._BaseInsert, BackendServicesRestStub
-    ):
+    class _Insert(_BaseBackendServicesRestTransport._BaseInsert, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2503,34 +2085,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseBackendServicesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2554,13 +2120,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2576,12 +2136,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2607,15 +2163,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             return hash("BackendServicesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2658,30 +2206,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseBackendServicesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2705,12 +2239,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2727,9 +2256,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.BackendServiceList.to_json(response)
                 except:
@@ -2750,22 +2277,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _ListUsable(
-        _BaseBackendServicesRestTransport._BaseListUsable, BackendServicesRestStub
-    ):
+    class _ListUsable(_BaseBackendServicesRestTransport._BaseListUsable, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.ListUsable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2808,26 +2325,16 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseListUsable._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseListUsable._get_http_options()
 
             request, metadata = self._interceptor.pre_list_usable(request, metadata)
-            transcoded_request = _BaseBackendServicesRestTransport._BaseListUsable._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseListUsable._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseListUsable._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseListUsable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2851,12 +2358,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._ListUsable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2872,16 +2374,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_list_usable(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_usable_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_usable_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.BackendServiceListUsable.to_json(
-                        response
-                    )
+                    response_payload = compute.BackendServiceListUsable.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2905,15 +2401,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             return hash("BackendServicesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2972,34 +2460,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseBackendServicesRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3023,13 +2495,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3045,12 +2511,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3071,23 +2533,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _SetEdgeSecurityPolicy(
-        _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy,
-        BackendServicesRestStub,
-    ):
+    class _SetEdgeSecurityPolicy(_BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.SetEdgeSecurityPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3146,32 +2597,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_edge_security_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_edge_security_policy(request, metadata)
+            transcoded_request = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3194,16 +2631,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
 
             # Send the request
-            response = (
-                BackendServicesRestTransport._SetEdgeSecurityPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = BackendServicesRestTransport._SetEdgeSecurityPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3219,12 +2648,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_set_edge_security_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_edge_security_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_edge_security_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3245,22 +2670,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseBackendServicesRestTransport._BaseSetIamPolicy, BackendServicesRestStub
-    ):
+    class _SetIamPolicy(_BaseBackendServicesRestTransport._BaseSetIamPolicy, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3325,30 +2740,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3372,13 +2775,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3394,12 +2791,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -3420,23 +2813,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _SetSecurityPolicy(
-        _BaseBackendServicesRestTransport._BaseSetSecurityPolicy,
-        BackendServicesRestStub,
-    ):
+    class _SetSecurityPolicy(_BaseBackendServicesRestTransport._BaseSetSecurityPolicy, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.SetSecurityPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3495,32 +2877,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_security_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_security_policy(request, metadata)
+            transcoded_request = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3544,13 +2912,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._SetSecurityPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3566,12 +2928,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_set_security_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_security_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_security_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3592,23 +2950,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseBackendServicesRestTransport._BaseTestIamPermissions,
-        BackendServicesRestStub,
-    ):
+    class _TestIamPermissions(_BaseBackendServicesRestTransport._BaseTestIamPermissions, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3650,32 +2997,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3699,13 +3032,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3721,12 +3048,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -3747,22 +3070,12 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 )
             return resp
 
-    class _Update(
-        _BaseBackendServicesRestTransport._BaseUpdate, BackendServicesRestStub
-    ):
+    class _Update(_BaseBackendServicesRestTransport._BaseUpdate, BackendServicesRestStub):
         def __hash__(self):
             return hash("BackendServicesRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3821,34 +3134,18 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackendServicesRestTransport._BaseUpdate._get_http_options()
-            )
+            http_options = _BaseBackendServicesRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BaseBackendServicesRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackendServicesRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = _BaseBackendServicesRestTransport._BaseUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackendServicesRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackendServicesRestTransport._BaseUpdate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackendServicesRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3872,13 +3169,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             # Send the request
             response = BackendServicesRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3894,12 +3185,8 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3921,44 +3208,31 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             return resp
 
     @property
-    def add_signed_url_key(
-        self,
-    ) -> Callable[[compute.AddSignedUrlKeyBackendServiceRequest], compute.Operation]:
+    def add_signed_url_key(self) -> Callable[[compute.AddSignedUrlKeyBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddSignedUrlKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListBackendServicesRequest],
-        compute.BackendServiceAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListBackendServicesRequest], compute.BackendServiceAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteBackendServiceRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_signed_url_key(
-        self,
-    ) -> Callable[[compute.DeleteSignedUrlKeyBackendServiceRequest], compute.Operation]:
+    def delete_signed_url_key(self) -> Callable[[compute.DeleteSignedUrlKeyBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSignedUrlKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetBackendServiceRequest], compute.BackendService]:
+    def get(self) -> Callable[[compute.GetBackendServiceRequest], compute.BackendService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
@@ -3966,107 +3240,73 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
     @property
     def get_effective_security_policies(
         self,
-    ) -> Callable[
-        [compute.GetEffectiveSecurityPoliciesBackendServiceRequest],
-        compute.GetEffectiveSecurityPoliciesBackendServiceResponse,
-    ]:
+    ) -> Callable[[compute.GetEffectiveSecurityPoliciesBackendServiceRequest], compute.GetEffectiveSecurityPoliciesBackendServiceResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEffectiveSecurityPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_health(
-        self,
-    ) -> Callable[
-        [compute.GetHealthBackendServiceRequest], compute.BackendServiceGroupHealth
-    ]:
+    def get_health(self) -> Callable[[compute.GetHealthBackendServiceRequest], compute.BackendServiceGroupHealth]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHealth(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyBackendServiceRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyBackendServiceRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertBackendServiceRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListBackendServicesRequest], compute.BackendServiceList]:
+    def list(self) -> Callable[[compute.ListBackendServicesRequest], compute.BackendServiceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_usable(
-        self,
-    ) -> Callable[
-        [compute.ListUsableBackendServicesRequest], compute.BackendServiceListUsable
-    ]:
+    def list_usable(self) -> Callable[[compute.ListUsableBackendServicesRequest], compute.BackendServiceListUsable]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUsable(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchBackendServiceRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_edge_security_policy(
-        self,
-    ) -> Callable[
-        [compute.SetEdgeSecurityPolicyBackendServiceRequest], compute.Operation
-    ]:
+    def set_edge_security_policy(self) -> Callable[[compute.SetEdgeSecurityPolicyBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetEdgeSecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyBackendServiceRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyBackendServiceRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_security_policy(
-        self,
-    ) -> Callable[[compute.SetSecurityPolicyBackendServiceRequest], compute.Operation]:
+    def set_security_policy(self) -> Callable[[compute.SetSecurityPolicyBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetSecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsBackendServiceRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsBackendServiceRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update(
-        self,
-    ) -> Callable[[compute.UpdateBackendServiceRequest], compute.Operation]:
+    def update(self) -> Callable[[compute.UpdateBackendServiceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore

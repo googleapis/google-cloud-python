@@ -123,12 +123,8 @@ class CmekServiceRestInterceptor:
     """
 
     def pre_create_encryption_config(
-        self,
-        request: cmek.CreateEncryptionConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek.CreateEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cmek.CreateEncryptionConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cmek.CreateEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_encryption_config
 
         Override in a subclass to manipulate the request or metadata
@@ -136,9 +132,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_encryption_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_encryption_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_encryption_config
 
         DEPRECATED. Please use the `post_create_encryption_config_with_metadata`
@@ -152,9 +146,7 @@ class CmekServiceRestInterceptor:
         return response
 
     def post_create_encryption_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_encryption_config
 
@@ -171,12 +163,8 @@ class CmekServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_encryption_config(
-        self,
-        request: cmek.DeleteEncryptionConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek.DeleteEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cmek.DeleteEncryptionConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cmek.DeleteEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_encryption_config
 
         Override in a subclass to manipulate the request or metadata
@@ -184,9 +172,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_encryption_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_encryption_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_encryption_config
 
         DEPRECATED. Please use the `post_delete_encryption_config_with_metadata`
@@ -200,9 +186,7 @@ class CmekServiceRestInterceptor:
         return response
 
     def post_delete_encryption_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_encryption_config
 
@@ -219,12 +203,8 @@ class CmekServiceRestInterceptor:
         return response, metadata
 
     def pre_get_encryption_config(
-        self,
-        request: cmek.GetEncryptionConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek.GetEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cmek.GetEncryptionConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cmek.GetEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_encryption_config
 
         Override in a subclass to manipulate the request or metadata
@@ -232,9 +212,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_encryption_config(
-        self, response: cmek.EncryptionConfig
-    ) -> cmek.EncryptionConfig:
+    def post_get_encryption_config(self, response: cmek.EncryptionConfig) -> cmek.EncryptionConfig:
         """Post-rpc interceptor for get_encryption_config
 
         DEPRECATED. Please use the `post_get_encryption_config_with_metadata`
@@ -248,9 +226,7 @@ class CmekServiceRestInterceptor:
         return response
 
     def post_get_encryption_config_with_metadata(
-        self,
-        response: cmek.EncryptionConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cmek.EncryptionConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cmek.EncryptionConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_encryption_config
 
@@ -267,12 +243,8 @@ class CmekServiceRestInterceptor:
         return response, metadata
 
     def pre_list_encryption_configs(
-        self,
-        request: cmek.ListEncryptionConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek.ListEncryptionConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cmek.ListEncryptionConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cmek.ListEncryptionConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_encryption_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -280,9 +252,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_encryption_configs(
-        self, response: cmek.ListEncryptionConfigsResponse
-    ) -> cmek.ListEncryptionConfigsResponse:
+    def post_list_encryption_configs(self, response: cmek.ListEncryptionConfigsResponse) -> cmek.ListEncryptionConfigsResponse:
         """Post-rpc interceptor for list_encryption_configs
 
         DEPRECATED. Please use the `post_list_encryption_configs_with_metadata`
@@ -296,12 +266,8 @@ class CmekServiceRestInterceptor:
         return response
 
     def post_list_encryption_configs_with_metadata(
-        self,
-        response: cmek.ListEncryptionConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek.ListEncryptionConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cmek.ListEncryptionConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cmek.ListEncryptionConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_encryption_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -317,12 +283,8 @@ class CmekServiceRestInterceptor:
         return response, metadata
 
     def pre_update_encryption_config(
-        self,
-        request: cmek.UpdateEncryptionConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek.UpdateEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cmek.UpdateEncryptionConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cmek.UpdateEncryptionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_encryption_config
 
         Override in a subclass to manipulate the request or metadata
@@ -330,9 +292,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_encryption_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_encryption_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_encryption_config
 
         DEPRECATED. Please use the `post_update_encryption_config_with_metadata`
@@ -346,9 +306,7 @@ class CmekServiceRestInterceptor:
         return response
 
     def post_update_encryption_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_encryption_config
 
@@ -365,12 +323,8 @@ class CmekServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -378,9 +332,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -390,12 +342,8 @@ class CmekServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -403,9 +351,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -415,12 +361,8 @@ class CmekServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -438,12 +380,8 @@ class CmekServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -461,12 +399,8 @@ class CmekServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -474,9 +408,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -486,12 +418,8 @@ class CmekServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -499,9 +427,7 @@ class CmekServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -591,9 +517,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -663,29 +587,17 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateEncryptionConfig(
-        _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig, CmekServiceRestStub
-    ):
+    class _CreateEncryptionConfig(_BaseCmekServiceRestTransport._BaseCreateEncryptionConfig, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.CreateEncryptionConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -728,32 +640,18 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_encryption_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_encryption_config(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseCreateEncryptionConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -777,13 +675,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._CreateEncryptionConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -797,12 +689,8 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             resp = self._interceptor.post_create_encryption_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_encryption_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_encryption_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -823,22 +711,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEncryptionConfig(
-        _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig, CmekServiceRestStub
-    ):
+    class _DeleteEncryptionConfig(_BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.DeleteEncryptionConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -880,28 +758,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_encryption_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_encryption_config(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseDeleteEncryptionConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -925,12 +791,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._DeleteEncryptionConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -944,12 +805,8 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             resp = self._interceptor.post_delete_encryption_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_encryption_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_encryption_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -970,22 +827,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 )
             return resp
 
-    class _GetEncryptionConfig(
-        _BaseCmekServiceRestTransport._BaseGetEncryptionConfig, CmekServiceRestStub
-    ):
+    class _GetEncryptionConfig(_BaseCmekServiceRestTransport._BaseGetEncryptionConfig, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.GetEncryptionConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1028,28 +875,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseGetEncryptionConfig._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseGetEncryptionConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_encryption_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseGetEncryptionConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_encryption_config(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseGetEncryptionConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseGetEncryptionConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseGetEncryptionConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1073,12 +908,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._GetEncryptionConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1094,12 +924,8 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             resp = self._interceptor.post_get_encryption_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_encryption_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_encryption_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cmek.EncryptionConfig.to_json(response)
                 except:
@@ -1120,22 +946,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 )
             return resp
 
-    class _ListEncryptionConfigs(
-        _BaseCmekServiceRestTransport._BaseListEncryptionConfigs, CmekServiceRestStub
-    ):
+    class _ListEncryptionConfigs(_BaseCmekServiceRestTransport._BaseListEncryptionConfigs, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.ListEncryptionConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1174,28 +990,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                     List EncryptionConfigs Response
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseListEncryptionConfigs._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseListEncryptionConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_encryption_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseListEncryptionConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_encryption_configs(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseListEncryptionConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseListEncryptionConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseListEncryptionConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1219,12 +1023,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._ListEncryptionConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1240,16 +1039,10 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             resp = self._interceptor.post_list_encryption_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_encryption_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_encryption_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cmek.ListEncryptionConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = cmek.ListEncryptionConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1268,22 +1061,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEncryptionConfig(
-        _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig, CmekServiceRestStub
-    ):
+    class _UpdateEncryptionConfig(_BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.UpdateEncryptionConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1326,32 +1109,18 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_encryption_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_encryption_config(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseUpdateEncryptionConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1375,13 +1144,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._UpdateEncryptionConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1395,12 +1158,8 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             resp = self._interceptor.post_update_encryption_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_encryption_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_encryption_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1422,43 +1181,31 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
             return resp
 
     @property
-    def create_encryption_config(
-        self,
-    ) -> Callable[[cmek.CreateEncryptionConfigRequest], operations_pb2.Operation]:
+    def create_encryption_config(self) -> Callable[[cmek.CreateEncryptionConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEncryptionConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_encryption_config(
-        self,
-    ) -> Callable[[cmek.DeleteEncryptionConfigRequest], operations_pb2.Operation]:
+    def delete_encryption_config(self) -> Callable[[cmek.DeleteEncryptionConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEncryptionConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_encryption_config(
-        self,
-    ) -> Callable[[cmek.GetEncryptionConfigRequest], cmek.EncryptionConfig]:
+    def get_encryption_config(self) -> Callable[[cmek.GetEncryptionConfigRequest], cmek.EncryptionConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEncryptionConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_encryption_configs(
-        self,
-    ) -> Callable[
-        [cmek.ListEncryptionConfigsRequest], cmek.ListEncryptionConfigsResponse
-    ]:
+    def list_encryption_configs(self) -> Callable[[cmek.ListEncryptionConfigsRequest], cmek.ListEncryptionConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEncryptionConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_encryption_config(
-        self,
-    ) -> Callable[[cmek.UpdateEncryptionConfigRequest], operations_pb2.Operation]:
+    def update_encryption_config(self) -> Callable[[cmek.UpdateEncryptionConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEncryptionConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -1467,22 +1214,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCmekServiceRestTransport._BaseGetLocation, CmekServiceRestStub
-    ):
+    class _GetLocation(_BaseCmekServiceRestTransport._BaseGetLocation, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1520,30 +1257,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseCmekServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCmekServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCmekServiceRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1567,12 +1290,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1584,9 +1302,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1611,22 +1327,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCmekServiceRestTransport._BaseListLocations, CmekServiceRestStub
-    ):
+    class _ListLocations(_BaseCmekServiceRestTransport._BaseListLocations, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1664,28 +1370,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCmekServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmekServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCmekServiceRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1709,12 +1403,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1726,9 +1415,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1753,22 +1440,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseCmekServiceRestTransport._BaseCancelOperation, CmekServiceRestStub
-    ):
+    class _CancelOperation(_BaseCmekServiceRestTransport._BaseCancelOperation, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1804,32 +1481,18 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCmekServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmekServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1853,13 +1516,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1873,22 +1530,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseCmekServiceRestTransport._BaseDeleteOperation, CmekServiceRestStub
-    ):
+    class _DeleteOperation(_BaseCmekServiceRestTransport._BaseDeleteOperation, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1923,28 +1570,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseCmekServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1968,12 +1603,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1987,22 +1617,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCmekServiceRestTransport._BaseGetOperation, CmekServiceRestStub
-    ):
+    class _GetOperation(_BaseCmekServiceRestTransport._BaseGetOperation, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2040,30 +1660,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseCmekServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCmekServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCmekServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2087,12 +1693,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2104,9 +1705,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2131,22 +1730,12 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCmekServiceRestTransport._BaseListOperations, CmekServiceRestStub
-    ):
+    class _ListOperations(_BaseCmekServiceRestTransport._BaseListOperations, CmekServiceRestStub):
         def __hash__(self):
             return hash("CmekServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2184,26 +1773,16 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCmekServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCmekServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCmekServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmekServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2227,12 +1806,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
 
             # Send the request
             response = CmekServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2244,9 +1818,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

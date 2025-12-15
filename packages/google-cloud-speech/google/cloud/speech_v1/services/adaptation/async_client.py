@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -80,24 +69,16 @@ class AdaptationAsyncClient:
     parse_custom_class_path = staticmethod(AdaptationClient.parse_custom_class_path)
     phrase_set_path = staticmethod(AdaptationClient.phrase_set_path)
     parse_phrase_set_path = staticmethod(AdaptationClient.parse_phrase_set_path)
-    common_billing_account_path = staticmethod(
-        AdaptationClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AdaptationClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(AdaptationClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AdaptationClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AdaptationClient.common_folder_path)
     parse_common_folder_path = staticmethod(AdaptationClient.parse_common_folder_path)
     common_organization_path = staticmethod(AdaptationClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        AdaptationClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(AdaptationClient.parse_common_organization_path)
     common_project_path = staticmethod(AdaptationClient.common_project_path)
     parse_common_project_path = staticmethod(AdaptationClient.parse_common_project_path)
     common_location_path = staticmethod(AdaptationClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        AdaptationClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(AdaptationClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -133,9 +114,7 @@ class AdaptationAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -202,9 +181,7 @@ class AdaptationAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, AdaptationTransport, Callable[..., AdaptationTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AdaptationTransport, Callable[..., AdaptationTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -264,20 +241,14 @@ class AdaptationAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.speech_v1.AdaptationAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.speech.v1.Adaptation",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -288,9 +259,7 @@ class AdaptationAsyncClient:
 
     async def create_phrase_set(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.CreatePhraseSetRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.CreatePhraseSetRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         phrase_set: Optional[resource.PhraseSet] = None,
@@ -390,14 +359,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, phrase_set, phrase_set_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -415,15 +379,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_phrase_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_phrase_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -441,9 +401,7 @@ class AdaptationAsyncClient:
 
     async def get_phrase_set(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.GetPhraseSetRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.GetPhraseSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -518,14 +476,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -539,15 +492,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_phrase_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_phrase_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -565,9 +514,7 @@ class AdaptationAsyncClient:
 
     async def list_phrase_set(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.ListPhraseSetRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.ListPhraseSetRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -645,14 +592,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -666,15 +608,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_phrase_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_phrase_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -703,9 +641,7 @@ class AdaptationAsyncClient:
 
     async def update_phrase_set(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.UpdatePhraseSetRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.UpdatePhraseSetRequest, dict]] = None,
         *,
         phrase_set: Optional[resource.PhraseSet] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -787,14 +723,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [phrase_set, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -810,17 +741,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_phrase_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_phrase_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("phrase_set.name", request.phrase_set.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("phrase_set.name", request.phrase_set.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -838,9 +763,7 @@ class AdaptationAsyncClient:
 
     async def delete_phrase_set(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.DeletePhraseSetRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.DeletePhraseSetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -896,14 +819,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -917,15 +835,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_phrase_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_phrase_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -940,9 +854,7 @@ class AdaptationAsyncClient:
 
     async def create_custom_class(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.CreateCustomClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.CreateCustomClassRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         custom_class: Optional[resource.CustomClass] = None,
@@ -1043,14 +955,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, custom_class, custom_class_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1068,15 +975,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_custom_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_custom_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1094,9 +997,7 @@ class AdaptationAsyncClient:
 
     async def get_custom_class(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.GetCustomClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.GetCustomClassRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1167,14 +1068,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1188,15 +1084,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_custom_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_custom_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1214,9 +1106,7 @@ class AdaptationAsyncClient:
 
     async def list_custom_classes(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.ListCustomClassesRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.ListCustomClassesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1294,14 +1184,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1315,15 +1200,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_custom_classes
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_custom_classes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1352,9 +1233,7 @@ class AdaptationAsyncClient:
 
     async def update_custom_class(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.UpdateCustomClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.UpdateCustomClassRequest, dict]] = None,
         *,
         custom_class: Optional[resource.CustomClass] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1440,14 +1319,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [custom_class, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1463,17 +1337,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_custom_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_custom_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("custom_class.name", request.custom_class.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("custom_class.name", request.custom_class.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1491,9 +1359,7 @@ class AdaptationAsyncClient:
 
     async def delete_custom_class(
         self,
-        request: Optional[
-            Union[cloud_speech_adaptation.DeleteCustomClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cloud_speech_adaptation.DeleteCustomClassRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1558,14 +1424,9 @@ class AdaptationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1579,15 +1440,11 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_custom_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_custom_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1637,9 +1494,7 @@ class AdaptationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1692,9 +1547,7 @@ class AdaptationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1717,9 +1570,7 @@ class AdaptationAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

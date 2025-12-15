@@ -28,17 +28,10 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1 import (
-    gapic_version as package_version,
-)
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import (
-    rollouts_resources,
-    rollouts_service,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1 import gapic_version as package_version
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import rollouts_resources, rollouts_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +93,15 @@ class SaasRolloutsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -270,48 +255,28 @@ class SaasRolloutsTransport(abc.ABC):
     def list_rollouts(
         self,
     ) -> Callable[
-        [rollouts_service.ListRolloutsRequest],
-        Union[
-            rollouts_service.ListRolloutsResponse,
-            Awaitable[rollouts_service.ListRolloutsResponse],
-        ],
+        [rollouts_service.ListRolloutsRequest], Union[rollouts_service.ListRolloutsResponse, Awaitable[rollouts_service.ListRolloutsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[
-        [rollouts_service.GetRolloutRequest],
-        Union[rollouts_resources.Rollout, Awaitable[rollouts_resources.Rollout]],
-    ]:
+    def get_rollout(self) -> Callable[[rollouts_service.GetRolloutRequest], Union[rollouts_resources.Rollout, Awaitable[rollouts_resources.Rollout]]]:
         raise NotImplementedError()
 
     @property
     def create_rollout(
         self,
-    ) -> Callable[
-        [rollouts_service.CreateRolloutRequest],
-        Union[rollouts_resources.Rollout, Awaitable[rollouts_resources.Rollout]],
-    ]:
+    ) -> Callable[[rollouts_service.CreateRolloutRequest], Union[rollouts_resources.Rollout, Awaitable[rollouts_resources.Rollout]]]:
         raise NotImplementedError()
 
     @property
     def update_rollout(
         self,
-    ) -> Callable[
-        [rollouts_service.UpdateRolloutRequest],
-        Union[rollouts_resources.Rollout, Awaitable[rollouts_resources.Rollout]],
-    ]:
+    ) -> Callable[[rollouts_service.UpdateRolloutRequest], Union[rollouts_resources.Rollout, Awaitable[rollouts_resources.Rollout]]]:
         raise NotImplementedError()
 
     @property
-    def delete_rollout(
-        self,
-    ) -> Callable[
-        [rollouts_service.DeleteRolloutRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_rollout(self) -> Callable[[rollouts_service.DeleteRolloutRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -319,74 +284,42 @@ class SaasRolloutsTransport(abc.ABC):
         self,
     ) -> Callable[
         [rollouts_service.ListRolloutKindsRequest],
-        Union[
-            rollouts_service.ListRolloutKindsResponse,
-            Awaitable[rollouts_service.ListRolloutKindsResponse],
-        ],
+        Union[rollouts_service.ListRolloutKindsResponse, Awaitable[rollouts_service.ListRolloutKindsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_rollout_kind(
         self,
-    ) -> Callable[
-        [rollouts_service.GetRolloutKindRequest],
-        Union[
-            rollouts_resources.RolloutKind, Awaitable[rollouts_resources.RolloutKind]
-        ],
-    ]:
+    ) -> Callable[[rollouts_service.GetRolloutKindRequest], Union[rollouts_resources.RolloutKind, Awaitable[rollouts_resources.RolloutKind]]]:
         raise NotImplementedError()
 
     @property
     def create_rollout_kind(
         self,
-    ) -> Callable[
-        [rollouts_service.CreateRolloutKindRequest],
-        Union[
-            rollouts_resources.RolloutKind, Awaitable[rollouts_resources.RolloutKind]
-        ],
-    ]:
+    ) -> Callable[[rollouts_service.CreateRolloutKindRequest], Union[rollouts_resources.RolloutKind, Awaitable[rollouts_resources.RolloutKind]]]:
         raise NotImplementedError()
 
     @property
     def update_rollout_kind(
         self,
-    ) -> Callable[
-        [rollouts_service.UpdateRolloutKindRequest],
-        Union[
-            rollouts_resources.RolloutKind, Awaitable[rollouts_resources.RolloutKind]
-        ],
-    ]:
+    ) -> Callable[[rollouts_service.UpdateRolloutKindRequest], Union[rollouts_resources.RolloutKind, Awaitable[rollouts_resources.RolloutKind]]]:
         raise NotImplementedError()
 
     @property
-    def delete_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.DeleteRolloutKindRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_rollout_kind(self) -> Callable[[rollouts_service.DeleteRolloutKindRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

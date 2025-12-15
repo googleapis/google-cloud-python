@@ -21,9 +21,7 @@ from .grpc import ManagedNotebookServiceGrpcTransport
 from .grpc_asyncio import ManagedNotebookServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ManagedNotebookServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ManagedNotebookServiceTransport]]
 _transport_registry["grpc"] = ManagedNotebookServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ManagedNotebookServiceGrpcAsyncIOTransport
 

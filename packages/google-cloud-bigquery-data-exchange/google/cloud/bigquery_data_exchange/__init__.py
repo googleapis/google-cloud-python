@@ -18,12 +18,8 @@ from google.cloud.bigquery_data_exchange import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.async_client import (
-    AnalyticsHubServiceAsyncClient,
-)
-from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.client import (
-    AnalyticsHubServiceClient,
-)
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.async_client import AnalyticsHubServiceAsyncClient
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.client import AnalyticsHubServiceClient
 from google.cloud.bigquery_data_exchange_v1beta1.types.dataexchange import (
     CreateDataExchangeRequest,
     CreateListingRequest,

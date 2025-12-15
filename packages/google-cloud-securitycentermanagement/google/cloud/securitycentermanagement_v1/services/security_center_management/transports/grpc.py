@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -327,9 +312,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def list_effective_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest],
         security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
     ]:
         r"""Return a callable for the list effective security health
@@ -353,9 +336,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_effective_security_health_analytics_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_effective_security_health_analytics_custom_modules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_effective_security_health_analytics_custom_modules"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveSecurityHealthAnalyticsCustomModules",
                 request_serializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.deserialize,
@@ -366,9 +347,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def get_effective_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [
-            security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest
-        ],
+        [security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
         security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
     ]:
         r"""Return a callable for the get effective security health
@@ -388,9 +367,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_effective_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "get_effective_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_effective_security_health_analytics_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.deserialize,
@@ -425,9 +402,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_security_health_analytics_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_security_health_analytics_custom_modules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_security_health_analytics_custom_modules"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityHealthAnalyticsCustomModules",
                 request_serializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.deserialize,
@@ -438,9 +413,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def list_descendant_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],
         security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
     ]:
         r"""Return a callable for the list descendant security
@@ -461,13 +434,8 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if (
-            "list_descendant_security_health_analytics_custom_modules"
-            not in self._stubs
-        ):
-            self._stubs[
-                "list_descendant_security_health_analytics_custom_modules"
-            ] = self._logged_channel.unary_unary(
+        if "list_descendant_security_health_analytics_custom_modules" not in self._stubs:
+            self._stubs["list_descendant_security_health_analytics_custom_modules"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantSecurityHealthAnalyticsCustomModules",
                 request_serializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.deserialize,
@@ -478,8 +446,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def get_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest],
-        security_center_management.SecurityHealthAnalyticsCustomModule,
+        [security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest], security_center_management.SecurityHealthAnalyticsCustomModule
     ]:
         r"""Return a callable for the get security health analytics
         custom module method over gRPC.
@@ -498,9 +465,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "get_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_security_health_analytics_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
@@ -511,8 +476,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def create_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest],
-        security_center_management.SecurityHealthAnalyticsCustomModule,
+        [security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest], security_center_management.SecurityHealthAnalyticsCustomModule
     ]:
         r"""Return a callable for the create security health
         analytics custom module method over gRPC.
@@ -535,9 +499,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "create_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_security_health_analytics_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
@@ -548,8 +510,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def update_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest],
-        security_center_management.SecurityHealthAnalyticsCustomModule,
+        [security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest], security_center_management.SecurityHealthAnalyticsCustomModule
     ]:
         r"""Return a callable for the update security health
         analytics custom module method over gRPC.
@@ -573,9 +534,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "update_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_security_health_analytics_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
@@ -585,10 +544,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     @property
     def delete_security_health_analytics_custom_module(
         self,
-    ) -> Callable[
-        [security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete security health
         analytics custom module method over gRPC.
 
@@ -608,9 +564,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "delete_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_security_health_analytics_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -642,9 +596,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "simulate_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "simulate_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["simulate_security_health_analytics_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/SimulateSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.deserialize,
@@ -655,9 +607,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def list_effective_event_threat_detection_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest
-        ],
+        [security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest],
         security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
     ]:
         r"""Return a callable for the list effective event threat
@@ -679,9 +629,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_effective_event_threat_detection_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_effective_event_threat_detection_custom_modules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_effective_event_threat_detection_custom_modules"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveEventThreatDetectionCustomModules",
                 request_serializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.deserialize,
@@ -692,9 +640,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def get_effective_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [
-            security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest
-        ],
+        [security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest],
         security_center_management.EffectiveEventThreatDetectionCustomModule,
     ]:
         r"""Return a callable for the get effective event threat
@@ -726,9 +672,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_effective_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "get_effective_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_effective_event_threat_detection_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EffectiveEventThreatDetectionCustomModule.deserialize,
@@ -761,9 +705,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_event_threat_detection_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_event_threat_detection_custom_modules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_event_threat_detection_custom_modules"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEventThreatDetectionCustomModules",
                 request_serializer=security_center_management.ListEventThreatDetectionCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListEventThreatDetectionCustomModulesResponse.deserialize,
@@ -774,9 +716,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def list_descendant_event_threat_detection_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest
-        ],
+        [security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest],
         security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
     ]:
         r"""Return a callable for the list descendant event threat
@@ -797,9 +737,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_descendant_event_threat_detection_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_descendant_event_threat_detection_custom_modules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_descendant_event_threat_detection_custom_modules"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantEventThreatDetectionCustomModules",
                 request_serializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.deserialize,
@@ -810,8 +748,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def get_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.GetEventThreatDetectionCustomModuleRequest],
-        security_center_management.EventThreatDetectionCustomModule,
+        [security_center_management.GetEventThreatDetectionCustomModuleRequest], security_center_management.EventThreatDetectionCustomModule
     ]:
         r"""Return a callable for the get event threat detection
         custom module method over gRPC.
@@ -829,9 +766,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "get_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_event_threat_detection_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.GetEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
@@ -842,8 +777,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def create_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.CreateEventThreatDetectionCustomModuleRequest],
-        security_center_management.EventThreatDetectionCustomModule,
+        [security_center_management.CreateEventThreatDetectionCustomModuleRequest], security_center_management.EventThreatDetectionCustomModule
     ]:
         r"""Return a callable for the create event threat detection
         custom module method over gRPC.
@@ -865,9 +799,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "create_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_event_threat_detection_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.CreateEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
@@ -878,8 +810,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     def update_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.UpdateEventThreatDetectionCustomModuleRequest],
-        security_center_management.EventThreatDetectionCustomModule,
+        [security_center_management.UpdateEventThreatDetectionCustomModuleRequest], security_center_management.EventThreatDetectionCustomModule
     ]:
         r"""Return a callable for the update event threat detection
         custom module method over gRPC.
@@ -904,9 +835,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "update_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_event_threat_detection_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.UpdateEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
@@ -916,10 +845,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     @property
     def delete_event_threat_detection_custom_module(
         self,
-    ) -> Callable[
-        [security_center_management.DeleteEventThreatDetectionCustomModuleRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[security_center_management.DeleteEventThreatDetectionCustomModuleRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete event threat detection
         custom module method over gRPC.
 
@@ -939,9 +865,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "delete_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_event_threat_detection_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.DeleteEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -972,9 +896,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "validate_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["validate_event_threat_detection_custom_module"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ValidateEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.ValidateEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.ValidateEventThreatDetectionCustomModuleResponse.deserialize,
@@ -984,10 +906,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     @property
     def get_security_center_service(
         self,
-    ) -> Callable[
-        [security_center_management.GetSecurityCenterServiceRequest],
-        security_center_management.SecurityCenterService,
-    ]:
+    ) -> Callable[[security_center_management.GetSecurityCenterServiceRequest], security_center_management.SecurityCenterService]:
         r"""Return a callable for the get security center service method over gRPC.
 
         Gets service settings for the specified Security
@@ -1004,9 +923,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_center_service" not in self._stubs:
-            self._stubs[
-                "get_security_center_service"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_security_center_service"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityCenterService",
                 request_serializer=security_center_management.GetSecurityCenterServiceRequest.serialize,
                 response_deserializer=security_center_management.SecurityCenterService.deserialize,
@@ -1016,10 +933,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     @property
     def list_security_center_services(
         self,
-    ) -> Callable[
-        [security_center_management.ListSecurityCenterServicesRequest],
-        security_center_management.ListSecurityCenterServicesResponse,
-    ]:
+    ) -> Callable[[security_center_management.ListSecurityCenterServicesRequest], security_center_management.ListSecurityCenterServicesResponse]:
         r"""Return a callable for the list security center services method over gRPC.
 
         Returns a list of all Security Command Center
@@ -1036,9 +950,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_security_center_services" not in self._stubs:
-            self._stubs[
-                "list_security_center_services"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_security_center_services"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityCenterServices",
                 request_serializer=security_center_management.ListSecurityCenterServicesRequest.serialize,
                 response_deserializer=security_center_management.ListSecurityCenterServicesResponse.deserialize,
@@ -1048,10 +960,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     @property
     def update_security_center_service(
         self,
-    ) -> Callable[
-        [security_center_management.UpdateSecurityCenterServiceRequest],
-        security_center_management.SecurityCenterService,
-    ]:
+    ) -> Callable[[security_center_management.UpdateSecurityCenterServiceRequest], security_center_management.SecurityCenterService]:
         r"""Return a callable for the update security center service method over gRPC.
 
         Updates a Security Command Center service using the
@@ -1068,9 +977,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_security_center_service" not in self._stubs:
-            self._stubs[
-                "update_security_center_service"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_security_center_service"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityCenterService",
                 request_serializer=security_center_management.UpdateSecurityCenterServiceRequest.serialize,
                 response_deserializer=security_center_management.SecurityCenterService.deserialize,
@@ -1083,9 +990,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -194,9 +194,7 @@ class ListNotificationSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_subscriptions: MutableSequence[
-        "NotificationSubscription"
-    ] = proto.RepeatedField(
+    notification_subscriptions: MutableSequence["NotificationSubscription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="NotificationSubscription",

@@ -435,9 +435,7 @@ class AttachedServerConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    valid_versions: MutableSequence[
-        "AttachedPlatformVersionInfo"
-    ] = proto.RepeatedField(
+    valid_versions: MutableSequence["AttachedPlatformVersionInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AttachedPlatformVersionInfo",

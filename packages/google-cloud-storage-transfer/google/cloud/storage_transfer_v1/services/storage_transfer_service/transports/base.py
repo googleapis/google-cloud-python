@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.storage_transfer_v1 import gapic_version as package_version
 from google.cloud.storage_transfer_v1.types import transfer, transfer_types
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class StorageTransferServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -240,134 +230,70 @@ class StorageTransferServiceTransport(abc.ABC):
     def get_google_service_account(
         self,
     ) -> Callable[
-        [transfer.GetGoogleServiceAccountRequest],
-        Union[
-            transfer_types.GoogleServiceAccount,
-            Awaitable[transfer_types.GoogleServiceAccount],
-        ],
+        [transfer.GetGoogleServiceAccountRequest], Union[transfer_types.GoogleServiceAccount, Awaitable[transfer_types.GoogleServiceAccount]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_transfer_job(
         self,
-    ) -> Callable[
-        [transfer.CreateTransferJobRequest],
-        Union[transfer_types.TransferJob, Awaitable[transfer_types.TransferJob]],
-    ]:
+    ) -> Callable[[transfer.CreateTransferJobRequest], Union[transfer_types.TransferJob, Awaitable[transfer_types.TransferJob]]]:
         raise NotImplementedError()
 
     @property
     def update_transfer_job(
         self,
-    ) -> Callable[
-        [transfer.UpdateTransferJobRequest],
-        Union[transfer_types.TransferJob, Awaitable[transfer_types.TransferJob]],
-    ]:
+    ) -> Callable[[transfer.UpdateTransferJobRequest], Union[transfer_types.TransferJob, Awaitable[transfer_types.TransferJob]]]:
         raise NotImplementedError()
 
     @property
     def get_transfer_job(
         self,
-    ) -> Callable[
-        [transfer.GetTransferJobRequest],
-        Union[transfer_types.TransferJob, Awaitable[transfer_types.TransferJob]],
-    ]:
+    ) -> Callable[[transfer.GetTransferJobRequest], Union[transfer_types.TransferJob, Awaitable[transfer_types.TransferJob]]]:
         raise NotImplementedError()
 
     @property
     def list_transfer_jobs(
         self,
-    ) -> Callable[
-        [transfer.ListTransferJobsRequest],
-        Union[
-            transfer.ListTransferJobsResponse,
-            Awaitable[transfer.ListTransferJobsResponse],
-        ],
-    ]:
+    ) -> Callable[[transfer.ListTransferJobsRequest], Union[transfer.ListTransferJobsResponse, Awaitable[transfer.ListTransferJobsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def pause_transfer_operation(
-        self,
-    ) -> Callable[
-        [transfer.PauseTransferOperationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def pause_transfer_operation(self) -> Callable[[transfer.PauseTransferOperationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def resume_transfer_operation(
-        self,
-    ) -> Callable[
-        [transfer.ResumeTransferOperationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def resume_transfer_operation(self) -> Callable[[transfer.ResumeTransferOperationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def run_transfer_job(
-        self,
-    ) -> Callable[
-        [transfer.RunTransferJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def run_transfer_job(self) -> Callable[[transfer.RunTransferJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_transfer_job(
-        self,
-    ) -> Callable[
-        [transfer.DeleteTransferJobRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_transfer_job(self) -> Callable[[transfer.DeleteTransferJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_agent_pool(
-        self,
-    ) -> Callable[
-        [transfer.CreateAgentPoolRequest],
-        Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]],
-    ]:
+    def create_agent_pool(self) -> Callable[[transfer.CreateAgentPoolRequest], Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]]]:
         raise NotImplementedError()
 
     @property
-    def update_agent_pool(
-        self,
-    ) -> Callable[
-        [transfer.UpdateAgentPoolRequest],
-        Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]],
-    ]:
+    def update_agent_pool(self) -> Callable[[transfer.UpdateAgentPoolRequest], Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]]]:
         raise NotImplementedError()
 
     @property
-    def get_agent_pool(
-        self,
-    ) -> Callable[
-        [transfer.GetAgentPoolRequest],
-        Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]],
-    ]:
+    def get_agent_pool(self) -> Callable[[transfer.GetAgentPoolRequest], Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]]]:
         raise NotImplementedError()
 
     @property
     def list_agent_pools(
         self,
-    ) -> Callable[
-        [transfer.ListAgentPoolsRequest],
-        Union[
-            transfer.ListAgentPoolsResponse, Awaitable[transfer.ListAgentPoolsResponse]
-        ],
-    ]:
+    ) -> Callable[[transfer.ListAgentPoolsRequest], Union[transfer.ListAgentPoolsResponse, Awaitable[transfer.ListAgentPoolsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_agent_pool(
-        self,
-    ) -> Callable[
-        [transfer.DeleteAgentPoolRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_agent_pool(self) -> Callable[[transfer.DeleteAgentPoolRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -375,20 +301,14 @@ class StorageTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

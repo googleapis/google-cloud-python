@@ -18,12 +18,8 @@ from google.cloud.telcoautomation import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.telcoautomation_v1.services.telco_automation.async_client import (
-    TelcoAutomationAsyncClient,
-)
-from google.cloud.telcoautomation_v1.services.telco_automation.client import (
-    TelcoAutomationClient,
-)
+from google.cloud.telcoautomation_v1.services.telco_automation.async_client import TelcoAutomationAsyncClient
+from google.cloud.telcoautomation_v1.services.telco_automation.client import TelcoAutomationClient
 from google.cloud.telcoautomation_v1.types.telcoautomation import (
     ApplyDeploymentRequest,
     ApplyHydratedDeploymentRequest,

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -56,9 +45,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_management_v1.services.vpc_flow_logs_service import pagers
 from google.cloud.network_management_v1.types import reachability, vpc_flow_logs
-from google.cloud.network_management_v1.types import (
-    vpc_flow_logs_config as gcn_vpc_flow_logs_config,
-)
+from google.cloud.network_management_v1.types import vpc_flow_logs_config as gcn_vpc_flow_logs_config
 from google.cloud.network_management_v1.types import vpc_flow_logs_config
 
 from .client import VpcFlowLogsServiceClient
@@ -91,36 +78,18 @@ class VpcFlowLogsServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = VpcFlowLogsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = VpcFlowLogsServiceClient._DEFAULT_UNIVERSE
 
-    vpc_flow_logs_config_path = staticmethod(
-        VpcFlowLogsServiceClient.vpc_flow_logs_config_path
-    )
-    parse_vpc_flow_logs_config_path = staticmethod(
-        VpcFlowLogsServiceClient.parse_vpc_flow_logs_config_path
-    )
-    common_billing_account_path = staticmethod(
-        VpcFlowLogsServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        VpcFlowLogsServiceClient.parse_common_billing_account_path
-    )
+    vpc_flow_logs_config_path = staticmethod(VpcFlowLogsServiceClient.vpc_flow_logs_config_path)
+    parse_vpc_flow_logs_config_path = staticmethod(VpcFlowLogsServiceClient.parse_vpc_flow_logs_config_path)
+    common_billing_account_path = staticmethod(VpcFlowLogsServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(VpcFlowLogsServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(VpcFlowLogsServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        VpcFlowLogsServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        VpcFlowLogsServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        VpcFlowLogsServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(VpcFlowLogsServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(VpcFlowLogsServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(VpcFlowLogsServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(VpcFlowLogsServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        VpcFlowLogsServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(VpcFlowLogsServiceClient.parse_common_project_path)
     common_location_path = staticmethod(VpcFlowLogsServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        VpcFlowLogsServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(VpcFlowLogsServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -156,9 +125,7 @@ class VpcFlowLogsServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -225,13 +192,7 @@ class VpcFlowLogsServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                VpcFlowLogsServiceTransport,
-                Callable[..., VpcFlowLogsServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, VpcFlowLogsServiceTransport, Callable[..., VpcFlowLogsServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -291,20 +252,14 @@ class VpcFlowLogsServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networkmanagement_v1.VpcFlowLogsServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networkmanagement.v1.VpcFlowLogsService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -315,9 +270,7 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def list_vpc_flow_logs_configs(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.ListVpcFlowLogsConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.ListVpcFlowLogsConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -389,14 +342,9 @@ class VpcFlowLogsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -410,15 +358,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_vpc_flow_logs_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_vpc_flow_logs_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -447,9 +391,7 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def get_vpc_flow_logs_config(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.GetVpcFlowLogsConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.GetVpcFlowLogsConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -518,14 +460,9 @@ class VpcFlowLogsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -539,15 +476,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_vpc_flow_logs_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_vpc_flow_logs_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -565,14 +498,10 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def create_vpc_flow_logs_config(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.CreateVpcFlowLogsConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.CreateVpcFlowLogsConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        vpc_flow_logs_config: Optional[
-            gcn_vpc_flow_logs_config.VpcFlowLogsConfig
-        ] = None,
+        vpc_flow_logs_config: Optional[gcn_vpc_flow_logs_config.VpcFlowLogsConfig] = None,
         vpc_flow_logs_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -676,14 +605,9 @@ class VpcFlowLogsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, vpc_flow_logs_config, vpc_flow_logs_config_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -701,15 +625,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_vpc_flow_logs_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_vpc_flow_logs_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -735,13 +655,9 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def update_vpc_flow_logs_config(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.UpdateVpcFlowLogsConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.UpdateVpcFlowLogsConfigRequest, dict]] = None,
         *,
-        vpc_flow_logs_config: Optional[
-            gcn_vpc_flow_logs_config.VpcFlowLogsConfig
-        ] = None,
+        vpc_flow_logs_config: Optional[gcn_vpc_flow_logs_config.VpcFlowLogsConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -838,14 +754,9 @@ class VpcFlowLogsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [vpc_flow_logs_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -861,17 +772,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_vpc_flow_logs_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_vpc_flow_logs_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("vpc_flow_logs_config.name", request.vpc_flow_logs_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("vpc_flow_logs_config.name", request.vpc_flow_logs_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -897,9 +802,7 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def delete_vpc_flow_logs_config(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.DeleteVpcFlowLogsConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.DeleteVpcFlowLogsConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -982,14 +885,9 @@ class VpcFlowLogsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1003,15 +901,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_vpc_flow_logs_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_vpc_flow_logs_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1037,9 +931,7 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def query_org_vpc_flow_logs_configs(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1103,15 +995,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.query_org_vpc_flow_logs_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.query_org_vpc_flow_logs_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1140,9 +1028,7 @@ class VpcFlowLogsServiceAsyncClient:
 
     async def show_effective_flow_logs_configs(
         self,
-        request: Optional[
-            Union[vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1207,15 +1093,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.show_effective_flow_logs_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.show_effective_flow_logs_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1279,9 +1161,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1334,9 +1214,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1393,9 +1271,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1448,9 +1324,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1566,9 +1440,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1688,9 +1560,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1744,15 +1614,11 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1805,9 +1671,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1860,9 +1724,7 @@ class VpcFlowLogsServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1885,9 +1747,7 @@ class VpcFlowLogsServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

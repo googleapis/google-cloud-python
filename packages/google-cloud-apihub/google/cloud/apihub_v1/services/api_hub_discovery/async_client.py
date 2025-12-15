@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -79,46 +68,22 @@ class ApiHubDiscoveryAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ApiHubDiscoveryClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ApiHubDiscoveryClient._DEFAULT_UNIVERSE
 
-    discovered_api_observation_path = staticmethod(
-        ApiHubDiscoveryClient.discovered_api_observation_path
-    )
-    parse_discovered_api_observation_path = staticmethod(
-        ApiHubDiscoveryClient.parse_discovered_api_observation_path
-    )
-    discovered_api_operation_path = staticmethod(
-        ApiHubDiscoveryClient.discovered_api_operation_path
-    )
-    parse_discovered_api_operation_path = staticmethod(
-        ApiHubDiscoveryClient.parse_discovered_api_operation_path
-    )
+    discovered_api_observation_path = staticmethod(ApiHubDiscoveryClient.discovered_api_observation_path)
+    parse_discovered_api_observation_path = staticmethod(ApiHubDiscoveryClient.parse_discovered_api_observation_path)
+    discovered_api_operation_path = staticmethod(ApiHubDiscoveryClient.discovered_api_operation_path)
+    parse_discovered_api_operation_path = staticmethod(ApiHubDiscoveryClient.parse_discovered_api_operation_path)
     plugin_instance_path = staticmethod(ApiHubDiscoveryClient.plugin_instance_path)
-    parse_plugin_instance_path = staticmethod(
-        ApiHubDiscoveryClient.parse_plugin_instance_path
-    )
-    common_billing_account_path = staticmethod(
-        ApiHubDiscoveryClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ApiHubDiscoveryClient.parse_common_billing_account_path
-    )
+    parse_plugin_instance_path = staticmethod(ApiHubDiscoveryClient.parse_plugin_instance_path)
+    common_billing_account_path = staticmethod(ApiHubDiscoveryClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ApiHubDiscoveryClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ApiHubDiscoveryClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ApiHubDiscoveryClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ApiHubDiscoveryClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ApiHubDiscoveryClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ApiHubDiscoveryClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ApiHubDiscoveryClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ApiHubDiscoveryClient.parse_common_organization_path)
     common_project_path = staticmethod(ApiHubDiscoveryClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ApiHubDiscoveryClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ApiHubDiscoveryClient.parse_common_project_path)
     common_location_path = staticmethod(ApiHubDiscoveryClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ApiHubDiscoveryClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ApiHubDiscoveryClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -154,9 +119,7 @@ class ApiHubDiscoveryAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -223,11 +186,7 @@ class ApiHubDiscoveryAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, ApiHubDiscoveryTransport, Callable[..., ApiHubDiscoveryTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ApiHubDiscoveryTransport, Callable[..., ApiHubDiscoveryTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -287,20 +246,14 @@ class ApiHubDiscoveryAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.apihub_v1.ApiHubDiscoveryAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.apihub.v1.ApiHubDiscovery",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -311,9 +264,7 @@ class ApiHubDiscoveryAsyncClient:
 
     async def list_discovered_api_observations(
         self,
-        request: Optional[
-            Union[discovery_service.ListDiscoveredApiObservationsRequest, dict]
-        ] = None,
+        request: Optional[Union[discovery_service.ListDiscoveredApiObservationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -384,20 +335,13 @@ class ApiHubDiscoveryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, discovery_service.ListDiscoveredApiObservationsRequest
-        ):
+        if not isinstance(request, discovery_service.ListDiscoveredApiObservationsRequest):
             request = discovery_service.ListDiscoveredApiObservationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -407,15 +351,11 @@ class ApiHubDiscoveryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_discovered_api_observations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_discovered_api_observations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -444,9 +384,7 @@ class ApiHubDiscoveryAsyncClient:
 
     async def get_discovered_api_observation(
         self,
-        request: Optional[
-            Union[discovery_service.GetDiscoveredApiObservationRequest, dict]
-        ] = None,
+        request: Optional[Union[discovery_service.GetDiscoveredApiObservationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -512,20 +450,13 @@ class ApiHubDiscoveryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, discovery_service.GetDiscoveredApiObservationRequest
-        ):
+        if not isinstance(request, discovery_service.GetDiscoveredApiObservationRequest):
             request = discovery_service.GetDiscoveredApiObservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -535,15 +466,11 @@ class ApiHubDiscoveryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_discovered_api_observation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_discovered_api_observation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -561,9 +488,7 @@ class ApiHubDiscoveryAsyncClient:
 
     async def list_discovered_api_operations(
         self,
-        request: Optional[
-            Union[discovery_service.ListDiscoveredApiOperationsRequest, dict]
-        ] = None,
+        request: Optional[Union[discovery_service.ListDiscoveredApiOperationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -633,20 +558,13 @@ class ApiHubDiscoveryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, discovery_service.ListDiscoveredApiOperationsRequest
-        ):
+        if not isinstance(request, discovery_service.ListDiscoveredApiOperationsRequest):
             request = discovery_service.ListDiscoveredApiOperationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -656,15 +574,11 @@ class ApiHubDiscoveryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_discovered_api_operations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_discovered_api_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -693,9 +607,7 @@ class ApiHubDiscoveryAsyncClient:
 
     async def get_discovered_api_operation(
         self,
-        request: Optional[
-            Union[discovery_service.GetDiscoveredApiOperationRequest, dict]
-        ] = None,
+        request: Optional[Union[discovery_service.GetDiscoveredApiOperationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -762,14 +674,9 @@ class ApiHubDiscoveryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -783,15 +690,11 @@ class ApiHubDiscoveryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_discovered_api_operation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_discovered_api_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -844,9 +747,7 @@ class ApiHubDiscoveryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -899,9 +800,7 @@ class ApiHubDiscoveryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -958,9 +857,7 @@ class ApiHubDiscoveryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1013,9 +910,7 @@ class ApiHubDiscoveryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1065,9 +960,7 @@ class ApiHubDiscoveryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1120,9 +1013,7 @@ class ApiHubDiscoveryAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1145,9 +1036,7 @@ class ApiHubDiscoveryAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

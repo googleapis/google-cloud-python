@@ -119,13 +119,8 @@ class GlobalOperationsRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListGlobalOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListGlobalOperationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListGlobalOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListGlobalOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class GlobalOperationsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.OperationAggregatedList
-    ) -> compute.OperationAggregatedList:
+    def post_aggregated_list(self, response: compute.OperationAggregatedList) -> compute.OperationAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -149,12 +142,8 @@ class GlobalOperationsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.OperationAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.OperationAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.OperationAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.OperationAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,12 +159,8 @@ class GlobalOperationsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteGlobalOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteGlobalOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteGlobalOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteGlobalOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -183,9 +168,7 @@ class GlobalOperationsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete(
-        self, response: compute.DeleteGlobalOperationResponse
-    ) -> compute.DeleteGlobalOperationResponse:
+    def post_delete(self, response: compute.DeleteGlobalOperationResponse) -> compute.DeleteGlobalOperationResponse:
         """Post-rpc interceptor for delete
 
         DEPRECATED. Please use the `post_delete_with_metadata`
@@ -199,12 +182,8 @@ class GlobalOperationsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.DeleteGlobalOperationResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteGlobalOperationResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.DeleteGlobalOperationResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteGlobalOperationResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -220,12 +199,8 @@ class GlobalOperationsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetGlobalOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetGlobalOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetGlobalOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetGlobalOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -247,9 +222,7 @@ class GlobalOperationsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -266,12 +239,8 @@ class GlobalOperationsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListGlobalOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListGlobalOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListGlobalOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListGlobalOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -293,9 +262,7 @@ class GlobalOperationsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.OperationList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.OperationList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.OperationList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -312,12 +279,8 @@ class GlobalOperationsRestInterceptor:
         return response, metadata
 
     def pre_wait(
-        self,
-        request: compute.WaitGlobalOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.WaitGlobalOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.WaitGlobalOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.WaitGlobalOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for wait
 
         Override in a subclass to manipulate the request or metadata
@@ -339,9 +302,7 @@ class GlobalOperationsRestInterceptor:
         return response
 
     def post_wait_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for wait
 
@@ -441,30 +402,18 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GlobalOperationsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseGlobalOperationsRestTransport._BaseAggregatedList, GlobalOperationsRestStub
-    ):
+    class _AggregatedList(_BaseGlobalOperationsRestTransport._BaseAggregatedList, GlobalOperationsRestStub):
         def __hash__(self):
             return hash("GlobalOperationsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -505,26 +454,16 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGlobalOperationsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseGlobalOperationsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseGlobalOperationsRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGlobalOperationsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGlobalOperationsRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGlobalOperationsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -548,12 +487,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             # Send the request
             response = GlobalOperationsRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -569,12 +503,8 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.OperationAggregatedList.to_json(response)
                 except:
@@ -595,22 +525,12 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
                 )
             return resp
 
-    class _Delete(
-        _BaseGlobalOperationsRestTransport._BaseDelete, GlobalOperationsRestStub
-    ):
+    class _Delete(_BaseGlobalOperationsRestTransport._BaseDelete, GlobalOperationsRestStub):
         def __hash__(self):
             return hash("GlobalOperationsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -654,30 +574,16 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGlobalOperationsRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseGlobalOperationsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseGlobalOperationsRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGlobalOperationsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGlobalOperationsRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGlobalOperationsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -701,12 +607,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             # Send the request
             response = GlobalOperationsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -722,16 +623,10 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.DeleteGlobalOperationResponse.to_json(
-                        response
-                    )
+                    response_payload = compute.DeleteGlobalOperationResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -755,15 +650,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             return hash("GlobalOperationsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -821,30 +708,16 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGlobalOperationsRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseGlobalOperationsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseGlobalOperationsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGlobalOperationsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGlobalOperationsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGlobalOperationsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -868,12 +741,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             # Send the request
             response = GlobalOperationsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -890,9 +758,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -918,15 +784,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             return hash("GlobalOperationsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -969,30 +827,16 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGlobalOperationsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseGlobalOperationsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseGlobalOperationsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGlobalOperationsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGlobalOperationsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGlobalOperationsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1016,12 +860,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             # Send the request
             response = GlobalOperationsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1038,9 +877,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.OperationList.to_json(response)
                 except:
@@ -1066,15 +903,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             return hash("GlobalOperationsRestTransport.Wait")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1132,30 +961,16 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGlobalOperationsRestTransport._BaseWait._get_http_options()
-            )
+            http_options = _BaseGlobalOperationsRestTransport._BaseWait._get_http_options()
 
             request, metadata = self._interceptor.pre_wait(request, metadata)
-            transcoded_request = (
-                _BaseGlobalOperationsRestTransport._BaseWait._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGlobalOperationsRestTransport._BaseWait._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGlobalOperationsRestTransport._BaseWait._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGlobalOperationsRestTransport._BaseWait._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1179,12 +994,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
 
             # Send the request
             response = GlobalOperationsRestTransport._Wait._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1201,9 +1011,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             resp = self._interceptor.post_wait(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_wait_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1225,21 +1033,13 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListGlobalOperationsRequest], compute.OperationAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListGlobalOperationsRequest], compute.OperationAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteGlobalOperationRequest], compute.DeleteGlobalOperationResponse
-    ]:
+    def delete(self) -> Callable[[compute.DeleteGlobalOperationRequest], compute.DeleteGlobalOperationResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
@@ -1251,9 +1051,7 @@ class GlobalOperationsRestTransport(_BaseGlobalOperationsRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListGlobalOperationsRequest], compute.OperationList]:
+    def list(self) -> Callable[[compute.ListGlobalOperationsRequest], compute.OperationList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore

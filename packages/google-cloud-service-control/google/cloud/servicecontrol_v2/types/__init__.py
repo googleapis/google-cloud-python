@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .service_controller import (
-    CheckRequest,
-    CheckResponse,
-    ReportRequest,
-    ReportResponse,
-    ResourceInfo,
-    ResourceInfoList,
-)
+from .service_controller import CheckRequest, CheckResponse, ReportRequest, ReportResponse, ResourceInfo, ResourceInfoList
 
 __all__ = (
     "CheckRequest",

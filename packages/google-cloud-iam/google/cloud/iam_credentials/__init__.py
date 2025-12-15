@@ -18,12 +18,8 @@ from google.cloud.iam_credentials import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.iam_credentials_v1.services.iam_credentials.async_client import (
-    IAMCredentialsAsyncClient,
-)
-from google.cloud.iam_credentials_v1.services.iam_credentials.client import (
-    IAMCredentialsClient,
-)
+from google.cloud.iam_credentials_v1.services.iam_credentials.async_client import IAMCredentialsAsyncClient
+from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from google.cloud.iam_credentials_v1.types.common import (
     GenerateAccessTokenRequest,
     GenerateAccessTokenResponse,

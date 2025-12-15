@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.notebooks_v1 import gapic_version as package_version
 from google.cloud.notebooks_v1.types import managed_service, runtime
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class ManagedNotebookServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -267,102 +257,60 @@ class ManagedNotebookServiceTransport(abc.ABC):
     def list_runtimes(
         self,
     ) -> Callable[
-        [managed_service.ListRuntimesRequest],
-        Union[
-            managed_service.ListRuntimesResponse,
-            Awaitable[managed_service.ListRuntimesResponse],
-        ],
+        [managed_service.ListRuntimesRequest], Union[managed_service.ListRuntimesResponse, Awaitable[managed_service.ListRuntimesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_runtime(
-        self,
-    ) -> Callable[
-        [managed_service.GetRuntimeRequest],
-        Union[runtime.Runtime, Awaitable[runtime.Runtime]],
-    ]:
+    def get_runtime(self) -> Callable[[managed_service.GetRuntimeRequest], Union[runtime.Runtime, Awaitable[runtime.Runtime]]]:
         raise NotImplementedError()
 
     @property
     def create_runtime(
         self,
-    ) -> Callable[
-        [managed_service.CreateRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.CreateRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_runtime(
         self,
-    ) -> Callable[
-        [managed_service.UpdateRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.UpdateRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_runtime(
         self,
-    ) -> Callable[
-        [managed_service.DeleteRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.DeleteRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def start_runtime(
-        self,
-    ) -> Callable[
-        [managed_service.StartRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def start_runtime(self) -> Callable[[managed_service.StartRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop_runtime(
-        self,
-    ) -> Callable[
-        [managed_service.StopRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def stop_runtime(self) -> Callable[[managed_service.StopRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def switch_runtime(
         self,
-    ) -> Callable[
-        [managed_service.SwitchRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.SwitchRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def reset_runtime(
-        self,
-    ) -> Callable[
-        [managed_service.ResetRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def reset_runtime(self) -> Callable[[managed_service.ResetRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def upgrade_runtime(
         self,
-    ) -> Callable[
-        [managed_service.UpgradeRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.UpgradeRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def report_runtime_event(
         self,
-    ) -> Callable[
-        [managed_service.ReportRuntimeEventRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.ReportRuntimeEventRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -370,20 +318,14 @@ class ManagedNotebookServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_service.RefreshRuntimeTokenInternalRequest],
-        Union[
-            managed_service.RefreshRuntimeTokenInternalResponse,
-            Awaitable[managed_service.RefreshRuntimeTokenInternalResponse],
-        ],
+        Union[managed_service.RefreshRuntimeTokenInternalResponse, Awaitable[managed_service.RefreshRuntimeTokenInternalResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def diagnose_runtime(
         self,
-    ) -> Callable[
-        [managed_service.DiagnoseRuntimeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_service.DiagnoseRuntimeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -391,20 +333,14 @@ class ManagedNotebookServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -422,19 +358,13 @@ class ManagedNotebookServiceTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -452,22 +382,13 @@ class ManagedNotebookServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

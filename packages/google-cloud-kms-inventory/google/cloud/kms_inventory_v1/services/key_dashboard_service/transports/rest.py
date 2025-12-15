@@ -87,13 +87,8 @@ class KeyDashboardServiceRestInterceptor:
     """
 
     def pre_list_crypto_keys(
-        self,
-        request: key_dashboard_service.ListCryptoKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        key_dashboard_service.ListCryptoKeysRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: key_dashboard_service.ListCryptoKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[key_dashboard_service.ListCryptoKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_crypto_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +96,7 @@ class KeyDashboardServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_crypto_keys(
-        self, response: key_dashboard_service.ListCryptoKeysResponse
-    ) -> key_dashboard_service.ListCryptoKeysResponse:
+    def post_list_crypto_keys(self, response: key_dashboard_service.ListCryptoKeysResponse) -> key_dashboard_service.ListCryptoKeysResponse:
         """Post-rpc interceptor for list_crypto_keys
 
         DEPRECATED. Please use the `post_list_crypto_keys_with_metadata`
@@ -117,13 +110,8 @@ class KeyDashboardServiceRestInterceptor:
         return response
 
     def post_list_crypto_keys_with_metadata(
-        self,
-        response: key_dashboard_service.ListCryptoKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        key_dashboard_service.ListCryptoKeysResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: key_dashboard_service.ListCryptoKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[key_dashboard_service.ListCryptoKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_crypto_keys
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -219,31 +207,18 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or KeyDashboardServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListCryptoKeys(
-        _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys,
-        KeyDashboardServiceRestStub,
-    ):
+    class _ListCryptoKeys(_BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys, KeyDashboardServiceRestStub):
         def __hash__(self):
             return hash("KeyDashboardServiceRestTransport.ListCryptoKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -285,28 +260,16 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_http_options()
-            )
+            http_options = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_crypto_keys(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_crypto_keys(request, metadata)
+            transcoded_request = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -330,12 +293,7 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
 
             # Send the request
             response = KeyDashboardServiceRestTransport._ListCryptoKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -351,16 +309,10 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
 
             resp = self._interceptor.post_list_crypto_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_crypto_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_crypto_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        key_dashboard_service.ListCryptoKeysResponse.to_json(response)
-                    )
+                    response_payload = key_dashboard_service.ListCryptoKeysResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -380,12 +332,7 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
             return resp
 
     @property
-    def list_crypto_keys(
-        self,
-    ) -> Callable[
-        [key_dashboard_service.ListCryptoKeysRequest],
-        key_dashboard_service.ListCryptoKeysResponse,
-    ]:
+    def list_crypto_keys(self) -> Callable[[key_dashboard_service.ListCryptoKeysRequest], key_dashboard_service.ListCryptoKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCryptoKeys(self._session, self._host, self._interceptor)  # type: ignore

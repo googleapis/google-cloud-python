@@ -76,13 +76,7 @@ from .policytagmanagerserialization import (
 )
 from .schema import ColumnSchema, Schema
 from .search import SearchCatalogResult, SearchResultType
-from .table_spec import (
-    BigQueryDateShardedSpec,
-    BigQueryTableSpec,
-    TableSourceType,
-    TableSpec,
-    ViewSpec,
-)
+from .table_spec import BigQueryDateShardedSpec, BigQueryTableSpec, TableSourceType, TableSpec, ViewSpec
 from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .timestamps import SystemTimestamps
 from .usage import UsageSignal, UsageStats

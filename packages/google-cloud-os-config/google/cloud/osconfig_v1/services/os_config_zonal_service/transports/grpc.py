@@ -29,12 +29,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.osconfig_v1.types import (
-    inventory,
-    os_policy_assignment_reports,
-    os_policy_assignments,
-    vulnerability,
-)
+from google.cloud.osconfig_v1.types import inventory, os_policy_assignment_reports, os_policy_assignments, vulnerability
 
 from .base import DEFAULT_CLIENT_INFO, OsConfigZonalServiceTransport
 
@@ -50,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -227,18 +213,14 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -272,9 +254,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -341,20 +321,13 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.CreateOSPolicyAssignmentRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_os_policy_assignment(self) -> Callable[[os_policy_assignments.CreateOSPolicyAssignmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create os policy assignment method over gRPC.
 
         Create an OS policy assignment.
@@ -380,9 +353,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_os_policy_assignment" not in self._stubs:
-            self._stubs[
-                "create_os_policy_assignment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_os_policy_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/CreateOSPolicyAssignment",
                 request_serializer=os_policy_assignments.CreateOSPolicyAssignmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -390,12 +361,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["create_os_policy_assignment"]
 
     @property
-    def update_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.UpdateOSPolicyAssignmentRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_os_policy_assignment(self) -> Callable[[os_policy_assignments.UpdateOSPolicyAssignmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the update os policy assignment method over gRPC.
 
         Update an existing OS policy assignment.
@@ -420,9 +386,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_os_policy_assignment" not in self._stubs:
-            self._stubs[
-                "update_os_policy_assignment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_os_policy_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/UpdateOSPolicyAssignment",
                 request_serializer=os_policy_assignments.UpdateOSPolicyAssignmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -430,12 +394,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["update_os_policy_assignment"]
 
     @property
-    def get_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.GetOSPolicyAssignmentRequest],
-        os_policy_assignments.OSPolicyAssignment,
-    ]:
+    def get_os_policy_assignment(self) -> Callable[[os_policy_assignments.GetOSPolicyAssignmentRequest], os_policy_assignments.OSPolicyAssignment]:
         r"""Return a callable for the get os policy assignment method over gRPC.
 
         Retrieve an existing OS policy assignment.
@@ -465,10 +424,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
     @property
     def list_os_policy_assignments(
         self,
-    ) -> Callable[
-        [os_policy_assignments.ListOSPolicyAssignmentsRequest],
-        os_policy_assignments.ListOSPolicyAssignmentsResponse,
-    ]:
+    ) -> Callable[[os_policy_assignments.ListOSPolicyAssignmentsRequest], os_policy_assignments.ListOSPolicyAssignmentsResponse]:
         r"""Return a callable for the list os policy assignments method over gRPC.
 
         List the OS policy assignments under the parent
@@ -487,9 +443,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_os_policy_assignments" not in self._stubs:
-            self._stubs[
-                "list_os_policy_assignments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_os_policy_assignments"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/ListOSPolicyAssignments",
                 request_serializer=os_policy_assignments.ListOSPolicyAssignmentsRequest.serialize,
                 response_deserializer=os_policy_assignments.ListOSPolicyAssignmentsResponse.deserialize,
@@ -499,10 +453,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
     @property
     def list_os_policy_assignment_revisions(
         self,
-    ) -> Callable[
-        [os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest],
-        os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
-    ]:
+    ) -> Callable[[os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest], os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
         r"""Return a callable for the list os policy assignment
         revisions method over gRPC.
 
@@ -520,9 +471,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_os_policy_assignment_revisions" not in self._stubs:
-            self._stubs[
-                "list_os_policy_assignment_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_os_policy_assignment_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/ListOSPolicyAssignmentRevisions",
                 request_serializer=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest.serialize,
                 response_deserializer=os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.deserialize,
@@ -530,12 +479,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["list_os_policy_assignment_revisions"]
 
     @property
-    def delete_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.DeleteOSPolicyAssignmentRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_os_policy_assignment(self) -> Callable[[os_policy_assignments.DeleteOSPolicyAssignmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete os policy assignment method over gRPC.
 
         Delete the OS policy assignment.
@@ -563,9 +507,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_os_policy_assignment" not in self._stubs:
-            self._stubs[
-                "delete_os_policy_assignment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_os_policy_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/DeleteOSPolicyAssignment",
                 request_serializer=os_policy_assignments.DeleteOSPolicyAssignmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -575,10 +517,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
     @property
     def get_os_policy_assignment_report(
         self,
-    ) -> Callable[
-        [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
-        os_policy_assignment_reports.OSPolicyAssignmentReport,
-    ]:
+    ) -> Callable[[os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest], os_policy_assignment_reports.OSPolicyAssignmentReport]:
         r"""Return a callable for the get os policy assignment
         report method over gRPC.
 
@@ -596,9 +535,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_os_policy_assignment_report" not in self._stubs:
-            self._stubs[
-                "get_os_policy_assignment_report"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_os_policy_assignment_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/GetOSPolicyAssignmentReport",
                 request_serializer=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.serialize,
                 response_deserializer=os_policy_assignment_reports.OSPolicyAssignmentReport.deserialize,
@@ -609,8 +546,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
     def list_os_policy_assignment_reports(
         self,
     ) -> Callable[
-        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
-        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest], os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
     ]:
         r"""Return a callable for the list os policy assignment
         reports method over gRPC.
@@ -629,9 +565,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_os_policy_assignment_reports" not in self._stubs:
-            self._stubs[
-                "list_os_policy_assignment_reports"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_os_policy_assignment_reports"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/ListOSPolicyAssignmentReports",
                 request_serializer=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.serialize,
                 response_deserializer=os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.deserialize,
@@ -639,9 +573,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["list_os_policy_assignment_reports"]
 
     @property
-    def get_inventory(
-        self,
-    ) -> Callable[[inventory.GetInventoryRequest], inventory.Inventory]:
+    def get_inventory(self) -> Callable[[inventory.GetInventoryRequest], inventory.Inventory]:
         r"""Return a callable for the get inventory method over gRPC.
 
         Get inventory data for the specified VM instance. If the VM has
@@ -666,11 +598,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["get_inventory"]
 
     @property
-    def list_inventories(
-        self,
-    ) -> Callable[
-        [inventory.ListInventoriesRequest], inventory.ListInventoriesResponse
-    ]:
+    def list_inventories(self) -> Callable[[inventory.ListInventoriesRequest], inventory.ListInventoriesResponse]:
         r"""Return a callable for the list inventories method over gRPC.
 
         List inventory data for all VM instances in the
@@ -695,11 +623,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["list_inventories"]
 
     @property
-    def get_vulnerability_report(
-        self,
-    ) -> Callable[
-        [vulnerability.GetVulnerabilityReportRequest], vulnerability.VulnerabilityReport
-    ]:
+    def get_vulnerability_report(self) -> Callable[[vulnerability.GetVulnerabilityReportRequest], vulnerability.VulnerabilityReport]:
         r"""Return a callable for the get vulnerability report method over gRPC.
 
         Gets the vulnerability report for the specified VM
@@ -725,12 +649,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         return self._stubs["get_vulnerability_report"]
 
     @property
-    def list_vulnerability_reports(
-        self,
-    ) -> Callable[
-        [vulnerability.ListVulnerabilityReportsRequest],
-        vulnerability.ListVulnerabilityReportsResponse,
-    ]:
+    def list_vulnerability_reports(self) -> Callable[[vulnerability.ListVulnerabilityReportsRequest], vulnerability.ListVulnerabilityReportsResponse]:
         r"""Return a callable for the list vulnerability reports method over gRPC.
 
         List vulnerability reports for all VM instances in
@@ -747,9 +666,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vulnerability_reports" not in self._stubs:
-            self._stubs[
-                "list_vulnerability_reports"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_vulnerability_reports"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigZonalService/ListVulnerabilityReports",
                 request_serializer=vulnerability.ListVulnerabilityReportsRequest.serialize,
                 response_deserializer=vulnerability.ListVulnerabilityReportsResponse.deserialize,

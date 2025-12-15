@@ -232,12 +232,8 @@ class AzureClustersRestInterceptor:
     """
 
     def pre_create_azure_client(
-        self,
-        request: azure_service.CreateAzureClientRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.CreateAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.CreateAzureClientRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.CreateAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -245,9 +241,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_azure_client(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_azure_client(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_azure_client
 
         DEPRECATED. Please use the `post_create_azure_client_with_metadata`
@@ -261,9 +255,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_create_azure_client_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_azure_client
 
@@ -280,12 +272,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_create_azure_cluster(
-        self,
-        request: azure_service.CreateAzureClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.CreateAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.CreateAzureClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.CreateAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -293,9 +281,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_azure_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_azure_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_azure_cluster
 
         DEPRECATED. Please use the `post_create_azure_cluster_with_metadata`
@@ -309,9 +295,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_create_azure_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_azure_cluster
 
@@ -328,13 +312,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_create_azure_node_pool(
-        self,
-        request: azure_service.CreateAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.CreateAzureNodePoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.CreateAzureNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.CreateAzureNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -342,9 +321,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_azure_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_azure_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_azure_node_pool
 
         DEPRECATED. Please use the `post_create_azure_node_pool_with_metadata`
@@ -358,9 +335,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_create_azure_node_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_azure_node_pool
 
@@ -377,12 +352,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_delete_azure_client(
-        self,
-        request: azure_service.DeleteAzureClientRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.DeleteAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.DeleteAzureClientRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.DeleteAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -390,9 +361,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_azure_client(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_azure_client(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_azure_client
 
         DEPRECATED. Please use the `post_delete_azure_client_with_metadata`
@@ -406,9 +375,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_delete_azure_client_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_azure_client
 
@@ -425,12 +392,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_delete_azure_cluster(
-        self,
-        request: azure_service.DeleteAzureClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.DeleteAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.DeleteAzureClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.DeleteAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -438,9 +401,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_azure_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_azure_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_azure_cluster
 
         DEPRECATED. Please use the `post_delete_azure_cluster_with_metadata`
@@ -454,9 +415,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_delete_azure_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_azure_cluster
 
@@ -473,13 +432,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_delete_azure_node_pool(
-        self,
-        request: azure_service.DeleteAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.DeleteAzureNodePoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.DeleteAzureNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.DeleteAzureNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -487,9 +441,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_azure_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_azure_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_azure_node_pool
 
         DEPRECATED. Please use the `post_delete_azure_node_pool_with_metadata`
@@ -503,9 +455,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_delete_azure_node_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_azure_node_pool
 
@@ -522,13 +472,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_generate_azure_access_token(
-        self,
-        request: azure_service.GenerateAzureAccessTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GenerateAzureAccessTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.GenerateAzureAccessTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GenerateAzureAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_azure_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -552,13 +497,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_generate_azure_access_token_with_metadata(
-        self,
-        response: azure_service.GenerateAzureAccessTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GenerateAzureAccessTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: azure_service.GenerateAzureAccessTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GenerateAzureAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_azure_access_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -574,13 +514,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_generate_azure_cluster_agent_token(
-        self,
-        request: azure_service.GenerateAzureClusterAgentTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GenerateAzureClusterAgentTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.GenerateAzureClusterAgentTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GenerateAzureClusterAgentTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_azure_cluster_agent_token
 
         Override in a subclass to manipulate the request or metadata
@@ -604,13 +539,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_generate_azure_cluster_agent_token_with_metadata(
-        self,
-        response: azure_service.GenerateAzureClusterAgentTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GenerateAzureClusterAgentTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: azure_service.GenerateAzureClusterAgentTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GenerateAzureClusterAgentTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_azure_cluster_agent_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -626,12 +556,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_get_azure_client(
-        self,
-        request: azure_service.GetAzureClientRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GetAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.GetAzureClientRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GetAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -639,9 +565,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_client(
-        self, response: azure_resources.AzureClient
-    ) -> azure_resources.AzureClient:
+    def post_get_azure_client(self, response: azure_resources.AzureClient) -> azure_resources.AzureClient:
         """Post-rpc interceptor for get_azure_client
 
         DEPRECATED. Please use the `post_get_azure_client_with_metadata`
@@ -655,9 +579,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_get_azure_client_with_metadata(
-        self,
-        response: azure_resources.AzureClient,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: azure_resources.AzureClient, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[azure_resources.AzureClient, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_azure_client
 
@@ -674,12 +596,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_get_azure_cluster(
-        self,
-        request: azure_service.GetAzureClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GetAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.GetAzureClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GetAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -687,9 +605,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_cluster(
-        self, response: azure_resources.AzureCluster
-    ) -> azure_resources.AzureCluster:
+    def post_get_azure_cluster(self, response: azure_resources.AzureCluster) -> azure_resources.AzureCluster:
         """Post-rpc interceptor for get_azure_cluster
 
         DEPRECATED. Please use the `post_get_azure_cluster_with_metadata`
@@ -703,9 +619,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_get_azure_cluster_with_metadata(
-        self,
-        response: azure_resources.AzureCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: azure_resources.AzureCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[azure_resources.AzureCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_azure_cluster
 
@@ -722,13 +636,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_get_azure_json_web_keys(
-        self,
-        request: azure_service.GetAzureJsonWebKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GetAzureJsonWebKeysRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.GetAzureJsonWebKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GetAzureJsonWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_azure_json_web_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -736,9 +645,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_json_web_keys(
-        self, response: azure_resources.AzureJsonWebKeys
-    ) -> azure_resources.AzureJsonWebKeys:
+    def post_get_azure_json_web_keys(self, response: azure_resources.AzureJsonWebKeys) -> azure_resources.AzureJsonWebKeys:
         """Post-rpc interceptor for get_azure_json_web_keys
 
         DEPRECATED. Please use the `post_get_azure_json_web_keys_with_metadata`
@@ -752,12 +659,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_get_azure_json_web_keys_with_metadata(
-        self,
-        response: azure_resources.AzureJsonWebKeys,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_resources.AzureJsonWebKeys, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: azure_resources.AzureJsonWebKeys, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_resources.AzureJsonWebKeys, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_azure_json_web_keys
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -773,12 +676,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_get_azure_node_pool(
-        self,
-        request: azure_service.GetAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GetAzureNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.GetAzureNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GetAzureNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -786,9 +685,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_node_pool(
-        self, response: azure_resources.AzureNodePool
-    ) -> azure_resources.AzureNodePool:
+    def post_get_azure_node_pool(self, response: azure_resources.AzureNodePool) -> azure_resources.AzureNodePool:
         """Post-rpc interceptor for get_azure_node_pool
 
         DEPRECATED. Please use the `post_get_azure_node_pool_with_metadata`
@@ -802,9 +699,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_get_azure_node_pool_with_metadata(
-        self,
-        response: azure_resources.AzureNodePool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: azure_resources.AzureNodePool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[azure_resources.AzureNodePool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_azure_node_pool
 
@@ -821,13 +716,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_get_azure_open_id_config(
-        self,
-        request: azure_service.GetAzureOpenIdConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GetAzureOpenIdConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.GetAzureOpenIdConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GetAzureOpenIdConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_azure_open_id_config
 
         Override in a subclass to manipulate the request or metadata
@@ -835,9 +725,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_open_id_config(
-        self, response: azure_resources.AzureOpenIdConfig
-    ) -> azure_resources.AzureOpenIdConfig:
+    def post_get_azure_open_id_config(self, response: azure_resources.AzureOpenIdConfig) -> azure_resources.AzureOpenIdConfig:
         """Post-rpc interceptor for get_azure_open_id_config
 
         DEPRECATED. Please use the `post_get_azure_open_id_config_with_metadata`
@@ -851,12 +739,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_get_azure_open_id_config_with_metadata(
-        self,
-        response: azure_resources.AzureOpenIdConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_resources.AzureOpenIdConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: azure_resources.AzureOpenIdConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_resources.AzureOpenIdConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_azure_open_id_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -872,13 +756,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_get_azure_server_config(
-        self,
-        request: azure_service.GetAzureServerConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.GetAzureServerConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.GetAzureServerConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.GetAzureServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_azure_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -886,9 +765,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_azure_server_config(
-        self, response: azure_resources.AzureServerConfig
-    ) -> azure_resources.AzureServerConfig:
+    def post_get_azure_server_config(self, response: azure_resources.AzureServerConfig) -> azure_resources.AzureServerConfig:
         """Post-rpc interceptor for get_azure_server_config
 
         DEPRECATED. Please use the `post_get_azure_server_config_with_metadata`
@@ -902,12 +779,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_get_azure_server_config_with_metadata(
-        self,
-        response: azure_resources.AzureServerConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_resources.AzureServerConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: azure_resources.AzureServerConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_resources.AzureServerConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_azure_server_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -923,12 +796,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_list_azure_clients(
-        self,
-        request: azure_service.ListAzureClientsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.ListAzureClientsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.ListAzureClientsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.ListAzureClientsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_azure_clients
 
         Override in a subclass to manipulate the request or metadata
@@ -936,9 +805,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_azure_clients(
-        self, response: azure_service.ListAzureClientsResponse
-    ) -> azure_service.ListAzureClientsResponse:
+    def post_list_azure_clients(self, response: azure_service.ListAzureClientsResponse) -> azure_service.ListAzureClientsResponse:
         """Post-rpc interceptor for list_azure_clients
 
         DEPRECATED. Please use the `post_list_azure_clients_with_metadata`
@@ -952,12 +819,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_list_azure_clients_with_metadata(
-        self,
-        response: azure_service.ListAzureClientsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.ListAzureClientsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: azure_service.ListAzureClientsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.ListAzureClientsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_azure_clients
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -973,12 +836,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_list_azure_clusters(
-        self,
-        request: azure_service.ListAzureClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.ListAzureClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.ListAzureClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.ListAzureClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_azure_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -986,9 +845,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_azure_clusters(
-        self, response: azure_service.ListAzureClustersResponse
-    ) -> azure_service.ListAzureClustersResponse:
+    def post_list_azure_clusters(self, response: azure_service.ListAzureClustersResponse) -> azure_service.ListAzureClustersResponse:
         """Post-rpc interceptor for list_azure_clusters
 
         DEPRECATED. Please use the `post_list_azure_clusters_with_metadata`
@@ -1002,12 +859,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_list_azure_clusters_with_metadata(
-        self,
-        response: azure_service.ListAzureClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.ListAzureClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: azure_service.ListAzureClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.ListAzureClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_azure_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1023,12 +876,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_list_azure_node_pools(
-        self,
-        request: azure_service.ListAzureNodePoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.ListAzureNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.ListAzureNodePoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.ListAzureNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_azure_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -1036,9 +885,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_azure_node_pools(
-        self, response: azure_service.ListAzureNodePoolsResponse
-    ) -> azure_service.ListAzureNodePoolsResponse:
+    def post_list_azure_node_pools(self, response: azure_service.ListAzureNodePoolsResponse) -> azure_service.ListAzureNodePoolsResponse:
         """Post-rpc interceptor for list_azure_node_pools
 
         DEPRECATED. Please use the `post_list_azure_node_pools_with_metadata`
@@ -1052,13 +899,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_list_azure_node_pools_with_metadata(
-        self,
-        response: azure_service.ListAzureNodePoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.ListAzureNodePoolsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: azure_service.ListAzureNodePoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.ListAzureNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_azure_node_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1074,12 +916,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_update_azure_cluster(
-        self,
-        request: azure_service.UpdateAzureClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.UpdateAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: azure_service.UpdateAzureClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.UpdateAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1087,9 +925,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_azure_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_azure_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_azure_cluster
 
         DEPRECATED. Please use the `post_update_azure_cluster_with_metadata`
@@ -1103,9 +939,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_update_azure_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_azure_cluster
 
@@ -1122,13 +956,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_update_azure_node_pool(
-        self,
-        request: azure_service.UpdateAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        azure_service.UpdateAzureNodePoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: azure_service.UpdateAzureNodePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[azure_service.UpdateAzureNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -1136,9 +965,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_azure_node_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_azure_node_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_azure_node_pool
 
         DEPRECATED. Please use the `post_update_azure_node_pool_with_metadata`
@@ -1152,9 +979,7 @@ class AzureClustersRestInterceptor:
         return response
 
     def post_update_azure_node_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_azure_node_pool
 
@@ -1171,12 +996,8 @@ class AzureClustersRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1194,12 +1015,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1217,12 +1034,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1230,9 +1043,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1242,12 +1053,8 @@ class AzureClustersRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1255,9 +1062,7 @@ class AzureClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1352,9 +1157,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1407,29 +1210,17 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAzureClient(
-        _BaseAzureClustersRestTransport._BaseCreateAzureClient, AzureClustersRestStub
-    ):
+    class _CreateAzureClient(_BaseAzureClustersRestTransport._BaseCreateAzureClient, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.CreateAzureClient")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1473,32 +1264,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_azure_client(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_azure_client(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1522,13 +1299,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._CreateAzureClient._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1542,12 +1313,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_create_azure_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_azure_client_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_azure_client_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1568,22 +1335,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _CreateAzureCluster(
-        _BaseAzureClustersRestTransport._BaseCreateAzureCluster, AzureClustersRestStub
-    ):
+    class _CreateAzureCluster(_BaseAzureClustersRestTransport._BaseCreateAzureCluster, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.CreateAzureCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1627,32 +1384,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_azure_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_azure_cluster(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1676,13 +1419,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._CreateAzureCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1696,12 +1433,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_create_azure_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_azure_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_azure_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1722,22 +1455,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _CreateAzureNodePool(
-        _BaseAzureClustersRestTransport._BaseCreateAzureNodePool, AzureClustersRestStub
-    ):
+    class _CreateAzureNodePool(_BaseAzureClustersRestTransport._BaseCreateAzureNodePool, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.CreateAzureNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1781,32 +1504,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_azure_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_azure_node_pool(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1830,13 +1539,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._CreateAzureNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1850,12 +1553,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_create_azure_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_azure_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_azure_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1876,22 +1575,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _DeleteAzureClient(
-        _BaseAzureClustersRestTransport._BaseDeleteAzureClient, AzureClustersRestStub
-    ):
+    class _DeleteAzureClient(_BaseAzureClustersRestTransport._BaseDeleteAzureClient, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.DeleteAzureClient")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1934,28 +1623,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_azure_client(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_azure_client(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1979,12 +1656,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._DeleteAzureClient._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1998,12 +1670,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_delete_azure_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_azure_client_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_azure_client_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2024,22 +1692,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _DeleteAzureCluster(
-        _BaseAzureClustersRestTransport._BaseDeleteAzureCluster, AzureClustersRestStub
-    ):
+    class _DeleteAzureCluster(_BaseAzureClustersRestTransport._BaseDeleteAzureCluster, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.DeleteAzureCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2082,28 +1740,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_azure_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_azure_cluster(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2127,12 +1773,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._DeleteAzureCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2146,12 +1787,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_delete_azure_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_azure_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_azure_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2172,22 +1809,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _DeleteAzureNodePool(
-        _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool, AzureClustersRestStub
-    ):
+    class _DeleteAzureNodePool(_BaseAzureClustersRestTransport._BaseDeleteAzureNodePool, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.DeleteAzureNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2230,28 +1857,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_azure_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_azure_node_pool(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2275,12 +1890,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._DeleteAzureNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2294,12 +1904,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_delete_azure_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_azure_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_azure_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2320,23 +1926,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GenerateAzureAccessToken(
-        _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken,
-        AzureClustersRestStub,
-    ):
+    class _GenerateAzureAccessToken(_BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GenerateAzureAccessToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2379,28 +1974,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_azure_access_token(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_azure_access_token(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2423,15 +2006,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AzureClustersRestTransport._GenerateAzureAccessToken._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AzureClustersRestTransport._GenerateAzureAccessToken._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2447,16 +2023,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_generate_azure_access_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_azure_access_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_azure_access_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        azure_service.GenerateAzureAccessTokenResponse.to_json(response)
-                    )
+                    response_payload = azure_service.GenerateAzureAccessTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2475,23 +2045,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GenerateAzureClusterAgentToken(
-        _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken,
-        AzureClustersRestStub,
-    ):
+    class _GenerateAzureClusterAgentToken(_BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GenerateAzureClusterAgentToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2532,35 +2091,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_azure_cluster_agent_token(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_azure_cluster_agent_token(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2584,13 +2126,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GenerateAzureClusterAgentToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2606,21 +2142,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_generate_azure_cluster_agent_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_azure_cluster_agent_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_azure_cluster_agent_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        azure_service.GenerateAzureClusterAgentTokenResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = azure_service.GenerateAzureClusterAgentTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2639,22 +2164,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GetAzureClient(
-        _BaseAzureClustersRestTransport._BaseGetAzureClient, AzureClustersRestStub
-    ):
+    class _GetAzureClient(_BaseAzureClustersRestTransport._BaseGetAzureClient, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetAzureClient")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2710,28 +2225,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetAzureClient._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetAzureClient._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_azure_client(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureClient._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_azure_client(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureClient._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetAzureClient._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetAzureClient._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2755,12 +2258,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureClient._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2776,12 +2274,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_get_azure_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_azure_client_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_azure_client_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = azure_resources.AzureClient.to_json(response)
                 except:
@@ -2802,22 +2296,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GetAzureCluster(
-        _BaseAzureClustersRestTransport._BaseGetAzureCluster, AzureClustersRestStub
-    ):
+    class _GetAzureCluster(_BaseAzureClustersRestTransport._BaseGetAzureCluster, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetAzureCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2857,28 +2341,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     An Anthos cluster running on Azure.
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_azure_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_azure_cluster(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2902,12 +2374,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2923,12 +2390,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_get_azure_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_azure_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_azure_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = azure_resources.AzureCluster.to_json(response)
                 except:
@@ -2949,22 +2412,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GetAzureJsonWebKeys(
-        _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys, AzureClustersRestStub
-    ):
+    class _GetAzureJsonWebKeys(_BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetAzureJsonWebKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3009,28 +2462,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_azure_json_web_keys(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_azure_json_web_keys(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3054,12 +2495,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureJsonWebKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3075,16 +2511,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_get_azure_json_web_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_azure_json_web_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_azure_json_web_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = azure_resources.AzureJsonWebKeys.to_json(
-                        response
-                    )
+                    response_payload = azure_resources.AzureJsonWebKeys.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3103,22 +2533,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GetAzureNodePool(
-        _BaseAzureClustersRestTransport._BaseGetAzureNodePool, AzureClustersRestStub
-    ):
+    class _GetAzureNodePool(_BaseAzureClustersRestTransport._BaseGetAzureNodePool, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetAzureNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3158,28 +2578,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     An Anthos node pool running on Azure.
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_azure_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_azure_node_pool(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3203,12 +2611,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3224,12 +2627,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_get_azure_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_azure_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_azure_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = azure_resources.AzureNodePool.to_json(response)
                 except:
@@ -3250,22 +2649,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GetAzureOpenIdConfig(
-        _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig, AzureClustersRestStub
-    ):
+    class _GetAzureOpenIdConfig(_BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetAzureOpenIdConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3311,28 +2700,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_azure_open_id_config(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_azure_open_id_config(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3356,12 +2733,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureOpenIdConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3377,16 +2749,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_get_azure_open_id_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_azure_open_id_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_azure_open_id_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = azure_resources.AzureOpenIdConfig.to_json(
-                        response
-                    )
+                    response_payload = azure_resources.AzureOpenIdConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3405,22 +2771,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _GetAzureServerConfig(
-        _BaseAzureClustersRestTransport._BaseGetAzureServerConfig, AzureClustersRestStub
-    ):
+    class _GetAzureServerConfig(_BaseAzureClustersRestTransport._BaseGetAzureServerConfig, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetAzureServerConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3464,28 +2820,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_azure_server_config(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_azure_server_config(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3509,12 +2853,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureServerConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3530,16 +2869,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_get_azure_server_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_azure_server_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_azure_server_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = azure_resources.AzureServerConfig.to_json(
-                        response
-                    )
+                    response_payload = azure_resources.AzureServerConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3558,22 +2891,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _ListAzureClients(
-        _BaseAzureClustersRestTransport._BaseListAzureClients, AzureClustersRestStub
-    ):
+    class _ListAzureClients(_BaseAzureClustersRestTransport._BaseListAzureClients, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.ListAzureClients")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3615,28 +2938,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseListAzureClients._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseListAzureClients._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_azure_clients(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseListAzureClients._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_azure_clients(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseListAzureClients._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseListAzureClients._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseListAzureClients._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3660,12 +2971,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._ListAzureClients._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3681,16 +2987,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_list_azure_clients(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_azure_clients_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_azure_clients_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = azure_service.ListAzureClientsResponse.to_json(
-                        response
-                    )
+                    response_payload = azure_service.ListAzureClientsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3709,22 +3009,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _ListAzureClusters(
-        _BaseAzureClustersRestTransport._BaseListAzureClusters, AzureClustersRestStub
-    ):
+    class _ListAzureClusters(_BaseAzureClustersRestTransport._BaseListAzureClusters, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.ListAzureClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3766,28 +3056,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseListAzureClusters._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseListAzureClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_azure_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseListAzureClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_azure_clusters(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseListAzureClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseListAzureClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseListAzureClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3811,12 +3089,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._ListAzureClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3832,16 +3105,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_list_azure_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_azure_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_azure_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = azure_service.ListAzureClustersResponse.to_json(
-                        response
-                    )
+                    response_payload = azure_service.ListAzureClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3860,22 +3127,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _ListAzureNodePools(
-        _BaseAzureClustersRestTransport._BaseListAzureNodePools, AzureClustersRestStub
-    ):
+    class _ListAzureNodePools(_BaseAzureClustersRestTransport._BaseListAzureNodePools, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.ListAzureNodePools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3917,28 +3174,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_azure_node_pools(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_azure_node_pools(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3962,12 +3207,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._ListAzureNodePools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3983,16 +3223,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_list_azure_node_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_azure_node_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_azure_node_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = azure_service.ListAzureNodePoolsResponse.to_json(
-                        response
-                    )
+                    response_payload = azure_service.ListAzureNodePoolsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4011,22 +3245,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _UpdateAzureCluster(
-        _BaseAzureClustersRestTransport._BaseUpdateAzureCluster, AzureClustersRestStub
-    ):
+    class _UpdateAzureCluster(_BaseAzureClustersRestTransport._BaseUpdateAzureCluster, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.UpdateAzureCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4070,32 +3294,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_azure_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_azure_cluster(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4119,13 +3329,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._UpdateAzureCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4139,12 +3343,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_update_azure_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_azure_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_azure_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4165,22 +3365,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 )
             return resp
 
-    class _UpdateAzureNodePool(
-        _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool, AzureClustersRestStub
-    ):
+    class _UpdateAzureNodePool(_BaseAzureClustersRestTransport._BaseUpdateAzureNodePool, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.UpdateAzureNodePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4224,32 +3414,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_azure_node_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_azure_node_pool(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4273,13 +3449,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._UpdateAzureNodePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4293,12 +3463,8 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             resp = self._interceptor.post_update_azure_node_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_azure_node_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_azure_node_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4320,49 +3486,37 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             return resp
 
     @property
-    def create_azure_client(
-        self,
-    ) -> Callable[[azure_service.CreateAzureClientRequest], operations_pb2.Operation]:
+    def create_azure_client(self) -> Callable[[azure_service.CreateAzureClientRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAzureClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.CreateAzureClusterRequest], operations_pb2.Operation]:
+    def create_azure_cluster(self) -> Callable[[azure_service.CreateAzureClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_azure_node_pool(
-        self,
-    ) -> Callable[[azure_service.CreateAzureNodePoolRequest], operations_pb2.Operation]:
+    def create_azure_node_pool(self) -> Callable[[azure_service.CreateAzureNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_azure_client(
-        self,
-    ) -> Callable[[azure_service.DeleteAzureClientRequest], operations_pb2.Operation]:
+    def delete_azure_client(self) -> Callable[[azure_service.DeleteAzureClientRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAzureClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.DeleteAzureClusterRequest], operations_pb2.Operation]:
+    def delete_azure_cluster(self) -> Callable[[azure_service.DeleteAzureClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_azure_node_pool(
-        self,
-    ) -> Callable[[azure_service.DeleteAzureNodePoolRequest], operations_pb2.Operation]:
+    def delete_azure_node_pool(self) -> Callable[[azure_service.DeleteAzureNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
@@ -4370,10 +3524,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
     @property
     def generate_azure_access_token(
         self,
-    ) -> Callable[
-        [azure_service.GenerateAzureAccessTokenRequest],
-        azure_service.GenerateAzureAccessTokenResponse,
-    ]:
+    ) -> Callable[[azure_service.GenerateAzureAccessTokenRequest], azure_service.GenerateAzureAccessTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAzureAccessToken(self._session, self._host, self._interceptor)  # type: ignore
@@ -4381,114 +3532,73 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
     @property
     def generate_azure_cluster_agent_token(
         self,
-    ) -> Callable[
-        [azure_service.GenerateAzureClusterAgentTokenRequest],
-        azure_service.GenerateAzureClusterAgentTokenResponse,
-    ]:
+    ) -> Callable[[azure_service.GenerateAzureClusterAgentTokenRequest], azure_service.GenerateAzureClusterAgentTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAzureClusterAgentToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_client(
-        self,
-    ) -> Callable[[azure_service.GetAzureClientRequest], azure_resources.AzureClient]:
+    def get_azure_client(self) -> Callable[[azure_service.GetAzureClientRequest], azure_resources.AzureClient]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.GetAzureClusterRequest], azure_resources.AzureCluster]:
+    def get_azure_cluster(self) -> Callable[[azure_service.GetAzureClusterRequest], azure_resources.AzureCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_json_web_keys(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureJsonWebKeysRequest], azure_resources.AzureJsonWebKeys
-    ]:
+    def get_azure_json_web_keys(self) -> Callable[[azure_service.GetAzureJsonWebKeysRequest], azure_resources.AzureJsonWebKeys]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureJsonWebKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_node_pool(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureNodePoolRequest], azure_resources.AzureNodePool
-    ]:
+    def get_azure_node_pool(self) -> Callable[[azure_service.GetAzureNodePoolRequest], azure_resources.AzureNodePool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_open_id_config(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureOpenIdConfigRequest], azure_resources.AzureOpenIdConfig
-    ]:
+    def get_azure_open_id_config(self) -> Callable[[azure_service.GetAzureOpenIdConfigRequest], azure_resources.AzureOpenIdConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureOpenIdConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_azure_server_config(
-        self,
-    ) -> Callable[
-        [azure_service.GetAzureServerConfigRequest], azure_resources.AzureServerConfig
-    ]:
+    def get_azure_server_config(self) -> Callable[[azure_service.GetAzureServerConfigRequest], azure_resources.AzureServerConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_azure_clients(
-        self,
-    ) -> Callable[
-        [azure_service.ListAzureClientsRequest], azure_service.ListAzureClientsResponse
-    ]:
+    def list_azure_clients(self) -> Callable[[azure_service.ListAzureClientsRequest], azure_service.ListAzureClientsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAzureClients(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_azure_clusters(
-        self,
-    ) -> Callable[
-        [azure_service.ListAzureClustersRequest],
-        azure_service.ListAzureClustersResponse,
-    ]:
+    def list_azure_clusters(self) -> Callable[[azure_service.ListAzureClustersRequest], azure_service.ListAzureClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAzureClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_azure_node_pools(
-        self,
-    ) -> Callable[
-        [azure_service.ListAzureNodePoolsRequest],
-        azure_service.ListAzureNodePoolsResponse,
-    ]:
+    def list_azure_node_pools(self) -> Callable[[azure_service.ListAzureNodePoolsRequest], azure_service.ListAzureNodePoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAzureNodePools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_azure_cluster(
-        self,
-    ) -> Callable[[azure_service.UpdateAzureClusterRequest], operations_pb2.Operation]:
+    def update_azure_cluster(self) -> Callable[[azure_service.UpdateAzureClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_azure_node_pool(
-        self,
-    ) -> Callable[[azure_service.UpdateAzureNodePoolRequest], operations_pb2.Operation]:
+    def update_azure_node_pool(self) -> Callable[[azure_service.UpdateAzureNodePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
@@ -4497,22 +3607,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAzureClustersRestTransport._BaseCancelOperation, AzureClustersRestStub
-    ):
+    class _CancelOperation(_BaseAzureClustersRestTransport._BaseCancelOperation, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4548,32 +3648,18 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseAzureClustersRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAzureClustersRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4597,13 +3683,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4617,22 +3697,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseAzureClustersRestTransport._BaseDeleteOperation, AzureClustersRestStub
-    ):
+    class _DeleteOperation(_BaseAzureClustersRestTransport._BaseDeleteOperation, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4667,28 +3737,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAzureClustersRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4712,12 +3770,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4731,22 +3784,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAzureClustersRestTransport._BaseGetOperation, AzureClustersRestStub
-    ):
+    class _GetOperation(_BaseAzureClustersRestTransport._BaseGetOperation, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4784,26 +3827,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAzureClustersRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAzureClustersRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4827,12 +3860,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4844,9 +3872,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4871,22 +3897,12 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAzureClustersRestTransport._BaseListOperations, AzureClustersRestStub
-    ):
+    class _ListOperations(_BaseAzureClustersRestTransport._BaseListOperations, AzureClustersRestStub):
         def __hash__(self):
             return hash("AzureClustersRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4924,26 +3940,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAzureClustersRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAzureClustersRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAzureClustersRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAzureClustersRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAzureClustersRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAzureClustersRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4967,12 +3973,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             # Send the request
             response = AzureClustersRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4984,9 +3985,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

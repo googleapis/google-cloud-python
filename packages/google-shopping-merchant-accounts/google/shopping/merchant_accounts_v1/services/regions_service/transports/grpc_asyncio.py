@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -335,9 +318,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_region(
-        self,
-    ) -> Callable[[regions.GetRegionRequest], Awaitable[regions.Region]]:
+    def get_region(self) -> Callable[[regions.GetRegionRequest], Awaitable[regions.Region]]:
         r"""Return a callable for the get region method over gRPC.
 
         Retrieves a region defined in your Merchant Center
@@ -362,9 +343,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["get_region"]
 
     @property
-    def create_region(
-        self,
-    ) -> Callable[[regions.CreateRegionRequest], Awaitable[regions.Region]]:
+    def create_region(self) -> Callable[[regions.CreateRegionRequest], Awaitable[regions.Region]]:
         r"""Return a callable for the create region method over gRPC.
 
         Creates a region definition in your Merchant Center
@@ -389,12 +368,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["create_region"]
 
     @property
-    def batch_create_regions(
-        self,
-    ) -> Callable[
-        [regions.BatchCreateRegionsRequest],
-        Awaitable[regions.BatchCreateRegionsResponse],
-    ]:
+    def batch_create_regions(self) -> Callable[[regions.BatchCreateRegionsRequest], Awaitable[regions.BatchCreateRegionsResponse]]:
         r"""Return a callable for the batch create regions method over gRPC.
 
         Creates one or more regions in your Merchant Center
@@ -419,9 +393,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["batch_create_regions"]
 
     @property
-    def update_region(
-        self,
-    ) -> Callable[[regions.UpdateRegionRequest], Awaitable[regions.Region]]:
+    def update_region(self) -> Callable[[regions.UpdateRegionRequest], Awaitable[regions.Region]]:
         r"""Return a callable for the update region method over gRPC.
 
         Updates a region definition in your Merchant Center
@@ -446,12 +418,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["update_region"]
 
     @property
-    def batch_update_regions(
-        self,
-    ) -> Callable[
-        [regions.BatchUpdateRegionsRequest],
-        Awaitable[regions.BatchUpdateRegionsResponse],
-    ]:
+    def batch_update_regions(self) -> Callable[[regions.BatchUpdateRegionsRequest], Awaitable[regions.BatchUpdateRegionsResponse]]:
         r"""Return a callable for the batch update regions method over gRPC.
 
         Updates one or more regions in your Merchant Center
@@ -476,9 +443,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["batch_update_regions"]
 
     @property
-    def delete_region(
-        self,
-    ) -> Callable[[regions.DeleteRegionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_region(self) -> Callable[[regions.DeleteRegionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete region method over gRPC.
 
         Deletes a region definition from your Merchant Center
@@ -503,9 +468,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["delete_region"]
 
     @property
-    def batch_delete_regions(
-        self,
-    ) -> Callable[[regions.BatchDeleteRegionsRequest], Awaitable[empty_pb2.Empty]]:
+    def batch_delete_regions(self) -> Callable[[regions.BatchDeleteRegionsRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the batch delete regions method over gRPC.
 
         Deletes multiple regions by name from your Merchant
@@ -531,9 +494,7 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["batch_delete_regions"]
 
     @property
-    def list_regions(
-        self,
-    ) -> Callable[[regions.ListRegionsRequest], Awaitable[regions.ListRegionsResponse]]:
+    def list_regions(self) -> Callable[[regions.ListRegionsRequest], Awaitable[regions.ListRegionsResponse]]:
         r"""Return a callable for the list regions method over gRPC.
 
         Lists the regions in your Merchant Center account.

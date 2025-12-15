@@ -18,30 +18,13 @@ from google.cloud.channel import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.channel_v1.services.cloud_channel_reports_service.async_client import (
-    CloudChannelReportsServiceAsyncClient,
-)
-from google.cloud.channel_v1.services.cloud_channel_reports_service.client import (
-    CloudChannelReportsServiceClient,
-)
-from google.cloud.channel_v1.services.cloud_channel_service.async_client import (
-    CloudChannelServiceAsyncClient,
-)
-from google.cloud.channel_v1.services.cloud_channel_service.client import (
-    CloudChannelServiceClient,
-)
+from google.cloud.channel_v1.services.cloud_channel_reports_service.async_client import CloudChannelReportsServiceAsyncClient
+from google.cloud.channel_v1.services.cloud_channel_reports_service.client import CloudChannelReportsServiceClient
+from google.cloud.channel_v1.services.cloud_channel_service.async_client import CloudChannelServiceAsyncClient
+from google.cloud.channel_v1.services.cloud_channel_service.client import CloudChannelServiceClient
 from google.cloud.channel_v1.types.billing_accounts import BillingAccount
-from google.cloud.channel_v1.types.channel_partner_links import (
-    ChannelPartnerLink,
-    ChannelPartnerLinkState,
-    ChannelPartnerLinkView,
-)
-from google.cloud.channel_v1.types.common import (
-    AdminUser,
-    CloudIdentityInfo,
-    EduData,
-    Value,
-)
+from google.cloud.channel_v1.types.channel_partner_links import ChannelPartnerLink, ChannelPartnerLinkState, ChannelPartnerLinkView
+from google.cloud.channel_v1.types.common import AdminUser, CloudIdentityInfo, EduData, Value
 from google.cloud.channel_v1.types.customers import ContactInfo, Customer
 from google.cloud.channel_v1.types.entitlement_changes import EntitlementChange
 from google.cloud.channel_v1.types.entitlements import (
@@ -75,13 +58,7 @@ from google.cloud.channel_v1.types.offers import (
     ResourceType,
 )
 from google.cloud.channel_v1.types.operations import OperationMetadata
-from google.cloud.channel_v1.types.products import (
-    MarketingInfo,
-    Media,
-    MediaType,
-    Product,
-    Sku,
-)
+from google.cloud.channel_v1.types.products import MarketingInfo, Media, MediaType, Product, Sku
 from google.cloud.channel_v1.types.reports_service import (
     Column,
     DateRange,
@@ -189,11 +166,7 @@ from google.cloud.channel_v1.types.service import (
     UpdateCustomerRepricingConfigRequest,
     UpdateCustomerRequest,
 )
-from google.cloud.channel_v1.types.subscriber_event import (
-    CustomerEvent,
-    EntitlementEvent,
-    SubscriberEvent,
-)
+from google.cloud.channel_v1.types.subscriber_event import CustomerEvent, EntitlementEvent, SubscriberEvent
 
 __all__ = (
     "CloudChannelReportsServiceClient",

@@ -40,9 +40,7 @@ async def sample_update_intercept_endpoint_group():
 
     # Initialize request argument(s)
     intercept_endpoint_group = network_security_v1alpha1.InterceptEndpointGroup()
-    intercept_endpoint_group.intercept_deployment_group = (
-        "intercept_deployment_group_value"
-    )
+    intercept_endpoint_group.intercept_deployment_group = "intercept_deployment_group_value"
 
     request = network_security_v1alpha1.UpdateInterceptEndpointGroupRequest(
         intercept_endpoint_group=intercept_endpoint_group,

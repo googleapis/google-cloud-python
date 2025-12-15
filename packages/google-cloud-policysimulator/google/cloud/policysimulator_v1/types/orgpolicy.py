@@ -484,9 +484,7 @@ class ListOrgPolicyViolationsPreviewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    org_policy_violations_previews: MutableSequence[
-        "OrgPolicyViolationsPreview"
-    ] = proto.RepeatedField(
+    org_policy_violations_previews: MutableSequence["OrgPolicyViolationsPreview"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OrgPolicyViolationsPreview",

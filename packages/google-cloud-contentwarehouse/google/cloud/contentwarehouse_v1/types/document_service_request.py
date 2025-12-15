@@ -58,9 +58,7 @@ class CloudAIDocumentOption(proto.Message):
         proto.BOOL,
         number=1,
     )
-    customized_entities_properties_conversions: MutableMapping[
-        str, str
-    ] = proto.MapField(
+    customized_entities_properties_conversions: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,

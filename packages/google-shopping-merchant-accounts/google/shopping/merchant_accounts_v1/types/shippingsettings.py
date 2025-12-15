@@ -307,13 +307,11 @@ class Service(proto.Message):
                     optional=True,
                 )
 
-            local_cutoff_time: "Service.StoreConfig.CutoffConfig.LocalCutoffTime" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    optional=True,
-                    message="Service.StoreConfig.CutoffConfig.LocalCutoffTime",
-                )
+            local_cutoff_time: "Service.StoreConfig.CutoffConfig.LocalCutoffTime" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                optional=True,
+                message="Service.StoreConfig.CutoffConfig.LocalCutoffTime",
             )
             store_close_offset_hours: int = proto.Field(
                 proto.INT64,
@@ -397,9 +395,7 @@ class Service(proto.Message):
             number=1,
             optional=True,
         )
-        loyalty_program_tiers: MutableSequence[
-            "Service.LoyaltyProgram.LoyaltyProgramTiers"
-        ] = proto.RepeatedField(
+        loyalty_program_tiers: MutableSequence["Service.LoyaltyProgram.LoyaltyProgramTiers"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Service.LoyaltyProgram.LoyaltyProgramTiers",
@@ -796,9 +792,7 @@ class DeliveryTime(proto.Message):
         optional=True,
         message="BusinessDayConfig",
     )
-    warehouse_based_delivery_times: MutableSequence[
-        "WarehouseBasedDeliveryTime"
-    ] = proto.RepeatedField(
+    warehouse_based_delivery_times: MutableSequence["WarehouseBasedDeliveryTime"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="WarehouseBasedDeliveryTime",
@@ -1134,9 +1128,7 @@ class TransitTable(proto.Message):
                 optional=True,
             )
 
-        values: MutableSequence[
-            "TransitTable.TransitTimeRow.TransitTimeValue"
-        ] = proto.RepeatedField(
+        values: MutableSequence["TransitTable.TransitTimeRow.TransitTimeValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TransitTable.TransitTimeRow.TransitTimeValue",
@@ -1203,9 +1195,7 @@ class MinimumOrderValueTable(proto.Message):
             message=types.Price,
         )
 
-    store_code_set_with_movs: MutableSequence[
-        StoreCodeSetWithMov
-    ] = proto.RepeatedField(
+    store_code_set_with_movs: MutableSequence[StoreCodeSetWithMov] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=StoreCodeSetWithMov,

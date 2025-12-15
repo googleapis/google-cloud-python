@@ -155,12 +155,8 @@ class JobServiceRestInterceptor:
     """
 
     def pre_batch_create_jobs(
-        self,
-        request: job_service.BatchCreateJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        job_service.BatchCreateJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: job_service.BatchCreateJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[job_service.BatchCreateJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -168,9 +164,7 @@ class JobServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_jobs(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_create_jobs(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_create_jobs
 
         DEPRECATED. Please use the `post_batch_create_jobs_with_metadata`
@@ -184,9 +178,7 @@ class JobServiceRestInterceptor:
         return response
 
     def post_batch_create_jobs_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_jobs
 
@@ -203,12 +195,8 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_delete_jobs(
-        self,
-        request: job_service.BatchDeleteJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        job_service.BatchDeleteJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: job_service.BatchDeleteJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[job_service.BatchDeleteJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -217,12 +205,8 @@ class JobServiceRestInterceptor:
         return request, metadata
 
     def pre_batch_update_jobs(
-        self,
-        request: job_service.BatchUpdateJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        job_service.BatchUpdateJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: job_service.BatchUpdateJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[job_service.BatchUpdateJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -230,9 +214,7 @@ class JobServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_jobs(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_update_jobs(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_update_jobs
 
         DEPRECATED. Please use the `post_batch_update_jobs_with_metadata`
@@ -246,9 +228,7 @@ class JobServiceRestInterceptor:
         return response
 
     def post_batch_update_jobs_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_jobs
 
@@ -265,9 +245,7 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_create_job(
-        self,
-        request: job_service.CreateJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.CreateJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job
 
@@ -307,9 +285,7 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_job(
-        self,
-        request: job_service.DeleteJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.DeleteJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
@@ -319,9 +295,7 @@ class JobServiceRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self,
-        request: job_service.GetJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.GetJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
@@ -361,9 +335,7 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_list_jobs(
-        self,
-        request: job_service.ListJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.ListJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
@@ -372,9 +344,7 @@ class JobServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_jobs(
-        self, response: job_service.ListJobsResponse
-    ) -> job_service.ListJobsResponse:
+    def post_list_jobs(self, response: job_service.ListJobsResponse) -> job_service.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
         DEPRECATED. Please use the `post_list_jobs_with_metadata`
@@ -388,9 +358,7 @@ class JobServiceRestInterceptor:
         return response
 
     def post_list_jobs_with_metadata(
-        self,
-        response: job_service.ListJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: job_service.ListJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_jobs
 
@@ -407,9 +375,7 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_search_jobs(
-        self,
-        request: job_service.SearchJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.SearchJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.SearchJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_jobs
 
@@ -418,9 +384,7 @@ class JobServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_jobs(
-        self, response: job_service.SearchJobsResponse
-    ) -> job_service.SearchJobsResponse:
+    def post_search_jobs(self, response: job_service.SearchJobsResponse) -> job_service.SearchJobsResponse:
         """Post-rpc interceptor for search_jobs
 
         DEPRECATED. Please use the `post_search_jobs_with_metadata`
@@ -434,9 +398,7 @@ class JobServiceRestInterceptor:
         return response
 
     def post_search_jobs_with_metadata(
-        self,
-        response: job_service.SearchJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: job_service.SearchJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.SearchJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_jobs
 
@@ -453,9 +415,7 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_search_jobs_for_alert(
-        self,
-        request: job_service.SearchJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.SearchJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.SearchJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_jobs_for_alert
 
@@ -464,9 +424,7 @@ class JobServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_jobs_for_alert(
-        self, response: job_service.SearchJobsResponse
-    ) -> job_service.SearchJobsResponse:
+    def post_search_jobs_for_alert(self, response: job_service.SearchJobsResponse) -> job_service.SearchJobsResponse:
         """Post-rpc interceptor for search_jobs_for_alert
 
         DEPRECATED. Please use the `post_search_jobs_for_alert_with_metadata`
@@ -480,9 +438,7 @@ class JobServiceRestInterceptor:
         return response
 
     def post_search_jobs_for_alert_with_metadata(
-        self,
-        response: job_service.SearchJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: job_service.SearchJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.SearchJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_jobs_for_alert
 
@@ -499,9 +455,7 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_update_job(
-        self,
-        request: job_service.UpdateJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: job_service.UpdateJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[job_service.UpdateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_job
 
@@ -541,12 +495,8 @@ class JobServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +504,7 @@ class JobServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -646,9 +594,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -682,29 +628,17 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                 path_prefix="v4beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchCreateJobs(
-        _BaseJobServiceRestTransport._BaseBatchCreateJobs, JobServiceRestStub
-    ):
+    class _BatchCreateJobs(_BaseJobServiceRestTransport._BaseBatchCreateJobs, JobServiceRestStub):
         def __hash__(self):
             return hash("JobServiceRestTransport.BatchCreateJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -747,32 +681,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_jobs(request, metadata)
+            transcoded_request = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobServiceRestTransport._BaseBatchCreateJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -796,13 +716,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._BatchCreateJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -816,12 +730,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -842,22 +752,12 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeleteJobs(
-        _BaseJobServiceRestTransport._BaseBatchDeleteJobs, JobServiceRestStub
-    ):
+    class _BatchDeleteJobs(_BaseJobServiceRestTransport._BaseBatchDeleteJobs, JobServiceRestStub):
         def __hash__(self):
             return hash("JobServiceRestTransport.BatchDeleteJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -893,32 +793,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_jobs(request, metadata)
+            transcoded_request = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobServiceRestTransport._BaseBatchDeleteJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -942,13 +828,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._BatchDeleteJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -956,22 +836,12 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchUpdateJobs(
-        _BaseJobServiceRestTransport._BaseBatchUpdateJobs, JobServiceRestStub
-    ):
+    class _BatchUpdateJobs(_BaseJobServiceRestTransport._BaseBatchUpdateJobs, JobServiceRestStub):
         def __hash__(self):
             return hash("JobServiceRestTransport.BatchUpdateJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1014,32 +884,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_jobs(request, metadata)
+            transcoded_request = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobServiceRestTransport._BaseBatchUpdateJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1063,13 +919,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._BatchUpdateJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1083,12 +933,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1114,15 +960,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return hash("JobServiceRestTransport.CreateJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1167,34 +1005,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseCreateJob._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseCreateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_job(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseCreateJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseCreateJob._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseCreateJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseCreateJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseCreateJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseCreateJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1218,13 +1040,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._CreateJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1240,12 +1056,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_create_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_job.Job.to_json(response)
                 except:
@@ -1271,15 +1083,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return hash("JobServiceRestTransport.DeleteJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1314,30 +1118,16 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseDeleteJob._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseDeleteJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseDeleteJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseDeleteJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseDeleteJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseDeleteJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1361,12 +1151,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._DeleteJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1379,15 +1164,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return hash("JobServiceRestTransport.GetJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1434,25 +1211,13 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             http_options = _BaseJobServiceRestTransport._BaseGetJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseGetJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseGetJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1475,14 +1240,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                 )
 
             # Send the request
-            response = JobServiceRestTransport._GetJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = JobServiceRestTransport._GetJob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1497,12 +1255,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job.Job.to_json(response)
                 except:
@@ -1528,15 +1282,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return hash("JobServiceRestTransport.ListJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1575,30 +1321,16 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                     List jobs response.
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseListJobs._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseListJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseListJobs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseListJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1621,14 +1353,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                 )
 
             # Send the request
-            response = JobServiceRestTransport._ListJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = JobServiceRestTransport._ListJobs._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1643,12 +1368,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job_service.ListJobsResponse.to_json(response)
                 except:
@@ -1674,15 +1395,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return hash("JobServiceRestTransport.SearchJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1722,34 +1435,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                     Response for SearchJob method.
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseSearchJobs._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseSearchJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_search_jobs(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseSearchJobs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseSearchJobs._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseSearchJobs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseSearchJobs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseSearchJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseSearchJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1773,13 +1470,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._SearchJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1795,12 +1486,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_search_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job_service.SearchJobsResponse.to_json(response)
                 except:
@@ -1821,22 +1508,12 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                 )
             return resp
 
-    class _SearchJobsForAlert(
-        _BaseJobServiceRestTransport._BaseSearchJobsForAlert, JobServiceRestStub
-    ):
+    class _SearchJobsForAlert(_BaseJobServiceRestTransport._BaseSearchJobsForAlert, JobServiceRestStub):
         def __hash__(self):
             return hash("JobServiceRestTransport.SearchJobsForAlert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1876,32 +1553,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                     Response for SearchJob method.
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_jobs_for_alert(
-                request, metadata
-            )
-            transcoded_request = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_jobs_for_alert(request, metadata)
+            transcoded_request = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobServiceRestTransport._BaseSearchJobsForAlert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1925,13 +1588,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._SearchJobsForAlert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1947,12 +1604,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_search_jobs_for_alert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_jobs_for_alert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_jobs_for_alert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job_service.SearchJobsResponse.to_json(response)
                 except:
@@ -1978,15 +1631,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return hash("JobServiceRestTransport.UpdateJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2031,34 +1676,18 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseUpdateJob._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseUpdateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_update_job(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseUpdateJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseUpdateJob._get_transcoded_request(http_options, request)
 
-            body = _BaseJobServiceRestTransport._BaseUpdateJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobServiceRestTransport._BaseUpdateJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseUpdateJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseUpdateJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2082,13 +1711,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._UpdateJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2104,12 +1727,8 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             resp = self._interceptor.post_update_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_job.Job.to_json(response)
                 except:
@@ -2131,25 +1750,19 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             return resp
 
     @property
-    def batch_create_jobs(
-        self,
-    ) -> Callable[[job_service.BatchCreateJobsRequest], operations_pb2.Operation]:
+    def batch_create_jobs(self) -> Callable[[job_service.BatchCreateJobsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_delete_jobs(
-        self,
-    ) -> Callable[[job_service.BatchDeleteJobsRequest], empty_pb2.Empty]:
+    def batch_delete_jobs(self) -> Callable[[job_service.BatchDeleteJobsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_jobs(
-        self,
-    ) -> Callable[[job_service.BatchUpdateJobsRequest], operations_pb2.Operation]:
+    def batch_update_jobs(self) -> Callable[[job_service.BatchUpdateJobsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateJobs(self._session, self._host, self._interceptor)  # type: ignore
@@ -2173,25 +1786,19 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
         return self._GetJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[[job_service.ListJobsRequest], job_service.ListJobsResponse]:
+    def list_jobs(self) -> Callable[[job_service.ListJobsRequest], job_service.ListJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_jobs(
-        self,
-    ) -> Callable[[job_service.SearchJobsRequest], job_service.SearchJobsResponse]:
+    def search_jobs(self) -> Callable[[job_service.SearchJobsRequest], job_service.SearchJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_jobs_for_alert(
-        self,
-    ) -> Callable[[job_service.SearchJobsRequest], job_service.SearchJobsResponse]:
+    def search_jobs_for_alert(self) -> Callable[[job_service.SearchJobsRequest], job_service.SearchJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchJobsForAlert(self._session, self._host, self._interceptor)  # type: ignore
@@ -2206,22 +1813,12 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseJobServiceRestTransport._BaseGetOperation, JobServiceRestStub
-    ):
+    class _GetOperation(_BaseJobServiceRestTransport._BaseGetOperation, JobServiceRestStub):
         def __hash__(self):
             return hash("JobServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2259,30 +1856,16 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseJobServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseJobServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseJobServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2306,12 +1889,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
 
             # Send the request
             response = JobServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2323,9 +1901,7 @@ class JobServiceRestTransport(_BaseJobServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import LocalInventoryServiceTransport
 from .grpc import LocalInventoryServiceGrpcTransport
 from .grpc_asyncio import LocalInventoryServiceGrpcAsyncIOTransport
-from .rest import (
-    LocalInventoryServiceRestInterceptor,
-    LocalInventoryServiceRestTransport,
-)
+from .rest import LocalInventoryServiceRestInterceptor, LocalInventoryServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[LocalInventoryServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[LocalInventoryServiceTransport]]
 _transport_registry["grpc"] = LocalInventoryServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = LocalInventoryServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = LocalInventoryServiceRestTransport

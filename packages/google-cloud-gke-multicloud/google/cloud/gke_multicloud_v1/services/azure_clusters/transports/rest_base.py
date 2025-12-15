@@ -72,20 +72,14 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateAzureClient:
@@ -98,11 +92,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -125,9 +115,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -138,11 +126,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseCreateAzureClient._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -156,11 +140,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -183,9 +163,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -196,11 +174,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -214,11 +188,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -241,9 +211,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -254,11 +222,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -270,11 +234,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -300,11 +260,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -316,11 +272,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -346,11 +298,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -362,11 +310,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -392,11 +336,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -408,11 +348,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -438,11 +374,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -454,11 +386,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -481,9 +409,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -494,11 +420,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -510,11 +432,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -540,11 +458,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGetAzureClient._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGetAzureClient._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -556,11 +470,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -586,11 +496,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGetAzureCluster._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -602,11 +508,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -632,11 +534,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -648,11 +546,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -678,11 +572,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -694,11 +584,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -724,11 +610,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -740,11 +622,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -770,11 +648,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -786,11 +660,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -816,11 +686,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseListAzureClients._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseListAzureClients._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -832,11 +698,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -862,11 +724,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseListAzureClusters._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseListAzureClusters._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -878,11 +736,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -908,11 +762,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseListAzureNodePools._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -926,11 +776,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -953,9 +799,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -966,11 +810,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -984,11 +824,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1011,9 +847,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1024,11 +858,7 @@ class _BaseAzureClustersRestTransport(AzureClustersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_unset_required_fields(query_params))
 
             return query_params
 

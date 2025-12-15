@@ -117,9 +117,7 @@ class EntityServiceRestInterceptor:
     """
 
     def pre_create_watchlist(
-        self,
-        request: entity.CreateWatchlistRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: entity.CreateWatchlistRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.CreateWatchlistRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_watchlist
 
@@ -142,9 +140,7 @@ class EntityServiceRestInterceptor:
         return response
 
     def post_create_watchlist_with_metadata(
-        self,
-        response: entity.Watchlist,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: entity.Watchlist, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.Watchlist, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_watchlist
 
@@ -161,9 +157,7 @@ class EntityServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_watchlist(
-        self,
-        request: entity.DeleteWatchlistRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: entity.DeleteWatchlistRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.DeleteWatchlistRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_watchlist
 
@@ -173,9 +167,7 @@ class EntityServiceRestInterceptor:
         return request, metadata
 
     def pre_get_watchlist(
-        self,
-        request: entity.GetWatchlistRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: entity.GetWatchlistRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.GetWatchlistRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_watchlist
 
@@ -198,9 +190,7 @@ class EntityServiceRestInterceptor:
         return response
 
     def post_get_watchlist_with_metadata(
-        self,
-        response: entity.Watchlist,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: entity.Watchlist, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.Watchlist, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_watchlist
 
@@ -217,9 +207,7 @@ class EntityServiceRestInterceptor:
         return response, metadata
 
     def pre_list_watchlists(
-        self,
-        request: entity.ListWatchlistsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: entity.ListWatchlistsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.ListWatchlistsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_watchlists
 
@@ -228,9 +216,7 @@ class EntityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_watchlists(
-        self, response: entity.ListWatchlistsResponse
-    ) -> entity.ListWatchlistsResponse:
+    def post_list_watchlists(self, response: entity.ListWatchlistsResponse) -> entity.ListWatchlistsResponse:
         """Post-rpc interceptor for list_watchlists
 
         DEPRECATED. Please use the `post_list_watchlists_with_metadata`
@@ -244,9 +230,7 @@ class EntityServiceRestInterceptor:
         return response
 
     def post_list_watchlists_with_metadata(
-        self,
-        response: entity.ListWatchlistsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: entity.ListWatchlistsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.ListWatchlistsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_watchlists
 
@@ -263,9 +247,7 @@ class EntityServiceRestInterceptor:
         return response, metadata
 
     def pre_update_watchlist(
-        self,
-        request: entity.UpdateWatchlistRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: entity.UpdateWatchlistRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.UpdateWatchlistRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_watchlist
 
@@ -288,9 +270,7 @@ class EntityServiceRestInterceptor:
         return response
 
     def post_update_watchlist_with_metadata(
-        self,
-        response: entity.Watchlist,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: entity.Watchlist, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[entity.Watchlist, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_watchlist
 
@@ -307,12 +287,8 @@ class EntityServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -330,12 +306,8 @@ class EntityServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -353,12 +325,8 @@ class EntityServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +334,7 @@ class EntityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -378,12 +344,8 @@ class EntityServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -391,9 +353,7 @@ class EntityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -482,30 +442,18 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or EntityServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateWatchlist(
-        _BaseEntityServiceRestTransport._BaseCreateWatchlist, EntityServiceRestStub
-    ):
+    class _CreateWatchlist(_BaseEntityServiceRestTransport._BaseCreateWatchlist, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.CreateWatchlist")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -549,32 +497,18 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_watchlist(
-                request, metadata
-            )
-            transcoded_request = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_watchlist(request, metadata)
+            transcoded_request = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_transcoded_request(http_options, request)
 
-            body = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseCreateWatchlist._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -598,13 +532,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._CreateWatchlist._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -620,12 +548,8 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             resp = self._interceptor.post_create_watchlist(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_watchlist_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_watchlist_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = entity.Watchlist.to_json(response)
                 except:
@@ -646,22 +570,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                 )
             return resp
 
-    class _DeleteWatchlist(
-        _BaseEntityServiceRestTransport._BaseDeleteWatchlist, EntityServiceRestStub
-    ):
+    class _DeleteWatchlist(_BaseEntityServiceRestTransport._BaseDeleteWatchlist, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.DeleteWatchlist")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -697,28 +611,16 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseDeleteWatchlist._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseDeleteWatchlist._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_watchlist(
-                request, metadata
-            )
-            transcoded_request = _BaseEntityServiceRestTransport._BaseDeleteWatchlist._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_watchlist(request, metadata)
+            transcoded_request = _BaseEntityServiceRestTransport._BaseDeleteWatchlist._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseDeleteWatchlist._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseDeleteWatchlist._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -742,12 +644,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._DeleteWatchlist._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -755,22 +652,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetWatchlist(
-        _BaseEntityServiceRestTransport._BaseGetWatchlist, EntityServiceRestStub
-    ):
+    class _GetWatchlist(_BaseEntityServiceRestTransport._BaseGetWatchlist, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.GetWatchlist")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -813,26 +700,16 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseGetWatchlist._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseGetWatchlist._get_http_options()
 
             request, metadata = self._interceptor.pre_get_watchlist(request, metadata)
-            transcoded_request = _BaseEntityServiceRestTransport._BaseGetWatchlist._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEntityServiceRestTransport._BaseGetWatchlist._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseGetWatchlist._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseGetWatchlist._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -856,12 +733,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._GetWatchlist._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -877,12 +749,8 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             resp = self._interceptor.post_get_watchlist(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_watchlist_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_watchlist_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = entity.Watchlist.to_json(response)
                 except:
@@ -903,22 +771,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                 )
             return resp
 
-    class _ListWatchlists(
-        _BaseEntityServiceRestTransport._BaseListWatchlists, EntityServiceRestStub
-    ):
+    class _ListWatchlists(_BaseEntityServiceRestTransport._BaseListWatchlists, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.ListWatchlists")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -960,26 +818,16 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseListWatchlists._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseListWatchlists._get_http_options()
 
             request, metadata = self._interceptor.pre_list_watchlists(request, metadata)
-            transcoded_request = _BaseEntityServiceRestTransport._BaseListWatchlists._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEntityServiceRestTransport._BaseListWatchlists._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseListWatchlists._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseListWatchlists._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1003,12 +851,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._ListWatchlists._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1024,12 +867,8 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             resp = self._interceptor.post_list_watchlists(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_watchlists_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_watchlists_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = entity.ListWatchlistsResponse.to_json(response)
                 except:
@@ -1050,22 +889,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                 )
             return resp
 
-    class _UpdateWatchlist(
-        _BaseEntityServiceRestTransport._BaseUpdateWatchlist, EntityServiceRestStub
-    ):
+    class _UpdateWatchlist(_BaseEntityServiceRestTransport._BaseUpdateWatchlist, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.UpdateWatchlist")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1109,32 +938,18 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_watchlist(
-                request, metadata
-            )
-            transcoded_request = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_watchlist(request, metadata)
+            transcoded_request = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_transcoded_request(http_options, request)
 
-            body = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseUpdateWatchlist._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1158,13 +973,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._UpdateWatchlist._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1180,12 +989,8 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             resp = self._interceptor.post_update_watchlist(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_watchlist_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_watchlist_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = entity.Watchlist.to_json(response)
                 except:
@@ -1207,17 +1012,13 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
             return resp
 
     @property
-    def create_watchlist(
-        self,
-    ) -> Callable[[entity.CreateWatchlistRequest], entity.Watchlist]:
+    def create_watchlist(self) -> Callable[[entity.CreateWatchlistRequest], entity.Watchlist]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWatchlist(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_watchlist(
-        self,
-    ) -> Callable[[entity.DeleteWatchlistRequest], empty_pb2.Empty]:
+    def delete_watchlist(self) -> Callable[[entity.DeleteWatchlistRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWatchlist(self._session, self._host, self._interceptor)  # type: ignore
@@ -1229,17 +1030,13 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
         return self._GetWatchlist(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_watchlists(
-        self,
-    ) -> Callable[[entity.ListWatchlistsRequest], entity.ListWatchlistsResponse]:
+    def list_watchlists(self) -> Callable[[entity.ListWatchlistsRequest], entity.ListWatchlistsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWatchlists(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_watchlist(
-        self,
-    ) -> Callable[[entity.UpdateWatchlistRequest], entity.Watchlist]:
+    def update_watchlist(self) -> Callable[[entity.UpdateWatchlistRequest], entity.Watchlist]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWatchlist(self._session, self._host, self._interceptor)  # type: ignore
@@ -1248,22 +1045,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEntityServiceRestTransport._BaseCancelOperation, EntityServiceRestStub
-    ):
+    class _CancelOperation(_BaseEntityServiceRestTransport._BaseCancelOperation, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1299,32 +1086,18 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEntityServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEntityServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseEntityServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntityServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1348,13 +1121,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1368,22 +1135,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseEntityServiceRestTransport._BaseDeleteOperation, EntityServiceRestStub
-    ):
+    class _DeleteOperation(_BaseEntityServiceRestTransport._BaseDeleteOperation, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1418,28 +1175,16 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEntityServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseEntityServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1463,12 +1208,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1482,22 +1222,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEntityServiceRestTransport._BaseGetOperation, EntityServiceRestStub
-    ):
+    class _GetOperation(_BaseEntityServiceRestTransport._BaseGetOperation, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1535,26 +1265,16 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEntityServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEntityServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1578,12 +1298,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1595,9 +1310,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1622,22 +1335,12 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEntityServiceRestTransport._BaseListOperations, EntityServiceRestStub
-    ):
+    class _ListOperations(_BaseEntityServiceRestTransport._BaseListOperations, EntityServiceRestStub):
         def __hash__(self):
             return hash("EntityServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1675,26 +1378,16 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEntityServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEntityServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEntityServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEntityServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntityServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntityServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1718,12 +1411,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
 
             # Send the request
             response = EntityServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1735,9 +1423,7 @@ class EntityServiceRestTransport(_BaseEntityServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

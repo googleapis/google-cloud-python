@@ -37,23 +37,13 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import securitycenter_service, simulation
 from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
-from google.cloud.securitycenter_v1.types import (
-    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
-)
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module as gcs_event_threat_detection_custom_module
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
-from google.cloud.securitycenter_v1.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1.types import (
-    resource_value_config as gcs_resource_value_config,
-)
+from google.cloud.securitycenter_v1.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1.types import resource_value_config as gcs_resource_value_config
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
-from google.cloud.securitycenter_v1.types import (
-    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
-)
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module as gcs_security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
@@ -66,9 +56,7 @@ from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
 from google.cloud.securitycenter_v1.types import valued_resource
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -130,23 +118,15 @@ class SecurityCenterTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -685,10 +665,7 @@ class SecurityCenterTransport(abc.ABC):
     @property
     def bulk_mute_findings(
         self,
-    ) -> Callable[
-        [securitycenter_service.BulkMuteFindingsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[securitycenter_service.BulkMuteFindingsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -698,38 +675,23 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
-            Awaitable[
-                gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-            ],
+            Awaitable[gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateSourceRequest],
-        Union[gcs_source.Source, Awaitable[gcs_source.Source]],
-    ]:
+    def create_source(self) -> Callable[[securitycenter_service.CreateSourceRequest], Union[gcs_source.Source, Awaitable[gcs_source.Source]]]:
         raise NotImplementedError()
 
     @property
-    def create_finding(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateFindingRequest],
-        Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]],
-    ]:
+    def create_finding(self) -> Callable[[securitycenter_service.CreateFindingRequest], Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]]]:
         raise NotImplementedError()
 
     @property
     def create_mute_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.CreateMuteConfigRequest],
-        Union[gcs_mute_config.MuteConfig, Awaitable[gcs_mute_config.MuteConfig]],
-    ]:
+    ) -> Callable[[securitycenter_service.CreateMuteConfigRequest], Union[gcs_mute_config.MuteConfig, Awaitable[gcs_mute_config.MuteConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -737,57 +699,37 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.CreateNotificationConfigRequest],
-        Union[
-            gcs_notification_config.NotificationConfig,
-            Awaitable[gcs_notification_config.NotificationConfig],
-        ],
+        Union[gcs_notification_config.NotificationConfig, Awaitable[gcs_notification_config.NotificationConfig]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_mute_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.DeleteMuteConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_mute_config(self) -> Callable[[securitycenter_service.DeleteMuteConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def delete_notification_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.DeleteNotificationConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[securitycenter_service.DeleteNotificationConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def delete_security_health_analytics_custom_module(
         self,
-    ) -> Callable[
-        [securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_simulation(
         self,
-    ) -> Callable[
-        [securitycenter_service.GetSimulationRequest],
-        Union[simulation.Simulation, Awaitable[simulation.Simulation]],
-    ]:
+    ) -> Callable[[securitycenter_service.GetSimulationRequest], Union[simulation.Simulation, Awaitable[simulation.Simulation]]]:
         raise NotImplementedError()
 
     @property
     def get_valued_resource(
         self,
     ) -> Callable[
-        [securitycenter_service.GetValuedResourceRequest],
-        Union[
-            valued_resource.ValuedResource, Awaitable[valued_resource.ValuedResource]
-        ],
+        [securitycenter_service.GetValuedResourceRequest], Union[valued_resource.ValuedResource, Awaitable[valued_resource.ValuedResource]]
     ]:
         raise NotImplementedError()
 
@@ -795,29 +737,18 @@ class SecurityCenterTransport(abc.ABC):
     def get_big_query_export(
         self,
     ) -> Callable[
-        [securitycenter_service.GetBigQueryExportRequest],
-        Union[
-            bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]
-        ],
+        [securitycenter_service.GetBigQueryExportRequest], Union[bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
     def get_mute_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.GetMuteConfigRequest],
-        Union[mute_config.MuteConfig, Awaitable[mute_config.MuteConfig]],
-    ]:
+    ) -> Callable[[securitycenter_service.GetMuteConfigRequest], Union[mute_config.MuteConfig, Awaitable[mute_config.MuteConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -825,10 +756,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GetNotificationConfigRequest],
-        Union[
-            notification_config.NotificationConfig,
-            Awaitable[notification_config.NotificationConfig],
-        ],
+        Union[notification_config.NotificationConfig, Awaitable[notification_config.NotificationConfig]],
     ]:
         raise NotImplementedError()
 
@@ -837,10 +765,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GetOrganizationSettingsRequest],
-        Union[
-            organization_settings.OrganizationSettings,
-            Awaitable[organization_settings.OrganizationSettings],
-        ],
+        Union[organization_settings.OrganizationSettings, Awaitable[organization_settings.OrganizationSettings]],
     ]:
         raise NotImplementedError()
 
@@ -851,9 +776,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
-            Awaitable[
-                effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
-            ],
+            Awaitable[effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -865,20 +788,13 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
-            Awaitable[
-                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-            ],
+            Awaitable[security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetSourceRequest],
-        Union[source.Source, Awaitable[source.Source]],
-    ]:
+    def get_source(self) -> Callable[[securitycenter_service.GetSourceRequest], Union[source.Source, Awaitable[source.Source]]]:
         raise NotImplementedError()
 
     @property
@@ -886,10 +802,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GroupAssetsRequest],
-        Union[
-            securitycenter_service.GroupAssetsResponse,
-            Awaitable[securitycenter_service.GroupAssetsResponse],
-        ],
+        Union[securitycenter_service.GroupAssetsResponse, Awaitable[securitycenter_service.GroupAssetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -898,10 +811,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GroupFindingsRequest],
-        Union[
-            securitycenter_service.GroupFindingsResponse,
-            Awaitable[securitycenter_service.GroupFindingsResponse],
-        ],
+        Union[securitycenter_service.GroupFindingsResponse, Awaitable[securitycenter_service.GroupFindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -910,10 +820,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListAssetsRequest],
-        Union[
-            securitycenter_service.ListAssetsResponse,
-            Awaitable[securitycenter_service.ListAssetsResponse],
-        ],
+        Union[securitycenter_service.ListAssetsResponse, Awaitable[securitycenter_service.ListAssetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -921,14 +828,10 @@ class SecurityCenterTransport(abc.ABC):
     def list_descendant_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],
         Union[
             securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-            Awaitable[
-                securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-            ],
+            Awaitable[securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -938,10 +841,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListFindingsRequest],
-        Union[
-            securitycenter_service.ListFindingsResponse,
-            Awaitable[securitycenter_service.ListFindingsResponse],
-        ],
+        Union[securitycenter_service.ListFindingsResponse, Awaitable[securitycenter_service.ListFindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -950,10 +850,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListMuteConfigsRequest],
-        Union[
-            securitycenter_service.ListMuteConfigsResponse,
-            Awaitable[securitycenter_service.ListMuteConfigsResponse],
-        ],
+        Union[securitycenter_service.ListMuteConfigsResponse, Awaitable[securitycenter_service.ListMuteConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -962,10 +859,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListNotificationConfigsRequest],
-        Union[
-            securitycenter_service.ListNotificationConfigsResponse,
-            Awaitable[securitycenter_service.ListNotificationConfigsResponse],
-        ],
+        Union[securitycenter_service.ListNotificationConfigsResponse, Awaitable[securitycenter_service.ListNotificationConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -973,14 +867,10 @@ class SecurityCenterTransport(abc.ABC):
     def list_effective_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest],
         Union[
             securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-            Awaitable[
-                securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-            ],
+            Awaitable[securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -992,9 +882,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest],
         Union[
             securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
-            Awaitable[
-                securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse
-            ],
+            Awaitable[securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1004,47 +892,26 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListSourcesRequest],
-        Union[
-            securitycenter_service.ListSourcesResponse,
-            Awaitable[securitycenter_service.ListSourcesResponse],
-        ],
+        Union[securitycenter_service.ListSourcesResponse, Awaitable[securitycenter_service.ListSourcesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def run_asset_discovery(
         self,
-    ) -> Callable[
-        [securitycenter_service.RunAssetDiscoveryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[securitycenter_service.RunAssetDiscoveryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_finding_state(
-        self,
-    ) -> Callable[
-        [securitycenter_service.SetFindingStateRequest],
-        Union[finding.Finding, Awaitable[finding.Finding]],
-    ]:
+    def set_finding_state(self) -> Callable[[securitycenter_service.SetFindingStateRequest], Union[finding.Finding, Awaitable[finding.Finding]]]:
         raise NotImplementedError()
 
     @property
-    def set_mute(
-        self,
-    ) -> Callable[
-        [securitycenter_service.SetMuteRequest],
-        Union[finding.Finding, Awaitable[finding.Finding]],
-    ]:
+    def set_mute(self) -> Callable[[securitycenter_service.SetMuteRequest], Union[finding.Finding, Awaitable[finding.Finding]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -1052,10 +919,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1066,9 +930,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse,
-            Awaitable[
-                securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse
-            ],
+            Awaitable[securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1077,30 +939,18 @@ class SecurityCenterTransport(abc.ABC):
     def update_external_system(
         self,
     ) -> Callable[
-        [securitycenter_service.UpdateExternalSystemRequest],
-        Union[
-            gcs_external_system.ExternalSystem,
-            Awaitable[gcs_external_system.ExternalSystem],
-        ],
+        [securitycenter_service.UpdateExternalSystemRequest], Union[gcs_external_system.ExternalSystem, Awaitable[gcs_external_system.ExternalSystem]]
     ]:
         raise NotImplementedError()
 
     @property
-    def update_finding(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateFindingRequest],
-        Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]],
-    ]:
+    def update_finding(self) -> Callable[[securitycenter_service.UpdateFindingRequest], Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]]]:
         raise NotImplementedError()
 
     @property
     def update_mute_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.UpdateMuteConfigRequest],
-        Union[gcs_mute_config.MuteConfig, Awaitable[gcs_mute_config.MuteConfig]],
-    ]:
+    ) -> Callable[[securitycenter_service.UpdateMuteConfigRequest], Union[gcs_mute_config.MuteConfig, Awaitable[gcs_mute_config.MuteConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -1108,10 +958,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.UpdateNotificationConfigRequest],
-        Union[
-            gcs_notification_config.NotificationConfig,
-            Awaitable[gcs_notification_config.NotificationConfig],
-        ],
+        Union[gcs_notification_config.NotificationConfig, Awaitable[gcs_notification_config.NotificationConfig]],
     ]:
         raise NotImplementedError()
 
@@ -1120,10 +967,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.UpdateOrganizationSettingsRequest],
-        Union[
-            gcs_organization_settings.OrganizationSettings,
-            Awaitable[gcs_organization_settings.OrganizationSettings],
-        ],
+        Union[gcs_organization_settings.OrganizationSettings, Awaitable[gcs_organization_settings.OrganizationSettings]],
     ]:
         raise NotImplementedError()
 
@@ -1134,31 +978,20 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
-            Awaitable[
-                gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-            ],
+            Awaitable[gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateSourceRequest],
-        Union[gcs_source.Source, Awaitable[gcs_source.Source]],
-    ]:
+    def update_source(self) -> Callable[[securitycenter_service.UpdateSourceRequest], Union[gcs_source.Source, Awaitable[gcs_source.Source]]]:
         raise NotImplementedError()
 
     @property
     def update_security_marks(
         self,
     ) -> Callable[
-        [securitycenter_service.UpdateSecurityMarksRequest],
-        Union[
-            gcs_security_marks.SecurityMarks,
-            Awaitable[gcs_security_marks.SecurityMarks],
-        ],
+        [securitycenter_service.UpdateSecurityMarksRequest], Union[gcs_security_marks.SecurityMarks, Awaitable[gcs_security_marks.SecurityMarks]]
     ]:
         raise NotImplementedError()
 
@@ -1166,30 +999,21 @@ class SecurityCenterTransport(abc.ABC):
     def create_big_query_export(
         self,
     ) -> Callable[
-        [securitycenter_service.CreateBigQueryExportRequest],
-        Union[
-            bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]
-        ],
+        [securitycenter_service.CreateBigQueryExportRequest], Union[bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_big_query_export(
         self,
-    ) -> Callable[
-        [securitycenter_service.DeleteBigQueryExportRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[securitycenter_service.DeleteBigQueryExportRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_big_query_export(
         self,
     ) -> Callable[
-        [securitycenter_service.UpdateBigQueryExportRequest],
-        Union[
-            bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]
-        ],
+        [securitycenter_service.UpdateBigQueryExportRequest], Union[bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]]
     ]:
         raise NotImplementedError()
 
@@ -1198,10 +1022,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListBigQueryExportsRequest],
-        Union[
-            securitycenter_service.ListBigQueryExportsResponse,
-            Awaitable[securitycenter_service.ListBigQueryExportsResponse],
-        ],
+        Union[securitycenter_service.ListBigQueryExportsResponse, Awaitable[securitycenter_service.ListBigQueryExportsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1212,9 +1033,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.CreateEventThreatDetectionCustomModuleRequest],
         Union[
             gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
-            Awaitable[
-                gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
-            ],
+            Awaitable[gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -1222,10 +1041,7 @@ class SecurityCenterTransport(abc.ABC):
     @property
     def delete_event_threat_detection_custom_module(
         self,
-    ) -> Callable[
-        [securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1235,9 +1051,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.GetEventThreatDetectionCustomModuleRequest],
         Union[
             event_threat_detection_custom_module.EventThreatDetectionCustomModule,
-            Awaitable[
-                event_threat_detection_custom_module.EventThreatDetectionCustomModule
-            ],
+            Awaitable[event_threat_detection_custom_module.EventThreatDetectionCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -1249,9 +1063,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest],
         Union[
             securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
-            Awaitable[
-                securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
-            ],
+            Awaitable[securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1263,9 +1075,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.ListEventThreatDetectionCustomModulesRequest],
         Union[
             securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
-            Awaitable[
-                securitycenter_service.ListEventThreatDetectionCustomModulesResponse
-            ],
+            Awaitable[securitycenter_service.ListEventThreatDetectionCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1277,9 +1087,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest],
         Union[
             gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
-            Awaitable[
-                gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
-            ],
+            Awaitable[gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -1291,9 +1099,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest],
         Union[
             securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
-            Awaitable[
-                securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse
-            ],
+            Awaitable[securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1305,9 +1111,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest],
         Union[
             effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
-            Awaitable[
-                effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
-            ],
+            Awaitable[effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -1319,9 +1123,7 @@ class SecurityCenterTransport(abc.ABC):
         [securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest],
         Union[
             securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
-            Awaitable[
-                securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
-            ],
+            Awaitable[securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1332,8 +1134,7 @@ class SecurityCenterTransport(abc.ABC):
     ) -> Callable[
         [securitycenter_service.BatchCreateResourceValueConfigsRequest],
         Union[
-            securitycenter_service.BatchCreateResourceValueConfigsResponse,
-            Awaitable[securitycenter_service.BatchCreateResourceValueConfigsResponse],
+            securitycenter_service.BatchCreateResourceValueConfigsResponse, Awaitable[securitycenter_service.BatchCreateResourceValueConfigsResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -1341,10 +1142,7 @@ class SecurityCenterTransport(abc.ABC):
     @property
     def delete_resource_value_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.DeleteResourceValueConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[securitycenter_service.DeleteResourceValueConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1352,10 +1150,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GetResourceValueConfigRequest],
-        Union[
-            resource_value_config.ResourceValueConfig,
-            Awaitable[resource_value_config.ResourceValueConfig],
-        ],
+        Union[resource_value_config.ResourceValueConfig, Awaitable[resource_value_config.ResourceValueConfig]],
     ]:
         raise NotImplementedError()
 
@@ -1364,10 +1159,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListResourceValueConfigsRequest],
-        Union[
-            securitycenter_service.ListResourceValueConfigsResponse,
-            Awaitable[securitycenter_service.ListResourceValueConfigsResponse],
-        ],
+        Union[securitycenter_service.ListResourceValueConfigsResponse, Awaitable[securitycenter_service.ListResourceValueConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1376,10 +1168,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.UpdateResourceValueConfigRequest],
-        Union[
-            gcs_resource_value_config.ResourceValueConfig,
-            Awaitable[gcs_resource_value_config.ResourceValueConfig],
-        ],
+        Union[gcs_resource_value_config.ResourceValueConfig, Awaitable[gcs_resource_value_config.ResourceValueConfig]],
     ]:
         raise NotImplementedError()
 
@@ -1388,10 +1177,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListValuedResourcesRequest],
-        Union[
-            securitycenter_service.ListValuedResourcesResponse,
-            Awaitable[securitycenter_service.ListValuedResourcesResponse],
-        ],
+        Union[securitycenter_service.ListValuedResourcesResponse, Awaitable[securitycenter_service.ListValuedResourcesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1400,10 +1186,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListAttackPathsRequest],
-        Union[
-            securitycenter_service.ListAttackPathsResponse,
-            Awaitable[securitycenter_service.ListAttackPathsResponse],
-        ],
+        Union[securitycenter_service.ListAttackPathsResponse, Awaitable[securitycenter_service.ListAttackPathsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1412,20 +1195,14 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

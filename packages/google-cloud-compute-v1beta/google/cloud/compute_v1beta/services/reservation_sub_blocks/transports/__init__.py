@@ -20,9 +20,7 @@ from .base import ReservationSubBlocksTransport
 from .rest import ReservationSubBlocksRestInterceptor, ReservationSubBlocksRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ReservationSubBlocksTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ReservationSubBlocksTransport]]
 _transport_registry["rest"] = ReservationSubBlocksRestTransport
 
 __all__ = (

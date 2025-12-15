@@ -167,19 +167,15 @@ class SecurityCenterService(proto.Message):
                 billing eligibility or onboarding status.
         """
 
-        intended_enablement_state: "SecurityCenterService.EnablementState" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="SecurityCenterService.EnablementState",
-            )
+        intended_enablement_state: "SecurityCenterService.EnablementState" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SecurityCenterService.EnablementState",
         )
-        effective_enablement_state: "SecurityCenterService.EnablementState" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="SecurityCenterService.EnablementState",
-            )
+        effective_enablement_state: "SecurityCenterService.EnablementState" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="SecurityCenterService.EnablementState",
         )
 
     name: str = proto.Field(
@@ -339,9 +335,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    effective_security_health_analytics_custom_modules: MutableSequence[
-        "EffectiveSecurityHealthAnalyticsCustomModule"
-    ] = proto.RepeatedField(
+    effective_security_health_analytics_custom_modules: MutableSequence["EffectiveSecurityHealthAnalyticsCustomModule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EffectiveSecurityHealthAnalyticsCustomModule",
@@ -571,9 +565,7 @@ class CustomConfig(proto.Message):
                 message=expr_pb2.Expr,
             )
 
-        properties: MutableSequence[
-            "CustomConfig.CustomOutputSpec.Property"
-        ] = proto.RepeatedField(
+        properties: MutableSequence["CustomConfig.CustomOutputSpec.Property"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="CustomConfig.CustomOutputSpec.Property",
@@ -681,9 +673,7 @@ class ListSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_health_analytics_custom_modules: MutableSequence[
-        "SecurityHealthAnalyticsCustomModule"
-    ] = proto.RepeatedField(
+    security_health_analytics_custom_modules: MutableSequence["SecurityHealthAnalyticsCustomModule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SecurityHealthAnalyticsCustomModule",
@@ -752,9 +742,7 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_health_analytics_custom_modules: MutableSequence[
-        "SecurityHealthAnalyticsCustomModule"
-    ] = proto.RepeatedField(
+    security_health_analytics_custom_modules: MutableSequence["SecurityHealthAnalyticsCustomModule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SecurityHealthAnalyticsCustomModule",
@@ -816,12 +804,10 @@ class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    security_health_analytics_custom_module: "SecurityHealthAnalyticsCustomModule" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="SecurityHealthAnalyticsCustomModule",
-        )
+    security_health_analytics_custom_module: "SecurityHealthAnalyticsCustomModule" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SecurityHealthAnalyticsCustomModule",
     )
     validate_only: bool = proto.Field(
         proto.BOOL,
@@ -867,12 +853,10 @@ class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    security_health_analytics_custom_module: "SecurityHealthAnalyticsCustomModule" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="SecurityHealthAnalyticsCustomModule",
-        )
+    security_health_analytics_custom_module: "SecurityHealthAnalyticsCustomModule" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SecurityHealthAnalyticsCustomModule",
     )
     validate_only: bool = proto.Field(
         proto.BOOL,
@@ -1422,9 +1406,7 @@ class ListEffectiveEventThreatDetectionCustomModulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    effective_event_threat_detection_custom_modules: MutableSequence[
-        "EffectiveEventThreatDetectionCustomModule"
-    ] = proto.RepeatedField(
+    effective_event_threat_detection_custom_modules: MutableSequence["EffectiveEventThreatDetectionCustomModule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EffectiveEventThreatDetectionCustomModule",
@@ -1623,9 +1605,7 @@ class ListEventThreatDetectionCustomModulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    event_threat_detection_custom_modules: MutableSequence[
-        "EventThreatDetectionCustomModule"
-    ] = proto.RepeatedField(
+    event_threat_detection_custom_modules: MutableSequence["EventThreatDetectionCustomModule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EventThreatDetectionCustomModule",
@@ -1694,9 +1674,7 @@ class ListDescendantEventThreatDetectionCustomModulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    event_threat_detection_custom_modules: MutableSequence[
-        "EventThreatDetectionCustomModule"
-    ] = proto.RepeatedField(
+    event_threat_detection_custom_modules: MutableSequence["EventThreatDetectionCustomModule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EventThreatDetectionCustomModule",
@@ -1765,12 +1743,10 @@ class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    event_threat_detection_custom_module: "EventThreatDetectionCustomModule" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="EventThreatDetectionCustomModule",
-        )
+    event_threat_detection_custom_module: "EventThreatDetectionCustomModule" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="EventThreatDetectionCustomModule",
     )
     validate_only: bool = proto.Field(
         proto.BOOL,
@@ -1809,12 +1785,10 @@ class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    event_threat_detection_custom_module: "EventThreatDetectionCustomModule" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="EventThreatDetectionCustomModule",
-        )
+    event_threat_detection_custom_module: "EventThreatDetectionCustomModule" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="EventThreatDetectionCustomModule",
     )
     validate_only: bool = proto.Field(
         proto.BOOL,
@@ -1942,13 +1916,11 @@ class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
             proto.STRING,
             number=2,
         )
-        start: "ValidateEventThreatDetectionCustomModuleResponse.Position" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                optional=True,
-                message="ValidateEventThreatDetectionCustomModuleResponse.Position",
-            )
+        start: "ValidateEventThreatDetectionCustomModuleResponse.Position" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            optional=True,
+            message="ValidateEventThreatDetectionCustomModuleResponse.Position",
         )
         end: "ValidateEventThreatDetectionCustomModuleResponse.Position" = proto.Field(
             proto.MESSAGE,
@@ -2082,9 +2054,7 @@ class ListSecurityCenterServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_center_services: MutableSequence[
-        "SecurityCenterService"
-    ] = proto.RepeatedField(
+    security_center_services: MutableSequence["SecurityCenterService"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SecurityCenterService",

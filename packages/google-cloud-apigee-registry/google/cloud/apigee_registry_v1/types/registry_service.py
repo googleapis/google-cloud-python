@@ -807,9 +807,7 @@ class ListApiDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_deployments: MutableSequence[
-        registry_models.ApiDeployment
-    ] = proto.RepeatedField(
+    api_deployments: MutableSequence[registry_models.ApiDeployment] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiDeployment,
@@ -999,9 +997,7 @@ class ListApiDeploymentRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_deployments: MutableSequence[
-        registry_models.ApiDeployment
-    ] = proto.RepeatedField(
+    api_deployments: MutableSequence[registry_models.ApiDeployment] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiDeployment,

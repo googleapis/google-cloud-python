@@ -49,9 +49,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +78,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -224,18 +215,14 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -269,9 +256,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -338,19 +323,13 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_data_taxonomy(
-        self,
-    ) -> Callable[
-        [gcd_data_taxonomy.CreateDataTaxonomyRequest], operations_pb2.Operation
-    ]:
+    def create_data_taxonomy(self) -> Callable[[gcd_data_taxonomy.CreateDataTaxonomyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create data taxonomy method over gRPC.
 
         Create a DataTaxonomy resource.
@@ -374,11 +353,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["create_data_taxonomy"]
 
     @property
-    def update_data_taxonomy(
-        self,
-    ) -> Callable[
-        [gcd_data_taxonomy.UpdateDataTaxonomyRequest], operations_pb2.Operation
-    ]:
+    def update_data_taxonomy(self) -> Callable[[gcd_data_taxonomy.UpdateDataTaxonomyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update data taxonomy method over gRPC.
 
         Updates a DataTaxonomy resource.
@@ -402,9 +377,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["update_data_taxonomy"]
 
     @property
-    def delete_data_taxonomy(
-        self,
-    ) -> Callable[[data_taxonomy.DeleteDataTaxonomyRequest], operations_pb2.Operation]:
+    def delete_data_taxonomy(self) -> Callable[[data_taxonomy.DeleteDataTaxonomyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete data taxonomy method over gRPC.
 
         Deletes a DataTaxonomy resource. All attributes
@@ -430,12 +403,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["delete_data_taxonomy"]
 
     @property
-    def list_data_taxonomies(
-        self,
-    ) -> Callable[
-        [data_taxonomy.ListDataTaxonomiesRequest],
-        data_taxonomy.ListDataTaxonomiesResponse,
-    ]:
+    def list_data_taxonomies(self) -> Callable[[data_taxonomy.ListDataTaxonomiesRequest], data_taxonomy.ListDataTaxonomiesResponse]:
         r"""Return a callable for the list data taxonomies method over gRPC.
 
         Lists DataTaxonomy resources in a project and
@@ -460,9 +428,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["list_data_taxonomies"]
 
     @property
-    def get_data_taxonomy(
-        self,
-    ) -> Callable[[data_taxonomy.GetDataTaxonomyRequest], data_taxonomy.DataTaxonomy]:
+    def get_data_taxonomy(self) -> Callable[[data_taxonomy.GetDataTaxonomyRequest], data_taxonomy.DataTaxonomy]:
         r"""Return a callable for the get data taxonomy method over gRPC.
 
         Retrieves a DataTaxonomy resource.
@@ -486,11 +452,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["get_data_taxonomy"]
 
     @property
-    def create_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.CreateDataAttributeBindingRequest], operations_pb2.Operation
-    ]:
+    def create_data_attribute_binding(self) -> Callable[[data_taxonomy.CreateDataAttributeBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the create data attribute binding method over gRPC.
 
         Create a DataAttributeBinding resource.
@@ -506,9 +468,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "create_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_data_attribute_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttributeBinding",
                 request_serializer=data_taxonomy.CreateDataAttributeBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -516,11 +476,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["create_data_attribute_binding"]
 
     @property
-    def update_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.UpdateDataAttributeBindingRequest], operations_pb2.Operation
-    ]:
+    def update_data_attribute_binding(self) -> Callable[[data_taxonomy.UpdateDataAttributeBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the update data attribute binding method over gRPC.
 
         Updates a DataAttributeBinding resource.
@@ -536,9 +492,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "update_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_data_attribute_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttributeBinding",
                 request_serializer=data_taxonomy.UpdateDataAttributeBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -546,11 +500,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["update_data_attribute_binding"]
 
     @property
-    def delete_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.DeleteDataAttributeBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_data_attribute_binding(self) -> Callable[[data_taxonomy.DeleteDataAttributeBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete data attribute binding method over gRPC.
 
         Deletes a DataAttributeBinding resource. All
@@ -568,9 +518,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "delete_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_data_attribute_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttributeBinding",
                 request_serializer=data_taxonomy.DeleteDataAttributeBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -580,10 +528,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
     @property
     def list_data_attribute_bindings(
         self,
-    ) -> Callable[
-        [data_taxonomy.ListDataAttributeBindingsRequest],
-        data_taxonomy.ListDataAttributeBindingsResponse,
-    ]:
+    ) -> Callable[[data_taxonomy.ListDataAttributeBindingsRequest], data_taxonomy.ListDataAttributeBindingsResponse]:
         r"""Return a callable for the list data attribute bindings method over gRPC.
 
         Lists DataAttributeBinding resources in a project and
@@ -600,9 +545,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_attribute_bindings" not in self._stubs:
-            self._stubs[
-                "list_data_attribute_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_data_attribute_bindings"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributeBindings",
                 request_serializer=data_taxonomy.ListDataAttributeBindingsRequest.serialize,
                 response_deserializer=data_taxonomy.ListDataAttributeBindingsResponse.deserialize,
@@ -610,12 +553,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["list_data_attribute_bindings"]
 
     @property
-    def get_data_attribute_binding(
-        self,
-    ) -> Callable[
-        [data_taxonomy.GetDataAttributeBindingRequest],
-        data_taxonomy.DataAttributeBinding,
-    ]:
+    def get_data_attribute_binding(self) -> Callable[[data_taxonomy.GetDataAttributeBindingRequest], data_taxonomy.DataAttributeBinding]:
         r"""Return a callable for the get data attribute binding method over gRPC.
 
         Retrieves a DataAttributeBinding resource.
@@ -631,9 +569,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "get_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_data_attribute_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding",
                 request_serializer=data_taxonomy.GetDataAttributeBindingRequest.serialize,
                 response_deserializer=data_taxonomy.DataAttributeBinding.deserialize,
@@ -641,9 +577,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["get_data_attribute_binding"]
 
     @property
-    def create_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.CreateDataAttributeRequest], operations_pb2.Operation]:
+    def create_data_attribute(self) -> Callable[[data_taxonomy.CreateDataAttributeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create data attribute method over gRPC.
 
         Create a DataAttribute resource.
@@ -667,9 +601,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["create_data_attribute"]
 
     @property
-    def update_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.UpdateDataAttributeRequest], operations_pb2.Operation]:
+    def update_data_attribute(self) -> Callable[[data_taxonomy.UpdateDataAttributeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update data attribute method over gRPC.
 
         Updates a DataAttribute resource.
@@ -693,9 +625,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["update_data_attribute"]
 
     @property
-    def delete_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.DeleteDataAttributeRequest], operations_pb2.Operation]:
+    def delete_data_attribute(self) -> Callable[[data_taxonomy.DeleteDataAttributeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete data attribute method over gRPC.
 
         Deletes a Data Attribute resource.
@@ -719,12 +649,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["delete_data_attribute"]
 
     @property
-    def list_data_attributes(
-        self,
-    ) -> Callable[
-        [data_taxonomy.ListDataAttributesRequest],
-        data_taxonomy.ListDataAttributesResponse,
-    ]:
+    def list_data_attributes(self) -> Callable[[data_taxonomy.ListDataAttributesRequest], data_taxonomy.ListDataAttributesResponse]:
         r"""Return a callable for the list data attributes method over gRPC.
 
         Lists Data Attribute resources in a DataTaxonomy.
@@ -748,9 +673,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         return self._stubs["list_data_attributes"]
 
     @property
-    def get_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.GetDataAttributeRequest], data_taxonomy.DataAttribute]:
+    def get_data_attribute(self) -> Callable[[data_taxonomy.GetDataAttributeRequest], data_taxonomy.DataAttribute]:
         r"""Return a callable for the get data attribute method over gRPC.
 
         Retrieves a Data Attribute resource.
@@ -830,9 +753,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -849,9 +770,7 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

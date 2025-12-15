@@ -202,9 +202,7 @@ class Event(proto.Message):
         number=13,
         message="CustomVariable",
     )
-    experimental_fields: MutableSequence[
-        experimental_field.ExperimentalField
-    ] = proto.RepeatedField(
+    experimental_fields: MutableSequence[experimental_field.ExperimentalField] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=experimental_field.ExperimentalField,
@@ -226,9 +224,7 @@ class Event(proto.Message):
         proto.STRING,
         number=18,
     )
-    additional_event_parameters: MutableSequence[
-        "EventParameter"
-    ] = proto.RepeatedField(
+    additional_event_parameters: MutableSequence["EventParameter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message="EventParameter",

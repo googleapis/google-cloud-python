@@ -147,12 +147,8 @@ class ProjectServiceRestInterceptor:
     """
 
     def pre_accept_terms(
-        self,
-        request: project_service.AcceptTermsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.AcceptTermsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: project_service.AcceptTermsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.AcceptTermsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for accept_terms
 
         Override in a subclass to manipulate the request or metadata
@@ -174,9 +170,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_accept_terms_with_metadata(
-        self,
-        response: gcr_project.Project,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcr_project.Project, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcr_project.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for accept_terms
 
@@ -193,12 +187,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_enroll_solution(
-        self,
-        request: project_service.EnrollSolutionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.EnrollSolutionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: project_service.EnrollSolutionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.EnrollSolutionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enroll_solution
 
         Override in a subclass to manipulate the request or metadata
@@ -206,9 +196,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_enroll_solution(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_enroll_solution(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for enroll_solution
 
         DEPRECATED. Please use the `post_enroll_solution_with_metadata`
@@ -222,9 +210,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_enroll_solution_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enroll_solution
 
@@ -241,12 +227,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_get_alert_config(
-        self,
-        request: project_service.GetAlertConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.GetAlertConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: project_service.GetAlertConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.GetAlertConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_alert_config
 
         Override in a subclass to manipulate the request or metadata
@@ -254,9 +236,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_alert_config(
-        self, response: project.AlertConfig
-    ) -> project.AlertConfig:
+    def post_get_alert_config(self, response: project.AlertConfig) -> project.AlertConfig:
         """Post-rpc interceptor for get_alert_config
 
         DEPRECATED. Please use the `post_get_alert_config_with_metadata`
@@ -270,9 +250,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_get_alert_config_with_metadata(
-        self,
-        response: project.AlertConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: project.AlertConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[project.AlertConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_alert_config
 
@@ -289,12 +267,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_get_logging_config(
-        self,
-        request: project_service.GetLoggingConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.GetLoggingConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: project_service.GetLoggingConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.GetLoggingConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_logging_config
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +276,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_logging_config(
-        self, response: project.LoggingConfig
-    ) -> project.LoggingConfig:
+    def post_get_logging_config(self, response: project.LoggingConfig) -> project.LoggingConfig:
         """Post-rpc interceptor for get_logging_config
 
         DEPRECATED. Please use the `post_get_logging_config_with_metadata`
@@ -318,9 +290,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_get_logging_config_with_metadata(
-        self,
-        response: project.LoggingConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: project.LoggingConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[project.LoggingConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_logging_config
 
@@ -337,12 +307,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_get_project(
-        self,
-        request: project_service.GetProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.GetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: project_service.GetProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.GetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_project
 
         Override in a subclass to manipulate the request or metadata
@@ -364,9 +330,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_get_project_with_metadata(
-        self,
-        response: project.Project,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: project.Project, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[project.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_project
 
@@ -383,13 +347,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_list_enrolled_solutions(
-        self,
-        request: project_service.ListEnrolledSolutionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.ListEnrolledSolutionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: project_service.ListEnrolledSolutionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.ListEnrolledSolutionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_enrolled_solutions
 
         Override in a subclass to manipulate the request or metadata
@@ -397,9 +356,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_enrolled_solutions(
-        self, response: project_service.ListEnrolledSolutionsResponse
-    ) -> project_service.ListEnrolledSolutionsResponse:
+    def post_list_enrolled_solutions(self, response: project_service.ListEnrolledSolutionsResponse) -> project_service.ListEnrolledSolutionsResponse:
         """Post-rpc interceptor for list_enrolled_solutions
 
         DEPRECATED. Please use the `post_list_enrolled_solutions_with_metadata`
@@ -413,13 +370,8 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_list_enrolled_solutions_with_metadata(
-        self,
-        response: project_service.ListEnrolledSolutionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.ListEnrolledSolutionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: project_service.ListEnrolledSolutionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.ListEnrolledSolutionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_enrolled_solutions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -435,13 +387,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_update_alert_config(
-        self,
-        request: project_service.UpdateAlertConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.UpdateAlertConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: project_service.UpdateAlertConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.UpdateAlertConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_alert_config
 
         Override in a subclass to manipulate the request or metadata
@@ -449,9 +396,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_alert_config(
-        self, response: project.AlertConfig
-    ) -> project.AlertConfig:
+    def post_update_alert_config(self, response: project.AlertConfig) -> project.AlertConfig:
         """Post-rpc interceptor for update_alert_config
 
         DEPRECATED. Please use the `post_update_alert_config_with_metadata`
@@ -465,9 +410,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_update_alert_config_with_metadata(
-        self,
-        response: project.AlertConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: project.AlertConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[project.AlertConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_alert_config
 
@@ -484,13 +427,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_update_logging_config(
-        self,
-        request: project_service.UpdateLoggingConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        project_service.UpdateLoggingConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: project_service.UpdateLoggingConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[project_service.UpdateLoggingConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_logging_config
 
         Override in a subclass to manipulate the request or metadata
@@ -498,9 +436,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_logging_config(
-        self, response: project.LoggingConfig
-    ) -> project.LoggingConfig:
+    def post_update_logging_config(self, response: project.LoggingConfig) -> project.LoggingConfig:
         """Post-rpc interceptor for update_logging_config
 
         DEPRECATED. Please use the `post_update_logging_config_with_metadata`
@@ -514,9 +450,7 @@ class ProjectServiceRestInterceptor:
         return response
 
     def post_update_logging_config_with_metadata(
-        self,
-        response: project.LoggingConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: project.LoggingConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[project.LoggingConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_logging_config
 
@@ -533,12 +467,8 @@ class ProjectServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -546,9 +476,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -558,12 +486,8 @@ class ProjectServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -571,9 +495,7 @@ class ProjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -662,9 +584,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -728,29 +648,17 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 path_prefix="v2alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AcceptTerms(
-        _BaseProjectServiceRestTransport._BaseAcceptTerms, ProjectServiceRestStub
-    ):
+    class _AcceptTerms(_BaseProjectServiceRestTransport._BaseAcceptTerms, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.AcceptTerms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -792,30 +700,18 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseAcceptTerms._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_http_options()
 
             request, metadata = self._interceptor.pre_accept_terms(request, metadata)
-            transcoded_request = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -839,13 +735,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._AcceptTerms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -861,12 +751,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_accept_terms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_accept_terms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_accept_terms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcr_project.Project.to_json(response)
                 except:
@@ -887,22 +773,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _EnrollSolution(
-        _BaseProjectServiceRestTransport._BaseEnrollSolution, ProjectServiceRestStub
-    ):
+    class _EnrollSolution(_BaseProjectServiceRestTransport._BaseEnrollSolution, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.EnrollSolution")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -945,30 +821,18 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseEnrollSolution._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_http_options()
 
             request, metadata = self._interceptor.pre_enroll_solution(request, metadata)
-            transcoded_request = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -992,13 +856,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._EnrollSolution._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1012,12 +870,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_enroll_solution(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_enroll_solution_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enroll_solution_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1038,22 +892,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _GetAlertConfig(
-        _BaseProjectServiceRestTransport._BaseGetAlertConfig, ProjectServiceRestStub
-    ):
+    class _GetAlertConfig(_BaseProjectServiceRestTransport._BaseGetAlertConfig, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.GetAlertConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1094,28 +938,16 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                     Project level alert config.
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_alert_config(
-                request, metadata
-            )
-            transcoded_request = _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_alert_config(request, metadata)
+            transcoded_request = _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1139,12 +971,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._GetAlertConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1160,12 +987,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_get_alert_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_alert_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_alert_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = project.AlertConfig.to_json(response)
                 except:
@@ -1186,22 +1009,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _GetLoggingConfig(
-        _BaseProjectServiceRestTransport._BaseGetLoggingConfig, ProjectServiceRestStub
-    ):
+    class _GetLoggingConfig(_BaseProjectServiceRestTransport._BaseGetLoggingConfig, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.GetLoggingConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1245,28 +1058,16 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_logging_config(
-                request, metadata
-            )
-            transcoded_request = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_logging_config(request, metadata)
+            transcoded_request = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1290,12 +1091,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._GetLoggingConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1311,12 +1107,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_get_logging_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_logging_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_logging_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = project.LoggingConfig.to_json(response)
                 except:
@@ -1337,22 +1129,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _GetProject(
-        _BaseProjectServiceRestTransport._BaseGetProject, ProjectServiceRestStub
-    ):
+    class _GetProject(_BaseProjectServiceRestTransport._BaseGetProject, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.GetProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1393,28 +1175,16 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseGetProject._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseGetProject._get_http_options()
 
             request, metadata = self._interceptor.pre_get_project(request, metadata)
-            transcoded_request = _BaseProjectServiceRestTransport._BaseGetProject._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProjectServiceRestTransport._BaseGetProject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProjectServiceRestTransport._BaseGetProject._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseGetProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1438,12 +1208,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._GetProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1459,12 +1224,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_get_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = project.Project.to_json(response)
                 except:
@@ -1485,23 +1246,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _ListEnrolledSolutions(
-        _BaseProjectServiceRestTransport._BaseListEnrolledSolutions,
-        ProjectServiceRestStub,
-    ):
+    class _ListEnrolledSolutions(_BaseProjectServiceRestTransport._BaseListEnrolledSolutions, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.ListEnrolledSolutions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1543,28 +1293,16 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_enrolled_solutions(
-                request, metadata
-            )
-            transcoded_request = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_enrolled_solutions(request, metadata)
+            transcoded_request = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1588,12 +1326,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._ListEnrolledSolutions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1609,16 +1342,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_list_enrolled_solutions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_enrolled_solutions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_enrolled_solutions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        project_service.ListEnrolledSolutionsResponse.to_json(response)
-                    )
+                    response_payload = project_service.ListEnrolledSolutionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1637,22 +1364,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAlertConfig(
-        _BaseProjectServiceRestTransport._BaseUpdateAlertConfig, ProjectServiceRestStub
-    ):
+    class _UpdateAlertConfig(_BaseProjectServiceRestTransport._BaseUpdateAlertConfig, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.UpdateAlertConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1694,32 +1411,18 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                     Project level alert config.
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_alert_config(
-                request, metadata
-            )
-            transcoded_request = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_alert_config(request, metadata)
+            transcoded_request = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1743,13 +1446,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._UpdateAlertConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1765,12 +1462,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_update_alert_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_alert_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_alert_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = project.AlertConfig.to_json(response)
                 except:
@@ -1791,23 +1484,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLoggingConfig(
-        _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig,
-        ProjectServiceRestStub,
-    ):
+    class _UpdateLoggingConfig(_BaseProjectServiceRestTransport._BaseUpdateLoggingConfig, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.UpdateLoggingConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1852,32 +1534,18 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_logging_config(
-                request, metadata
-            )
-            transcoded_request = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_logging_config(request, metadata)
+            transcoded_request = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1901,13 +1569,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._UpdateLoggingConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1923,12 +1585,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             resp = self._interceptor.post_update_logging_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_logging_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_logging_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = project.LoggingConfig.to_json(response)
                 except:
@@ -1950,68 +1608,49 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             return resp
 
     @property
-    def accept_terms(
-        self,
-    ) -> Callable[[project_service.AcceptTermsRequest], gcr_project.Project]:
+    def accept_terms(self) -> Callable[[project_service.AcceptTermsRequest], gcr_project.Project]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AcceptTerms(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enroll_solution(
-        self,
-    ) -> Callable[[project_service.EnrollSolutionRequest], operations_pb2.Operation]:
+    def enroll_solution(self) -> Callable[[project_service.EnrollSolutionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnrollSolution(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_alert_config(
-        self,
-    ) -> Callable[[project_service.GetAlertConfigRequest], project.AlertConfig]:
+    def get_alert_config(self) -> Callable[[project_service.GetAlertConfigRequest], project.AlertConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAlertConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_logging_config(
-        self,
-    ) -> Callable[[project_service.GetLoggingConfigRequest], project.LoggingConfig]:
+    def get_logging_config(self) -> Callable[[project_service.GetLoggingConfigRequest], project.LoggingConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLoggingConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_project(
-        self,
-    ) -> Callable[[project_service.GetProjectRequest], project.Project]:
+    def get_project(self) -> Callable[[project_service.GetProjectRequest], project.Project]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_enrolled_solutions(
-        self,
-    ) -> Callable[
-        [project_service.ListEnrolledSolutionsRequest],
-        project_service.ListEnrolledSolutionsResponse,
-    ]:
+    def list_enrolled_solutions(self) -> Callable[[project_service.ListEnrolledSolutionsRequest], project_service.ListEnrolledSolutionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEnrolledSolutions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_alert_config(
-        self,
-    ) -> Callable[[project_service.UpdateAlertConfigRequest], project.AlertConfig]:
+    def update_alert_config(self) -> Callable[[project_service.UpdateAlertConfigRequest], project.AlertConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAlertConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_logging_config(
-        self,
-    ) -> Callable[[project_service.UpdateLoggingConfigRequest], project.LoggingConfig]:
+    def update_logging_config(self) -> Callable[[project_service.UpdateLoggingConfigRequest], project.LoggingConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLoggingConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -2020,22 +1659,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseProjectServiceRestTransport._BaseGetOperation, ProjectServiceRestStub
-    ):
+    class _GetOperation(_BaseProjectServiceRestTransport._BaseGetOperation, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2073,26 +1702,16 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseProjectServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProjectServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2116,12 +1735,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2133,9 +1747,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2160,22 +1772,12 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseProjectServiceRestTransport._BaseListOperations, ProjectServiceRestStub
-    ):
+    class _ListOperations(_BaseProjectServiceRestTransport._BaseListOperations, ProjectServiceRestStub):
         def __hash__(self):
             return hash("ProjectServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2213,26 +1815,16 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseProjectServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProjectServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProjectServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProjectServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2256,12 +1848,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             # Send the request
             response = ProjectServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2273,9 +1860,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

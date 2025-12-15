@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import PredictionApiKeyRegistryTransport
 from .grpc import PredictionApiKeyRegistryGrpcTransport
 from .grpc_asyncio import PredictionApiKeyRegistryGrpcAsyncIOTransport
-from .rest import (
-    PredictionApiKeyRegistryRestInterceptor,
-    PredictionApiKeyRegistryRestTransport,
-)
+from .rest import PredictionApiKeyRegistryRestInterceptor, PredictionApiKeyRegistryRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PredictionApiKeyRegistryTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PredictionApiKeyRegistryTransport]]
 _transport_registry["grpc"] = PredictionApiKeyRegistryGrpcTransport
 _transport_registry["grpc_asyncio"] = PredictionApiKeyRegistryGrpcAsyncIOTransport
 _transport_registry["rest"] = PredictionApiKeyRegistryRestTransport

@@ -421,9 +421,7 @@ class MaintenancePolicy(proto.Message):
         proto.STRING,
         number=3,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="WeeklyMaintenanceWindow",

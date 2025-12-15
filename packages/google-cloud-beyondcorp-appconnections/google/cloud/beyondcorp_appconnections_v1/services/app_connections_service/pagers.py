@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class ListAppConnectionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[app_connections_service.AppConnection]:
@@ -137,9 +120,7 @@ class ListAppConnectionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[app_connections_service.ListAppConnectionsResponse]
-        ],
+        method: Callable[..., Awaitable[app_connections_service.ListAppConnectionsResponse]],
         request: app_connections_service.ListAppConnectionsRequest,
         response: app_connections_service.ListAppConnectionsResponse,
         *,
@@ -175,18 +156,11 @@ class ListAppConnectionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[app_connections_service.ListAppConnectionsResponse]:
+    async def pages(self) -> AsyncIterator[app_connections_service.ListAppConnectionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[app_connections_service.AppConnection]:
@@ -261,19 +235,10 @@ class ResolveAppConnectionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        app_connections_service.ResolveAppConnectionsResponse.AppConnectionDetails
-    ]:
+    def __iter__(self) -> Iterator[app_connections_service.ResolveAppConnectionsResponse.AppConnectionDetails]:
         for page in self.pages:
             yield from page.app_connection_details
 
@@ -301,9 +266,7 @@ class ResolveAppConnectionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[app_connections_service.ResolveAppConnectionsResponse]
-        ],
+        method: Callable[..., Awaitable[app_connections_service.ResolveAppConnectionsResponse]],
         request: app_connections_service.ResolveAppConnectionsRequest,
         response: app_connections_service.ResolveAppConnectionsResponse,
         *,
@@ -339,25 +302,14 @@ class ResolveAppConnectionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[app_connections_service.ResolveAppConnectionsResponse]:
+    async def pages(self) -> AsyncIterator[app_connections_service.ResolveAppConnectionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        app_connections_service.ResolveAppConnectionsResponse.AppConnectionDetails
-    ]:
+    def __aiter__(self) -> AsyncIterator[app_connections_service.ResolveAppConnectionsResponse.AppConnectionDetails]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.app_connection_details:

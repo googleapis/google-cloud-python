@@ -139,12 +139,8 @@ class EkmServiceRestInterceptor:
     """
 
     def pre_create_ekm_connection(
-        self,
-        request: ekm_service.CreateEkmConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.CreateEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.CreateEkmConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.CreateEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_ekm_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -152,9 +148,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_ekm_connection(
-        self, response: ekm_service.EkmConnection
-    ) -> ekm_service.EkmConnection:
+    def post_create_ekm_connection(self, response: ekm_service.EkmConnection) -> ekm_service.EkmConnection:
         """Post-rpc interceptor for create_ekm_connection
 
         DEPRECATED. Please use the `post_create_ekm_connection_with_metadata`
@@ -168,9 +162,7 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_create_ekm_connection_with_metadata(
-        self,
-        response: ekm_service.EkmConnection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ekm_service.EkmConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ekm_service.EkmConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_ekm_connection
 
@@ -187,12 +179,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_ekm_config(
-        self,
-        request: ekm_service.GetEkmConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.GetEkmConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.GetEkmConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.GetEkmConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_ekm_config
 
         Override in a subclass to manipulate the request or metadata
@@ -200,9 +188,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_ekm_config(
-        self, response: ekm_service.EkmConfig
-    ) -> ekm_service.EkmConfig:
+    def post_get_ekm_config(self, response: ekm_service.EkmConfig) -> ekm_service.EkmConfig:
         """Post-rpc interceptor for get_ekm_config
 
         DEPRECATED. Please use the `post_get_ekm_config_with_metadata`
@@ -216,9 +202,7 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_get_ekm_config_with_metadata(
-        self,
-        response: ekm_service.EkmConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ekm_service.EkmConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ekm_service.EkmConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_ekm_config
 
@@ -235,12 +219,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_ekm_connection(
-        self,
-        request: ekm_service.GetEkmConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.GetEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.GetEkmConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.GetEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_ekm_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -248,9 +228,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_ekm_connection(
-        self, response: ekm_service.EkmConnection
-    ) -> ekm_service.EkmConnection:
+    def post_get_ekm_connection(self, response: ekm_service.EkmConnection) -> ekm_service.EkmConnection:
         """Post-rpc interceptor for get_ekm_connection
 
         DEPRECATED. Please use the `post_get_ekm_connection_with_metadata`
@@ -264,9 +242,7 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_get_ekm_connection_with_metadata(
-        self,
-        response: ekm_service.EkmConnection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ekm_service.EkmConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ekm_service.EkmConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_ekm_connection
 
@@ -283,12 +259,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_list_ekm_connections(
-        self,
-        request: ekm_service.ListEkmConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.ListEkmConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.ListEkmConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.ListEkmConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_ekm_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -296,9 +268,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_ekm_connections(
-        self, response: ekm_service.ListEkmConnectionsResponse
-    ) -> ekm_service.ListEkmConnectionsResponse:
+    def post_list_ekm_connections(self, response: ekm_service.ListEkmConnectionsResponse) -> ekm_service.ListEkmConnectionsResponse:
         """Post-rpc interceptor for list_ekm_connections
 
         DEPRECATED. Please use the `post_list_ekm_connections_with_metadata`
@@ -312,12 +282,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_list_ekm_connections_with_metadata(
-        self,
-        response: ekm_service.ListEkmConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.ListEkmConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: ekm_service.ListEkmConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.ListEkmConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_ekm_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -333,12 +299,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_update_ekm_config(
-        self,
-        request: ekm_service.UpdateEkmConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.UpdateEkmConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.UpdateEkmConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.UpdateEkmConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_ekm_config
 
         Override in a subclass to manipulate the request or metadata
@@ -346,9 +308,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_ekm_config(
-        self, response: ekm_service.EkmConfig
-    ) -> ekm_service.EkmConfig:
+    def post_update_ekm_config(self, response: ekm_service.EkmConfig) -> ekm_service.EkmConfig:
         """Post-rpc interceptor for update_ekm_config
 
         DEPRECATED. Please use the `post_update_ekm_config_with_metadata`
@@ -362,9 +322,7 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_update_ekm_config_with_metadata(
-        self,
-        response: ekm_service.EkmConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ekm_service.EkmConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ekm_service.EkmConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_ekm_config
 
@@ -381,12 +339,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_update_ekm_connection(
-        self,
-        request: ekm_service.UpdateEkmConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.UpdateEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.UpdateEkmConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.UpdateEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_ekm_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -394,9 +348,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_ekm_connection(
-        self, response: ekm_service.EkmConnection
-    ) -> ekm_service.EkmConnection:
+    def post_update_ekm_connection(self, response: ekm_service.EkmConnection) -> ekm_service.EkmConnection:
         """Post-rpc interceptor for update_ekm_connection
 
         DEPRECATED. Please use the `post_update_ekm_connection_with_metadata`
@@ -410,9 +362,7 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_update_ekm_connection_with_metadata(
-        self,
-        response: ekm_service.EkmConnection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ekm_service.EkmConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ekm_service.EkmConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_ekm_connection
 
@@ -429,12 +379,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_verify_connectivity(
-        self,
-        request: ekm_service.VerifyConnectivityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.VerifyConnectivityRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ekm_service.VerifyConnectivityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.VerifyConnectivityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for verify_connectivity
 
         Override in a subclass to manipulate the request or metadata
@@ -442,9 +388,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_verify_connectivity(
-        self, response: ekm_service.VerifyConnectivityResponse
-    ) -> ekm_service.VerifyConnectivityResponse:
+    def post_verify_connectivity(self, response: ekm_service.VerifyConnectivityResponse) -> ekm_service.VerifyConnectivityResponse:
         """Post-rpc interceptor for verify_connectivity
 
         DEPRECATED. Please use the `post_verify_connectivity_with_metadata`
@@ -458,12 +402,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def post_verify_connectivity_with_metadata(
-        self,
-        response: ekm_service.VerifyConnectivityResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ekm_service.VerifyConnectivityResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: ekm_service.VerifyConnectivityResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ekm_service.VerifyConnectivityResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for verify_connectivity
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -479,12 +419,8 @@ class EkmServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -492,9 +428,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -504,12 +438,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +447,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -529,12 +457,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -552,12 +476,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -575,13 +495,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -589,9 +504,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -601,12 +514,8 @@ class EkmServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -614,9 +523,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -710,30 +617,18 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or EkmServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateEkmConnection(
-        _BaseEkmServiceRestTransport._BaseCreateEkmConnection, EkmServiceRestStub
-    ):
+    class _CreateEkmConnection(_BaseEkmServiceRestTransport._BaseCreateEkmConnection, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.CreateEkmConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -786,32 +681,18 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_ekm_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_ekm_connection(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -835,13 +716,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._CreateEkmConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -857,12 +732,8 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_create_ekm_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_ekm_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_ekm_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ekm_service.EkmConnection.to_json(response)
                 except:
@@ -883,22 +754,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 )
             return resp
 
-    class _GetEkmConfig(
-        _BaseEkmServiceRestTransport._BaseGetEkmConfig, EkmServiceRestStub
-    ):
+    class _GetEkmConfig(_BaseEkmServiceRestTransport._BaseGetEkmConfig, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.GetEkmConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -948,30 +809,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_ekm_config(request, metadata)
-            transcoded_request = (
-                _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -995,12 +842,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._GetEkmConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1016,12 +858,8 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_get_ekm_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_ekm_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_ekm_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ekm_service.EkmConfig.to_json(response)
                 except:
@@ -1042,22 +880,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 )
             return resp
 
-    class _GetEkmConnection(
-        _BaseEkmServiceRestTransport._BaseGetEkmConnection, EkmServiceRestStub
-    ):
+    class _GetEkmConnection(_BaseEkmServiceRestTransport._BaseGetEkmConnection, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.GetEkmConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1109,28 +937,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_ekm_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_ekm_connection(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1154,12 +970,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._GetEkmConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1175,12 +986,8 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_get_ekm_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_ekm_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_ekm_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ekm_service.EkmConnection.to_json(response)
                 except:
@@ -1201,22 +1008,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 )
             return resp
 
-    class _ListEkmConnections(
-        _BaseEkmServiceRestTransport._BaseListEkmConnections, EkmServiceRestStub
-    ):
+    class _ListEkmConnections(_BaseEkmServiceRestTransport._BaseListEkmConnections, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.ListEkmConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1258,28 +1055,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseListEkmConnections._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseListEkmConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_ekm_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseListEkmConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_ekm_connections(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseListEkmConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseListEkmConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseListEkmConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1303,12 +1088,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._ListEkmConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1324,16 +1104,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_list_ekm_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_ekm_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_ekm_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ekm_service.ListEkmConnectionsResponse.to_json(
-                        response
-                    )
+                    response_payload = ekm_service.ListEkmConnectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1352,22 +1126,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEkmConfig(
-        _BaseEkmServiceRestTransport._BaseUpdateEkmConfig, EkmServiceRestStub
-    ):
+    class _UpdateEkmConfig(_BaseEkmServiceRestTransport._BaseUpdateEkmConfig, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.UpdateEkmConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1418,32 +1182,18 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_ekm_config(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_ekm_config(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1467,13 +1217,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._UpdateEkmConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1489,12 +1233,8 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_update_ekm_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_ekm_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_ekm_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ekm_service.EkmConfig.to_json(response)
                 except:
@@ -1515,22 +1255,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEkmConnection(
-        _BaseEkmServiceRestTransport._BaseUpdateEkmConnection, EkmServiceRestStub
-    ):
+    class _UpdateEkmConnection(_BaseEkmServiceRestTransport._BaseUpdateEkmConnection, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.UpdateEkmConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1583,32 +1313,18 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_ekm_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_ekm_connection(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1632,13 +1348,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._UpdateEkmConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1654,12 +1364,8 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_update_ekm_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_ekm_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_ekm_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ekm_service.EkmConnection.to_json(response)
                 except:
@@ -1680,22 +1386,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 )
             return resp
 
-    class _VerifyConnectivity(
-        _BaseEkmServiceRestTransport._BaseVerifyConnectivity, EkmServiceRestStub
-    ):
+    class _VerifyConnectivity(_BaseEkmServiceRestTransport._BaseVerifyConnectivity, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.VerifyConnectivity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1737,28 +1433,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_http_options()
 
-            request, metadata = self._interceptor.pre_verify_connectivity(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_verify_connectivity(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1782,12 +1466,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._VerifyConnectivity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1803,16 +1482,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             resp = self._interceptor.post_verify_connectivity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_verify_connectivity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_verify_connectivity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ekm_service.VerifyConnectivityResponse.to_json(
-                        response
-                    )
+                    response_payload = ekm_service.VerifyConnectivityResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1832,61 +1505,43 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             return resp
 
     @property
-    def create_ekm_connection(
-        self,
-    ) -> Callable[[ekm_service.CreateEkmConnectionRequest], ekm_service.EkmConnection]:
+    def create_ekm_connection(self) -> Callable[[ekm_service.CreateEkmConnectionRequest], ekm_service.EkmConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEkmConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_ekm_config(
-        self,
-    ) -> Callable[[ekm_service.GetEkmConfigRequest], ekm_service.EkmConfig]:
+    def get_ekm_config(self) -> Callable[[ekm_service.GetEkmConfigRequest], ekm_service.EkmConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEkmConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_ekm_connection(
-        self,
-    ) -> Callable[[ekm_service.GetEkmConnectionRequest], ekm_service.EkmConnection]:
+    def get_ekm_connection(self) -> Callable[[ekm_service.GetEkmConnectionRequest], ekm_service.EkmConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEkmConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_ekm_connections(
-        self,
-    ) -> Callable[
-        [ekm_service.ListEkmConnectionsRequest], ekm_service.ListEkmConnectionsResponse
-    ]:
+    def list_ekm_connections(self) -> Callable[[ekm_service.ListEkmConnectionsRequest], ekm_service.ListEkmConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEkmConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_ekm_config(
-        self,
-    ) -> Callable[[ekm_service.UpdateEkmConfigRequest], ekm_service.EkmConfig]:
+    def update_ekm_config(self) -> Callable[[ekm_service.UpdateEkmConfigRequest], ekm_service.EkmConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEkmConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_ekm_connection(
-        self,
-    ) -> Callable[[ekm_service.UpdateEkmConnectionRequest], ekm_service.EkmConnection]:
+    def update_ekm_connection(self) -> Callable[[ekm_service.UpdateEkmConnectionRequest], ekm_service.EkmConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEkmConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def verify_connectivity(
-        self,
-    ) -> Callable[
-        [ekm_service.VerifyConnectivityRequest], ekm_service.VerifyConnectivityResponse
-    ]:
+    def verify_connectivity(self) -> Callable[[ekm_service.VerifyConnectivityRequest], ekm_service.VerifyConnectivityResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._VerifyConnectivity(self._session, self._host, self._interceptor)  # type: ignore
@@ -1895,22 +1550,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseEkmServiceRestTransport._BaseGetLocation, EkmServiceRestStub
-    ):
+    class _GetLocation(_BaseEkmServiceRestTransport._BaseGetLocation, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1948,30 +1593,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseEkmServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEkmServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEkmServiceRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1995,12 +1626,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2012,9 +1638,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2039,22 +1663,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseEkmServiceRestTransport._BaseListLocations, EkmServiceRestStub
-    ):
+    class _ListLocations(_BaseEkmServiceRestTransport._BaseListLocations, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2092,30 +1706,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseEkmServiceRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEkmServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEkmServiceRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2139,12 +1739,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2156,9 +1751,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2183,22 +1776,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseEkmServiceRestTransport._BaseGetIamPolicy, EkmServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseEkmServiceRestTransport._BaseGetIamPolicy, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2236,30 +1819,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2283,12 +1852,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2300,9 +1864,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2327,22 +1889,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseEkmServiceRestTransport._BaseSetIamPolicy, EkmServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseEkmServiceRestTransport._BaseSetIamPolicy, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2381,36 +1933,18 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2434,13 +1968,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2452,9 +1980,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2479,22 +2005,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseEkmServiceRestTransport._BaseTestIamPermissions, EkmServiceRestStub
-    ):
+    class _TestIamPermissions(_BaseEkmServiceRestTransport._BaseTestIamPermissions, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2533,32 +2049,18 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2582,13 +2084,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2600,9 +2096,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2627,22 +2121,12 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEkmServiceRestTransport._BaseGetOperation, EkmServiceRestStub
-    ):
+    class _GetOperation(_BaseEkmServiceRestTransport._BaseGetOperation, EkmServiceRestStub):
         def __hash__(self):
             return hash("EkmServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2680,30 +2164,16 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEkmServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEkmServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseEkmServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEkmServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEkmServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEkmServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2727,12 +2197,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
 
             # Send the request
             response = EkmServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2744,9 +2209,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

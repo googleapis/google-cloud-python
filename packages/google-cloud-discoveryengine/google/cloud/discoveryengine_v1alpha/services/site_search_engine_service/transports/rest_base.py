@@ -22,10 +22,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
+from google.cloud.discoveryengine_v1alpha.types import site_search_engine, site_search_engine_service
 
 from .base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
 
@@ -76,20 +73,14 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseBatchCreateTargetSites:
@@ -100,11 +91,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -124,9 +111,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.BatchCreateTargetSitesRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.BatchCreateTargetSitesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -134,9 +119,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -147,11 +130,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -164,11 +143,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -183,9 +158,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.BatchVerifyTargetSitesRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.BatchVerifyTargetSitesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -193,9 +166,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -206,11 +177,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -223,11 +190,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -255,9 +218,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -268,11 +229,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -285,11 +242,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -319,11 +272,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -336,11 +285,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -360,9 +305,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.DisableAdvancedSiteSearchRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.DisableAdvancedSiteSearchRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -370,9 +313,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -383,11 +324,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -400,11 +337,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -424,9 +357,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.EnableAdvancedSiteSearchRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.EnableAdvancedSiteSearchRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -434,9 +365,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -447,11 +376,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -464,11 +389,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -482,11 +403,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                site_search_engine_service.FetchDomainVerificationStatusRequest.pb(
-                    request
-                )
-            )
+            pb_request = site_search_engine_service.FetchDomainVerificationStatusRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -498,11 +415,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -515,11 +428,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -537,9 +446,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.GetSiteSearchEngineRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.GetSiteSearchEngineRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -551,11 +458,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -568,11 +471,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -602,11 +501,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -619,11 +514,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -637,9 +528,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.GetUriPatternDocumentDataRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.GetUriPatternDocumentDataRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -651,11 +540,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -668,11 +553,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -702,11 +583,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -719,11 +596,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -751,9 +624,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -764,11 +635,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -781,11 +648,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -800,9 +663,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = site_search_engine_service.SetUriPatternDocumentDataRequest.pb(
-                request
-            )
+            pb_request = site_search_engine_service.SetUriPatternDocumentDataRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -810,9 +671,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -823,11 +682,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -840,11 +695,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -872,9 +723,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -885,11 +734,7 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

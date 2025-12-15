@@ -87,13 +87,8 @@ class TextSuggestionsServiceRestInterceptor:
     """
 
     def pre_generate_product_text_suggestions(
-        self,
-        request: textsuggestions.GenerateProductTextSuggestionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        textsuggestions.GenerateProductTextSuggestionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: textsuggestions.GenerateProductTextSuggestionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[textsuggestions.GenerateProductTextSuggestionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_product_text_suggestions
 
         Override in a subclass to manipulate the request or metadata
@@ -117,13 +112,8 @@ class TextSuggestionsServiceRestInterceptor:
         return response
 
     def post_generate_product_text_suggestions_with_metadata(
-        self,
-        response: textsuggestions.GenerateProductTextSuggestionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        textsuggestions.GenerateProductTextSuggestionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: textsuggestions.GenerateProductTextSuggestionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[textsuggestions.GenerateProductTextSuggestionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_product_text_suggestions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -220,33 +210,20 @@ class TextSuggestionsServiceRestTransport(_BaseTextSuggestionsServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TextSuggestionsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _GenerateProductTextSuggestions(
-        _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions,
-        TextSuggestionsServiceRestStub,
+        _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions, TextSuggestionsServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "TextSuggestionsServiceRestTransport.GenerateProductTextSuggestions"
-            )
+            return hash("TextSuggestionsServiceRestTransport.GenerateProductTextSuggestions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -290,32 +267,20 @@ class TextSuggestionsServiceRestTransport(_BaseTextSuggestionsServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_http_options()
-            )
+            http_options = _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_product_text_suggestions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_generate_product_text_suggestions(request, metadata)
             transcoded_request = _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTextSuggestionsServiceRestTransport._BaseGenerateProductTextSuggestions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -339,13 +304,7 @@ class TextSuggestionsServiceRestTransport(_BaseTextSuggestionsServiceRestTranspo
 
             # Send the request
             response = TextSuggestionsServiceRestTransport._GenerateProductTextSuggestions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -361,21 +320,10 @@ class TextSuggestionsServiceRestTransport(_BaseTextSuggestionsServiceRestTranspo
 
             resp = self._interceptor.post_generate_product_text_suggestions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_product_text_suggestions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_product_text_suggestions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        textsuggestions.GenerateProductTextSuggestionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = textsuggestions.GenerateProductTextSuggestionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -397,10 +345,7 @@ class TextSuggestionsServiceRestTransport(_BaseTextSuggestionsServiceRestTranspo
     @property
     def generate_product_text_suggestions(
         self,
-    ) -> Callable[
-        [textsuggestions.GenerateProductTextSuggestionsRequest],
-        textsuggestions.GenerateProductTextSuggestionsResponse,
-    ]:
+    ) -> Callable[[textsuggestions.GenerateProductTextSuggestionsRequest], textsuggestions.GenerateProductTextSuggestionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateProductTextSuggestions(self._session, self._host, self._interceptor)  # type: ignore

@@ -120,12 +120,8 @@ class DomainMappingsRestInterceptor:
     """
 
     def pre_create_domain_mapping(
-        self,
-        request: appengine.CreateDomainMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.CreateDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.CreateDomainMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.CreateDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +129,7 @@ class DomainMappingsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_domain_mapping(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_domain_mapping(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_domain_mapping
 
         DEPRECATED. Please use the `post_create_domain_mapping_with_metadata`
@@ -149,9 +143,7 @@ class DomainMappingsRestInterceptor:
         return response
 
     def post_create_domain_mapping_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_domain_mapping
 
@@ -168,12 +160,8 @@ class DomainMappingsRestInterceptor:
         return response, metadata
 
     def pre_delete_domain_mapping(
-        self,
-        request: appengine.DeleteDomainMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.DeleteDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.DeleteDomainMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.DeleteDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +169,7 @@ class DomainMappingsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_domain_mapping(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_domain_mapping(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_domain_mapping
 
         DEPRECATED. Please use the `post_delete_domain_mapping_with_metadata`
@@ -197,9 +183,7 @@ class DomainMappingsRestInterceptor:
         return response
 
     def post_delete_domain_mapping_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_domain_mapping
 
@@ -216,12 +200,8 @@ class DomainMappingsRestInterceptor:
         return response, metadata
 
     def pre_get_domain_mapping(
-        self,
-        request: appengine.GetDomainMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.GetDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.GetDomainMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.GetDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -229,9 +209,7 @@ class DomainMappingsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_domain_mapping(
-        self, response: domain_mapping.DomainMapping
-    ) -> domain_mapping.DomainMapping:
+    def post_get_domain_mapping(self, response: domain_mapping.DomainMapping) -> domain_mapping.DomainMapping:
         """Post-rpc interceptor for get_domain_mapping
 
         DEPRECATED. Please use the `post_get_domain_mapping_with_metadata`
@@ -245,9 +223,7 @@ class DomainMappingsRestInterceptor:
         return response
 
     def post_get_domain_mapping_with_metadata(
-        self,
-        response: domain_mapping.DomainMapping,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: domain_mapping.DomainMapping, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domain_mapping.DomainMapping, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_domain_mapping
 
@@ -264,12 +240,8 @@ class DomainMappingsRestInterceptor:
         return response, metadata
 
     def pre_list_domain_mappings(
-        self,
-        request: appengine.ListDomainMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.ListDomainMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.ListDomainMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.ListDomainMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_domain_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +249,7 @@ class DomainMappingsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_domain_mappings(
-        self, response: appengine.ListDomainMappingsResponse
-    ) -> appengine.ListDomainMappingsResponse:
+    def post_list_domain_mappings(self, response: appengine.ListDomainMappingsResponse) -> appengine.ListDomainMappingsResponse:
         """Post-rpc interceptor for list_domain_mappings
 
         DEPRECATED. Please use the `post_list_domain_mappings_with_metadata`
@@ -293,12 +263,8 @@ class DomainMappingsRestInterceptor:
         return response
 
     def post_list_domain_mappings_with_metadata(
-        self,
-        response: appengine.ListDomainMappingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.ListDomainMappingsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: appengine.ListDomainMappingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.ListDomainMappingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_domain_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -314,12 +280,8 @@ class DomainMappingsRestInterceptor:
         return response, metadata
 
     def pre_update_domain_mapping(
-        self,
-        request: appengine.UpdateDomainMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.UpdateDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.UpdateDomainMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.UpdateDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -327,9 +289,7 @@ class DomainMappingsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_domain_mapping(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_domain_mapping(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_domain_mapping
 
         DEPRECATED. Please use the `post_update_domain_mapping_with_metadata`
@@ -343,9 +303,7 @@ class DomainMappingsRestInterceptor:
         return response
 
     def post_update_domain_mapping_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_domain_mapping
 
@@ -441,9 +399,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -483,30 +439,17 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDomainMapping(
-        _BaseDomainMappingsRestTransport._BaseCreateDomainMapping,
-        DomainMappingsRestStub,
-    ):
+    class _CreateDomainMapping(_BaseDomainMappingsRestTransport._BaseCreateDomainMapping, DomainMappingsRestStub):
         def __hash__(self):
             return hash("DomainMappingsRestTransport.CreateDomainMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -550,32 +493,18 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_http_options()
-            )
+            http_options = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_domain_mapping(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_domain_mapping(request, metadata)
+            transcoded_request = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -599,13 +528,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             # Send the request
             response = DomainMappingsRestTransport._CreateDomainMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -619,12 +542,8 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             resp = self._interceptor.post_create_domain_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_domain_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_domain_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -645,23 +564,12 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 )
             return resp
 
-    class _DeleteDomainMapping(
-        _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping,
-        DomainMappingsRestStub,
-    ):
+    class _DeleteDomainMapping(_BaseDomainMappingsRestTransport._BaseDeleteDomainMapping, DomainMappingsRestStub):
         def __hash__(self):
             return hash("DomainMappingsRestTransport.DeleteDomainMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -704,28 +612,16 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_http_options()
-            )
+            http_options = _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_domain_mapping(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_domain_mapping(request, metadata)
+            transcoded_request = _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -749,12 +645,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             # Send the request
             response = DomainMappingsRestTransport._DeleteDomainMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -768,12 +659,8 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             resp = self._interceptor.post_delete_domain_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_domain_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_domain_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -794,22 +681,12 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 )
             return resp
 
-    class _GetDomainMapping(
-        _BaseDomainMappingsRestTransport._BaseGetDomainMapping, DomainMappingsRestStub
-    ):
+    class _GetDomainMapping(_BaseDomainMappingsRestTransport._BaseGetDomainMapping, DomainMappingsRestStub):
         def __hash__(self):
             return hash("DomainMappingsRestTransport.GetDomainMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -850,28 +727,16 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_http_options()
-            )
+            http_options = _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_domain_mapping(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_domain_mapping(request, metadata)
+            transcoded_request = _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -895,12 +760,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             # Send the request
             response = DomainMappingsRestTransport._GetDomainMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -916,12 +776,8 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             resp = self._interceptor.post_get_domain_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_domain_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_domain_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = domain_mapping.DomainMapping.to_json(response)
                 except:
@@ -942,22 +798,12 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 )
             return resp
 
-    class _ListDomainMappings(
-        _BaseDomainMappingsRestTransport._BaseListDomainMappings, DomainMappingsRestStub
-    ):
+    class _ListDomainMappings(_BaseDomainMappingsRestTransport._BaseListDomainMappings, DomainMappingsRestStub):
         def __hash__(self):
             return hash("DomainMappingsRestTransport.ListDomainMappings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -999,28 +845,16 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_http_options()
-            )
+            http_options = _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_domain_mappings(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_domain_mappings(request, metadata)
+            transcoded_request = _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1044,12 +878,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             # Send the request
             response = DomainMappingsRestTransport._ListDomainMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1065,16 +894,10 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             resp = self._interceptor.post_list_domain_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_domain_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_domain_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = appengine.ListDomainMappingsResponse.to_json(
-                        response
-                    )
+                    response_payload = appengine.ListDomainMappingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1093,23 +916,12 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 )
             return resp
 
-    class _UpdateDomainMapping(
-        _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping,
-        DomainMappingsRestStub,
-    ):
+    class _UpdateDomainMapping(_BaseDomainMappingsRestTransport._BaseUpdateDomainMapping, DomainMappingsRestStub):
         def __hash__(self):
             return hash("DomainMappingsRestTransport.UpdateDomainMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1153,32 +965,18 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_http_options()
-            )
+            http_options = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_domain_mapping(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_domain_mapping(request, metadata)
+            transcoded_request = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1202,13 +1000,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             # Send the request
             response = DomainMappingsRestTransport._UpdateDomainMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1222,12 +1014,8 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
 
             resp = self._interceptor.post_update_domain_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_domain_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_domain_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1249,43 +1037,31 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             return resp
 
     @property
-    def create_domain_mapping(
-        self,
-    ) -> Callable[[appengine.CreateDomainMappingRequest], operations_pb2.Operation]:
+    def create_domain_mapping(self) -> Callable[[appengine.CreateDomainMappingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDomainMapping(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_domain_mapping(
-        self,
-    ) -> Callable[[appengine.DeleteDomainMappingRequest], operations_pb2.Operation]:
+    def delete_domain_mapping(self) -> Callable[[appengine.DeleteDomainMappingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDomainMapping(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_domain_mapping(
-        self,
-    ) -> Callable[[appengine.GetDomainMappingRequest], domain_mapping.DomainMapping]:
+    def get_domain_mapping(self) -> Callable[[appengine.GetDomainMappingRequest], domain_mapping.DomainMapping]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDomainMapping(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_domain_mappings(
-        self,
-    ) -> Callable[
-        [appengine.ListDomainMappingsRequest], appengine.ListDomainMappingsResponse
-    ]:
+    def list_domain_mappings(self) -> Callable[[appengine.ListDomainMappingsRequest], appengine.ListDomainMappingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDomainMappings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_domain_mapping(
-        self,
-    ) -> Callable[[appengine.UpdateDomainMappingRequest], operations_pb2.Operation]:
+    def update_domain_mapping(self) -> Callable[[appengine.UpdateDomainMappingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDomainMapping(self._session, self._host, self._interceptor)  # type: ignore

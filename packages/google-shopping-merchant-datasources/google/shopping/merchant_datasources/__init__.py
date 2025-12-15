@@ -18,18 +18,10 @@ from google.shopping.merchant_datasources import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_datasources_v1.services.data_sources_service.async_client import (
-    DataSourcesServiceAsyncClient,
-)
-from google.shopping.merchant_datasources_v1.services.data_sources_service.client import (
-    DataSourcesServiceClient,
-)
-from google.shopping.merchant_datasources_v1.services.file_uploads_service.async_client import (
-    FileUploadsServiceAsyncClient,
-)
-from google.shopping.merchant_datasources_v1.services.file_uploads_service.client import (
-    FileUploadsServiceClient,
-)
+from google.shopping.merchant_datasources_v1.services.data_sources_service.async_client import DataSourcesServiceAsyncClient
+from google.shopping.merchant_datasources_v1.services.data_sources_service.client import DataSourcesServiceClient
+from google.shopping.merchant_datasources_v1.services.file_uploads_service.async_client import FileUploadsServiceAsyncClient
+from google.shopping.merchant_datasources_v1.services.file_uploads_service.client import FileUploadsServiceClient
 from google.shopping.merchant_datasources_v1.types.datasources import (
     CreateDataSourceRequest,
     DataSource,
@@ -51,10 +43,7 @@ from google.shopping.merchant_datasources_v1.types.datasourcetypes import (
     SupplementalProductDataSource,
 )
 from google.shopping.merchant_datasources_v1.types.fileinputs import FileInput
-from google.shopping.merchant_datasources_v1.types.fileuploads import (
-    FileUpload,
-    GetFileUploadRequest,
-)
+from google.shopping.merchant_datasources_v1.types.fileuploads import FileUpload, GetFileUploadRequest
 
 __all__ = (
     "DataSourcesServiceClient",

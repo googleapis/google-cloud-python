@@ -320,19 +320,15 @@ class DataStoreConnectionSignals(proto.Message):
             HIGH = 5
             VERY_HIGH = 6
 
-        decision: "DataStoreConnectionSignals.GroundingSignals.GroundingDecision" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="DataStoreConnectionSignals.GroundingSignals.GroundingDecision",
-            )
+        decision: "DataStoreConnectionSignals.GroundingSignals.GroundingDecision" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DataStoreConnectionSignals.GroundingSignals.GroundingDecision",
         )
-        score: "DataStoreConnectionSignals.GroundingSignals.GroundingScoreBucket" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="DataStoreConnectionSignals.GroundingSignals.GroundingScoreBucket",
-            )
+        score: "DataStoreConnectionSignals.GroundingSignals.GroundingScoreBucket" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DataStoreConnectionSignals.GroundingSignals.GroundingScoreBucket",
         )
 
     class SafetySignals(proto.Message):
@@ -383,12 +379,10 @@ class DataStoreConnectionSignals(proto.Message):
             BANNED_PHRASE_MATCH_QUERY = 2
             BANNED_PHRASE_MATCH_RESPONSE = 3
 
-        decision: "DataStoreConnectionSignals.SafetySignals.SafetyDecision" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="DataStoreConnectionSignals.SafetySignals.SafetyDecision",
-            )
+        decision: "DataStoreConnectionSignals.SafetySignals.SafetyDecision" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DataStoreConnectionSignals.SafetySignals.SafetyDecision",
         )
         banned_phrase_match: "DataStoreConnectionSignals.SafetySignals.BannedPhraseMatch" = proto.Field(
             proto.ENUM,
@@ -414,12 +408,10 @@ class DataStoreConnectionSignals(proto.Message):
         number=3,
         message=SearchSnippet,
     )
-    answer_generation_model_call_signals: AnswerGenerationModelCallSignals = (
-        proto.Field(
-            proto.MESSAGE,
-            number=4,
-            message=AnswerGenerationModelCallSignals,
-        )
+    answer_generation_model_call_signals: AnswerGenerationModelCallSignals = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=AnswerGenerationModelCallSignals,
     )
     answer: str = proto.Field(
         proto.STRING,

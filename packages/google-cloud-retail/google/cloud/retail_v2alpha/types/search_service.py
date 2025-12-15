@@ -941,9 +941,7 @@ class SearchRequest(proto.Message):
                 number=2,
             )
 
-        condition_boost_specs: MutableSequence[
-            "SearchRequest.BoostSpec.ConditionBoostSpec"
-        ] = proto.RepeatedField(
+        condition_boost_specs: MutableSequence["SearchRequest.BoostSpec.ConditionBoostSpec"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.BoostSpec.ConditionBoostSpec",
@@ -1139,9 +1137,7 @@ class SearchRequest(proto.Message):
                         which is a attribute key-value.
                 """
 
-                product_attribute_values: MutableSequence[
-                    "ProductAttributeValue"
-                ] = proto.RepeatedField(
+                product_attribute_values: MutableSequence["ProductAttributeValue"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="ProductAttributeValue",
@@ -1534,9 +1530,7 @@ class SearchResponse(proto.Message):
             proto.INT32,
             number=3,
         )
-        matching_variant_fields: MutableMapping[
-            str, field_mask_pb2.FieldMask
-        ] = proto.MapField(
+        matching_variant_fields: MutableMapping[str, field_mask_pb2.FieldMask] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=4,
@@ -1637,9 +1631,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SearchResponse.Facet.FacetValue",
@@ -1753,9 +1745,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=2,
         )
-        additional_filters: MutableSequence[
-            "SearchResponse.ConversationalSearchResult.AdditionalFilter"
-        ] = proto.RepeatedField(
+        additional_filters: MutableSequence["SearchResponse.ConversationalSearchResult.AdditionalFilter"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="SearchResponse.ConversationalSearchResult.AdditionalFilter",
@@ -1764,9 +1754,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=4,
         )
-        suggested_answers: MutableSequence[
-            "SearchResponse.ConversationalSearchResult.SuggestedAnswer"
-        ] = proto.RepeatedField(
+        suggested_answers: MutableSequence["SearchResponse.ConversationalSearchResult.SuggestedAnswer"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="SearchResponse.ConversationalSearchResult.SuggestedAnswer",
@@ -1841,9 +1829,7 @@ class SearchResponse(proto.Message):
         number=22,
         message=common.PinControlMetadata,
     )
-    invalid_condition_boost_specs: MutableSequence[
-        "SearchRequest.BoostSpec.ConditionBoostSpec"
-    ] = proto.RepeatedField(
+    invalid_condition_boost_specs: MutableSequence["SearchRequest.BoostSpec.ConditionBoostSpec"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="SearchRequest.BoostSpec.ConditionBoostSpec",

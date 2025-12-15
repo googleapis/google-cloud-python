@@ -123,12 +123,8 @@ class QuestionServiceRestInterceptor:
     """
 
     def pre_create_question(
-        self,
-        request: question_service.CreateQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        question_service.CreateQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: question_service.CreateQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[question_service.CreateQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_question
 
         Override in a subclass to manipulate the request or metadata
@@ -136,9 +132,7 @@ class QuestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_question(
-        self, response: gcd_question.Question
-    ) -> gcd_question.Question:
+    def post_create_question(self, response: gcd_question.Question) -> gcd_question.Question:
         """Post-rpc interceptor for create_question
 
         DEPRECATED. Please use the `post_create_question_with_metadata`
@@ -152,9 +146,7 @@ class QuestionServiceRestInterceptor:
         return response
 
     def post_create_question_with_metadata(
-        self,
-        response: gcd_question.Question,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_question.Question, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_question.Question, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_question
 
@@ -171,12 +163,8 @@ class QuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_execute_question(
-        self,
-        request: question_service.ExecuteQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        question_service.ExecuteQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: question_service.ExecuteQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[question_service.ExecuteQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_question
 
         Override in a subclass to manipulate the request or metadata
@@ -198,9 +186,7 @@ class QuestionServiceRestInterceptor:
         return response
 
     def post_execute_question_with_metadata(
-        self,
-        response: question.Question,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: question.Question, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[question.Question, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for execute_question
 
@@ -217,12 +203,8 @@ class QuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_get_question(
-        self,
-        request: question_service.GetQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        question_service.GetQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: question_service.GetQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[question_service.GetQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_question
 
         Override in a subclass to manipulate the request or metadata
@@ -244,9 +226,7 @@ class QuestionServiceRestInterceptor:
         return response
 
     def post_get_question_with_metadata(
-        self,
-        response: question.Question,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: question.Question, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[question.Question, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_question
 
@@ -263,12 +243,8 @@ class QuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_get_user_feedback(
-        self,
-        request: question_service.GetUserFeedbackRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        question_service.GetUserFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: question_service.GetUserFeedbackRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[question_service.GetUserFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_user_feedback
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +252,7 @@ class QuestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_user_feedback(
-        self, response: user_feedback.UserFeedback
-    ) -> user_feedback.UserFeedback:
+    def post_get_user_feedback(self, response: user_feedback.UserFeedback) -> user_feedback.UserFeedback:
         """Post-rpc interceptor for get_user_feedback
 
         DEPRECATED. Please use the `post_get_user_feedback_with_metadata`
@@ -292,9 +266,7 @@ class QuestionServiceRestInterceptor:
         return response
 
     def post_get_user_feedback_with_metadata(
-        self,
-        response: user_feedback.UserFeedback,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: user_feedback.UserFeedback, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[user_feedback.UserFeedback, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_user_feedback
 
@@ -311,13 +283,8 @@ class QuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_update_user_feedback(
-        self,
-        request: question_service.UpdateUserFeedbackRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        question_service.UpdateUserFeedbackRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: question_service.UpdateUserFeedbackRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[question_service.UpdateUserFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_user_feedback
 
         Override in a subclass to manipulate the request or metadata
@@ -325,9 +292,7 @@ class QuestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_user_feedback(
-        self, response: gcd_user_feedback.UserFeedback
-    ) -> gcd_user_feedback.UserFeedback:
+    def post_update_user_feedback(self, response: gcd_user_feedback.UserFeedback) -> gcd_user_feedback.UserFeedback:
         """Post-rpc interceptor for update_user_feedback
 
         DEPRECATED. Please use the `post_update_user_feedback_with_metadata`
@@ -341,9 +306,7 @@ class QuestionServiceRestInterceptor:
         return response
 
     def post_update_user_feedback_with_metadata(
-        self,
-        response: gcd_user_feedback.UserFeedback,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_user_feedback.UserFeedback, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_user_feedback.UserFeedback, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_user_feedback
 
@@ -459,30 +422,18 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or QuestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateQuestion(
-        _BaseQuestionServiceRestTransport._BaseCreateQuestion, QuestionServiceRestStub
-    ):
+    class _CreateQuestion(_BaseQuestionServiceRestTransport._BaseCreateQuestion, QuestionServiceRestStub):
         def __hash__(self):
             return hash("QuestionServiceRestTransport.CreateQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -528,30 +479,18 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_question(request, metadata)
-            transcoded_request = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_transcoded_request(http_options, request)
 
-            body = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -575,13 +514,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             # Send the request
             response = QuestionServiceRestTransport._CreateQuestion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -597,12 +530,8 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             resp = self._interceptor.post_create_question(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_question_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_question_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_question.Question.to_json(response)
                 except:
@@ -623,22 +552,12 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 )
             return resp
 
-    class _ExecuteQuestion(
-        _BaseQuestionServiceRestTransport._BaseExecuteQuestion, QuestionServiceRestStub
-    ):
+    class _ExecuteQuestion(_BaseQuestionServiceRestTransport._BaseExecuteQuestion, QuestionServiceRestStub):
         def __hash__(self):
             return hash("QuestionServiceRestTransport.ExecuteQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -683,32 +602,18 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_http_options()
 
-            request, metadata = self._interceptor.pre_execute_question(
-                request, metadata
-            )
-            transcoded_request = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_execute_question(request, metadata)
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_transcoded_request(http_options, request)
 
-            body = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -732,13 +637,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             # Send the request
             response = QuestionServiceRestTransport._ExecuteQuestion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -754,12 +653,8 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             resp = self._interceptor.post_execute_question(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_execute_question_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_execute_question_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = question.Question.to_json(response)
                 except:
@@ -780,22 +675,12 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 )
             return resp
 
-    class _GetQuestion(
-        _BaseQuestionServiceRestTransport._BaseGetQuestion, QuestionServiceRestStub
-    ):
+    class _GetQuestion(_BaseQuestionServiceRestTransport._BaseGetQuestion, QuestionServiceRestStub):
         def __hash__(self):
             return hash("QuestionServiceRestTransport.GetQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -840,26 +725,16 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseGetQuestion._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_question(request, metadata)
-            transcoded_request = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -883,12 +758,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             # Send the request
             response = QuestionServiceRestTransport._GetQuestion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -904,12 +774,8 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             resp = self._interceptor.post_get_question(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_question_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_question_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = question.Question.to_json(response)
                 except:
@@ -930,22 +796,12 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 )
             return resp
 
-    class _GetUserFeedback(
-        _BaseQuestionServiceRestTransport._BaseGetUserFeedback, QuestionServiceRestStub
-    ):
+    class _GetUserFeedback(_BaseQuestionServiceRestTransport._BaseGetUserFeedback, QuestionServiceRestStub):
         def __hash__(self):
             return hash("QuestionServiceRestTransport.GetUserFeedback")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -984,28 +840,16 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                     Feedback provided by a user.
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_user_feedback(
-                request, metadata
-            )
-            transcoded_request = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_user_feedback(request, metadata)
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1029,12 +873,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             # Send the request
             response = QuestionServiceRestTransport._GetUserFeedback._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1050,12 +889,8 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             resp = self._interceptor.post_get_user_feedback(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_user_feedback_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_user_feedback_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = user_feedback.UserFeedback.to_json(response)
                 except:
@@ -1076,23 +911,12 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 )
             return resp
 
-    class _UpdateUserFeedback(
-        _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback,
-        QuestionServiceRestStub,
-    ):
+    class _UpdateUserFeedback(_BaseQuestionServiceRestTransport._BaseUpdateUserFeedback, QuestionServiceRestStub):
         def __hash__(self):
             return hash("QuestionServiceRestTransport.UpdateUserFeedback")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1132,32 +956,18 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                     Feedback provided by a user.
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_user_feedback(
-                request, metadata
-            )
-            transcoded_request = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_user_feedback(request, metadata)
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_transcoded_request(http_options, request)
 
-            body = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1181,13 +991,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             # Send the request
             response = QuestionServiceRestTransport._UpdateUserFeedback._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1203,12 +1007,8 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             resp = self._interceptor.post_update_user_feedback(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_user_feedback_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_user_feedback_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_user_feedback.UserFeedback.to_json(response)
                 except:
@@ -1230,45 +1030,31 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             return resp
 
     @property
-    def create_question(
-        self,
-    ) -> Callable[[question_service.CreateQuestionRequest], gcd_question.Question]:
+    def create_question(self) -> Callable[[question_service.CreateQuestionRequest], gcd_question.Question]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def execute_question(
-        self,
-    ) -> Callable[[question_service.ExecuteQuestionRequest], question.Question]:
+    def execute_question(self) -> Callable[[question_service.ExecuteQuestionRequest], question.Question]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExecuteQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_question(
-        self,
-    ) -> Callable[[question_service.GetQuestionRequest], question.Question]:
+    def get_question(self) -> Callable[[question_service.GetQuestionRequest], question.Question]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_user_feedback(
-        self,
-    ) -> Callable[
-        [question_service.GetUserFeedbackRequest], user_feedback.UserFeedback
-    ]:
+    def get_user_feedback(self) -> Callable[[question_service.GetUserFeedbackRequest], user_feedback.UserFeedback]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUserFeedback(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_user_feedback(
-        self,
-    ) -> Callable[
-        [question_service.UpdateUserFeedbackRequest], gcd_user_feedback.UserFeedback
-    ]:
+    def update_user_feedback(self) -> Callable[[question_service.UpdateUserFeedbackRequest], gcd_user_feedback.UserFeedback]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateUserFeedback(self._session, self._host, self._interceptor)  # type: ignore

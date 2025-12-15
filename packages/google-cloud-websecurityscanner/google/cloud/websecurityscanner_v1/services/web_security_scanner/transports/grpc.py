@@ -29,12 +29,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.websecurityscanner_v1.types import (
-    finding,
-    scan_config,
-    scan_run,
-    web_security_scanner,
-)
+from google.cloud.websecurityscanner_v1.types import finding, scan_config, scan_run, web_security_scanner
 
 from .base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
 
@@ -50,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -225,18 +211,14 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -270,9 +252,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -331,11 +311,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._grpc_channel
 
     @property
-    def create_scan_config(
-        self,
-    ) -> Callable[
-        [web_security_scanner.CreateScanConfigRequest], scan_config.ScanConfig
-    ]:
+    def create_scan_config(self) -> Callable[[web_security_scanner.CreateScanConfigRequest], scan_config.ScanConfig]:
         r"""Return a callable for the create scan config method over gRPC.
 
         Creates a new ScanConfig.
@@ -359,9 +335,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["create_scan_config"]
 
     @property
-    def delete_scan_config(
-        self,
-    ) -> Callable[[web_security_scanner.DeleteScanConfigRequest], empty_pb2.Empty]:
+    def delete_scan_config(self) -> Callable[[web_security_scanner.DeleteScanConfigRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete scan config method over gRPC.
 
         Deletes an existing ScanConfig and its child
@@ -386,9 +360,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["delete_scan_config"]
 
     @property
-    def get_scan_config(
-        self,
-    ) -> Callable[[web_security_scanner.GetScanConfigRequest], scan_config.ScanConfig]:
+    def get_scan_config(self) -> Callable[[web_security_scanner.GetScanConfigRequest], scan_config.ScanConfig]:
         r"""Return a callable for the get scan config method over gRPC.
 
         Gets a ScanConfig.
@@ -412,12 +384,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["get_scan_config"]
 
     @property
-    def list_scan_configs(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListScanConfigsRequest],
-        web_security_scanner.ListScanConfigsResponse,
-    ]:
+    def list_scan_configs(self) -> Callable[[web_security_scanner.ListScanConfigsRequest], web_security_scanner.ListScanConfigsResponse]:
         r"""Return a callable for the list scan configs method over gRPC.
 
         Lists ScanConfigs under a given project.
@@ -441,11 +408,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["list_scan_configs"]
 
     @property
-    def update_scan_config(
-        self,
-    ) -> Callable[
-        [web_security_scanner.UpdateScanConfigRequest], scan_config.ScanConfig
-    ]:
+    def update_scan_config(self) -> Callable[[web_security_scanner.UpdateScanConfigRequest], scan_config.ScanConfig]:
         r"""Return a callable for the update scan config method over gRPC.
 
         Updates a ScanConfig. This method support partial
@@ -470,9 +433,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["update_scan_config"]
 
     @property
-    def start_scan_run(
-        self,
-    ) -> Callable[[web_security_scanner.StartScanRunRequest], scan_run.ScanRun]:
+    def start_scan_run(self) -> Callable[[web_security_scanner.StartScanRunRequest], scan_run.ScanRun]:
         r"""Return a callable for the start scan run method over gRPC.
 
         Start a ScanRun according to the given ScanConfig.
@@ -496,9 +457,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["start_scan_run"]
 
     @property
-    def get_scan_run(
-        self,
-    ) -> Callable[[web_security_scanner.GetScanRunRequest], scan_run.ScanRun]:
+    def get_scan_run(self) -> Callable[[web_security_scanner.GetScanRunRequest], scan_run.ScanRun]:
         r"""Return a callable for the get scan run method over gRPC.
 
         Gets a ScanRun.
@@ -522,12 +481,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["get_scan_run"]
 
     @property
-    def list_scan_runs(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListScanRunsRequest],
-        web_security_scanner.ListScanRunsResponse,
-    ]:
+    def list_scan_runs(self) -> Callable[[web_security_scanner.ListScanRunsRequest], web_security_scanner.ListScanRunsResponse]:
         r"""Return a callable for the list scan runs method over gRPC.
 
         Lists ScanRuns under a given ScanConfig, in
@@ -552,9 +506,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["list_scan_runs"]
 
     @property
-    def stop_scan_run(
-        self,
-    ) -> Callable[[web_security_scanner.StopScanRunRequest], scan_run.ScanRun]:
+    def stop_scan_run(self) -> Callable[[web_security_scanner.StopScanRunRequest], scan_run.ScanRun]:
         r"""Return a callable for the stop scan run method over gRPC.
 
         Stops a ScanRun. The stopped ScanRun is returned.
@@ -578,12 +530,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["stop_scan_run"]
 
     @property
-    def list_crawled_urls(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListCrawledUrlsRequest],
-        web_security_scanner.ListCrawledUrlsResponse,
-    ]:
+    def list_crawled_urls(self) -> Callable[[web_security_scanner.ListCrawledUrlsRequest], web_security_scanner.ListCrawledUrlsResponse]:
         r"""Return a callable for the list crawled urls method over gRPC.
 
         List CrawledUrls under a given ScanRun.
@@ -607,9 +554,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["list_crawled_urls"]
 
     @property
-    def get_finding(
-        self,
-    ) -> Callable[[web_security_scanner.GetFindingRequest], finding.Finding]:
+    def get_finding(self) -> Callable[[web_security_scanner.GetFindingRequest], finding.Finding]:
         r"""Return a callable for the get finding method over gRPC.
 
         Gets a Finding.
@@ -633,12 +578,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         return self._stubs["get_finding"]
 
     @property
-    def list_findings(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListFindingsRequest],
-        web_security_scanner.ListFindingsResponse,
-    ]:
+    def list_findings(self) -> Callable[[web_security_scanner.ListFindingsRequest], web_security_scanner.ListFindingsResponse]:
         r"""Return a callable for the list findings method over gRPC.
 
         List Findings under a given ScanRun.
@@ -664,10 +604,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
     @property
     def list_finding_type_stats(
         self,
-    ) -> Callable[
-        [web_security_scanner.ListFindingTypeStatsRequest],
-        web_security_scanner.ListFindingTypeStatsResponse,
-    ]:
+    ) -> Callable[[web_security_scanner.ListFindingTypeStatsRequest], web_security_scanner.ListFindingTypeStatsResponse]:
         r"""Return a callable for the list finding type stats method over gRPC.
 
         List all FindingTypeStats under a given ScanRun.

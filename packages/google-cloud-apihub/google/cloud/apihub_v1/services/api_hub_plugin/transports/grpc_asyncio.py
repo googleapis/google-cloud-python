@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -269,18 +258,14 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -316,9 +301,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -341,17 +324,13 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_plugin(
-        self,
-    ) -> Callable[[plugin_service.GetPluginRequest], Awaitable[plugin_service.Plugin]]:
+    def get_plugin(self) -> Callable[[plugin_service.GetPluginRequest], Awaitable[plugin_service.Plugin]]:
         r"""Return a callable for the get plugin method over gRPC.
 
         Get an API Hub plugin.
@@ -375,11 +354,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["get_plugin"]
 
     @property
-    def enable_plugin(
-        self,
-    ) -> Callable[
-        [plugin_service.EnablePluginRequest], Awaitable[plugin_service.Plugin]
-    ]:
+    def enable_plugin(self) -> Callable[[plugin_service.EnablePluginRequest], Awaitable[plugin_service.Plugin]]:
         r"""Return a callable for the enable plugin method over gRPC.
 
         Enables a plugin. The ``state`` of the plugin after enabling is
@@ -404,11 +379,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["enable_plugin"]
 
     @property
-    def disable_plugin(
-        self,
-    ) -> Callable[
-        [plugin_service.DisablePluginRequest], Awaitable[plugin_service.Plugin]
-    ]:
+    def disable_plugin(self) -> Callable[[plugin_service.DisablePluginRequest], Awaitable[plugin_service.Plugin]]:
         r"""Return a callable for the disable plugin method over gRPC.
 
         Disables a plugin. The ``state`` of the plugin after disabling
@@ -433,11 +404,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["disable_plugin"]
 
     @property
-    def create_plugin(
-        self,
-    ) -> Callable[
-        [plugin_service.CreatePluginRequest], Awaitable[plugin_service.Plugin]
-    ]:
+    def create_plugin(self) -> Callable[[plugin_service.CreatePluginRequest], Awaitable[plugin_service.Plugin]]:
         r"""Return a callable for the create plugin method over gRPC.
 
         Create an API Hub plugin resource in the API hub.
@@ -463,12 +430,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["create_plugin"]
 
     @property
-    def list_plugins(
-        self,
-    ) -> Callable[
-        [plugin_service.ListPluginsRequest],
-        Awaitable[plugin_service.ListPluginsResponse],
-    ]:
+    def list_plugins(self) -> Callable[[plugin_service.ListPluginsRequest], Awaitable[plugin_service.ListPluginsResponse]]:
         r"""Return a callable for the list plugins method over gRPC.
 
         List all the plugins in a given project and location.
@@ -492,11 +454,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["list_plugins"]
 
     @property
-    def delete_plugin(
-        self,
-    ) -> Callable[
-        [plugin_service.DeletePluginRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_plugin(self) -> Callable[[plugin_service.DeletePluginRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete plugin method over gRPC.
 
         Delete a Plugin in API hub.
@@ -522,12 +480,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["delete_plugin"]
 
     @property
-    def create_plugin_instance(
-        self,
-    ) -> Callable[
-        [plugin_service.CreatePluginInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_plugin_instance(self) -> Callable[[plugin_service.CreatePluginInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create plugin instance method over gRPC.
 
         Creates a Plugin instance in the API hub.
@@ -551,12 +504,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["create_plugin_instance"]
 
     @property
-    def execute_plugin_instance_action(
-        self,
-    ) -> Callable[
-        [plugin_service.ExecutePluginInstanceActionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def execute_plugin_instance_action(self) -> Callable[[plugin_service.ExecutePluginInstanceActionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the execute plugin instance action method over gRPC.
 
         Executes a plugin instance in the API hub.
@@ -572,9 +520,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "execute_plugin_instance_action" not in self._stubs:
-            self._stubs[
-                "execute_plugin_instance_action"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["execute_plugin_instance_action"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHubPlugin/ExecutePluginInstanceAction",
                 request_serializer=plugin_service.ExecutePluginInstanceActionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -582,12 +528,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["execute_plugin_instance_action"]
 
     @property
-    def get_plugin_instance(
-        self,
-    ) -> Callable[
-        [plugin_service.GetPluginInstanceRequest],
-        Awaitable[plugin_service.PluginInstance],
-    ]:
+    def get_plugin_instance(self) -> Callable[[plugin_service.GetPluginInstanceRequest], Awaitable[plugin_service.PluginInstance]]:
         r"""Return a callable for the get plugin instance method over gRPC.
 
         Get an API Hub plugin instance.
@@ -611,12 +552,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["get_plugin_instance"]
 
     @property
-    def list_plugin_instances(
-        self,
-    ) -> Callable[
-        [plugin_service.ListPluginInstancesRequest],
-        Awaitable[plugin_service.ListPluginInstancesResponse],
-    ]:
+    def list_plugin_instances(self) -> Callable[[plugin_service.ListPluginInstancesRequest], Awaitable[plugin_service.ListPluginInstancesResponse]]:
         r"""Return a callable for the list plugin instances method over gRPC.
 
         List all the plugins in a given project and location. ``-`` can
@@ -641,12 +577,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["list_plugin_instances"]
 
     @property
-    def enable_plugin_instance_action(
-        self,
-    ) -> Callable[
-        [plugin_service.EnablePluginInstanceActionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def enable_plugin_instance_action(self) -> Callable[[plugin_service.EnablePluginInstanceActionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the enable plugin instance action method over gRPC.
 
         Enables a plugin instance in the API hub.
@@ -662,9 +593,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_plugin_instance_action" not in self._stubs:
-            self._stubs[
-                "enable_plugin_instance_action"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["enable_plugin_instance_action"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHubPlugin/EnablePluginInstanceAction",
                 request_serializer=plugin_service.EnablePluginInstanceActionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -672,12 +601,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["enable_plugin_instance_action"]
 
     @property
-    def disable_plugin_instance_action(
-        self,
-    ) -> Callable[
-        [plugin_service.DisablePluginInstanceActionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def disable_plugin_instance_action(self) -> Callable[[plugin_service.DisablePluginInstanceActionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the disable plugin instance action method over gRPC.
 
         Disables a plugin instance in the API hub.
@@ -693,9 +617,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_plugin_instance_action" not in self._stubs:
-            self._stubs[
-                "disable_plugin_instance_action"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["disable_plugin_instance_action"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHubPlugin/DisablePluginInstanceAction",
                 request_serializer=plugin_service.DisablePluginInstanceActionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -703,12 +625,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["disable_plugin_instance_action"]
 
     @property
-    def update_plugin_instance(
-        self,
-    ) -> Callable[
-        [plugin_service.UpdatePluginInstanceRequest],
-        Awaitable[plugin_service.PluginInstance],
-    ]:
+    def update_plugin_instance(self) -> Callable[[plugin_service.UpdatePluginInstanceRequest], Awaitable[plugin_service.PluginInstance]]:
         r"""Return a callable for the update plugin instance method over gRPC.
 
         Updates a plugin instance in the API hub. The following fields
@@ -749,12 +666,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         return self._stubs["update_plugin_instance"]
 
     @property
-    def delete_plugin_instance(
-        self,
-    ) -> Callable[
-        [plugin_service.DeletePluginInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_plugin_instance(self) -> Callable[[plugin_service.DeletePluginInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete plugin instance method over gRPC.
 
         Deletes a plugin instance in the API hub.
@@ -957,9 +869,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -976,9 +886,7 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

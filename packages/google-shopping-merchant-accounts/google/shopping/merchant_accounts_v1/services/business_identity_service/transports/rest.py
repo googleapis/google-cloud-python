@@ -95,13 +95,8 @@ class BusinessIdentityServiceRestInterceptor:
     """
 
     def pre_get_business_identity(
-        self,
-        request: businessidentity.GetBusinessIdentityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        businessidentity.GetBusinessIdentityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: businessidentity.GetBusinessIdentityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[businessidentity.GetBusinessIdentityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_business_identity
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class BusinessIdentityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_business_identity(
-        self, response: businessidentity.BusinessIdentity
-    ) -> businessidentity.BusinessIdentity:
+    def post_get_business_identity(self, response: businessidentity.BusinessIdentity) -> businessidentity.BusinessIdentity:
         """Post-rpc interceptor for get_business_identity
 
         DEPRECATED. Please use the `post_get_business_identity_with_metadata`
@@ -125,12 +118,8 @@ class BusinessIdentityServiceRestInterceptor:
         return response
 
     def post_get_business_identity_with_metadata(
-        self,
-        response: businessidentity.BusinessIdentity,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        businessidentity.BusinessIdentity, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: businessidentity.BusinessIdentity, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[businessidentity.BusinessIdentity, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_business_identity
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,13 +135,8 @@ class BusinessIdentityServiceRestInterceptor:
         return response, metadata
 
     def pre_update_business_identity(
-        self,
-        request: businessidentity.UpdateBusinessIdentityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        businessidentity.UpdateBusinessIdentityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: businessidentity.UpdateBusinessIdentityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[businessidentity.UpdateBusinessIdentityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_business_identity
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +144,7 @@ class BusinessIdentityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_business_identity(
-        self, response: businessidentity.BusinessIdentity
-    ) -> businessidentity.BusinessIdentity:
+    def post_update_business_identity(self, response: businessidentity.BusinessIdentity) -> businessidentity.BusinessIdentity:
         """Post-rpc interceptor for update_business_identity
 
         DEPRECATED. Please use the `post_update_business_identity_with_metadata`
@@ -176,12 +158,8 @@ class BusinessIdentityServiceRestInterceptor:
         return response
 
     def post_update_business_identity_with_metadata(
-        self,
-        response: businessidentity.BusinessIdentity,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        businessidentity.BusinessIdentity, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: businessidentity.BusinessIdentity, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[businessidentity.BusinessIdentity, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_business_identity
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,31 +256,18 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or BusinessIdentityServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetBusinessIdentity(
-        _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity,
-        BusinessIdentityServiceRestStub,
-    ):
+    class _GetBusinessIdentity(_BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity, BusinessIdentityServiceRestStub):
         def __hash__(self):
             return hash("BusinessIdentityServiceRestTransport.GetBusinessIdentity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -343,28 +308,16 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_http_options()
-            )
+            http_options = _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_business_identity(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_business_identity(request, metadata)
+            transcoded_request = _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -387,15 +340,8 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                BusinessIdentityServiceRestTransport._GetBusinessIdentity._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = BusinessIdentityServiceRestTransport._GetBusinessIdentity._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -411,16 +357,10 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             resp = self._interceptor.post_get_business_identity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_business_identity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_business_identity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = businessidentity.BusinessIdentity.to_json(
-                        response
-                    )
+                    response_payload = businessidentity.BusinessIdentity.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -439,23 +379,12 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
                 )
             return resp
 
-    class _UpdateBusinessIdentity(
-        _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity,
-        BusinessIdentityServiceRestStub,
-    ):
+    class _UpdateBusinessIdentity(_BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity, BusinessIdentityServiceRestStub):
         def __hash__(self):
             return hash("BusinessIdentityServiceRestTransport.UpdateBusinessIdentity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -498,32 +427,18 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_http_options()
-            )
+            http_options = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_business_identity(
-                request, metadata
-            )
-            transcoded_request = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_business_identity(request, metadata)
+            transcoded_request = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_transcoded_request(http_options, request)
 
-            body = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -547,13 +462,7 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             # Send the request
             response = BusinessIdentityServiceRestTransport._UpdateBusinessIdentity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -569,16 +478,10 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             resp = self._interceptor.post_update_business_identity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_business_identity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_business_identity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = businessidentity.BusinessIdentity.to_json(
-                        response
-                    )
+                    response_payload = businessidentity.BusinessIdentity.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -598,22 +501,13 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             return resp
 
     @property
-    def get_business_identity(
-        self,
-    ) -> Callable[
-        [businessidentity.GetBusinessIdentityRequest], businessidentity.BusinessIdentity
-    ]:
+    def get_business_identity(self) -> Callable[[businessidentity.GetBusinessIdentityRequest], businessidentity.BusinessIdentity]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBusinessIdentity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_business_identity(
-        self,
-    ) -> Callable[
-        [businessidentity.UpdateBusinessIdentityRequest],
-        businessidentity.BusinessIdentity,
-    ]:
+    def update_business_identity(self) -> Callable[[businessidentity.UpdateBusinessIdentityRequest], businessidentity.BusinessIdentity]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBusinessIdentity(self._session, self._host, self._interceptor)  # type: ignore

@@ -18,12 +18,8 @@ from google.cloud.shell import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.shell_v1.services.cloud_shell_service.async_client import (
-    CloudShellServiceAsyncClient,
-)
-from google.cloud.shell_v1.services.cloud_shell_service.client import (
-    CloudShellServiceClient,
-)
+from google.cloud.shell_v1.services.cloud_shell_service.async_client import CloudShellServiceAsyncClient
+from google.cloud.shell_v1.services.cloud_shell_service.client import CloudShellServiceClient
 from google.cloud.shell_v1.types.cloudshell import (
     AddPublicKeyMetadata,
     AddPublicKeyRequest,

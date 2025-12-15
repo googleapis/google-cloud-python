@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -270,18 +259,14 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -317,9 +302,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -334,11 +317,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         return self._grpc_channel
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [version.ListVersionsRequest], Awaitable[version.ListVersionsResponse]
-    ]:
+    def list_versions(self) -> Callable[[version.ListVersionsRequest], Awaitable[version.ListVersionsResponse]]:
         r"""Return a callable for the list versions method over gRPC.
 
         Returns the list of all versions of the specified
@@ -363,9 +342,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         return self._stubs["list_versions"]
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[[version.GetVersionRequest], Awaitable[version.Version]]:
+    def get_version(self) -> Callable[[version.GetVersionRequest], Awaitable[version.Version]]:
         r"""Return a callable for the get version method over gRPC.
 
         Retrieves the specified agent version.
@@ -389,9 +366,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         return self._stubs["get_version"]
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[[gcd_version.CreateVersionRequest], Awaitable[gcd_version.Version]]:
+    def create_version(self) -> Callable[[gcd_version.CreateVersionRequest], Awaitable[gcd_version.Version]]:
         r"""Return a callable for the create version method over gRPC.
 
         Creates an agent version.
@@ -418,9 +393,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         return self._stubs["create_version"]
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[[gcd_version.UpdateVersionRequest], Awaitable[gcd_version.Version]]:
+    def update_version(self) -> Callable[[gcd_version.UpdateVersionRequest], Awaitable[gcd_version.Version]]:
         r"""Return a callable for the update version method over gRPC.
 
         Updates the specified agent version.
@@ -449,9 +422,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         return self._stubs["update_version"]
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[version.DeleteVersionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_version(self) -> Callable[[version.DeleteVersionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete version method over gRPC.
 
         Delete the specified agent version.
@@ -578,9 +549,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -597,9 +566,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

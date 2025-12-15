@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.edgenetwork_v1 import gapic_version as package_version
 from google.cloud.edgenetwork_v1.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class EdgeNetworkTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -431,152 +421,74 @@ class EdgeNetworkTransport(abc.ABC):
     @property
     def initialize_zone(
         self,
-    ) -> Callable[
-        [service.InitializeZoneRequest],
-        Union[
-            service.InitializeZoneResponse, Awaitable[service.InitializeZoneResponse]
-        ],
-    ]:
+    ) -> Callable[[service.InitializeZoneRequest], Union[service.InitializeZoneResponse, Awaitable[service.InitializeZoneResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[
-        [service.ListZonesRequest],
-        Union[service.ListZonesResponse, Awaitable[service.ListZonesResponse]],
-    ]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], Union[service.ListZonesResponse, Awaitable[service.ListZonesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_zone(
-        self,
-    ) -> Callable[
-        [service.GetZoneRequest], Union[resources.Zone, Awaitable[resources.Zone]]
-    ]:
+    def get_zone(self) -> Callable[[service.GetZoneRequest], Union[resources.Zone, Awaitable[resources.Zone]]]:
         raise NotImplementedError()
 
     @property
-    def list_networks(
-        self,
-    ) -> Callable[
-        [service.ListNetworksRequest],
-        Union[service.ListNetworksResponse, Awaitable[service.ListNetworksResponse]],
-    ]:
+    def list_networks(self) -> Callable[[service.ListNetworksRequest], Union[service.ListNetworksResponse, Awaitable[service.ListNetworksResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_network(
-        self,
-    ) -> Callable[
-        [service.GetNetworkRequest],
-        Union[resources.Network, Awaitable[resources.Network]],
-    ]:
+    def get_network(self) -> Callable[[service.GetNetworkRequest], Union[resources.Network, Awaitable[resources.Network]]]:
         raise NotImplementedError()
 
     @property
     def diagnose_network(
         self,
-    ) -> Callable[
-        [service.DiagnoseNetworkRequest],
-        Union[
-            service.DiagnoseNetworkResponse, Awaitable[service.DiagnoseNetworkResponse]
-        ],
-    ]:
+    ) -> Callable[[service.DiagnoseNetworkRequest], Union[service.DiagnoseNetworkResponse, Awaitable[service.DiagnoseNetworkResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_network(
-        self,
-    ) -> Callable[
-        [service.CreateNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_network(self) -> Callable[[service.CreateNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_network(
-        self,
-    ) -> Callable[
-        [service.DeleteNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_network(self) -> Callable[[service.DeleteNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_subnets(
-        self,
-    ) -> Callable[
-        [service.ListSubnetsRequest],
-        Union[service.ListSubnetsResponse, Awaitable[service.ListSubnetsResponse]],
-    ]:
+    def list_subnets(self) -> Callable[[service.ListSubnetsRequest], Union[service.ListSubnetsResponse, Awaitable[service.ListSubnetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_subnet(
-        self,
-    ) -> Callable[
-        [service.GetSubnetRequest], Union[resources.Subnet, Awaitable[resources.Subnet]]
-    ]:
+    def get_subnet(self) -> Callable[[service.GetSubnetRequest], Union[resources.Subnet, Awaitable[resources.Subnet]]]:
         raise NotImplementedError()
 
     @property
-    def create_subnet(
-        self,
-    ) -> Callable[
-        [service.CreateSubnetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_subnet(self) -> Callable[[service.CreateSubnetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_subnet(
-        self,
-    ) -> Callable[
-        [service.UpdateSubnetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_subnet(self) -> Callable[[service.UpdateSubnetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_subnet(
-        self,
-    ) -> Callable[
-        [service.DeleteSubnetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_subnet(self) -> Callable[[service.DeleteSubnetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_interconnects(
         self,
-    ) -> Callable[
-        [service.ListInterconnectsRequest],
-        Union[
-            service.ListInterconnectsResponse,
-            Awaitable[service.ListInterconnectsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListInterconnectsRequest], Union[service.ListInterconnectsResponse, Awaitable[service.ListInterconnectsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_interconnect(
-        self,
-    ) -> Callable[
-        [service.GetInterconnectRequest],
-        Union[resources.Interconnect, Awaitable[resources.Interconnect]],
-    ]:
+    def get_interconnect(self) -> Callable[[service.GetInterconnectRequest], Union[resources.Interconnect, Awaitable[resources.Interconnect]]]:
         raise NotImplementedError()
 
     @property
     def diagnose_interconnect(
         self,
     ) -> Callable[
-        [service.DiagnoseInterconnectRequest],
-        Union[
-            service.DiagnoseInterconnectResponse,
-            Awaitable[service.DiagnoseInterconnectResponse],
-        ],
+        [service.DiagnoseInterconnectRequest], Union[service.DiagnoseInterconnectResponse, Awaitable[service.DiagnoseInterconnectResponse]]
     ]:
         raise NotImplementedError()
 
@@ -585,96 +497,52 @@ class EdgeNetworkTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListInterconnectAttachmentsRequest],
-        Union[
-            service.ListInterconnectAttachmentsResponse,
-            Awaitable[service.ListInterconnectAttachmentsResponse],
-        ],
+        Union[service.ListInterconnectAttachmentsResponse, Awaitable[service.ListInterconnectAttachmentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_interconnect_attachment(
         self,
-    ) -> Callable[
-        [service.GetInterconnectAttachmentRequest],
-        Union[
-            resources.InterconnectAttachment,
-            Awaitable[resources.InterconnectAttachment],
-        ],
-    ]:
+    ) -> Callable[[service.GetInterconnectAttachmentRequest], Union[resources.InterconnectAttachment, Awaitable[resources.InterconnectAttachment]]]:
         raise NotImplementedError()
 
     @property
     def create_interconnect_attachment(
         self,
-    ) -> Callable[
-        [service.CreateInterconnectAttachmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateInterconnectAttachmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_interconnect_attachment(
         self,
-    ) -> Callable[
-        [service.DeleteInterconnectAttachmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.DeleteInterconnectAttachmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_routers(
-        self,
-    ) -> Callable[
-        [service.ListRoutersRequest],
-        Union[service.ListRoutersResponse, Awaitable[service.ListRoutersResponse]],
-    ]:
+    def list_routers(self) -> Callable[[service.ListRoutersRequest], Union[service.ListRoutersResponse, Awaitable[service.ListRoutersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_router(
-        self,
-    ) -> Callable[
-        [service.GetRouterRequest], Union[resources.Router, Awaitable[resources.Router]]
-    ]:
+    def get_router(self) -> Callable[[service.GetRouterRequest], Union[resources.Router, Awaitable[resources.Router]]]:
         raise NotImplementedError()
 
     @property
     def diagnose_router(
         self,
-    ) -> Callable[
-        [service.DiagnoseRouterRequest],
-        Union[
-            service.DiagnoseRouterResponse, Awaitable[service.DiagnoseRouterResponse]
-        ],
-    ]:
+    ) -> Callable[[service.DiagnoseRouterRequest], Union[service.DiagnoseRouterResponse, Awaitable[service.DiagnoseRouterResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_router(
-        self,
-    ) -> Callable[
-        [service.CreateRouterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_router(self) -> Callable[[service.CreateRouterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_router(
-        self,
-    ) -> Callable[
-        [service.UpdateRouterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_router(self) -> Callable[[service.UpdateRouterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_router(
-        self,
-    ) -> Callable[
-        [service.DeleteRouterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_router(self) -> Callable[[service.DeleteRouterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -682,20 +550,14 @@ class EdgeNetworkTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -713,22 +575,13 @@ class EdgeNetworkTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

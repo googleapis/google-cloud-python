@@ -31,11 +31,7 @@ from .case_service import (
     UpdateCaseRequest,
 )
 from .comment import Comment
-from .comment_service import (
-    CreateCommentRequest,
-    ListCommentsRequest,
-    ListCommentsResponse,
-)
+from .comment_service import CreateCommentRequest, ListCommentsRequest, ListCommentsResponse
 from .escalation import Escalation
 
 __all__ = (

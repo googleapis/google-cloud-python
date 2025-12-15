@@ -319,9 +319,7 @@ class SearchNearbyResponse(proto.Message):
         number=1,
         message=gmp_place.Place,
     )
-    routing_summaries: MutableSequence[
-        routing_summary.RoutingSummary
-    ] = proto.RepeatedField(
+    routing_summaries: MutableSequence[routing_summary.RoutingSummary] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=routing_summary.RoutingSummary,
@@ -524,9 +522,7 @@ class SearchTextRequest(proto.Message):
             proto.DOUBLE,
             number=1,
         )
-        connector_types: MutableSequence[
-            ev_charging.EVConnectorType
-        ] = proto.RepeatedField(
+        connector_types: MutableSequence[ev_charging.EVConnectorType] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum=ev_charging.EVConnectorType,
@@ -667,16 +663,12 @@ class SearchTextResponse(proto.Message):
         number=1,
         message=gmp_place.Place,
     )
-    routing_summaries: MutableSequence[
-        routing_summary.RoutingSummary
-    ] = proto.RepeatedField(
+    routing_summaries: MutableSequence[routing_summary.RoutingSummary] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=routing_summary.RoutingSummary,
     )
-    contextual_contents: MutableSequence[
-        contextual_content.ContextualContent
-    ] = proto.RepeatedField(
+    contextual_contents: MutableSequence[contextual_content.ContextualContent] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=contextual_content.ContextualContent,
@@ -1157,9 +1149,7 @@ class AutocompletePlacesResponse(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            matches: MutableSequence[
-                "AutocompletePlacesResponse.Suggestion.StringRange"
-            ] = proto.RepeatedField(
+            matches: MutableSequence["AutocompletePlacesResponse.Suggestion.StringRange"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="AutocompletePlacesResponse.Suggestion.StringRange",
@@ -1186,19 +1176,15 @@ class AutocompletePlacesResponse(proto.Message):
                     the Place or refine the query.
             """
 
-            main_text: "AutocompletePlacesResponse.Suggestion.FormattableText" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    message="AutocompletePlacesResponse.Suggestion.FormattableText",
-                )
+            main_text: "AutocompletePlacesResponse.Suggestion.FormattableText" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="AutocompletePlacesResponse.Suggestion.FormattableText",
             )
-            secondary_text: "AutocompletePlacesResponse.Suggestion.FormattableText" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    message="AutocompletePlacesResponse.Suggestion.FormattableText",
-                )
+            secondary_text: "AutocompletePlacesResponse.Suggestion.FormattableText" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="AutocompletePlacesResponse.Suggestion.FormattableText",
             )
 
         class PlacePrediction(proto.Message):
@@ -1330,21 +1316,17 @@ class AutocompletePlacesResponse(proto.Message):
                 message="AutocompletePlacesResponse.Suggestion.StructuredFormat",
             )
 
-        place_prediction: "AutocompletePlacesResponse.Suggestion.PlacePrediction" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="kind",
-                message="AutocompletePlacesResponse.Suggestion.PlacePrediction",
-            )
+        place_prediction: "AutocompletePlacesResponse.Suggestion.PlacePrediction" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="kind",
+            message="AutocompletePlacesResponse.Suggestion.PlacePrediction",
         )
-        query_prediction: "AutocompletePlacesResponse.Suggestion.QueryPrediction" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="kind",
-                message="AutocompletePlacesResponse.Suggestion.QueryPrediction",
-            )
+        query_prediction: "AutocompletePlacesResponse.Suggestion.QueryPrediction" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="kind",
+            message="AutocompletePlacesResponse.Suggestion.QueryPrediction",
         )
 
     suggestions: MutableSequence[Suggestion] = proto.RepeatedField(

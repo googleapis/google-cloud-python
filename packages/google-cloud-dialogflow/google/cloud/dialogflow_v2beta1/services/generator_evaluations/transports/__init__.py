@@ -22,9 +22,7 @@ from .grpc_asyncio import GeneratorEvaluationsGrpcAsyncIOTransport
 from .rest import GeneratorEvaluationsRestInterceptor, GeneratorEvaluationsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GeneratorEvaluationsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GeneratorEvaluationsTransport]]
 _transport_registry["grpc"] = GeneratorEvaluationsGrpcTransport
 _transport_registry["grpc_asyncio"] = GeneratorEvaluationsGrpcAsyncIOTransport
 _transport_registry["rest"] = GeneratorEvaluationsRestTransport

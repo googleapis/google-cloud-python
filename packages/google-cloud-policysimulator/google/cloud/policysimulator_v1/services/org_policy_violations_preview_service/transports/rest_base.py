@@ -26,9 +26,7 @@ from google.cloud.policysimulator_v1.types import orgpolicy as gcp_orgpolicy
 from .base import DEFAULT_CLIENT_INFO, OrgPolicyViolationsPreviewServiceTransport
 
 
-class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
-    OrgPolicyViolationsPreviewServiceTransport
-):
+class _BaseOrgPolicyViolationsPreviewServiceRestTransport(OrgPolicyViolationsPreviewServiceTransport):
     """Base REST backend transport for OrgPolicyViolationsPreviewService.
 
     Note: This class is not meant to be used directly. Use its sync and
@@ -74,20 +72,14 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateOrgPolicyViolationsPreview:
@@ -98,11 +90,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -117,9 +105,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest.pb(
-                request
-            )
+            pb_request = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -127,9 +113,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -141,9 +125,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -157,11 +139,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -188,9 +166,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -204,11 +180,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -235,9 +207,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -251,11 +221,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -269,9 +235,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest.pb(
-                request
-            )
+            pb_request = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -284,9 +248,7 @@ class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_unset_required_fields(
-                    query_params
-                )
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"

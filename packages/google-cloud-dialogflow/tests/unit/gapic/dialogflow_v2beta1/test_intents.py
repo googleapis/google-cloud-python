@@ -43,15 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -66,12 +58,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.intents import (
-    IntentsAsyncClient,
-    IntentsClient,
-    pagers,
-    transports,
-)
+from google.cloud.dialogflow_v2beta1.services.intents import IntentsAsyncClient, IntentsClient, pagers, transports
 from google.cloud.dialogflow_v2beta1.types import context
 from google.cloud.dialogflow_v2beta1.types import intent
 from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
@@ -106,22 +93,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -133,17 +112,9 @@ def test__get_default_mtls_endpoint():
 
     assert IntentsClient._get_default_mtls_endpoint(None) is None
     assert IntentsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert (
-        IntentsClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        IntentsClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        IntentsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert IntentsClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert IntentsClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert IntentsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert IntentsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -156,15 +127,17 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert IntentsClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            IntentsClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                IntentsClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert IntentsClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert IntentsClient._read_environment_variables() == (False, "never", None)
@@ -178,13 +151,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             IntentsClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
         assert IntentsClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert IntentsClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert IntentsClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert IntentsClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert IntentsClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert IntentsClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert IntentsClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert IntentsClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert IntentsClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert IntentsClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                IntentsClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert IntentsClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert IntentsClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -192,114 +247,45 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert IntentsClient._get_client_cert_source(None, False) is None
-    assert (
-        IntentsClient._get_client_cert_source(mock_provided_cert_source, False) is None
-    )
-    assert (
-        IntentsClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert IntentsClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert IntentsClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                IntentsClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                IntentsClient._get_client_cert_source(mock_provided_cert_source, "true")
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert IntentsClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert IntentsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    IntentsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsClient),
-)
-@mock.patch.object(
-    IntentsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsAsyncClient),
-)
+@mock.patch.object(IntentsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsClient))
+@mock.patch.object(IntentsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = IntentsClient._DEFAULT_UNIVERSE
-    default_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        IntentsClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        IntentsClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == IntentsClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        IntentsClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        IntentsClient._get_api_endpoint(None, None, default_universe, "always")
-        == IntentsClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        IntentsClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == IntentsClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        IntentsClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        IntentsClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert IntentsClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert IntentsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == IntentsClient.DEFAULT_MTLS_ENDPOINT
+    assert IntentsClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert IntentsClient._get_api_endpoint(None, None, default_universe, "always") == IntentsClient.DEFAULT_MTLS_ENDPOINT
+    assert IntentsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == IntentsClient.DEFAULT_MTLS_ENDPOINT
+    assert IntentsClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert IntentsClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        IntentsClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        IntentsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        IntentsClient._get_universe_domain(client_universe_domain, universe_domain_env)
-        == client_universe_domain
-    )
-    assert (
-        IntentsClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        IntentsClient._get_universe_domain(None, None)
-        == IntentsClient._DEFAULT_UNIVERSE
-    )
+    assert IntentsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert IntentsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert IntentsClient._get_universe_domain(None, None) == IntentsClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         IntentsClient._get_universe_domain("", None)
@@ -359,9 +345,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_intents_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -369,9 +353,7 @@ def test_intents_client_from_service_account_info(client_class, transport_name):
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "dialogflow.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://dialogflow.googleapis.com"
+            "dialogflow.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://dialogflow.googleapis.com"
         )
 
 
@@ -384,16 +366,12 @@ def test_intents_client_from_service_account_info(client_class, transport_name):
     ],
 )
 def test_intents_client_service_account_always_use_jwt(transport_class, transport_name):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -409,26 +387,18 @@ def test_intents_client_service_account_always_use_jwt(transport_class, transpor
 )
 def test_intents_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "dialogflow.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://dialogflow.googleapis.com"
+            "dialogflow.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://dialogflow.googleapis.com"
         )
 
 
@@ -452,16 +422,8 @@ def test_intents_client_get_transport_class():
         (IntentsClient, transports.IntentsRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    IntentsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsClient),
-)
-@mock.patch.object(
-    IntentsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsAsyncClient),
-)
+@mock.patch.object(IntentsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsClient))
+@mock.patch.object(IntentsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsAsyncClient))
 def test_intents_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(IntentsClient, "get_transport_class") as gtc:
@@ -500,9 +462,7 @@ def test_intents_client_client_options(client_class, transport_class, transport_
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -534,21 +494,7 @@ def test_intents_client_client_options(client_class, transport_class, transport_
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -558,9 +504,7 @@ def test_intents_client_client_options(client_class, transport_class, transport_
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -569,18 +513,14 @@ def test_intents_client_client_options(client_class, transport_class, transport_
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -594,57 +534,31 @@ def test_intents_client_client_options(client_class, transport_class, transport_
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (IntentsClient, transports.IntentsGrpcTransport, "grpc", "true"),
-        (
-            IntentsAsyncClient,
-            transports.IntentsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
+        (IntentsAsyncClient, transports.IntentsGrpcAsyncIOTransport, "grpc_asyncio", "true"),
         (IntentsClient, transports.IntentsGrpcTransport, "grpc", "false"),
-        (
-            IntentsAsyncClient,
-            transports.IntentsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
+        (IntentsAsyncClient, transports.IntentsGrpcAsyncIOTransport, "grpc_asyncio", "false"),
         (IntentsClient, transports.IntentsRestTransport, "rest", "true"),
         (IntentsClient, transports.IntentsRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    IntentsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsClient),
-)
-@mock.patch.object(
-    IntentsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsAsyncClient),
-)
+@mock.patch.object(IntentsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsClient))
+@mock.patch.object(IntentsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_intents_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_intents_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -663,22 +577,12 @@ def test_intents_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -699,22 +603,15 @@ def test_intents_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -725,24 +622,16 @@ def test_intents_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [IntentsClient, IntentsAsyncClient])
-@mock.patch.object(
-    IntentsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IntentsClient)
-)
-@mock.patch.object(
-    IntentsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IntentsAsyncClient)
-)
+@mock.patch.object(IntentsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IntentsClient))
+@mock.patch.object(IntentsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IntentsAsyncClient))
 def test_intents_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -750,14 +639,106 @@ def test_intents_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -773,28 +754,16 @@ def test_intents_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -804,60 +773,26 @@ def test_intents_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [IntentsClient, IntentsAsyncClient])
-@mock.patch.object(
-    IntentsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsClient),
-)
-@mock.patch.object(
-    IntentsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IntentsAsyncClient),
-)
+@mock.patch.object(IntentsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsClient))
+@mock.patch.object(IntentsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IntentsAsyncClient))
 def test_intents_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = IntentsClient._DEFAULT_UNIVERSE
-    default_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = IntentsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -880,19 +815,11 @@ def test_intents_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -900,9 +827,7 @@ def test_intents_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -914,9 +839,7 @@ def test_intents_client_client_api_endpoint(client_class):
         (IntentsClient, transports.IntentsRestTransport, "rest"),
     ],
 )
-def test_intents_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_intents_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -927,9 +850,7 @@ def test_intents_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -943,18 +864,11 @@ def test_intents_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (IntentsClient, transports.IntentsGrpcTransport, "grpc", grpc_helpers),
-        (
-            IntentsAsyncClient,
-            transports.IntentsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (IntentsAsyncClient, transports.IntentsGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
         (IntentsClient, transports.IntentsRestTransport, "rest", None),
     ],
 )
-def test_intents_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_intents_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -964,9 +878,7 @@ def test_intents_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -977,9 +889,7 @@ def test_intents_client_client_options_credentials_file(
 
 
 def test_intents_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.dialogflow_v2beta1.services.intents.transports.IntentsGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.dialogflow_v2beta1.services.intents.transports.IntentsGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
         client = IntentsClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
@@ -999,17 +909,10 @@ def test_intents_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (IntentsClient, transports.IntentsGrpcTransport, "grpc", grpc_helpers),
-        (
-            IntentsAsyncClient,
-            transports.IntentsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (IntentsAsyncClient, transports.IntentsGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_intents_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_intents_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1019,9 +922,7 @@ def test_intents_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1031,13 +932,9 @@ def test_intents_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1117,9 +1014,7 @@ def test_list_intents_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_intents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1148,9 +1043,7 @@ def test_list_intents_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_intents] = mock_rpc
         request = {}
         client.list_intents(request)
@@ -1166,9 +1059,7 @@ def test_list_intents_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_intents_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_intents_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1182,17 +1073,12 @@ async def test_list_intents_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_intents
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_intents in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_intents
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_intents] = mock_rpc
 
         request = {}
         await client.list_intents(request)
@@ -1208,9 +1094,7 @@ async def test_list_intents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_intents_async(
-    transport: str = "grpc_asyncio", request_type=intent.ListIntentsRequest
-):
+async def test_list_intents_async(transport: str = "grpc_asyncio", request_type=intent.ListIntentsRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1289,9 +1173,7 @@ async def test_list_intents_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            intent.ListIntentsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(intent.ListIntentsResponse())
         await client.list_intents(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1361,9 +1243,7 @@ async def test_list_intents_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = intent.ListIntentsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            intent.ListIntentsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(intent.ListIntentsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_intents(
@@ -1439,9 +1319,7 @@ def test_list_intents_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_intents(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -1501,9 +1379,7 @@ async def test_list_intents_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_intents), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             intent.ListIntentsResponse(
@@ -1551,9 +1427,7 @@ async def test_list_intents_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_intents), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             intent.ListIntentsResponse(
@@ -1585,9 +1459,7 @@ async def test_list_intents_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_intents(request={})
-        ).pages:
+        async for page_ in (await client.list_intents(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1654,9 +1526,7 @@ def test_get_intent(request_type, transport: str = "grpc"):
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -1679,9 +1549,7 @@ def test_get_intent_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_intent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1709,9 +1577,7 @@ def test_get_intent_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_intent] = mock_rpc
         request = {}
         client.get_intent(request)
@@ -1741,17 +1607,12 @@ async def test_get_intent_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_intent
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_intent in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_intent
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_intent] = mock_rpc
 
         request = {}
         await client.get_intent(request)
@@ -1767,9 +1628,7 @@ async def test_get_intent_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_intent_async(
-    transport: str = "grpc_asyncio", request_type=intent.GetIntentRequest
-):
+async def test_get_intent_async(transport: str = "grpc_asyncio", request_type=intent.GetIntentRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1825,9 +1684,7 @@ async def test_get_intent_async(
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -2036,9 +1893,7 @@ def test_create_intent(request_type, transport: str = "grpc"):
     assert isinstance(response, gcd_intent.Intent)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert (
-        response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
-    )
+    assert response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.ml_enabled is True
@@ -2049,9 +1904,7 @@ def test_create_intent(request_type, transport: str = "grpc"):
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        gcd_intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [gcd_intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -2074,9 +1927,7 @@ def test_create_intent_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_intent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2104,9 +1955,7 @@ def test_create_intent_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_intent] = mock_rpc
         request = {}
         client.create_intent(request)
@@ -2122,9 +1971,7 @@ def test_create_intent_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_intent_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_intent_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2138,17 +1985,12 @@ async def test_create_intent_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_intent
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_intent in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_intent
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_intent] = mock_rpc
 
         request = {}
         await client.create_intent(request)
@@ -2164,9 +2006,7 @@ async def test_create_intent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_intent_async(
-    transport: str = "grpc_asyncio", request_type=gcd_intent.CreateIntentRequest
-):
+async def test_create_intent_async(transport: str = "grpc_asyncio", request_type=gcd_intent.CreateIntentRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2194,9 +2034,7 @@ async def test_create_intent_async(
                 events=["events_value"],
                 action="action_value",
                 reset_contexts=True,
-                default_response_platforms=[
-                    gcd_intent.Intent.Message.Platform.FACEBOOK
-                ],
+                default_response_platforms=[gcd_intent.Intent.Message.Platform.FACEBOOK],
                 root_followup_intent_name="root_followup_intent_name_value",
                 parent_followup_intent_name="parent_followup_intent_name_value",
             )
@@ -2213,9 +2051,7 @@ async def test_create_intent_async(
     assert isinstance(response, gcd_intent.Intent)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert (
-        response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
-    )
+    assert response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.ml_enabled is True
@@ -2226,9 +2062,7 @@ async def test_create_intent_async(
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        gcd_intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [gcd_intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -2447,9 +2281,7 @@ def test_update_intent(request_type, transport: str = "grpc"):
     assert isinstance(response, gcd_intent.Intent)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert (
-        response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
-    )
+    assert response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.ml_enabled is True
@@ -2460,9 +2292,7 @@ def test_update_intent(request_type, transport: str = "grpc"):
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        gcd_intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [gcd_intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -2484,9 +2314,7 @@ def test_update_intent_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_intent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2513,9 +2341,7 @@ def test_update_intent_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_intent] = mock_rpc
         request = {}
         client.update_intent(request)
@@ -2531,9 +2357,7 @@ def test_update_intent_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_intent_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_intent_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2547,17 +2371,12 @@ async def test_update_intent_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_intent
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_intent in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_intent
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_intent] = mock_rpc
 
         request = {}
         await client.update_intent(request)
@@ -2573,9 +2392,7 @@ async def test_update_intent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_intent_async(
-    transport: str = "grpc_asyncio", request_type=gcd_intent.UpdateIntentRequest
-):
+async def test_update_intent_async(transport: str = "grpc_asyncio", request_type=gcd_intent.UpdateIntentRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2603,9 +2420,7 @@ async def test_update_intent_async(
                 events=["events_value"],
                 action="action_value",
                 reset_contexts=True,
-                default_response_platforms=[
-                    gcd_intent.Intent.Message.Platform.FACEBOOK
-                ],
+                default_response_platforms=[gcd_intent.Intent.Message.Platform.FACEBOOK],
                 root_followup_intent_name="root_followup_intent_name_value",
                 parent_followup_intent_name="parent_followup_intent_name_value",
             )
@@ -2622,9 +2437,7 @@ async def test_update_intent_async(
     assert isinstance(response, gcd_intent.Intent)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert (
-        response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
-    )
+    assert response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.ml_enabled is True
@@ -2635,9 +2448,7 @@ async def test_update_intent_async(
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        gcd_intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [gcd_intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -2856,9 +2667,7 @@ def test_delete_intent_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_intent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2885,9 +2694,7 @@ def test_delete_intent_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_intent] = mock_rpc
         request = {}
         client.delete_intent(request)
@@ -2903,9 +2710,7 @@ def test_delete_intent_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_intent_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_intent_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2919,17 +2724,12 @@ async def test_delete_intent_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_intent
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_intent in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_intent
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_intent] = mock_rpc
 
         request = {}
         await client.delete_intent(request)
@@ -2945,9 +2745,7 @@ async def test_delete_intent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_intent_async(
-    transport: str = "grpc_asyncio", request_type=intent.DeleteIntentRequest
-):
+async def test_delete_intent_async(transport: str = "grpc_asyncio", request_type=intent.DeleteIntentRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3135,9 +2933,7 @@ def test_batch_update_intents(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.batch_update_intents(request)
@@ -3170,12 +2966,8 @@ def test_batch_update_intents_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.batch_update_intents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3200,18 +2992,12 @@ def test_batch_update_intents_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.batch_update_intents in client._transport._wrapped_methods
-        )
+        assert client._transport.batch_update_intents in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.batch_update_intents
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.batch_update_intents] = mock_rpc
         request = {}
         client.batch_update_intents(request)
 
@@ -3231,9 +3017,7 @@ def test_batch_update_intents_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_update_intents_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_batch_update_intents_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3247,17 +3031,12 @@ async def test_batch_update_intents_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.batch_update_intents
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.batch_update_intents in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.batch_update_intents
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.batch_update_intents] = mock_rpc
 
         request = {}
         await client.batch_update_intents(request)
@@ -3278,9 +3057,7 @@ async def test_batch_update_intents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_update_intents_async(
-    transport: str = "grpc_asyncio", request_type=intent.BatchUpdateIntentsRequest
-):
+async def test_batch_update_intents_async(transport: str = "grpc_asyncio", request_type=intent.BatchUpdateIntentsRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3291,13 +3068,9 @@ async def test_batch_update_intents_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.batch_update_intents(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3327,9 +3100,7 @@ def test_batch_update_intents_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.batch_update_intents(request)
 
@@ -3359,12 +3130,8 @@ async def test_batch_update_intents_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.batch_update_intents(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3386,9 +3153,7 @@ def test_batch_update_intents_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -3396,9 +3161,7 @@ def test_batch_update_intents_flattened():
         client.batch_update_intents(
             parent="parent_value",
             intent_batch_uri="intent_batch_uri_value",
-            intent_batch_inline=intent.IntentBatch(
-                intents=[intent.Intent(name="name_value")]
-            ),
+            intent_batch_inline=intent.IntentBatch(intents=[intent.Intent(name="name_value")]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3408,9 +3171,7 @@ def test_batch_update_intents_flattened():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        assert args[0].intent_batch_inline == intent.IntentBatch(
-            intents=[intent.Intent(name="name_value")]
-        )
+        assert args[0].intent_batch_inline == intent.IntentBatch(intents=[intent.Intent(name="name_value")])
 
 
 def test_batch_update_intents_flattened_error():
@@ -3425,9 +3186,7 @@ def test_batch_update_intents_flattened_error():
             intent.BatchUpdateIntentsRequest(),
             parent="parent_value",
             intent_batch_uri="intent_batch_uri_value",
-            intent_batch_inline=intent.IntentBatch(
-                intents=[intent.Intent(name="name_value")]
-            ),
+            intent_batch_inline=intent.IntentBatch(intents=[intent.Intent(name="name_value")]),
         )
 
 
@@ -3438,23 +3197,17 @@ async def test_batch_update_intents_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.batch_update_intents(
             parent="parent_value",
             intent_batch_uri="intent_batch_uri_value",
-            intent_batch_inline=intent.IntentBatch(
-                intents=[intent.Intent(name="name_value")]
-            ),
+            intent_batch_inline=intent.IntentBatch(intents=[intent.Intent(name="name_value")]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3464,9 +3217,7 @@ async def test_batch_update_intents_flattened_async():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        assert args[0].intent_batch_inline == intent.IntentBatch(
-            intents=[intent.Intent(name="name_value")]
-        )
+        assert args[0].intent_batch_inline == intent.IntentBatch(intents=[intent.Intent(name="name_value")])
 
 
 @pytest.mark.asyncio
@@ -3482,9 +3233,7 @@ async def test_batch_update_intents_flattened_error_async():
             intent.BatchUpdateIntentsRequest(),
             parent="parent_value",
             intent_batch_uri="intent_batch_uri_value",
-            intent_batch_inline=intent.IntentBatch(
-                intents=[intent.Intent(name="name_value")]
-            ),
+            intent_batch_inline=intent.IntentBatch(intents=[intent.Intent(name="name_value")]),
         )
 
 
@@ -3506,9 +3255,7 @@ def test_batch_delete_intents(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.batch_delete_intents(request)
@@ -3539,12 +3286,8 @@ def test_batch_delete_intents_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.batch_delete_intents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3567,18 +3310,12 @@ def test_batch_delete_intents_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.batch_delete_intents in client._transport._wrapped_methods
-        )
+        assert client._transport.batch_delete_intents in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.batch_delete_intents
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.batch_delete_intents] = mock_rpc
         request = {}
         client.batch_delete_intents(request)
 
@@ -3598,9 +3335,7 @@ def test_batch_delete_intents_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_delete_intents_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_batch_delete_intents_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3614,17 +3349,12 @@ async def test_batch_delete_intents_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.batch_delete_intents
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.batch_delete_intents in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.batch_delete_intents
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.batch_delete_intents] = mock_rpc
 
         request = {}
         await client.batch_delete_intents(request)
@@ -3645,9 +3375,7 @@ async def test_batch_delete_intents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_delete_intents_async(
-    transport: str = "grpc_asyncio", request_type=intent.BatchDeleteIntentsRequest
-):
+async def test_batch_delete_intents_async(transport: str = "grpc_asyncio", request_type=intent.BatchDeleteIntentsRequest):
     client = IntentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3658,13 +3386,9 @@ async def test_batch_delete_intents_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.batch_delete_intents(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3694,9 +3418,7 @@ def test_batch_delete_intents_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.batch_delete_intents(request)
 
@@ -3726,12 +3448,8 @@ async def test_batch_delete_intents_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.batch_delete_intents(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3753,9 +3471,7 @@ def test_batch_delete_intents_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -3799,15 +3515,11 @@ async def test_batch_delete_intents_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.batch_delete_intents(
@@ -3861,9 +3573,7 @@ def test_list_intents_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_intents] = mock_rpc
 
         request = {}
@@ -3886,24 +3596,18 @@ def test_list_intents_rest_required_fields(request_type=intent.ListIntentsReques
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_intents._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_intents._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_intents._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_intents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -3962,9 +3666,7 @@ def test_list_intents_rest_required_fields(request_type=intent.ListIntentsReques
 
 
 def test_list_intents_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_intents._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4017,10 +3719,7 @@ def test_list_intents_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{parent=projects/*/agent}/intents" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{parent=projects/*/agent}/intents" % client.transport._host, args[1])
 
 
 def test_list_intents_rest_flattened_error(transport: str = "rest"):
@@ -4118,9 +3817,7 @@ def test_get_intent_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_intent] = mock_rpc
 
         request = {}
@@ -4143,24 +3840,18 @@ def test_get_intent_rest_required_fields(request_type=intent.GetIntentRequest):
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_intent._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_intent._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4217,9 +3908,7 @@ def test_get_intent_rest_required_fields(request_type=intent.GetIntentRequest):
 
 
 def test_get_intent_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_intent._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4270,10 +3959,7 @@ def test_get_intent_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{name=projects/*/agent/intents/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{name=projects/*/agent/intents/*}" % client.transport._host, args[1])
 
 
 def test_get_intent_rest_flattened_error(transport: str = "rest"):
@@ -4310,9 +3996,7 @@ def test_create_intent_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_intent] = mock_rpc
 
         request = {}
@@ -4328,33 +4012,25 @@ def test_create_intent_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_intent_rest_required_fields(
-    request_type=gcd_intent.CreateIntentRequest,
-):
+def test_create_intent_rest_required_fields(request_type=gcd_intent.CreateIntentRequest):
     transport_class = transports.IntentsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_intent._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_intent._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4412,9 +4088,7 @@ def test_create_intent_rest_required_fields(
 
 
 def test_create_intent_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_intent._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4471,10 +4145,7 @@ def test_create_intent_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{parent=projects/*/agent}/intents" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{parent=projects/*/agent}/intents" % client.transport._host, args[1])
 
 
 def test_create_intent_rest_flattened_error(transport: str = "rest"):
@@ -4512,9 +4183,7 @@ def test_update_intent_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_intent] = mock_rpc
 
         request = {}
@@ -4530,30 +4199,22 @@ def test_update_intent_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_intent_rest_required_fields(
-    request_type=gcd_intent.UpdateIntentRequest,
-):
+def test_update_intent_rest_required_fields(request_type=gcd_intent.UpdateIntentRequest):
     transport_class = transports.IntentsRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_intent._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_intent._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4610,9 +4271,7 @@ def test_update_intent_rest_required_fields(
 
 
 def test_update_intent_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_intent._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4665,11 +4324,7 @@ def test_update_intent_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{intent.name=projects/*/agent/intents/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{intent.name=projects/*/agent/intents/*}" % client.transport._host, args[1])
 
 
 def test_update_intent_rest_flattened_error(transport: str = "rest"):
@@ -4707,9 +4362,7 @@ def test_delete_intent_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_intent] = mock_rpc
 
         request = {}
@@ -4732,24 +4385,18 @@ def test_delete_intent_rest_required_fields(request_type=intent.DeleteIntentRequ
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_intent._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_intent._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_intent._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4796,9 +4443,7 @@ def test_delete_intent_rest_required_fields(request_type=intent.DeleteIntentRequ
 
 
 def test_delete_intent_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_intent._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -4838,10 +4483,7 @@ def test_delete_intent_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{name=projects/*/agent/intents/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{name=projects/*/agent/intents/*}" % client.transport._host, args[1])
 
 
 def test_delete_intent_rest_flattened_error(transport: str = "rest"):
@@ -4873,18 +4515,12 @@ def test_batch_update_intents_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.batch_update_intents in client._transport._wrapped_methods
-        )
+        assert client._transport.batch_update_intents in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.batch_update_intents
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.batch_update_intents] = mock_rpc
 
         request = {}
         client.batch_update_intents(request)
@@ -4903,33 +4539,29 @@ def test_batch_update_intents_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_batch_update_intents_rest_required_fields(
-    request_type=intent.BatchUpdateIntentsRequest,
-):
+def test_batch_update_intents_rest_required_fields(request_type=intent.BatchUpdateIntentsRequest):
     transport_class = transports.IntentsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_update_intents._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_update_intents._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_update_intents._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_update_intents._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4977,9 +4609,7 @@ def test_batch_update_intents_rest_required_fields(
 
 
 def test_batch_update_intents_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.batch_update_intents._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -5019,11 +4649,7 @@ def test_batch_update_intents_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{parent=projects/*/agent}/intents:batchUpdate"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{parent=projects/*/agent}/intents:batchUpdate" % client.transport._host, args[1])
 
 
 def test_batch_update_intents_rest_flattened_error(transport: str = "rest"):
@@ -5039,9 +4665,7 @@ def test_batch_update_intents_rest_flattened_error(transport: str = "rest"):
             intent.BatchUpdateIntentsRequest(),
             parent="parent_value",
             intent_batch_uri="intent_batch_uri_value",
-            intent_batch_inline=intent.IntentBatch(
-                intents=[intent.Intent(name="name_value")]
-            ),
+            intent_batch_inline=intent.IntentBatch(intents=[intent.Intent(name="name_value")]),
         )
 
 
@@ -5059,18 +4683,12 @@ def test_batch_delete_intents_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.batch_delete_intents in client._transport._wrapped_methods
-        )
+        assert client._transport.batch_delete_intents in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.batch_delete_intents
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.batch_delete_intents] = mock_rpc
 
         request = {}
         client.batch_delete_intents(request)
@@ -5089,33 +4707,29 @@ def test_batch_delete_intents_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_batch_delete_intents_rest_required_fields(
-    request_type=intent.BatchDeleteIntentsRequest,
-):
+def test_batch_delete_intents_rest_required_fields(request_type=intent.BatchDeleteIntentsRequest):
     transport_class = transports.IntentsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_intents._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_delete_intents._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_intents._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_delete_intents._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5163,9 +4777,7 @@ def test_batch_delete_intents_rest_required_fields(
 
 
 def test_batch_delete_intents_rest_unset_required_fields():
-    transport = transports.IntentsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.IntentsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.batch_delete_intents._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5214,11 +4826,7 @@ def test_batch_delete_intents_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2beta1/{parent=projects/*/agent}/intents:batchDelete"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v2beta1/{parent=projects/*/agent}/intents:batchDelete" % client.transport._host, args[1])
 
 
 def test_batch_delete_intents_rest_flattened_error(transport: str = "rest"):
@@ -5274,9 +4882,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = IntentsClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = IntentsClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.IntentsGrpcTransport(
@@ -5330,16 +4936,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = IntentsClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = IntentsClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -5457,9 +5059,7 @@ def test_batch_update_intents_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.batch_update_intents(request=None)
 
@@ -5480,9 +5080,7 @@ def test_batch_delete_intents_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.batch_delete_intents(request=None)
 
@@ -5495,16 +5093,12 @@ def test_batch_delete_intents_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = IntentsAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = IntentsAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = IntentsAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = IntentsAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -5604,9 +5198,7 @@ async def test_create_intent_empty_call_grpc_asyncio():
                 events=["events_value"],
                 action="action_value",
                 reset_contexts=True,
-                default_response_platforms=[
-                    gcd_intent.Intent.Message.Platform.FACEBOOK
-                ],
+                default_response_platforms=[gcd_intent.Intent.Message.Platform.FACEBOOK],
                 root_followup_intent_name="root_followup_intent_name_value",
                 parent_followup_intent_name="parent_followup_intent_name_value",
             )
@@ -5648,9 +5240,7 @@ async def test_update_intent_empty_call_grpc_asyncio():
                 events=["events_value"],
                 action="action_value",
                 reset_contexts=True,
-                default_response_platforms=[
-                    gcd_intent.Intent.Message.Platform.FACEBOOK
-                ],
+                default_response_platforms=[gcd_intent.Intent.Message.Platform.FACEBOOK],
                 root_followup_intent_name="root_followup_intent_name_value",
                 parent_followup_intent_name="parent_followup_intent_name_value",
             )
@@ -5698,13 +5288,9 @@ async def test_batch_update_intents_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.batch_update_intents(request=None)
 
         # Establish that the underlying stub method was called.
@@ -5725,13 +5311,9 @@ async def test_batch_delete_intents_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.batch_delete_intents(request=None)
 
         # Establish that the underlying stub method was called.
@@ -5743,24 +5325,18 @@ async def test_batch_delete_intents_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = IntentsClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = IntentsClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_list_intents_rest_bad_request(request_type=intent.ListIntentsRequest):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5780,9 +5356,7 @@ def test_list_intents_rest_bad_request(request_type=intent.ListIntentsRequest):
     ],
 )
 def test_list_intents_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
@@ -5820,13 +5394,9 @@ def test_list_intents_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IntentsRestInterceptor, "post_list_intents"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.IntentsRestInterceptor, "post_list_intents") as post, mock.patch.object(
         transports.IntentsRestInterceptor, "post_list_intents_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_list_intents"
@@ -5871,17 +5441,13 @@ def test_list_intents_rest_interceptors(null_interceptor):
 
 
 def test_get_intent_rest_bad_request(request_type=intent.GetIntentRequest):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/agent/intents/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5901,9 +5467,7 @@ def test_get_intent_rest_bad_request(request_type=intent.GetIntentRequest):
     ],
 )
 def test_get_intent_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/agent/intents/sample2"}
@@ -5958,9 +5522,7 @@ def test_get_intent_rest_call_success(request_type):
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -5973,13 +5535,9 @@ def test_get_intent_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IntentsRestInterceptor, "post_get_intent"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.IntentsRestInterceptor, "post_get_intent") as post, mock.patch.object(
         transports.IntentsRestInterceptor, "post_get_intent_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_get_intent"
@@ -6024,17 +5582,13 @@ def test_get_intent_rest_interceptors(null_interceptor):
 
 
 def test_create_intent_rest_bad_request(request_type=gcd_intent.CreateIntentRequest):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6054,9 +5608,7 @@ def test_create_intent_rest_bad_request(request_type=gcd_intent.CreateIntentRequ
     ],
 )
 def test_create_intent_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
@@ -6070,30 +5622,18 @@ def test_create_intent_rest_call_success(request_type):
         "ml_disabled": True,
         "live_agent_handoff": True,
         "end_interaction": True,
-        "input_context_names": [
-            "input_context_names_value1",
-            "input_context_names_value2",
-        ],
+        "input_context_names": ["input_context_names_value1", "input_context_names_value2"],
         "events": ["events_value1", "events_value2"],
         "training_phrases": [
             {
                 "name": "name_value",
                 "type_": 1,
-                "parts": [
-                    {
-                        "text": "text_value",
-                        "entity_type": "entity_type_value",
-                        "alias": "alias_value",
-                        "user_defined": True,
-                    }
-                ],
+                "parts": [{"text": "text_value", "entity_type": "entity_type_value", "alias": "alias_value", "user_defined": True}],
                 "times_added_count": 1787,
             }
         ],
         "action": "action_value",
-        "output_contexts": [
-            {"name": "name_value", "lifespan_count": 1498, "parameters": {"fields": {}}}
-        ],
+        "output_contexts": [{"name": "name_value", "lifespan_count": 1498, "parameters": {"fields": {}}}],
         "reset_contexts": True,
         "parameters": [
             {
@@ -6110,14 +5650,8 @@ def test_create_intent_rest_call_success(request_type):
         "messages": [
             {
                 "text": {"text": ["text_value1", "text_value2"]},
-                "image": {
-                    "image_uri": "image_uri_value",
-                    "accessibility_text": "accessibility_text_value",
-                },
-                "quick_replies": {
-                    "title": "title_value",
-                    "quick_replies": ["quick_replies_value1", "quick_replies_value2"],
-                },
+                "image": {"image_uri": "image_uri_value", "accessibility_text": "accessibility_text_value"},
+                "quick_replies": {"title": "title_value", "quick_replies": ["quick_replies_value1", "quick_replies_value2"]},
                 "card": {
                     "title": "title_value",
                     "subtitle": "subtitle_value",
@@ -6126,39 +5660,22 @@ def test_create_intent_rest_call_success(request_type):
                 },
                 "payload": {},
                 "simple_responses": {
-                    "simple_responses": [
-                        {
-                            "text_to_speech": "text_to_speech_value",
-                            "ssml": "ssml_value",
-                            "display_text": "display_text_value",
-                        }
-                    ]
+                    "simple_responses": [{"text_to_speech": "text_to_speech_value", "ssml": "ssml_value", "display_text": "display_text_value"}]
                 },
                 "basic_card": {
                     "title": "title_value",
                     "subtitle": "subtitle_value",
                     "formatted_text": "formatted_text_value",
                     "image": {},
-                    "buttons": [
-                        {
-                            "title": "title_value",
-                            "open_uri_action": {"uri": "uri_value"},
-                        }
-                    ],
+                    "buttons": [{"title": "title_value", "open_uri_action": {"uri": "uri_value"}}],
                 },
                 "suggestions": {"suggestions": [{"title": "title_value"}]},
-                "link_out_suggestion": {
-                    "destination_name": "destination_name_value",
-                    "uri": "uri_value",
-                },
+                "link_out_suggestion": {"destination_name": "destination_name_value", "uri": "uri_value"},
                 "list_select": {
                     "title": "title_value",
                     "items": [
                         {
-                            "info": {
-                                "key": "key_value",
-                                "synonyms": ["synonyms_value1", "synonyms_value2"],
-                            },
+                            "info": {"key": "key_value", "synonyms": ["synonyms_value1", "synonyms_value2"]},
                             "title": "title_value",
                             "description": "description_value",
                             "image": {},
@@ -6166,30 +5683,15 @@ def test_create_intent_rest_call_success(request_type):
                     ],
                     "subtitle": "subtitle_value",
                 },
-                "carousel_select": {
-                    "items": [
-                        {
-                            "info": {},
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                        }
-                    ]
-                },
+                "carousel_select": {"items": [{"info": {}, "title": "title_value", "description": "description_value", "image": {}}]},
                 "telephony_play_audio": {"audio_uri": "audio_uri_value"},
-                "telephony_synthesize_speech": {
-                    "text": "text_value",
-                    "ssml": "ssml_value",
-                },
+                "telephony_synthesize_speech": {"text": "text_value", "ssml": "ssml_value"},
                 "telephony_transfer_call": {"phone_number": "phone_number_value"},
                 "rbm_text": {
                     "text": "text_value",
                     "rbm_suggestion": [
                         {
-                            "reply": {
-                                "text": "text_value",
-                                "postback_data": "postback_data_value",
-                            },
+                            "reply": {"text": "text_value", "postback_data": "postback_data_value"},
                             "action": {
                                 "text": "text_value",
                                 "postback_data": "postback_data_value",
@@ -6206,11 +5708,7 @@ def test_create_intent_rest_call_success(request_type):
                     "card_content": {
                         "title": "title_value",
                         "description": "description_value",
-                        "media": {
-                            "file_uri": "file_uri_value",
-                            "thumbnail_uri": "thumbnail_uri_value",
-                            "height": 1,
-                        },
+                        "media": {"file_uri": "file_uri_value", "thumbnail_uri": "thumbnail_uri_value", "height": 1},
                         "suggestions": {},
                     },
                 },
@@ -6231,24 +5729,14 @@ def test_create_intent_rest_call_success(request_type):
                     "title": "title_value",
                     "subtitle": "subtitle_value",
                     "image": {},
-                    "column_properties": [
-                        {"header": "header_value", "horizontal_alignment": 1}
-                    ],
-                    "rows": [
-                        {"cells": [{"text": "text_value"}], "divider_after": True}
-                    ],
+                    "column_properties": [{"header": "header_value", "horizontal_alignment": 1}],
+                    "rows": [{"cells": [{"text": "text_value"}], "divider_after": True}],
                     "buttons": {},
                 },
                 "media_content": {
                     "media_type": 1,
                     "media_objects": [
-                        {
-                            "name": "name_value",
-                            "description": "description_value",
-                            "large_image": {},
-                            "icon": {},
-                            "content_url": "content_url_value",
-                        }
+                        {"name": "name_value", "description": "description_value", "large_image": {}, "icon": {}, "content_url": "content_url_value"}
                     ],
                 },
                 "platform": 1,
@@ -6258,10 +5746,7 @@ def test_create_intent_rest_call_success(request_type):
         "root_followup_intent_name": "root_followup_intent_name_value",
         "parent_followup_intent_name": "parent_followup_intent_name_value",
         "followup_intent_info": [
-            {
-                "followup_intent_name": "followup_intent_name_value",
-                "parent_followup_intent_name": "parent_followup_intent_name_value",
-            }
+            {"followup_intent_name": "followup_intent_name_value", "parent_followup_intent_name": "parent_followup_intent_name_value"}
         ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6288,9 +5773,7 @@ def test_create_intent_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -6311,13 +5794,7 @@ def test_create_intent_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -6371,9 +5848,7 @@ def test_create_intent_rest_call_success(request_type):
     assert isinstance(response, gcd_intent.Intent)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert (
-        response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
-    )
+    assert response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.ml_enabled is True
@@ -6384,9 +5859,7 @@ def test_create_intent_rest_call_success(request_type):
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        gcd_intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [gcd_intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -6399,13 +5872,9 @@ def test_create_intent_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IntentsRestInterceptor, "post_create_intent"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.IntentsRestInterceptor, "post_create_intent") as post, mock.patch.object(
         transports.IntentsRestInterceptor, "post_create_intent_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_create_intent"
@@ -6450,17 +5919,13 @@ def test_create_intent_rest_interceptors(null_interceptor):
 
 
 def test_update_intent_rest_bad_request(request_type=gcd_intent.UpdateIntentRequest):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"intent": {"name": "projects/sample1/agent/intents/sample2"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6480,9 +5945,7 @@ def test_update_intent_rest_bad_request(request_type=gcd_intent.UpdateIntentRequ
     ],
 )
 def test_update_intent_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"intent": {"name": "projects/sample1/agent/intents/sample2"}}
@@ -6496,30 +5959,18 @@ def test_update_intent_rest_call_success(request_type):
         "ml_disabled": True,
         "live_agent_handoff": True,
         "end_interaction": True,
-        "input_context_names": [
-            "input_context_names_value1",
-            "input_context_names_value2",
-        ],
+        "input_context_names": ["input_context_names_value1", "input_context_names_value2"],
         "events": ["events_value1", "events_value2"],
         "training_phrases": [
             {
                 "name": "name_value",
                 "type_": 1,
-                "parts": [
-                    {
-                        "text": "text_value",
-                        "entity_type": "entity_type_value",
-                        "alias": "alias_value",
-                        "user_defined": True,
-                    }
-                ],
+                "parts": [{"text": "text_value", "entity_type": "entity_type_value", "alias": "alias_value", "user_defined": True}],
                 "times_added_count": 1787,
             }
         ],
         "action": "action_value",
-        "output_contexts": [
-            {"name": "name_value", "lifespan_count": 1498, "parameters": {"fields": {}}}
-        ],
+        "output_contexts": [{"name": "name_value", "lifespan_count": 1498, "parameters": {"fields": {}}}],
         "reset_contexts": True,
         "parameters": [
             {
@@ -6536,14 +5987,8 @@ def test_update_intent_rest_call_success(request_type):
         "messages": [
             {
                 "text": {"text": ["text_value1", "text_value2"]},
-                "image": {
-                    "image_uri": "image_uri_value",
-                    "accessibility_text": "accessibility_text_value",
-                },
-                "quick_replies": {
-                    "title": "title_value",
-                    "quick_replies": ["quick_replies_value1", "quick_replies_value2"],
-                },
+                "image": {"image_uri": "image_uri_value", "accessibility_text": "accessibility_text_value"},
+                "quick_replies": {"title": "title_value", "quick_replies": ["quick_replies_value1", "quick_replies_value2"]},
                 "card": {
                     "title": "title_value",
                     "subtitle": "subtitle_value",
@@ -6552,39 +5997,22 @@ def test_update_intent_rest_call_success(request_type):
                 },
                 "payload": {},
                 "simple_responses": {
-                    "simple_responses": [
-                        {
-                            "text_to_speech": "text_to_speech_value",
-                            "ssml": "ssml_value",
-                            "display_text": "display_text_value",
-                        }
-                    ]
+                    "simple_responses": [{"text_to_speech": "text_to_speech_value", "ssml": "ssml_value", "display_text": "display_text_value"}]
                 },
                 "basic_card": {
                     "title": "title_value",
                     "subtitle": "subtitle_value",
                     "formatted_text": "formatted_text_value",
                     "image": {},
-                    "buttons": [
-                        {
-                            "title": "title_value",
-                            "open_uri_action": {"uri": "uri_value"},
-                        }
-                    ],
+                    "buttons": [{"title": "title_value", "open_uri_action": {"uri": "uri_value"}}],
                 },
                 "suggestions": {"suggestions": [{"title": "title_value"}]},
-                "link_out_suggestion": {
-                    "destination_name": "destination_name_value",
-                    "uri": "uri_value",
-                },
+                "link_out_suggestion": {"destination_name": "destination_name_value", "uri": "uri_value"},
                 "list_select": {
                     "title": "title_value",
                     "items": [
                         {
-                            "info": {
-                                "key": "key_value",
-                                "synonyms": ["synonyms_value1", "synonyms_value2"],
-                            },
+                            "info": {"key": "key_value", "synonyms": ["synonyms_value1", "synonyms_value2"]},
                             "title": "title_value",
                             "description": "description_value",
                             "image": {},
@@ -6592,30 +6020,15 @@ def test_update_intent_rest_call_success(request_type):
                     ],
                     "subtitle": "subtitle_value",
                 },
-                "carousel_select": {
-                    "items": [
-                        {
-                            "info": {},
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                        }
-                    ]
-                },
+                "carousel_select": {"items": [{"info": {}, "title": "title_value", "description": "description_value", "image": {}}]},
                 "telephony_play_audio": {"audio_uri": "audio_uri_value"},
-                "telephony_synthesize_speech": {
-                    "text": "text_value",
-                    "ssml": "ssml_value",
-                },
+                "telephony_synthesize_speech": {"text": "text_value", "ssml": "ssml_value"},
                 "telephony_transfer_call": {"phone_number": "phone_number_value"},
                 "rbm_text": {
                     "text": "text_value",
                     "rbm_suggestion": [
                         {
-                            "reply": {
-                                "text": "text_value",
-                                "postback_data": "postback_data_value",
-                            },
+                            "reply": {"text": "text_value", "postback_data": "postback_data_value"},
                             "action": {
                                 "text": "text_value",
                                 "postback_data": "postback_data_value",
@@ -6632,11 +6045,7 @@ def test_update_intent_rest_call_success(request_type):
                     "card_content": {
                         "title": "title_value",
                         "description": "description_value",
-                        "media": {
-                            "file_uri": "file_uri_value",
-                            "thumbnail_uri": "thumbnail_uri_value",
-                            "height": 1,
-                        },
+                        "media": {"file_uri": "file_uri_value", "thumbnail_uri": "thumbnail_uri_value", "height": 1},
                         "suggestions": {},
                     },
                 },
@@ -6657,24 +6066,14 @@ def test_update_intent_rest_call_success(request_type):
                     "title": "title_value",
                     "subtitle": "subtitle_value",
                     "image": {},
-                    "column_properties": [
-                        {"header": "header_value", "horizontal_alignment": 1}
-                    ],
-                    "rows": [
-                        {"cells": [{"text": "text_value"}], "divider_after": True}
-                    ],
+                    "column_properties": [{"header": "header_value", "horizontal_alignment": 1}],
+                    "rows": [{"cells": [{"text": "text_value"}], "divider_after": True}],
                     "buttons": {},
                 },
                 "media_content": {
                     "media_type": 1,
                     "media_objects": [
-                        {
-                            "name": "name_value",
-                            "description": "description_value",
-                            "large_image": {},
-                            "icon": {},
-                            "content_url": "content_url_value",
-                        }
+                        {"name": "name_value", "description": "description_value", "large_image": {}, "icon": {}, "content_url": "content_url_value"}
                     ],
                 },
                 "platform": 1,
@@ -6684,10 +6083,7 @@ def test_update_intent_rest_call_success(request_type):
         "root_followup_intent_name": "root_followup_intent_name_value",
         "parent_followup_intent_name": "parent_followup_intent_name_value",
         "followup_intent_info": [
-            {
-                "followup_intent_name": "followup_intent_name_value",
-                "parent_followup_intent_name": "parent_followup_intent_name_value",
-            }
+            {"followup_intent_name": "followup_intent_name_value", "parent_followup_intent_name": "parent_followup_intent_name_value"}
         ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6714,9 +6110,7 @@ def test_update_intent_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -6737,13 +6131,7 @@ def test_update_intent_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -6797,9 +6185,7 @@ def test_update_intent_rest_call_success(request_type):
     assert isinstance(response, gcd_intent.Intent)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert (
-        response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
-    )
+    assert response.webhook_state == gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.ml_enabled is True
@@ -6810,9 +6196,7 @@ def test_update_intent_rest_call_success(request_type):
     assert response.events == ["events_value"]
     assert response.action == "action_value"
     assert response.reset_contexts is True
-    assert response.default_response_platforms == [
-        gcd_intent.Intent.Message.Platform.FACEBOOK
-    ]
+    assert response.default_response_platforms == [gcd_intent.Intent.Message.Platform.FACEBOOK]
     assert response.root_followup_intent_name == "root_followup_intent_name_value"
     assert response.parent_followup_intent_name == "parent_followup_intent_name_value"
 
@@ -6825,13 +6209,9 @@ def test_update_intent_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IntentsRestInterceptor, "post_update_intent"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.IntentsRestInterceptor, "post_update_intent") as post, mock.patch.object(
         transports.IntentsRestInterceptor, "post_update_intent_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_update_intent"
@@ -6876,17 +6256,13 @@ def test_update_intent_rest_interceptors(null_interceptor):
 
 
 def test_delete_intent_rest_bad_request(request_type=intent.DeleteIntentRequest):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/agent/intents/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6906,9 +6282,7 @@ def test_delete_intent_rest_bad_request(request_type=intent.DeleteIntentRequest)
     ],
 )
 def test_delete_intent_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/agent/intents/sample2"}
@@ -6940,13 +6314,9 @@ def test_delete_intent_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IntentsRestInterceptor, "pre_delete_intent"
-    ) as pre:
+    ) as transcode, mock.patch.object(transports.IntentsRestInterceptor, "pre_delete_intent") as pre:
         pre.assert_not_called()
         pb_message = intent.DeleteIntentRequest.pb(intent.DeleteIntentRequest())
         transcode.return_value = {
@@ -6978,20 +6348,14 @@ def test_delete_intent_rest_interceptors(null_interceptor):
         pre.assert_called_once()
 
 
-def test_batch_update_intents_rest_bad_request(
-    request_type=intent.BatchUpdateIntentsRequest,
-):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_batch_update_intents_rest_bad_request(request_type=intent.BatchUpdateIntentsRequest):
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7011,9 +6375,7 @@ def test_batch_update_intents_rest_bad_request(
     ],
 )
 def test_batch_update_intents_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
@@ -7045,13 +6407,9 @@ def test_batch_update_intents_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.IntentsRestInterceptor, "post_batch_update_intents"
     ) as post, mock.patch.object(
         transports.IntentsRestInterceptor, "post_batch_update_intents_with_metadata"
@@ -7061,9 +6419,7 @@ def test_batch_update_intents_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = intent.BatchUpdateIntentsRequest.pb(
-            intent.BatchUpdateIntentsRequest()
-        )
+        pb_message = intent.BatchUpdateIntentsRequest.pb(intent.BatchUpdateIntentsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7099,20 +6455,14 @@ def test_batch_update_intents_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_batch_delete_intents_rest_bad_request(
-    request_type=intent.BatchDeleteIntentsRequest,
-):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_batch_delete_intents_rest_bad_request(request_type=intent.BatchDeleteIntentsRequest):
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7132,9 +6482,7 @@ def test_batch_delete_intents_rest_bad_request(
     ],
 )
 def test_batch_delete_intents_rest_call_success(request_type):
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
@@ -7166,13 +6514,9 @@ def test_batch_delete_intents_rest_interceptors(null_interceptor):
     )
     client = IntentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.IntentsRestInterceptor, "post_batch_delete_intents"
     ) as post, mock.patch.object(
         transports.IntentsRestInterceptor, "post_batch_delete_intents_with_metadata"
@@ -7182,9 +6526,7 @@ def test_batch_delete_intents_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = intent.BatchDeleteIntentsRequest.pb(
-            intent.BatchDeleteIntentsRequest()
-        )
+        pb_message = intent.BatchDeleteIntentsRequest.pb(intent.BatchDeleteIntentsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7226,14 +6568,10 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -7280,9 +6618,7 @@ def test_get_location_rest(request_type):
     assert isinstance(response, locations_pb2.Location)
 
 
-def test_list_locations_rest_bad_request(
-    request_type=locations_pb2.ListLocationsRequest,
-):
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
     client = IntentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -7291,9 +6627,7 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -7340,22 +6674,16 @@ def test_list_locations_rest(request_type):
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
     client = IntentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/operations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -7402,22 +6730,16 @@ def test_cancel_operation_rest(request_type):
     assert response is None
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = IntentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/operations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -7464,9 +6786,7 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = IntentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -7475,9 +6795,7 @@ def test_list_operations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -7525,9 +6843,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -7640,9 +6956,7 @@ def test_batch_update_intents_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_update_intents), "__call__") as call:
         client.batch_update_intents(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7662,9 +6976,7 @@ def test_batch_delete_intents_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.batch_delete_intents), "__call__") as call:
         client.batch_delete_intents(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7706,17 +7018,12 @@ def test_transport_grpc_default():
 def test_intents_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.IntentsTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.IntentsTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_intents_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.dialogflow_v2beta1.services.intents.transports.IntentsTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.dialogflow_v2beta1.services.intents.transports.IntentsTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.IntentsTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -7761,9 +7068,7 @@ def test_intents_base_transport():
 
 def test_intents_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.dialogflow_v2beta1.services.intents.transports.IntentsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -7847,9 +7152,7 @@ def test_intents_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -7857,17 +7160,12 @@ def test_intents_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.IntentsGrpcTransport, grpc_helpers),
-        (transports.IntentsGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.IntentsGrpcTransport, grpc_helpers), (transports.IntentsGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_intents_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -7893,21 +7191,14 @@ def test_intents_transport_create_channel(transport_class, grpc_helpers):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport])
 def test_intents_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -7925,24 +7216,15 @@ def test_intents_grpc_transport_client_cert_source_for_mtls(transport_class):
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_intents_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.IntentsRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.IntentsRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -7957,15 +7239,11 @@ def test_intents_http_transport_client_cert_source_for_mtls():
 def test_intents_host_no_port(transport_name):
     client = IntentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="dialogflow.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="dialogflow.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "dialogflow.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://dialogflow.googleapis.com"
+        "dialogflow.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://dialogflow.googleapis.com"
     )
 
 
@@ -7980,15 +7258,11 @@ def test_intents_host_no_port(transport_name):
 def test_intents_host_with_port(transport_name):
     client = IntentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="dialogflow.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="dialogflow.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "dialogflow.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://dialogflow.googleapis.com:8000"
+        "dialogflow.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://dialogflow.googleapis.com:8000"
     )
 
 
@@ -8060,17 +7334,11 @@ def test_intents_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport],
-)
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport])
 def test_intents_transport_channel_mtls_with_client_cert_source(transport_class):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -8088,9 +7356,7 @@ def test_intents_transport_channel_mtls_with_client_cert_source(transport_class)
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -8109,10 +7375,7 @@ def test_intents_transport_channel_mtls_with_client_cert_source(transport_class)
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport])
 def test_intents_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -8120,9 +7383,7 @@ def test_intents_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -8339,18 +7600,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.IntentsTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.IntentsTransport, "_prep_wrapped_messages") as prep:
         client = IntentsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.IntentsTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.IntentsTransport, "_prep_wrapped_messages") as prep:
         transport_class = IntentsClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -8536,9 +7793,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -8590,9 +7845,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -8632,9 +7885,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -8681,9 +7932,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -8735,9 +7984,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -8777,9 +8024,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -8826,9 +8071,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -8880,9 +8123,7 @@ async def test_list_locations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -8922,9 +8163,7 @@ async def test_list_locations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(
             request={
                 "name": "locations",
@@ -8971,9 +8210,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -9021,9 +8258,7 @@ async def test_get_location_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -9063,9 +8298,7 @@ async def test_get_location_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(
             request={
                 "name": "locations",
@@ -9075,12 +8308,8 @@ async def test_get_location_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -9088,24 +8317,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = IntentsAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = IntentsAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = IntentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -9117,9 +8338,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = IntentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = IntentsClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -9136,9 +8355,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -9149,9 +8366,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

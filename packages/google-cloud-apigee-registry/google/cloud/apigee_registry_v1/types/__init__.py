@@ -13,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .provisioning_service import (
-    CreateInstanceRequest,
-    DeleteInstanceRequest,
-    GetInstanceRequest,
-    Instance,
-    OperationMetadata,
-)
+from .provisioning_service import CreateInstanceRequest, DeleteInstanceRequest, GetInstanceRequest, Instance, OperationMetadata
 from .registry_models import Api, ApiDeployment, ApiSpec, ApiVersion, Artifact
 from .registry_service import (
     CreateApiDeploymentRequest,

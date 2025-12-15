@@ -34,9 +34,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
+from google.cloud.dialogflowcx_v3.types import transition_route_group as gcdc_transition_route_group
 from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 from .base import DEFAULT_CLIENT_INFO, TransitionRouteGroupsTransport
@@ -52,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -68,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -90,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -273,18 +260,14 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +303,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -339,10 +320,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     @property
     def list_transition_route_groups(
         self,
-    ) -> Callable[
-        [transition_route_group.ListTransitionRouteGroupsRequest],
-        Awaitable[transition_route_group.ListTransitionRouteGroupsResponse],
-    ]:
+    ) -> Callable[[transition_route_group.ListTransitionRouteGroupsRequest], Awaitable[transition_route_group.ListTransitionRouteGroupsResponse]]:
         r"""Return a callable for the list transition route groups method over gRPC.
 
         Returns the list of all transition route groups in
@@ -359,9 +337,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_transition_route_groups" not in self._stubs:
-            self._stubs[
-                "list_transition_route_groups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_transition_route_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/ListTransitionRouteGroups",
                 request_serializer=transition_route_group.ListTransitionRouteGroupsRequest.serialize,
                 response_deserializer=transition_route_group.ListTransitionRouteGroupsResponse.deserialize,
@@ -371,10 +347,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     @property
     def get_transition_route_group(
         self,
-    ) -> Callable[
-        [transition_route_group.GetTransitionRouteGroupRequest],
-        Awaitable[transition_route_group.TransitionRouteGroup],
-    ]:
+    ) -> Callable[[transition_route_group.GetTransitionRouteGroupRequest], Awaitable[transition_route_group.TransitionRouteGroup]]:
         r"""Return a callable for the get transition route group method over gRPC.
 
         Retrieves the specified
@@ -391,9 +364,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_transition_route_group" not in self._stubs:
-            self._stubs[
-                "get_transition_route_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_transition_route_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/GetTransitionRouteGroup",
                 request_serializer=transition_route_group.GetTransitionRouteGroupRequest.serialize,
                 response_deserializer=transition_route_group.TransitionRouteGroup.deserialize,
@@ -403,10 +374,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     @property
     def create_transition_route_group(
         self,
-    ) -> Callable[
-        [gcdc_transition_route_group.CreateTransitionRouteGroupRequest],
-        Awaitable[gcdc_transition_route_group.TransitionRouteGroup],
-    ]:
+    ) -> Callable[[gcdc_transition_route_group.CreateTransitionRouteGroupRequest], Awaitable[gcdc_transition_route_group.TransitionRouteGroup]]:
         r"""Return a callable for the create transition route group method over gRPC.
 
         Creates an
@@ -428,9 +396,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_transition_route_group" not in self._stubs:
-            self._stubs[
-                "create_transition_route_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_transition_route_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/CreateTransitionRouteGroup",
                 request_serializer=gcdc_transition_route_group.CreateTransitionRouteGroupRequest.serialize,
                 response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
@@ -440,10 +406,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     @property
     def update_transition_route_group(
         self,
-    ) -> Callable[
-        [gcdc_transition_route_group.UpdateTransitionRouteGroupRequest],
-        Awaitable[gcdc_transition_route_group.TransitionRouteGroup],
-    ]:
+    ) -> Callable[[gcdc_transition_route_group.UpdateTransitionRouteGroupRequest], Awaitable[gcdc_transition_route_group.TransitionRouteGroup]]:
         r"""Return a callable for the update transition route group method over gRPC.
 
         Updates the specified
@@ -464,9 +427,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_transition_route_group" not in self._stubs:
-            self._stubs[
-                "update_transition_route_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_transition_route_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/UpdateTransitionRouteGroup",
                 request_serializer=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.serialize,
                 response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
@@ -474,12 +435,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         return self._stubs["update_transition_route_group"]
 
     @property
-    def delete_transition_route_group(
-        self,
-    ) -> Callable[
-        [transition_route_group.DeleteTransitionRouteGroupRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_transition_route_group(self) -> Callable[[transition_route_group.DeleteTransitionRouteGroupRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete transition route group method over gRPC.
 
         Deletes the specified
@@ -500,9 +456,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_transition_route_group" not in self._stubs:
-            self._stubs[
-                "delete_transition_route_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_transition_route_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/DeleteTransitionRouteGroup",
                 request_serializer=transition_route_group.DeleteTransitionRouteGroupRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -613,9 +567,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -632,9 +584,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

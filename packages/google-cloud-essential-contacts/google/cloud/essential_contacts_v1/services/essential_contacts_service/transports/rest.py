@@ -128,9 +128,7 @@ class EssentialContactsServiceRestInterceptor:
     """
 
     def pre_compute_contacts(
-        self,
-        request: service.ComputeContactsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ComputeContactsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ComputeContactsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_contacts
 
@@ -139,9 +137,7 @@ class EssentialContactsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_compute_contacts(
-        self, response: service.ComputeContactsResponse
-    ) -> service.ComputeContactsResponse:
+    def post_compute_contacts(self, response: service.ComputeContactsResponse) -> service.ComputeContactsResponse:
         """Post-rpc interceptor for compute_contacts
 
         DEPRECATED. Please use the `post_compute_contacts_with_metadata`
@@ -155,12 +151,8 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def post_compute_contacts_with_metadata(
-        self,
-        response: service.ComputeContactsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ComputeContactsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ComputeContactsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ComputeContactsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_contacts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -176,9 +168,7 @@ class EssentialContactsServiceRestInterceptor:
         return response, metadata
 
     def pre_create_contact(
-        self,
-        request: service.CreateContactRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateContactRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_contact
 
@@ -201,9 +191,7 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def post_create_contact_with_metadata(
-        self,
-        response: service.Contact,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Contact, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Contact, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_contact
 
@@ -220,9 +208,7 @@ class EssentialContactsServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_contact(
-        self,
-        request: service.DeleteContactRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteContactRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_contact
 
@@ -232,9 +218,7 @@ class EssentialContactsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_contact(
-        self,
-        request: service.GetContactRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetContactRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_contact
 
@@ -257,9 +241,7 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def post_get_contact_with_metadata(
-        self,
-        response: service.Contact,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Contact, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Contact, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_contact
 
@@ -276,9 +258,7 @@ class EssentialContactsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_contacts(
-        self,
-        request: service.ListContactsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListContactsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListContactsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_contacts
 
@@ -287,9 +267,7 @@ class EssentialContactsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_contacts(
-        self, response: service.ListContactsResponse
-    ) -> service.ListContactsResponse:
+    def post_list_contacts(self, response: service.ListContactsResponse) -> service.ListContactsResponse:
         """Post-rpc interceptor for list_contacts
 
         DEPRECATED. Please use the `post_list_contacts_with_metadata`
@@ -303,9 +281,7 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def post_list_contacts_with_metadata(
-        self,
-        response: service.ListContactsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListContactsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListContactsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_contacts
 
@@ -322,9 +298,7 @@ class EssentialContactsServiceRestInterceptor:
         return response, metadata
 
     def pre_send_test_message(
-        self,
-        request: service.SendTestMessageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.SendTestMessageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SendTestMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for send_test_message
 
@@ -334,9 +308,7 @@ class EssentialContactsServiceRestInterceptor:
         return request, metadata
 
     def pre_update_contact(
-        self,
-        request: service.UpdateContactRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateContactRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_contact
 
@@ -359,9 +331,7 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def post_update_contact_with_metadata(
-        self,
-        response: service.Contact,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Contact, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Contact, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_contact
 
@@ -457,31 +427,18 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or EssentialContactsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ComputeContacts(
-        _BaseEssentialContactsServiceRestTransport._BaseComputeContacts,
-        EssentialContactsServiceRestStub,
-    ):
+    class _ComputeContacts(_BaseEssentialContactsServiceRestTransport._BaseComputeContacts, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.ComputeContacts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -523,28 +480,16 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_http_options()
 
-            request, metadata = self._interceptor.pre_compute_contacts(
-                request, metadata
-            )
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compute_contacts(request, metadata)
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -567,15 +512,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                EssentialContactsServiceRestTransport._ComputeContacts._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EssentialContactsServiceRestTransport._ComputeContacts._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -591,12 +529,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             resp = self._interceptor.post_compute_contacts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compute_contacts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_contacts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ComputeContactsResponse.to_json(response)
                 except:
@@ -617,23 +551,12 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
             return resp
 
-    class _CreateContact(
-        _BaseEssentialContactsServiceRestTransport._BaseCreateContact,
-        EssentialContactsServiceRestStub,
-    ):
+    class _CreateContact(_BaseEssentialContactsServiceRestTransport._BaseCreateContact, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.CreateContact")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -676,30 +599,18 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_http_options()
 
             request, metadata = self._interceptor.pre_create_contact(request, metadata)
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_transcoded_request(http_options, request)
 
-            body = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -722,16 +633,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                EssentialContactsServiceRestTransport._CreateContact._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = EssentialContactsServiceRestTransport._CreateContact._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -747,12 +650,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             resp = self._interceptor.post_create_contact(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_contact_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_contact_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Contact.to_json(response)
                 except:
@@ -773,23 +672,12 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
             return resp
 
-    class _DeleteContact(
-        _BaseEssentialContactsServiceRestTransport._BaseDeleteContact,
-        EssentialContactsServiceRestStub,
-    ):
+    class _DeleteContact(_BaseEssentialContactsServiceRestTransport._BaseDeleteContact, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.DeleteContact")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -825,26 +713,16 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_contact(request, metadata)
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -867,15 +745,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                EssentialContactsServiceRestTransport._DeleteContact._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EssentialContactsServiceRestTransport._DeleteContact._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -883,23 +754,12 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetContact(
-        _BaseEssentialContactsServiceRestTransport._BaseGetContact,
-        EssentialContactsServiceRestStub,
-    ):
+    class _GetContact(_BaseEssentialContactsServiceRestTransport._BaseGetContact, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.GetContact")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -941,26 +801,16 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_http_options()
 
             request, metadata = self._interceptor.pre_get_contact(request, metadata)
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -984,12 +834,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             # Send the request
             response = EssentialContactsServiceRestTransport._GetContact._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1005,12 +850,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             resp = self._interceptor.post_get_contact(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_contact_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_contact_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Contact.to_json(response)
                 except:
@@ -1031,23 +872,12 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
             return resp
 
-    class _ListContacts(
-        _BaseEssentialContactsServiceRestTransport._BaseListContacts,
-        EssentialContactsServiceRestStub,
-    ):
+    class _ListContacts(_BaseEssentialContactsServiceRestTransport._BaseListContacts, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.ListContacts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1089,26 +919,16 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_contacts(request, metadata)
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1131,15 +951,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                EssentialContactsServiceRestTransport._ListContacts._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EssentialContactsServiceRestTransport._ListContacts._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1155,12 +968,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             resp = self._interceptor.post_list_contacts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_contacts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_contacts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListContactsResponse.to_json(response)
                 except:
@@ -1181,23 +990,12 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
             return resp
 
-    class _SendTestMessage(
-        _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage,
-        EssentialContactsServiceRestStub,
-    ):
+    class _SendTestMessage(_BaseEssentialContactsServiceRestTransport._BaseSendTestMessage, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.SendTestMessage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1234,32 +1032,18 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_http_options()
 
-            request, metadata = self._interceptor.pre_send_test_message(
-                request, metadata
-            )
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_send_test_message(request, metadata)
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_transcoded_request(http_options, request)
 
-            body = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1282,16 +1066,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                EssentialContactsServiceRestTransport._SendTestMessage._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = EssentialContactsServiceRestTransport._SendTestMessage._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1299,23 +1075,12 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _UpdateContact(
-        _BaseEssentialContactsServiceRestTransport._BaseUpdateContact,
-        EssentialContactsServiceRestStub,
-    ):
+    class _UpdateContact(_BaseEssentialContactsServiceRestTransport._BaseUpdateContact, EssentialContactsServiceRestStub):
         def __hash__(self):
             return hash("EssentialContactsServiceRestTransport.UpdateContact")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1358,30 +1123,18 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_http_options()
 
             request, metadata = self._interceptor.pre_update_contact(request, metadata)
-            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_transcoded_request(http_options, request)
 
-            body = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1404,16 +1157,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                EssentialContactsServiceRestTransport._UpdateContact._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = EssentialContactsServiceRestTransport._UpdateContact._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1429,12 +1174,8 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             resp = self._interceptor.post_update_contact(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_contact_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_contact_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Contact.to_json(response)
                 except:
@@ -1456,25 +1197,19 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             return resp
 
     @property
-    def compute_contacts(
-        self,
-    ) -> Callable[[service.ComputeContactsRequest], service.ComputeContactsResponse]:
+    def compute_contacts(self) -> Callable[[service.ComputeContactsRequest], service.ComputeContactsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeContacts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_contact(
-        self,
-    ) -> Callable[[service.CreateContactRequest], service.Contact]:
+    def create_contact(self) -> Callable[[service.CreateContactRequest], service.Contact]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateContact(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_contact(
-        self,
-    ) -> Callable[[service.DeleteContactRequest], empty_pb2.Empty]:
+    def delete_contact(self) -> Callable[[service.DeleteContactRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteContact(self._session, self._host, self._interceptor)  # type: ignore
@@ -1486,25 +1221,19 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
         return self._GetContact(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_contacts(
-        self,
-    ) -> Callable[[service.ListContactsRequest], service.ListContactsResponse]:
+    def list_contacts(self) -> Callable[[service.ListContactsRequest], service.ListContactsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListContacts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def send_test_message(
-        self,
-    ) -> Callable[[service.SendTestMessageRequest], empty_pb2.Empty]:
+    def send_test_message(self) -> Callable[[service.SendTestMessageRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SendTestMessage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_contact(
-        self,
-    ) -> Callable[[service.UpdateContactRequest], service.Contact]:
+    def update_contact(self) -> Callable[[service.UpdateContactRequest], service.Contact]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateContact(self._session, self._host, self._interceptor)  # type: ignore

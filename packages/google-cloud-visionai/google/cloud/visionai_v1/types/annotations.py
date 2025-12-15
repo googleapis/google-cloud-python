@@ -188,12 +188,10 @@ class PersonalProtectiveEquipmentDetectionOutput(proto.Message):
             proto.FLOAT,
             number=3,
         )
-        person_entity: "PersonalProtectiveEquipmentDetectionOutput.PersonEntity" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="PersonalProtectiveEquipmentDetectionOutput.PersonEntity",
-            )
+        person_entity: "PersonalProtectiveEquipmentDetectionOutput.PersonEntity" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="PersonalProtectiveEquipmentDetectionOutput.PersonEntity",
         )
 
     class PPEIdentifiedBox(proto.Message):
@@ -224,12 +222,10 @@ class PersonalProtectiveEquipmentDetectionOutput(proto.Message):
             proto.FLOAT,
             number=3,
         )
-        ppe_entity: "PersonalProtectiveEquipmentDetectionOutput.PPEEntity" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="PersonalProtectiveEquipmentDetectionOutput.PPEEntity",
-            )
+        ppe_entity: "PersonalProtectiveEquipmentDetectionOutput.PPEEntity" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="PersonalProtectiveEquipmentDetectionOutput.PPEEntity",
         )
 
     class DetectedPerson(proto.Message):
@@ -283,9 +279,7 @@ class PersonalProtectiveEquipmentDetectionOutput(proto.Message):
             number=2,
             message="PersonalProtectiveEquipmentDetectionOutput.PersonIdentifiedBox",
         )
-        detected_ppe_identified_boxes: MutableSequence[
-            "PersonalProtectiveEquipmentDetectionOutput.PPEIdentifiedBox"
-        ] = proto.RepeatedField(
+        detected_ppe_identified_boxes: MutableSequence["PersonalProtectiveEquipmentDetectionOutput.PPEIdentifiedBox"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="PersonalProtectiveEquipmentDetectionOutput.PPEIdentifiedBox",
@@ -971,12 +965,10 @@ class OccupancyCountingPredictionResult(proto.Message):
                 number=1,
                 message=timestamp_pb2.Timestamp,
             )
-            object_count: "OccupancyCountingPredictionResult.Stats.ObjectCount" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    message="OccupancyCountingPredictionResult.Stats.ObjectCount",
-                )
+            object_count: "OccupancyCountingPredictionResult.Stats.ObjectCount" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="OccupancyCountingPredictionResult.Stats.ObjectCount",
             )
 
         class CrossingLineCount(proto.Message):
@@ -1002,16 +994,12 @@ class OccupancyCountingPredictionResult(proto.Message):
                 number=1,
                 message="StreamAnnotation",
             )
-            positive_direction_counts: MutableSequence[
-                "OccupancyCountingPredictionResult.Stats.ObjectCount"
-            ] = proto.RepeatedField(
+            positive_direction_counts: MutableSequence["OccupancyCountingPredictionResult.Stats.ObjectCount"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="OccupancyCountingPredictionResult.Stats.ObjectCount",
             )
-            negative_direction_counts: MutableSequence[
-                "OccupancyCountingPredictionResult.Stats.ObjectCount"
-            ] = proto.RepeatedField(
+            negative_direction_counts: MutableSequence["OccupancyCountingPredictionResult.Stats.ObjectCount"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="OccupancyCountingPredictionResult.Stats.ObjectCount",
@@ -1046,31 +1034,23 @@ class OccupancyCountingPredictionResult(proto.Message):
                 number=1,
                 message="StreamAnnotation",
             )
-            counts: MutableSequence[
-                "OccupancyCountingPredictionResult.Stats.ObjectCount"
-            ] = proto.RepeatedField(
+            counts: MutableSequence["OccupancyCountingPredictionResult.Stats.ObjectCount"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="OccupancyCountingPredictionResult.Stats.ObjectCount",
             )
 
-        full_frame_count: MutableSequence[
-            "OccupancyCountingPredictionResult.Stats.ObjectCount"
-        ] = proto.RepeatedField(
+        full_frame_count: MutableSequence["OccupancyCountingPredictionResult.Stats.ObjectCount"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="OccupancyCountingPredictionResult.Stats.ObjectCount",
         )
-        crossing_line_counts: MutableSequence[
-            "OccupancyCountingPredictionResult.Stats.CrossingLineCount"
-        ] = proto.RepeatedField(
+        crossing_line_counts: MutableSequence["OccupancyCountingPredictionResult.Stats.CrossingLineCount"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="OccupancyCountingPredictionResult.Stats.CrossingLineCount",
         )
-        active_zone_counts: MutableSequence[
-            "OccupancyCountingPredictionResult.Stats.ActiveZoneCount"
-        ] = proto.RepeatedField(
+        active_zone_counts: MutableSequence["OccupancyCountingPredictionResult.Stats.ActiveZoneCount"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="OccupancyCountingPredictionResult.Stats.ActiveZoneCount",

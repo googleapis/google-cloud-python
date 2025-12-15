@@ -180,9 +180,7 @@ class ComposeTrigger(proto.Message):
         NONE = 1
         METADATA = 2
 
-    actions: MutableSequence[
-        extension_point.MenuItemExtensionPoint
-    ] = proto.RepeatedField(
+    actions: MutableSequence[extension_point.MenuItemExtensionPoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=extension_point.MenuItemExtensionPoint,

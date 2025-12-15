@@ -614,9 +614,7 @@ class ListFirewallEndpointAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    firewall_endpoint_associations: MutableSequence[
-        "FirewallEndpointAssociation"
-    ] = proto.RepeatedField(
+    firewall_endpoint_associations: MutableSequence["FirewallEndpointAssociation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FirewallEndpointAssociation",

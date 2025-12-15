@@ -469,21 +469,17 @@ class SummarizationEvaluationMetrics(proto.Message):
             oneof="result",
             message="SummarizationEvaluationMetrics.AccuracyDecomposition",
         )
-        adherence_rubric: "SummarizationEvaluationMetrics.AdherenceRubric" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="result",
-                message="SummarizationEvaluationMetrics.AdherenceRubric",
-            )
+        adherence_rubric: "SummarizationEvaluationMetrics.AdherenceRubric" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="result",
+            message="SummarizationEvaluationMetrics.AdherenceRubric",
         )
-        completeness_rubric: "SummarizationEvaluationMetrics.CompletenessRubric" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="result",
-                message="SummarizationEvaluationMetrics.CompletenessRubric",
-            )
+        completeness_rubric: "SummarizationEvaluationMetrics.CompletenessRubric" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="result",
+            message="SummarizationEvaluationMetrics.CompletenessRubric",
         )
 
     class SummarizationEvaluationResult(proto.Message):
@@ -530,16 +526,12 @@ class SummarizationEvaluationMetrics(proto.Message):
             proto.STRING,
             number=6,
         )
-        decompositions: MutableSequence[
-            "SummarizationEvaluationMetrics.Decomposition"
-        ] = proto.RepeatedField(
+        decompositions: MutableSequence["SummarizationEvaluationMetrics.Decomposition"] = proto.RepeatedField(
             proto.MESSAGE,
             number=7,
             message="SummarizationEvaluationMetrics.Decomposition",
         )
-        evaluation_results: MutableSequence[
-            "SummarizationEvaluationMetrics.EvaluationResult"
-        ] = proto.RepeatedField(
+        evaluation_results: MutableSequence["SummarizationEvaluationMetrics.EvaluationResult"] = proto.RepeatedField(
             proto.MESSAGE,
             number=8,
             message="SummarizationEvaluationMetrics.EvaluationResult",
@@ -665,9 +657,7 @@ class SummarizationEvaluationMetrics(proto.Message):
                     proto.STRING,
                     number=4,
                 )
-                evaluation_results: MutableSequence[
-                    "SummarizationEvaluationMetrics.EvaluationResult"
-                ] = proto.RepeatedField(
+                evaluation_results: MutableSequence["SummarizationEvaluationMetrics.EvaluationResult"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=5,
                     message="SummarizationEvaluationMetrics.EvaluationResult",
@@ -682,9 +672,7 @@ class SummarizationEvaluationMetrics(proto.Message):
                 number=2,
                 optional=True,
             )
-            section_details: MutableSequence[
-                "SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail"
-            ] = proto.RepeatedField(
+            section_details: MutableSequence["SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="SummarizationEvaluationMetrics.ConversationDetail.MetricDetail.SectionDetail",
@@ -695,31 +683,23 @@ class SummarizationEvaluationMetrics(proto.Message):
             number=1,
             message=generator.MessageEntry,
         )
-        summary_sections: MutableSequence[
-            generator.SummarySuggestion.SummarySection
-        ] = proto.RepeatedField(
+        summary_sections: MutableSequence[generator.SummarySuggestion.SummarySection] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message=generator.SummarySuggestion.SummarySection,
         )
-        metric_details: MutableSequence[
-            "SummarizationEvaluationMetrics.ConversationDetail.MetricDetail"
-        ] = proto.RepeatedField(
+        metric_details: MutableSequence["SummarizationEvaluationMetrics.ConversationDetail.MetricDetail"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SummarizationEvaluationMetrics.ConversationDetail.MetricDetail",
         )
-        section_tokens: MutableSequence[
-            "SummarizationEvaluationMetrics.SectionToken"
-        ] = proto.RepeatedField(
+        section_tokens: MutableSequence["SummarizationEvaluationMetrics.SectionToken"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="SummarizationEvaluationMetrics.SectionToken",
         )
 
-    summarization_evaluation_results: MutableSequence[
-        SummarizationEvaluationResult
-    ] = proto.RepeatedField(
+    summarization_evaluation_results: MutableSequence[SummarizationEvaluationResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=SummarizationEvaluationResult,
@@ -891,12 +871,10 @@ class GeneratorEvaluationConfig(proto.Message):
             GENERATE_IF_MISSING = 2
             DO_NOT_GENERATE = 3
 
-        input_data_source_type: "GeneratorEvaluationConfig.InputDataSourceType" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="GeneratorEvaluationConfig.InputDataSourceType",
-            )
+        input_data_source_type: "GeneratorEvaluationConfig.InputDataSourceType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="GeneratorEvaluationConfig.InputDataSourceType",
         )
         start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,

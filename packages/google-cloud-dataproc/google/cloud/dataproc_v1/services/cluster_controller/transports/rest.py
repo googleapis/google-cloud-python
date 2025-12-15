@@ -146,9 +146,7 @@ class ClusterControllerRestInterceptor:
     """
 
     def pre_create_cluster(
-        self,
-        request: clusters.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.CreateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cluster
 
@@ -157,9 +155,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
         DEPRECATED. Please use the `post_create_cluster_with_metadata`
@@ -173,9 +169,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_create_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cluster
 
@@ -192,9 +186,7 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_delete_cluster(
-        self,
-        request: clusters.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.DeleteClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cluster
 
@@ -203,9 +195,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
         DEPRECATED. Please use the `post_delete_cluster_with_metadata`
@@ -219,9 +209,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_delete_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cluster
 
@@ -238,12 +226,8 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_diagnose_cluster(
-        self,
-        request: clusters.DiagnoseClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        clusters.DiagnoseClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: clusters.DiagnoseClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[clusters.DiagnoseClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for diagnose_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -251,9 +235,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_diagnose_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_diagnose_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for diagnose_cluster
 
         DEPRECATED. Please use the `post_diagnose_cluster_with_metadata`
@@ -267,9 +249,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_diagnose_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for diagnose_cluster
 
@@ -286,9 +266,7 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_get_cluster(
-        self,
-        request: clusters.GetClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.GetClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
@@ -311,9 +289,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_get_cluster_with_metadata(
-        self,
-        response: clusters.Cluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: clusters.Cluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cluster
 
@@ -330,9 +306,7 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_list_clusters(
-        self,
-        request: clusters.ListClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.ListClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clusters
 
@@ -341,9 +315,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_clusters(
-        self, response: clusters.ListClustersResponse
-    ) -> clusters.ListClustersResponse:
+    def post_list_clusters(self, response: clusters.ListClustersResponse) -> clusters.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
         DEPRECATED. Please use the `post_list_clusters_with_metadata`
@@ -357,9 +329,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_list_clusters_with_metadata(
-        self,
-        response: clusters.ListClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: clusters.ListClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_clusters
 
@@ -376,9 +346,7 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_start_cluster(
-        self,
-        request: clusters.StartClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.StartClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.StartClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_cluster
 
@@ -387,9 +355,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_start_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_cluster
 
         DEPRECATED. Please use the `post_start_cluster_with_metadata`
@@ -403,9 +369,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_start_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_cluster
 
@@ -422,9 +386,7 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_stop_cluster(
-        self,
-        request: clusters.StopClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.StopClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.StopClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_cluster
 
@@ -433,9 +395,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_cluster
 
         DEPRECATED. Please use the `post_stop_cluster_with_metadata`
@@ -449,9 +409,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_stop_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_cluster
 
@@ -468,9 +426,7 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_update_cluster(
-        self,
-        request: clusters.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: clusters.UpdateClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[clusters.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cluster
 
@@ -479,9 +435,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
         DEPRECATED. Please use the `post_update_cluster_with_metadata`
@@ -495,9 +449,7 @@ class ClusterControllerRestInterceptor:
         return response
 
     def post_update_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cluster
 
@@ -514,12 +466,8 @@ class ClusterControllerRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -537,12 +485,8 @@ class ClusterControllerRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -560,13 +504,8 @@ class ClusterControllerRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -574,9 +513,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -586,12 +523,8 @@ class ClusterControllerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -609,12 +542,8 @@ class ClusterControllerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -632,12 +561,8 @@ class ClusterControllerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -645,9 +570,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -657,12 +580,8 @@ class ClusterControllerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +589,7 @@ class ClusterControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -762,9 +679,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -832,30 +747,17 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateCluster(
-        _BaseClusterControllerRestTransport._BaseCreateCluster,
-        ClusterControllerRestStub,
-    ):
+    class _CreateCluster(_BaseClusterControllerRestTransport._BaseCreateCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.CreateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -898,30 +800,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseCreateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseCreateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseCreateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseCreateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseCreateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseCreateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -945,13 +835,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._CreateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -965,12 +849,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_create_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -991,23 +871,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _DeleteCluster(
-        _BaseClusterControllerRestTransport._BaseDeleteCluster,
-        ClusterControllerRestStub,
-    ):
+    class _DeleteCluster(_BaseClusterControllerRestTransport._BaseDeleteCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.DeleteCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1049,26 +918,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1092,12 +951,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._DeleteCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1111,12 +965,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_delete_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1137,23 +987,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _DiagnoseCluster(
-        _BaseClusterControllerRestTransport._BaseDiagnoseCluster,
-        ClusterControllerRestStub,
-    ):
+    class _DiagnoseCluster(_BaseClusterControllerRestTransport._BaseDiagnoseCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.DiagnoseCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1197,32 +1036,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_diagnose_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_diagnose_cluster(request, metadata)
+            transcoded_request = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1246,13 +1071,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._DiagnoseCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1266,12 +1085,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_diagnose_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_diagnose_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_diagnose_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1292,22 +1107,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _GetCluster(
-        _BaseClusterControllerRestTransport._BaseGetCluster, ClusterControllerRestStub
-    ):
+    class _GetCluster(_BaseClusterControllerRestTransport._BaseGetCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.GetCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1351,26 +1156,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseGetCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseGetCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseGetCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseGetCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseGetCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseGetCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1394,12 +1189,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._GetCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1415,12 +1205,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_get_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = clusters.Cluster.to_json(response)
                 except:
@@ -1441,22 +1227,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _ListClusters(
-        _BaseClusterControllerRestTransport._BaseListClusters, ClusterControllerRestStub
-    ):
+    class _ListClusters(_BaseClusterControllerRestTransport._BaseListClusters, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.ListClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1498,26 +1274,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseListClusters._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseListClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseListClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseListClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1541,12 +1307,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._ListClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1562,12 +1323,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_list_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = clusters.ListClustersResponse.to_json(response)
                 except:
@@ -1588,22 +1345,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _StartCluster(
-        _BaseClusterControllerRestTransport._BaseStartCluster, ClusterControllerRestStub
-    ):
+    class _StartCluster(_BaseClusterControllerRestTransport._BaseStartCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.StartCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1646,30 +1393,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseStartCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseStartCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_start_cluster(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseStartCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseStartCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseStartCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseStartCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseStartCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseStartCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1693,13 +1428,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._StartCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1713,12 +1442,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_start_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1739,22 +1464,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _StopCluster(
-        _BaseClusterControllerRestTransport._BaseStopCluster, ClusterControllerRestStub
-    ):
+    class _StopCluster(_BaseClusterControllerRestTransport._BaseStopCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.StopCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1797,30 +1512,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseStopCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseStopCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_cluster(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseStopCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseStopCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseStopCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseStopCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseStopCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseStopCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1844,13 +1547,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._StopCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1864,12 +1561,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_stop_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1890,23 +1583,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 )
             return resp
 
-    class _UpdateCluster(
-        _BaseClusterControllerRestTransport._BaseUpdateCluster,
-        ClusterControllerRestStub,
-    ):
+    class _UpdateCluster(_BaseClusterControllerRestTransport._BaseUpdateCluster, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.UpdateCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1949,30 +1631,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1996,13 +1666,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._UpdateCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2016,12 +1680,8 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             resp = self._interceptor.post_update_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2043,25 +1703,19 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             return resp
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[clusters.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[clusters.CreateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[clusters.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[clusters.DeleteClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def diagnose_cluster(
-        self,
-    ) -> Callable[[clusters.DiagnoseClusterRequest], operations_pb2.Operation]:
+    def diagnose_cluster(self) -> Callable[[clusters.DiagnoseClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiagnoseCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -2073,33 +1727,25 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[[clusters.ListClustersRequest], clusters.ListClustersResponse]:
+    def list_clusters(self) -> Callable[[clusters.ListClustersRequest], clusters.ListClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_cluster(
-        self,
-    ) -> Callable[[clusters.StartClusterRequest], operations_pb2.Operation]:
+    def start_cluster(self) -> Callable[[clusters.StartClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_cluster(
-        self,
-    ) -> Callable[[clusters.StopClusterRequest], operations_pb2.Operation]:
+    def stop_cluster(self) -> Callable[[clusters.StopClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[clusters.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[clusters.UpdateClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -2108,22 +1754,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseClusterControllerRestTransport._BaseGetIamPolicy, ClusterControllerRestStub
-    ):
+    class _GetIamPolicy(_BaseClusterControllerRestTransport._BaseGetIamPolicy, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2162,30 +1798,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2209,13 +1833,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2227,9 +1845,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2254,22 +1870,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseClusterControllerRestTransport._BaseSetIamPolicy, ClusterControllerRestStub
-    ):
+    class _SetIamPolicy(_BaseClusterControllerRestTransport._BaseSetIamPolicy, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2308,30 +1914,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2355,13 +1949,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2373,9 +1961,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2400,23 +1986,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseClusterControllerRestTransport._BaseTestIamPermissions,
-        ClusterControllerRestStub,
-    ):
+    class _TestIamPermissions(_BaseClusterControllerRestTransport._BaseTestIamPermissions, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2455,32 +2030,18 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2504,13 +2065,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2522,9 +2077,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2549,23 +2102,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseClusterControllerRestTransport._BaseCancelOperation,
-        ClusterControllerRestStub,
-    ):
+    class _CancelOperation(_BaseClusterControllerRestTransport._BaseCancelOperation, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2600,28 +2142,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterControllerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseClusterControllerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2645,12 +2175,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2664,23 +2189,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseClusterControllerRestTransport._BaseDeleteOperation,
-        ClusterControllerRestStub,
-    ):
+    class _DeleteOperation(_BaseClusterControllerRestTransport._BaseDeleteOperation, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2715,28 +2229,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseClusterControllerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseClusterControllerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2760,12 +2262,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2779,22 +2276,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseClusterControllerRestTransport._BaseGetOperation, ClusterControllerRestStub
-    ):
+    class _GetOperation(_BaseClusterControllerRestTransport._BaseGetOperation, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2832,26 +2319,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2875,12 +2352,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2892,9 +2364,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2919,23 +2389,12 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseClusterControllerRestTransport._BaseListOperations,
-        ClusterControllerRestStub,
-    ):
+    class _ListOperations(_BaseClusterControllerRestTransport._BaseListOperations, ClusterControllerRestStub):
         def __hash__(self):
             return hash("ClusterControllerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2973,26 +2432,16 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseClusterControllerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClusterControllerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClusterControllerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClusterControllerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3016,12 +2465,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             # Send the request
             response = ClusterControllerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3033,9 +2477,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

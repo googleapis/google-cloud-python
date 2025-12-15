@@ -18,9 +18,7 @@ from google.cloud.datastream import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.datastream_v1.services.datastream.async_client import (
-    DatastreamAsyncClient,
-)
+from google.cloud.datastream_v1.services.datastream.async_client import DatastreamAsyncClient
 from google.cloud.datastream_v1.services.datastream.client import DatastreamClient
 from google.cloud.datastream_v1.types.datastream import (
     CreateConnectionProfileRequest,

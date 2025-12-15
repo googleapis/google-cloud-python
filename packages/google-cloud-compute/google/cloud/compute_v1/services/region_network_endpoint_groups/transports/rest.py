@@ -135,13 +135,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
     """
 
     def pre_attach_network_endpoints(
-        self,
-        request: compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for attach_network_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +144,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_attach_network_endpoints(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_attach_network_endpoints(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for attach_network_endpoints
 
         DEPRECATED. Please use the `post_attach_network_endpoints_with_metadata`
@@ -165,9 +158,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_attach_network_endpoints_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for attach_network_endpoints
 
@@ -184,13 +175,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteRegionNetworkEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionNetworkEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -212,9 +198,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -231,13 +215,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response, metadata
 
     def pre_detach_network_endpoints(
-        self,
-        request: compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for detach_network_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -245,9 +224,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_detach_network_endpoints(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_detach_network_endpoints(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for detach_network_endpoints
 
         DEPRECATED. Please use the `post_detach_network_endpoints_with_metadata`
@@ -261,9 +238,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_detach_network_endpoints_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for detach_network_endpoints
 
@@ -280,13 +255,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetRegionNetworkEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionNetworkEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +264,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.NetworkEndpointGroup
-    ) -> compute.NetworkEndpointGroup:
+    def post_get(self, response: compute.NetworkEndpointGroup) -> compute.NetworkEndpointGroup:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -310,9 +278,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.NetworkEndpointGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NetworkEndpointGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NetworkEndpointGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -329,13 +295,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertRegionNetworkEndpointGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionNetworkEndpointGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +318,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -376,13 +335,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionNetworkEndpointGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionNetworkEndpointGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListRegionNetworkEndpointGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionNetworkEndpointGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -390,9 +344,7 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.NetworkEndpointGroupList
-    ) -> compute.NetworkEndpointGroupList:
+    def post_list(self, response: compute.NetworkEndpointGroupList) -> compute.NetworkEndpointGroupList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -406,12 +358,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.NetworkEndpointGroupList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NetworkEndpointGroupList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.NetworkEndpointGroupList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NetworkEndpointGroupList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -427,13 +375,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response, metadata
 
     def pre_list_network_endpoints(
-        self,
-        request: compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_network_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -457,13 +400,8 @@ class RegionNetworkEndpointGroupsRestInterceptor:
         return response
 
     def post_list_network_endpoints_with_metadata(
-        self,
-        response: compute.NetworkEndpointGroupsListNetworkEndpoints,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NetworkEndpointGroupsListNetworkEndpoints,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.NetworkEndpointGroupsListNetworkEndpoints, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NetworkEndpointGroupsListNetworkEndpoints, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_network_endpoints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -486,9 +424,7 @@ class RegionNetworkEndpointGroupsRestStub:
     _interceptor: RegionNetworkEndpointGroupsRestInterceptor
 
 
-class RegionNetworkEndpointGroupsRestTransport(
-    _BaseRegionNetworkEndpointGroupsRestTransport
-):
+class RegionNetworkEndpointGroupsRestTransport(_BaseRegionNetworkEndpointGroupsRestTransport):
     """REST backend synchronous transport for RegionNetworkEndpointGroups.
 
     The RegionNetworkEndpointGroups API.
@@ -564,33 +500,18 @@ class RegionNetworkEndpointGroupsRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionNetworkEndpointGroupsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AttachNetworkEndpoints(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _AttachNetworkEndpoints(_BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
-            return hash(
-                "RegionNetworkEndpointGroupsRestTransport.AttachNetworkEndpoints"
-            )
+            return hash("RegionNetworkEndpointGroupsRestTransport.AttachNetworkEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -649,32 +570,20 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_http_options()
 
-            request, metadata = self._interceptor.pre_attach_network_endpoints(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_attach_network_endpoints(request, metadata)
             transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -698,13 +607,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._AttachNetworkEndpoints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -720,12 +623,8 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             resp = self._interceptor.post_attach_network_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_attach_network_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_attach_network_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -746,23 +645,12 @@ class RegionNetworkEndpointGroupsRestTransport(
                 )
             return resp
 
-    class _Delete(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _Delete(_BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("RegionNetworkEndpointGroupsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -820,26 +708,16 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -863,12 +741,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -884,12 +757,8 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -910,25 +779,12 @@ class RegionNetworkEndpointGroupsRestTransport(
                 )
             return resp
 
-    class _DetachNetworkEndpoints(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _DetachNetworkEndpoints(_BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
-            return hash(
-                "RegionNetworkEndpointGroupsRestTransport.DetachNetworkEndpoints"
-            )
+            return hash("RegionNetworkEndpointGroupsRestTransport.DetachNetworkEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -987,32 +843,20 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_http_options()
 
-            request, metadata = self._interceptor.pre_detach_network_endpoints(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_detach_network_endpoints(request, metadata)
             transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1036,13 +880,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._DetachNetworkEndpoints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1058,12 +896,8 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             resp = self._interceptor.post_detach_network_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_detach_network_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_detach_network_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1084,23 +918,12 @@ class RegionNetworkEndpointGroupsRestTransport(
                 )
             return resp
 
-    class _Get(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _Get(_BaseRegionNetworkEndpointGroupsRestTransport._BaseGet, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("RegionNetworkEndpointGroupsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1149,26 +972,16 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1192,12 +1005,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1214,9 +1022,7 @@ class RegionNetworkEndpointGroupsRestTransport(
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NetworkEndpointGroup.to_json(response)
                 except:
@@ -1237,23 +1043,12 @@ class RegionNetworkEndpointGroupsRestTransport(
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _Insert(_BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("RegionNetworkEndpointGroupsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1312,30 +1107,18 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1359,13 +1142,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1381,12 +1158,8 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1407,23 +1180,12 @@ class RegionNetworkEndpointGroupsRestTransport(
                 )
             return resp
 
-    class _List(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseList,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _List(_BaseRegionNetworkEndpointGroupsRestTransport._BaseList, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("RegionNetworkEndpointGroupsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1464,26 +1226,16 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1507,12 +1259,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1529,13 +1276,9 @@ class RegionNetworkEndpointGroupsRestTransport(
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.NetworkEndpointGroupList.to_json(
-                        response
-                    )
+                    response_payload = compute.NetworkEndpointGroupList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1554,23 +1297,12 @@ class RegionNetworkEndpointGroupsRestTransport(
                 )
             return resp
 
-    class _ListNetworkEndpoints(
-        _BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints,
-        RegionNetworkEndpointGroupsRestStub,
-    ):
+    class _ListNetworkEndpoints(_BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints, RegionNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("RegionNetworkEndpointGroupsRestTransport.ListNetworkEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1611,28 +1343,18 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_http_options()
-            )
+            http_options = _BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_network_endpoints(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_network_endpoints(request, metadata)
             transcoded_request = _BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1656,12 +1378,7 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             # Send the request
             response = RegionNetworkEndpointGroupsRestTransport._ListNetworkEndpoints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1677,18 +1394,10 @@ class RegionNetworkEndpointGroupsRestTransport(
 
             resp = self._interceptor.post_list_network_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_network_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_network_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.NetworkEndpointGroupsListNetworkEndpoints.to_json(
-                            response
-                        )
-                    )
+                    response_payload = compute.NetworkEndpointGroupsListNetworkEndpoints.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1708,60 +1417,37 @@ class RegionNetworkEndpointGroupsRestTransport(
             return resp
 
     @property
-    def attach_network_endpoints(
-        self,
-    ) -> Callable[
-        [compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest],
-        compute.Operation,
-    ]:
+    def attach_network_endpoints(self) -> Callable[[compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AttachNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionNetworkEndpointGroupRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionNetworkEndpointGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def detach_network_endpoints(
-        self,
-    ) -> Callable[
-        [compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest],
-        compute.Operation,
-    ]:
+    def detach_network_endpoints(self) -> Callable[[compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DetachNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetRegionNetworkEndpointGroupRequest], compute.NetworkEndpointGroup
-    ]:
+    def get(self) -> Callable[[compute.GetRegionNetworkEndpointGroupRequest], compute.NetworkEndpointGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionNetworkEndpointGroupRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionNetworkEndpointGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionNetworkEndpointGroupsRequest],
-        compute.NetworkEndpointGroupList,
-    ]:
+    def list(self) -> Callable[[compute.ListRegionNetworkEndpointGroupsRequest], compute.NetworkEndpointGroupList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
@@ -1769,10 +1455,7 @@ class RegionNetworkEndpointGroupsRestTransport(
     @property
     def list_network_endpoints(
         self,
-    ) -> Callable[
-        [compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest],
-        compute.NetworkEndpointGroupsListNetworkEndpoints,
-    ]:
+    ) -> Callable[[compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest], compute.NetworkEndpointGroupsListNetworkEndpoints]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore

@@ -108,13 +108,8 @@ class ProductReviewsServiceRestInterceptor:
     """
 
     def pre_delete_product_review(
-        self,
-        request: productreviews.DeleteProductReviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productreviews.DeleteProductReviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: productreviews.DeleteProductReviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productreviews.DeleteProductReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_product_review
 
         Override in a subclass to manipulate the request or metadata
@@ -123,12 +118,8 @@ class ProductReviewsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_product_review(
-        self,
-        request: productreviews.GetProductReviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productreviews.GetProductReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: productreviews.GetProductReviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productreviews.GetProductReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_product_review
 
         Override in a subclass to manipulate the request or metadata
@@ -136,9 +127,7 @@ class ProductReviewsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_product_review(
-        self, response: productreviews.ProductReview
-    ) -> productreviews.ProductReview:
+    def post_get_product_review(self, response: productreviews.ProductReview) -> productreviews.ProductReview:
         """Post-rpc interceptor for get_product_review
 
         DEPRECATED. Please use the `post_get_product_review_with_metadata`
@@ -152,9 +141,7 @@ class ProductReviewsServiceRestInterceptor:
         return response
 
     def post_get_product_review_with_metadata(
-        self,
-        response: productreviews.ProductReview,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: productreviews.ProductReview, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[productreviews.ProductReview, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_product_review
 
@@ -171,13 +158,8 @@ class ProductReviewsServiceRestInterceptor:
         return response, metadata
 
     def pre_insert_product_review(
-        self,
-        request: productreviews.InsertProductReviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productreviews.InsertProductReviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: productreviews.InsertProductReviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productreviews.InsertProductReviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_product_review
 
         Override in a subclass to manipulate the request or metadata
@@ -185,9 +167,7 @@ class ProductReviewsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_product_review(
-        self, response: productreviews.ProductReview
-    ) -> productreviews.ProductReview:
+    def post_insert_product_review(self, response: productreviews.ProductReview) -> productreviews.ProductReview:
         """Post-rpc interceptor for insert_product_review
 
         DEPRECATED. Please use the `post_insert_product_review_with_metadata`
@@ -201,9 +181,7 @@ class ProductReviewsServiceRestInterceptor:
         return response
 
     def post_insert_product_review_with_metadata(
-        self,
-        response: productreviews.ProductReview,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: productreviews.ProductReview, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[productreviews.ProductReview, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_product_review
 
@@ -220,13 +198,8 @@ class ProductReviewsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_product_reviews(
-        self,
-        request: productreviews.ListProductReviewsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productreviews.ListProductReviewsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: productreviews.ListProductReviewsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productreviews.ListProductReviewsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_product_reviews
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +207,7 @@ class ProductReviewsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_product_reviews(
-        self, response: productreviews.ListProductReviewsResponse
-    ) -> productreviews.ListProductReviewsResponse:
+    def post_list_product_reviews(self, response: productreviews.ListProductReviewsResponse) -> productreviews.ListProductReviewsResponse:
         """Post-rpc interceptor for list_product_reviews
 
         DEPRECATED. Please use the `post_list_product_reviews_with_metadata`
@@ -250,13 +221,8 @@ class ProductReviewsServiceRestInterceptor:
         return response
 
     def post_list_product_reviews_with_metadata(
-        self,
-        response: productreviews.ListProductReviewsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productreviews.ListProductReviewsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: productreviews.ListProductReviewsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productreviews.ListProductReviewsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_product_reviews
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -351,31 +317,18 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ProductReviewsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteProductReview(
-        _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview,
-        ProductReviewsServiceRestStub,
-    ):
+    class _DeleteProductReview(_BaseProductReviewsServiceRestTransport._BaseDeleteProductReview, ProductReviewsServiceRestStub):
         def __hash__(self):
             return hash("ProductReviewsServiceRestTransport.DeleteProductReview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -410,28 +363,16 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_http_options()
-            )
+            http_options = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_product_review(
-                request, metadata
-            )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_product_review(request, metadata)
+            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductReviewsServiceRestTransport._BaseDeleteProductReview._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -454,15 +395,8 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                ProductReviewsServiceRestTransport._DeleteProductReview._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ProductReviewsServiceRestTransport._DeleteProductReview._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -470,23 +404,12 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetProductReview(
-        _BaseProductReviewsServiceRestTransport._BaseGetProductReview,
-        ProductReviewsServiceRestStub,
-    ):
+    class _GetProductReview(_BaseProductReviewsServiceRestTransport._BaseGetProductReview, ProductReviewsServiceRestStub):
         def __hash__(self):
             return hash("ProductReviewsServiceRestTransport.GetProductReview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -529,28 +452,16 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_http_options()
-            )
+            http_options = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_product_review(
-                request, metadata
-            )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_product_review(request, metadata)
+            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductReviewsServiceRestTransport._BaseGetProductReview._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -573,15 +484,8 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                ProductReviewsServiceRestTransport._GetProductReview._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ProductReviewsServiceRestTransport._GetProductReview._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -597,12 +501,8 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             resp = self._interceptor.post_get_product_review(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_product_review_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_product_review_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = productreviews.ProductReview.to_json(response)
                 except:
@@ -623,23 +523,12 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                 )
             return resp
 
-    class _InsertProductReview(
-        _BaseProductReviewsServiceRestTransport._BaseInsertProductReview,
-        ProductReviewsServiceRestStub,
-    ):
+    class _InsertProductReview(_BaseProductReviewsServiceRestTransport._BaseInsertProductReview, ProductReviewsServiceRestStub):
         def __hash__(self):
             return hash("ProductReviewsServiceRestTransport.InsertProductReview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -682,32 +571,18 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_http_options()
-            )
+            http_options = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_product_review(
-                request, metadata
-            )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_product_review(request, metadata)
+            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_transcoded_request(http_options, request)
 
-            body = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductReviewsServiceRestTransport._BaseInsertProductReview._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -730,16 +605,8 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                ProductReviewsServiceRestTransport._InsertProductReview._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ProductReviewsServiceRestTransport._InsertProductReview._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -755,12 +622,8 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             resp = self._interceptor.post_insert_product_review(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_product_review_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_product_review_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = productreviews.ProductReview.to_json(response)
                 except:
@@ -781,23 +644,12 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                 )
             return resp
 
-    class _ListProductReviews(
-        _BaseProductReviewsServiceRestTransport._BaseListProductReviews,
-        ProductReviewsServiceRestStub,
-    ):
+    class _ListProductReviews(_BaseProductReviewsServiceRestTransport._BaseListProductReviews, ProductReviewsServiceRestStub):
         def __hash__(self):
             return hash("ProductReviewsServiceRestTransport.ListProductReviews")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -839,28 +691,16 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_http_options()
-            )
+            http_options = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_product_reviews(
-                request, metadata
-            )
-            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_product_reviews(request, metadata)
+            transcoded_request = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductReviewsServiceRestTransport._BaseListProductReviews._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -883,15 +723,8 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                ProductReviewsServiceRestTransport._ListProductReviews._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ProductReviewsServiceRestTransport._ListProductReviews._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -907,16 +740,10 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             resp = self._interceptor.post_list_product_reviews(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_product_reviews_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_product_reviews_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        productreviews.ListProductReviewsResponse.to_json(response)
-                    )
+                    response_payload = productreviews.ListProductReviewsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -936,40 +763,25 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
             return resp
 
     @property
-    def delete_product_review(
-        self,
-    ) -> Callable[[productreviews.DeleteProductReviewRequest], empty_pb2.Empty]:
+    def delete_product_review(self) -> Callable[[productreviews.DeleteProductReviewRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProductReview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_product_review(
-        self,
-    ) -> Callable[
-        [productreviews.GetProductReviewRequest], productreviews.ProductReview
-    ]:
+    def get_product_review(self) -> Callable[[productreviews.GetProductReviewRequest], productreviews.ProductReview]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProductReview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_product_review(
-        self,
-    ) -> Callable[
-        [productreviews.InsertProductReviewRequest], productreviews.ProductReview
-    ]:
+    def insert_product_review(self) -> Callable[[productreviews.InsertProductReviewRequest], productreviews.ProductReview]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertProductReview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_product_reviews(
-        self,
-    ) -> Callable[
-        [productreviews.ListProductReviewsRequest],
-        productreviews.ListProductReviewsResponse,
-    ]:
+    def list_product_reviews(self) -> Callable[[productreviews.ListProductReviewsRequest], productreviews.ListProductReviewsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProductReviews(self._session, self._host, self._interceptor)  # type: ignore

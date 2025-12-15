@@ -25,9 +25,7 @@ from google.cloud.compute_v1beta.types import compute
 from .base import DEFAULT_CLIENT_INFO, RegionNetworkFirewallPoliciesTransport
 
 
-class _BaseRegionNetworkFirewallPoliciesRestTransport(
-    RegionNetworkFirewallPoliciesTransport
-):
+class _BaseRegionNetworkFirewallPoliciesRestTransport(RegionNetworkFirewallPoliciesTransport):
     """Base REST backend transport for RegionNetworkFirewallPolicies.
 
     Note: This class is not meant to be used directly. Use its sync and
@@ -73,20 +71,14 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAddAssociation:
@@ -97,11 +89,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -116,9 +104,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.AddAssociationRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.AddAssociationRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -126,9 +112,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -139,11 +123,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -155,11 +135,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -182,9 +158,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -195,11 +169,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddRule._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -211,11 +181,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -229,9 +195,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.CloneRulesRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.CloneRulesRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -243,11 +207,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -259,11 +219,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -289,11 +245,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseDelete._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseDelete._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -305,11 +257,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -335,11 +283,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseGet._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -351,11 +295,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -369,9 +309,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.GetAssociationRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.GetAssociationRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -383,11 +321,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -401,11 +335,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -419,11 +349,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                compute.GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest.pb(
-                    request
-                )
-            )
+            pb_request = compute.GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -435,11 +361,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetEffectiveFirewalls._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetEffectiveFirewalls._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -451,11 +373,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -469,9 +387,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.GetIamPolicyRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.GetIamPolicyRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -483,11 +399,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -499,11 +411,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -529,11 +437,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetRule._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -545,11 +449,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -572,9 +472,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -585,11 +483,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseInsert._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseInsert._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -601,11 +495,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -631,11 +521,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseList._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseList._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -647,11 +533,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -674,9 +556,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -687,11 +567,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatch._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BasePatch._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -703,11 +579,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -722,9 +594,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.PatchAssociationRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.PatchAssociationRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -732,9 +602,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -745,11 +613,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchAssociation._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -761,11 +625,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -788,9 +648,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -801,11 +659,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchRule._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -817,11 +671,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -835,9 +685,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.RemoveAssociationRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.RemoveAssociationRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -849,11 +697,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveAssociation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveAssociation._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -865,11 +709,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -883,9 +723,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.RemoveRuleRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.RemoveRuleRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -897,11 +735,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -913,11 +747,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -932,9 +762,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.SetIamPolicyRegionNetworkFirewallPolicyRequest.pb(
-                request
-            )
+            pb_request = compute.SetIamPolicyRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -942,9 +770,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -955,11 +781,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -971,11 +793,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -990,9 +808,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                compute.TestIamPermissionsRegionNetworkFirewallPolicyRequest.pb(request)
-            )
+            pb_request = compute.TestIamPermissionsRegionNetworkFirewallPolicyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1000,9 +816,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1013,11 +827,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseTestIamPermissions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseRegionNetworkFirewallPoliciesRestTransport._BaseTestIamPermissions._get_unset_required_fields(query_params))
 
             return query_params
 

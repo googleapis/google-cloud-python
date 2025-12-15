@@ -91,9 +91,7 @@ class ListDiscoveredApiObservationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_api_observations: MutableSequence[
-        common_fields.DiscoveredApiObservation
-    ] = proto.RepeatedField(
+    discovered_api_observations: MutableSequence[common_fields.DiscoveredApiObservation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common_fields.DiscoveredApiObservation,
@@ -158,9 +156,7 @@ class ListDiscoveredApiOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_api_operations: MutableSequence[
-        common_fields.DiscoveredApiOperation
-    ] = proto.RepeatedField(
+    discovered_api_operations: MutableSequence[common_fields.DiscoveredApiOperation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common_fields.DiscoveredApiOperation,

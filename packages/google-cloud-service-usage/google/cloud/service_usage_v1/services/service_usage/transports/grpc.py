@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +214,14 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +255,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -337,17 +322,13 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def enable_service(
-        self,
-    ) -> Callable[[serviceusage.EnableServiceRequest], operations_pb2.Operation]:
+    def enable_service(self) -> Callable[[serviceusage.EnableServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the enable service method over gRPC.
 
         Enable a service so that it can be used with a
@@ -372,9 +353,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
         return self._stubs["enable_service"]
 
     @property
-    def disable_service(
-        self,
-    ) -> Callable[[serviceusage.DisableServiceRequest], operations_pb2.Operation]:
+    def disable_service(self) -> Callable[[serviceusage.DisableServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the disable service method over gRPC.
 
         Disable a service so that it can no longer be used with a
@@ -405,9 +384,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
         return self._stubs["disable_service"]
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[[serviceusage.GetServiceRequest], resources.Service]:
+    def get_service(self) -> Callable[[serviceusage.GetServiceRequest], resources.Service]:
         r"""Return a callable for the get service method over gRPC.
 
         Returns the service configuration and enabled state
@@ -432,11 +409,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
         return self._stubs["get_service"]
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[
-        [serviceusage.ListServicesRequest], serviceusage.ListServicesResponse
-    ]:
+    def list_services(self) -> Callable[[serviceusage.ListServicesRequest], serviceusage.ListServicesResponse]:
         r"""Return a callable for the list services method over gRPC.
 
         List all services available to the specified project, and the
@@ -473,9 +446,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
         return self._stubs["list_services"]
 
     @property
-    def batch_enable_services(
-        self,
-    ) -> Callable[[serviceusage.BatchEnableServicesRequest], operations_pb2.Operation]:
+    def batch_enable_services(self) -> Callable[[serviceusage.BatchEnableServicesRequest], operations_pb2.Operation]:
         r"""Return a callable for the batch enable services method over gRPC.
 
         Enable multiple services on a project. The operation is atomic:
@@ -502,11 +473,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
         return self._stubs["batch_enable_services"]
 
     @property
-    def batch_get_services(
-        self,
-    ) -> Callable[
-        [serviceusage.BatchGetServicesRequest], serviceusage.BatchGetServicesResponse
-    ]:
+    def batch_get_services(self) -> Callable[[serviceusage.BatchGetServicesRequest], serviceusage.BatchGetServicesResponse]:
         r"""Return a callable for the batch get services method over gRPC.
 
         Returns the service configurations and enabled states
@@ -553,9 +520,7 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

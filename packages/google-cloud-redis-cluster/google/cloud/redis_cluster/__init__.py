@@ -18,12 +18,8 @@ from google.cloud.redis_cluster import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.redis_cluster_v1.services.cloud_redis_cluster.async_client import (
-    CloudRedisClusterAsyncClient,
-)
-from google.cloud.redis_cluster_v1.services.cloud_redis_cluster.client import (
-    CloudRedisClusterClient,
-)
+from google.cloud.redis_cluster_v1.services.cloud_redis_cluster.async_client import CloudRedisClusterAsyncClient
+from google.cloud.redis_cluster_v1.services.cloud_redis_cluster.client import CloudRedisClusterClient
 from google.cloud.redis_cluster_v1.types.cloud_redis_cluster import (
     AuthorizationMode,
     AutomatedBackupConfig,

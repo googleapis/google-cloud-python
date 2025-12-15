@@ -18,12 +18,8 @@ from google.cloud.parallelstore import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.parallelstore_v1beta.services.parallelstore.async_client import (
-    ParallelstoreAsyncClient,
-)
-from google.cloud.parallelstore_v1beta.services.parallelstore.client import (
-    ParallelstoreClient,
-)
+from google.cloud.parallelstore_v1beta.services.parallelstore.async_client import ParallelstoreAsyncClient
+from google.cloud.parallelstore_v1beta.services.parallelstore.client import ParallelstoreClient
 from google.cloud.parallelstore_v1beta.types.parallelstore import (
     CreateInstanceRequest,
     DeleteInstanceRequest,

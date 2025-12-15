@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class MonitoringGrpcTransport(MonitoringTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -326,10 +311,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
     @property
     def list_framework_compliance_summaries(
         self,
-    ) -> Callable[
-        [monitoring.ListFrameworkComplianceSummariesRequest],
-        monitoring.ListFrameworkComplianceSummariesResponse,
-    ]:
+    ) -> Callable[[monitoring.ListFrameworkComplianceSummariesRequest], monitoring.ListFrameworkComplianceSummariesResponse]:
         r"""Return a callable for the list framework compliance
         summaries method over gRPC.
 
@@ -347,9 +329,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_framework_compliance_summaries" not in self._stubs:
-            self._stubs[
-                "list_framework_compliance_summaries"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_framework_compliance_summaries"] = self._logged_channel.unary_unary(
                 "/google.cloud.cloudsecuritycompliance.v1.Monitoring/ListFrameworkComplianceSummaries",
                 request_serializer=monitoring.ListFrameworkComplianceSummariesRequest.serialize,
                 response_deserializer=monitoring.ListFrameworkComplianceSummariesResponse.deserialize,
@@ -357,12 +337,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
         return self._stubs["list_framework_compliance_summaries"]
 
     @property
-    def list_finding_summaries(
-        self,
-    ) -> Callable[
-        [monitoring.ListFindingSummariesRequest],
-        monitoring.ListFindingSummariesResponse,
-    ]:
+    def list_finding_summaries(self) -> Callable[[monitoring.ListFindingSummariesRequest], monitoring.ListFindingSummariesResponse]:
         r"""Return a callable for the list finding summaries method over gRPC.
 
         Lists the finding summary by category for a given
@@ -387,12 +362,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
         return self._stubs["list_finding_summaries"]
 
     @property
-    def fetch_framework_compliance_report(
-        self,
-    ) -> Callable[
-        [monitoring.FetchFrameworkComplianceReportRequest],
-        monitoring.FrameworkComplianceReport,
-    ]:
+    def fetch_framework_compliance_report(self) -> Callable[[monitoring.FetchFrameworkComplianceReportRequest], monitoring.FrameworkComplianceReport]:
         r"""Return a callable for the fetch framework compliance
         report method over gRPC.
 
@@ -410,9 +380,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_framework_compliance_report" not in self._stubs:
-            self._stubs[
-                "fetch_framework_compliance_report"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_framework_compliance_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.cloudsecuritycompliance.v1.Monitoring/FetchFrameworkComplianceReport",
                 request_serializer=monitoring.FetchFrameworkComplianceReportRequest.serialize,
                 response_deserializer=monitoring.FrameworkComplianceReport.deserialize,
@@ -422,10 +390,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
     @property
     def list_control_compliance_summaries(
         self,
-    ) -> Callable[
-        [monitoring.ListControlComplianceSummariesRequest],
-        monitoring.ListControlComplianceSummariesResponse,
-    ]:
+    ) -> Callable[[monitoring.ListControlComplianceSummariesRequest], monitoring.ListControlComplianceSummariesResponse]:
         r"""Return a callable for the list control compliance
         summaries method over gRPC.
 
@@ -443,9 +408,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_control_compliance_summaries" not in self._stubs:
-            self._stubs[
-                "list_control_compliance_summaries"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_control_compliance_summaries"] = self._logged_channel.unary_unary(
                 "/google.cloud.cloudsecuritycompliance.v1.Monitoring/ListControlComplianceSummaries",
                 request_serializer=monitoring.ListControlComplianceSummariesRequest.serialize,
                 response_deserializer=monitoring.ListControlComplianceSummariesResponse.deserialize,
@@ -455,10 +418,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
     @property
     def aggregate_framework_compliance_report(
         self,
-    ) -> Callable[
-        [monitoring.AggregateFrameworkComplianceReportRequest],
-        monitoring.AggregateFrameworkComplianceReportResponse,
-    ]:
+    ) -> Callable[[monitoring.AggregateFrameworkComplianceReportRequest], monitoring.AggregateFrameworkComplianceReportResponse]:
         r"""Return a callable for the aggregate framework compliance
         report method over gRPC.
 
@@ -476,9 +436,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "aggregate_framework_compliance_report" not in self._stubs:
-            self._stubs[
-                "aggregate_framework_compliance_report"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["aggregate_framework_compliance_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.cloudsecuritycompliance.v1.Monitoring/AggregateFrameworkComplianceReport",
                 request_serializer=monitoring.AggregateFrameworkComplianceReportRequest.serialize,
                 response_deserializer=monitoring.AggregateFrameworkComplianceReportResponse.deserialize,
@@ -542,9 +500,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -561,9 +517,7 @@ class MonitoringGrpcTransport(MonitoringTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

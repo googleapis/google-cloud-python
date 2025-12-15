@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class SpeechGrpcTransport(SpeechTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class SpeechGrpcTransport(SpeechTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -333,17 +318,13 @@ class SpeechGrpcTransport(SpeechTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.CreateRecognizerRequest], operations_pb2.Operation]:
+    def create_recognizer(self) -> Callable[[cloud_speech.CreateRecognizerRequest], operations_pb2.Operation]:
         r"""Return a callable for the create recognizer method over gRPC.
 
         Creates a [Recognizer][google.cloud.speech.v2.Recognizer].
@@ -367,11 +348,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["create_recognizer"]
 
     @property
-    def list_recognizers(
-        self,
-    ) -> Callable[
-        [cloud_speech.ListRecognizersRequest], cloud_speech.ListRecognizersResponse
-    ]:
+    def list_recognizers(self) -> Callable[[cloud_speech.ListRecognizersRequest], cloud_speech.ListRecognizersResponse]:
         r"""Return a callable for the list recognizers method over gRPC.
 
         Lists Recognizers.
@@ -395,9 +372,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["list_recognizers"]
 
     @property
-    def get_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.GetRecognizerRequest], cloud_speech.Recognizer]:
+    def get_recognizer(self) -> Callable[[cloud_speech.GetRecognizerRequest], cloud_speech.Recognizer]:
         r"""Return a callable for the get recognizer method over gRPC.
 
         Returns the requested
@@ -424,9 +399,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["get_recognizer"]
 
     @property
-    def update_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.UpdateRecognizerRequest], operations_pb2.Operation]:
+    def update_recognizer(self) -> Callable[[cloud_speech.UpdateRecognizerRequest], operations_pb2.Operation]:
         r"""Return a callable for the update recognizer method over gRPC.
 
         Updates the [Recognizer][google.cloud.speech.v2.Recognizer].
@@ -450,9 +423,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["update_recognizer"]
 
     @property
-    def delete_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.DeleteRecognizerRequest], operations_pb2.Operation]:
+    def delete_recognizer(self) -> Callable[[cloud_speech.DeleteRecognizerRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete recognizer method over gRPC.
 
         Deletes the [Recognizer][google.cloud.speech.v2.Recognizer].
@@ -476,9 +447,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["delete_recognizer"]
 
     @property
-    def undelete_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.UndeleteRecognizerRequest], operations_pb2.Operation]:
+    def undelete_recognizer(self) -> Callable[[cloud_speech.UndeleteRecognizerRequest], operations_pb2.Operation]:
         r"""Return a callable for the undelete recognizer method over gRPC.
 
         Undeletes the [Recognizer][google.cloud.speech.v2.Recognizer].
@@ -502,9 +471,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["undelete_recognizer"]
 
     @property
-    def recognize(
-        self,
-    ) -> Callable[[cloud_speech.RecognizeRequest], cloud_speech.RecognizeResponse]:
+    def recognize(self) -> Callable[[cloud_speech.RecognizeRequest], cloud_speech.RecognizeResponse]:
         r"""Return a callable for the recognize method over gRPC.
 
         Performs synchronous Speech recognition: receive
@@ -529,12 +496,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["recognize"]
 
     @property
-    def streaming_recognize(
-        self,
-    ) -> Callable[
-        [cloud_speech.StreamingRecognizeRequest],
-        cloud_speech.StreamingRecognizeResponse,
-    ]:
+    def streaming_recognize(self) -> Callable[[cloud_speech.StreamingRecognizeRequest], cloud_speech.StreamingRecognizeResponse]:
         r"""Return a callable for the streaming recognize method over gRPC.
 
         Performs bidirectional streaming speech recognition:
@@ -560,9 +522,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["streaming_recognize"]
 
     @property
-    def batch_recognize(
-        self,
-    ) -> Callable[[cloud_speech.BatchRecognizeRequest], operations_pb2.Operation]:
+    def batch_recognize(self) -> Callable[[cloud_speech.BatchRecognizeRequest], operations_pb2.Operation]:
         r"""Return a callable for the batch recognize method over gRPC.
 
         Performs batch asynchronous speech recognition: send
@@ -589,9 +549,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["batch_recognize"]
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[[cloud_speech.GetConfigRequest], cloud_speech.Config]:
+    def get_config(self) -> Callable[[cloud_speech.GetConfigRequest], cloud_speech.Config]:
         r"""Return a callable for the get config method over gRPC.
 
         Returns the requested [Config][google.cloud.speech.v2.Config].
@@ -615,9 +573,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["get_config"]
 
     @property
-    def update_config(
-        self,
-    ) -> Callable[[cloud_speech.UpdateConfigRequest], cloud_speech.Config]:
+    def update_config(self) -> Callable[[cloud_speech.UpdateConfigRequest], cloud_speech.Config]:
         r"""Return a callable for the update config method over gRPC.
 
         Updates the [Config][google.cloud.speech.v2.Config].
@@ -641,9 +597,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["update_config"]
 
     @property
-    def create_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.CreateCustomClassRequest], operations_pb2.Operation]:
+    def create_custom_class(self) -> Callable[[cloud_speech.CreateCustomClassRequest], operations_pb2.Operation]:
         r"""Return a callable for the create custom class method over gRPC.
 
         Creates a [CustomClass][google.cloud.speech.v2.CustomClass].
@@ -667,11 +621,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["create_custom_class"]
 
     @property
-    def list_custom_classes(
-        self,
-    ) -> Callable[
-        [cloud_speech.ListCustomClassesRequest], cloud_speech.ListCustomClassesResponse
-    ]:
+    def list_custom_classes(self) -> Callable[[cloud_speech.ListCustomClassesRequest], cloud_speech.ListCustomClassesResponse]:
         r"""Return a callable for the list custom classes method over gRPC.
 
         Lists CustomClasses.
@@ -695,9 +645,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["list_custom_classes"]
 
     @property
-    def get_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.GetCustomClassRequest], cloud_speech.CustomClass]:
+    def get_custom_class(self) -> Callable[[cloud_speech.GetCustomClassRequest], cloud_speech.CustomClass]:
         r"""Return a callable for the get custom class method over gRPC.
 
         Returns the requested
@@ -722,9 +670,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["get_custom_class"]
 
     @property
-    def update_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.UpdateCustomClassRequest], operations_pb2.Operation]:
+    def update_custom_class(self) -> Callable[[cloud_speech.UpdateCustomClassRequest], operations_pb2.Operation]:
         r"""Return a callable for the update custom class method over gRPC.
 
         Updates the [CustomClass][google.cloud.speech.v2.CustomClass].
@@ -748,9 +694,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["update_custom_class"]
 
     @property
-    def delete_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.DeleteCustomClassRequest], operations_pb2.Operation]:
+    def delete_custom_class(self) -> Callable[[cloud_speech.DeleteCustomClassRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete custom class method over gRPC.
 
         Deletes the [CustomClass][google.cloud.speech.v2.CustomClass].
@@ -774,9 +718,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["delete_custom_class"]
 
     @property
-    def undelete_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.UndeleteCustomClassRequest], operations_pb2.Operation]:
+    def undelete_custom_class(self) -> Callable[[cloud_speech.UndeleteCustomClassRequest], operations_pb2.Operation]:
         r"""Return a callable for the undelete custom class method over gRPC.
 
         Undeletes the [CustomClass][google.cloud.speech.v2.CustomClass].
@@ -800,9 +742,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["undelete_custom_class"]
 
     @property
-    def create_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.CreatePhraseSetRequest], operations_pb2.Operation]:
+    def create_phrase_set(self) -> Callable[[cloud_speech.CreatePhraseSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create phrase set method over gRPC.
 
         Creates a [PhraseSet][google.cloud.speech.v2.PhraseSet].
@@ -826,11 +766,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["create_phrase_set"]
 
     @property
-    def list_phrase_sets(
-        self,
-    ) -> Callable[
-        [cloud_speech.ListPhraseSetsRequest], cloud_speech.ListPhraseSetsResponse
-    ]:
+    def list_phrase_sets(self) -> Callable[[cloud_speech.ListPhraseSetsRequest], cloud_speech.ListPhraseSetsResponse]:
         r"""Return a callable for the list phrase sets method over gRPC.
 
         Lists PhraseSets.
@@ -854,9 +790,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["list_phrase_sets"]
 
     @property
-    def get_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.GetPhraseSetRequest], cloud_speech.PhraseSet]:
+    def get_phrase_set(self) -> Callable[[cloud_speech.GetPhraseSetRequest], cloud_speech.PhraseSet]:
         r"""Return a callable for the get phrase set method over gRPC.
 
         Returns the requested
@@ -881,9 +815,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["get_phrase_set"]
 
     @property
-    def update_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.UpdatePhraseSetRequest], operations_pb2.Operation]:
+    def update_phrase_set(self) -> Callable[[cloud_speech.UpdatePhraseSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update phrase set method over gRPC.
 
         Updates the [PhraseSet][google.cloud.speech.v2.PhraseSet].
@@ -907,9 +839,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["update_phrase_set"]
 
     @property
-    def delete_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.DeletePhraseSetRequest], operations_pb2.Operation]:
+    def delete_phrase_set(self) -> Callable[[cloud_speech.DeletePhraseSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete phrase set method over gRPC.
 
         Deletes the [PhraseSet][google.cloud.speech.v2.PhraseSet].
@@ -933,9 +863,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["delete_phrase_set"]
 
     @property
-    def undelete_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.UndeletePhraseSetRequest], operations_pb2.Operation]:
+    def undelete_phrase_set(self) -> Callable[[cloud_speech.UndeletePhraseSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the undelete phrase set method over gRPC.
 
         Undeletes the [PhraseSet][google.cloud.speech.v2.PhraseSet].
@@ -1015,9 +943,7 @@ class SpeechGrpcTransport(SpeechTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1034,9 +960,7 @@ class SpeechGrpcTransport(SpeechTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

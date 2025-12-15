@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.video.live_stream_v1 import gapic_version as package_version
 from google.cloud.video.live_stream_v1.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class LivestreamServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -470,304 +460,143 @@ class LivestreamServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_channel_(
-        self,
-    ) -> Callable[
-        [service.CreateChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_channel_(self) -> Callable[[service.CreateChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_channels(
-        self,
-    ) -> Callable[
-        [service.ListChannelsRequest],
-        Union[service.ListChannelsResponse, Awaitable[service.ListChannelsResponse]],
-    ]:
+    def list_channels(self) -> Callable[[service.ListChannelsRequest], Union[service.ListChannelsResponse, Awaitable[service.ListChannelsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_channel(
-        self,
-    ) -> Callable[
-        [service.GetChannelRequest],
-        Union[resources.Channel, Awaitable[resources.Channel]],
-    ]:
+    def get_channel(self) -> Callable[[service.GetChannelRequest], Union[resources.Channel, Awaitable[resources.Channel]]]:
         raise NotImplementedError()
 
     @property
-    def delete_channel(
-        self,
-    ) -> Callable[
-        [service.DeleteChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_channel(self) -> Callable[[service.DeleteChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_channel(
-        self,
-    ) -> Callable[
-        [service.UpdateChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_channel(self) -> Callable[[service.UpdateChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def start_channel(
-        self,
-    ) -> Callable[
-        [service.StartChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def start_channel(self) -> Callable[[service.StartChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop_channel(
-        self,
-    ) -> Callable[
-        [service.StopChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def stop_channel(self) -> Callable[[service.StopChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_distribution(
         self,
-    ) -> Callable[
-        [service.StartDistributionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.StartDistributionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop_distribution(
-        self,
-    ) -> Callable[
-        [service.StopDistributionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def stop_distribution(self) -> Callable[[service.StopDistributionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_input(
-        self,
-    ) -> Callable[
-        [service.CreateInputRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_input(self) -> Callable[[service.CreateInputRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_inputs(
-        self,
-    ) -> Callable[
-        [service.ListInputsRequest],
-        Union[service.ListInputsResponse, Awaitable[service.ListInputsResponse]],
-    ]:
+    def list_inputs(self) -> Callable[[service.ListInputsRequest], Union[service.ListInputsResponse, Awaitable[service.ListInputsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_input(
-        self,
-    ) -> Callable[
-        [service.GetInputRequest], Union[resources.Input, Awaitable[resources.Input]]
-    ]:
+    def get_input(self) -> Callable[[service.GetInputRequest], Union[resources.Input, Awaitable[resources.Input]]]:
         raise NotImplementedError()
 
     @property
-    def delete_input(
-        self,
-    ) -> Callable[
-        [service.DeleteInputRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_input(self) -> Callable[[service.DeleteInputRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_input(
-        self,
-    ) -> Callable[
-        [service.UpdateInputRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_input(self) -> Callable[[service.UpdateInputRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def preview_input(
-        self,
-    ) -> Callable[
-        [service.PreviewInputRequest],
-        Union[service.PreviewInputResponse, Awaitable[service.PreviewInputResponse]],
-    ]:
+    def preview_input(self) -> Callable[[service.PreviewInputRequest], Union[service.PreviewInputResponse, Awaitable[service.PreviewInputResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_event(
-        self,
-    ) -> Callable[
-        [service.CreateEventRequest], Union[resources.Event, Awaitable[resources.Event]]
-    ]:
+    def create_event(self) -> Callable[[service.CreateEventRequest], Union[resources.Event, Awaitable[resources.Event]]]:
         raise NotImplementedError()
 
     @property
-    def list_events(
-        self,
-    ) -> Callable[
-        [service.ListEventsRequest],
-        Union[service.ListEventsResponse, Awaitable[service.ListEventsResponse]],
-    ]:
+    def list_events(self) -> Callable[[service.ListEventsRequest], Union[service.ListEventsResponse, Awaitable[service.ListEventsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_event(
-        self,
-    ) -> Callable[
-        [service.GetEventRequest], Union[resources.Event, Awaitable[resources.Event]]
-    ]:
+    def get_event(self) -> Callable[[service.GetEventRequest], Union[resources.Event, Awaitable[resources.Event]]]:
         raise NotImplementedError()
 
     @property
-    def delete_event(
-        self,
-    ) -> Callable[
-        [service.DeleteEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_event(self) -> Callable[[service.DeleteEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def list_clips(
-        self,
-    ) -> Callable[
-        [service.ListClipsRequest],
-        Union[service.ListClipsResponse, Awaitable[service.ListClipsResponse]],
-    ]:
+    def list_clips(self) -> Callable[[service.ListClipsRequest], Union[service.ListClipsResponse, Awaitable[service.ListClipsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_clip(
-        self,
-    ) -> Callable[
-        [service.GetClipRequest], Union[resources.Clip, Awaitable[resources.Clip]]
-    ]:
+    def get_clip(self) -> Callable[[service.GetClipRequest], Union[resources.Clip, Awaitable[resources.Clip]]]:
         raise NotImplementedError()
 
     @property
-    def create_clip(
-        self,
-    ) -> Callable[
-        [service.CreateClipRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_clip(self) -> Callable[[service.CreateClipRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_clip(
-        self,
-    ) -> Callable[
-        [service.DeleteClipRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_clip(self) -> Callable[[service.DeleteClipRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_dvr_session(
-        self,
-    ) -> Callable[
-        [service.CreateDvrSessionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_dvr_session(self) -> Callable[[service.CreateDvrSessionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_dvr_sessions(
         self,
-    ) -> Callable[
-        [service.ListDvrSessionsRequest],
-        Union[
-            service.ListDvrSessionsResponse, Awaitable[service.ListDvrSessionsResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListDvrSessionsRequest], Union[service.ListDvrSessionsResponse, Awaitable[service.ListDvrSessionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_dvr_session(
-        self,
-    ) -> Callable[
-        [service.GetDvrSessionRequest],
-        Union[resources.DvrSession, Awaitable[resources.DvrSession]],
-    ]:
+    def get_dvr_session(self) -> Callable[[service.GetDvrSessionRequest], Union[resources.DvrSession, Awaitable[resources.DvrSession]]]:
         raise NotImplementedError()
 
     @property
-    def delete_dvr_session(
-        self,
-    ) -> Callable[
-        [service.DeleteDvrSessionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_dvr_session(self) -> Callable[[service.DeleteDvrSessionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_dvr_session(
-        self,
-    ) -> Callable[
-        [service.UpdateDvrSessionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_dvr_session(self) -> Callable[[service.UpdateDvrSessionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[
-        [service.CreateAssetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_asset(self) -> Callable[[service.CreateAssetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[
-        [service.DeleteAssetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_asset(self) -> Callable[[service.DeleteAssetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[
-        [service.GetAssetRequest], Union[resources.Asset, Awaitable[resources.Asset]]
-    ]:
+    def get_asset(self) -> Callable[[service.GetAssetRequest], Union[resources.Asset, Awaitable[resources.Asset]]]:
         raise NotImplementedError()
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [service.ListAssetsRequest],
-        Union[service.ListAssetsResponse, Awaitable[service.ListAssetsResponse]],
-    ]:
+    def list_assets(self) -> Callable[[service.ListAssetsRequest], Union[service.ListAssetsResponse, Awaitable[service.ListAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_pool(
-        self,
-    ) -> Callable[
-        [service.GetPoolRequest], Union[resources.Pool, Awaitable[resources.Pool]]
-    ]:
+    def get_pool(self) -> Callable[[service.GetPoolRequest], Union[resources.Pool, Awaitable[resources.Pool]]]:
         raise NotImplementedError()
 
     @property
-    def update_pool(
-        self,
-    ) -> Callable[
-        [service.UpdatePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_pool(self) -> Callable[[service.UpdatePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -775,20 +604,14 @@ class LivestreamServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -806,22 +629,13 @@ class LivestreamServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

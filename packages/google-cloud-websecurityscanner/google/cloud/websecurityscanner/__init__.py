@@ -18,12 +18,8 @@ from google.cloud.websecurityscanner import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.websecurityscanner_v1.services.web_security_scanner.async_client import (
-    WebSecurityScannerAsyncClient,
-)
-from google.cloud.websecurityscanner_v1.services.web_security_scanner.client import (
-    WebSecurityScannerClient,
-)
+from google.cloud.websecurityscanner_v1.services.web_security_scanner.async_client import WebSecurityScannerAsyncClient
+from google.cloud.websecurityscanner_v1.services.web_security_scanner.client import WebSecurityScannerClient
 from google.cloud.websecurityscanner_v1.types.crawled_url import CrawledUrl
 from google.cloud.websecurityscanner_v1.types.finding import Finding
 from google.cloud.websecurityscanner_v1.types.finding_addon import (
@@ -39,13 +35,9 @@ from google.cloud.websecurityscanner_v1.types.finding_type_stats import FindingT
 from google.cloud.websecurityscanner_v1.types.scan_config import ScanConfig
 from google.cloud.websecurityscanner_v1.types.scan_config_error import ScanConfigError
 from google.cloud.websecurityscanner_v1.types.scan_run import ScanRun
-from google.cloud.websecurityscanner_v1.types.scan_run_error_trace import (
-    ScanRunErrorTrace,
-)
+from google.cloud.websecurityscanner_v1.types.scan_run_error_trace import ScanRunErrorTrace
 from google.cloud.websecurityscanner_v1.types.scan_run_log import ScanRunLog
-from google.cloud.websecurityscanner_v1.types.scan_run_warning_trace import (
-    ScanRunWarningTrace,
-)
+from google.cloud.websecurityscanner_v1.types.scan_run_warning_trace import ScanRunWarningTrace
 from google.cloud.websecurityscanner_v1.types.web_security_scanner import (
     CreateScanConfigRequest,
     DeleteScanConfigRequest,

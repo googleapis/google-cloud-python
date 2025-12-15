@@ -291,13 +291,8 @@ class AppPlatformRestInterceptor:
     """
 
     def pre_add_application_stream_input(
-        self,
-        request: platform.AddApplicationStreamInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.AddApplicationStreamInputRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: platform.AddApplicationStreamInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.AddApplicationStreamInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_application_stream_input
 
         Override in a subclass to manipulate the request or metadata
@@ -305,9 +300,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_add_application_stream_input(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_application_stream_input(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_application_stream_input
 
         DEPRECATED. Please use the `post_add_application_stream_input_with_metadata`
@@ -321,9 +314,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_add_application_stream_input_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_application_stream_input
 
@@ -340,12 +331,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_create_application(
-        self,
-        request: platform.CreateApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.CreateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.CreateApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.CreateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_application
 
         Override in a subclass to manipulate the request or metadata
@@ -353,9 +340,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_application
 
         DEPRECATED. Please use the `post_create_application_with_metadata`
@@ -369,9 +354,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_create_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_application
 
@@ -388,13 +371,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_create_application_instances(
-        self,
-        request: platform.CreateApplicationInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.CreateApplicationInstancesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: platform.CreateApplicationInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.CreateApplicationInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_application_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -402,9 +380,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_application_instances(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_application_instances(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_application_instances
 
         DEPRECATED. Please use the `post_create_application_instances_with_metadata`
@@ -418,9 +394,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_create_application_instances_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_application_instances
 
@@ -437,9 +411,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_create_draft(
-        self,
-        request: platform.CreateDraftRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.CreateDraftRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.CreateDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_draft
 
@@ -448,9 +420,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_draft(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_draft(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_draft
 
         DEPRECATED. Please use the `post_create_draft_with_metadata`
@@ -464,9 +434,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_create_draft_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_draft
 
@@ -483,12 +451,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_create_processor(
-        self,
-        request: platform.CreateProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.CreateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.CreateProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.CreateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -496,9 +460,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_processor(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_processor(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_processor
 
         DEPRECATED. Please use the `post_create_processor_with_metadata`
@@ -512,9 +474,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_create_processor_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_processor
 
@@ -531,12 +491,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_delete_application(
-        self,
-        request: platform.DeleteApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.DeleteApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.DeleteApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.DeleteApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_application
 
         Override in a subclass to manipulate the request or metadata
@@ -544,9 +500,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_application
 
         DEPRECATED. Please use the `post_delete_application_with_metadata`
@@ -560,9 +514,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_delete_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_application
 
@@ -579,13 +531,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_delete_application_instances(
-        self,
-        request: platform.DeleteApplicationInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.DeleteApplicationInstancesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: platform.DeleteApplicationInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.DeleteApplicationInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_application_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -593,9 +540,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_application_instances(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_application_instances(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_application_instances
 
         DEPRECATED. Please use the `post_delete_application_instances_with_metadata`
@@ -609,9 +554,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_delete_application_instances_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_application_instances
 
@@ -628,9 +571,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_delete_draft(
-        self,
-        request: platform.DeleteDraftRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.DeleteDraftRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.DeleteDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_draft
 
@@ -639,9 +580,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_draft(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_draft(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_draft
 
         DEPRECATED. Please use the `post_delete_draft_with_metadata`
@@ -655,9 +594,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_delete_draft_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_draft
 
@@ -674,12 +611,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_delete_processor(
-        self,
-        request: platform.DeleteProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.DeleteProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.DeleteProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.DeleteProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -687,9 +620,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_processor(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_processor(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_processor
 
         DEPRECATED. Please use the `post_delete_processor_with_metadata`
@@ -703,9 +634,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_delete_processor_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_processor
 
@@ -722,12 +651,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_deploy_application(
-        self,
-        request: platform.DeployApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.DeployApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.DeployApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.DeployApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_application
 
         Override in a subclass to manipulate the request or metadata
@@ -735,9 +660,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deploy_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_application
 
         DEPRECATED. Please use the `post_deploy_application_with_metadata`
@@ -751,9 +674,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_deploy_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_application
 
@@ -770,9 +691,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_get_application(
-        self,
-        request: platform.GetApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.GetApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.GetApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_application
 
@@ -781,9 +700,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_application(
-        self, response: platform.Application
-    ) -> platform.Application:
+    def post_get_application(self, response: platform.Application) -> platform.Application:
         """Post-rpc interceptor for get_application
 
         DEPRECATED. Please use the `post_get_application_with_metadata`
@@ -797,9 +714,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_get_application_with_metadata(
-        self,
-        response: platform.Application,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: platform.Application, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.Application, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_application
 
@@ -816,9 +731,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_get_draft(
-        self,
-        request: platform.GetDraftRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.GetDraftRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.GetDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_draft
 
@@ -841,9 +754,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_get_draft_with_metadata(
-        self,
-        response: platform.Draft,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: platform.Draft, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.Draft, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_draft
 
@@ -860,9 +771,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: platform.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -885,9 +794,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: platform.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: platform.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -904,9 +811,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_get_processor(
-        self,
-        request: platform.GetProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.GetProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.GetProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_processor
 
@@ -929,9 +834,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_get_processor_with_metadata(
-        self,
-        response: platform.Processor,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: platform.Processor, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.Processor, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_processor
 
@@ -948,12 +851,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_list_applications(
-        self,
-        request: platform.ListApplicationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.ListApplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.ListApplicationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.ListApplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_applications
 
         Override in a subclass to manipulate the request or metadata
@@ -961,9 +860,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_applications(
-        self, response: platform.ListApplicationsResponse
-    ) -> platform.ListApplicationsResponse:
+    def post_list_applications(self, response: platform.ListApplicationsResponse) -> platform.ListApplicationsResponse:
         """Post-rpc interceptor for list_applications
 
         DEPRECATED. Please use the `post_list_applications_with_metadata`
@@ -977,12 +874,8 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_list_applications_with_metadata(
-        self,
-        response: platform.ListApplicationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.ListApplicationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: platform.ListApplicationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.ListApplicationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_applications
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -998,9 +891,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_list_drafts(
-        self,
-        request: platform.ListDraftsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.ListDraftsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.ListDraftsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_drafts
 
@@ -1009,9 +900,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_drafts(
-        self, response: platform.ListDraftsResponse
-    ) -> platform.ListDraftsResponse:
+    def post_list_drafts(self, response: platform.ListDraftsResponse) -> platform.ListDraftsResponse:
         """Post-rpc interceptor for list_drafts
 
         DEPRECATED. Please use the `post_list_drafts_with_metadata`
@@ -1025,9 +914,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_list_drafts_with_metadata(
-        self,
-        response: platform.ListDraftsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: platform.ListDraftsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.ListDraftsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_drafts
 
@@ -1044,9 +931,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: platform.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
@@ -1055,9 +940,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: platform.ListInstancesResponse
-    ) -> platform.ListInstancesResponse:
+    def post_list_instances(self, response: platform.ListInstancesResponse) -> platform.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -1071,9 +954,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: platform.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: platform.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
@@ -1090,12 +971,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_list_prebuilt_processors(
-        self,
-        request: platform.ListPrebuiltProcessorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.ListPrebuiltProcessorsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.ListPrebuiltProcessorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.ListPrebuiltProcessorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_prebuilt_processors
 
         Override in a subclass to manipulate the request or metadata
@@ -1103,9 +980,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_prebuilt_processors(
-        self, response: platform.ListPrebuiltProcessorsResponse
-    ) -> platform.ListPrebuiltProcessorsResponse:
+    def post_list_prebuilt_processors(self, response: platform.ListPrebuiltProcessorsResponse) -> platform.ListPrebuiltProcessorsResponse:
         """Post-rpc interceptor for list_prebuilt_processors
 
         DEPRECATED. Please use the `post_list_prebuilt_processors_with_metadata`
@@ -1119,12 +994,8 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_list_prebuilt_processors_with_metadata(
-        self,
-        response: platform.ListPrebuiltProcessorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.ListPrebuiltProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: platform.ListPrebuiltProcessorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.ListPrebuiltProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_prebuilt_processors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1140,9 +1011,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_list_processors(
-        self,
-        request: platform.ListProcessorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.ListProcessorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.ListProcessorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processors
 
@@ -1151,9 +1020,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_processors(
-        self, response: platform.ListProcessorsResponse
-    ) -> platform.ListProcessorsResponse:
+    def post_list_processors(self, response: platform.ListProcessorsResponse) -> platform.ListProcessorsResponse:
         """Post-rpc interceptor for list_processors
 
         DEPRECATED. Please use the `post_list_processors_with_metadata`
@@ -1167,12 +1034,8 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_list_processors_with_metadata(
-        self,
-        response: platform.ListProcessorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.ListProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: platform.ListProcessorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.ListProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_processors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1188,13 +1051,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_remove_application_stream_input(
-        self,
-        request: platform.RemoveApplicationStreamInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.RemoveApplicationStreamInputRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: platform.RemoveApplicationStreamInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.RemoveApplicationStreamInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_application_stream_input
 
         Override in a subclass to manipulate the request or metadata
@@ -1202,9 +1060,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_application_stream_input(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_application_stream_input(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_application_stream_input
 
         DEPRECATED. Please use the `post_remove_application_stream_input_with_metadata`
@@ -1218,9 +1074,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_remove_application_stream_input_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_application_stream_input
 
@@ -1237,12 +1091,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_undeploy_application(
-        self,
-        request: platform.UndeployApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.UndeployApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.UndeployApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.UndeployApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_application
 
         Override in a subclass to manipulate the request or metadata
@@ -1250,9 +1100,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_undeploy_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undeploy_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_application
 
         DEPRECATED. Please use the `post_undeploy_application_with_metadata`
@@ -1266,9 +1114,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_undeploy_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undeploy_application
 
@@ -1285,12 +1131,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_update_application(
-        self,
-        request: platform.UpdateApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.UpdateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.UpdateApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.UpdateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_application
 
         Override in a subclass to manipulate the request or metadata
@@ -1298,9 +1140,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application
 
         DEPRECATED. Please use the `post_update_application_with_metadata`
@@ -1314,9 +1154,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_update_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_application
 
@@ -1333,13 +1171,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_update_application_instances(
-        self,
-        request: platform.UpdateApplicationInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.UpdateApplicationInstancesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: platform.UpdateApplicationInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.UpdateApplicationInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_application_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -1347,9 +1180,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_application_instances(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_application_instances(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application_instances
 
         DEPRECATED. Please use the `post_update_application_instances_with_metadata`
@@ -1363,9 +1194,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_update_application_instances_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_application_instances
 
@@ -1382,13 +1211,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_update_application_stream_input(
-        self,
-        request: platform.UpdateApplicationStreamInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.UpdateApplicationStreamInputRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: platform.UpdateApplicationStreamInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.UpdateApplicationStreamInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_application_stream_input
 
         Override in a subclass to manipulate the request or metadata
@@ -1396,9 +1220,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_application_stream_input(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_application_stream_input(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application_stream_input
 
         DEPRECATED. Please use the `post_update_application_stream_input_with_metadata`
@@ -1412,9 +1234,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_update_application_stream_input_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_application_stream_input
 
@@ -1431,9 +1251,7 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_update_draft(
-        self,
-        request: platform.UpdateDraftRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: platform.UpdateDraftRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[platform.UpdateDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_draft
 
@@ -1442,9 +1260,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_draft(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_draft(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_draft
 
         DEPRECATED. Please use the `post_update_draft_with_metadata`
@@ -1458,9 +1274,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_update_draft_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_draft
 
@@ -1477,12 +1291,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_update_processor(
-        self,
-        request: platform.UpdateProcessorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        platform.UpdateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: platform.UpdateProcessorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[platform.UpdateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -1490,9 +1300,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_processor(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_processor(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_processor
 
         DEPRECATED. Please use the `post_update_processor_with_metadata`
@@ -1506,9 +1314,7 @@ class AppPlatformRestInterceptor:
         return response
 
     def post_update_processor_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_processor
 
@@ -1525,12 +1331,8 @@ class AppPlatformRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1548,12 +1350,8 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1571,12 +1369,8 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1584,9 +1378,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1596,12 +1388,8 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1609,9 +1397,7 @@ class AppPlatformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1700,9 +1486,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1783,30 +1567,17 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddApplicationStreamInput(
-        _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput,
-        AppPlatformRestStub,
-    ):
+    class _AddApplicationStreamInput(_BaseAppPlatformRestTransport._BaseAddApplicationStreamInput, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.AddApplicationStreamInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1851,32 +1622,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_application_stream_input(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_application_stream_input(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1899,16 +1656,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
 
             # Send the request
-            response = (
-                AppPlatformRestTransport._AddApplicationStreamInput._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AppPlatformRestTransport._AddApplicationStreamInput._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1922,12 +1671,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_add_application_stream_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_application_stream_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_application_stream_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1948,22 +1693,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _CreateApplication(
-        _BaseAppPlatformRestTransport._BaseCreateApplication, AppPlatformRestStub
-    ):
+    class _CreateApplication(_BaseAppPlatformRestTransport._BaseCreateApplication, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.CreateApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2006,32 +1741,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseCreateApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseCreateApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_application(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_application(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseCreateApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseCreateApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseCreateApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseCreateApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2055,13 +1776,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._CreateApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2075,12 +1790,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_create_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2101,23 +1812,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _CreateApplicationInstances(
-        _BaseAppPlatformRestTransport._BaseCreateApplicationInstances,
-        AppPlatformRestStub,
-    ):
+    class _CreateApplicationInstances(_BaseAppPlatformRestTransport._BaseCreateApplicationInstances, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.CreateApplicationInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2162,32 +1862,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_application_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_application_instances(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2210,16 +1896,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
 
             # Send the request
-            response = (
-                AppPlatformRestTransport._CreateApplicationInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AppPlatformRestTransport._CreateApplicationInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2233,12 +1911,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_create_application_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_application_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_application_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2259,22 +1933,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _CreateDraft(
-        _BaseAppPlatformRestTransport._BaseCreateDraft, AppPlatformRestStub
-    ):
+    class _CreateDraft(_BaseAppPlatformRestTransport._BaseCreateDraft, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.CreateDraft")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2317,36 +1981,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseCreateDraft._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseCreateDraft._get_http_options()
 
             request, metadata = self._interceptor.pre_create_draft(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseCreateDraft._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateDraft._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAppPlatformRestTransport._BaseCreateDraft._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAppPlatformRestTransport._BaseCreateDraft._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseCreateDraft._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseCreateDraft._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2370,13 +2016,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._CreateDraft._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2390,12 +2030,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_create_draft(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_draft_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_draft_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2416,22 +2052,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _CreateProcessor(
-        _BaseAppPlatformRestTransport._BaseCreateProcessor, AppPlatformRestStub
-    ):
+    class _CreateProcessor(_BaseAppPlatformRestTransport._BaseCreateProcessor, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.CreateProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2474,32 +2100,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseCreateProcessor._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_processor(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2523,13 +2135,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._CreateProcessor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2543,12 +2149,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_create_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2569,22 +2171,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _DeleteApplication(
-        _BaseAppPlatformRestTransport._BaseDeleteApplication, AppPlatformRestStub
-    ):
+    class _DeleteApplication(_BaseAppPlatformRestTransport._BaseDeleteApplication, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.DeleteApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2626,28 +2218,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeleteApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeleteApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_application(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_application(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteApplication._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseDeleteApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseDeleteApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2671,12 +2251,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._DeleteApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2690,12 +2265,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_delete_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2716,23 +2287,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _DeleteApplicationInstances(
-        _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances,
-        AppPlatformRestStub,
-    ):
+    class _DeleteApplicationInstances(_BaseAppPlatformRestTransport._BaseDeleteApplicationInstances, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.DeleteApplicationInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2777,32 +2337,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_application_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_application_instances(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2825,16 +2371,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
 
             # Send the request
-            response = (
-                AppPlatformRestTransport._DeleteApplicationInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AppPlatformRestTransport._DeleteApplicationInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2848,12 +2386,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_delete_application_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_application_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_application_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2874,22 +2408,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _DeleteDraft(
-        _BaseAppPlatformRestTransport._BaseDeleteDraft, AppPlatformRestStub
-    ):
+    class _DeleteDraft(_BaseAppPlatformRestTransport._BaseDeleteDraft, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.DeleteDraft")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2931,30 +2455,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeleteDraft._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeleteDraft._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_draft(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseDeleteDraft._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteDraft._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseDeleteDraft._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseDeleteDraft._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2978,12 +2488,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._DeleteDraft._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2997,12 +2502,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_delete_draft(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_draft_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_draft_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3023,22 +2524,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _DeleteProcessor(
-        _BaseAppPlatformRestTransport._BaseDeleteProcessor, AppPlatformRestStub
-    ):
+    class _DeleteProcessor(_BaseAppPlatformRestTransport._BaseDeleteProcessor, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.DeleteProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3080,28 +2571,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_processor(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3125,12 +2604,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._DeleteProcessor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3144,12 +2618,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_delete_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3170,22 +2640,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _DeployApplication(
-        _BaseAppPlatformRestTransport._BaseDeployApplication, AppPlatformRestStub
-    ):
+    class _DeployApplication(_BaseAppPlatformRestTransport._BaseDeployApplication, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.DeployApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3228,32 +2688,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeployApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeployApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_deploy_application(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseDeployApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deploy_application(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseDeployApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseDeployApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseDeployApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseDeployApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseDeployApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3277,13 +2723,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._DeployApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3297,12 +2737,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_deploy_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3323,22 +2759,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _GetApplication(
-        _BaseAppPlatformRestTransport._BaseGetApplication, AppPlatformRestStub
-    ):
+    class _GetApplication(_BaseAppPlatformRestTransport._BaseGetApplication, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.GetApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3377,26 +2803,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     Message describing Application object
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseGetApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseGetApplication._get_http_options()
 
             request, metadata = self._interceptor.pre_get_application(request, metadata)
-            transcoded_request = _BaseAppPlatformRestTransport._BaseGetApplication._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseGetApplication._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseGetApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseGetApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3420,12 +2836,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._GetApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3441,12 +2852,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_get_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.Application.to_json(response)
                 except:
@@ -3472,15 +2879,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             return hash("AppPlatformRestTransport.GetDraft")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3519,30 +2918,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     Message describing Draft object
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseGetDraft._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseGetDraft._get_http_options()
 
             request, metadata = self._interceptor.pre_get_draft(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseGetDraft._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseGetDraft._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseGetDraft._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseGetDraft._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3566,12 +2951,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._GetDraft._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3587,12 +2967,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_get_draft(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_draft_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_draft_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.Draft.to_json(response)
                 except:
@@ -3613,22 +2989,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseAppPlatformRestTransport._BaseGetInstance, AppPlatformRestStub
-    ):
+    class _GetInstance(_BaseAppPlatformRestTransport._BaseGetInstance, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3669,30 +3035,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3716,12 +3068,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3737,12 +3084,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.Instance.to_json(response)
                 except:
@@ -3763,22 +3106,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _GetProcessor(
-        _BaseAppPlatformRestTransport._BaseGetProcessor, AppPlatformRestStub
-    ):
+    class _GetProcessor(_BaseAppPlatformRestTransport._BaseGetProcessor, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.GetProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3819,30 +3152,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseGetProcessor._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseGetProcessor._get_http_options()
 
             request, metadata = self._interceptor.pre_get_processor(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseGetProcessor._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseGetProcessor._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseGetProcessor._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseGetProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3866,12 +3185,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._GetProcessor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3887,12 +3201,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_get_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.Processor.to_json(response)
                 except:
@@ -3913,22 +3223,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _ListApplications(
-        _BaseAppPlatformRestTransport._BaseListApplications, AppPlatformRestStub
-    ):
+    class _ListApplications(_BaseAppPlatformRestTransport._BaseListApplications, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.ListApplications")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3970,28 +3270,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListApplications._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListApplications._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_applications(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseListApplications._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_applications(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseListApplications._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseListApplications._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseListApplications._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4015,12 +3303,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._ListApplications._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4036,16 +3319,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_list_applications(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_applications_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_applications_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = platform.ListApplicationsResponse.to_json(
-                        response
-                    )
+                    response_payload = platform.ListApplicationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4064,22 +3341,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _ListDrafts(
-        _BaseAppPlatformRestTransport._BaseListDrafts, AppPlatformRestStub
-    ):
+    class _ListDrafts(_BaseAppPlatformRestTransport._BaseListDrafts, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.ListDrafts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4121,30 +3388,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListDrafts._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListDrafts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_drafts(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseListDrafts._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseListDrafts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseListDrafts._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseListDrafts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4168,12 +3421,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._ListDrafts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4189,12 +3437,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_list_drafts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_drafts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_drafts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.ListDraftsResponse.to_json(response)
                 except:
@@ -4215,22 +3459,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseAppPlatformRestTransport._BaseListInstances, AppPlatformRestStub
-    ):
+    class _ListInstances(_BaseAppPlatformRestTransport._BaseListInstances, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4272,28 +3506,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseAppPlatformRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4317,12 +3539,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4338,12 +3555,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.ListInstancesResponse.to_json(response)
                 except:
@@ -4364,22 +3577,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _ListPrebuiltProcessors(
-        _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors, AppPlatformRestStub
-    ):
+    class _ListPrebuiltProcessors(_BaseAppPlatformRestTransport._BaseListPrebuiltProcessors, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.ListPrebuiltProcessors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4422,32 +3625,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_prebuilt_processors(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_prebuilt_processors(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4471,13 +3660,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._ListPrebuiltProcessors._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4493,16 +3676,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_list_prebuilt_processors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_prebuilt_processors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_prebuilt_processors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = platform.ListPrebuiltProcessorsResponse.to_json(
-                        response
-                    )
+                    response_payload = platform.ListPrebuiltProcessorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4521,22 +3698,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _ListProcessors(
-        _BaseAppPlatformRestTransport._BaseListProcessors, AppPlatformRestStub
-    ):
+    class _ListProcessors(_BaseAppPlatformRestTransport._BaseListProcessors, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.ListProcessors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4578,26 +3745,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListProcessors._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListProcessors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_processors(request, metadata)
-            transcoded_request = _BaseAppPlatformRestTransport._BaseListProcessors._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseListProcessors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseListProcessors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseListProcessors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4621,12 +3778,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._ListProcessors._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4642,12 +3794,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_list_processors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_processors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_processors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = platform.ListProcessorsResponse.to_json(response)
                 except:
@@ -4668,23 +3816,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _RemoveApplicationStreamInput(
-        _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput,
-        AppPlatformRestStub,
-    ):
+    class _RemoveApplicationStreamInput(_BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.RemoveApplicationStreamInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4729,32 +3866,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_application_stream_input(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_application_stream_input(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4777,16 +3900,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
 
             # Send the request
-            response = (
-                AppPlatformRestTransport._RemoveApplicationStreamInput._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AppPlatformRestTransport._RemoveApplicationStreamInput._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4800,15 +3915,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_remove_application_stream_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_application_stream_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_application_stream_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4829,22 +3937,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _UndeployApplication(
-        _BaseAppPlatformRestTransport._BaseUndeployApplication, AppPlatformRestStub
-    ):
+    class _UndeployApplication(_BaseAppPlatformRestTransport._BaseUndeployApplication, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.UndeployApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4888,32 +3986,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUndeployApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_undeploy_application(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undeploy_application(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4937,13 +4021,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._UndeployApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4957,12 +4035,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_undeploy_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undeploy_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undeploy_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4983,22 +4057,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _UpdateApplication(
-        _BaseAppPlatformRestTransport._BaseUpdateApplication, AppPlatformRestStub
-    ):
+    class _UpdateApplication(_BaseAppPlatformRestTransport._BaseUpdateApplication, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.UpdateApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5041,32 +4105,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_application(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_application(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5090,13 +4140,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._UpdateApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5110,12 +4154,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_update_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5136,23 +4176,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _UpdateApplicationInstances(
-        _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances,
-        AppPlatformRestStub,
-    ):
+    class _UpdateApplicationInstances(_BaseAppPlatformRestTransport._BaseUpdateApplicationInstances, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.UpdateApplicationInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5197,32 +4226,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_application_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_application_instances(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5245,16 +4260,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
 
             # Send the request
-            response = (
-                AppPlatformRestTransport._UpdateApplicationInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AppPlatformRestTransport._UpdateApplicationInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5268,12 +4275,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_update_application_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_application_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_application_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5294,23 +4297,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _UpdateApplicationStreamInput(
-        _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput,
-        AppPlatformRestStub,
-    ):
+    class _UpdateApplicationStreamInput(_BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.UpdateApplicationStreamInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5355,32 +4347,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_application_stream_input(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_application_stream_input(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5403,16 +4381,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
 
             # Send the request
-            response = (
-                AppPlatformRestTransport._UpdateApplicationStreamInput._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AppPlatformRestTransport._UpdateApplicationStreamInput._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5426,15 +4396,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_update_application_stream_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_application_stream_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_application_stream_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5455,22 +4418,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _UpdateDraft(
-        _BaseAppPlatformRestTransport._BaseUpdateDraft, AppPlatformRestStub
-    ):
+    class _UpdateDraft(_BaseAppPlatformRestTransport._BaseUpdateDraft, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.UpdateDraft")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5513,36 +4466,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateDraft._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateDraft._get_http_options()
 
             request, metadata = self._interceptor.pre_update_draft(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseUpdateDraft._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateDraft._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAppPlatformRestTransport._BaseUpdateDraft._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAppPlatformRestTransport._BaseUpdateDraft._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseUpdateDraft._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseUpdateDraft._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5566,13 +4501,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._UpdateDraft._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5586,12 +4515,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_update_draft(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_draft_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_draft_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5612,22 +4537,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             return resp
 
-    class _UpdateProcessor(
-        _BaseAppPlatformRestTransport._BaseUpdateProcessor, AppPlatformRestStub
-    ):
+    class _UpdateProcessor(_BaseAppPlatformRestTransport._BaseUpdateProcessor, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.UpdateProcessor")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5670,32 +4585,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_processor(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_processor(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5719,13 +4620,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._UpdateProcessor._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5739,12 +4634,8 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_update_processor(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_processor_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_processor_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5766,95 +4657,67 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             return resp
 
     @property
-    def add_application_stream_input(
-        self,
-    ) -> Callable[
-        [platform.AddApplicationStreamInputRequest], operations_pb2.Operation
-    ]:
+    def add_application_stream_input(self) -> Callable[[platform.AddApplicationStreamInputRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddApplicationStreamInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_application(
-        self,
-    ) -> Callable[[platform.CreateApplicationRequest], operations_pb2.Operation]:
+    def create_application(self) -> Callable[[platform.CreateApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_application_instances(
-        self,
-    ) -> Callable[
-        [platform.CreateApplicationInstancesRequest], operations_pb2.Operation
-    ]:
+    def create_application_instances(self) -> Callable[[platform.CreateApplicationInstancesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateApplicationInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_draft(
-        self,
-    ) -> Callable[[platform.CreateDraftRequest], operations_pb2.Operation]:
+    def create_draft(self) -> Callable[[platform.CreateDraftRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDraft(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_processor(
-        self,
-    ) -> Callable[[platform.CreateProcessorRequest], operations_pb2.Operation]:
+    def create_processor(self) -> Callable[[platform.CreateProcessorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_application(
-        self,
-    ) -> Callable[[platform.DeleteApplicationRequest], operations_pb2.Operation]:
+    def delete_application(self) -> Callable[[platform.DeleteApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_application_instances(
-        self,
-    ) -> Callable[
-        [platform.DeleteApplicationInstancesRequest], operations_pb2.Operation
-    ]:
+    def delete_application_instances(self) -> Callable[[platform.DeleteApplicationInstancesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApplicationInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_draft(
-        self,
-    ) -> Callable[[platform.DeleteDraftRequest], operations_pb2.Operation]:
+    def delete_draft(self) -> Callable[[platform.DeleteDraftRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDraft(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_processor(
-        self,
-    ) -> Callable[[platform.DeleteProcessorRequest], operations_pb2.Operation]:
+    def delete_processor(self) -> Callable[[platform.DeleteProcessorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_application(
-        self,
-    ) -> Callable[[platform.DeployApplicationRequest], operations_pb2.Operation]:
+    def deploy_application(self) -> Callable[[platform.DeployApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_application(
-        self,
-    ) -> Callable[[platform.GetApplicationRequest], platform.Application]:
+    def get_application(self) -> Callable[[platform.GetApplicationRequest], platform.Application]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApplication(self._session, self._host, self._interceptor)  # type: ignore
@@ -5866,124 +4729,85 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
         return self._GetDraft(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[platform.GetInstanceRequest], platform.Instance]:
+    def get_instance(self) -> Callable[[platform.GetInstanceRequest], platform.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_processor(
-        self,
-    ) -> Callable[[platform.GetProcessorRequest], platform.Processor]:
+    def get_processor(self) -> Callable[[platform.GetProcessorRequest], platform.Processor]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProcessor(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_applications(
-        self,
-    ) -> Callable[
-        [platform.ListApplicationsRequest], platform.ListApplicationsResponse
-    ]:
+    def list_applications(self) -> Callable[[platform.ListApplicationsRequest], platform.ListApplicationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListApplications(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_drafts(
-        self,
-    ) -> Callable[[platform.ListDraftsRequest], platform.ListDraftsResponse]:
+    def list_drafts(self) -> Callable[[platform.ListDraftsRequest], platform.ListDraftsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDrafts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[platform.ListInstancesRequest], platform.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[platform.ListInstancesRequest], platform.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_prebuilt_processors(
-        self,
-    ) -> Callable[
-        [platform.ListPrebuiltProcessorsRequest],
-        platform.ListPrebuiltProcessorsResponse,
-    ]:
+    def list_prebuilt_processors(self) -> Callable[[platform.ListPrebuiltProcessorsRequest], platform.ListPrebuiltProcessorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrebuiltProcessors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_processors(
-        self,
-    ) -> Callable[[platform.ListProcessorsRequest], platform.ListProcessorsResponse]:
+    def list_processors(self) -> Callable[[platform.ListProcessorsRequest], platform.ListProcessorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProcessors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_application_stream_input(
-        self,
-    ) -> Callable[
-        [platform.RemoveApplicationStreamInputRequest], operations_pb2.Operation
-    ]:
+    def remove_application_stream_input(self) -> Callable[[platform.RemoveApplicationStreamInputRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveApplicationStreamInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undeploy_application(
-        self,
-    ) -> Callable[[platform.UndeployApplicationRequest], operations_pb2.Operation]:
+    def undeploy_application(self) -> Callable[[platform.UndeployApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeployApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_application(
-        self,
-    ) -> Callable[[platform.UpdateApplicationRequest], operations_pb2.Operation]:
+    def update_application(self) -> Callable[[platform.UpdateApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_application_instances(
-        self,
-    ) -> Callable[
-        [platform.UpdateApplicationInstancesRequest], operations_pb2.Operation
-    ]:
+    def update_application_instances(self) -> Callable[[platform.UpdateApplicationInstancesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApplicationInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_application_stream_input(
-        self,
-    ) -> Callable[
-        [platform.UpdateApplicationStreamInputRequest], operations_pb2.Operation
-    ]:
+    def update_application_stream_input(self) -> Callable[[platform.UpdateApplicationStreamInputRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApplicationStreamInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_draft(
-        self,
-    ) -> Callable[[platform.UpdateDraftRequest], operations_pb2.Operation]:
+    def update_draft(self) -> Callable[[platform.UpdateDraftRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDraft(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_processor(
-        self,
-    ) -> Callable[[platform.UpdateProcessorRequest], operations_pb2.Operation]:
+    def update_processor(self) -> Callable[[platform.UpdateProcessorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProcessor(self._session, self._host, self._interceptor)  # type: ignore
@@ -5992,22 +4816,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAppPlatformRestTransport._BaseCancelOperation, AppPlatformRestStub
-    ):
+    class _CancelOperation(_BaseAppPlatformRestTransport._BaseCancelOperation, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6043,32 +4857,18 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseAppPlatformRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAppPlatformRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6092,13 +4892,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6112,22 +4906,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseAppPlatformRestTransport._BaseDeleteOperation, AppPlatformRestStub
-    ):
+    class _DeleteOperation(_BaseAppPlatformRestTransport._BaseDeleteOperation, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6162,28 +4946,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAppPlatformRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6207,12 +4979,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6226,22 +4993,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAppPlatformRestTransport._BaseGetOperation, AppPlatformRestStub
-    ):
+    class _GetOperation(_BaseAppPlatformRestTransport._BaseGetOperation, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6279,30 +5036,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAppPlatformRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAppPlatformRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6326,12 +5069,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6343,9 +5081,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6370,22 +5106,12 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAppPlatformRestTransport._BaseListOperations, AppPlatformRestStub
-    ):
+    class _ListOperations(_BaseAppPlatformRestTransport._BaseListOperations, AppPlatformRestStub):
         def __hash__(self):
             return hash("AppPlatformRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6423,26 +5149,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAppPlatformRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAppPlatformRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAppPlatformRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAppPlatformRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6466,12 +5182,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             # Send the request
             response = AppPlatformRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6483,9 +5194,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class AuditGrpcTransport(AuditTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class AuditGrpcTransport(AuditTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -333,9 +318,7 @@ class AuditGrpcTransport(AuditTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -343,10 +326,7 @@ class AuditGrpcTransport(AuditTransport):
     @property
     def generate_framework_audit_scope_report(
         self,
-    ) -> Callable[
-        [audit.GenerateFrameworkAuditScopeReportRequest],
-        audit.GenerateFrameworkAuditScopeReportResponse,
-    ]:
+    ) -> Callable[[audit.GenerateFrameworkAuditScopeReportRequest], audit.GenerateFrameworkAuditScopeReportResponse]:
         r"""Return a callable for the generate framework audit scope
         report method over gRPC.
 
@@ -363,9 +343,7 @@ class AuditGrpcTransport(AuditTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_framework_audit_scope_report" not in self._stubs:
-            self._stubs[
-                "generate_framework_audit_scope_report"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_framework_audit_scope_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.cloudsecuritycompliance.v1.Audit/GenerateFrameworkAuditScopeReport",
                 request_serializer=audit.GenerateFrameworkAuditScopeReportRequest.serialize,
                 response_deserializer=audit.GenerateFrameworkAuditScopeReportResponse.deserialize,
@@ -373,9 +351,7 @@ class AuditGrpcTransport(AuditTransport):
         return self._stubs["generate_framework_audit_scope_report"]
 
     @property
-    def create_framework_audit(
-        self,
-    ) -> Callable[[audit.CreateFrameworkAuditRequest], operations_pb2.Operation]:
+    def create_framework_audit(self) -> Callable[[audit.CreateFrameworkAuditRequest], operations_pb2.Operation]:
         r"""Return a callable for the create framework audit method over gRPC.
 
         Creates an audit scope report for a framework.
@@ -399,11 +375,7 @@ class AuditGrpcTransport(AuditTransport):
         return self._stubs["create_framework_audit"]
 
     @property
-    def list_framework_audits(
-        self,
-    ) -> Callable[
-        [audit.ListFrameworkAuditsRequest], audit.ListFrameworkAuditsResponse
-    ]:
+    def list_framework_audits(self) -> Callable[[audit.ListFrameworkAuditsRequest], audit.ListFrameworkAuditsResponse]:
         r"""Return a callable for the list framework audits method over gRPC.
 
         Lists the framework audits for a given organization,
@@ -428,9 +400,7 @@ class AuditGrpcTransport(AuditTransport):
         return self._stubs["list_framework_audits"]
 
     @property
-    def get_framework_audit(
-        self,
-    ) -> Callable[[audit.GetFrameworkAuditRequest], audit.FrameworkAudit]:
+    def get_framework_audit(self) -> Callable[[audit.GetFrameworkAuditRequest], audit.FrameworkAudit]:
         r"""Return a callable for the get framework audit method over gRPC.
 
         Gets the details for a framework audit.
@@ -510,9 +480,7 @@ class AuditGrpcTransport(AuditTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -529,9 +497,7 @@ class AuditGrpcTransport(AuditTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -1148,9 +1148,7 @@ class CertificateAuthority(proto.Message):
                 number=1,
             )
 
-        ca_certs: MutableSequence[
-            "CertificateAuthority.ManagedCertificateAuthority.CertChain"
-        ] = proto.RepeatedField(
+        ca_certs: MutableSequence["CertificateAuthority.ManagedCertificateAuthority.CertChain"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="CertificateAuthority.ManagedCertificateAuthority.CertChain",

@@ -33,9 +33,7 @@ from google.cloud.networkconnectivity_v1 import gapic_version as package_version
 from google.cloud.networkconnectivity_v1.types import hub
 from google.cloud.networkconnectivity_v1.types import hub as gcn_hub
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class HubServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -315,197 +305,95 @@ class HubServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_hubs(
-        self,
-    ) -> Callable[
-        [hub.ListHubsRequest],
-        Union[hub.ListHubsResponse, Awaitable[hub.ListHubsResponse]],
-    ]:
+    def list_hubs(self) -> Callable[[hub.ListHubsRequest], Union[hub.ListHubsResponse, Awaitable[hub.ListHubsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_hub(
-        self,
-    ) -> Callable[[hub.GetHubRequest], Union[hub.Hub, Awaitable[hub.Hub]]]:
+    def get_hub(self) -> Callable[[hub.GetHubRequest], Union[hub.Hub, Awaitable[hub.Hub]]]:
         raise NotImplementedError()
 
     @property
-    def create_hub(
-        self,
-    ) -> Callable[
-        [gcn_hub.CreateHubRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_hub(self) -> Callable[[gcn_hub.CreateHubRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_hub(
-        self,
-    ) -> Callable[
-        [gcn_hub.UpdateHubRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_hub(self) -> Callable[[gcn_hub.UpdateHubRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_hub(
-        self,
-    ) -> Callable[
-        [hub.DeleteHubRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_hub(self) -> Callable[[hub.DeleteHubRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_hub_spokes(
-        self,
-    ) -> Callable[
-        [hub.ListHubSpokesRequest],
-        Union[hub.ListHubSpokesResponse, Awaitable[hub.ListHubSpokesResponse]],
-    ]:
+    def list_hub_spokes(self) -> Callable[[hub.ListHubSpokesRequest], Union[hub.ListHubSpokesResponse, Awaitable[hub.ListHubSpokesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def query_hub_status(
-        self,
-    ) -> Callable[
-        [hub.QueryHubStatusRequest],
-        Union[hub.QueryHubStatusResponse, Awaitable[hub.QueryHubStatusResponse]],
-    ]:
+    def query_hub_status(self) -> Callable[[hub.QueryHubStatusRequest], Union[hub.QueryHubStatusResponse, Awaitable[hub.QueryHubStatusResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_spokes(
-        self,
-    ) -> Callable[
-        [hub.ListSpokesRequest],
-        Union[hub.ListSpokesResponse, Awaitable[hub.ListSpokesResponse]],
-    ]:
+    def list_spokes(self) -> Callable[[hub.ListSpokesRequest], Union[hub.ListSpokesResponse, Awaitable[hub.ListSpokesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_spoke(
-        self,
-    ) -> Callable[[hub.GetSpokeRequest], Union[hub.Spoke, Awaitable[hub.Spoke]]]:
+    def get_spoke(self) -> Callable[[hub.GetSpokeRequest], Union[hub.Spoke, Awaitable[hub.Spoke]]]:
         raise NotImplementedError()
 
     @property
-    def create_spoke(
-        self,
-    ) -> Callable[
-        [hub.CreateSpokeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_spoke(self) -> Callable[[hub.CreateSpokeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_spoke(
-        self,
-    ) -> Callable[
-        [hub.UpdateSpokeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_spoke(self) -> Callable[[hub.UpdateSpokeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def reject_hub_spoke(
-        self,
-    ) -> Callable[
-        [hub.RejectHubSpokeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def reject_hub_spoke(self) -> Callable[[hub.RejectHubSpokeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def accept_hub_spoke(
-        self,
-    ) -> Callable[
-        [hub.AcceptHubSpokeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def accept_hub_spoke(self) -> Callable[[hub.AcceptHubSpokeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def accept_spoke_update(
-        self,
-    ) -> Callable[
-        [hub.AcceptSpokeUpdateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def accept_spoke_update(self) -> Callable[[hub.AcceptSpokeUpdateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def reject_spoke_update(
-        self,
-    ) -> Callable[
-        [hub.RejectSpokeUpdateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def reject_spoke_update(self) -> Callable[[hub.RejectSpokeUpdateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_spoke(
-        self,
-    ) -> Callable[
-        [hub.DeleteSpokeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_spoke(self) -> Callable[[hub.DeleteSpokeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_route_table(
-        self,
-    ) -> Callable[
-        [hub.GetRouteTableRequest], Union[hub.RouteTable, Awaitable[hub.RouteTable]]
-    ]:
+    def get_route_table(self) -> Callable[[hub.GetRouteTableRequest], Union[hub.RouteTable, Awaitable[hub.RouteTable]]]:
         raise NotImplementedError()
 
     @property
-    def get_route(
-        self,
-    ) -> Callable[[hub.GetRouteRequest], Union[hub.Route, Awaitable[hub.Route]]]:
+    def get_route(self) -> Callable[[hub.GetRouteRequest], Union[hub.Route, Awaitable[hub.Route]]]:
         raise NotImplementedError()
 
     @property
-    def list_routes(
-        self,
-    ) -> Callable[
-        [hub.ListRoutesRequest],
-        Union[hub.ListRoutesResponse, Awaitable[hub.ListRoutesResponse]],
-    ]:
+    def list_routes(self) -> Callable[[hub.ListRoutesRequest], Union[hub.ListRoutesResponse, Awaitable[hub.ListRoutesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_route_tables(
-        self,
-    ) -> Callable[
-        [hub.ListRouteTablesRequest],
-        Union[hub.ListRouteTablesResponse, Awaitable[hub.ListRouteTablesResponse]],
-    ]:
+    def list_route_tables(self) -> Callable[[hub.ListRouteTablesRequest], Union[hub.ListRouteTablesResponse, Awaitable[hub.ListRouteTablesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_group(
-        self,
-    ) -> Callable[[hub.GetGroupRequest], Union[hub.Group, Awaitable[hub.Group]]]:
+    def get_group(self) -> Callable[[hub.GetGroupRequest], Union[hub.Group, Awaitable[hub.Group]]]:
         raise NotImplementedError()
 
     @property
-    def list_groups(
-        self,
-    ) -> Callable[
-        [hub.ListGroupsRequest],
-        Union[hub.ListGroupsResponse, Awaitable[hub.ListGroupsResponse]],
-    ]:
+    def list_groups(self) -> Callable[[hub.ListGroupsRequest], Union[hub.ListGroupsResponse, Awaitable[hub.ListGroupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[
-        [hub.UpdateGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_group(self) -> Callable[[hub.UpdateGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -513,20 +401,14 @@ class HubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -544,19 +426,13 @@ class HubServiceTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -574,22 +450,13 @@ class HubServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

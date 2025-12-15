@@ -599,9 +599,7 @@ class Instance(proto.Message):
         number=20,
         message="PscAutoConnection",
     )
-    psc_attachment_details: MutableSequence[
-        "PscAttachmentDetail"
-    ] = proto.RepeatedField(
+    psc_attachment_details: MutableSequence["PscAttachmentDetail"] = proto.RepeatedField(
         proto.MESSAGE,
         number=21,
         message="PscAttachmentDetail",
@@ -1064,9 +1062,7 @@ class CrossInstanceReplicationConfig(proto.Message):
             number=1,
             message="CrossInstanceReplicationConfig.RemoteInstance",
         )
-        secondary_instances: MutableSequence[
-            "CrossInstanceReplicationConfig.RemoteInstance"
-        ] = proto.RepeatedField(
+        secondary_instances: MutableSequence["CrossInstanceReplicationConfig.RemoteInstance"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CrossInstanceReplicationConfig.RemoteInstance",
@@ -1125,9 +1121,7 @@ class MaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="WeeklyMaintenanceWindow",
@@ -2215,9 +2209,7 @@ class CertificateAuthority(proto.Message):
                 number=1,
             )
 
-        ca_certs: MutableSequence[
-            "CertificateAuthority.ManagedCertificateAuthority.CertChain"
-        ] = proto.RepeatedField(
+        ca_certs: MutableSequence["CertificateAuthority.ManagedCertificateAuthority.CertChain"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="CertificateAuthority.ManagedCertificateAuthority.CertChain",

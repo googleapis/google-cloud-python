@@ -135,12 +135,8 @@ class ExperimentsRestInterceptor:
     """
 
     def pre_create_experiment(
-        self,
-        request: gcdc_experiment.CreateExperimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_experiment.CreateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_experiment.CreateExperimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_experiment.CreateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_experiment
 
         Override in a subclass to manipulate the request or metadata
@@ -148,9 +144,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_experiment(
-        self, response: gcdc_experiment.Experiment
-    ) -> gcdc_experiment.Experiment:
+    def post_create_experiment(self, response: gcdc_experiment.Experiment) -> gcdc_experiment.Experiment:
         """Post-rpc interceptor for create_experiment
 
         DEPRECATED. Please use the `post_create_experiment_with_metadata`
@@ -164,9 +158,7 @@ class ExperimentsRestInterceptor:
         return response
 
     def post_create_experiment_with_metadata(
-        self,
-        response: gcdc_experiment.Experiment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_experiment.Experiment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_experiment
 
@@ -183,12 +175,8 @@ class ExperimentsRestInterceptor:
         return response, metadata
 
     def pre_delete_experiment(
-        self,
-        request: experiment.DeleteExperimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        experiment.DeleteExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: experiment.DeleteExperimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[experiment.DeleteExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_experiment
 
         Override in a subclass to manipulate the request or metadata
@@ -197,12 +185,8 @@ class ExperimentsRestInterceptor:
         return request, metadata
 
     def pre_get_experiment(
-        self,
-        request: experiment.GetExperimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        experiment.GetExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: experiment.GetExperimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[experiment.GetExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_experiment
 
         Override in a subclass to manipulate the request or metadata
@@ -210,9 +194,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_experiment(
-        self, response: experiment.Experiment
-    ) -> experiment.Experiment:
+    def post_get_experiment(self, response: experiment.Experiment) -> experiment.Experiment:
         """Post-rpc interceptor for get_experiment
 
         DEPRECATED. Please use the `post_get_experiment_with_metadata`
@@ -226,9 +208,7 @@ class ExperimentsRestInterceptor:
         return response
 
     def post_get_experiment_with_metadata(
-        self,
-        response: experiment.Experiment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: experiment.Experiment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_experiment
 
@@ -245,12 +225,8 @@ class ExperimentsRestInterceptor:
         return response, metadata
 
     def pre_list_experiments(
-        self,
-        request: experiment.ListExperimentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        experiment.ListExperimentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: experiment.ListExperimentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[experiment.ListExperimentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_experiments
 
         Override in a subclass to manipulate the request or metadata
@@ -258,9 +234,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_experiments(
-        self, response: experiment.ListExperimentsResponse
-    ) -> experiment.ListExperimentsResponse:
+    def post_list_experiments(self, response: experiment.ListExperimentsResponse) -> experiment.ListExperimentsResponse:
         """Post-rpc interceptor for list_experiments
 
         DEPRECATED. Please use the `post_list_experiments_with_metadata`
@@ -274,12 +248,8 @@ class ExperimentsRestInterceptor:
         return response
 
     def post_list_experiments_with_metadata(
-        self,
-        response: experiment.ListExperimentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        experiment.ListExperimentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: experiment.ListExperimentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[experiment.ListExperimentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_experiments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -295,12 +265,8 @@ class ExperimentsRestInterceptor:
         return response, metadata
 
     def pre_start_experiment(
-        self,
-        request: experiment.StartExperimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        experiment.StartExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: experiment.StartExperimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[experiment.StartExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_experiment
 
         Override in a subclass to manipulate the request or metadata
@@ -308,9 +274,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_start_experiment(
-        self, response: experiment.Experiment
-    ) -> experiment.Experiment:
+    def post_start_experiment(self, response: experiment.Experiment) -> experiment.Experiment:
         """Post-rpc interceptor for start_experiment
 
         DEPRECATED. Please use the `post_start_experiment_with_metadata`
@@ -324,9 +288,7 @@ class ExperimentsRestInterceptor:
         return response
 
     def post_start_experiment_with_metadata(
-        self,
-        response: experiment.Experiment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: experiment.Experiment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_experiment
 
@@ -343,12 +305,8 @@ class ExperimentsRestInterceptor:
         return response, metadata
 
     def pre_stop_experiment(
-        self,
-        request: experiment.StopExperimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        experiment.StopExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: experiment.StopExperimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[experiment.StopExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_experiment
 
         Override in a subclass to manipulate the request or metadata
@@ -356,9 +314,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_experiment(
-        self, response: experiment.Experiment
-    ) -> experiment.Experiment:
+    def post_stop_experiment(self, response: experiment.Experiment) -> experiment.Experiment:
         """Post-rpc interceptor for stop_experiment
 
         DEPRECATED. Please use the `post_stop_experiment_with_metadata`
@@ -372,9 +328,7 @@ class ExperimentsRestInterceptor:
         return response
 
     def post_stop_experiment_with_metadata(
-        self,
-        response: experiment.Experiment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: experiment.Experiment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_experiment
 
@@ -391,12 +345,8 @@ class ExperimentsRestInterceptor:
         return response, metadata
 
     def pre_update_experiment(
-        self,
-        request: gcdc_experiment.UpdateExperimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_experiment.UpdateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_experiment.UpdateExperimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_experiment.UpdateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_experiment
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +354,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_experiment(
-        self, response: gcdc_experiment.Experiment
-    ) -> gcdc_experiment.Experiment:
+    def post_update_experiment(self, response: gcdc_experiment.Experiment) -> gcdc_experiment.Experiment:
         """Post-rpc interceptor for update_experiment
 
         DEPRECATED. Please use the `post_update_experiment_with_metadata`
@@ -420,9 +368,7 @@ class ExperimentsRestInterceptor:
         return response
 
     def post_update_experiment_with_metadata(
-        self,
-        response: gcdc_experiment.Experiment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_experiment.Experiment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_experiment
 
@@ -439,12 +385,8 @@ class ExperimentsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -452,9 +394,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -464,12 +404,8 @@ class ExperimentsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -477,9 +413,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -489,12 +423,8 @@ class ExperimentsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -512,12 +442,8 @@ class ExperimentsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -525,9 +451,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -537,12 +461,8 @@ class ExperimentsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -550,9 +470,7 @@ class ExperimentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -642,30 +560,18 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ExperimentsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateExperiment(
-        _BaseExperimentsRestTransport._BaseCreateExperiment, ExperimentsRestStub
-    ):
+    class _CreateExperiment(_BaseExperimentsRestTransport._BaseCreateExperiment, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.CreateExperiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -708,32 +614,18 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseCreateExperiment._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseCreateExperiment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_experiment(
-                request, metadata
-            )
-            transcoded_request = _BaseExperimentsRestTransport._BaseCreateExperiment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_experiment(request, metadata)
+            transcoded_request = _BaseExperimentsRestTransport._BaseCreateExperiment._get_transcoded_request(http_options, request)
 
-            body = _BaseExperimentsRestTransport._BaseCreateExperiment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseExperimentsRestTransport._BaseCreateExperiment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseCreateExperiment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseCreateExperiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -757,13 +649,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._CreateExperiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -779,12 +665,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             resp = self._interceptor.post_create_experiment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_experiment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_experiment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_experiment.Experiment.to_json(response)
                 except:
@@ -805,22 +687,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 )
             return resp
 
-    class _DeleteExperiment(
-        _BaseExperimentsRestTransport._BaseDeleteExperiment, ExperimentsRestStub
-    ):
+    class _DeleteExperiment(_BaseExperimentsRestTransport._BaseDeleteExperiment, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.DeleteExperiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -856,28 +728,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseDeleteExperiment._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseDeleteExperiment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_experiment(
-                request, metadata
-            )
-            transcoded_request = _BaseExperimentsRestTransport._BaseDeleteExperiment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_experiment(request, metadata)
+            transcoded_request = _BaseExperimentsRestTransport._BaseDeleteExperiment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseDeleteExperiment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseDeleteExperiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -901,12 +761,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._DeleteExperiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -914,22 +769,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetExperiment(
-        _BaseExperimentsRestTransport._BaseGetExperiment, ExperimentsRestStub
-    ):
+    class _GetExperiment(_BaseExperimentsRestTransport._BaseGetExperiment, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.GetExperiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -971,28 +816,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseGetExperiment._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseGetExperiment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_experiment(request, metadata)
-            transcoded_request = _BaseExperimentsRestTransport._BaseGetExperiment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseExperimentsRestTransport._BaseGetExperiment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExperimentsRestTransport._BaseGetExperiment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExperimentsRestTransport._BaseGetExperiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1016,12 +849,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._GetExperiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1037,12 +865,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             resp = self._interceptor.post_get_experiment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_experiment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_experiment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = experiment.Experiment.to_json(response)
                 except:
@@ -1063,22 +887,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 )
             return resp
 
-    class _ListExperiments(
-        _BaseExperimentsRestTransport._BaseListExperiments, ExperimentsRestStub
-    ):
+    class _ListExperiments(_BaseExperimentsRestTransport._BaseListExperiments, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.ListExperiments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1120,28 +934,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseListExperiments._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseListExperiments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_experiments(
-                request, metadata
-            )
-            transcoded_request = _BaseExperimentsRestTransport._BaseListExperiments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_experiments(request, metadata)
+            transcoded_request = _BaseExperimentsRestTransport._BaseListExperiments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseListExperiments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseListExperiments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1165,12 +967,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._ListExperiments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1186,16 +983,10 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             resp = self._interceptor.post_list_experiments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_experiments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_experiments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = experiment.ListExperimentsResponse.to_json(
-                        response
-                    )
+                    response_payload = experiment.ListExperimentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1214,22 +1005,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 )
             return resp
 
-    class _StartExperiment(
-        _BaseExperimentsRestTransport._BaseStartExperiment, ExperimentsRestStub
-    ):
+    class _StartExperiment(_BaseExperimentsRestTransport._BaseStartExperiment, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.StartExperiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1272,32 +1053,18 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseStartExperiment._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseStartExperiment._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_experiment(
-                request, metadata
-            )
-            transcoded_request = _BaseExperimentsRestTransport._BaseStartExperiment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_experiment(request, metadata)
+            transcoded_request = _BaseExperimentsRestTransport._BaseStartExperiment._get_transcoded_request(http_options, request)
 
-            body = _BaseExperimentsRestTransport._BaseStartExperiment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseExperimentsRestTransport._BaseStartExperiment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseStartExperiment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseStartExperiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1321,13 +1088,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._StartExperiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1343,12 +1104,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             resp = self._interceptor.post_start_experiment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_experiment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_experiment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = experiment.Experiment.to_json(response)
                 except:
@@ -1369,22 +1126,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 )
             return resp
 
-    class _StopExperiment(
-        _BaseExperimentsRestTransport._BaseStopExperiment, ExperimentsRestStub
-    ):
+    class _StopExperiment(_BaseExperimentsRestTransport._BaseStopExperiment, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.StopExperiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1427,30 +1174,18 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseStopExperiment._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseStopExperiment._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_experiment(request, metadata)
-            transcoded_request = _BaseExperimentsRestTransport._BaseStopExperiment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseExperimentsRestTransport._BaseStopExperiment._get_transcoded_request(http_options, request)
 
-            body = _BaseExperimentsRestTransport._BaseStopExperiment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseExperimentsRestTransport._BaseStopExperiment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseStopExperiment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseStopExperiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1474,13 +1209,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._StopExperiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1496,12 +1225,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             resp = self._interceptor.post_stop_experiment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_experiment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_experiment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = experiment.Experiment.to_json(response)
                 except:
@@ -1522,22 +1247,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 )
             return resp
 
-    class _UpdateExperiment(
-        _BaseExperimentsRestTransport._BaseUpdateExperiment, ExperimentsRestStub
-    ):
+    class _UpdateExperiment(_BaseExperimentsRestTransport._BaseUpdateExperiment, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.UpdateExperiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1580,32 +1295,18 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseUpdateExperiment._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_experiment(
-                request, metadata
-            )
-            transcoded_request = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_experiment(request, metadata)
+            transcoded_request = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_transcoded_request(http_options, request)
 
-            body = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseUpdateExperiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1629,13 +1330,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._UpdateExperiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1651,12 +1346,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             resp = self._interceptor.post_update_experiment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_experiment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_experiment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_experiment.Experiment.to_json(response)
                 except:
@@ -1678,63 +1369,43 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             return resp
 
     @property
-    def create_experiment(
-        self,
-    ) -> Callable[
-        [gcdc_experiment.CreateExperimentRequest], gcdc_experiment.Experiment
-    ]:
+    def create_experiment(self) -> Callable[[gcdc_experiment.CreateExperimentRequest], gcdc_experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExperiment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_experiment(
-        self,
-    ) -> Callable[[experiment.DeleteExperimentRequest], empty_pb2.Empty]:
+    def delete_experiment(self) -> Callable[[experiment.DeleteExperimentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExperiment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_experiment(
-        self,
-    ) -> Callable[[experiment.GetExperimentRequest], experiment.Experiment]:
+    def get_experiment(self) -> Callable[[experiment.GetExperimentRequest], experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetExperiment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_experiments(
-        self,
-    ) -> Callable[
-        [experiment.ListExperimentsRequest], experiment.ListExperimentsResponse
-    ]:
+    def list_experiments(self) -> Callable[[experiment.ListExperimentsRequest], experiment.ListExperimentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExperiments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_experiment(
-        self,
-    ) -> Callable[[experiment.StartExperimentRequest], experiment.Experiment]:
+    def start_experiment(self) -> Callable[[experiment.StartExperimentRequest], experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartExperiment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_experiment(
-        self,
-    ) -> Callable[[experiment.StopExperimentRequest], experiment.Experiment]:
+    def stop_experiment(self) -> Callable[[experiment.StopExperimentRequest], experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopExperiment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_experiment(
-        self,
-    ) -> Callable[
-        [gcdc_experiment.UpdateExperimentRequest], gcdc_experiment.Experiment
-    ]:
+    def update_experiment(self) -> Callable[[gcdc_experiment.UpdateExperimentRequest], gcdc_experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExperiment(self._session, self._host, self._interceptor)  # type: ignore
@@ -1743,22 +1414,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseExperimentsRestTransport._BaseGetLocation, ExperimentsRestStub
-    ):
+    class _GetLocation(_BaseExperimentsRestTransport._BaseGetLocation, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1796,30 +1457,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseExperimentsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExperimentsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExperimentsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExperimentsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1843,12 +1490,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1860,9 +1502,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1887,22 +1527,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseExperimentsRestTransport._BaseListLocations, ExperimentsRestStub
-    ):
+    class _ListLocations(_BaseExperimentsRestTransport._BaseListLocations, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1940,28 +1570,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseExperimentsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseExperimentsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExperimentsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExperimentsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1985,12 +1603,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2002,9 +1615,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2029,22 +1640,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseExperimentsRestTransport._BaseCancelOperation, ExperimentsRestStub
-    ):
+    class _CancelOperation(_BaseExperimentsRestTransport._BaseCancelOperation, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2079,28 +1680,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseExperimentsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseExperimentsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2124,12 +1713,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2143,22 +1727,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseExperimentsRestTransport._BaseGetOperation, ExperimentsRestStub
-    ):
+    class _GetOperation(_BaseExperimentsRestTransport._BaseGetOperation, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2196,30 +1770,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseExperimentsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExperimentsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExperimentsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExperimentsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2243,12 +1803,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2260,9 +1815,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2287,22 +1840,12 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseExperimentsRestTransport._BaseListOperations, ExperimentsRestStub
-    ):
+    class _ListOperations(_BaseExperimentsRestTransport._BaseListOperations, ExperimentsRestStub):
         def __hash__(self):
             return hash("ExperimentsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2340,26 +1883,16 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseExperimentsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseExperimentsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseExperimentsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseExperimentsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseExperimentsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseExperimentsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2383,12 +1916,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
             # Send the request
             response = ExperimentsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2400,9 +1928,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

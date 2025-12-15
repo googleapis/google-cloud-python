@@ -19,11 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    request_platform_enum,
-    targeted_video_bumper_type_enum,
-    video_position_enum,
-)
+from google.ads.admanager_v1.types import request_platform_enum, targeted_video_bumper_type_enum, video_position_enum
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -558,9 +554,7 @@ class RequestPlatformTargeting(proto.Message):
             should be targeted.
     """
 
-    request_platforms: MutableSequence[
-        request_platform_enum.RequestPlatformEnum.RequestPlatform
-    ] = proto.RepeatedField(
+    request_platforms: MutableSequence[request_platform_enum.RequestPlatformEnum.RequestPlatform] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=request_platform_enum.RequestPlatformEnum.RequestPlatform,
@@ -577,9 +571,7 @@ class CustomTargeting(proto.Message):
             together.
     """
 
-    custom_targeting_clauses: MutableSequence[
-        "CustomTargetingClause"
-    ] = proto.RepeatedField(
+    custom_targeting_clauses: MutableSequence["CustomTargetingClause"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CustomTargetingClause",
@@ -602,23 +594,17 @@ class CustomTargetingClause(proto.Message):
             metadata.
     """
 
-    custom_targeting_literals: MutableSequence[
-        "CustomTargetingLiteral"
-    ] = proto.RepeatedField(
+    custom_targeting_literals: MutableSequence["CustomTargetingLiteral"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CustomTargetingLiteral",
     )
-    audience_segment_targetings: MutableSequence[
-        "AudienceSegmentTargeting"
-    ] = proto.RepeatedField(
+    audience_segment_targetings: MutableSequence["AudienceSegmentTargeting"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AudienceSegmentTargeting",
     )
-    cms_metadata_targetings: MutableSequence[
-        "CmsMetadataTargeting"
-    ] = proto.RepeatedField(
+    cms_metadata_targetings: MutableSequence["CmsMetadataTargeting"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="CmsMetadataTargeting",

@@ -18,18 +18,10 @@ from google.cloud.managedkafka import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.managedkafka_v1.services.managed_kafka.async_client import (
-    ManagedKafkaAsyncClient,
-)
-from google.cloud.managedkafka_v1.services.managed_kafka.client import (
-    ManagedKafkaClient,
-)
-from google.cloud.managedkafka_v1.services.managed_kafka_connect.async_client import (
-    ManagedKafkaConnectAsyncClient,
-)
-from google.cloud.managedkafka_v1.services.managed_kafka_connect.client import (
-    ManagedKafkaConnectClient,
-)
+from google.cloud.managedkafka_v1.services.managed_kafka.async_client import ManagedKafkaAsyncClient
+from google.cloud.managedkafka_v1.services.managed_kafka.client import ManagedKafkaClient
+from google.cloud.managedkafka_v1.services.managed_kafka_connect.async_client import ManagedKafkaConnectAsyncClient
+from google.cloud.managedkafka_v1.services.managed_kafka_connect.client import ManagedKafkaConnectClient
 from google.cloud.managedkafka_v1.types.managed_kafka import (
     AddAclEntryRequest,
     AddAclEntryResponse,

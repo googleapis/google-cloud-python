@@ -144,12 +144,8 @@ class SpacesServiceRestInterceptor:
     """
 
     def pre_connect_active_conference(
-        self,
-        request: service.ConnectActiveConferenceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ConnectActiveConferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ConnectActiveConferenceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ConnectActiveConferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for connect_active_conference
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +153,7 @@ class SpacesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_connect_active_conference(
-        self, response: service.ConnectActiveConferenceResponse
-    ) -> service.ConnectActiveConferenceResponse:
+    def post_connect_active_conference(self, response: service.ConnectActiveConferenceResponse) -> service.ConnectActiveConferenceResponse:
         """Post-rpc interceptor for connect_active_conference
 
         DEPRECATED. Please use the `post_connect_active_conference_with_metadata`
@@ -173,12 +167,8 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_connect_active_conference_with_metadata(
-        self,
-        response: service.ConnectActiveConferenceResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ConnectActiveConferenceResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ConnectActiveConferenceResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ConnectActiveConferenceResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for connect_active_conference
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -194,9 +184,7 @@ class SpacesServiceRestInterceptor:
         return response, metadata
 
     def pre_create_member(
-        self,
-        request: service.CreateMemberRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateMemberRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateMemberRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_member
 
@@ -219,9 +207,7 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_create_member_with_metadata(
-        self,
-        response: resource.Member,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Member, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Member, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_member
 
@@ -238,9 +224,7 @@ class SpacesServiceRestInterceptor:
         return response, metadata
 
     def pre_create_space(
-        self,
-        request: service.CreateSpaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateSpaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_space
 
@@ -263,9 +247,7 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_create_space_with_metadata(
-        self,
-        response: resource.Space,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Space, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_space
 
@@ -282,9 +264,7 @@ class SpacesServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_member(
-        self,
-        request: service.DeleteMemberRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteMemberRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteMemberRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_member
 
@@ -294,12 +274,8 @@ class SpacesServiceRestInterceptor:
         return request, metadata
 
     def pre_end_active_conference(
-        self,
-        request: service.EndActiveConferenceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.EndActiveConferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.EndActiveConferenceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.EndActiveConferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for end_active_conference
 
         Override in a subclass to manipulate the request or metadata
@@ -308,9 +284,7 @@ class SpacesServiceRestInterceptor:
         return request, metadata
 
     def pre_get_member(
-        self,
-        request: service.GetMemberRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetMemberRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetMemberRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_member
 
@@ -333,9 +307,7 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_get_member_with_metadata(
-        self,
-        response: resource.Member,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Member, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Member, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_member
 
@@ -352,9 +324,7 @@ class SpacesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_space(
-        self,
-        request: service.GetSpaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetSpaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_space
 
@@ -377,9 +347,7 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_get_space_with_metadata(
-        self,
-        response: resource.Space,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Space, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_space
 
@@ -396,9 +364,7 @@ class SpacesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_members(
-        self,
-        request: service.ListMembersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListMembersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListMembersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_members
 
@@ -407,9 +373,7 @@ class SpacesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_members(
-        self, response: service.ListMembersResponse
-    ) -> service.ListMembersResponse:
+    def post_list_members(self, response: service.ListMembersResponse) -> service.ListMembersResponse:
         """Post-rpc interceptor for list_members
 
         DEPRECATED. Please use the `post_list_members_with_metadata`
@@ -423,9 +387,7 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_list_members_with_metadata(
-        self,
-        response: service.ListMembersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListMembersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListMembersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_members
 
@@ -442,9 +404,7 @@ class SpacesServiceRestInterceptor:
         return response, metadata
 
     def pre_update_space(
-        self,
-        request: service.UpdateSpaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateSpaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_space
 
@@ -467,9 +427,7 @@ class SpacesServiceRestInterceptor:
         return response
 
     def post_update_space_with_metadata(
-        self,
-        response: resource.Space,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Space, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_space
 
@@ -565,31 +523,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SpacesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ConnectActiveConference(
-        _BaseSpacesServiceRestTransport._BaseConnectActiveConference,
-        SpacesServiceRestStub,
-    ):
+    class _ConnectActiveConference(_BaseSpacesServiceRestTransport._BaseConnectActiveConference, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.ConnectActiveConference")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -640,32 +585,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_http_options()
 
-            request, metadata = self._interceptor.pre_connect_active_conference(
-                request, metadata
-            )
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_connect_active_conference(request, metadata)
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_transcoded_request(http_options, request)
 
-            body = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -688,16 +619,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SpacesServiceRestTransport._ConnectActiveConference._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SpacesServiceRestTransport._ConnectActiveConference._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -713,16 +636,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_connect_active_conference(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_connect_active_conference_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_connect_active_conference_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ConnectActiveConferenceResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ConnectActiveConferenceResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -741,22 +658,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
             return resp
 
-    class _CreateMember(
-        _BaseSpacesServiceRestTransport._BaseCreateMember, SpacesServiceRestStub
-    ):
+    class _CreateMember(_BaseSpacesServiceRestTransport._BaseCreateMember, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.CreateMember")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -800,30 +707,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseCreateMember._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseCreateMember._get_http_options()
 
             request, metadata = self._interceptor.pre_create_member(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseCreateMember._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseCreateMember._get_transcoded_request(http_options, request)
 
-            body = _BaseSpacesServiceRestTransport._BaseCreateMember._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpacesServiceRestTransport._BaseCreateMember._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSpacesServiceRestTransport._BaseCreateMember._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseCreateMember._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -847,13 +742,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._CreateMember._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -869,12 +758,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_create_member(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_member_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_member_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Member.to_json(response)
                 except:
@@ -895,22 +780,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
             return resp
 
-    class _CreateSpace(
-        _BaseSpacesServiceRestTransport._BaseCreateSpace, SpacesServiceRestStub
-    ):
+    class _CreateSpace(_BaseSpacesServiceRestTransport._BaseCreateSpace, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.CreateSpace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -953,34 +828,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseCreateSpace._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseCreateSpace._get_http_options()
 
             request, metadata = self._interceptor.pre_create_space(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseCreateSpace._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseCreateSpace._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpacesServiceRestTransport._BaseCreateSpace._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpacesServiceRestTransport._BaseCreateSpace._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseCreateSpace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseCreateSpace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1004,13 +863,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._CreateSpace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1026,12 +879,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_create_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_space_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_space_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Space.to_json(response)
                 except:
@@ -1052,22 +901,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
             return resp
 
-    class _DeleteMember(
-        _BaseSpacesServiceRestTransport._BaseDeleteMember, SpacesServiceRestStub
-    ):
+    class _DeleteMember(_BaseSpacesServiceRestTransport._BaseDeleteMember, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.DeleteMember")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1103,26 +942,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseDeleteMember._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseDeleteMember._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_member(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseDeleteMember._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseDeleteMember._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSpacesServiceRestTransport._BaseDeleteMember._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseDeleteMember._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1146,12 +975,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._DeleteMember._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1159,22 +983,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _EndActiveConference(
-        _BaseSpacesServiceRestTransport._BaseEndActiveConference, SpacesServiceRestStub
-    ):
+    class _EndActiveConference(_BaseSpacesServiceRestTransport._BaseEndActiveConference, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.EndActiveConference")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1211,32 +1025,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_http_options()
 
-            request, metadata = self._interceptor.pre_end_active_conference(
-                request, metadata
-            )
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_end_active_conference(request, metadata)
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_transcoded_request(http_options, request)
 
-            body = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1260,13 +1060,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._EndActiveConference._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1274,22 +1068,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetMember(
-        _BaseSpacesServiceRestTransport._BaseGetMember, SpacesServiceRestStub
-    ):
+    class _GetMember(_BaseSpacesServiceRestTransport._BaseGetMember, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.GetMember")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1331,30 +1115,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseGetMember._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseGetMember._get_http_options()
 
             request, metadata = self._interceptor.pre_get_member(request, metadata)
-            transcoded_request = (
-                _BaseSpacesServiceRestTransport._BaseGetMember._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseGetMember._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseGetMember._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseGetMember._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1378,12 +1148,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._GetMember._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1399,12 +1164,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_get_member(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_member_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_member_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Member.to_json(response)
                 except:
@@ -1425,22 +1186,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
             return resp
 
-    class _GetSpace(
-        _BaseSpacesServiceRestTransport._BaseGetSpace, SpacesServiceRestStub
-    ):
+    class _GetSpace(_BaseSpacesServiceRestTransport._BaseGetSpace, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.GetSpace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1482,30 +1233,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseGetSpace._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseGetSpace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_space(request, metadata)
-            transcoded_request = (
-                _BaseSpacesServiceRestTransport._BaseGetSpace._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseGetSpace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseGetSpace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseGetSpace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1529,12 +1266,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._GetSpace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1550,12 +1282,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_get_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_space_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_space_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Space.to_json(response)
                 except:
@@ -1576,22 +1304,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
             return resp
 
-    class _ListMembers(
-        _BaseSpacesServiceRestTransport._BaseListMembers, SpacesServiceRestStub
-    ):
+    class _ListMembers(_BaseSpacesServiceRestTransport._BaseListMembers, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.ListMembers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1631,28 +1349,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                     Response of list members.
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseListMembers._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseListMembers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_members(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseListMembers._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseListMembers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseListMembers._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseListMembers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1676,12 +1382,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._ListMembers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1697,12 +1398,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_list_members(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_members_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_members_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListMembersResponse.to_json(response)
                 except:
@@ -1723,22 +1420,12 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSpace(
-        _BaseSpacesServiceRestTransport._BaseUpdateSpace, SpacesServiceRestStub
-    ):
+    class _UpdateSpace(_BaseSpacesServiceRestTransport._BaseUpdateSpace, SpacesServiceRestStub):
         def __hash__(self):
             return hash("SpacesServiceRestTransport.UpdateSpace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1781,34 +1468,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_http_options()
 
             request, metadata = self._interceptor.pre_update_space(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1832,13 +1503,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             # Send the request
             response = SpacesServiceRestTransport._UpdateSpace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1854,12 +1519,8 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             resp = self._interceptor.post_update_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_space_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_space_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Space.to_json(response)
                 except:
@@ -1881,12 +1542,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             return resp
 
     @property
-    def connect_active_conference(
-        self,
-    ) -> Callable[
-        [service.ConnectActiveConferenceRequest],
-        service.ConnectActiveConferenceResponse,
-    ]:
+    def connect_active_conference(self) -> Callable[[service.ConnectActiveConferenceRequest], service.ConnectActiveConferenceResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ConnectActiveConference(self._session, self._host, self._interceptor)  # type: ignore
@@ -1910,9 +1566,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
         return self._DeleteMember(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def end_active_conference(
-        self,
-    ) -> Callable[[service.EndActiveConferenceRequest], empty_pb2.Empty]:
+    def end_active_conference(self) -> Callable[[service.EndActiveConferenceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EndActiveConference(self._session, self._host, self._interceptor)  # type: ignore
@@ -1930,9 +1584,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
         return self._GetSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_members(
-        self,
-    ) -> Callable[[service.ListMembersRequest], service.ListMembersResponse]:
+    def list_members(self) -> Callable[[service.ListMembersRequest], service.ListMembersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMembers(self._session, self._host, self._interceptor)  # type: ignore

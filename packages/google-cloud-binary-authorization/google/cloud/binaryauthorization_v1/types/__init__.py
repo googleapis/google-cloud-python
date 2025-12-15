@@ -13,15 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .resources import (
-    AdmissionRule,
-    AdmissionWhitelistPattern,
-    Attestor,
-    AttestorPublicKey,
-    PkixPublicKey,
-    Policy,
-    UserOwnedGrafeasNote,
-)
+from .resources import AdmissionRule, AdmissionWhitelistPattern, Attestor, AttestorPublicKey, PkixPublicKey, Policy, UserOwnedGrafeasNote
 from .service import (
     CreateAttestorRequest,
     DeleteAttestorRequest,

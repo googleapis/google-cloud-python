@@ -40,9 +40,7 @@ async def sample_update_connect_cluster():
 
     # Initialize request argument(s)
     connect_cluster = managedkafka_v1.ConnectCluster()
-    connect_cluster.gcp_config.access_config.network_configs.primary_subnet = (
-        "primary_subnet_value"
-    )
+    connect_cluster.gcp_config.access_config.network_configs.primary_subnet = "primary_subnet_value"
     connect_cluster.kafka_cluster = "kafka_cluster_value"
     connect_cluster.capacity_config.vcpu_count = 1094
     connect_cluster.capacity_config.memory_bytes = 1311

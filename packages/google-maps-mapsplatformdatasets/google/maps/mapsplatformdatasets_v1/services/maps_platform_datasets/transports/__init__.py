@@ -22,9 +22,7 @@ from .grpc_asyncio import MapsPlatformDatasetsGrpcAsyncIOTransport
 from .rest import MapsPlatformDatasetsRestInterceptor, MapsPlatformDatasetsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[MapsPlatformDatasetsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[MapsPlatformDatasetsTransport]]
 _transport_registry["grpc"] = MapsPlatformDatasetsGrpcTransport
 _transport_registry["grpc_asyncio"] = MapsPlatformDatasetsGrpcAsyncIOTransport
 _transport_registry["rest"] = MapsPlatformDatasetsRestTransport

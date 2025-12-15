@@ -51,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -89,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -335,12 +318,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_catalogs(
-        self,
-    ) -> Callable[
-        [catalog_service.ListCatalogsRequest],
-        Awaitable[catalog_service.ListCatalogsResponse],
-    ]:
+    def list_catalogs(self) -> Callable[[catalog_service.ListCatalogsRequest], Awaitable[catalog_service.ListCatalogsResponse]]:
         r"""Return a callable for the list catalogs method over gRPC.
 
         Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s
@@ -365,11 +343,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["list_catalogs"]
 
     @property
-    def update_catalog(
-        self,
-    ) -> Callable[
-        [catalog_service.UpdateCatalogRequest], Awaitable[gcr_catalog.Catalog]
-    ]:
+    def update_catalog(self) -> Callable[[catalog_service.UpdateCatalogRequest], Awaitable[gcr_catalog.Catalog]]:
         r"""Return a callable for the update catalog method over gRPC.
 
         Updates the [Catalog][google.cloud.retail.v2alpha.Catalog]s.
@@ -393,11 +367,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_catalog"]
 
     @property
-    def set_default_branch(
-        self,
-    ) -> Callable[
-        [catalog_service.SetDefaultBranchRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def set_default_branch(self) -> Callable[[catalog_service.SetDefaultBranchRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the set default branch method over gRPC.
 
         Set a specified branch id as default branch. API methods such as
@@ -455,12 +425,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["set_default_branch"]
 
     @property
-    def get_default_branch(
-        self,
-    ) -> Callable[
-        [catalog_service.GetDefaultBranchRequest],
-        Awaitable[catalog_service.GetDefaultBranchResponse],
-    ]:
+    def get_default_branch(self) -> Callable[[catalog_service.GetDefaultBranchRequest], Awaitable[catalog_service.GetDefaultBranchResponse]]:
         r"""Return a callable for the get default branch method over gRPC.
 
         Get which branch is currently default branch set by
@@ -486,12 +451,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_default_branch"]
 
     @property
-    def get_completion_config(
-        self,
-    ) -> Callable[
-        [catalog_service.GetCompletionConfigRequest],
-        Awaitable[catalog.CompletionConfig],
-    ]:
+    def get_completion_config(self) -> Callable[[catalog_service.GetCompletionConfigRequest], Awaitable[catalog.CompletionConfig]]:
         r"""Return a callable for the get completion config method over gRPC.
 
         Gets a
@@ -516,12 +476,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_completion_config"]
 
     @property
-    def update_completion_config(
-        self,
-    ) -> Callable[
-        [catalog_service.UpdateCompletionConfigRequest],
-        Awaitable[catalog.CompletionConfig],
-    ]:
+    def update_completion_config(self) -> Callable[[catalog_service.UpdateCompletionConfigRequest], Awaitable[catalog.CompletionConfig]]:
         r"""Return a callable for the update completion config method over gRPC.
 
         Updates the
@@ -546,12 +501,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_completion_config"]
 
     @property
-    def get_attributes_config(
-        self,
-    ) -> Callable[
-        [catalog_service.GetAttributesConfigRequest],
-        Awaitable[catalog.AttributesConfig],
-    ]:
+    def get_attributes_config(self) -> Callable[[catalog_service.GetAttributesConfigRequest], Awaitable[catalog.AttributesConfig]]:
         r"""Return a callable for the get attributes config method over gRPC.
 
         Gets an
@@ -576,12 +526,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_attributes_config"]
 
     @property
-    def update_attributes_config(
-        self,
-    ) -> Callable[
-        [catalog_service.UpdateAttributesConfigRequest],
-        Awaitable[catalog.AttributesConfig],
-    ]:
+    def update_attributes_config(self) -> Callable[[catalog_service.UpdateAttributesConfigRequest], Awaitable[catalog.AttributesConfig]]:
         r"""Return a callable for the update attributes config method over gRPC.
 
         Updates the
@@ -615,12 +560,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_attributes_config"]
 
     @property
-    def add_catalog_attribute(
-        self,
-    ) -> Callable[
-        [catalog_service.AddCatalogAttributeRequest],
-        Awaitable[catalog.AttributesConfig],
-    ]:
+    def add_catalog_attribute(self) -> Callable[[catalog_service.AddCatalogAttributeRequest], Awaitable[catalog.AttributesConfig]]:
         r"""Return a callable for the add catalog attribute method over gRPC.
 
         Adds the specified
@@ -651,12 +591,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["add_catalog_attribute"]
 
     @property
-    def remove_catalog_attribute(
-        self,
-    ) -> Callable[
-        [catalog_service.RemoveCatalogAttributeRequest],
-        Awaitable[catalog.AttributesConfig],
-    ]:
+    def remove_catalog_attribute(self) -> Callable[[catalog_service.RemoveCatalogAttributeRequest], Awaitable[catalog.AttributesConfig]]:
         r"""Return a callable for the remove catalog attribute method over gRPC.
 
         Removes the specified
@@ -689,10 +624,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     @property
     def batch_remove_catalog_attributes(
         self,
-    ) -> Callable[
-        [catalog_service.BatchRemoveCatalogAttributesRequest],
-        Awaitable[catalog_service.BatchRemoveCatalogAttributesResponse],
-    ]:
+    ) -> Callable[[catalog_service.BatchRemoveCatalogAttributesRequest], Awaitable[catalog_service.BatchRemoveCatalogAttributesResponse]]:
         r"""Return a callable for the batch remove catalog
         attributes method over gRPC.
 
@@ -712,9 +644,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_remove_catalog_attributes" not in self._stubs:
-            self._stubs[
-                "batch_remove_catalog_attributes"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_remove_catalog_attributes"] = self._logged_channel.unary_unary(
                 "/google.cloud.retail.v2alpha.CatalogService/BatchRemoveCatalogAttributes",
                 request_serializer=catalog_service.BatchRemoveCatalogAttributesRequest.serialize,
                 response_deserializer=catalog_service.BatchRemoveCatalogAttributesResponse.deserialize,
@@ -722,12 +652,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["batch_remove_catalog_attributes"]
 
     @property
-    def replace_catalog_attribute(
-        self,
-    ) -> Callable[
-        [catalog_service.ReplaceCatalogAttributeRequest],
-        Awaitable[catalog.AttributesConfig],
-    ]:
+    def replace_catalog_attribute(self) -> Callable[[catalog_service.ReplaceCatalogAttributeRequest], Awaitable[catalog.AttributesConfig]]:
         r"""Return a callable for the replace catalog attribute method over gRPC.
 
         Replaces the specified
@@ -866,9 +791,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

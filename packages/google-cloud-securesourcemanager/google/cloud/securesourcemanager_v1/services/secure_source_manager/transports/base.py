@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.securesourcemanager_v1 import gapic_version as package_version
 from google.cloud.securesourcemanager_v1.types import secure_source_manager
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class SecureSourceManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -508,40 +498,26 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListInstancesRequest],
-        Union[
-            secure_source_manager.ListInstancesResponse,
-            Awaitable[secure_source_manager.ListInstancesResponse],
-        ],
+        Union[secure_source_manager.ListInstancesResponse, Awaitable[secure_source_manager.ListInstancesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_instance(
         self,
-    ) -> Callable[
-        [secure_source_manager.GetInstanceRequest],
-        Union[
-            secure_source_manager.Instance, Awaitable[secure_source_manager.Instance]
-        ],
-    ]:
+    ) -> Callable[[secure_source_manager.GetInstanceRequest], Union[secure_source_manager.Instance, Awaitable[secure_source_manager.Instance]]]:
         raise NotImplementedError()
 
     @property
     def create_instance(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_instance(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeleteInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeleteInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -549,116 +525,70 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListRepositoriesRequest],
-        Union[
-            secure_source_manager.ListRepositoriesResponse,
-            Awaitable[secure_source_manager.ListRepositoriesResponse],
-        ],
+        Union[secure_source_manager.ListRepositoriesResponse, Awaitable[secure_source_manager.ListRepositoriesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_repository(
         self,
-    ) -> Callable[
-        [secure_source_manager.GetRepositoryRequest],
-        Union[
-            secure_source_manager.Repository,
-            Awaitable[secure_source_manager.Repository],
-        ],
-    ]:
+    ) -> Callable[[secure_source_manager.GetRepositoryRequest], Union[secure_source_manager.Repository, Awaitable[secure_source_manager.Repository]]]:
         raise NotImplementedError()
 
     @property
     def create_repository(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreateRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreateRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_repository(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdateRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdateRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_repository(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeleteRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeleteRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_hooks(
         self,
     ) -> Callable[
-        [secure_source_manager.ListHooksRequest],
-        Union[
-            secure_source_manager.ListHooksResponse,
-            Awaitable[secure_source_manager.ListHooksResponse],
-        ],
+        [secure_source_manager.ListHooksRequest], Union[secure_source_manager.ListHooksResponse, Awaitable[secure_source_manager.ListHooksResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_hook(
-        self,
-    ) -> Callable[
-        [secure_source_manager.GetHookRequest],
-        Union[secure_source_manager.Hook, Awaitable[secure_source_manager.Hook]],
-    ]:
+    def get_hook(self) -> Callable[[secure_source_manager.GetHookRequest], Union[secure_source_manager.Hook, Awaitable[secure_source_manager.Hook]]]:
         raise NotImplementedError()
 
     @property
     def create_hook(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreateHookRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreateHookRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_hook(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdateHookRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdateHookRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_hook(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeleteHookRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeleteHookRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy_repo(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy_repo(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy_repo(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy_repo(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -666,20 +596,14 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_branch_rule(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreateBranchRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreateBranchRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -687,61 +611,39 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListBranchRulesRequest],
-        Union[
-            secure_source_manager.ListBranchRulesResponse,
-            Awaitable[secure_source_manager.ListBranchRulesResponse],
-        ],
+        Union[secure_source_manager.ListBranchRulesResponse, Awaitable[secure_source_manager.ListBranchRulesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_branch_rule(
         self,
-    ) -> Callable[
-        [secure_source_manager.GetBranchRuleRequest],
-        Union[
-            secure_source_manager.BranchRule,
-            Awaitable[secure_source_manager.BranchRule],
-        ],
-    ]:
+    ) -> Callable[[secure_source_manager.GetBranchRuleRequest], Union[secure_source_manager.BranchRule, Awaitable[secure_source_manager.BranchRule]]]:
         raise NotImplementedError()
 
     @property
     def update_branch_rule(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdateBranchRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdateBranchRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_branch_rule(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeleteBranchRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeleteBranchRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_pull_request(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreatePullRequestRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreatePullRequestRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_pull_request(
         self,
     ) -> Callable[
-        [secure_source_manager.GetPullRequestRequest],
-        Union[
-            secure_source_manager.PullRequest,
-            Awaitable[secure_source_manager.PullRequest],
-        ],
+        [secure_source_manager.GetPullRequestRequest], Union[secure_source_manager.PullRequest, Awaitable[secure_source_manager.PullRequest]]
     ]:
         raise NotImplementedError()
 
@@ -750,47 +652,32 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListPullRequestsRequest],
-        Union[
-            secure_source_manager.ListPullRequestsResponse,
-            Awaitable[secure_source_manager.ListPullRequestsResponse],
-        ],
+        Union[secure_source_manager.ListPullRequestsResponse, Awaitable[secure_source_manager.ListPullRequestsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_pull_request(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdatePullRequestRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdatePullRequestRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def merge_pull_request(
         self,
-    ) -> Callable[
-        [secure_source_manager.MergePullRequestRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.MergePullRequestRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def open_pull_request(
         self,
-    ) -> Callable[
-        [secure_source_manager.OpenPullRequestRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.OpenPullRequestRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def close_pull_request(
         self,
-    ) -> Callable[
-        [secure_source_manager.ClosePullRequestRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.ClosePullRequestRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -798,10 +685,7 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListPullRequestFileDiffsRequest],
-        Union[
-            secure_source_manager.ListPullRequestFileDiffsResponse,
-            Awaitable[secure_source_manager.ListPullRequestFileDiffsResponse],
-        ],
+        Union[secure_source_manager.ListPullRequestFileDiffsResponse, Awaitable[secure_source_manager.ListPullRequestFileDiffsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -809,11 +693,7 @@ class SecureSourceManagerTransport(abc.ABC):
     def fetch_tree(
         self,
     ) -> Callable[
-        [secure_source_manager.FetchTreeRequest],
-        Union[
-            secure_source_manager.FetchTreeResponse,
-            Awaitable[secure_source_manager.FetchTreeResponse],
-        ],
+        [secure_source_manager.FetchTreeRequest], Union[secure_source_manager.FetchTreeResponse, Awaitable[secure_source_manager.FetchTreeResponse]]
     ]:
         raise NotImplementedError()
 
@@ -821,30 +701,20 @@ class SecureSourceManagerTransport(abc.ABC):
     def fetch_blob(
         self,
     ) -> Callable[
-        [secure_source_manager.FetchBlobRequest],
-        Union[
-            secure_source_manager.FetchBlobResponse,
-            Awaitable[secure_source_manager.FetchBlobResponse],
-        ],
+        [secure_source_manager.FetchBlobRequest], Union[secure_source_manager.FetchBlobResponse, Awaitable[secure_source_manager.FetchBlobResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_issue(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreateIssueRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreateIssueRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_issue(
         self,
-    ) -> Callable[
-        [secure_source_manager.GetIssueRequest],
-        Union[secure_source_manager.Issue, Awaitable[secure_source_manager.Issue]],
-    ]:
+    ) -> Callable[[secure_source_manager.GetIssueRequest], Union[secure_source_manager.Issue, Awaitable[secure_source_manager.Issue]]]:
         raise NotImplementedError()
 
     @property
@@ -852,47 +722,30 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListIssuesRequest],
-        Union[
-            secure_source_manager.ListIssuesResponse,
-            Awaitable[secure_source_manager.ListIssuesResponse],
-        ],
+        Union[secure_source_manager.ListIssuesResponse, Awaitable[secure_source_manager.ListIssuesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_issue(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdateIssueRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdateIssueRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_issue(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeleteIssueRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeleteIssueRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def open_issue(
-        self,
-    ) -> Callable[
-        [secure_source_manager.OpenIssueRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def open_issue(self) -> Callable[[secure_source_manager.OpenIssueRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def close_issue(
         self,
-    ) -> Callable[
-        [secure_source_manager.CloseIssueRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CloseIssueRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -900,10 +753,7 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.GetPullRequestCommentRequest],
-        Union[
-            secure_source_manager.PullRequestComment,
-            Awaitable[secure_source_manager.PullRequestComment],
-        ],
+        Union[secure_source_manager.PullRequestComment, Awaitable[secure_source_manager.PullRequestComment]],
     ]:
         raise NotImplementedError()
 
@@ -912,85 +762,59 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListPullRequestCommentsRequest],
-        Union[
-            secure_source_manager.ListPullRequestCommentsResponse,
-            Awaitable[secure_source_manager.ListPullRequestCommentsResponse],
-        ],
+        Union[secure_source_manager.ListPullRequestCommentsResponse, Awaitable[secure_source_manager.ListPullRequestCommentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_pull_request_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreatePullRequestCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreatePullRequestCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_pull_request_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdatePullRequestCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdatePullRequestCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_pull_request_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeletePullRequestCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeletePullRequestCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_pull_request_comments(
         self,
     ) -> Callable[
-        [secure_source_manager.BatchCreatePullRequestCommentsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [secure_source_manager.BatchCreatePullRequestCommentsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
     @property
     def resolve_pull_request_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.ResolvePullRequestCommentsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.ResolvePullRequestCommentsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def unresolve_pull_request_comments(
         self,
-    ) -> Callable[
-        [secure_source_manager.UnresolvePullRequestCommentsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UnresolvePullRequestCommentsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_issue_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.CreateIssueCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.CreateIssueCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_issue_comment(
         self,
     ) -> Callable[
-        [secure_source_manager.GetIssueCommentRequest],
-        Union[
-            secure_source_manager.IssueComment,
-            Awaitable[secure_source_manager.IssueComment],
-        ],
+        [secure_source_manager.GetIssueCommentRequest], Union[secure_source_manager.IssueComment, Awaitable[secure_source_manager.IssueComment]]
     ]:
         raise NotImplementedError()
 
@@ -999,29 +823,20 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.ListIssueCommentsRequest],
-        Union[
-            secure_source_manager.ListIssueCommentsResponse,
-            Awaitable[secure_source_manager.ListIssueCommentsResponse],
-        ],
+        Union[secure_source_manager.ListIssueCommentsResponse, Awaitable[secure_source_manager.ListIssueCommentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_issue_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.UpdateIssueCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.UpdateIssueCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_issue_comment(
         self,
-    ) -> Callable[
-        [secure_source_manager.DeleteIssueCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[secure_source_manager.DeleteIssueCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1029,20 +844,14 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1060,19 +869,13 @@ class SecureSourceManagerTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1090,22 +893,13 @@ class SecureSourceManagerTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

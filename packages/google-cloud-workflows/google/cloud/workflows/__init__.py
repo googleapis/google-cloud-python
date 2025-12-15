@@ -18,9 +18,7 @@ from google.cloud.workflows import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.workflows_v1.services.workflows.async_client import (
-    WorkflowsAsyncClient,
-)
+from google.cloud.workflows_v1.services.workflows.async_client import WorkflowsAsyncClient
 from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
 from google.cloud.workflows_v1.types.workflows import (
     CreateWorkflowRequest,

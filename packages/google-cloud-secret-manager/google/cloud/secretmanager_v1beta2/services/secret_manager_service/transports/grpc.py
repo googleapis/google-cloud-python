@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -226,18 +217,14 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -271,9 +258,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -332,9 +317,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_secrets(
-        self,
-    ) -> Callable[[service.ListSecretsRequest], service.ListSecretsResponse]:
+    def list_secrets(self) -> Callable[[service.ListSecretsRequest], service.ListSecretsResponse]:
         r"""Return a callable for the list secrets method over gRPC.
 
         Lists [Secrets][google.cloud.secretmanager.v1beta2.Secret].
@@ -358,9 +341,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["list_secrets"]
 
     @property
-    def create_secret(
-        self,
-    ) -> Callable[[service.CreateSecretRequest], resources.Secret]:
+    def create_secret(self) -> Callable[[service.CreateSecretRequest], resources.Secret]:
         r"""Return a callable for the create secret method over gRPC.
 
         Creates a new
@@ -387,9 +368,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["create_secret"]
 
     @property
-    def add_secret_version(
-        self,
-    ) -> Callable[[service.AddSecretVersionRequest], resources.SecretVersion]:
+    def add_secret_version(self) -> Callable[[service.AddSecretVersionRequest], resources.SecretVersion]:
         r"""Return a callable for the add secret version method over gRPC.
 
         Creates a new
@@ -441,9 +420,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["get_secret"]
 
     @property
-    def update_secret(
-        self,
-    ) -> Callable[[service.UpdateSecretRequest], resources.Secret]:
+    def update_secret(self) -> Callable[[service.UpdateSecretRequest], resources.Secret]:
         r"""Return a callable for the update secret method over gRPC.
 
         Updates metadata of an existing
@@ -492,11 +469,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["delete_secret"]
 
     @property
-    def list_secret_versions(
-        self,
-    ) -> Callable[
-        [service.ListSecretVersionsRequest], service.ListSecretVersionsResponse
-    ]:
+    def list_secret_versions(self) -> Callable[[service.ListSecretVersionsRequest], service.ListSecretVersionsResponse]:
         r"""Return a callable for the list secret versions method over gRPC.
 
         Lists
@@ -522,9 +495,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["list_secret_versions"]
 
     @property
-    def get_secret_version(
-        self,
-    ) -> Callable[[service.GetSecretVersionRequest], resources.SecretVersion]:
+    def get_secret_version(self) -> Callable[[service.GetSecretVersionRequest], resources.SecretVersion]:
         r"""Return a callable for the get secret version method over gRPC.
 
         Gets metadata for a
@@ -553,11 +524,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["get_secret_version"]
 
     @property
-    def access_secret_version(
-        self,
-    ) -> Callable[
-        [service.AccessSecretVersionRequest], service.AccessSecretVersionResponse
-    ]:
+    def access_secret_version(self) -> Callable[[service.AccessSecretVersionRequest], service.AccessSecretVersionResponse]:
         r"""Return a callable for the access secret version method over gRPC.
 
         Accesses a
@@ -587,9 +554,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["access_secret_version"]
 
     @property
-    def disable_secret_version(
-        self,
-    ) -> Callable[[service.DisableSecretVersionRequest], resources.SecretVersion]:
+    def disable_secret_version(self) -> Callable[[service.DisableSecretVersionRequest], resources.SecretVersion]:
         r"""Return a callable for the disable secret version method over gRPC.
 
         Disables a
@@ -621,9 +586,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["disable_secret_version"]
 
     @property
-    def enable_secret_version(
-        self,
-    ) -> Callable[[service.EnableSecretVersionRequest], resources.SecretVersion]:
+    def enable_secret_version(self) -> Callable[[service.EnableSecretVersionRequest], resources.SecretVersion]:
         r"""Return a callable for the enable secret version method over gRPC.
 
         Enables a
@@ -655,9 +618,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["enable_secret_version"]
 
     @property
-    def destroy_secret_version(
-        self,
-    ) -> Callable[[service.DestroySecretVersionRequest], resources.SecretVersion]:
+    def destroy_secret_version(self) -> Callable[[service.DestroySecretVersionRequest], resources.SecretVersion]:
         r"""Return a callable for the destroy secret version method over gRPC.
 
         Destroys a
@@ -690,9 +651,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["destroy_secret_version"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on the specified secret. Replaces
@@ -722,9 +681,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a secret.
@@ -750,12 +707,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that a caller has for the specified secret.
@@ -791,9 +743,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

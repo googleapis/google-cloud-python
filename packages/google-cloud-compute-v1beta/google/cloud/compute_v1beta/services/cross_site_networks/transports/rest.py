@@ -119,12 +119,8 @@ class CrossSiteNetworksRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteCrossSiteNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteCrossSiteNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -146,9 +142,7 @@ class CrossSiteNetworksRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -165,12 +159,8 @@ class CrossSiteNetworksRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetCrossSiteNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetCrossSiteNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +182,7 @@ class CrossSiteNetworksRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.CrossSiteNetwork,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.CrossSiteNetwork, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.CrossSiteNetwork, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -211,12 +199,8 @@ class CrossSiteNetworksRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertCrossSiteNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertCrossSiteNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -238,9 +222,7 @@ class CrossSiteNetworksRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -257,12 +239,8 @@ class CrossSiteNetworksRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListCrossSiteNetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListCrossSiteNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListCrossSiteNetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListCrossSiteNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -270,9 +248,7 @@ class CrossSiteNetworksRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.CrossSiteNetworkList
-    ) -> compute.CrossSiteNetworkList:
+    def post_list(self, response: compute.CrossSiteNetworkList) -> compute.CrossSiteNetworkList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -286,9 +262,7 @@ class CrossSiteNetworksRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.CrossSiteNetworkList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.CrossSiteNetworkList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.CrossSiteNetworkList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -305,12 +279,8 @@ class CrossSiteNetworksRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchCrossSiteNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchCrossSiteNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchCrossSiteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -332,9 +302,7 @@ class CrossSiteNetworksRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -434,30 +402,18 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CrossSiteNetworksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Delete(
-        _BaseCrossSiteNetworksRestTransport._BaseDelete, CrossSiteNetworksRestStub
-    ):
+    class _Delete(_BaseCrossSiteNetworksRestTransport._BaseDelete, CrossSiteNetworksRestStub):
         def __hash__(self):
             return hash("CrossSiteNetworksRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -515,30 +471,16 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCrossSiteNetworksRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseCrossSiteNetworksRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseCrossSiteNetworksRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCrossSiteNetworksRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCrossSiteNetworksRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCrossSiteNetworksRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -562,12 +504,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             # Send the request
             response = CrossSiteNetworksRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -583,12 +520,8 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -614,15 +547,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             return hash("CrossSiteNetworksRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -668,30 +593,16 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCrossSiteNetworksRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseCrossSiteNetworksRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseCrossSiteNetworksRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCrossSiteNetworksRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCrossSiteNetworksRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCrossSiteNetworksRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -715,12 +626,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             # Send the request
             response = CrossSiteNetworksRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -737,9 +643,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.CrossSiteNetwork.to_json(response)
                 except:
@@ -760,22 +664,12 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseCrossSiteNetworksRestTransport._BaseInsert, CrossSiteNetworksRestStub
-    ):
+    class _Insert(_BaseCrossSiteNetworksRestTransport._BaseInsert, CrossSiteNetworksRestStub):
         def __hash__(self):
             return hash("CrossSiteNetworksRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -834,36 +728,18 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCrossSiteNetworksRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseCrossSiteNetworksRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseCrossSiteNetworksRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCrossSiteNetworksRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCrossSiteNetworksRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCrossSiteNetworksRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCrossSiteNetworksRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCrossSiteNetworksRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -887,13 +763,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             # Send the request
             response = CrossSiteNetworksRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -909,12 +779,8 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -935,22 +801,12 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
                 )
             return resp
 
-    class _List(
-        _BaseCrossSiteNetworksRestTransport._BaseList, CrossSiteNetworksRestStub
-    ):
+    class _List(_BaseCrossSiteNetworksRestTransport._BaseList, CrossSiteNetworksRestStub):
         def __hash__(self):
             return hash("CrossSiteNetworksRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -993,30 +849,16 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCrossSiteNetworksRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseCrossSiteNetworksRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseCrossSiteNetworksRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCrossSiteNetworksRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCrossSiteNetworksRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCrossSiteNetworksRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1040,12 +882,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             # Send the request
             response = CrossSiteNetworksRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1062,9 +899,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.CrossSiteNetworkList.to_json(response)
                 except:
@@ -1085,22 +920,12 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
                 )
             return resp
 
-    class _Patch(
-        _BaseCrossSiteNetworksRestTransport._BasePatch, CrossSiteNetworksRestStub
-    ):
+    class _Patch(_BaseCrossSiteNetworksRestTransport._BasePatch, CrossSiteNetworksRestStub):
         def __hash__(self):
             return hash("CrossSiteNetworksRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1159,36 +984,18 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCrossSiteNetworksRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseCrossSiteNetworksRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseCrossSiteNetworksRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCrossSiteNetworksRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCrossSiteNetworksRestTransport._BasePatch._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCrossSiteNetworksRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCrossSiteNetworksRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCrossSiteNetworksRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1212,13 +1019,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             # Send the request
             response = CrossSiteNetworksRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1234,12 +1035,8 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1261,41 +1058,31 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteCrossSiteNetworkRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteCrossSiteNetworkRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetCrossSiteNetworkRequest], compute.CrossSiteNetwork]:
+    def get(self) -> Callable[[compute.GetCrossSiteNetworkRequest], compute.CrossSiteNetwork]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertCrossSiteNetworkRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertCrossSiteNetworkRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListCrossSiteNetworksRequest], compute.CrossSiteNetworkList]:
+    def list(self) -> Callable[[compute.ListCrossSiteNetworksRequest], compute.CrossSiteNetworkList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchCrossSiteNetworkRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchCrossSiteNetworkRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore

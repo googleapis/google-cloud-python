@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -97,18 +85,11 @@ class ListDiscoveredApiObservationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[discovery_service.ListDiscoveredApiObservationsResponse]:
+    def pages(self) -> Iterator[discovery_service.ListDiscoveredApiObservationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[common_fields.DiscoveredApiObservation]:
@@ -139,9 +120,7 @@ class ListDiscoveredApiObservationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[discovery_service.ListDiscoveredApiObservationsResponse]
-        ],
+        method: Callable[..., Awaitable[discovery_service.ListDiscoveredApiObservationsResponse]],
         request: discovery_service.ListDiscoveredApiObservationsRequest,
         response: discovery_service.ListDiscoveredApiObservationsResponse,
         *,
@@ -177,18 +156,11 @@ class ListDiscoveredApiObservationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[discovery_service.ListDiscoveredApiObservationsResponse]:
+    async def pages(self) -> AsyncIterator[discovery_service.ListDiscoveredApiObservationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[common_fields.DiscoveredApiObservation]:
@@ -263,12 +235,7 @@ class ListDiscoveredApiOperationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[common_fields.DiscoveredApiOperation]:
@@ -299,9 +266,7 @@ class ListDiscoveredApiOperationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[discovery_service.ListDiscoveredApiOperationsResponse]
-        ],
+        method: Callable[..., Awaitable[discovery_service.ListDiscoveredApiOperationsResponse]],
         request: discovery_service.ListDiscoveredApiOperationsRequest,
         response: discovery_service.ListDiscoveredApiOperationsResponse,
         *,
@@ -337,18 +302,11 @@ class ListDiscoveredApiOperationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[discovery_service.ListDiscoveredApiOperationsResponse]:
+    async def pages(self) -> AsyncIterator[discovery_service.ListDiscoveredApiOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[common_fields.DiscoveredApiOperation]:

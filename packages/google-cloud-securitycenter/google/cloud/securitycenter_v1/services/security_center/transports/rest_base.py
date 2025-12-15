@@ -31,23 +31,13 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import securitycenter_service, simulation
 from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
-from google.cloud.securitycenter_v1.types import (
-    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
-)
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module as gcs_event_threat_detection_custom_module
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
-from google.cloud.securitycenter_v1.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1.types import (
-    resource_value_config as gcs_resource_value_config,
-)
+from google.cloud.securitycenter_v1.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1.types import resource_value_config as gcs_resource_value_config
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
-from google.cloud.securitycenter_v1.types import (
-    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
-)
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module as gcs_security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
@@ -109,20 +99,14 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseBatchCreateResourceValueConfigs:
@@ -133,11 +117,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -152,11 +132,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.BatchCreateResourceValueConfigsRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.BatchCreateResourceValueConfigsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -164,9 +140,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -177,11 +151,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -194,11 +164,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -231,9 +197,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -244,11 +208,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseBulkMuteFindings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseBulkMuteFindings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -263,11 +223,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -300,9 +256,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -313,11 +267,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateBigQueryExport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseCreateBigQueryExport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -330,11 +280,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -359,11 +305,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -371,9 +313,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -384,11 +324,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -403,11 +339,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -430,9 +362,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -443,11 +373,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateFinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseCreateFinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -462,11 +388,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -514,9 +436,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -527,11 +447,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateMuteConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseCreateMuteConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -546,11 +462,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -575,9 +487,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.CreateNotificationConfigRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.CreateNotificationConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -585,9 +495,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -598,11 +506,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -615,11 +519,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -644,9 +544,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -654,9 +552,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -668,9 +564,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -684,11 +578,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -711,9 +601,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -724,11 +612,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseCreateSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseCreateSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -741,11 +625,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -779,11 +659,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseDeleteBigQueryExport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseDeleteBigQueryExport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -796,11 +672,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -822,11 +694,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -838,11 +706,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -855,11 +719,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -905,11 +765,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseDeleteMuteConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseDeleteMuteConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -922,11 +778,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -948,9 +800,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.DeleteNotificationConfigRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.DeleteNotificationConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -962,11 +812,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -979,11 +825,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -997,9 +839,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.DeleteResourceValueConfigRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.DeleteResourceValueConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1011,11 +851,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseDeleteResourceValueConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseDeleteResourceValueConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1028,11 +864,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1054,9 +886,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1069,9 +899,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -1085,11 +913,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1123,11 +947,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetBigQueryExport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetBigQueryExport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1140,11 +960,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1166,9 +982,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1181,9 +995,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -1197,11 +1009,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1223,9 +1031,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1238,9 +1044,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -1254,11 +1058,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1280,11 +1080,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.GetEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1296,11 +1092,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetEventThreatDetectionCustomModule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetEventThreatDetectionCustomModule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1313,11 +1105,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1340,9 +1128,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1353,11 +1139,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1370,11 +1152,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1420,11 +1198,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetMuteConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetMuteConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1437,11 +1211,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1475,11 +1245,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1492,11 +1258,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1510,9 +1272,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.GetOrganizationSettingsRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.GetOrganizationSettingsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1524,11 +1284,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1541,11 +1297,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1559,9 +1311,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.GetResourceValueConfigRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.GetResourceValueConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1573,11 +1323,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetResourceValueConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetResourceValueConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1590,11 +1336,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1616,11 +1358,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1632,11 +1370,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1649,11 +1383,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1679,11 +1409,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetSimulation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetSimulation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1696,11 +1422,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1726,11 +1448,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1743,11 +1461,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1773,11 +1487,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGetValuedResource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGetValuedResource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1790,11 +1500,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1827,9 +1533,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1840,11 +1544,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGroupAssets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGroupAssets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1857,11 +1557,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1894,9 +1590,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1907,11 +1601,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseGroupFindings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseGroupFindings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1924,11 +1614,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1962,11 +1648,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListAssets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListAssets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1979,11 +1661,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2017,11 +1695,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListAttackPaths._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListAttackPaths._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2034,11 +1708,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2072,11 +1742,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListBigQueryExports._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListBigQueryExports._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2089,11 +1755,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2115,9 +1777,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2130,9 +1790,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -2146,11 +1804,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2172,9 +1826,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2187,9 +1839,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -2203,11 +1853,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2229,9 +1875,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2244,9 +1888,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -2260,11 +1902,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2286,9 +1924,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2301,9 +1937,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -2317,11 +1951,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2343,11 +1973,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.ListEventThreatDetectionCustomModulesRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2359,11 +1985,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListEventThreatDetectionCustomModules._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListEventThreatDetectionCustomModules._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2376,11 +1998,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2414,11 +2032,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListFindings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListFindings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2431,11 +2045,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2481,11 +2091,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListMuteConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListMuteConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2498,11 +2104,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2524,9 +2126,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListNotificationConfigsRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListNotificationConfigsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2538,11 +2138,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2555,11 +2151,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2573,9 +2165,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListResourceValueConfigsRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListResourceValueConfigsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2587,11 +2177,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListResourceValueConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListResourceValueConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2604,11 +2190,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2630,9 +2212,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2645,9 +2225,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -2661,11 +2239,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2699,11 +2273,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListSources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListSources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2716,11 +2286,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2750,11 +2316,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseListValuedResources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseListValuedResources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2767,11 +2329,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2794,9 +2352,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2807,11 +2363,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2824,11 +2376,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2861,9 +2409,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2874,11 +2420,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseSetFindingState._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseSetFindingState._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2891,11 +2433,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2918,9 +2456,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2931,11 +2467,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2948,11 +2480,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2985,9 +2513,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2998,11 +2524,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseSetMute._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseSetMute._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3015,11 +2537,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3044,9 +2562,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3054,9 +2570,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3068,9 +2582,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -3084,11 +2596,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3111,9 +2619,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3124,11 +2630,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3141,11 +2643,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3178,9 +2676,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3191,11 +2687,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3208,11 +2700,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3237,11 +2725,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
-            )
+            pb_request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3249,9 +2733,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3262,11 +2744,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3279,11 +2757,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3316,9 +2790,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3329,11 +2801,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateExternalSystem._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateExternalSystem._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3346,11 +2814,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3383,9 +2847,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3396,11 +2858,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateFinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3413,11 +2871,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3465,9 +2919,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3478,11 +2930,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateMuteConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateMuteConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3495,11 +2943,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3524,9 +2968,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.UpdateNotificationConfigRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.UpdateNotificationConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3534,9 +2976,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3547,11 +2987,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3564,11 +3000,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3583,9 +3015,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.UpdateOrganizationSettingsRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.UpdateOrganizationSettingsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3593,9 +3023,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3606,11 +3034,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3623,11 +3047,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3642,9 +3062,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.UpdateResourceValueConfigRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.UpdateResourceValueConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3652,9 +3070,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3665,11 +3081,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3682,11 +3094,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3711,9 +3119,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3721,9 +3127,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3735,9 +3139,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -3751,11 +3153,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3803,9 +3201,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3816,11 +3212,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3833,11 +3225,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3860,9 +3248,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3873,11 +3259,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSecurityCenterRestTransport._BaseUpdateSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSecurityCenterRestTransport._BaseUpdateSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3890,11 +3272,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3919,9 +3297,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.pb(
-                request
-            )
+            pb_request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3929,9 +3305,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3943,9 +3317,7 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 )
             )
             query_params.update(
-                _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule._get_unset_required_fields(
-                    query_params
-                )
+                _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"

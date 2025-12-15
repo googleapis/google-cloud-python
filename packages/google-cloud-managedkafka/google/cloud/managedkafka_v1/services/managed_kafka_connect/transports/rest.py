@@ -190,13 +190,8 @@ class ManagedKafkaConnectRestInterceptor:
     """
 
     def pre_create_connect_cluster(
-        self,
-        request: managed_kafka_connect.CreateConnectClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.CreateConnectClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.CreateConnectClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.CreateConnectClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connect_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +199,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_create_connect_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_connect_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connect_cluster
 
         DEPRECATED. Please use the `post_create_connect_cluster_with_metadata`
@@ -220,9 +213,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_create_connect_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connect_cluster
 
@@ -239,13 +230,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_create_connector(
-        self,
-        request: managed_kafka_connect.CreateConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.CreateConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.CreateConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.CreateConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -253,9 +239,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_create_connector(
-        self, response: resources.Connector
-    ) -> resources.Connector:
+    def post_create_connector(self, response: resources.Connector) -> resources.Connector:
         """Post-rpc interceptor for create_connector
 
         DEPRECATED. Please use the `post_create_connector_with_metadata`
@@ -269,9 +253,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_create_connector_with_metadata(
-        self,
-        response: resources.Connector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Connector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Connector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connector
 
@@ -288,13 +270,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_connect_cluster(
-        self,
-        request: managed_kafka_connect.DeleteConnectClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.DeleteConnectClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.DeleteConnectClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.DeleteConnectClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connect_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +279,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_connect_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_connect_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connect_cluster
 
         DEPRECATED. Please use the `post_delete_connect_cluster_with_metadata`
@@ -318,9 +293,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_delete_connect_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_connect_cluster
 
@@ -337,13 +310,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_delete_connector(
-        self,
-        request: managed_kafka_connect.DeleteConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.DeleteConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.DeleteConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.DeleteConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -352,13 +320,8 @@ class ManagedKafkaConnectRestInterceptor:
         return request, metadata
 
     def pre_get_connect_cluster(
-        self,
-        request: managed_kafka_connect.GetConnectClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.GetConnectClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.GetConnectClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.GetConnectClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connect_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +329,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_connect_cluster(
-        self, response: resources.ConnectCluster
-    ) -> resources.ConnectCluster:
+    def post_get_connect_cluster(self, response: resources.ConnectCluster) -> resources.ConnectCluster:
         """Post-rpc interceptor for get_connect_cluster
 
         DEPRECATED. Please use the `post_get_connect_cluster_with_metadata`
@@ -382,9 +343,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_get_connect_cluster_with_metadata(
-        self,
-        response: resources.ConnectCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.ConnectCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.ConnectCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connect_cluster
 
@@ -401,13 +360,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_get_connector(
-        self,
-        request: managed_kafka_connect.GetConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.GetConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.GetConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.GetConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -429,9 +383,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_get_connector_with_metadata(
-        self,
-        response: resources.Connector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Connector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Connector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connector
 
@@ -448,13 +400,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_list_connect_clusters(
-        self,
-        request: managed_kafka_connect.ListConnectClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.ListConnectClustersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.ListConnectClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.ListConnectClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connect_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -478,13 +425,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_list_connect_clusters_with_metadata(
-        self,
-        response: managed_kafka_connect.ListConnectClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.ListConnectClustersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: managed_kafka_connect.ListConnectClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.ListConnectClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connect_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -500,13 +442,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_list_connectors(
-        self,
-        request: managed_kafka_connect.ListConnectorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.ListConnectorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.ListConnectorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.ListConnectorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connectors
 
         Override in a subclass to manipulate the request or metadata
@@ -514,9 +451,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_connectors(
-        self, response: managed_kafka_connect.ListConnectorsResponse
-    ) -> managed_kafka_connect.ListConnectorsResponse:
+    def post_list_connectors(self, response: managed_kafka_connect.ListConnectorsResponse) -> managed_kafka_connect.ListConnectorsResponse:
         """Post-rpc interceptor for list_connectors
 
         DEPRECATED. Please use the `post_list_connectors_with_metadata`
@@ -530,13 +465,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_list_connectors_with_metadata(
-        self,
-        response: managed_kafka_connect.ListConnectorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.ListConnectorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: managed_kafka_connect.ListConnectorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.ListConnectorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connectors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -552,13 +482,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_pause_connector(
-        self,
-        request: managed_kafka_connect.PauseConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.PauseConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.PauseConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.PauseConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -566,9 +491,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_pause_connector(
-        self, response: managed_kafka_connect.PauseConnectorResponse
-    ) -> managed_kafka_connect.PauseConnectorResponse:
+    def post_pause_connector(self, response: managed_kafka_connect.PauseConnectorResponse) -> managed_kafka_connect.PauseConnectorResponse:
         """Post-rpc interceptor for pause_connector
 
         DEPRECATED. Please use the `post_pause_connector_with_metadata`
@@ -582,13 +505,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_pause_connector_with_metadata(
-        self,
-        response: managed_kafka_connect.PauseConnectorResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.PauseConnectorResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: managed_kafka_connect.PauseConnectorResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.PauseConnectorResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for pause_connector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -604,13 +522,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_restart_connector(
-        self,
-        request: managed_kafka_connect.RestartConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.RestartConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.RestartConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.RestartConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restart_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -618,9 +531,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_restart_connector(
-        self, response: managed_kafka_connect.RestartConnectorResponse
-    ) -> managed_kafka_connect.RestartConnectorResponse:
+    def post_restart_connector(self, response: managed_kafka_connect.RestartConnectorResponse) -> managed_kafka_connect.RestartConnectorResponse:
         """Post-rpc interceptor for restart_connector
 
         DEPRECATED. Please use the `post_restart_connector_with_metadata`
@@ -634,13 +545,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_restart_connector_with_metadata(
-        self,
-        response: managed_kafka_connect.RestartConnectorResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.RestartConnectorResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: managed_kafka_connect.RestartConnectorResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.RestartConnectorResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restart_connector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -656,13 +562,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_resume_connector(
-        self,
-        request: managed_kafka_connect.ResumeConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.ResumeConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.ResumeConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.ResumeConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +571,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_resume_connector(
-        self, response: managed_kafka_connect.ResumeConnectorResponse
-    ) -> managed_kafka_connect.ResumeConnectorResponse:
+    def post_resume_connector(self, response: managed_kafka_connect.ResumeConnectorResponse) -> managed_kafka_connect.ResumeConnectorResponse:
         """Post-rpc interceptor for resume_connector
 
         DEPRECATED. Please use the `post_resume_connector_with_metadata`
@@ -686,13 +585,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_resume_connector_with_metadata(
-        self,
-        response: managed_kafka_connect.ResumeConnectorResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.ResumeConnectorResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: managed_kafka_connect.ResumeConnectorResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.ResumeConnectorResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_connector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -708,13 +602,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_stop_connector(
-        self,
-        request: managed_kafka_connect.StopConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.StopConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.StopConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.StopConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -722,9 +611,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_connector(
-        self, response: managed_kafka_connect.StopConnectorResponse
-    ) -> managed_kafka_connect.StopConnectorResponse:
+    def post_stop_connector(self, response: managed_kafka_connect.StopConnectorResponse) -> managed_kafka_connect.StopConnectorResponse:
         """Post-rpc interceptor for stop_connector
 
         DEPRECATED. Please use the `post_stop_connector_with_metadata`
@@ -738,13 +625,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_stop_connector_with_metadata(
-        self,
-        response: managed_kafka_connect.StopConnectorResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.StopConnectorResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: managed_kafka_connect.StopConnectorResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.StopConnectorResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_connector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -760,13 +642,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_update_connect_cluster(
-        self,
-        request: managed_kafka_connect.UpdateConnectClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.UpdateConnectClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.UpdateConnectClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.UpdateConnectClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connect_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -774,9 +651,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_update_connect_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_connect_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connect_cluster
 
         DEPRECATED. Please use the `post_update_connect_cluster_with_metadata`
@@ -790,9 +665,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_update_connect_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connect_cluster
 
@@ -809,13 +682,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_update_connector(
-        self,
-        request: managed_kafka_connect.UpdateConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        managed_kafka_connect.UpdateConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: managed_kafka_connect.UpdateConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[managed_kafka_connect.UpdateConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -823,9 +691,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_update_connector(
-        self, response: resources.Connector
-    ) -> resources.Connector:
+    def post_update_connector(self, response: resources.Connector) -> resources.Connector:
         """Post-rpc interceptor for update_connector
 
         DEPRECATED. Please use the `post_update_connector_with_metadata`
@@ -839,9 +705,7 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def post_update_connector_with_metadata(
-        self,
-        response: resources.Connector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Connector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Connector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connector
 
@@ -858,12 +722,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -871,9 +731,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -883,12 +741,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -896,9 +750,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -908,12 +760,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -931,12 +779,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -954,12 +798,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -967,9 +807,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -979,12 +817,8 @@ class ManagedKafkaConnectRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -992,9 +826,7 @@ class ManagedKafkaConnectRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1084,9 +916,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1139,30 +969,17 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateConnectCluster(
-        _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _CreateConnectCluster(_BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.CreateConnectCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1205,32 +1022,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connect_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connect_cluster(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1253,16 +1056,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                ManagedKafkaConnectRestTransport._CreateConnectCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedKafkaConnectRestTransport._CreateConnectCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1276,12 +1071,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_create_connect_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connect_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connect_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1302,23 +1093,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _CreateConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseCreateConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _CreateConnector(_BaseManagedKafkaConnectRestTransport._BaseCreateConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.CreateConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1360,32 +1140,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connector(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1409,13 +1175,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._CreateConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1431,12 +1191,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_create_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Connector.to_json(response)
                 except:
@@ -1457,23 +1213,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _DeleteConnectCluster(
-        _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _DeleteConnectCluster(_BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.DeleteConnectCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1515,28 +1260,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connect_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connect_cluster(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1559,15 +1292,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                ManagedKafkaConnectRestTransport._DeleteConnectCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedKafkaConnectRestTransport._DeleteConnectCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1581,12 +1307,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_delete_connect_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_connect_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_connect_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1607,23 +1329,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _DeleteConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _DeleteConnector(_BaseManagedKafkaConnectRestTransport._BaseDeleteConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.DeleteConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1658,28 +1369,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connector(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1703,12 +1402,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._DeleteConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1716,23 +1410,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetConnectCluster(
-        _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _GetConnectCluster(_BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.GetConnectCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1773,28 +1456,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_connect_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_connect_cluster(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1817,15 +1488,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                ManagedKafkaConnectRestTransport._GetConnectCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedKafkaConnectRestTransport._GetConnectCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1841,12 +1505,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_get_connect_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connect_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connect_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.ConnectCluster.to_json(response)
                 except:
@@ -1867,23 +1527,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _GetConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseGetConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _GetConnector(_BaseManagedKafkaConnectRestTransport._BaseGetConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.GetConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1924,26 +1573,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connector(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1967,12 +1606,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._GetConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1988,12 +1622,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_get_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Connector.to_json(response)
                 except:
@@ -2014,23 +1644,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _ListConnectClusters(
-        _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _ListConnectClusters(_BaseManagedKafkaConnectRestTransport._BaseListConnectClusters, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.ListConnectClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2069,28 +1688,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for ListConnectClusters.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_connect_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_connect_clusters(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2113,15 +1720,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                ManagedKafkaConnectRestTransport._ListConnectClusters._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ManagedKafkaConnectRestTransport._ListConnectClusters._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2137,18 +1737,10 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_list_connect_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connect_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connect_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        managed_kafka_connect.ListConnectClustersResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = managed_kafka_connect.ListConnectClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2167,23 +1759,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _ListConnectors(
-        _BaseManagedKafkaConnectRestTransport._BaseListConnectors,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _ListConnectors(_BaseManagedKafkaConnectRestTransport._BaseListConnectors, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.ListConnectors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2222,26 +1803,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for ListConnectors.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_connectors(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2265,12 +1836,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._ListConnectors._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2286,16 +1852,10 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_list_connectors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connectors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connectors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        managed_kafka_connect.ListConnectorsResponse.to_json(response)
-                    )
+                    response_payload = managed_kafka_connect.ListConnectorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2314,23 +1874,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _PauseConnector(
-        _BaseManagedKafkaConnectRestTransport._BasePauseConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _PauseConnector(_BaseManagedKafkaConnectRestTransport._BasePauseConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.PauseConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2370,30 +1919,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for PauseConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_connector(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2417,13 +1954,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._PauseConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2439,16 +1970,10 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_pause_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pause_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pause_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        managed_kafka_connect.PauseConnectorResponse.to_json(response)
-                    )
+                    response_payload = managed_kafka_connect.PauseConnectorResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2467,23 +1992,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _RestartConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseRestartConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _RestartConnector(_BaseManagedKafkaConnectRestTransport._BaseRestartConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.RestartConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2523,32 +2037,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for RestartConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_restart_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restart_connector(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2572,13 +2072,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._RestartConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2594,16 +2088,10 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_restart_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restart_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restart_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        managed_kafka_connect.RestartConnectorResponse.to_json(response)
-                    )
+                    response_payload = managed_kafka_connect.RestartConnectorResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2622,23 +2110,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _ResumeConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseResumeConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _ResumeConnector(_BaseManagedKafkaConnectRestTransport._BaseResumeConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.ResumeConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2678,32 +2155,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for ResumeConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_resume_connector(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2727,13 +2190,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._ResumeConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2749,16 +2206,10 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_resume_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        managed_kafka_connect.ResumeConnectorResponse.to_json(response)
-                    )
+                    response_payload = managed_kafka_connect.ResumeConnectorResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2777,23 +2228,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _StopConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseStopConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _StopConnector(_BaseManagedKafkaConnectRestTransport._BaseStopConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.StopConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2833,30 +2273,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for StopConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_connector(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2880,13 +2308,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._StopConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2902,16 +2324,10 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_stop_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        managed_kafka_connect.StopConnectorResponse.to_json(response)
-                    )
+                    response_payload = managed_kafka_connect.StopConnectorResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2930,23 +2346,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _UpdateConnectCluster(
-        _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _UpdateConnectCluster(_BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.UpdateConnectCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2989,32 +2394,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connect_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connect_cluster(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3037,16 +2428,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
 
             # Send the request
-            response = (
-                ManagedKafkaConnectRestTransport._UpdateConnectCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ManagedKafkaConnectRestTransport._UpdateConnectCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3060,12 +2443,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_update_connect_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connect_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connect_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3086,23 +2465,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 )
             return resp
 
-    class _UpdateConnector(
-        _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _UpdateConnector(_BaseManagedKafkaConnectRestTransport._BaseUpdateConnector, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.UpdateConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3144,32 +2512,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connector(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3193,13 +2547,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._UpdateConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3215,12 +2563,8 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             resp = self._interceptor.post_update_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Connector.to_json(response)
                 except:
@@ -3242,55 +2586,37 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             return resp
 
     @property
-    def create_connect_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.CreateConnectClusterRequest], operations_pb2.Operation
-    ]:
+    def create_connect_cluster(self) -> Callable[[managed_kafka_connect.CreateConnectClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnectCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_connector(
-        self,
-    ) -> Callable[[managed_kafka_connect.CreateConnectorRequest], resources.Connector]:
+    def create_connector(self) -> Callable[[managed_kafka_connect.CreateConnectorRequest], resources.Connector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connect_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.DeleteConnectClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_connect_cluster(self) -> Callable[[managed_kafka_connect.DeleteConnectClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnectCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connector(
-        self,
-    ) -> Callable[[managed_kafka_connect.DeleteConnectorRequest], empty_pb2.Empty]:
+    def delete_connector(self) -> Callable[[managed_kafka_connect.DeleteConnectorRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connect_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.GetConnectClusterRequest], resources.ConnectCluster
-    ]:
+    def get_connect_cluster(self) -> Callable[[managed_kafka_connect.GetConnectClusterRequest], resources.ConnectCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnectCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connector(
-        self,
-    ) -> Callable[[managed_kafka_connect.GetConnectorRequest], resources.Connector]:
+    def get_connector(self) -> Callable[[managed_kafka_connect.GetConnectorRequest], resources.Connector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnector(self._session, self._host, self._interceptor)  # type: ignore
@@ -3298,83 +2624,49 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     @property
     def list_connect_clusters(
         self,
-    ) -> Callable[
-        [managed_kafka_connect.ListConnectClustersRequest],
-        managed_kafka_connect.ListConnectClustersResponse,
-    ]:
+    ) -> Callable[[managed_kafka_connect.ListConnectClustersRequest], managed_kafka_connect.ListConnectClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnectClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_connectors(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.ListConnectorsRequest],
-        managed_kafka_connect.ListConnectorsResponse,
-    ]:
+    def list_connectors(self) -> Callable[[managed_kafka_connect.ListConnectorsRequest], managed_kafka_connect.ListConnectorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnectors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pause_connector(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.PauseConnectorRequest],
-        managed_kafka_connect.PauseConnectorResponse,
-    ]:
+    def pause_connector(self) -> Callable[[managed_kafka_connect.PauseConnectorRequest], managed_kafka_connect.PauseConnectorResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PauseConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restart_connector(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.RestartConnectorRequest],
-        managed_kafka_connect.RestartConnectorResponse,
-    ]:
+    def restart_connector(self) -> Callable[[managed_kafka_connect.RestartConnectorRequest], managed_kafka_connect.RestartConnectorResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestartConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_connector(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.ResumeConnectorRequest],
-        managed_kafka_connect.ResumeConnectorResponse,
-    ]:
+    def resume_connector(self) -> Callable[[managed_kafka_connect.ResumeConnectorRequest], managed_kafka_connect.ResumeConnectorResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_connector(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.StopConnectorRequest],
-        managed_kafka_connect.StopConnectorResponse,
-    ]:
+    def stop_connector(self) -> Callable[[managed_kafka_connect.StopConnectorRequest], managed_kafka_connect.StopConnectorResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connect_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka_connect.UpdateConnectClusterRequest], operations_pb2.Operation
-    ]:
+    def update_connect_cluster(self) -> Callable[[managed_kafka_connect.UpdateConnectClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnectCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connector(
-        self,
-    ) -> Callable[[managed_kafka_connect.UpdateConnectorRequest], resources.Connector]:
+    def update_connector(self) -> Callable[[managed_kafka_connect.UpdateConnectorRequest], resources.Connector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnector(self._session, self._host, self._interceptor)  # type: ignore
@@ -3383,23 +2675,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseManagedKafkaConnectRestTransport._BaseGetLocation,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _GetLocation(_BaseManagedKafkaConnectRestTransport._BaseGetLocation, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3437,26 +2718,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3480,12 +2751,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3497,9 +2763,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3524,23 +2788,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseManagedKafkaConnectRestTransport._BaseListLocations,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _ListLocations(_BaseManagedKafkaConnectRestTransport._BaseListLocations, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3578,26 +2831,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3621,12 +2864,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3638,9 +2876,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3665,23 +2901,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseManagedKafkaConnectRestTransport._BaseCancelOperation,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _CancelOperation(_BaseManagedKafkaConnectRestTransport._BaseCancelOperation, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3717,32 +2942,18 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3766,13 +2977,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3786,23 +2991,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _DeleteOperation(_BaseManagedKafkaConnectRestTransport._BaseDeleteOperation, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3837,28 +3031,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3882,12 +3064,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3901,23 +3078,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseManagedKafkaConnectRestTransport._BaseGetOperation,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _GetOperation(_BaseManagedKafkaConnectRestTransport._BaseGetOperation, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3955,26 +3121,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3998,12 +3154,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4015,9 +3166,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4042,23 +3191,12 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseManagedKafkaConnectRestTransport._BaseListOperations,
-        ManagedKafkaConnectRestStub,
-    ):
+    class _ListOperations(_BaseManagedKafkaConnectRestTransport._BaseListOperations, ManagedKafkaConnectRestStub):
         def __hash__(self):
             return hash("ManagedKafkaConnectRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4096,26 +3234,16 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4139,12 +3267,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             # Send the request
             response = ManagedKafkaConnectRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4156,9 +3279,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

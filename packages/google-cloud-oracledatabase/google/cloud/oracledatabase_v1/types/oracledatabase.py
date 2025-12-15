@@ -31,12 +31,8 @@ from google.cloud.oracledatabase_v1.types import (
     entitlement,
     exadata_infra,
 )
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database as gco_autonomous_database,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exadb_vm_cluster as gco_exadb_vm_cluster,
-)
+from google.cloud.oracledatabase_v1.types import autonomous_database as gco_autonomous_database
+from google.cloud.oracledatabase_v1.types import exadb_vm_cluster as gco_exadb_vm_cluster
 from google.cloud.oracledatabase_v1.types import gi_version, vm_cluster
 
 __protobuf__ = proto.module(
@@ -155,9 +151,7 @@ class ListCloudExadataInfrastructuresResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cloud_exadata_infrastructures: MutableSequence[
-        exadata_infra.CloudExadataInfrastructure
-    ] = proto.RepeatedField(
+    cloud_exadata_infrastructures: MutableSequence[exadata_infra.CloudExadataInfrastructure] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=exadata_infra.CloudExadataInfrastructure,
@@ -224,12 +218,10 @@ class CreateCloudExadataInfrastructureRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    cloud_exadata_infrastructure: exadata_infra.CloudExadataInfrastructure = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=exadata_infra.CloudExadataInfrastructure,
-        )
+    cloud_exadata_infrastructure: exadata_infra.CloudExadataInfrastructure = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=exadata_infra.CloudExadataInfrastructure,
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -748,9 +740,7 @@ class ListDbSystemShapesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    db_system_shapes: MutableSequence[
-        db_system_shape.DbSystemShape
-    ] = proto.RepeatedField(
+    db_system_shapes: MutableSequence[db_system_shape.DbSystemShape] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=db_system_shape.DbSystemShape,
@@ -891,9 +881,7 @@ class ListAutonomousDatabasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    autonomous_databases: MutableSequence[
-        gco_autonomous_database.AutonomousDatabase
-    ] = proto.RepeatedField(
+    autonomous_databases: MutableSequence[gco_autonomous_database.AutonomousDatabase] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gco_autonomous_database.AutonomousDatabase,
@@ -1267,9 +1255,7 @@ class ListAutonomousDbVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    autonomous_db_versions: MutableSequence[
-        autonomous_db_version.AutonomousDbVersion
-    ] = proto.RepeatedField(
+    autonomous_db_versions: MutableSequence[autonomous_db_version.AutonomousDbVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=autonomous_db_version.AutonomousDbVersion,
@@ -1339,9 +1325,7 @@ class ListAutonomousDatabaseCharacterSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    autonomous_database_character_sets: MutableSequence[
-        autonomous_database_character_set.AutonomousDatabaseCharacterSet
-    ] = proto.RepeatedField(
+    autonomous_database_character_sets: MutableSequence[autonomous_database_character_set.AutonomousDatabaseCharacterSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=autonomous_database_character_set.AutonomousDatabaseCharacterSet,
@@ -1413,9 +1397,7 @@ class ListAutonomousDatabaseBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    autonomous_database_backups: MutableSequence[
-        autonomous_db_backup.AutonomousDatabaseBackup
-    ] = proto.RepeatedField(
+    autonomous_database_backups: MutableSequence[autonomous_db_backup.AutonomousDatabaseBackup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=autonomous_db_backup.AutonomousDatabaseBackup,
@@ -1593,9 +1575,7 @@ class ListExadbVmClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exadb_vm_clusters: MutableSequence[
-        gco_exadb_vm_cluster.ExadbVmCluster
-    ] = proto.RepeatedField(
+    exadb_vm_clusters: MutableSequence[gco_exadb_vm_cluster.ExadbVmCluster] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gco_exadb_vm_cluster.ExadbVmCluster,

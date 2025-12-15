@@ -57,12 +57,7 @@ from .application import Application, Scope
 from .attributes import Attributes, ContactInfo, Criticality, Environment
 from .service import DiscoveredService, Service, ServiceProperties, ServiceReference
 from .service_project_attachment import ServiceProjectAttachment
-from .workload import (
-    DiscoveredWorkload,
-    Workload,
-    WorkloadProperties,
-    WorkloadReference,
-)
+from .workload import DiscoveredWorkload, Workload, WorkloadProperties, WorkloadReference
 
 __all__ = (
     "CreateApplicationRequest",

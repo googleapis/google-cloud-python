@@ -161,13 +161,8 @@ class VectorSearchServiceRestInterceptor:
     """
 
     def pre_create_collection(
-        self,
-        request: vectorsearch_service.CreateCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.CreateCollectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vectorsearch_service.CreateCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.CreateCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +170,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_collection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_collection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_collection
 
         DEPRECATED. Please use the `post_create_collection_with_metadata`
@@ -191,9 +184,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_create_collection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_collection
 
@@ -210,12 +201,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_create_index(
-        self,
-        request: vectorsearch_service.CreateIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.CreateIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vectorsearch_service.CreateIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.CreateIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_index
 
         Override in a subclass to manipulate the request or metadata
@@ -223,9 +210,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_index
 
         DEPRECATED. Please use the `post_create_index_with_metadata`
@@ -239,9 +224,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_create_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_index
 
@@ -258,13 +241,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_collection(
-        self,
-        request: vectorsearch_service.DeleteCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.DeleteCollectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vectorsearch_service.DeleteCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.DeleteCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -272,9 +250,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_collection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_collection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_collection
 
         DEPRECATED. Please use the `post_delete_collection_with_metadata`
@@ -288,9 +264,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_delete_collection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_collection
 
@@ -307,12 +281,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_index(
-        self,
-        request: vectorsearch_service.DeleteIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.DeleteIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vectorsearch_service.DeleteIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.DeleteIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_index
 
         Override in a subclass to manipulate the request or metadata
@@ -320,9 +290,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_index
 
         DEPRECATED. Please use the `post_delete_index_with_metadata`
@@ -336,9 +304,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_delete_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_index
 
@@ -355,13 +321,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_get_collection(
-        self,
-        request: vectorsearch_service.GetCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.GetCollectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vectorsearch_service.GetCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.GetCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -369,9 +330,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_collection(
-        self, response: vectorsearch_service.Collection
-    ) -> vectorsearch_service.Collection:
+    def post_get_collection(self, response: vectorsearch_service.Collection) -> vectorsearch_service.Collection:
         """Post-rpc interceptor for get_collection
 
         DEPRECATED. Please use the `post_get_collection_with_metadata`
@@ -385,12 +344,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_get_collection_with_metadata(
-        self,
-        response: vectorsearch_service.Collection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.Collection, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vectorsearch_service.Collection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.Collection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_collection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -406,12 +361,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_get_index(
-        self,
-        request: vectorsearch_service.GetIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.GetIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vectorsearch_service.GetIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.GetIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_index
 
         Override in a subclass to manipulate the request or metadata
@@ -419,9 +370,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_index(
-        self, response: vectorsearch_service.Index
-    ) -> vectorsearch_service.Index:
+    def post_get_index(self, response: vectorsearch_service.Index) -> vectorsearch_service.Index:
         """Post-rpc interceptor for get_index
 
         DEPRECATED. Please use the `post_get_index_with_metadata`
@@ -435,9 +384,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_get_index_with_metadata(
-        self,
-        response: vectorsearch_service.Index,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vectorsearch_service.Index, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vectorsearch_service.Index, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_index
 
@@ -454,13 +401,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_import_data_objects(
-        self,
-        request: vectorsearch_service.ImportDataObjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.ImportDataObjectsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vectorsearch_service.ImportDataObjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.ImportDataObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_data_objects
 
         Override in a subclass to manipulate the request or metadata
@@ -468,9 +410,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_data_objects(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_data_objects(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_data_objects
 
         DEPRECATED. Please use the `post_import_data_objects_with_metadata`
@@ -484,9 +424,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_import_data_objects_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_data_objects
 
@@ -503,13 +441,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_list_collections(
-        self,
-        request: vectorsearch_service.ListCollectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.ListCollectionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vectorsearch_service.ListCollectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.ListCollectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_collections
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +450,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_collections(
-        self, response: vectorsearch_service.ListCollectionsResponse
-    ) -> vectorsearch_service.ListCollectionsResponse:
+    def post_list_collections(self, response: vectorsearch_service.ListCollectionsResponse) -> vectorsearch_service.ListCollectionsResponse:
         """Post-rpc interceptor for list_collections
 
         DEPRECATED. Please use the `post_list_collections_with_metadata`
@@ -533,13 +464,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_list_collections_with_metadata(
-        self,
-        response: vectorsearch_service.ListCollectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.ListCollectionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vectorsearch_service.ListCollectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.ListCollectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_collections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -555,12 +481,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_list_indexes(
-        self,
-        request: vectorsearch_service.ListIndexesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.ListIndexesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vectorsearch_service.ListIndexesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.ListIndexesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_indexes
 
         Override in a subclass to manipulate the request or metadata
@@ -568,9 +490,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_indexes(
-        self, response: vectorsearch_service.ListIndexesResponse
-    ) -> vectorsearch_service.ListIndexesResponse:
+    def post_list_indexes(self, response: vectorsearch_service.ListIndexesResponse) -> vectorsearch_service.ListIndexesResponse:
         """Post-rpc interceptor for list_indexes
 
         DEPRECATED. Please use the `post_list_indexes_with_metadata`
@@ -584,13 +504,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_list_indexes_with_metadata(
-        self,
-        response: vectorsearch_service.ListIndexesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.ListIndexesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vectorsearch_service.ListIndexesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.ListIndexesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_indexes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -606,13 +521,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_update_collection(
-        self,
-        request: vectorsearch_service.UpdateCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vectorsearch_service.UpdateCollectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vectorsearch_service.UpdateCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vectorsearch_service.UpdateCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -620,9 +530,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_collection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_collection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_collection
 
         DEPRECATED. Please use the `post_update_collection_with_metadata`
@@ -636,9 +544,7 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def post_update_collection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_collection
 
@@ -655,12 +561,8 @@ class VectorSearchServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -668,9 +570,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -680,12 +580,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -693,9 +589,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -705,12 +599,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -728,12 +618,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -751,12 +637,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -764,9 +646,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -776,12 +656,8 @@ class VectorSearchServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -789,9 +665,7 @@ class VectorSearchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -885,9 +759,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -940,30 +812,17 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateCollection(
-        _BaseVectorSearchServiceRestTransport._BaseCreateCollection,
-        VectorSearchServiceRestStub,
-    ):
+    class _CreateCollection(_BaseVectorSearchServiceRestTransport._BaseCreateCollection, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.CreateCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1006,32 +865,18 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_collection(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_transcoded_request(http_options, request)
 
-            body = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseCreateCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1055,13 +900,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._CreateCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1075,12 +914,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_create_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1101,23 +936,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _CreateIndex(
-        _BaseVectorSearchServiceRestTransport._BaseCreateIndex,
-        VectorSearchServiceRestStub,
-    ):
+    class _CreateIndex(_BaseVectorSearchServiceRestTransport._BaseCreateIndex, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.CreateIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1160,30 +984,18 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_create_index(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_transcoded_request(http_options, request)
 
-            body = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseCreateIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1207,13 +1019,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._CreateIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1227,12 +1033,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_create_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1253,23 +1055,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _DeleteCollection(
-        _BaseVectorSearchServiceRestTransport._BaseDeleteCollection,
-        VectorSearchServiceRestStub,
-    ):
+    class _DeleteCollection(_BaseVectorSearchServiceRestTransport._BaseDeleteCollection, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.DeleteCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1311,28 +1102,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseDeleteCollection._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseDeleteCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseDeleteCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_collection(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseDeleteCollection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseDeleteCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseDeleteCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1356,12 +1135,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._DeleteCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1375,12 +1149,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_delete_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1401,23 +1171,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _DeleteIndex(
-        _BaseVectorSearchServiceRestTransport._BaseDeleteIndex,
-        VectorSearchServiceRestStub,
-    ):
+    class _DeleteIndex(_BaseVectorSearchServiceRestTransport._BaseDeleteIndex, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.DeleteIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1459,26 +1218,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseDeleteIndex._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseDeleteIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_index(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseDeleteIndex._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseDeleteIndex._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseDeleteIndex._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseDeleteIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1502,12 +1251,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._DeleteIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1521,12 +1265,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_delete_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1547,23 +1287,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _GetCollection(
-        _BaseVectorSearchServiceRestTransport._BaseGetCollection,
-        VectorSearchServiceRestStub,
-    ):
+    class _GetCollection(_BaseVectorSearchServiceRestTransport._BaseGetCollection, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.GetCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1602,26 +1331,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                     Message describing Collection object
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseGetCollection._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseGetCollection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_collection(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetCollection._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetCollection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseGetCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseGetCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1645,12 +1364,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._GetCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1666,12 +1380,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_get_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vectorsearch_service.Collection.to_json(response)
                 except:
@@ -1692,22 +1402,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _GetIndex(
-        _BaseVectorSearchServiceRestTransport._BaseGetIndex, VectorSearchServiceRestStub
-    ):
+    class _GetIndex(_BaseVectorSearchServiceRestTransport._BaseGetIndex, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.GetIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1746,26 +1446,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                     Message describing Index object
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseGetIndex._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseGetIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_get_index(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetIndex._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetIndex._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseGetIndex._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseGetIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1789,12 +1479,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._GetIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1810,12 +1495,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_get_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vectorsearch_service.Index.to_json(response)
                 except:
@@ -1836,23 +1517,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _ImportDataObjects(
-        _BaseVectorSearchServiceRestTransport._BaseImportDataObjects,
-        VectorSearchServiceRestStub,
-    ):
+    class _ImportDataObjects(_BaseVectorSearchServiceRestTransport._BaseImportDataObjects, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.ImportDataObjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1896,32 +1566,18 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_data_objects(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_data_objects(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_transcoded_request(http_options, request)
 
-            body = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseImportDataObjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1944,16 +1600,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                VectorSearchServiceRestTransport._ImportDataObjects._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VectorSearchServiceRestTransport._ImportDataObjects._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1967,12 +1615,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_import_data_objects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_data_objects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_data_objects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1993,23 +1637,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _ListCollections(
-        _BaseVectorSearchServiceRestTransport._BaseListCollections,
-        VectorSearchServiceRestStub,
-    ):
+    class _ListCollections(_BaseVectorSearchServiceRestTransport._BaseListCollections, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.ListCollections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2051,28 +1684,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseListCollections._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseListCollections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_collections(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListCollections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_collections(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListCollections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseListCollections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseListCollections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2096,12 +1717,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._ListCollections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2117,16 +1733,10 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_list_collections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_collections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_collections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vectorsearch_service.ListCollectionsResponse.to_json(response)
-                    )
+                    response_payload = vectorsearch_service.ListCollectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2145,23 +1755,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _ListIndexes(
-        _BaseVectorSearchServiceRestTransport._BaseListIndexes,
-        VectorSearchServiceRestStub,
-    ):
+    class _ListIndexes(_BaseVectorSearchServiceRestTransport._BaseListIndexes, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.ListIndexes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2203,26 +1802,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseListIndexes._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseListIndexes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_indexes(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListIndexes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListIndexes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseListIndexes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseListIndexes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2246,12 +1835,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._ListIndexes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2267,16 +1851,10 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_list_indexes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_indexes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_indexes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vectorsearch_service.ListIndexesResponse.to_json(
-                        response
-                    )
+                    response_payload = vectorsearch_service.ListIndexesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2295,23 +1873,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCollection(
-        _BaseVectorSearchServiceRestTransport._BaseUpdateCollection,
-        VectorSearchServiceRestStub,
-    ):
+    class _UpdateCollection(_BaseVectorSearchServiceRestTransport._BaseUpdateCollection, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.UpdateCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2354,32 +1921,18 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_collection(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_transcoded_request(http_options, request)
 
-            body = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseUpdateCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2403,13 +1956,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._UpdateCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2423,12 +1970,8 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             resp = self._interceptor.post_update_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2450,97 +1993,61 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
             return resp
 
     @property
-    def create_collection(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.CreateCollectionRequest], operations_pb2.Operation
-    ]:
+    def create_collection(self) -> Callable[[vectorsearch_service.CreateCollectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_index(
-        self,
-    ) -> Callable[[vectorsearch_service.CreateIndexRequest], operations_pb2.Operation]:
+    def create_index(self) -> Callable[[vectorsearch_service.CreateIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_collection(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.DeleteCollectionRequest], operations_pb2.Operation
-    ]:
+    def delete_collection(self) -> Callable[[vectorsearch_service.DeleteCollectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_index(
-        self,
-    ) -> Callable[[vectorsearch_service.DeleteIndexRequest], operations_pb2.Operation]:
+    def delete_index(self) -> Callable[[vectorsearch_service.DeleteIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_collection(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.GetCollectionRequest], vectorsearch_service.Collection
-    ]:
+    def get_collection(self) -> Callable[[vectorsearch_service.GetCollectionRequest], vectorsearch_service.Collection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_index(
-        self,
-    ) -> Callable[[vectorsearch_service.GetIndexRequest], vectorsearch_service.Index]:
+    def get_index(self) -> Callable[[vectorsearch_service.GetIndexRequest], vectorsearch_service.Index]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_data_objects(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.ImportDataObjectsRequest], operations_pb2.Operation
-    ]:
+    def import_data_objects(self) -> Callable[[vectorsearch_service.ImportDataObjectsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportDataObjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_collections(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.ListCollectionsRequest],
-        vectorsearch_service.ListCollectionsResponse,
-    ]:
+    def list_collections(self) -> Callable[[vectorsearch_service.ListCollectionsRequest], vectorsearch_service.ListCollectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCollections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_indexes(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.ListIndexesRequest],
-        vectorsearch_service.ListIndexesResponse,
-    ]:
+    def list_indexes(self) -> Callable[[vectorsearch_service.ListIndexesRequest], vectorsearch_service.ListIndexesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIndexes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_collection(
-        self,
-    ) -> Callable[
-        [vectorsearch_service.UpdateCollectionRequest], operations_pb2.Operation
-    ]:
+    def update_collection(self) -> Callable[[vectorsearch_service.UpdateCollectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCollection(self._session, self._host, self._interceptor)  # type: ignore
@@ -2549,23 +2056,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseVectorSearchServiceRestTransport._BaseGetLocation,
-        VectorSearchServiceRestStub,
-    ):
+    class _GetLocation(_BaseVectorSearchServiceRestTransport._BaseGetLocation, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2603,26 +2099,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2646,12 +2132,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2663,9 +2144,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2690,23 +2169,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseVectorSearchServiceRestTransport._BaseListLocations,
-        VectorSearchServiceRestStub,
-    ):
+    class _ListLocations(_BaseVectorSearchServiceRestTransport._BaseListLocations, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2744,26 +2212,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2787,12 +2245,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2804,9 +2257,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2831,23 +2282,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseVectorSearchServiceRestTransport._BaseCancelOperation,
-        VectorSearchServiceRestStub,
-    ):
+    class _CancelOperation(_BaseVectorSearchServiceRestTransport._BaseCancelOperation, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2883,32 +2323,18 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2932,13 +2358,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2952,23 +2372,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseVectorSearchServiceRestTransport._BaseDeleteOperation,
-        VectorSearchServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseVectorSearchServiceRestTransport._BaseDeleteOperation, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3003,28 +2412,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3048,12 +2445,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3067,23 +2459,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseVectorSearchServiceRestTransport._BaseGetOperation,
-        VectorSearchServiceRestStub,
-    ):
+    class _GetOperation(_BaseVectorSearchServiceRestTransport._BaseGetOperation, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3121,26 +2502,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3164,12 +2535,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3181,9 +2547,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3208,23 +2572,12 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVectorSearchServiceRestTransport._BaseListOperations,
-        VectorSearchServiceRestStub,
-    ):
+    class _ListOperations(_BaseVectorSearchServiceRestTransport._BaseListOperations, VectorSearchServiceRestStub):
         def __hash__(self):
             return hash("VectorSearchServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3262,26 +2615,16 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVectorSearchServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVectorSearchServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVectorSearchServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVectorSearchServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVectorSearchServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3305,12 +2648,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
 
             # Send the request
             response = VectorSearchServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3322,9 +2660,7 @@ class VectorSearchServiceRestTransport(_BaseVectorSearchServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

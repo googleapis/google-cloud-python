@@ -23,11 +23,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import (
-    response_message,
-    session,
-    transition_route_group,
-)
+from google.cloud.dialogflowcx_v3beta1.types import response_message, session, transition_route_group
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
 from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
 from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
@@ -145,9 +141,7 @@ class TestCase(proto.Message):
         number=13,
         message="TestConfig",
     )
-    test_case_conversation_turns: MutableSequence[
-        "ConversationTurn"
-    ] = proto.RepeatedField(
+    test_case_conversation_turns: MutableSequence["ConversationTurn"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="ConversationTurn",
@@ -363,9 +357,7 @@ class ConversationTurn(proto.Message):
             number=8,
             message=gcdc_page.Page,
         )
-        text_responses: MutableSequence[
-            response_message.ResponseMessage.Text
-        ] = proto.RepeatedField(
+        text_responses: MutableSequence[response_message.ResponseMessage.Text] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message=response_message.ResponseMessage.Text,
@@ -615,9 +607,7 @@ class TransitionRouteGroupCoverage(proto.Message):
             number=1,
             message=transition_route_group.TransitionRouteGroup,
         )
-        transitions: MutableSequence[
-            "TransitionRouteGroupCoverage.Coverage.Transition"
-        ] = proto.RepeatedField(
+        transitions: MutableSequence["TransitionRouteGroupCoverage.Coverage.Transition"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="TransitionRouteGroupCoverage.Coverage.Transition",

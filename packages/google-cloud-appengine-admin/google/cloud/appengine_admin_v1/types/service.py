@@ -19,9 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.appengine_admin_v1.types import (
-    network_settings as ga_network_settings,
-)
+from google.cloud.appengine_admin_v1.types import network_settings as ga_network_settings
 
 __protobuf__ = proto.module(
     package="google.appengine.v1",

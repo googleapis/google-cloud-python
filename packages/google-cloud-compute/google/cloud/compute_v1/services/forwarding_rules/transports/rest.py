@@ -143,13 +143,8 @@ class ForwardingRulesRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListForwardingRulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListForwardingRulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListForwardingRulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListForwardingRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +152,7 @@ class ForwardingRulesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.ForwardingRuleAggregatedList
-    ) -> compute.ForwardingRuleAggregatedList:
+    def post_aggregated_list(self, response: compute.ForwardingRuleAggregatedList) -> compute.ForwardingRuleAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -173,12 +166,8 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.ForwardingRuleAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ForwardingRuleAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.ForwardingRuleAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ForwardingRuleAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -194,12 +183,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteForwardingRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -221,9 +206,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -240,12 +223,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetForwardingRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -267,9 +246,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.ForwardingRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.ForwardingRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ForwardingRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -286,12 +263,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertForwardingRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -313,9 +286,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -332,12 +303,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListForwardingRulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListForwardingRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListForwardingRulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListForwardingRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -345,9 +312,7 @@ class ForwardingRulesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.ForwardingRuleList
-    ) -> compute.ForwardingRuleList:
+    def post_list(self, response: compute.ForwardingRuleList) -> compute.ForwardingRuleList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -361,9 +326,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.ForwardingRuleList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.ForwardingRuleList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ForwardingRuleList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -380,12 +343,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchForwardingRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -407,9 +366,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -426,12 +383,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetLabelsForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetLabelsForwardingRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetLabelsForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -453,9 +406,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -472,12 +423,8 @@ class ForwardingRulesRestInterceptor:
         return response, metadata
 
     def pre_set_target(
-        self,
-        request: compute.SetTargetForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetTargetForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetTargetForwardingRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetTargetForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_target
 
         Override in a subclass to manipulate the request or metadata
@@ -499,9 +446,7 @@ class ForwardingRulesRestInterceptor:
         return response
 
     def post_set_target_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_target
 
@@ -601,30 +546,18 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ForwardingRulesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseForwardingRulesRestTransport._BaseAggregatedList, ForwardingRulesRestStub
-    ):
+    class _AggregatedList(_BaseForwardingRulesRestTransport._BaseAggregatedList, ForwardingRulesRestStub):
         def __hash__(self):
             return hash("ForwardingRulesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -665,26 +598,16 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseForwardingRulesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseForwardingRulesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -708,12 +631,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -729,16 +647,10 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.ForwardingRuleAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.ForwardingRuleAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -757,22 +669,12 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
                 )
             return resp
 
-    class _Delete(
-        _BaseForwardingRulesRestTransport._BaseDelete, ForwardingRulesRestStub
-    ):
+    class _Delete(_BaseForwardingRulesRestTransport._BaseDelete, ForwardingRulesRestStub):
         def __hash__(self):
             return hash("ForwardingRulesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -830,30 +732,16 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseForwardingRulesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -877,12 +765,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -898,12 +781,8 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -929,15 +808,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             return hash("ForwardingRulesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -990,30 +861,16 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseForwardingRulesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1036,14 +893,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
                 )
 
             # Send the request
-            response = ForwardingRulesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ForwardingRulesRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1059,9 +909,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.ForwardingRule.to_json(response)
                 except:
@@ -1082,22 +930,12 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseForwardingRulesRestTransport._BaseInsert, ForwardingRulesRestStub
-    ):
+    class _Insert(_BaseForwardingRulesRestTransport._BaseInsert, ForwardingRulesRestStub):
         def __hash__(self):
             return hash("ForwardingRulesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1156,34 +994,18 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseForwardingRulesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseForwardingRulesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseForwardingRulesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1207,13 +1029,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1229,12 +1045,8 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1260,15 +1072,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             return hash("ForwardingRulesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1311,30 +1115,16 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseForwardingRulesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1358,12 +1148,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1380,9 +1165,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.ForwardingRuleList.to_json(response)
                 except:
@@ -1408,15 +1191,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             return hash("ForwardingRulesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1475,34 +1250,18 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseForwardingRulesRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseForwardingRulesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseForwardingRulesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1526,13 +1285,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1548,12 +1301,8 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1574,22 +1323,12 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
                 )
             return resp
 
-    class _SetLabels(
-        _BaseForwardingRulesRestTransport._BaseSetLabels, ForwardingRulesRestStub
-    ):
+    class _SetLabels(_BaseForwardingRulesRestTransport._BaseSetLabels, ForwardingRulesRestStub):
         def __hash__(self):
             return hash("ForwardingRulesRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1648,34 +1387,18 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = _BaseForwardingRulesRestTransport._BaseSetLabels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseForwardingRulesRestTransport._BaseSetLabels._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseForwardingRulesRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BaseSetLabels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1699,13 +1422,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1721,12 +1438,8 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1747,22 +1460,12 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
                 )
             return resp
 
-    class _SetTarget(
-        _BaseForwardingRulesRestTransport._BaseSetTarget, ForwardingRulesRestStub
-    ):
+    class _SetTarget(_BaseForwardingRulesRestTransport._BaseSetTarget, ForwardingRulesRestStub):
         def __hash__(self):
             return hash("ForwardingRulesRestTransport.SetTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1821,34 +1524,18 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             """
 
-            http_options = (
-                _BaseForwardingRulesRestTransport._BaseSetTarget._get_http_options()
-            )
+            http_options = _BaseForwardingRulesRestTransport._BaseSetTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_set_target(request, metadata)
-            transcoded_request = _BaseForwardingRulesRestTransport._BaseSetTarget._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseForwardingRulesRestTransport._BaseSetTarget._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseForwardingRulesRestTransport._BaseSetTarget._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseForwardingRulesRestTransport._BaseSetTarget._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseForwardingRulesRestTransport._BaseSetTarget._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseForwardingRulesRestTransport._BaseSetTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1872,13 +1559,7 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             # Send the request
             response = ForwardingRulesRestTransport._SetTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1894,12 +1575,8 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
 
             resp = self._interceptor.post_set_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1921,68 +1598,49 @@ class ForwardingRulesRestTransport(_BaseForwardingRulesRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListForwardingRulesRequest],
-        compute.ForwardingRuleAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListForwardingRulesRequest], compute.ForwardingRuleAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteForwardingRuleRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteForwardingRuleRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetForwardingRuleRequest], compute.ForwardingRule]:
+    def get(self) -> Callable[[compute.GetForwardingRuleRequest], compute.ForwardingRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertForwardingRuleRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertForwardingRuleRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListForwardingRulesRequest], compute.ForwardingRuleList]:
+    def list(self) -> Callable[[compute.ListForwardingRulesRequest], compute.ForwardingRuleList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchForwardingRuleRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchForwardingRuleRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsForwardingRuleRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsForwardingRuleRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_target(
-        self,
-    ) -> Callable[[compute.SetTargetForwardingRuleRequest], compute.Operation]:
+    def set_target(self) -> Callable[[compute.SetTargetForwardingRuleRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetTarget(self._session, self._host, self._interceptor)  # type: ignore

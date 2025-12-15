@@ -30,10 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.contentwarehouse_v1.types import (
-    synonymset,
-    synonymset_service_request,
-)
+from google.cloud.contentwarehouse_v1.types import synonymset, synonymset_service_request
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSynonymSetServiceRestTransport
@@ -120,13 +117,8 @@ class SynonymSetServiceRestInterceptor:
     """
 
     def pre_create_synonym_set(
-        self,
-        request: synonymset_service_request.CreateSynonymSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        synonymset_service_request.CreateSynonymSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: synonymset_service_request.CreateSynonymSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[synonymset_service_request.CreateSynonymSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_synonym_set
 
         Override in a subclass to manipulate the request or metadata
@@ -134,9 +126,7 @@ class SynonymSetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_synonym_set(
-        self, response: synonymset.SynonymSet
-    ) -> synonymset.SynonymSet:
+    def post_create_synonym_set(self, response: synonymset.SynonymSet) -> synonymset.SynonymSet:
         """Post-rpc interceptor for create_synonym_set
 
         DEPRECATED. Please use the `post_create_synonym_set_with_metadata`
@@ -150,9 +140,7 @@ class SynonymSetServiceRestInterceptor:
         return response
 
     def post_create_synonym_set_with_metadata(
-        self,
-        response: synonymset.SynonymSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: synonymset.SynonymSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[synonymset.SynonymSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_synonym_set
 
@@ -169,13 +157,8 @@ class SynonymSetServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_synonym_set(
-        self,
-        request: synonymset_service_request.DeleteSynonymSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        synonymset_service_request.DeleteSynonymSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: synonymset_service_request.DeleteSynonymSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[synonymset_service_request.DeleteSynonymSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_synonym_set
 
         Override in a subclass to manipulate the request or metadata
@@ -184,13 +167,8 @@ class SynonymSetServiceRestInterceptor:
         return request, metadata
 
     def pre_get_synonym_set(
-        self,
-        request: synonymset_service_request.GetSynonymSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        synonymset_service_request.GetSynonymSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: synonymset_service_request.GetSynonymSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[synonymset_service_request.GetSynonymSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_synonym_set
 
         Override in a subclass to manipulate the request or metadata
@@ -198,9 +176,7 @@ class SynonymSetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_synonym_set(
-        self, response: synonymset.SynonymSet
-    ) -> synonymset.SynonymSet:
+    def post_get_synonym_set(self, response: synonymset.SynonymSet) -> synonymset.SynonymSet:
         """Post-rpc interceptor for get_synonym_set
 
         DEPRECATED. Please use the `post_get_synonym_set_with_metadata`
@@ -214,9 +190,7 @@ class SynonymSetServiceRestInterceptor:
         return response
 
     def post_get_synonym_set_with_metadata(
-        self,
-        response: synonymset.SynonymSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: synonymset.SynonymSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[synonymset.SynonymSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_synonym_set
 
@@ -233,13 +207,8 @@ class SynonymSetServiceRestInterceptor:
         return response, metadata
 
     def pre_list_synonym_sets(
-        self,
-        request: synonymset_service_request.ListSynonymSetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        synonymset_service_request.ListSynonymSetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: synonymset_service_request.ListSynonymSetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[synonymset_service_request.ListSynonymSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_synonym_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -263,13 +232,8 @@ class SynonymSetServiceRestInterceptor:
         return response
 
     def post_list_synonym_sets_with_metadata(
-        self,
-        response: synonymset_service_request.ListSynonymSetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        synonymset_service_request.ListSynonymSetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: synonymset_service_request.ListSynonymSetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[synonymset_service_request.ListSynonymSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_synonym_sets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -285,13 +249,8 @@ class SynonymSetServiceRestInterceptor:
         return response, metadata
 
     def pre_update_synonym_set(
-        self,
-        request: synonymset_service_request.UpdateSynonymSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        synonymset_service_request.UpdateSynonymSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: synonymset_service_request.UpdateSynonymSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[synonymset_service_request.UpdateSynonymSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_synonym_set
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +258,7 @@ class SynonymSetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_synonym_set(
-        self, response: synonymset.SynonymSet
-    ) -> synonymset.SynonymSet:
+    def post_update_synonym_set(self, response: synonymset.SynonymSet) -> synonymset.SynonymSet:
         """Post-rpc interceptor for update_synonym_set
 
         DEPRECATED. Please use the `post_update_synonym_set_with_metadata`
@@ -315,9 +272,7 @@ class SynonymSetServiceRestInterceptor:
         return response
 
     def post_update_synonym_set_with_metadata(
-        self,
-        response: synonymset.SynonymSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: synonymset.SynonymSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[synonymset.SynonymSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_synonym_set
 
@@ -334,12 +289,8 @@ class SynonymSetServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -347,9 +298,7 @@ class SynonymSetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -438,31 +387,18 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SynonymSetServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateSynonymSet(
-        _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet,
-        SynonymSetServiceRestStub,
-    ):
+    class _CreateSynonymSet(_BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet, SynonymSetServiceRestStub):
         def __hash__(self):
             return hash("SynonymSetServiceRestTransport.CreateSynonymSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -512,32 +448,18 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_http_options()
-            )
+            http_options = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_synonym_set(
-                request, metadata
-            )
-            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_synonym_set(request, metadata)
+            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_transcoded_request(http_options, request)
 
-            body = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -561,13 +483,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             # Send the request
             response = SynonymSetServiceRestTransport._CreateSynonymSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -583,12 +499,8 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             resp = self._interceptor.post_create_synonym_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_synonym_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_synonym_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = synonymset.SynonymSet.to_json(response)
                 except:
@@ -609,23 +521,12 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSynonymSet(
-        _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet,
-        SynonymSetServiceRestStub,
-    ):
+    class _DeleteSynonymSet(_BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet, SynonymSetServiceRestStub):
         def __hash__(self):
             return hash("SynonymSetServiceRestTransport.DeleteSynonymSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -661,28 +562,16 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_http_options()
-            )
+            http_options = _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_synonym_set(
-                request, metadata
-            )
-            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_synonym_set(request, metadata)
+            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -706,12 +595,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             # Send the request
             response = SynonymSetServiceRestTransport._DeleteSynonymSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -719,23 +603,12 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetSynonymSet(
-        _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet,
-        SynonymSetServiceRestStub,
-    ):
+    class _GetSynonymSet(_BaseSynonymSetServiceRestTransport._BaseGetSynonymSet, SynonymSetServiceRestStub):
         def __hash__(self):
             return hash("SynonymSetServiceRestTransport.GetSynonymSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -785,26 +658,16 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_http_options()
-            )
+            http_options = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_synonym_set(request, metadata)
-            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -828,12 +691,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             # Send the request
             response = SynonymSetServiceRestTransport._GetSynonymSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -849,12 +707,8 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             resp = self._interceptor.post_get_synonym_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_synonym_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_synonym_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = synonymset.SynonymSet.to_json(response)
                 except:
@@ -875,23 +729,12 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 )
             return resp
 
-    class _ListSynonymSets(
-        _BaseSynonymSetServiceRestTransport._BaseListSynonymSets,
-        SynonymSetServiceRestStub,
-    ):
+    class _ListSynonymSets(_BaseSynonymSetServiceRestTransport._BaseListSynonymSets, SynonymSetServiceRestStub):
         def __hash__(self):
             return hash("SynonymSetServiceRestTransport.ListSynonymSets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -935,28 +778,16 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_http_options()
-            )
+            http_options = _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_synonym_sets(
-                request, metadata
-            )
-            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_synonym_sets(request, metadata)
+            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -980,12 +811,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             # Send the request
             response = SynonymSetServiceRestTransport._ListSynonymSets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1001,18 +827,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             resp = self._interceptor.post_list_synonym_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_synonym_sets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_synonym_sets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        synonymset_service_request.ListSynonymSetsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = synonymset_service_request.ListSynonymSetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1031,23 +849,12 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSynonymSet(
-        _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet,
-        SynonymSetServiceRestStub,
-    ):
+    class _UpdateSynonymSet(_BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet, SynonymSetServiceRestStub):
         def __hash__(self):
             return hash("SynonymSetServiceRestTransport.UpdateSynonymSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1100,32 +907,18 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_http_options()
-            )
+            http_options = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_synonym_set(
-                request, metadata
-            )
-            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_synonym_set(request, metadata)
+            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_transcoded_request(http_options, request)
 
-            body = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1149,13 +942,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             # Send the request
             response = SynonymSetServiceRestTransport._UpdateSynonymSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1171,12 +958,8 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             resp = self._interceptor.post_update_synonym_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_synonym_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_synonym_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = synonymset.SynonymSet.to_json(response)
                 except:
@@ -1198,52 +981,31 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             return resp
 
     @property
-    def create_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.CreateSynonymSetRequest], synonymset.SynonymSet
-    ]:
+    def create_synonym_set(self) -> Callable[[synonymset_service_request.CreateSynonymSetRequest], synonymset.SynonymSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSynonymSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.DeleteSynonymSetRequest], empty_pb2.Empty
-    ]:
+    def delete_synonym_set(self) -> Callable[[synonymset_service_request.DeleteSynonymSetRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSynonymSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.GetSynonymSetRequest], synonymset.SynonymSet
-    ]:
+    def get_synonym_set(self) -> Callable[[synonymset_service_request.GetSynonymSetRequest], synonymset.SynonymSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSynonymSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_synonym_sets(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.ListSynonymSetsRequest],
-        synonymset_service_request.ListSynonymSetsResponse,
-    ]:
+    def list_synonym_sets(self) -> Callable[[synonymset_service_request.ListSynonymSetsRequest], synonymset_service_request.ListSynonymSetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSynonymSets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.UpdateSynonymSetRequest], synonymset.SynonymSet
-    ]:
+    def update_synonym_set(self) -> Callable[[synonymset_service_request.UpdateSynonymSetRequest], synonymset.SynonymSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSynonymSet(self._session, self._host, self._interceptor)  # type: ignore
@@ -1252,22 +1014,12 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSynonymSetServiceRestTransport._BaseGetOperation, SynonymSetServiceRestStub
-    ):
+    class _GetOperation(_BaseSynonymSetServiceRestTransport._BaseGetOperation, SynonymSetServiceRestStub):
         def __hash__(self):
             return hash("SynonymSetServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1305,26 +1057,16 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1348,12 +1090,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
 
             # Send the request
             response = SynonymSetServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1365,9 +1102,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

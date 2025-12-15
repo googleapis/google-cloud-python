@@ -21,13 +21,9 @@ __version__ = package_version.__version__
 from google.cloud.enterpriseknowledgegraph_v1.services.enterprise_knowledge_graph_service.async_client import (
     EnterpriseKnowledgeGraphServiceAsyncClient,
 )
-from google.cloud.enterpriseknowledgegraph_v1.services.enterprise_knowledge_graph_service.client import (
-    EnterpriseKnowledgeGraphServiceClient,
-)
+from google.cloud.enterpriseknowledgegraph_v1.services.enterprise_knowledge_graph_service.client import EnterpriseKnowledgeGraphServiceClient
 from google.cloud.enterpriseknowledgegraph_v1.types.job_state import JobState
-from google.cloud.enterpriseknowledgegraph_v1.types.operation_metadata import (
-    CommonOperationMetadata,
-)
+from google.cloud.enterpriseknowledgegraph_v1.types.operation_metadata import CommonOperationMetadata
 from google.cloud.enterpriseknowledgegraph_v1.types.service import (
     AffinityClusteringConfig,
     BigQueryInputConfig,

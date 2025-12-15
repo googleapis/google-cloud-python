@@ -30,15 +30,11 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.managedkafka_schemaregistry_v1 import gapic_version as package_version
-from google.cloud.managedkafka_schemaregistry_v1.types import (
-    schema_registry as gcms_schema_registry,
-)
+from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry as gcms_schema_registry
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +96,15 @@ class ManagedSchemaRegistryTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -322,10 +310,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [schema_registry.GetSchemaRegistryRequest],
-        Union[
-            schema_registry_resources.SchemaRegistry,
-            Awaitable[schema_registry_resources.SchemaRegistry],
-        ],
+        Union[schema_registry_resources.SchemaRegistry, Awaitable[schema_registry_resources.SchemaRegistry]],
     ]:
         raise NotImplementedError()
 
@@ -334,10 +319,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [schema_registry.ListSchemaRegistriesRequest],
-        Union[
-            schema_registry.ListSchemaRegistriesResponse,
-            Awaitable[schema_registry.ListSchemaRegistriesResponse],
-        ],
+        Union[schema_registry.ListSchemaRegistriesResponse, Awaitable[schema_registry.ListSchemaRegistriesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -346,118 +328,63 @@ class ManagedSchemaRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [gcms_schema_registry.CreateSchemaRegistryRequest],
-        Union[
-            schema_registry_resources.SchemaRegistry,
-            Awaitable[schema_registry_resources.SchemaRegistry],
-        ],
+        Union[schema_registry_resources.SchemaRegistry, Awaitable[schema_registry_resources.SchemaRegistry]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_schema_registry(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteSchemaRegistryRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_schema_registry(self) -> Callable[[schema_registry.DeleteSchemaRegistryRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_context(
         self,
-    ) -> Callable[
-        [schema_registry.GetContextRequest],
-        Union[
-            schema_registry_resources.Context,
-            Awaitable[schema_registry_resources.Context],
-        ],
-    ]:
+    ) -> Callable[[schema_registry.GetContextRequest], Union[schema_registry_resources.Context, Awaitable[schema_registry_resources.Context]]]:
         raise NotImplementedError()
 
     @property
-    def list_contexts(
-        self,
-    ) -> Callable[
-        [schema_registry.ListContextsRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def list_contexts(self) -> Callable[[schema_registry.ListContextsRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def get_schema(
         self,
-    ) -> Callable[
-        [schema_registry.GetSchemaRequest],
-        Union[
-            schema_registry_resources.Schema,
-            Awaitable[schema_registry_resources.Schema],
-        ],
-    ]:
+    ) -> Callable[[schema_registry.GetSchemaRequest], Union[schema_registry_resources.Schema, Awaitable[schema_registry_resources.Schema]]]:
         raise NotImplementedError()
 
     @property
-    def get_raw_schema(
-        self,
-    ) -> Callable[
-        [schema_registry.GetSchemaRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def get_raw_schema(self) -> Callable[[schema_registry.GetSchemaRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def list_schema_versions(
         self,
-    ) -> Callable[
-        [schema_registry.ListSchemaVersionsRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    ) -> Callable[[schema_registry.ListSchemaVersionsRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
-    def list_schema_types(
-        self,
-    ) -> Callable[
-        [schema_registry.ListSchemaTypesRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def list_schema_types(self) -> Callable[[schema_registry.ListSchemaTypesRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
-    def list_subjects(
-        self,
-    ) -> Callable[
-        [schema_registry.ListSubjectsRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def list_subjects(self) -> Callable[[schema_registry.ListSubjectsRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def list_subjects_by_schema_id(
         self,
-    ) -> Callable[
-        [schema_registry.ListSubjectsBySchemaIdRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    ) -> Callable[[schema_registry.ListSubjectsBySchemaIdRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
-    def delete_subject(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteSubjectRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def delete_subject(self) -> Callable[[schema_registry.DeleteSubjectRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def lookup_version(
         self,
     ) -> Callable[
-        [schema_registry.LookupVersionRequest],
-        Union[
-            schema_registry_resources.SchemaVersion,
-            Awaitable[schema_registry_resources.SchemaVersion],
-        ],
+        [schema_registry.LookupVersionRequest], Union[schema_registry_resources.SchemaVersion, Awaitable[schema_registry_resources.SchemaVersion]]
     ]:
         raise NotImplementedError()
 
@@ -465,60 +392,34 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def get_version(
         self,
     ) -> Callable[
-        [schema_registry.GetVersionRequest],
-        Union[
-            schema_registry_resources.SchemaVersion,
-            Awaitable[schema_registry_resources.SchemaVersion],
-        ],
+        [schema_registry.GetVersionRequest], Union[schema_registry_resources.SchemaVersion, Awaitable[schema_registry_resources.SchemaVersion]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_raw_schema_version(
-        self,
-    ) -> Callable[
-        [schema_registry.GetVersionRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def get_raw_schema_version(self) -> Callable[[schema_registry.GetVersionRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [schema_registry.ListVersionsRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def list_versions(self) -> Callable[[schema_registry.ListVersionsRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def create_version(
         self,
     ) -> Callable[
-        [schema_registry.CreateVersionRequest],
-        Union[
-            schema_registry.CreateVersionResponse,
-            Awaitable[schema_registry.CreateVersionResponse],
-        ],
+        [schema_registry.CreateVersionRequest], Union[schema_registry.CreateVersionResponse, Awaitable[schema_registry.CreateVersionResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[
-        [schema_registry.DeleteVersionRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def delete_version(self) -> Callable[[schema_registry.DeleteVersionRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def list_referenced_schemas(
         self,
-    ) -> Callable[
-        [schema_registry.ListReferencedSchemasRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    ) -> Callable[[schema_registry.ListReferencedSchemasRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
@@ -526,10 +427,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [schema_registry.CheckCompatibilityRequest],
-        Union[
-            schema_registry.CheckCompatibilityResponse,
-            Awaitable[schema_registry.CheckCompatibilityResponse],
-        ],
+        Union[schema_registry.CheckCompatibilityResponse, Awaitable[schema_registry.CheckCompatibilityResponse]],
     ]:
         raise NotImplementedError()
 
@@ -537,11 +435,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def get_schema_config(
         self,
     ) -> Callable[
-        [schema_registry.GetSchemaConfigRequest],
-        Union[
-            schema_registry_resources.SchemaConfig,
-            Awaitable[schema_registry_resources.SchemaConfig],
-        ],
+        [schema_registry.GetSchemaConfigRequest], Union[schema_registry_resources.SchemaConfig, Awaitable[schema_registry_resources.SchemaConfig]]
     ]:
         raise NotImplementedError()
 
@@ -549,11 +443,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def update_schema_config(
         self,
     ) -> Callable[
-        [schema_registry.UpdateSchemaConfigRequest],
-        Union[
-            schema_registry_resources.SchemaConfig,
-            Awaitable[schema_registry_resources.SchemaConfig],
-        ],
+        [schema_registry.UpdateSchemaConfigRequest], Union[schema_registry_resources.SchemaConfig, Awaitable[schema_registry_resources.SchemaConfig]]
     ]:
         raise NotImplementedError()
 
@@ -561,11 +451,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def delete_schema_config(
         self,
     ) -> Callable[
-        [schema_registry.DeleteSchemaConfigRequest],
-        Union[
-            schema_registry_resources.SchemaConfig,
-            Awaitable[schema_registry_resources.SchemaConfig],
-        ],
+        [schema_registry.DeleteSchemaConfigRequest], Union[schema_registry_resources.SchemaConfig, Awaitable[schema_registry_resources.SchemaConfig]]
     ]:
         raise NotImplementedError()
 
@@ -573,11 +459,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def get_schema_mode(
         self,
     ) -> Callable[
-        [schema_registry.GetSchemaModeRequest],
-        Union[
-            schema_registry_resources.SchemaMode,
-            Awaitable[schema_registry_resources.SchemaMode],
-        ],
+        [schema_registry.GetSchemaModeRequest], Union[schema_registry_resources.SchemaMode, Awaitable[schema_registry_resources.SchemaMode]]
     ]:
         raise NotImplementedError()
 
@@ -585,11 +467,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def update_schema_mode(
         self,
     ) -> Callable[
-        [schema_registry.UpdateSchemaModeRequest],
-        Union[
-            schema_registry_resources.SchemaMode,
-            Awaitable[schema_registry_resources.SchemaMode],
-        ],
+        [schema_registry.UpdateSchemaModeRequest], Union[schema_registry_resources.SchemaMode, Awaitable[schema_registry_resources.SchemaMode]]
     ]:
         raise NotImplementedError()
 
@@ -597,11 +475,7 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     def delete_schema_mode(
         self,
     ) -> Callable[
-        [schema_registry.DeleteSchemaModeRequest],
-        Union[
-            schema_registry_resources.SchemaMode,
-            Awaitable[schema_registry_resources.SchemaMode],
-        ],
+        [schema_registry.DeleteSchemaModeRequest], Union[schema_registry_resources.SchemaMode, Awaitable[schema_registry_resources.SchemaMode]]
     ]:
         raise NotImplementedError()
 
@@ -610,20 +484,14 @@ class ManagedSchemaRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -641,22 +509,13 @@ class ManagedSchemaRegistryTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

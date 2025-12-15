@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -224,18 +215,14 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -269,9 +256,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -338,17 +323,13 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_data_scan(
-        self,
-    ) -> Callable[[datascans.CreateDataScanRequest], operations_pb2.Operation]:
+    def create_data_scan(self) -> Callable[[datascans.CreateDataScanRequest], operations_pb2.Operation]:
         r"""Return a callable for the create data scan method over gRPC.
 
         Creates a DataScan resource.
@@ -372,9 +353,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["create_data_scan"]
 
     @property
-    def update_data_scan(
-        self,
-    ) -> Callable[[datascans.UpdateDataScanRequest], operations_pb2.Operation]:
+    def update_data_scan(self) -> Callable[[datascans.UpdateDataScanRequest], operations_pb2.Operation]:
         r"""Return a callable for the update data scan method over gRPC.
 
         Updates a DataScan resource.
@@ -398,9 +377,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["update_data_scan"]
 
     @property
-    def delete_data_scan(
-        self,
-    ) -> Callable[[datascans.DeleteDataScanRequest], operations_pb2.Operation]:
+    def delete_data_scan(self) -> Callable[[datascans.DeleteDataScanRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete data scan method over gRPC.
 
         Deletes a DataScan resource.
@@ -424,9 +401,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["delete_data_scan"]
 
     @property
-    def get_data_scan(
-        self,
-    ) -> Callable[[datascans.GetDataScanRequest], datascans.DataScan]:
+    def get_data_scan(self) -> Callable[[datascans.GetDataScanRequest], datascans.DataScan]:
         r"""Return a callable for the get data scan method over gRPC.
 
         Gets a DataScan resource.
@@ -450,9 +425,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["get_data_scan"]
 
     @property
-    def list_data_scans(
-        self,
-    ) -> Callable[[datascans.ListDataScansRequest], datascans.ListDataScansResponse]:
+    def list_data_scans(self) -> Callable[[datascans.ListDataScansRequest], datascans.ListDataScansResponse]:
         r"""Return a callable for the list data scans method over gRPC.
 
         Lists DataScans.
@@ -476,9 +449,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["list_data_scans"]
 
     @property
-    def run_data_scan(
-        self,
-    ) -> Callable[[datascans.RunDataScanRequest], datascans.RunDataScanResponse]:
+    def run_data_scan(self) -> Callable[[datascans.RunDataScanRequest], datascans.RunDataScanResponse]:
         r"""Return a callable for the run data scan method over gRPC.
 
         Runs an on-demand execution of a DataScan
@@ -502,9 +473,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["run_data_scan"]
 
     @property
-    def get_data_scan_job(
-        self,
-    ) -> Callable[[datascans.GetDataScanJobRequest], datascans.DataScanJob]:
+    def get_data_scan_job(self) -> Callable[[datascans.GetDataScanJobRequest], datascans.DataScanJob]:
         r"""Return a callable for the get data scan job method over gRPC.
 
         Gets a DataScanJob resource.
@@ -528,11 +497,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["get_data_scan_job"]
 
     @property
-    def list_data_scan_jobs(
-        self,
-    ) -> Callable[
-        [datascans.ListDataScanJobsRequest], datascans.ListDataScanJobsResponse
-    ]:
+    def list_data_scan_jobs(self) -> Callable[[datascans.ListDataScanJobsRequest], datascans.ListDataScanJobsResponse]:
         r"""Return a callable for the list data scan jobs method over gRPC.
 
         Lists DataScanJobs under the given DataScan.
@@ -556,12 +521,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         return self._stubs["list_data_scan_jobs"]
 
     @property
-    def generate_data_quality_rules(
-        self,
-    ) -> Callable[
-        [datascans.GenerateDataQualityRulesRequest],
-        datascans.GenerateDataQualityRulesResponse,
-    ]:
+    def generate_data_quality_rules(self) -> Callable[[datascans.GenerateDataQualityRulesRequest], datascans.GenerateDataQualityRulesResponse]:
         r"""Return a callable for the generate data quality rules method over gRPC.
 
         Generates recommended data quality rules based on the
@@ -581,9 +541,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_data_quality_rules" not in self._stubs:
-            self._stubs[
-                "generate_data_quality_rules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_data_quality_rules"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataplex.v1.DataScanService/GenerateDataQualityRules",
                 request_serializer=datascans.GenerateDataQualityRulesRequest.serialize,
                 response_deserializer=datascans.GenerateDataQualityRulesResponse.deserialize,
@@ -647,9 +605,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -666,9 +622,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

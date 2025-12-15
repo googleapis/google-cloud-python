@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import AutoscalingPolicyServiceTransport
 from .grpc import AutoscalingPolicyServiceGrpcTransport
 from .grpc_asyncio import AutoscalingPolicyServiceGrpcAsyncIOTransport
-from .rest import (
-    AutoscalingPolicyServiceRestInterceptor,
-    AutoscalingPolicyServiceRestTransport,
-)
+from .rest import AutoscalingPolicyServiceRestInterceptor, AutoscalingPolicyServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AutoscalingPolicyServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AutoscalingPolicyServiceTransport]]
 _transport_registry["grpc"] = AutoscalingPolicyServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = AutoscalingPolicyServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = AutoscalingPolicyServiceRestTransport

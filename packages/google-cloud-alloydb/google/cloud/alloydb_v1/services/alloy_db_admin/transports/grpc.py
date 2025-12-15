@@ -49,9 +49,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +78,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +213,14 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +254,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,17 +321,13 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[[service.ListClustersRequest], service.ListClustersResponse]:
+    def list_clusters(self) -> Callable[[service.ListClustersRequest], service.ListClustersResponse]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists Clusters in a given project and location.
@@ -394,9 +375,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[service.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[service.CreateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a new Cluster in a given project and
@@ -421,9 +400,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["create_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[service.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[service.UpdateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Updates the parameters of a single Cluster.
@@ -447,9 +424,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def export_cluster(
-        self,
-    ) -> Callable[[service.ExportClusterRequest], operations_pb2.Operation]:
+    def export_cluster(self) -> Callable[[service.ExportClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the export cluster method over gRPC.
 
         Exports data from the cluster.
@@ -474,9 +449,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["export_cluster"]
 
     @property
-    def import_cluster(
-        self,
-    ) -> Callable[[service.ImportClusterRequest], operations_pb2.Operation]:
+    def import_cluster(self) -> Callable[[service.ImportClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the import cluster method over gRPC.
 
         Imports data to the cluster.
@@ -501,9 +474,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["import_cluster"]
 
     @property
-    def upgrade_cluster(
-        self,
-    ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
+    def upgrade_cluster(self) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the upgrade cluster method over gRPC.
 
         Upgrades a single Cluster.
@@ -528,9 +499,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["upgrade_cluster"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[service.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[service.DeleteClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes a single Cluster.
@@ -554,9 +523,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def promote_cluster(
-        self,
-    ) -> Callable[[service.PromoteClusterRequest], operations_pb2.Operation]:
+    def promote_cluster(self) -> Callable[[service.PromoteClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the promote cluster method over gRPC.
 
         Promotes a SECONDARY cluster. This turns down
@@ -583,9 +550,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["promote_cluster"]
 
     @property
-    def switchover_cluster(
-        self,
-    ) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
+    def switchover_cluster(self) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the switchover cluster method over gRPC.
 
         Switches the roles of PRIMARY and SECONDARY clusters
@@ -612,9 +577,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["switchover_cluster"]
 
     @property
-    def restore_cluster(
-        self,
-    ) -> Callable[[service.RestoreClusterRequest], operations_pb2.Operation]:
+    def restore_cluster(self) -> Callable[[service.RestoreClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the restore cluster method over gRPC.
 
         Creates a new Cluster in a given project and
@@ -641,9 +604,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["restore_cluster"]
 
     @property
-    def create_secondary_cluster(
-        self,
-    ) -> Callable[[service.CreateSecondaryClusterRequest], operations_pb2.Operation]:
+    def create_secondary_cluster(self) -> Callable[[service.CreateSecondaryClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create secondary cluster method over gRPC.
 
         Creates a cluster of type SECONDARY in the given
@@ -668,9 +629,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["create_secondary_cluster"]
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists Instances in a given project and location.
@@ -694,9 +653,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[service.GetInstanceRequest], resources.Instance]:
+    def get_instance(self) -> Callable[[service.GetInstanceRequest], resources.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets details of a single Instance.
@@ -720,9 +677,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a new Instance in a given project and
@@ -747,9 +702,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["create_instance"]
 
     @property
-    def create_secondary_instance(
-        self,
-    ) -> Callable[[service.CreateSecondaryInstanceRequest], operations_pb2.Operation]:
+    def create_secondary_instance(self) -> Callable[[service.CreateSecondaryInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create secondary instance method over gRPC.
 
         Creates a new SECONDARY Instance in a given project
@@ -774,9 +727,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["create_secondary_instance"]
 
     @property
-    def batch_create_instances(
-        self,
-    ) -> Callable[[service.BatchCreateInstancesRequest], operations_pb2.Operation]:
+    def batch_create_instances(self) -> Callable[[service.BatchCreateInstancesRequest], operations_pb2.Operation]:
         r"""Return a callable for the batch create instances method over gRPC.
 
         Creates new instances under the given project,
@@ -812,9 +763,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["batch_create_instances"]
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[service.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[service.UpdateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates the parameters of a single Instance.
@@ -838,9 +787,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["update_instance"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single Instance.
@@ -864,9 +811,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["delete_instance"]
 
     @property
-    def failover_instance(
-        self,
-    ) -> Callable[[service.FailoverInstanceRequest], operations_pb2.Operation]:
+    def failover_instance(self) -> Callable[[service.FailoverInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the failover instance method over gRPC.
 
         Forces a Failover for a highly available instance.
@@ -892,9 +837,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["failover_instance"]
 
     @property
-    def inject_fault(
-        self,
-    ) -> Callable[[service.InjectFaultRequest], operations_pb2.Operation]:
+    def inject_fault(self) -> Callable[[service.InjectFaultRequest], operations_pb2.Operation]:
         r"""Return a callable for the inject fault method over gRPC.
 
         Injects fault in an instance.
@@ -919,9 +862,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["inject_fault"]
 
     @property
-    def restart_instance(
-        self,
-    ) -> Callable[[service.RestartInstanceRequest], operations_pb2.Operation]:
+    def restart_instance(self) -> Callable[[service.RestartInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the restart instance method over gRPC.
 
         Restart an Instance in a cluster.
@@ -946,9 +887,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["restart_instance"]
 
     @property
-    def execute_sql(
-        self,
-    ) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
+    def execute_sql(self) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
         r"""Return a callable for the execute sql method over gRPC.
 
         Executes a SQL statement in a database inside an
@@ -973,9 +912,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["execute_sql"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[service.ListBackupsRequest], service.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[service.ListBackupsRequest], service.ListBackupsResponse]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists Backups in a given project and location.
@@ -1023,9 +960,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["get_backup"]
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[service.CreateBackupRequest], operations_pb2.Operation]:
+    def create_backup(self) -> Callable[[service.CreateBackupRequest], operations_pb2.Operation]:
         r"""Return a callable for the create backup method over gRPC.
 
         Creates a new Backup in a given project and location.
@@ -1049,9 +984,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["create_backup"]
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[service.UpdateBackupRequest], operations_pb2.Operation]:
+    def update_backup(self) -> Callable[[service.UpdateBackupRequest], operations_pb2.Operation]:
         r"""Return a callable for the update backup method over gRPC.
 
         Updates the parameters of a single Backup.
@@ -1075,9 +1008,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["update_backup"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[service.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[service.DeleteBackupRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a single Backup.
@@ -1101,12 +1032,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["delete_backup"]
 
     @property
-    def list_supported_database_flags(
-        self,
-    ) -> Callable[
-        [service.ListSupportedDatabaseFlagsRequest],
-        service.ListSupportedDatabaseFlagsResponse,
-    ]:
+    def list_supported_database_flags(self) -> Callable[[service.ListSupportedDatabaseFlagsRequest], service.ListSupportedDatabaseFlagsResponse]:
         r"""Return a callable for the list supported database flags method over gRPC.
 
         Lists SupportedDatabaseFlags for a given project and
@@ -1123,9 +1049,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_supported_database_flags" not in self._stubs:
-            self._stubs[
-                "list_supported_database_flags"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_supported_database_flags"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/ListSupportedDatabaseFlags",
                 request_serializer=service.ListSupportedDatabaseFlagsRequest.serialize,
                 response_deserializer=service.ListSupportedDatabaseFlagsResponse.deserialize,
@@ -1133,12 +1057,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["list_supported_database_flags"]
 
     @property
-    def generate_client_certificate(
-        self,
-    ) -> Callable[
-        [service.GenerateClientCertificateRequest],
-        service.GenerateClientCertificateResponse,
-    ]:
+    def generate_client_certificate(self) -> Callable[[service.GenerateClientCertificateRequest], service.GenerateClientCertificateResponse]:
         r"""Return a callable for the generate client certificate method over gRPC.
 
         Generate a client certificate signed by a Cluster CA.
@@ -1160,9 +1079,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_client_certificate" not in self._stubs:
-            self._stubs[
-                "generate_client_certificate"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_client_certificate"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/GenerateClientCertificate",
                 request_serializer=service.GenerateClientCertificateRequest.serialize,
                 response_deserializer=service.GenerateClientCertificateResponse.deserialize,
@@ -1170,9 +1087,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["generate_client_certificate"]
 
     @property
-    def get_connection_info(
-        self,
-    ) -> Callable[[service.GetConnectionInfoRequest], resources.ConnectionInfo]:
+    def get_connection_info(self) -> Callable[[service.GetConnectionInfoRequest], resources.ConnectionInfo]:
         r"""Return a callable for the get connection info method over gRPC.
 
         Get instance metadata used for a connection.
@@ -1196,9 +1111,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["get_connection_info"]
 
     @property
-    def list_users(
-        self,
-    ) -> Callable[[service.ListUsersRequest], service.ListUsersResponse]:
+    def list_users(self) -> Callable[[service.ListUsersRequest], service.ListUsersResponse]:
         r"""Return a callable for the list users method over gRPC.
 
         Lists Users in a given project and location.
@@ -1319,9 +1232,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["delete_user"]
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[[service.ListDatabasesRequest], service.ListDatabasesResponse]:
+    def list_databases(self) -> Callable[[service.ListDatabasesRequest], service.ListDatabasesResponse]:
         r"""Return a callable for the list databases method over gRPC.
 
         Lists Databases in a given project and location.
@@ -1401,9 +1312,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1420,9 +1329,7 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -280,18 +269,14 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -327,9 +312,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -368,9 +351,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["get_table"]
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[[tables.ListTablesRequest], Awaitable[tables.ListTablesResponse]]:
+    def list_tables(self) -> Callable[[tables.ListTablesRequest], Awaitable[tables.ListTablesResponse]]:
         r"""Return a callable for the list tables method over gRPC.
 
         Lists tables for the user.
@@ -394,9 +375,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["list_tables"]
 
     @property
-    def get_workspace(
-        self,
-    ) -> Callable[[tables.GetWorkspaceRequest], Awaitable[tables.Workspace]]:
+    def get_workspace(self) -> Callable[[tables.GetWorkspaceRequest], Awaitable[tables.Workspace]]:
         r"""Return a callable for the get workspace method over gRPC.
 
         Gets a workspace. Returns NOT_FOUND if the workspace does not
@@ -421,11 +400,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["get_workspace"]
 
     @property
-    def list_workspaces(
-        self,
-    ) -> Callable[
-        [tables.ListWorkspacesRequest], Awaitable[tables.ListWorkspacesResponse]
-    ]:
+    def list_workspaces(self) -> Callable[[tables.ListWorkspacesRequest], Awaitable[tables.ListWorkspacesResponse]]:
         r"""Return a callable for the list workspaces method over gRPC.
 
         Lists workspaces for the user.
@@ -474,9 +449,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["get_row"]
 
     @property
-    def list_rows(
-        self,
-    ) -> Callable[[tables.ListRowsRequest], Awaitable[tables.ListRowsResponse]]:
+    def list_rows(self) -> Callable[[tables.ListRowsRequest], Awaitable[tables.ListRowsResponse]]:
         r"""Return a callable for the list rows method over gRPC.
 
         Lists rows in a table. Returns NOT_FOUND if the table does not
@@ -525,11 +498,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["create_row"]
 
     @property
-    def batch_create_rows(
-        self,
-    ) -> Callable[
-        [tables.BatchCreateRowsRequest], Awaitable[tables.BatchCreateRowsResponse]
-    ]:
+    def batch_create_rows(self) -> Callable[[tables.BatchCreateRowsRequest], Awaitable[tables.BatchCreateRowsResponse]]:
         r"""Return a callable for the batch create rows method over gRPC.
 
         Creates multiple rows.
@@ -577,11 +546,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["update_row"]
 
     @property
-    def batch_update_rows(
-        self,
-    ) -> Callable[
-        [tables.BatchUpdateRowsRequest], Awaitable[tables.BatchUpdateRowsResponse]
-    ]:
+    def batch_update_rows(self) -> Callable[[tables.BatchUpdateRowsRequest], Awaitable[tables.BatchUpdateRowsResponse]]:
         r"""Return a callable for the batch update rows method over gRPC.
 
         Updates multiple rows.
@@ -605,9 +570,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["batch_update_rows"]
 
     @property
-    def delete_row(
-        self,
-    ) -> Callable[[tables.DeleteRowRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_row(self) -> Callable[[tables.DeleteRowRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete row method over gRPC.
 
         Deletes a row.
@@ -631,9 +594,7 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
         return self._stubs["delete_row"]
 
     @property
-    def batch_delete_rows(
-        self,
-    ) -> Callable[[tables.BatchDeleteRowsRequest], Awaitable[empty_pb2.Empty]]:
+    def batch_delete_rows(self) -> Callable[[tables.BatchDeleteRowsRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the batch delete rows method over gRPC.
 
         Deletes multiple rows.

@@ -480,12 +480,10 @@ class OSPolicy(proto.Message):
                     number=2,
                 )
 
-            desired_state: "OSPolicy.Resource.PackageResource.DesiredState" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="OSPolicy.Resource.PackageResource.DesiredState",
-                )
+            desired_state: "OSPolicy.Resource.PackageResource.DesiredState" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="OSPolicy.Resource.PackageResource.DesiredState",
             )
             apt: "OSPolicy.Resource.PackageResource.APT" = proto.Field(
                 proto.MESSAGE,
@@ -729,13 +727,11 @@ class OSPolicy(proto.Message):
                 oneof="repository",
                 message="OSPolicy.Resource.RepositoryResource.YumRepository",
             )
-            zypper: "OSPolicy.Resource.RepositoryResource.ZypperRepository" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=3,
-                    oneof="repository",
-                    message="OSPolicy.Resource.RepositoryResource.ZypperRepository",
-                )
+            zypper: "OSPolicy.Resource.RepositoryResource.ZypperRepository" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="repository",
+                message="OSPolicy.Resource.RepositoryResource.ZypperRepository",
             )
             goo: "OSPolicy.Resource.RepositoryResource.GooRepository" = proto.Field(
                 proto.MESSAGE,
@@ -863,12 +859,10 @@ class OSPolicy(proto.Message):
                     proto.STRING,
                     number=3,
                 )
-                interpreter: "OSPolicy.Resource.ExecResource.Exec.Interpreter" = (
-                    proto.Field(
-                        proto.ENUM,
-                        number=4,
-                        enum="OSPolicy.Resource.ExecResource.Exec.Interpreter",
-                    )
+                interpreter: "OSPolicy.Resource.ExecResource.Exec.Interpreter" = proto.Field(
+                    proto.ENUM,
+                    number=4,
+                    enum="OSPolicy.Resource.ExecResource.Exec.Interpreter",
                 )
                 output_file_path: str = proto.Field(
                     proto.STRING,
@@ -1046,9 +1040,7 @@ class OSPolicy(proto.Message):
             number=1,
             message="OSPolicy.OSFilter",
         )
-        inventory_filters: MutableSequence[
-            "OSPolicy.InventoryFilter"
-        ] = proto.RepeatedField(
+        inventory_filters: MutableSequence["OSPolicy.InventoryFilter"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="OSPolicy.InventoryFilter",

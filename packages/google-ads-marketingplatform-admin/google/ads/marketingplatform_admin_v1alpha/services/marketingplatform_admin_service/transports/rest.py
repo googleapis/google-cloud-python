@@ -29,10 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.marketingplatform_admin_v1alpha.types import (
-    marketingplatform_admin,
-    resources,
-)
+from google.ads.marketingplatform_admin_v1alpha.types import marketingplatform_admin, resources
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseMarketingplatformAdminServiceRestTransport
@@ -143,13 +140,8 @@ class MarketingplatformAdminServiceRestInterceptor:
     """
 
     def pre_create_analytics_account_link(
-        self,
-        request: marketingplatform_admin.CreateAnalyticsAccountLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.CreateAnalyticsAccountLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.CreateAnalyticsAccountLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.CreateAnalyticsAccountLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_analytics_account_link
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +149,7 @@ class MarketingplatformAdminServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_analytics_account_link(
-        self, response: resources.AnalyticsAccountLink
-    ) -> resources.AnalyticsAccountLink:
+    def post_create_analytics_account_link(self, response: resources.AnalyticsAccountLink) -> resources.AnalyticsAccountLink:
         """Post-rpc interceptor for create_analytics_account_link
 
         DEPRECATED. Please use the `post_create_analytics_account_link_with_metadata`
@@ -173,9 +163,7 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_create_analytics_account_link_with_metadata(
-        self,
-        response: resources.AnalyticsAccountLink,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.AnalyticsAccountLink, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.AnalyticsAccountLink, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_analytics_account_link
 
@@ -192,13 +180,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_analytics_account_link(
-        self,
-        request: marketingplatform_admin.DeleteAnalyticsAccountLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.DeleteAnalyticsAccountLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.DeleteAnalyticsAccountLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.DeleteAnalyticsAccountLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_analytics_account_link
 
         Override in a subclass to manipulate the request or metadata
@@ -207,13 +190,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return request, metadata
 
     def pre_find_sales_partner_managed_clients(
-        self,
-        request: marketingplatform_admin.FindSalesPartnerManagedClientsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.FindSalesPartnerManagedClientsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.FindSalesPartnerManagedClientsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.FindSalesPartnerManagedClientsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for find_sales_partner_managed_clients
 
         Override in a subclass to manipulate the request or metadata
@@ -237,13 +215,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_find_sales_partner_managed_clients_with_metadata(
-        self,
-        response: marketingplatform_admin.FindSalesPartnerManagedClientsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.FindSalesPartnerManagedClientsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: marketingplatform_admin.FindSalesPartnerManagedClientsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.FindSalesPartnerManagedClientsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for find_sales_partner_managed_clients
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -259,13 +232,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response, metadata
 
     def pre_get_organization(
-        self,
-        request: marketingplatform_admin.GetOrganizationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.GetOrganizationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.GetOrganizationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.GetOrganizationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_organization
 
         Override in a subclass to manipulate the request or metadata
@@ -273,9 +241,7 @@ class MarketingplatformAdminServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_organization(
-        self, response: resources.Organization
-    ) -> resources.Organization:
+    def post_get_organization(self, response: resources.Organization) -> resources.Organization:
         """Post-rpc interceptor for get_organization
 
         DEPRECATED. Please use the `post_get_organization_with_metadata`
@@ -289,9 +255,7 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_get_organization_with_metadata(
-        self,
-        response: resources.Organization,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Organization, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Organization, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_organization
 
@@ -308,13 +272,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response, metadata
 
     def pre_list_analytics_account_links(
-        self,
-        request: marketingplatform_admin.ListAnalyticsAccountLinksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.ListAnalyticsAccountLinksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.ListAnalyticsAccountLinksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.ListAnalyticsAccountLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_analytics_account_links
 
         Override in a subclass to manipulate the request or metadata
@@ -338,13 +297,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_list_analytics_account_links_with_metadata(
-        self,
-        response: marketingplatform_admin.ListAnalyticsAccountLinksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.ListAnalyticsAccountLinksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: marketingplatform_admin.ListAnalyticsAccountLinksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.ListAnalyticsAccountLinksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_analytics_account_links
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -360,13 +314,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response, metadata
 
     def pre_list_organizations(
-        self,
-        request: marketingplatform_admin.ListOrganizationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.ListOrganizationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.ListOrganizationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.ListOrganizationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_organizations
 
         Override in a subclass to manipulate the request or metadata
@@ -390,13 +339,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_list_organizations_with_metadata(
-        self,
-        response: marketingplatform_admin.ListOrganizationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.ListOrganizationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: marketingplatform_admin.ListOrganizationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.ListOrganizationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_organizations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -412,13 +356,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response, metadata
 
     def pre_report_property_usage(
-        self,
-        request: marketingplatform_admin.ReportPropertyUsageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.ReportPropertyUsageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.ReportPropertyUsageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.ReportPropertyUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for report_property_usage
 
         Override in a subclass to manipulate the request or metadata
@@ -442,13 +381,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_report_property_usage_with_metadata(
-        self,
-        response: marketingplatform_admin.ReportPropertyUsageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.ReportPropertyUsageResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: marketingplatform_admin.ReportPropertyUsageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.ReportPropertyUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for report_property_usage
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -464,13 +398,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response, metadata
 
     def pre_set_property_service_level(
-        self,
-        request: marketingplatform_admin.SetPropertyServiceLevelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.SetPropertyServiceLevelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: marketingplatform_admin.SetPropertyServiceLevelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.SetPropertyServiceLevelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_property_service_level
 
         Override in a subclass to manipulate the request or metadata
@@ -494,13 +423,8 @@ class MarketingplatformAdminServiceRestInterceptor:
         return response
 
     def post_set_property_service_level_with_metadata(
-        self,
-        response: marketingplatform_admin.SetPropertyServiceLevelResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        marketingplatform_admin.SetPropertyServiceLevelResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: marketingplatform_admin.SetPropertyServiceLevelResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[marketingplatform_admin.SetPropertyServiceLevelResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_property_service_level
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -523,9 +447,7 @@ class MarketingplatformAdminServiceRestStub:
     _interceptor: MarketingplatformAdminServiceRestInterceptor
 
 
-class MarketingplatformAdminServiceRestTransport(
-    _BaseMarketingplatformAdminServiceRestTransport
-):
+class MarketingplatformAdminServiceRestTransport(_BaseMarketingplatformAdminServiceRestTransport):
     """REST backend synchronous transport for MarketingplatformAdminService.
 
     Service Interface for the Google Marketing Platform Admin
@@ -598,35 +520,20 @@ class MarketingplatformAdminServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or MarketingplatformAdminServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or MarketingplatformAdminServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CreateAnalyticsAccountLink(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink,
-        MarketingplatformAdminServiceRestStub,
+        _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink, MarketingplatformAdminServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MarketingplatformAdminServiceRestTransport.CreateAnalyticsAccountLink"
-            )
+            return hash("MarketingplatformAdminServiceRestTransport.CreateAnalyticsAccountLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -672,32 +579,20 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_analytics_account_link(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_analytics_account_link(request, metadata)
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -721,13 +616,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._CreateAnalyticsAccountLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -743,15 +632,8 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_create_analytics_account_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_analytics_account_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_analytics_account_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalyticsAccountLink.to_json(response)
                 except:
@@ -773,24 +655,13 @@ class MarketingplatformAdminServiceRestTransport(
             return resp
 
     class _DeleteAnalyticsAccountLink(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink,
-        MarketingplatformAdminServiceRestStub,
+        _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink, MarketingplatformAdminServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MarketingplatformAdminServiceRestTransport.DeleteAnalyticsAccountLink"
-            )
+            return hash("MarketingplatformAdminServiceRestTransport.DeleteAnalyticsAccountLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -827,28 +698,18 @@ class MarketingplatformAdminServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_analytics_account_link(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_analytics_account_link(request, metadata)
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -872,12 +733,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._DeleteAnalyticsAccountLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -886,24 +742,13 @@ class MarketingplatformAdminServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
     class _FindSalesPartnerManagedClients(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients,
-        MarketingplatformAdminServiceRestStub,
+        _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients, MarketingplatformAdminServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MarketingplatformAdminServiceRestTransport.FindSalesPartnerManagedClients"
-            )
+            return hash("MarketingplatformAdminServiceRestTransport.FindSalesPartnerManagedClients")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -947,35 +792,22 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_find_sales_partner_managed_clients(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_find_sales_partner_managed_clients(request, metadata)
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -999,13 +831,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._FindSalesPartnerManagedClients._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1015,27 +841,16 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Return the response
             resp = marketingplatform_admin.FindSalesPartnerManagedClientsResponse()
-            pb_resp = marketingplatform_admin.FindSalesPartnerManagedClientsResponse.pb(
-                resp
-            )
+            pb_resp = marketingplatform_admin.FindSalesPartnerManagedClientsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_find_sales_partner_managed_clients(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_find_sales_partner_managed_clients_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_find_sales_partner_managed_clients_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = marketingplatform_admin.FindSalesPartnerManagedClientsResponse.to_json(
-                        response
-                    )
+                    response_payload = marketingplatform_admin.FindSalesPartnerManagedClientsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1054,23 +869,12 @@ class MarketingplatformAdminServiceRestTransport(
                 )
             return resp
 
-    class _GetOrganization(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization,
-        MarketingplatformAdminServiceRestStub,
-    ):
+    class _GetOrganization(_BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization, MarketingplatformAdminServiceRestStub):
         def __hash__(self):
             return hash("MarketingplatformAdminServiceRestTransport.GetOrganization")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1112,28 +916,16 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_organization(
-                request, metadata
-            )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_organization(request, metadata)
+            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1157,12 +949,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._GetOrganization._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1178,12 +965,8 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_get_organization(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_organization_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_organization_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Organization.to_json(response)
                 except:
@@ -1205,24 +988,13 @@ class MarketingplatformAdminServiceRestTransport(
             return resp
 
     class _ListAnalyticsAccountLinks(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks,
-        MarketingplatformAdminServiceRestStub,
+        _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks, MarketingplatformAdminServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MarketingplatformAdminServiceRestTransport.ListAnalyticsAccountLinks"
-            )
+            return hash("MarketingplatformAdminServiceRestTransport.ListAnalyticsAccountLinks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1265,28 +1037,18 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_analytics_account_links(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_analytics_account_links(request, metadata)
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1310,12 +1072,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._ListAnalyticsAccountLinks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1331,16 +1088,10 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_list_analytics_account_links(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_analytics_account_links_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_analytics_account_links_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = marketingplatform_admin.ListAnalyticsAccountLinksResponse.to_json(
-                        response
-                    )
+                    response_payload = marketingplatform_admin.ListAnalyticsAccountLinksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1359,23 +1110,12 @@ class MarketingplatformAdminServiceRestTransport(
                 )
             return resp
 
-    class _ListOrganizations(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations,
-        MarketingplatformAdminServiceRestStub,
-    ):
+    class _ListOrganizations(_BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations, MarketingplatformAdminServiceRestStub):
         def __hash__(self):
             return hash("MarketingplatformAdminServiceRestTransport.ListOrganizations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1417,28 +1157,16 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_organizations(
-                request, metadata
-            )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_organizations(request, metadata)
+            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1462,12 +1190,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._ListOrganizations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1483,18 +1206,10 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_list_organizations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_organizations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_organizations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        marketingplatform_admin.ListOrganizationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = marketingplatform_admin.ListOrganizationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1513,25 +1228,12 @@ class MarketingplatformAdminServiceRestTransport(
                 )
             return resp
 
-    class _ReportPropertyUsage(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage,
-        MarketingplatformAdminServiceRestStub,
-    ):
+    class _ReportPropertyUsage(_BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage, MarketingplatformAdminServiceRestStub):
         def __hash__(self):
-            return hash(
-                "MarketingplatformAdminServiceRestTransport.ReportPropertyUsage"
-            )
+            return hash("MarketingplatformAdminServiceRestTransport.ReportPropertyUsage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1574,32 +1276,20 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_http_options()
 
-            request, metadata = self._interceptor.pre_report_property_usage(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_report_property_usage(request, metadata)
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1623,13 +1313,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._ReportPropertyUsage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1645,18 +1329,10 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_report_property_usage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_report_property_usage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_report_property_usage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        marketingplatform_admin.ReportPropertyUsageResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = marketingplatform_admin.ReportPropertyUsageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1676,24 +1352,13 @@ class MarketingplatformAdminServiceRestTransport(
             return resp
 
     class _SetPropertyServiceLevel(
-        _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel,
-        MarketingplatformAdminServiceRestStub,
+        _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel, MarketingplatformAdminServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MarketingplatformAdminServiceRestTransport.SetPropertyServiceLevel"
-            )
+            return hash("MarketingplatformAdminServiceRestTransport.SetPropertyServiceLevel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1737,32 +1402,20 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_property_service_level(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_set_property_service_level(request, metadata)
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1786,13 +1439,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._SetPropertyServiceLevel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1808,18 +1455,10 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_set_property_service_level(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_property_service_level_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_property_service_level_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        marketingplatform_admin.SetPropertyServiceLevelResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = marketingplatform_admin.SetPropertyServiceLevelResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1839,22 +1478,13 @@ class MarketingplatformAdminServiceRestTransport(
             return resp
 
     @property
-    def create_analytics_account_link(
-        self,
-    ) -> Callable[
-        [marketingplatform_admin.CreateAnalyticsAccountLinkRequest],
-        resources.AnalyticsAccountLink,
-    ]:
+    def create_analytics_account_link(self) -> Callable[[marketingplatform_admin.CreateAnalyticsAccountLinkRequest], resources.AnalyticsAccountLink]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAnalyticsAccountLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_analytics_account_link(
-        self,
-    ) -> Callable[
-        [marketingplatform_admin.DeleteAnalyticsAccountLinkRequest], empty_pb2.Empty
-    ]:
+    def delete_analytics_account_link(self) -> Callable[[marketingplatform_admin.DeleteAnalyticsAccountLinkRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAnalyticsAccountLink(self._session, self._host, self._interceptor)  # type: ignore
@@ -1862,20 +1492,13 @@ class MarketingplatformAdminServiceRestTransport(
     @property
     def find_sales_partner_managed_clients(
         self,
-    ) -> Callable[
-        [marketingplatform_admin.FindSalesPartnerManagedClientsRequest],
-        marketingplatform_admin.FindSalesPartnerManagedClientsResponse,
-    ]:
+    ) -> Callable[[marketingplatform_admin.FindSalesPartnerManagedClientsRequest], marketingplatform_admin.FindSalesPartnerManagedClientsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FindSalesPartnerManagedClients(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_organization(
-        self,
-    ) -> Callable[
-        [marketingplatform_admin.GetOrganizationRequest], resources.Organization
-    ]:
+    def get_organization(self) -> Callable[[marketingplatform_admin.GetOrganizationRequest], resources.Organization]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganization(self._session, self._host, self._interceptor)  # type: ignore
@@ -1883,21 +1506,13 @@ class MarketingplatformAdminServiceRestTransport(
     @property
     def list_analytics_account_links(
         self,
-    ) -> Callable[
-        [marketingplatform_admin.ListAnalyticsAccountLinksRequest],
-        marketingplatform_admin.ListAnalyticsAccountLinksResponse,
-    ]:
+    ) -> Callable[[marketingplatform_admin.ListAnalyticsAccountLinksRequest], marketingplatform_admin.ListAnalyticsAccountLinksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAnalyticsAccountLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_organizations(
-        self,
-    ) -> Callable[
-        [marketingplatform_admin.ListOrganizationsRequest],
-        marketingplatform_admin.ListOrganizationsResponse,
-    ]:
+    def list_organizations(self) -> Callable[[marketingplatform_admin.ListOrganizationsRequest], marketingplatform_admin.ListOrganizationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrganizations(self._session, self._host, self._interceptor)  # type: ignore
@@ -1905,10 +1520,7 @@ class MarketingplatformAdminServiceRestTransport(
     @property
     def report_property_usage(
         self,
-    ) -> Callable[
-        [marketingplatform_admin.ReportPropertyUsageRequest],
-        marketingplatform_admin.ReportPropertyUsageResponse,
-    ]:
+    ) -> Callable[[marketingplatform_admin.ReportPropertyUsageRequest], marketingplatform_admin.ReportPropertyUsageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReportPropertyUsage(self._session, self._host, self._interceptor)  # type: ignore
@@ -1916,10 +1528,7 @@ class MarketingplatformAdminServiceRestTransport(
     @property
     def set_property_service_level(
         self,
-    ) -> Callable[
-        [marketingplatform_admin.SetPropertyServiceLevelRequest],
-        marketingplatform_admin.SetPropertyServiceLevelResponse,
-    ]:
+    ) -> Callable[[marketingplatform_admin.SetPropertyServiceLevelRequest], marketingplatform_admin.SetPropertyServiceLevelResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetPropertyServiceLevel(self._session, self._host, self._interceptor)  # type: ignore

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -85,35 +74,19 @@ class OsConfigServiceAsyncClient:
     instance_path = staticmethod(OsConfigServiceClient.instance_path)
     parse_instance_path = staticmethod(OsConfigServiceClient.parse_instance_path)
     patch_deployment_path = staticmethod(OsConfigServiceClient.patch_deployment_path)
-    parse_patch_deployment_path = staticmethod(
-        OsConfigServiceClient.parse_patch_deployment_path
-    )
+    parse_patch_deployment_path = staticmethod(OsConfigServiceClient.parse_patch_deployment_path)
     patch_job_path = staticmethod(OsConfigServiceClient.patch_job_path)
     parse_patch_job_path = staticmethod(OsConfigServiceClient.parse_patch_job_path)
-    common_billing_account_path = staticmethod(
-        OsConfigServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        OsConfigServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(OsConfigServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(OsConfigServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(OsConfigServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        OsConfigServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        OsConfigServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        OsConfigServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(OsConfigServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(OsConfigServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(OsConfigServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(OsConfigServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        OsConfigServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(OsConfigServiceClient.parse_common_project_path)
     common_location_path = staticmethod(OsConfigServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        OsConfigServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(OsConfigServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -149,9 +122,7 @@ class OsConfigServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -218,11 +189,7 @@ class OsConfigServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, OsConfigServiceTransport, Callable[..., OsConfigServiceTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, OsConfigServiceTransport, Callable[..., OsConfigServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -282,20 +249,14 @@ class OsConfigServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.osconfig_v1.OsConfigServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.osconfig.v1.OsConfigService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -376,15 +337,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.execute_patch_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.execute_patch_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -476,14 +433,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -497,15 +449,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_patch_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_patch_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -591,15 +539,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_patch_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.cancel_patch_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -683,14 +627,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -704,15 +643,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_patch_jobs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_patch_jobs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -741,9 +676,7 @@ class OsConfigServiceAsyncClient:
 
     async def list_patch_job_instance_details(
         self,
-        request: Optional[
-            Union[patch_jobs.ListPatchJobInstanceDetailsRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_jobs.ListPatchJobInstanceDetailsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -811,14 +744,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -832,15 +760,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_patch_job_instance_details
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_patch_job_instance_details]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -869,9 +793,7 @@ class OsConfigServiceAsyncClient:
 
     async def create_patch_deployment(
         self,
-        request: Optional[
-            Union[patch_deployments.CreatePatchDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.CreatePatchDeploymentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         patch_deployment: Optional[patch_deployments.PatchDeployment] = None,
@@ -963,14 +885,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, patch_deployment, patch_deployment_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -988,15 +905,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_patch_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1014,9 +927,7 @@ class OsConfigServiceAsyncClient:
 
     async def get_patch_deployment(
         self,
-        request: Optional[
-            Union[patch_deployments.GetPatchDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.GetPatchDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1084,14 +995,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1105,15 +1011,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_patch_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1131,9 +1033,7 @@ class OsConfigServiceAsyncClient:
 
     async def list_patch_deployments(
         self,
-        request: Optional[
-            Union[patch_deployments.ListPatchDeploymentsRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.ListPatchDeploymentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1201,14 +1101,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1222,15 +1117,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_patch_deployments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_patch_deployments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1259,9 +1150,7 @@ class OsConfigServiceAsyncClient:
 
     async def delete_patch_deployment(
         self,
-        request: Optional[
-            Union[patch_deployments.DeletePatchDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.DeletePatchDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1316,14 +1205,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1337,15 +1221,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_patch_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1360,9 +1240,7 @@ class OsConfigServiceAsyncClient:
 
     async def update_patch_deployment(
         self,
-        request: Optional[
-            Union[patch_deployments.UpdatePatchDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.UpdatePatchDeploymentRequest, dict]] = None,
         *,
         patch_deployment: Optional[patch_deployments.PatchDeployment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1438,14 +1316,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [patch_deployment, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1461,17 +1334,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_patch_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("patch_deployment.name", request.patch_deployment.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("patch_deployment.name", request.patch_deployment.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1489,9 +1356,7 @@ class OsConfigServiceAsyncClient:
 
     async def pause_patch_deployment(
         self,
-        request: Optional[
-            Union[patch_deployments.PausePatchDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.PausePatchDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1561,14 +1426,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1582,15 +1442,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.pause_patch_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.pause_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1608,9 +1464,7 @@ class OsConfigServiceAsyncClient:
 
     async def resume_patch_deployment(
         self,
-        request: Optional[
-            Union[patch_deployments.ResumePatchDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[patch_deployments.ResumePatchDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1680,14 +1534,9 @@ class OsConfigServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1701,15 +1550,11 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.resume_patch_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.resume_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1732,9 +1577,7 @@ class OsConfigServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

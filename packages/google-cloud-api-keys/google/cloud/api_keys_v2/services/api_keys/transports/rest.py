@@ -144,9 +144,7 @@ class ApiKeysRestInterceptor:
     """
 
     def pre_create_key(
-        self,
-        request: apikeys.CreateKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.CreateKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.CreateKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_key
 
@@ -155,9 +153,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_create_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_key
 
         DEPRECATED. Please use the `post_create_key_with_metadata`
@@ -171,9 +167,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_create_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_key
 
@@ -190,9 +184,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_delete_key(
-        self,
-        request: apikeys.DeleteKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.DeleteKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.DeleteKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_key
 
@@ -201,9 +193,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_key
 
         DEPRECATED. Please use the `post_delete_key_with_metadata`
@@ -217,9 +207,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_delete_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_key
 
@@ -236,9 +224,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_get_key(
-        self,
-        request: apikeys.GetKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.GetKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.GetKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_key
 
@@ -278,9 +264,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_get_key_string(
-        self,
-        request: apikeys.GetKeyStringRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.GetKeyStringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.GetKeyStringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_key_string
 
@@ -289,9 +273,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_get_key_string(
-        self, response: apikeys.GetKeyStringResponse
-    ) -> apikeys.GetKeyStringResponse:
+    def post_get_key_string(self, response: apikeys.GetKeyStringResponse) -> apikeys.GetKeyStringResponse:
         """Post-rpc interceptor for get_key_string
 
         DEPRECATED. Please use the `post_get_key_string_with_metadata`
@@ -305,9 +287,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_get_key_string_with_metadata(
-        self,
-        response: apikeys.GetKeyStringResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: apikeys.GetKeyStringResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.GetKeyStringResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_key_string
 
@@ -324,9 +304,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_list_keys(
-        self,
-        request: apikeys.ListKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.ListKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.ListKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_keys
 
@@ -335,9 +313,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_list_keys(
-        self, response: apikeys.ListKeysResponse
-    ) -> apikeys.ListKeysResponse:
+    def post_list_keys(self, response: apikeys.ListKeysResponse) -> apikeys.ListKeysResponse:
         """Post-rpc interceptor for list_keys
 
         DEPRECATED. Please use the `post_list_keys_with_metadata`
@@ -351,9 +327,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_list_keys_with_metadata(
-        self,
-        response: apikeys.ListKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: apikeys.ListKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.ListKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_keys
 
@@ -370,9 +344,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_lookup_key(
-        self,
-        request: apikeys.LookupKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.LookupKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.LookupKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_key
 
@@ -381,9 +353,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_lookup_key(
-        self, response: apikeys.LookupKeyResponse
-    ) -> apikeys.LookupKeyResponse:
+    def post_lookup_key(self, response: apikeys.LookupKeyResponse) -> apikeys.LookupKeyResponse:
         """Post-rpc interceptor for lookup_key
 
         DEPRECATED. Please use the `post_lookup_key_with_metadata`
@@ -397,9 +367,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_lookup_key_with_metadata(
-        self,
-        response: apikeys.LookupKeyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: apikeys.LookupKeyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.LookupKeyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for lookup_key
 
@@ -416,9 +384,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_undelete_key(
-        self,
-        request: apikeys.UndeleteKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.UndeleteKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.UndeleteKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_key
 
@@ -427,9 +393,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_key
 
         DEPRECATED. Please use the `post_undelete_key_with_metadata`
@@ -443,9 +407,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_undelete_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_key
 
@@ -462,9 +424,7 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_update_key(
-        self,
-        request: apikeys.UpdateKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: apikeys.UpdateKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[apikeys.UpdateKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_key
 
@@ -473,9 +433,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_update_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_key
 
         DEPRECATED. Please use the `post_update_key_with_metadata`
@@ -489,9 +447,7 @@ class ApiKeysRestInterceptor:
         return response
 
     def post_update_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_key
 
@@ -508,12 +464,8 @@ class ApiKeysRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -521,9 +473,7 @@ class ApiKeysRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -612,9 +562,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -648,9 +596,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -660,15 +606,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.CreateKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -714,29 +652,15 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = _BaseApiKeysRestTransport._BaseCreateKey._get_http_options()
 
             request, metadata = self._interceptor.pre_create_key(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseCreateKey._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseCreateKey._get_transcoded_request(http_options, request)
 
-            body = _BaseApiKeysRestTransport._BaseCreateKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiKeysRestTransport._BaseCreateKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseCreateKey._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseCreateKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -760,13 +684,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             # Send the request
             response = ApiKeysRestTransport._CreateKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -780,12 +698,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_create_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -811,15 +725,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.DeleteKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -864,25 +770,13 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = _BaseApiKeysRestTransport._BaseDeleteKey._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_key(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseDeleteKey._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseDeleteKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseDeleteKey._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseDeleteKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -905,14 +799,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 )
 
             # Send the request
-            response = ApiKeysRestTransport._DeleteKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiKeysRestTransport._DeleteKey._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -925,12 +812,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_delete_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -956,15 +839,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.GetKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1008,23 +883,13 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = _BaseApiKeysRestTransport._BaseGetKey._get_http_options()
 
             request, metadata = self._interceptor.pre_get_key(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseGetKey._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseGetKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApiKeysRestTransport._BaseGetKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApiKeysRestTransport._BaseGetKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1047,14 +912,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 )
 
             # Send the request
-            response = ApiKeysRestTransport._GetKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiKeysRestTransport._GetKey._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1069,12 +927,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_get_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Key.to_json(response)
                 except:
@@ -1100,15 +954,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.GetKeyString")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1147,30 +993,16 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     Response message for ``GetKeyString`` method.
             """
 
-            http_options = (
-                _BaseApiKeysRestTransport._BaseGetKeyString._get_http_options()
-            )
+            http_options = _BaseApiKeysRestTransport._BaseGetKeyString._get_http_options()
 
             request, metadata = self._interceptor.pre_get_key_string(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseGetKeyString._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseGetKeyString._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseGetKeyString._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseGetKeyString._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1194,12 +1026,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             # Send the request
             response = ApiKeysRestTransport._GetKeyString._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1215,12 +1042,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_get_key_string(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_key_string_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_key_string_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = apikeys.GetKeyStringResponse.to_json(response)
                 except:
@@ -1246,15 +1069,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.ListKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1296,25 +1111,13 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = _BaseApiKeysRestTransport._BaseListKeys._get_http_options()
 
             request, metadata = self._interceptor.pre_list_keys(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseListKeys._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseListKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseListKeys._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseListKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1337,14 +1140,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 )
 
             # Send the request
-            response = ApiKeysRestTransport._ListKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiKeysRestTransport._ListKeys._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1359,12 +1155,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_list_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = apikeys.ListKeysResponse.to_json(response)
                 except:
@@ -1390,15 +1182,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.LookupKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1440,25 +1224,13 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = _BaseApiKeysRestTransport._BaseLookupKey._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_key(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseLookupKey._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseLookupKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseLookupKey._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseLookupKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1481,14 +1253,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 )
 
             # Send the request
-            response = ApiKeysRestTransport._LookupKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ApiKeysRestTransport._LookupKey._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1503,12 +1268,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_lookup_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = apikeys.LookupKeyResponse.to_json(response)
                 except:
@@ -1534,15 +1295,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.UndeleteKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1585,34 +1338,18 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiKeysRestTransport._BaseUndeleteKey._get_http_options()
-            )
+            http_options = _BaseApiKeysRestTransport._BaseUndeleteKey._get_http_options()
 
             request, metadata = self._interceptor.pre_undelete_key(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseUndeleteKey._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseUndeleteKey._get_transcoded_request(http_options, request)
 
-            body = _BaseApiKeysRestTransport._BaseUndeleteKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiKeysRestTransport._BaseUndeleteKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseUndeleteKey._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseUndeleteKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1636,13 +1373,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             # Send the request
             response = ApiKeysRestTransport._UndeleteKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1656,12 +1387,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_undelete_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1687,15 +1414,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.UpdateKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1741,29 +1460,15 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = _BaseApiKeysRestTransport._BaseUpdateKey._get_http_options()
 
             request, metadata = self._interceptor.pre_update_key(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseUpdateKey._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseUpdateKey._get_transcoded_request(http_options, request)
 
-            body = _BaseApiKeysRestTransport._BaseUpdateKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApiKeysRestTransport._BaseUpdateKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseUpdateKey._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseUpdateKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1787,13 +1492,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             # Send the request
             response = ApiKeysRestTransport._UpdateKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1807,12 +1506,8 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             resp = self._interceptor.post_update_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1834,17 +1529,13 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return resp
 
     @property
-    def create_key(
-        self,
-    ) -> Callable[[apikeys.CreateKeyRequest], operations_pb2.Operation]:
+    def create_key(self) -> Callable[[apikeys.CreateKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_key(
-        self,
-    ) -> Callable[[apikeys.DeleteKeyRequest], operations_pb2.Operation]:
+    def delete_key(self) -> Callable[[apikeys.DeleteKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteKey(self._session, self._host, self._interceptor)  # type: ignore
@@ -1856,41 +1547,31 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
         return self._GetKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_key_string(
-        self,
-    ) -> Callable[[apikeys.GetKeyStringRequest], apikeys.GetKeyStringResponse]:
+    def get_key_string(self) -> Callable[[apikeys.GetKeyStringRequest], apikeys.GetKeyStringResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetKeyString(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_keys(
-        self,
-    ) -> Callable[[apikeys.ListKeysRequest], apikeys.ListKeysResponse]:
+    def list_keys(self) -> Callable[[apikeys.ListKeysRequest], apikeys.ListKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def lookup_key(
-        self,
-    ) -> Callable[[apikeys.LookupKeyRequest], apikeys.LookupKeyResponse]:
+    def lookup_key(self) -> Callable[[apikeys.LookupKeyRequest], apikeys.LookupKeyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_key(
-        self,
-    ) -> Callable[[apikeys.UndeleteKeyRequest], operations_pb2.Operation]:
+    def undelete_key(self) -> Callable[[apikeys.UndeleteKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_key(
-        self,
-    ) -> Callable[[apikeys.UpdateKeyRequest], operations_pb2.Operation]:
+    def update_key(self) -> Callable[[apikeys.UpdateKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateKey(self._session, self._host, self._interceptor)  # type: ignore
@@ -1904,15 +1585,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             return hash("ApiKeysRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1950,30 +1623,16 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseApiKeysRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseApiKeysRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseApiKeysRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseApiKeysRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseApiKeysRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseApiKeysRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1997,12 +1656,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
 
             # Send the request
             response = ApiKeysRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2014,9 +1668,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

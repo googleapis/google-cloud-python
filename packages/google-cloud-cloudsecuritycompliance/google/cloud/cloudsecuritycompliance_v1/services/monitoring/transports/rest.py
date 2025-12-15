@@ -121,13 +121,8 @@ class MonitoringRestInterceptor:
     """
 
     def pre_aggregate_framework_compliance_report(
-        self,
-        request: monitoring.AggregateFrameworkComplianceReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.AggregateFrameworkComplianceReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: monitoring.AggregateFrameworkComplianceReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.AggregateFrameworkComplianceReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregate_framework_compliance_report
 
         Override in a subclass to manipulate the request or metadata
@@ -151,13 +146,8 @@ class MonitoringRestInterceptor:
         return response
 
     def post_aggregate_framework_compliance_report_with_metadata(
-        self,
-        response: monitoring.AggregateFrameworkComplianceReportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.AggregateFrameworkComplianceReportResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: monitoring.AggregateFrameworkComplianceReportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.AggregateFrameworkComplianceReportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregate_framework_compliance_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -173,13 +163,8 @@ class MonitoringRestInterceptor:
         return response, metadata
 
     def pre_fetch_framework_compliance_report(
-        self,
-        request: monitoring.FetchFrameworkComplianceReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.FetchFrameworkComplianceReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: monitoring.FetchFrameworkComplianceReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.FetchFrameworkComplianceReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_framework_compliance_report
 
         Override in a subclass to manipulate the request or metadata
@@ -187,9 +172,7 @@ class MonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_framework_compliance_report(
-        self, response: monitoring.FrameworkComplianceReport
-    ) -> monitoring.FrameworkComplianceReport:
+    def post_fetch_framework_compliance_report(self, response: monitoring.FrameworkComplianceReport) -> monitoring.FrameworkComplianceReport:
         """Post-rpc interceptor for fetch_framework_compliance_report
 
         DEPRECATED. Please use the `post_fetch_framework_compliance_report_with_metadata`
@@ -203,12 +186,8 @@ class MonitoringRestInterceptor:
         return response
 
     def post_fetch_framework_compliance_report_with_metadata(
-        self,
-        response: monitoring.FrameworkComplianceReport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.FrameworkComplianceReport, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: monitoring.FrameworkComplianceReport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.FrameworkComplianceReport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_framework_compliance_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -224,13 +203,8 @@ class MonitoringRestInterceptor:
         return response, metadata
 
     def pre_list_control_compliance_summaries(
-        self,
-        request: monitoring.ListControlComplianceSummariesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.ListControlComplianceSummariesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: monitoring.ListControlComplianceSummariesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.ListControlComplianceSummariesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_control_compliance_summaries
 
         Override in a subclass to manipulate the request or metadata
@@ -254,13 +228,8 @@ class MonitoringRestInterceptor:
         return response
 
     def post_list_control_compliance_summaries_with_metadata(
-        self,
-        response: monitoring.ListControlComplianceSummariesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.ListControlComplianceSummariesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: monitoring.ListControlComplianceSummariesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.ListControlComplianceSummariesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_control_compliance_summaries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -276,12 +245,8 @@ class MonitoringRestInterceptor:
         return response, metadata
 
     def pre_list_finding_summaries(
-        self,
-        request: monitoring.ListFindingSummariesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.ListFindingSummariesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: monitoring.ListFindingSummariesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.ListFindingSummariesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_finding_summaries
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +254,7 @@ class MonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_finding_summaries(
-        self, response: monitoring.ListFindingSummariesResponse
-    ) -> monitoring.ListFindingSummariesResponse:
+    def post_list_finding_summaries(self, response: monitoring.ListFindingSummariesResponse) -> monitoring.ListFindingSummariesResponse:
         """Post-rpc interceptor for list_finding_summaries
 
         DEPRECATED. Please use the `post_list_finding_summaries_with_metadata`
@@ -305,12 +268,8 @@ class MonitoringRestInterceptor:
         return response
 
     def post_list_finding_summaries_with_metadata(
-        self,
-        response: monitoring.ListFindingSummariesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.ListFindingSummariesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: monitoring.ListFindingSummariesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.ListFindingSummariesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_finding_summaries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -326,13 +285,8 @@ class MonitoringRestInterceptor:
         return response, metadata
 
     def pre_list_framework_compliance_summaries(
-        self,
-        request: monitoring.ListFrameworkComplianceSummariesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.ListFrameworkComplianceSummariesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: monitoring.ListFrameworkComplianceSummariesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.ListFrameworkComplianceSummariesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_framework_compliance_summaries
 
         Override in a subclass to manipulate the request or metadata
@@ -356,13 +310,8 @@ class MonitoringRestInterceptor:
         return response
 
     def post_list_framework_compliance_summaries_with_metadata(
-        self,
-        response: monitoring.ListFrameworkComplianceSummariesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        monitoring.ListFrameworkComplianceSummariesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: monitoring.ListFrameworkComplianceSummariesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[monitoring.ListFrameworkComplianceSummariesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_framework_compliance_summaries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -378,12 +327,8 @@ class MonitoringRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -391,9 +336,7 @@ class MonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -403,12 +346,8 @@ class MonitoringRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -416,9 +355,7 @@ class MonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -428,12 +365,8 @@ class MonitoringRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -451,12 +384,8 @@ class MonitoringRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -474,12 +403,8 @@ class MonitoringRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -487,9 +412,7 @@ class MonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -499,12 +422,8 @@ class MonitoringRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -512,9 +431,7 @@ class MonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -603,31 +520,18 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MonitoringRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregateFrameworkComplianceReport(
-        _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport,
-        MonitoringRestStub,
-    ):
+    class _AggregateFrameworkComplianceReport(_BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.AggregateFrameworkComplianceReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -670,31 +574,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_aggregate_framework_compliance_report(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_aggregate_framework_compliance_report(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -718,12 +607,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._AggregateFrameworkComplianceReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -739,21 +623,10 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             resp = self._interceptor.post_aggregate_framework_compliance_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_aggregate_framework_compliance_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregate_framework_compliance_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        monitoring.AggregateFrameworkComplianceReportResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = monitoring.AggregateFrameworkComplianceReportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -772,23 +645,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
             return resp
 
-    class _FetchFrameworkComplianceReport(
-        _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport,
-        MonitoringRestStub,
-    ):
+    class _FetchFrameworkComplianceReport(_BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.FetchFrameworkComplianceReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -831,28 +693,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_framework_compliance_report(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_framework_compliance_report(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -875,15 +725,8 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MonitoringRestTransport._FetchFrameworkComplianceReport._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MonitoringRestTransport._FetchFrameworkComplianceReport._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -899,19 +742,10 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             resp = self._interceptor.post_fetch_framework_compliance_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_framework_compliance_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_framework_compliance_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = monitoring.FrameworkComplianceReport.to_json(
-                        response
-                    )
+                    response_payload = monitoring.FrameworkComplianceReport.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -930,23 +764,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
             return resp
 
-    class _ListControlComplianceSummaries(
-        _BaseMonitoringRestTransport._BaseListControlComplianceSummaries,
-        MonitoringRestStub,
-    ):
+    class _ListControlComplianceSummaries(_BaseMonitoringRestTransport._BaseListControlComplianceSummaries, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.ListControlComplianceSummaries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -989,28 +812,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_control_compliance_summaries(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_control_compliance_summaries(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1033,15 +844,8 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MonitoringRestTransport._ListControlComplianceSummaries._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MonitoringRestTransport._ListControlComplianceSummaries._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1057,21 +861,10 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             resp = self._interceptor.post_list_control_compliance_summaries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_control_compliance_summaries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_control_compliance_summaries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        monitoring.ListControlComplianceSummariesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = monitoring.ListControlComplianceSummariesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1090,22 +883,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
             return resp
 
-    class _ListFindingSummaries(
-        _BaseMonitoringRestTransport._BaseListFindingSummaries, MonitoringRestStub
-    ):
+    class _ListFindingSummaries(_BaseMonitoringRestTransport._BaseListFindingSummaries, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.ListFindingSummaries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1144,28 +927,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                     The response message for [ListFindingSummaries][].
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseListFindingSummaries._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseListFindingSummaries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_finding_summaries(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseListFindingSummaries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_finding_summaries(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseListFindingSummaries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseListFindingSummaries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseListFindingSummaries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1189,12 +960,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._ListFindingSummaries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1210,16 +976,10 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             resp = self._interceptor.post_list_finding_summaries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_finding_summaries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_finding_summaries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = monitoring.ListFindingSummariesResponse.to_json(
-                        response
-                    )
+                    response_payload = monitoring.ListFindingSummariesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1238,23 +998,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
             return resp
 
-    class _ListFrameworkComplianceSummaries(
-        _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries,
-        MonitoringRestStub,
-    ):
+    class _ListFrameworkComplianceSummaries(_BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.ListFrameworkComplianceSummaries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1297,31 +1046,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_framework_compliance_summaries(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_framework_compliance_summaries(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1344,15 +1078,8 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 )
 
             # Send the request
-            response = (
-                MonitoringRestTransport._ListFrameworkComplianceSummaries._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MonitoringRestTransport._ListFrameworkComplianceSummaries._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1368,21 +1095,10 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             resp = self._interceptor.post_list_framework_compliance_summaries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_framework_compliance_summaries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_framework_compliance_summaries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        monitoring.ListFrameworkComplianceSummariesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = monitoring.ListFrameworkComplianceSummariesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1404,21 +1120,13 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     @property
     def aggregate_framework_compliance_report(
         self,
-    ) -> Callable[
-        [monitoring.AggregateFrameworkComplianceReportRequest],
-        monitoring.AggregateFrameworkComplianceReportResponse,
-    ]:
+    ) -> Callable[[monitoring.AggregateFrameworkComplianceReportRequest], monitoring.AggregateFrameworkComplianceReportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregateFrameworkComplianceReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_framework_compliance_report(
-        self,
-    ) -> Callable[
-        [monitoring.FetchFrameworkComplianceReportRequest],
-        monitoring.FrameworkComplianceReport,
-    ]:
+    def fetch_framework_compliance_report(self) -> Callable[[monitoring.FetchFrameworkComplianceReportRequest], monitoring.FrameworkComplianceReport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchFrameworkComplianceReport(self._session, self._host, self._interceptor)  # type: ignore
@@ -1426,21 +1134,13 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     @property
     def list_control_compliance_summaries(
         self,
-    ) -> Callable[
-        [monitoring.ListControlComplianceSummariesRequest],
-        monitoring.ListControlComplianceSummariesResponse,
-    ]:
+    ) -> Callable[[monitoring.ListControlComplianceSummariesRequest], monitoring.ListControlComplianceSummariesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListControlComplianceSummaries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_finding_summaries(
-        self,
-    ) -> Callable[
-        [monitoring.ListFindingSummariesRequest],
-        monitoring.ListFindingSummariesResponse,
-    ]:
+    def list_finding_summaries(self) -> Callable[[monitoring.ListFindingSummariesRequest], monitoring.ListFindingSummariesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFindingSummaries(self._session, self._host, self._interceptor)  # type: ignore
@@ -1448,10 +1148,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     @property
     def list_framework_compliance_summaries(
         self,
-    ) -> Callable[
-        [monitoring.ListFrameworkComplianceSummariesRequest],
-        monitoring.ListFrameworkComplianceSummariesResponse,
-    ]:
+    ) -> Callable[[monitoring.ListFrameworkComplianceSummariesRequest], monitoring.ListFrameworkComplianceSummariesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFrameworkComplianceSummaries(self._session, self._host, self._interceptor)  # type: ignore
@@ -1460,22 +1157,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseMonitoringRestTransport._BaseGetLocation, MonitoringRestStub
-    ):
+    class _GetLocation(_BaseMonitoringRestTransport._BaseGetLocation, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1513,30 +1200,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseMonitoringRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMonitoringRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMonitoringRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMonitoringRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1560,12 +1233,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1577,9 +1245,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1604,22 +1270,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseMonitoringRestTransport._BaseListLocations, MonitoringRestStub
-    ):
+    class _ListLocations(_BaseMonitoringRestTransport._BaseListLocations, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1657,30 +1313,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseMonitoringRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMonitoringRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMonitoringRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMonitoringRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1704,12 +1346,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1721,9 +1358,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1748,22 +1383,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseMonitoringRestTransport._BaseCancelOperation, MonitoringRestStub
-    ):
+    class _CancelOperation(_BaseMonitoringRestTransport._BaseCancelOperation, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1799,32 +1424,18 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseMonitoringRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMonitoringRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1848,13 +1459,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1868,22 +1473,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseMonitoringRestTransport._BaseDeleteOperation, MonitoringRestStub
-    ):
+    class _DeleteOperation(_BaseMonitoringRestTransport._BaseDeleteOperation, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1918,28 +1513,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMonitoringRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseMonitoringRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMonitoringRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMonitoringRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1963,12 +1546,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1982,22 +1560,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMonitoringRestTransport._BaseGetOperation, MonitoringRestStub
-    ):
+    class _GetOperation(_BaseMonitoringRestTransport._BaseGetOperation, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2035,30 +1603,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseMonitoringRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMonitoringRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMonitoringRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMonitoringRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2082,12 +1636,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2099,9 +1648,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2126,22 +1673,12 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseMonitoringRestTransport._BaseListOperations, MonitoringRestStub
-    ):
+    class _ListOperations(_BaseMonitoringRestTransport._BaseListOperations, MonitoringRestStub):
         def __hash__(self):
             return hash("MonitoringRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2179,28 +1716,16 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMonitoringRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMonitoringRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseMonitoringRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMonitoringRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMonitoringRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMonitoringRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2224,12 +1749,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
 
             # Send the request
             response = MonitoringRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2241,9 +1761,7 @@ class MonitoringRestTransport(_BaseMonitoringRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import TermsOfServiceAgreementStateServiceTransport
 from .grpc import TermsOfServiceAgreementStateServiceGrpcTransport
 from .grpc_asyncio import TermsOfServiceAgreementStateServiceGrpcAsyncIOTransport
-from .rest import (
-    TermsOfServiceAgreementStateServiceRestInterceptor,
-    TermsOfServiceAgreementStateServiceRestTransport,
-)
+from .rest import TermsOfServiceAgreementStateServiceRestInterceptor, TermsOfServiceAgreementStateServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[TermsOfServiceAgreementStateServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TermsOfServiceAgreementStateServiceTransport]]
 _transport_registry["grpc"] = TermsOfServiceAgreementStateServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = TermsOfServiceAgreementStateServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = TermsOfServiceAgreementStateServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = TermsOfServiceAgreementStateServiceRestTransport
 
 __all__ = (

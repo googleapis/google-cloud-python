@@ -18,12 +18,8 @@ from google.cloud.vmwareengine import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.vmwareengine_v1.services.vmware_engine.async_client import (
-    VmwareEngineAsyncClient,
-)
-from google.cloud.vmwareengine_v1.services.vmware_engine.client import (
-    VmwareEngineClient,
-)
+from google.cloud.vmwareengine_v1.services.vmware_engine.async_client import VmwareEngineAsyncClient
+from google.cloud.vmwareengine_v1.services.vmware_engine.client import VmwareEngineClient
 from google.cloud.vmwareengine_v1.types.vmwareengine import (
     CreateClusterRequest,
     CreateExternalAccessRuleRequest,

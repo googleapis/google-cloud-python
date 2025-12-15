@@ -119,13 +119,8 @@ class OmnichannelSettingsServiceRestInterceptor:
     """
 
     def pre_create_omnichannel_setting(
-        self,
-        request: omnichannelsettings.CreateOmnichannelSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.CreateOmnichannelSettingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: omnichannelsettings.CreateOmnichannelSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.CreateOmnichannelSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_omnichannel_setting
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class OmnichannelSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_omnichannel_setting(
-        self, response: omnichannelsettings.OmnichannelSetting
-    ) -> omnichannelsettings.OmnichannelSetting:
+    def post_create_omnichannel_setting(self, response: omnichannelsettings.OmnichannelSetting) -> omnichannelsettings.OmnichannelSetting:
         """Post-rpc interceptor for create_omnichannel_setting
 
         DEPRECATED. Please use the `post_create_omnichannel_setting_with_metadata`
@@ -149,12 +142,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response
 
     def post_create_omnichannel_setting_with_metadata(
-        self,
-        response: omnichannelsettings.OmnichannelSetting,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.OmnichannelSetting, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: omnichannelsettings.OmnichannelSetting, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.OmnichannelSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_omnichannel_setting
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,13 +159,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_omnichannel_setting(
-        self,
-        request: omnichannelsettings.GetOmnichannelSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.GetOmnichannelSettingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: omnichannelsettings.GetOmnichannelSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.GetOmnichannelSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_omnichannel_setting
 
         Override in a subclass to manipulate the request or metadata
@@ -184,9 +168,7 @@ class OmnichannelSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_omnichannel_setting(
-        self, response: omnichannelsettings.OmnichannelSetting
-    ) -> omnichannelsettings.OmnichannelSetting:
+    def post_get_omnichannel_setting(self, response: omnichannelsettings.OmnichannelSetting) -> omnichannelsettings.OmnichannelSetting:
         """Post-rpc interceptor for get_omnichannel_setting
 
         DEPRECATED. Please use the `post_get_omnichannel_setting_with_metadata`
@@ -200,12 +182,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response
 
     def post_get_omnichannel_setting_with_metadata(
-        self,
-        response: omnichannelsettings.OmnichannelSetting,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.OmnichannelSetting, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: omnichannelsettings.OmnichannelSetting, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.OmnichannelSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_omnichannel_setting
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -221,13 +199,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_omnichannel_settings(
-        self,
-        request: omnichannelsettings.ListOmnichannelSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.ListOmnichannelSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: omnichannelsettings.ListOmnichannelSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.ListOmnichannelSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_omnichannel_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -251,13 +224,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response
 
     def post_list_omnichannel_settings_with_metadata(
-        self,
-        response: omnichannelsettings.ListOmnichannelSettingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.ListOmnichannelSettingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: omnichannelsettings.ListOmnichannelSettingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.ListOmnichannelSettingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_omnichannel_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -273,13 +241,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_request_inventory_verification(
-        self,
-        request: omnichannelsettings.RequestInventoryVerificationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.RequestInventoryVerificationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: omnichannelsettings.RequestInventoryVerificationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.RequestInventoryVerificationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for request_inventory_verification
 
         Override in a subclass to manipulate the request or metadata
@@ -303,13 +266,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response
 
     def post_request_inventory_verification_with_metadata(
-        self,
-        response: omnichannelsettings.RequestInventoryVerificationResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.RequestInventoryVerificationResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: omnichannelsettings.RequestInventoryVerificationResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.RequestInventoryVerificationResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for request_inventory_verification
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -325,13 +283,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_omnichannel_setting(
-        self,
-        request: omnichannelsettings.UpdateOmnichannelSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.UpdateOmnichannelSettingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: omnichannelsettings.UpdateOmnichannelSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.UpdateOmnichannelSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_omnichannel_setting
 
         Override in a subclass to manipulate the request or metadata
@@ -339,9 +292,7 @@ class OmnichannelSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_omnichannel_setting(
-        self, response: omnichannelsettings.OmnichannelSetting
-    ) -> omnichannelsettings.OmnichannelSetting:
+    def post_update_omnichannel_setting(self, response: omnichannelsettings.OmnichannelSetting) -> omnichannelsettings.OmnichannelSetting:
         """Post-rpc interceptor for update_omnichannel_setting
 
         DEPRECATED. Please use the `post_update_omnichannel_setting_with_metadata`
@@ -355,12 +306,8 @@ class OmnichannelSettingsServiceRestInterceptor:
         return response
 
     def post_update_omnichannel_setting_with_metadata(
-        self,
-        response: omnichannelsettings.OmnichannelSetting,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        omnichannelsettings.OmnichannelSetting, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: omnichannelsettings.OmnichannelSetting, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[omnichannelsettings.OmnichannelSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_omnichannel_setting
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -383,9 +330,7 @@ class OmnichannelSettingsServiceRestStub:
     _interceptor: OmnichannelSettingsServiceRestInterceptor
 
 
-class OmnichannelSettingsServiceRestTransport(
-    _BaseOmnichannelSettingsServiceRestTransport
-):
+class OmnichannelSettingsServiceRestTransport(_BaseOmnichannelSettingsServiceRestTransport):
     """REST backend synchronous transport for OmnichannelSettingsService.
 
     The service facilitates the management of a merchant's omnichannel
@@ -463,33 +408,18 @@ class OmnichannelSettingsServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OmnichannelSettingsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateOmnichannelSetting(
-        _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting,
-        OmnichannelSettingsServiceRestStub,
-    ):
+    class _CreateOmnichannelSetting(_BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting, OmnichannelSettingsServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OmnichannelSettingsServiceRestTransport.CreateOmnichannelSetting"
-            )
+            return hash("OmnichannelSettingsServiceRestTransport.CreateOmnichannelSetting")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -533,32 +463,20 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_omnichannel_setting(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_omnichannel_setting(request, metadata)
             transcoded_request = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -582,13 +500,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             # Send the request
             response = OmnichannelSettingsServiceRestTransport._CreateOmnichannelSetting._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -604,16 +516,10 @@ class OmnichannelSettingsServiceRestTransport(
 
             resp = self._interceptor.post_create_omnichannel_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_omnichannel_setting_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_omnichannel_setting_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = omnichannelsettings.OmnichannelSetting.to_json(
-                        response
-                    )
+                    response_payload = omnichannelsettings.OmnichannelSetting.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -632,23 +538,12 @@ class OmnichannelSettingsServiceRestTransport(
                 )
             return resp
 
-    class _GetOmnichannelSetting(
-        _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting,
-        OmnichannelSettingsServiceRestStub,
-    ):
+    class _GetOmnichannelSetting(_BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting, OmnichannelSettingsServiceRestStub):
         def __hash__(self):
             return hash("OmnichannelSettingsServiceRestTransport.GetOmnichannelSetting")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -690,28 +585,18 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_omnichannel_setting(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_omnichannel_setting(request, metadata)
             transcoded_request = _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -735,12 +620,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             # Send the request
             response = OmnichannelSettingsServiceRestTransport._GetOmnichannelSetting._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -756,16 +636,10 @@ class OmnichannelSettingsServiceRestTransport(
 
             resp = self._interceptor.post_get_omnichannel_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_omnichannel_setting_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_omnichannel_setting_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = omnichannelsettings.OmnichannelSetting.to_json(
-                        response
-                    )
+                    response_payload = omnichannelsettings.OmnichannelSetting.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -784,25 +658,12 @@ class OmnichannelSettingsServiceRestTransport(
                 )
             return resp
 
-    class _ListOmnichannelSettings(
-        _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings,
-        OmnichannelSettingsServiceRestStub,
-    ):
+    class _ListOmnichannelSettings(_BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings, OmnichannelSettingsServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OmnichannelSettingsServiceRestTransport.ListOmnichannelSettings"
-            )
+            return hash("OmnichannelSettingsServiceRestTransport.ListOmnichannelSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -844,28 +705,18 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_omnichannel_settings(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_omnichannel_settings(request, metadata)
             transcoded_request = _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -889,12 +740,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             # Send the request
             response = OmnichannelSettingsServiceRestTransport._ListOmnichannelSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -910,18 +756,10 @@ class OmnichannelSettingsServiceRestTransport(
 
             resp = self._interceptor.post_list_omnichannel_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_omnichannel_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_omnichannel_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        omnichannelsettings.ListOmnichannelSettingsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = omnichannelsettings.ListOmnichannelSettingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -941,24 +779,13 @@ class OmnichannelSettingsServiceRestTransport(
             return resp
 
     class _RequestInventoryVerification(
-        _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification,
-        OmnichannelSettingsServiceRestStub,
+        _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification, OmnichannelSettingsServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OmnichannelSettingsServiceRestTransport.RequestInventoryVerification"
-            )
+            return hash("OmnichannelSettingsServiceRestTransport.RequestInventoryVerification")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1002,32 +829,20 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_http_options()
 
-            request, metadata = self._interceptor.pre_request_inventory_verification(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_request_inventory_verification(request, metadata)
             transcoded_request = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1051,13 +866,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             # Send the request
             response = OmnichannelSettingsServiceRestTransport._RequestInventoryVerification._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1073,19 +882,10 @@ class OmnichannelSettingsServiceRestTransport(
 
             resp = self._interceptor.post_request_inventory_verification(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_request_inventory_verification_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_request_inventory_verification_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = omnichannelsettings.RequestInventoryVerificationResponse.to_json(
-                        response
-                    )
+                    response_payload = omnichannelsettings.RequestInventoryVerificationResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1104,25 +904,12 @@ class OmnichannelSettingsServiceRestTransport(
                 )
             return resp
 
-    class _UpdateOmnichannelSetting(
-        _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting,
-        OmnichannelSettingsServiceRestStub,
-    ):
+    class _UpdateOmnichannelSetting(_BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting, OmnichannelSettingsServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OmnichannelSettingsServiceRestTransport.UpdateOmnichannelSetting"
-            )
+            return hash("OmnichannelSettingsServiceRestTransport.UpdateOmnichannelSetting")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1166,32 +953,20 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_omnichannel_setting(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_omnichannel_setting(request, metadata)
             transcoded_request = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1215,13 +990,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             # Send the request
             response = OmnichannelSettingsServiceRestTransport._UpdateOmnichannelSetting._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1237,16 +1006,10 @@ class OmnichannelSettingsServiceRestTransport(
 
             resp = self._interceptor.post_update_omnichannel_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_omnichannel_setting_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_omnichannel_setting_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = omnichannelsettings.OmnichannelSetting.to_json(
-                        response
-                    )
+                    response_payload = omnichannelsettings.OmnichannelSetting.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1266,23 +1029,13 @@ class OmnichannelSettingsServiceRestTransport(
             return resp
 
     @property
-    def create_omnichannel_setting(
-        self,
-    ) -> Callable[
-        [omnichannelsettings.CreateOmnichannelSettingRequest],
-        omnichannelsettings.OmnichannelSetting,
-    ]:
+    def create_omnichannel_setting(self) -> Callable[[omnichannelsettings.CreateOmnichannelSettingRequest], omnichannelsettings.OmnichannelSetting]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOmnichannelSetting(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_omnichannel_setting(
-        self,
-    ) -> Callable[
-        [omnichannelsettings.GetOmnichannelSettingRequest],
-        omnichannelsettings.OmnichannelSetting,
-    ]:
+    def get_omnichannel_setting(self) -> Callable[[omnichannelsettings.GetOmnichannelSettingRequest], omnichannelsettings.OmnichannelSetting]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOmnichannelSetting(self._session, self._host, self._interceptor)  # type: ignore
@@ -1290,10 +1043,7 @@ class OmnichannelSettingsServiceRestTransport(
     @property
     def list_omnichannel_settings(
         self,
-    ) -> Callable[
-        [omnichannelsettings.ListOmnichannelSettingsRequest],
-        omnichannelsettings.ListOmnichannelSettingsResponse,
-    ]:
+    ) -> Callable[[omnichannelsettings.ListOmnichannelSettingsRequest], omnichannelsettings.ListOmnichannelSettingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOmnichannelSettings(self._session, self._host, self._interceptor)  # type: ignore
@@ -1301,21 +1051,13 @@ class OmnichannelSettingsServiceRestTransport(
     @property
     def request_inventory_verification(
         self,
-    ) -> Callable[
-        [omnichannelsettings.RequestInventoryVerificationRequest],
-        omnichannelsettings.RequestInventoryVerificationResponse,
-    ]:
+    ) -> Callable[[omnichannelsettings.RequestInventoryVerificationRequest], omnichannelsettings.RequestInventoryVerificationResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RequestInventoryVerification(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_omnichannel_setting(
-        self,
-    ) -> Callable[
-        [omnichannelsettings.UpdateOmnichannelSettingRequest],
-        omnichannelsettings.OmnichannelSetting,
-    ]:
+    def update_omnichannel_setting(self) -> Callable[[omnichannelsettings.UpdateOmnichannelSettingRequest], omnichannelsettings.OmnichannelSetting]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateOmnichannelSetting(self._session, self._host, self._interceptor)  # type: ignore

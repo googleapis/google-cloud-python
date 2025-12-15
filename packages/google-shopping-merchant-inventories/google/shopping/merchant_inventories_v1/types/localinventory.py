@@ -73,12 +73,10 @@ class LocalInventory(proto.Message):
         proto.STRING,
         number=3,
     )
-    local_inventory_attributes: inventories_common.LocalInventoryAttributes = (
-        proto.Field(
-            proto.MESSAGE,
-            number=14,
-            message=inventories_common.LocalInventoryAttributes,
-        )
+    local_inventory_attributes: inventories_common.LocalInventoryAttributes = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=inventories_common.LocalInventoryAttributes,
     )
 
 

@@ -192,9 +192,7 @@ class DeliveryVehicle(proto.Message):
         number=2,
         message=common.DeliveryVehicleLocation,
     )
-    past_locations: MutableSequence[
-        common.DeliveryVehicleLocation
-    ] = proto.RepeatedField(
+    past_locations: MutableSequence[common.DeliveryVehicleLocation] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=common.DeliveryVehicleLocation,
@@ -223,9 +221,7 @@ class DeliveryVehicle(proto.Message):
         number=7,
         message=duration_pb2.Duration,
     )
-    remaining_vehicle_journey_segments: MutableSequence[
-        "VehicleJourneySegment"
-    ] = proto.RepeatedField(
+    remaining_vehicle_journey_segments: MutableSequence["VehicleJourneySegment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="VehicleJourneySegment",

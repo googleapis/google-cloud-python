@@ -94,9 +94,7 @@ class ListAggregateProductStatusesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    aggregate_product_statuses: MutableSequence[
-        "AggregateProductStatus"
-    ] = proto.RepeatedField(
+    aggregate_product_statuses: MutableSequence["AggregateProductStatus"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AggregateProductStatus",

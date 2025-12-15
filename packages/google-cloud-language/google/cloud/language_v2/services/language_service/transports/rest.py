@@ -119,12 +119,8 @@ class LanguageServiceRestInterceptor:
     """
 
     def pre_analyze_entities(
-        self,
-        request: language_service.AnalyzeEntitiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.AnalyzeEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: language_service.AnalyzeEntitiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.AnalyzeEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_entities
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +128,7 @@ class LanguageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_entities(
-        self, response: language_service.AnalyzeEntitiesResponse
-    ) -> language_service.AnalyzeEntitiesResponse:
+    def post_analyze_entities(self, response: language_service.AnalyzeEntitiesResponse) -> language_service.AnalyzeEntitiesResponse:
         """Post-rpc interceptor for analyze_entities
 
         DEPRECATED. Please use the `post_analyze_entities_with_metadata`
@@ -148,13 +142,8 @@ class LanguageServiceRestInterceptor:
         return response
 
     def post_analyze_entities_with_metadata(
-        self,
-        response: language_service.AnalyzeEntitiesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.AnalyzeEntitiesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: language_service.AnalyzeEntitiesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.AnalyzeEntitiesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_entities
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,13 +159,8 @@ class LanguageServiceRestInterceptor:
         return response, metadata
 
     def pre_analyze_sentiment(
-        self,
-        request: language_service.AnalyzeSentimentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.AnalyzeSentimentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: language_service.AnalyzeSentimentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.AnalyzeSentimentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_sentiment
 
         Override in a subclass to manipulate the request or metadata
@@ -184,9 +168,7 @@ class LanguageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_sentiment(
-        self, response: language_service.AnalyzeSentimentResponse
-    ) -> language_service.AnalyzeSentimentResponse:
+    def post_analyze_sentiment(self, response: language_service.AnalyzeSentimentResponse) -> language_service.AnalyzeSentimentResponse:
         """Post-rpc interceptor for analyze_sentiment
 
         DEPRECATED. Please use the `post_analyze_sentiment_with_metadata`
@@ -200,13 +182,8 @@ class LanguageServiceRestInterceptor:
         return response
 
     def post_analyze_sentiment_with_metadata(
-        self,
-        response: language_service.AnalyzeSentimentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.AnalyzeSentimentResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: language_service.AnalyzeSentimentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.AnalyzeSentimentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_sentiment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -222,12 +199,8 @@ class LanguageServiceRestInterceptor:
         return response, metadata
 
     def pre_annotate_text(
-        self,
-        request: language_service.AnnotateTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.AnnotateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: language_service.AnnotateTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.AnnotateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for annotate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -235,9 +208,7 @@ class LanguageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_annotate_text(
-        self, response: language_service.AnnotateTextResponse
-    ) -> language_service.AnnotateTextResponse:
+    def post_annotate_text(self, response: language_service.AnnotateTextResponse) -> language_service.AnnotateTextResponse:
         """Post-rpc interceptor for annotate_text
 
         DEPRECATED. Please use the `post_annotate_text_with_metadata`
@@ -251,12 +222,8 @@ class LanguageServiceRestInterceptor:
         return response
 
     def post_annotate_text_with_metadata(
-        self,
-        response: language_service.AnnotateTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.AnnotateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: language_service.AnnotateTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.AnnotateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for annotate_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -272,12 +239,8 @@ class LanguageServiceRestInterceptor:
         return response, metadata
 
     def pre_classify_text(
-        self,
-        request: language_service.ClassifyTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.ClassifyTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: language_service.ClassifyTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.ClassifyTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for classify_text
 
         Override in a subclass to manipulate the request or metadata
@@ -285,9 +248,7 @@ class LanguageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_classify_text(
-        self, response: language_service.ClassifyTextResponse
-    ) -> language_service.ClassifyTextResponse:
+    def post_classify_text(self, response: language_service.ClassifyTextResponse) -> language_service.ClassifyTextResponse:
         """Post-rpc interceptor for classify_text
 
         DEPRECATED. Please use the `post_classify_text_with_metadata`
@@ -301,12 +262,8 @@ class LanguageServiceRestInterceptor:
         return response
 
     def post_classify_text_with_metadata(
-        self,
-        response: language_service.ClassifyTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.ClassifyTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: language_service.ClassifyTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.ClassifyTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for classify_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -322,12 +279,8 @@ class LanguageServiceRestInterceptor:
         return response, metadata
 
     def pre_moderate_text(
-        self,
-        request: language_service.ModerateTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.ModerateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: language_service.ModerateTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.ModerateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for moderate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -335,9 +288,7 @@ class LanguageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_moderate_text(
-        self, response: language_service.ModerateTextResponse
-    ) -> language_service.ModerateTextResponse:
+    def post_moderate_text(self, response: language_service.ModerateTextResponse) -> language_service.ModerateTextResponse:
         """Post-rpc interceptor for moderate_text
 
         DEPRECATED. Please use the `post_moderate_text_with_metadata`
@@ -351,12 +302,8 @@ class LanguageServiceRestInterceptor:
         return response
 
     def post_moderate_text_with_metadata(
-        self,
-        response: language_service.ModerateTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        language_service.ModerateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: language_service.ModerateTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[language_service.ModerateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for moderate_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -452,30 +399,18 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or LanguageServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AnalyzeEntities(
-        _BaseLanguageServiceRestTransport._BaseAnalyzeEntities, LanguageServiceRestStub
-    ):
+    class _AnalyzeEntities(_BaseLanguageServiceRestTransport._BaseAnalyzeEntities, LanguageServiceRestStub):
         def __hash__(self):
             return hash("LanguageServiceRestTransport.AnalyzeEntities")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -515,32 +450,18 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                     The entity analysis response message.
             """
 
-            http_options = (
-                _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_http_options()
-            )
+            http_options = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_http_options()
 
-            request, metadata = self._interceptor.pre_analyze_entities(
-                request, metadata
-            )
-            transcoded_request = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_entities(request, metadata)
+            transcoded_request = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_transcoded_request(http_options, request)
 
-            body = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -564,13 +485,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             # Send the request
             response = LanguageServiceRestTransport._AnalyzeEntities._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -586,16 +501,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             resp = self._interceptor.post_analyze_entities(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_entities_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_entities_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = language_service.AnalyzeEntitiesResponse.to_json(
-                        response
-                    )
+                    response_payload = language_service.AnalyzeEntitiesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -614,22 +523,12 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 )
             return resp
 
-    class _AnalyzeSentiment(
-        _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment, LanguageServiceRestStub
-    ):
+    class _AnalyzeSentiment(_BaseLanguageServiceRestTransport._BaseAnalyzeSentiment, LanguageServiceRestStub):
         def __hash__(self):
             return hash("LanguageServiceRestTransport.AnalyzeSentiment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -672,32 +571,18 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_http_options()
-            )
+            http_options = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_http_options()
 
-            request, metadata = self._interceptor.pre_analyze_sentiment(
-                request, metadata
-            )
-            transcoded_request = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_analyze_sentiment(request, metadata)
+            transcoded_request = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_transcoded_request(http_options, request)
 
-            body = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -721,13 +606,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             # Send the request
             response = LanguageServiceRestTransport._AnalyzeSentiment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -743,16 +622,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             resp = self._interceptor.post_analyze_sentiment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_sentiment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_sentiment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        language_service.AnalyzeSentimentResponse.to_json(response)
-                    )
+                    response_payload = language_service.AnalyzeSentimentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -771,22 +644,12 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 )
             return resp
 
-    class _AnnotateText(
-        _BaseLanguageServiceRestTransport._BaseAnnotateText, LanguageServiceRestStub
-    ):
+    class _AnnotateText(_BaseLanguageServiceRestTransport._BaseAnnotateText, LanguageServiceRestStub):
         def __hash__(self):
             return hash("LanguageServiceRestTransport.AnnotateText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -830,30 +693,18 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLanguageServiceRestTransport._BaseAnnotateText._get_http_options()
-            )
+            http_options = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_http_options()
 
             request, metadata = self._interceptor.pre_annotate_text(request, metadata)
-            transcoded_request = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_transcoded_request(http_options, request)
 
-            body = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -877,13 +728,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             # Send the request
             response = LanguageServiceRestTransport._AnnotateText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -899,16 +744,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             resp = self._interceptor.post_annotate_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_annotate_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_annotate_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = language_service.AnnotateTextResponse.to_json(
-                        response
-                    )
+                    response_payload = language_service.AnnotateTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -927,22 +766,12 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 )
             return resp
 
-    class _ClassifyText(
-        _BaseLanguageServiceRestTransport._BaseClassifyText, LanguageServiceRestStub
-    ):
+    class _ClassifyText(_BaseLanguageServiceRestTransport._BaseClassifyText, LanguageServiceRestStub):
         def __hash__(self):
             return hash("LanguageServiceRestTransport.ClassifyText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -985,30 +814,18 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLanguageServiceRestTransport._BaseClassifyText._get_http_options()
-            )
+            http_options = _BaseLanguageServiceRestTransport._BaseClassifyText._get_http_options()
 
             request, metadata = self._interceptor.pre_classify_text(request, metadata)
-            transcoded_request = _BaseLanguageServiceRestTransport._BaseClassifyText._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLanguageServiceRestTransport._BaseClassifyText._get_transcoded_request(http_options, request)
 
-            body = _BaseLanguageServiceRestTransport._BaseClassifyText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLanguageServiceRestTransport._BaseClassifyText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLanguageServiceRestTransport._BaseClassifyText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLanguageServiceRestTransport._BaseClassifyText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1032,13 +849,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             # Send the request
             response = LanguageServiceRestTransport._ClassifyText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1054,16 +865,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             resp = self._interceptor.post_classify_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_classify_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_classify_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = language_service.ClassifyTextResponse.to_json(
-                        response
-                    )
+                    response_payload = language_service.ClassifyTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1082,22 +887,12 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 )
             return resp
 
-    class _ModerateText(
-        _BaseLanguageServiceRestTransport._BaseModerateText, LanguageServiceRestStub
-    ):
+    class _ModerateText(_BaseLanguageServiceRestTransport._BaseModerateText, LanguageServiceRestStub):
         def __hash__(self):
             return hash("LanguageServiceRestTransport.ModerateText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1140,30 +935,18 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLanguageServiceRestTransport._BaseModerateText._get_http_options()
-            )
+            http_options = _BaseLanguageServiceRestTransport._BaseModerateText._get_http_options()
 
             request, metadata = self._interceptor.pre_moderate_text(request, metadata)
-            transcoded_request = _BaseLanguageServiceRestTransport._BaseModerateText._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLanguageServiceRestTransport._BaseModerateText._get_transcoded_request(http_options, request)
 
-            body = _BaseLanguageServiceRestTransport._BaseModerateText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLanguageServiceRestTransport._BaseModerateText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLanguageServiceRestTransport._BaseModerateText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLanguageServiceRestTransport._BaseModerateText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1187,13 +970,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             # Send the request
             response = LanguageServiceRestTransport._ModerateText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1209,16 +986,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             resp = self._interceptor.post_moderate_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_moderate_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_moderate_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = language_service.ModerateTextResponse.to_json(
-                        response
-                    )
+                    response_payload = language_service.ModerateTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1238,53 +1009,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             return resp
 
     @property
-    def analyze_entities(
-        self,
-    ) -> Callable[
-        [language_service.AnalyzeEntitiesRequest],
-        language_service.AnalyzeEntitiesResponse,
-    ]:
+    def analyze_entities(self) -> Callable[[language_service.AnalyzeEntitiesRequest], language_service.AnalyzeEntitiesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeEntities(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def analyze_sentiment(
-        self,
-    ) -> Callable[
-        [language_service.AnalyzeSentimentRequest],
-        language_service.AnalyzeSentimentResponse,
-    ]:
+    def analyze_sentiment(self) -> Callable[[language_service.AnalyzeSentimentRequest], language_service.AnalyzeSentimentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeSentiment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def annotate_text(
-        self,
-    ) -> Callable[
-        [language_service.AnnotateTextRequest], language_service.AnnotateTextResponse
-    ]:
+    def annotate_text(self) -> Callable[[language_service.AnnotateTextRequest], language_service.AnnotateTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnnotateText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def classify_text(
-        self,
-    ) -> Callable[
-        [language_service.ClassifyTextRequest], language_service.ClassifyTextResponse
-    ]:
+    def classify_text(self) -> Callable[[language_service.ClassifyTextRequest], language_service.ClassifyTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ClassifyText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def moderate_text(
-        self,
-    ) -> Callable[
-        [language_service.ModerateTextRequest], language_service.ModerateTextResponse
-    ]:
+    def moderate_text(self) -> Callable[[language_service.ModerateTextRequest], language_service.ModerateTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ModerateText(self._session, self._host, self._interceptor)  # type: ignore

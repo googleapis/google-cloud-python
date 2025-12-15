@@ -392,9 +392,7 @@ class ListConnectionProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connection_profiles: MutableSequence[
-        datastream_resources.ConnectionProfile
-    ] = proto.RepeatedField(
+    connection_profiles: MutableSequence[datastream_resources.ConnectionProfile] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.ConnectionProfile,
@@ -1050,9 +1048,7 @@ class ListStreamObjectsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    stream_objects: MutableSequence[
-        datastream_resources.StreamObject
-    ] = proto.RepeatedField(
+    stream_objects: MutableSequence[datastream_resources.StreamObject] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.StreamObject,
@@ -1273,9 +1269,7 @@ class ListPrivateConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_connections: MutableSequence[
-        datastream_resources.PrivateConnection
-    ] = proto.RepeatedField(
+    private_connections: MutableSequence[datastream_resources.PrivateConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.PrivateConnection,

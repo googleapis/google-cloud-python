@@ -27,16 +27,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.osconfig_v1 import gapic_version as package_version
-from google.cloud.osconfig_v1.types import (
-    inventory,
-    os_policy_assignment_reports,
-    os_policy_assignments,
-    vulnerability,
-)
+from google.cloud.osconfig_v1.types import inventory, os_policy_assignment_reports, os_policy_assignments, vulnerability
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +91,15 @@ class OsConfigZonalServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -218,19 +203,13 @@ class OsConfigZonalServiceTransport(abc.ABC):
     @property
     def create_os_policy_assignment(
         self,
-    ) -> Callable[
-        [os_policy_assignments.CreateOSPolicyAssignmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[os_policy_assignments.CreateOSPolicyAssignmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_os_policy_assignment(
         self,
-    ) -> Callable[
-        [os_policy_assignments.UpdateOSPolicyAssignmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[os_policy_assignments.UpdateOSPolicyAssignmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -238,10 +217,7 @@ class OsConfigZonalServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [os_policy_assignments.GetOSPolicyAssignmentRequest],
-        Union[
-            os_policy_assignments.OSPolicyAssignment,
-            Awaitable[os_policy_assignments.OSPolicyAssignment],
-        ],
+        Union[os_policy_assignments.OSPolicyAssignment, Awaitable[os_policy_assignments.OSPolicyAssignment]],
     ]:
         raise NotImplementedError()
 
@@ -250,10 +226,7 @@ class OsConfigZonalServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [os_policy_assignments.ListOSPolicyAssignmentsRequest],
-        Union[
-            os_policy_assignments.ListOSPolicyAssignmentsResponse,
-            Awaitable[os_policy_assignments.ListOSPolicyAssignmentsResponse],
-        ],
+        Union[os_policy_assignments.ListOSPolicyAssignmentsResponse, Awaitable[os_policy_assignments.ListOSPolicyAssignmentsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -263,8 +236,7 @@ class OsConfigZonalServiceTransport(abc.ABC):
     ) -> Callable[
         [os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest],
         Union[
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
-            Awaitable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse],
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse, Awaitable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -272,10 +244,7 @@ class OsConfigZonalServiceTransport(abc.ABC):
     @property
     def delete_os_policy_assignment(
         self,
-    ) -> Callable[
-        [os_policy_assignments.DeleteOSPolicyAssignmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[os_policy_assignments.DeleteOSPolicyAssignmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -283,10 +252,7 @@ class OsConfigZonalServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
-        Union[
-            os_policy_assignment_reports.OSPolicyAssignmentReport,
-            Awaitable[os_policy_assignment_reports.OSPolicyAssignmentReport],
-        ],
+        Union[os_policy_assignment_reports.OSPolicyAssignmentReport, Awaitable[os_policy_assignment_reports.OSPolicyAssignmentReport]],
     ]:
         raise NotImplementedError()
 
@@ -297,43 +263,26 @@ class OsConfigZonalServiceTransport(abc.ABC):
         [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
         Union[
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
-            Awaitable[
-                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
-            ],
+            Awaitable[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_inventory(
-        self,
-    ) -> Callable[
-        [inventory.GetInventoryRequest],
-        Union[inventory.Inventory, Awaitable[inventory.Inventory]],
-    ]:
+    def get_inventory(self) -> Callable[[inventory.GetInventoryRequest], Union[inventory.Inventory, Awaitable[inventory.Inventory]]]:
         raise NotImplementedError()
 
     @property
     def list_inventories(
         self,
-    ) -> Callable[
-        [inventory.ListInventoriesRequest],
-        Union[
-            inventory.ListInventoriesResponse,
-            Awaitable[inventory.ListInventoriesResponse],
-        ],
-    ]:
+    ) -> Callable[[inventory.ListInventoriesRequest], Union[inventory.ListInventoriesResponse, Awaitable[inventory.ListInventoriesResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_vulnerability_report(
         self,
     ) -> Callable[
-        [vulnerability.GetVulnerabilityReportRequest],
-        Union[
-            vulnerability.VulnerabilityReport,
-            Awaitable[vulnerability.VulnerabilityReport],
-        ],
+        [vulnerability.GetVulnerabilityReportRequest], Union[vulnerability.VulnerabilityReport, Awaitable[vulnerability.VulnerabilityReport]]
     ]:
         raise NotImplementedError()
 
@@ -342,10 +291,7 @@ class OsConfigZonalServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [vulnerability.ListVulnerabilityReportsRequest],
-        Union[
-            vulnerability.ListVulnerabilityReportsResponse,
-            Awaitable[vulnerability.ListVulnerabilityReportsResponse],
-        ],
+        Union[vulnerability.ListVulnerabilityReportsResponse, Awaitable[vulnerability.ListVulnerabilityReportsResponse]],
     ]:
         raise NotImplementedError()
 

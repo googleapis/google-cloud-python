@@ -22,9 +22,7 @@ from .grpc_asyncio import FlexTemplatesServiceGrpcAsyncIOTransport
 from .rest import FlexTemplatesServiceRestInterceptor, FlexTemplatesServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[FlexTemplatesServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[FlexTemplatesServiceTransport]]
 _transport_registry["grpc"] = FlexTemplatesServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = FlexTemplatesServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = FlexTemplatesServiceRestTransport

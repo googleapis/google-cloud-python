@@ -29,12 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.osconfig_v1.types import (
-    inventory,
-    os_policy_assignment_reports,
-    os_policy_assignments,
-    vulnerability,
-)
+from google.cloud.osconfig_v1.types import inventory, os_policy_assignment_reports, os_policy_assignments, vulnerability
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseOsConfigZonalServiceRestTransport
@@ -181,13 +176,8 @@ class OsConfigZonalServiceRestInterceptor:
     """
 
     def pre_create_os_policy_assignment(
-        self,
-        request: os_policy_assignments.CreateOSPolicyAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.CreateOSPolicyAssignmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignments.CreateOSPolicyAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.CreateOSPolicyAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_os_policy_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -195,9 +185,7 @@ class OsConfigZonalServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_os_policy_assignment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_os_policy_assignment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_os_policy_assignment
 
         DEPRECATED. Please use the `post_create_os_policy_assignment_with_metadata`
@@ -211,9 +199,7 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_create_os_policy_assignment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_os_policy_assignment
 
@@ -230,13 +216,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_os_policy_assignment(
-        self,
-        request: os_policy_assignments.DeleteOSPolicyAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.DeleteOSPolicyAssignmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignments.DeleteOSPolicyAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.DeleteOSPolicyAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_os_policy_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -244,9 +225,7 @@ class OsConfigZonalServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_os_policy_assignment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_os_policy_assignment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_os_policy_assignment
 
         DEPRECATED. Please use the `post_delete_os_policy_assignment_with_metadata`
@@ -260,9 +239,7 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_delete_os_policy_assignment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_os_policy_assignment
 
@@ -279,9 +256,7 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_get_inventory(
-        self,
-        request: inventory.GetInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: inventory.GetInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[inventory.GetInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_inventory
 
@@ -304,9 +279,7 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_get_inventory_with_metadata(
-        self,
-        response: inventory.Inventory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: inventory.Inventory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[inventory.Inventory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_inventory
 
@@ -323,13 +296,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_get_os_policy_assignment(
-        self,
-        request: os_policy_assignments.GetOSPolicyAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.GetOSPolicyAssignmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignments.GetOSPolicyAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.GetOSPolicyAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_os_policy_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +305,7 @@ class OsConfigZonalServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_os_policy_assignment(
-        self, response: os_policy_assignments.OSPolicyAssignment
-    ) -> os_policy_assignments.OSPolicyAssignment:
+    def post_get_os_policy_assignment(self, response: os_policy_assignments.OSPolicyAssignment) -> os_policy_assignments.OSPolicyAssignment:
         """Post-rpc interceptor for get_os_policy_assignment
 
         DEPRECATED. Please use the `post_get_os_policy_assignment_with_metadata`
@@ -353,13 +319,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_get_os_policy_assignment_with_metadata(
-        self,
-        response: os_policy_assignments.OSPolicyAssignment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.OSPolicyAssignment,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: os_policy_assignments.OSPolicyAssignment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.OSPolicyAssignment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_os_policy_assignment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -375,13 +336,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_get_os_policy_assignment_report(
-        self,
-        request: os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_os_policy_assignment_report
 
         Override in a subclass to manipulate the request or metadata
@@ -405,13 +361,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_get_os_policy_assignment_report_with_metadata(
-        self,
-        response: os_policy_assignment_reports.OSPolicyAssignmentReport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignment_reports.OSPolicyAssignmentReport,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: os_policy_assignment_reports.OSPolicyAssignmentReport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignment_reports.OSPolicyAssignmentReport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_os_policy_assignment_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -427,13 +378,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_get_vulnerability_report(
-        self,
-        request: vulnerability.GetVulnerabilityReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vulnerability.GetVulnerabilityReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vulnerability.GetVulnerabilityReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vulnerability.GetVulnerabilityReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_vulnerability_report
 
         Override in a subclass to manipulate the request or metadata
@@ -441,9 +387,7 @@ class OsConfigZonalServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_vulnerability_report(
-        self, response: vulnerability.VulnerabilityReport
-    ) -> vulnerability.VulnerabilityReport:
+    def post_get_vulnerability_report(self, response: vulnerability.VulnerabilityReport) -> vulnerability.VulnerabilityReport:
         """Post-rpc interceptor for get_vulnerability_report
 
         DEPRECATED. Please use the `post_get_vulnerability_report_with_metadata`
@@ -457,12 +401,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_get_vulnerability_report_with_metadata(
-        self,
-        response: vulnerability.VulnerabilityReport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vulnerability.VulnerabilityReport, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vulnerability.VulnerabilityReport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vulnerability.VulnerabilityReport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_vulnerability_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -478,12 +418,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_list_inventories(
-        self,
-        request: inventory.ListInventoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        inventory.ListInventoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: inventory.ListInventoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[inventory.ListInventoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_inventories
 
         Override in a subclass to manipulate the request or metadata
@@ -491,9 +427,7 @@ class OsConfigZonalServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_inventories(
-        self, response: inventory.ListInventoriesResponse
-    ) -> inventory.ListInventoriesResponse:
+    def post_list_inventories(self, response: inventory.ListInventoriesResponse) -> inventory.ListInventoriesResponse:
         """Post-rpc interceptor for list_inventories
 
         DEPRECATED. Please use the `post_list_inventories_with_metadata`
@@ -507,12 +441,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_list_inventories_with_metadata(
-        self,
-        response: inventory.ListInventoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        inventory.ListInventoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: inventory.ListInventoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[inventory.ListInventoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_inventories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -528,13 +458,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_list_os_policy_assignment_reports(
-        self,
-        request: os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_os_policy_assignment_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -543,8 +468,7 @@ class OsConfigZonalServiceRestInterceptor:
         return request, metadata
 
     def post_list_os_policy_assignment_reports(
-        self,
-        response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        self, response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
     ) -> os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse:
         """Post-rpc interceptor for list_os_policy_assignment_reports
 
@@ -559,13 +483,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_list_os_policy_assignment_reports_with_metadata(
-        self,
-        response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_os_policy_assignment_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -581,13 +500,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_list_os_policy_assignment_revisions(
-        self,
-        request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_os_policy_assignment_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -611,13 +525,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_list_os_policy_assignment_revisions_with_metadata(
-        self,
-        response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_os_policy_assignment_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -633,13 +542,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_list_os_policy_assignments(
-        self,
-        request: os_policy_assignments.ListOSPolicyAssignmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.ListOSPolicyAssignmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignments.ListOSPolicyAssignmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.ListOSPolicyAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_os_policy_assignments
 
         Override in a subclass to manipulate the request or metadata
@@ -663,13 +567,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_list_os_policy_assignments_with_metadata(
-        self,
-        response: os_policy_assignments.ListOSPolicyAssignmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.ListOSPolicyAssignmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: os_policy_assignments.ListOSPolicyAssignmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.ListOSPolicyAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_os_policy_assignments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -685,13 +584,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_list_vulnerability_reports(
-        self,
-        request: vulnerability.ListVulnerabilityReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vulnerability.ListVulnerabilityReportsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vulnerability.ListVulnerabilityReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vulnerability.ListVulnerabilityReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_vulnerability_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -715,13 +609,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_list_vulnerability_reports_with_metadata(
-        self,
-        response: vulnerability.ListVulnerabilityReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vulnerability.ListVulnerabilityReportsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vulnerability.ListVulnerabilityReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vulnerability.ListVulnerabilityReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_vulnerability_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -737,13 +626,8 @@ class OsConfigZonalServiceRestInterceptor:
         return response, metadata
 
     def pre_update_os_policy_assignment(
-        self,
-        request: os_policy_assignments.UpdateOSPolicyAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        os_policy_assignments.UpdateOSPolicyAssignmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: os_policy_assignments.UpdateOSPolicyAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[os_policy_assignments.UpdateOSPolicyAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_os_policy_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -751,9 +635,7 @@ class OsConfigZonalServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_os_policy_assignment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_os_policy_assignment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_os_policy_assignment
 
         DEPRECATED. Please use the `post_update_os_policy_assignment_with_metadata`
@@ -767,9 +649,7 @@ class OsConfigZonalServiceRestInterceptor:
         return response
 
     def post_update_os_policy_assignment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_os_policy_assignment
 
@@ -869,9 +749,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -912,30 +790,17 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateOSPolicyAssignment(
-        _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _CreateOSPolicyAssignment(_BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.CreateOSPolicyAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -980,32 +845,18 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_os_policy_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_os_policy_assignment(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1029,13 +880,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._CreateOSPolicyAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1049,12 +894,8 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_create_os_policy_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_os_policy_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_os_policy_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1075,23 +916,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _DeleteOSPolicyAssignment(
-        _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _DeleteOSPolicyAssignment(_BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.DeleteOSPolicyAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1135,28 +965,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_os_policy_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_os_policy_assignment(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1180,12 +998,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._DeleteOSPolicyAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1199,12 +1012,8 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_delete_os_policy_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_os_policy_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_os_policy_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1225,23 +1034,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _GetInventory(
-        _BaseOsConfigZonalServiceRestTransport._BaseGetInventory,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _GetInventory(_BaseOsConfigZonalServiceRestTransport._BaseGetInventory, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.GetInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1291,26 +1089,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_http_options()
 
             request, metadata = self._interceptor.pre_get_inventory(request, metadata)
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1334,12 +1122,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._GetInventory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1355,12 +1138,8 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_get_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = inventory.Inventory.to_json(response)
                 except:
@@ -1381,23 +1160,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _GetOSPolicyAssignment(
-        _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _GetOSPolicyAssignment(_BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.GetOSPolicyAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1449,28 +1217,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_os_policy_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_os_policy_assignment(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1493,15 +1249,8 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigZonalServiceRestTransport._GetOSPolicyAssignment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OsConfigZonalServiceRestTransport._GetOSPolicyAssignment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1517,16 +1266,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_get_os_policy_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_os_policy_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_os_policy_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = os_policy_assignments.OSPolicyAssignment.to_json(
-                        response
-                    )
+                    response_payload = os_policy_assignments.OSPolicyAssignment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1545,23 +1288,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _GetOSPolicyAssignmentReport(
-        _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _GetOSPolicyAssignmentReport(_BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.GetOSPolicyAssignmentReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1604,28 +1336,18 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_os_policy_assignment_report(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_os_policy_assignment_report(request, metadata)
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1649,12 +1371,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._GetOSPolicyAssignmentReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1670,21 +1387,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_get_os_policy_assignment_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_os_policy_assignment_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_os_policy_assignment_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        os_policy_assignment_reports.OSPolicyAssignmentReport.to_json(
-                            response
-                        )
-                    )
+                    response_payload = os_policy_assignment_reports.OSPolicyAssignmentReport.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1703,23 +1409,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _GetVulnerabilityReport(
-        _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _GetVulnerabilityReport(_BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.GetVulnerabilityReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1766,28 +1461,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_vulnerability_report(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_vulnerability_report(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1810,15 +1493,8 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigZonalServiceRestTransport._GetVulnerabilityReport._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OsConfigZonalServiceRestTransport._GetVulnerabilityReport._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1834,16 +1510,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_get_vulnerability_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_vulnerability_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_vulnerability_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vulnerability.VulnerabilityReport.to_json(
-                        response
-                    )
+                    response_payload = vulnerability.VulnerabilityReport.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1862,23 +1532,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _ListInventories(
-        _BaseOsConfigZonalServiceRestTransport._BaseListInventories,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _ListInventories(_BaseOsConfigZonalServiceRestTransport._BaseListInventories, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.ListInventories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1922,28 +1581,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_inventories(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_inventories(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1967,12 +1614,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._ListInventories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1988,16 +1630,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_list_inventories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_inventories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_inventories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = inventory.ListInventoriesResponse.to_json(
-                        response
-                    )
+                    response_payload = inventory.ListInventoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2016,25 +1652,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _ListOSPolicyAssignmentReports(
-        _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _ListOSPolicyAssignmentReports(_BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports, OsConfigZonalServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OsConfigZonalServiceRestTransport.ListOSPolicyAssignmentReports"
-            )
+            return hash("OsConfigZonalServiceRestTransport.ListOSPolicyAssignmentReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2078,28 +1701,18 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_os_policy_assignment_reports(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_os_policy_assignment_reports(request, metadata)
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2123,12 +1736,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._ListOSPolicyAssignmentReports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2138,29 +1746,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Return the response
             resp = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
-            pb_resp = (
-                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_os_policy_assignment_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_os_policy_assignment_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_os_policy_assignment_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.to_json(
-                        response
-                    )
+                    response_payload = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2179,25 +1774,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _ListOSPolicyAssignmentRevisions(
-        _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _ListOSPolicyAssignmentRevisions(_BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions, OsConfigZonalServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OsConfigZonalServiceRestTransport.ListOSPolicyAssignmentRevisions"
-            )
+            return hash("OsConfigZonalServiceRestTransport.ListOSPolicyAssignmentRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2240,31 +1822,18 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_os_policy_assignment_revisions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_os_policy_assignment_revisions(request, metadata)
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2288,12 +1857,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._ListOSPolicyAssignmentRevisions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2303,27 +1867,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Return the response
             resp = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
-            pb_resp = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
-                resp
-            )
+            pb_resp = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_os_policy_assignment_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_os_policy_assignment_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_os_policy_assignment_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.to_json(
-                        response
-                    )
+                    response_payload = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2342,23 +1895,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _ListOSPolicyAssignments(
-        _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _ListOSPolicyAssignments(_BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.ListOSPolicyAssignments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2401,28 +1943,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_os_policy_assignments(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_os_policy_assignments(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2446,12 +1976,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._ListOSPolicyAssignments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2467,18 +1992,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_list_os_policy_assignments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_os_policy_assignments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_os_policy_assignments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2497,23 +2014,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _ListVulnerabilityReports(
-        _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _ListVulnerabilityReports(_BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.ListVulnerabilityReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2558,28 +2064,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_vulnerability_reports(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_vulnerability_reports(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2603,12 +2097,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._ListVulnerabilityReports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2624,16 +2113,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_list_vulnerability_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_vulnerability_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_vulnerability_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vulnerability.ListVulnerabilityReportsResponse.to_json(response)
-                    )
+                    response_payload = vulnerability.ListVulnerabilityReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2652,23 +2135,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
             return resp
 
-    class _UpdateOSPolicyAssignment(
-        _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment,
-        OsConfigZonalServiceRestStub,
-    ):
+    class _UpdateOSPolicyAssignment(_BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment, OsConfigZonalServiceRestStub):
         def __hash__(self):
             return hash("OsConfigZonalServiceRestTransport.UpdateOSPolicyAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2713,32 +2185,18 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_os_policy_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_os_policy_assignment(request, metadata)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2762,13 +2220,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             # Send the request
             response = OsConfigZonalServiceRestTransport._UpdateOSPolicyAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2782,12 +2234,8 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_update_os_policy_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_os_policy_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_os_policy_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2809,42 +2257,25 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             return resp
 
     @property
-    def create_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.CreateOSPolicyAssignmentRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_os_policy_assignment(self) -> Callable[[os_policy_assignments.CreateOSPolicyAssignmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.DeleteOSPolicyAssignmentRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_os_policy_assignment(self) -> Callable[[os_policy_assignments.DeleteOSPolicyAssignmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_inventory(
-        self,
-    ) -> Callable[[inventory.GetInventoryRequest], inventory.Inventory]:
+    def get_inventory(self) -> Callable[[inventory.GetInventoryRequest], inventory.Inventory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.GetOSPolicyAssignmentRequest],
-        os_policy_assignments.OSPolicyAssignment,
-    ]:
+    def get_os_policy_assignment(self) -> Callable[[os_policy_assignments.GetOSPolicyAssignmentRequest], os_policy_assignments.OSPolicyAssignment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore
@@ -2852,30 +2283,19 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     @property
     def get_os_policy_assignment_report(
         self,
-    ) -> Callable[
-        [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
-        os_policy_assignment_reports.OSPolicyAssignmentReport,
-    ]:
+    ) -> Callable[[os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest], os_policy_assignment_reports.OSPolicyAssignmentReport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOSPolicyAssignmentReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_vulnerability_report(
-        self,
-    ) -> Callable[
-        [vulnerability.GetVulnerabilityReportRequest], vulnerability.VulnerabilityReport
-    ]:
+    def get_vulnerability_report(self) -> Callable[[vulnerability.GetVulnerabilityReportRequest], vulnerability.VulnerabilityReport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVulnerabilityReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_inventories(
-        self,
-    ) -> Callable[
-        [inventory.ListInventoriesRequest], inventory.ListInventoriesResponse
-    ]:
+    def list_inventories(self) -> Callable[[inventory.ListInventoriesRequest], inventory.ListInventoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInventories(self._session, self._host, self._interceptor)  # type: ignore
@@ -2884,8 +2304,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     def list_os_policy_assignment_reports(
         self,
     ) -> Callable[
-        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
-        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest], os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -2894,10 +2313,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     @property
     def list_os_policy_assignment_revisions(
         self,
-    ) -> Callable[
-        [os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest],
-        os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
-    ]:
+    ) -> Callable[[os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest], os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOSPolicyAssignmentRevisions(self._session, self._host, self._interceptor)  # type: ignore
@@ -2905,32 +2321,19 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     @property
     def list_os_policy_assignments(
         self,
-    ) -> Callable[
-        [os_policy_assignments.ListOSPolicyAssignmentsRequest],
-        os_policy_assignments.ListOSPolicyAssignmentsResponse,
-    ]:
+    ) -> Callable[[os_policy_assignments.ListOSPolicyAssignmentsRequest], os_policy_assignments.ListOSPolicyAssignmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOSPolicyAssignments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_vulnerability_reports(
-        self,
-    ) -> Callable[
-        [vulnerability.ListVulnerabilityReportsRequest],
-        vulnerability.ListVulnerabilityReportsResponse,
-    ]:
+    def list_vulnerability_reports(self) -> Callable[[vulnerability.ListVulnerabilityReportsRequest], vulnerability.ListVulnerabilityReportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVulnerabilityReports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_os_policy_assignment(
-        self,
-    ) -> Callable[
-        [os_policy_assignments.UpdateOSPolicyAssignmentRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_os_policy_assignment(self) -> Callable[[os_policy_assignments.UpdateOSPolicyAssignmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore

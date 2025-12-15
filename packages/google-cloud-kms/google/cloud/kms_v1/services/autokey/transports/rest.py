@@ -107,9 +107,7 @@ class AutokeyRestInterceptor:
     """
 
     def pre_create_key_handle(
-        self,
-        request: autokey.CreateKeyHandleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: autokey.CreateKeyHandleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[autokey.CreateKeyHandleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_key_handle
 
@@ -118,9 +116,7 @@ class AutokeyRestInterceptor:
         """
         return request, metadata
 
-    def post_create_key_handle(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_key_handle(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_key_handle
 
         DEPRECATED. Please use the `post_create_key_handle_with_metadata`
@@ -134,9 +130,7 @@ class AutokeyRestInterceptor:
         return response
 
     def post_create_key_handle_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_key_handle
 
@@ -153,9 +147,7 @@ class AutokeyRestInterceptor:
         return response, metadata
 
     def pre_get_key_handle(
-        self,
-        request: autokey.GetKeyHandleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: autokey.GetKeyHandleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[autokey.GetKeyHandleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_key_handle
 
@@ -178,9 +170,7 @@ class AutokeyRestInterceptor:
         return response
 
     def post_get_key_handle_with_metadata(
-        self,
-        response: autokey.KeyHandle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: autokey.KeyHandle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[autokey.KeyHandle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_key_handle
 
@@ -197,9 +187,7 @@ class AutokeyRestInterceptor:
         return response, metadata
 
     def pre_list_key_handles(
-        self,
-        request: autokey.ListKeyHandlesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: autokey.ListKeyHandlesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[autokey.ListKeyHandlesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_key_handles
 
@@ -208,9 +196,7 @@ class AutokeyRestInterceptor:
         """
         return request, metadata
 
-    def post_list_key_handles(
-        self, response: autokey.ListKeyHandlesResponse
-    ) -> autokey.ListKeyHandlesResponse:
+    def post_list_key_handles(self, response: autokey.ListKeyHandlesResponse) -> autokey.ListKeyHandlesResponse:
         """Post-rpc interceptor for list_key_handles
 
         DEPRECATED. Please use the `post_list_key_handles_with_metadata`
@@ -224,9 +210,7 @@ class AutokeyRestInterceptor:
         return response
 
     def post_list_key_handles_with_metadata(
-        self,
-        response: autokey.ListKeyHandlesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: autokey.ListKeyHandlesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[autokey.ListKeyHandlesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_key_handles
 
@@ -243,12 +227,8 @@ class AutokeyRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +236,7 @@ class AutokeyRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -268,12 +246,8 @@ class AutokeyRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -281,9 +255,7 @@ class AutokeyRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -293,12 +265,8 @@ class AutokeyRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -316,12 +284,8 @@ class AutokeyRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -339,13 +303,8 @@ class AutokeyRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -353,9 +312,7 @@ class AutokeyRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -365,12 +322,8 @@ class AutokeyRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -378,9 +331,7 @@ class AutokeyRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -487,9 +438,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -523,29 +472,17 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateKeyHandle(
-        _BaseAutokeyRestTransport._BaseCreateKeyHandle, AutokeyRestStub
-    ):
+    class _CreateKeyHandle(_BaseAutokeyRestTransport._BaseCreateKeyHandle, AutokeyRestStub):
         def __hash__(self):
             return hash("AutokeyRestTransport.CreateKeyHandle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -589,38 +526,18 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_key_handle(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_key_handle(request, metadata)
+            transcoded_request = _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseCreateKeyHandle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -644,13 +561,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._CreateKeyHandle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -664,12 +575,8 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             resp = self._interceptor.post_create_key_handle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_key_handle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_key_handle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -695,15 +602,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return hash("AutokeyRestTransport.GetKeyHandle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -746,30 +645,16 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseGetKeyHandle._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseGetKeyHandle._get_http_options()
 
             request, metadata = self._interceptor.pre_get_key_handle(request, metadata)
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseGetKeyHandle._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAutokeyRestTransport._BaseGetKeyHandle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseGetKeyHandle._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseGetKeyHandle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -793,12 +678,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._GetKeyHandle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -814,12 +694,8 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             resp = self._interceptor.post_get_key_handle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_key_handle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_key_handle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = autokey.KeyHandle.to_json(response)
                 except:
@@ -840,22 +716,12 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 )
             return resp
 
-    class _ListKeyHandles(
-        _BaseAutokeyRestTransport._BaseListKeyHandles, AutokeyRestStub
-    ):
+    class _ListKeyHandles(_BaseAutokeyRestTransport._BaseListKeyHandles, AutokeyRestStub):
         def __hash__(self):
             return hash("AutokeyRestTransport.ListKeyHandles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -897,32 +763,16 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseListKeyHandles._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseListKeyHandles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_key_handles(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseListKeyHandles._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_key_handles(request, metadata)
+            transcoded_request = _BaseAutokeyRestTransport._BaseListKeyHandles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseListKeyHandles._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseListKeyHandles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -946,12 +796,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._ListKeyHandles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -967,12 +812,8 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             resp = self._interceptor.post_list_key_handles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_key_handles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_key_handles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = autokey.ListKeyHandlesResponse.to_json(response)
                 except:
@@ -994,25 +835,19 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return resp
 
     @property
-    def create_key_handle(
-        self,
-    ) -> Callable[[autokey.CreateKeyHandleRequest], operations_pb2.Operation]:
+    def create_key_handle(self) -> Callable[[autokey.CreateKeyHandleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateKeyHandle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_key_handle(
-        self,
-    ) -> Callable[[autokey.GetKeyHandleRequest], autokey.KeyHandle]:
+    def get_key_handle(self) -> Callable[[autokey.GetKeyHandleRequest], autokey.KeyHandle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetKeyHandle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_key_handles(
-        self,
-    ) -> Callable[[autokey.ListKeyHandlesRequest], autokey.ListKeyHandlesResponse]:
+    def list_key_handles(self) -> Callable[[autokey.ListKeyHandlesRequest], autokey.ListKeyHandlesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListKeyHandles(self._session, self._host, self._interceptor)  # type: ignore
@@ -1026,15 +861,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return hash("AutokeyRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1072,30 +899,16 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAutokeyRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1118,14 +931,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 )
 
             # Send the request
-            response = AutokeyRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AutokeyRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1136,9 +942,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1168,15 +972,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return hash("AutokeyRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1214,30 +1010,16 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAutokeyRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1261,12 +1043,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1278,9 +1055,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1310,15 +1085,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return hash("AutokeyRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1356,30 +1123,16 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAutokeyRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1403,12 +1156,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1420,9 +1168,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1452,15 +1198,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return hash("AutokeyRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1499,34 +1237,18 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAutokeyRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseAutokeyRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutokeyRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1550,13 +1272,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1568,9 +1284,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1595,22 +1309,12 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseAutokeyRestTransport._BaseTestIamPermissions, AutokeyRestStub
-    ):
+    class _TestIamPermissions(_BaseAutokeyRestTransport._BaseTestIamPermissions, AutokeyRestStub):
         def __hash__(self):
             return hash("AutokeyRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1649,32 +1353,18 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutokeyRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1698,13 +1388,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1716,9 +1400,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1748,15 +1430,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             return hash("AutokeyRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1794,30 +1468,16 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAutokeyRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAutokeyRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAutokeyRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAutokeyRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAutokeyRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAutokeyRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1841,12 +1501,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
 
             # Send the request
             response = AutokeyRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1858,9 +1513,7 @@ class AutokeyRestTransport(_BaseAutokeyRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import OmnichannelSettingsServiceTransport
 from .grpc import OmnichannelSettingsServiceGrpcTransport
 from .grpc_asyncio import OmnichannelSettingsServiceGrpcAsyncIOTransport
-from .rest import (
-    OmnichannelSettingsServiceRestInterceptor,
-    OmnichannelSettingsServiceRestTransport,
-)
+from .rest import OmnichannelSettingsServiceRestInterceptor, OmnichannelSettingsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[OmnichannelSettingsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[OmnichannelSettingsServiceTransport]]
 _transport_registry["grpc"] = OmnichannelSettingsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = OmnichannelSettingsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = OmnichannelSettingsServiceRestTransport

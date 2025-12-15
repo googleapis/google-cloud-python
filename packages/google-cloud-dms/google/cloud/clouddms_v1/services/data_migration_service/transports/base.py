@@ -31,15 +31,9 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.clouddms_v1 import gapic_version as package_version
-from google.cloud.clouddms_v1.types import (
-    clouddms,
-    clouddms_resources,
-    conversionworkspace_resources,
-)
+from google.cloud.clouddms_v1.types import clouddms, clouddms_resources, conversionworkspace_resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -101,23 +95,15 @@ class DataMigrationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -411,134 +397,84 @@ class DataMigrationServiceTransport(abc.ABC):
     @property
     def list_migration_jobs(
         self,
-    ) -> Callable[
-        [clouddms.ListMigrationJobsRequest],
-        Union[
-            clouddms.ListMigrationJobsResponse,
-            Awaitable[clouddms.ListMigrationJobsResponse],
-        ],
-    ]:
+    ) -> Callable[[clouddms.ListMigrationJobsRequest], Union[clouddms.ListMigrationJobsResponse, Awaitable[clouddms.ListMigrationJobsResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.GetMigrationJobRequest],
-        Union[
-            clouddms_resources.MigrationJob, Awaitable[clouddms_resources.MigrationJob]
-        ],
-    ]:
+    ) -> Callable[[clouddms.GetMigrationJobRequest], Union[clouddms_resources.MigrationJob, Awaitable[clouddms_resources.MigrationJob]]]:
         raise NotImplementedError()
 
     @property
     def create_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.CreateMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.CreateMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.UpdateMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.UpdateMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.DeleteMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.DeleteMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.StartMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.StartMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def stop_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.StopMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.StopMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def resume_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.ResumeMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.ResumeMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def promote_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.PromoteMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.PromoteMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def verify_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.VerifyMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.VerifyMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def restart_migration_job(
         self,
-    ) -> Callable[
-        [clouddms.RestartMigrationJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.RestartMigrationJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def generate_ssh_script(
-        self,
-    ) -> Callable[
-        [clouddms.GenerateSshScriptRequest],
-        Union[clouddms.SshScript, Awaitable[clouddms.SshScript]],
-    ]:
+    def generate_ssh_script(self) -> Callable[[clouddms.GenerateSshScriptRequest], Union[clouddms.SshScript, Awaitable[clouddms.SshScript]]]:
         raise NotImplementedError()
 
     @property
     def generate_tcp_proxy_script(
         self,
-    ) -> Callable[
-        [clouddms.GenerateTcpProxyScriptRequest],
-        Union[clouddms.TcpProxyScript, Awaitable[clouddms.TcpProxyScript]],
-    ]:
+    ) -> Callable[[clouddms.GenerateTcpProxyScriptRequest], Union[clouddms.TcpProxyScript, Awaitable[clouddms.TcpProxyScript]]]:
         raise NotImplementedError()
 
     @property
     def list_connection_profiles(
         self,
     ) -> Callable[
-        [clouddms.ListConnectionProfilesRequest],
-        Union[
-            clouddms.ListConnectionProfilesResponse,
-            Awaitable[clouddms.ListConnectionProfilesResponse],
-        ],
+        [clouddms.ListConnectionProfilesRequest], Union[clouddms.ListConnectionProfilesResponse, Awaitable[clouddms.ListConnectionProfilesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -546,59 +482,39 @@ class DataMigrationServiceTransport(abc.ABC):
     def get_connection_profile(
         self,
     ) -> Callable[
-        [clouddms.GetConnectionProfileRequest],
-        Union[
-            clouddms_resources.ConnectionProfile,
-            Awaitable[clouddms_resources.ConnectionProfile],
-        ],
+        [clouddms.GetConnectionProfileRequest], Union[clouddms_resources.ConnectionProfile, Awaitable[clouddms_resources.ConnectionProfile]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_connection_profile(
         self,
-    ) -> Callable[
-        [clouddms.CreateConnectionProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.CreateConnectionProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_connection_profile(
         self,
-    ) -> Callable[
-        [clouddms.UpdateConnectionProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.UpdateConnectionProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_connection_profile(
         self,
-    ) -> Callable[
-        [clouddms.DeleteConnectionProfileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.DeleteConnectionProfileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_private_connection(
         self,
-    ) -> Callable[
-        [clouddms.CreatePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.CreatePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_private_connection(
         self,
     ) -> Callable[
-        [clouddms.GetPrivateConnectionRequest],
-        Union[
-            clouddms_resources.PrivateConnection,
-            Awaitable[clouddms_resources.PrivateConnection],
-        ],
+        [clouddms.GetPrivateConnectionRequest], Union[clouddms_resources.PrivateConnection, Awaitable[clouddms_resources.PrivateConnection]]
     ]:
         raise NotImplementedError()
 
@@ -606,21 +522,14 @@ class DataMigrationServiceTransport(abc.ABC):
     def list_private_connections(
         self,
     ) -> Callable[
-        [clouddms.ListPrivateConnectionsRequest],
-        Union[
-            clouddms.ListPrivateConnectionsResponse,
-            Awaitable[clouddms.ListPrivateConnectionsResponse],
-        ],
+        [clouddms.ListPrivateConnectionsRequest], Union[clouddms.ListPrivateConnectionsResponse, Awaitable[clouddms.ListPrivateConnectionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_private_connection(
         self,
-    ) -> Callable[
-        [clouddms.DeletePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.DeletePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -628,10 +537,7 @@ class DataMigrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [clouddms.GetConversionWorkspaceRequest],
-        Union[
-            conversionworkspace_resources.ConversionWorkspace,
-            Awaitable[conversionworkspace_resources.ConversionWorkspace],
-        ],
+        Union[conversionworkspace_resources.ConversionWorkspace, Awaitable[conversionworkspace_resources.ConversionWorkspace]],
     ]:
         raise NotImplementedError()
 
@@ -640,137 +546,88 @@ class DataMigrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [clouddms.ListConversionWorkspacesRequest],
-        Union[
-            clouddms.ListConversionWorkspacesResponse,
-            Awaitable[clouddms.ListConversionWorkspacesResponse],
-        ],
+        Union[clouddms.ListConversionWorkspacesResponse, Awaitable[clouddms.ListConversionWorkspacesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.CreateConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.CreateConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.UpdateConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.UpdateConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.DeleteConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.DeleteConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_mapping_rule(
         self,
     ) -> Callable[
-        [clouddms.CreateMappingRuleRequest],
-        Union[
-            conversionworkspace_resources.MappingRule,
-            Awaitable[conversionworkspace_resources.MappingRule],
-        ],
+        [clouddms.CreateMappingRuleRequest], Union[conversionworkspace_resources.MappingRule, Awaitable[conversionworkspace_resources.MappingRule]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_mapping_rule(
-        self,
-    ) -> Callable[
-        [clouddms.DeleteMappingRuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_mapping_rule(self) -> Callable[[clouddms.DeleteMappingRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_mapping_rules(
         self,
-    ) -> Callable[
-        [clouddms.ListMappingRulesRequest],
-        Union[
-            clouddms.ListMappingRulesResponse,
-            Awaitable[clouddms.ListMappingRulesResponse],
-        ],
-    ]:
+    ) -> Callable[[clouddms.ListMappingRulesRequest], Union[clouddms.ListMappingRulesResponse, Awaitable[clouddms.ListMappingRulesResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_mapping_rule(
         self,
     ) -> Callable[
-        [clouddms.GetMappingRuleRequest],
-        Union[
-            conversionworkspace_resources.MappingRule,
-            Awaitable[conversionworkspace_resources.MappingRule],
-        ],
+        [clouddms.GetMappingRuleRequest], Union[conversionworkspace_resources.MappingRule, Awaitable[conversionworkspace_resources.MappingRule]]
     ]:
         raise NotImplementedError()
 
     @property
     def seed_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.SeedConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.SeedConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_mapping_rules(
         self,
-    ) -> Callable[
-        [clouddms.ImportMappingRulesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.ImportMappingRulesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def convert_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.ConvertConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.ConvertConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def commit_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.CommitConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.CommitConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def rollback_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.RollbackConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.RollbackConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def apply_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.ApplyConversionWorkspaceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[clouddms.ApplyConversionWorkspaceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -778,10 +635,7 @@ class DataMigrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [clouddms.DescribeDatabaseEntitiesRequest],
-        Union[
-            clouddms.DescribeDatabaseEntitiesResponse,
-            Awaitable[clouddms.DescribeDatabaseEntitiesResponse],
-        ],
+        Union[clouddms.DescribeDatabaseEntitiesResponse, Awaitable[clouddms.DescribeDatabaseEntitiesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -789,11 +643,7 @@ class DataMigrationServiceTransport(abc.ABC):
     def search_background_jobs(
         self,
     ) -> Callable[
-        [clouddms.SearchBackgroundJobsRequest],
-        Union[
-            clouddms.SearchBackgroundJobsResponse,
-            Awaitable[clouddms.SearchBackgroundJobsResponse],
-        ],
+        [clouddms.SearchBackgroundJobsRequest], Union[clouddms.SearchBackgroundJobsResponse, Awaitable[clouddms.SearchBackgroundJobsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -802,22 +652,14 @@ class DataMigrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [clouddms.DescribeConversionWorkspaceRevisionsRequest],
-        Union[
-            clouddms.DescribeConversionWorkspaceRevisionsResponse,
-            Awaitable[clouddms.DescribeConversionWorkspaceRevisionsResponse],
-        ],
+        Union[clouddms.DescribeConversionWorkspaceRevisionsResponse, Awaitable[clouddms.DescribeConversionWorkspaceRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def fetch_static_ips(
         self,
-    ) -> Callable[
-        [clouddms.FetchStaticIpsRequest],
-        Union[
-            clouddms.FetchStaticIpsResponse, Awaitable[clouddms.FetchStaticIpsResponse]
-        ],
-    ]:
+    ) -> Callable[[clouddms.FetchStaticIpsRequest], Union[clouddms.FetchStaticIpsResponse, Awaitable[clouddms.FetchStaticIpsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -825,20 +667,14 @@ class DataMigrationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -856,19 +692,13 @@ class DataMigrationServiceTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -886,22 +716,13 @@ class DataMigrationServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

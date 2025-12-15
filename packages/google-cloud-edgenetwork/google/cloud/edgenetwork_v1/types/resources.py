@@ -809,9 +809,7 @@ class InterconnectDiagnostics(proto.Message):
             number=2,
             message="InterconnectDiagnostics.LinkLACPStatus",
         )
-        lldp_statuses: MutableSequence[
-            "InterconnectDiagnostics.LinkLLDPStatus"
-        ] = proto.RepeatedField(
+        lldp_statuses: MutableSequence["InterconnectDiagnostics.LinkLLDPStatus"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="InterconnectDiagnostics.LinkLLDPStatus",

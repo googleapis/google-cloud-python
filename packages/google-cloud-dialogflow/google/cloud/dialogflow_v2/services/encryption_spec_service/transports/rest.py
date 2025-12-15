@@ -98,13 +98,8 @@ class EncryptionSpecServiceRestInterceptor:
     """
 
     def pre_get_encryption_spec(
-        self,
-        request: encryption_spec.GetEncryptionSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        encryption_spec.GetEncryptionSpecRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: encryption_spec.GetEncryptionSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[encryption_spec.GetEncryptionSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_encryption_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -112,9 +107,7 @@ class EncryptionSpecServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_encryption_spec(
-        self, response: encryption_spec.EncryptionSpec
-    ) -> encryption_spec.EncryptionSpec:
+    def post_get_encryption_spec(self, response: encryption_spec.EncryptionSpec) -> encryption_spec.EncryptionSpec:
         """Post-rpc interceptor for get_encryption_spec
 
         DEPRECATED. Please use the `post_get_encryption_spec_with_metadata`
@@ -128,9 +121,7 @@ class EncryptionSpecServiceRestInterceptor:
         return response
 
     def post_get_encryption_spec_with_metadata(
-        self,
-        response: encryption_spec.EncryptionSpec,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: encryption_spec.EncryptionSpec, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[encryption_spec.EncryptionSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_encryption_spec
 
@@ -147,13 +138,8 @@ class EncryptionSpecServiceRestInterceptor:
         return response, metadata
 
     def pre_initialize_encryption_spec(
-        self,
-        request: gcd_encryption_spec.InitializeEncryptionSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_encryption_spec.InitializeEncryptionSpecRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_encryption_spec.InitializeEncryptionSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_encryption_spec.InitializeEncryptionSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for initialize_encryption_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -161,9 +147,7 @@ class EncryptionSpecServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_initialize_encryption_spec(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_initialize_encryption_spec(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for initialize_encryption_spec
 
         DEPRECATED. Please use the `post_initialize_encryption_spec_with_metadata`
@@ -177,9 +161,7 @@ class EncryptionSpecServiceRestInterceptor:
         return response
 
     def post_initialize_encryption_spec_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for initialize_encryption_spec
 
@@ -196,12 +178,8 @@ class EncryptionSpecServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +187,7 @@ class EncryptionSpecServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -221,12 +197,8 @@ class EncryptionSpecServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +206,7 @@ class EncryptionSpecServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -246,12 +216,8 @@ class EncryptionSpecServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -269,12 +235,8 @@ class EncryptionSpecServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -282,9 +244,7 @@ class EncryptionSpecServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -294,12 +254,8 @@ class EncryptionSpecServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -307,9 +263,7 @@ class EncryptionSpecServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -399,9 +353,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -459,30 +411,17 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _GetEncryptionSpec(
-        _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _GetEncryptionSpec(_BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.GetEncryptionSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -525,28 +464,16 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_encryption_spec(
-                request, metadata
-            )
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_encryption_spec(request, metadata)
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseGetEncryptionSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -569,15 +496,8 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                EncryptionSpecServiceRestTransport._GetEncryptionSpec._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EncryptionSpecServiceRestTransport._GetEncryptionSpec._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -593,12 +513,8 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             resp = self._interceptor.post_get_encryption_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_encryption_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_encryption_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = encryption_spec.EncryptionSpec.to_json(response)
                 except:
@@ -619,23 +535,12 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 )
             return resp
 
-    class _InitializeEncryptionSpec(
-        _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _InitializeEncryptionSpec(_BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.InitializeEncryptionSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -680,32 +585,18 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_http_options()
 
-            request, metadata = self._interceptor.pre_initialize_encryption_spec(
-                request, metadata
-            )
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_initialize_encryption_spec(request, metadata)
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_transcoded_request(http_options, request)
 
-            body = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseInitializeEncryptionSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -729,13 +620,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             # Send the request
             response = EncryptionSpecServiceRestTransport._InitializeEncryptionSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -749,12 +634,8 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             resp = self._interceptor.post_initialize_encryption_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_initialize_encryption_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_initialize_encryption_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -776,21 +657,13 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             return resp
 
     @property
-    def get_encryption_spec(
-        self,
-    ) -> Callable[
-        [encryption_spec.GetEncryptionSpecRequest], encryption_spec.EncryptionSpec
-    ]:
+    def get_encryption_spec(self) -> Callable[[encryption_spec.GetEncryptionSpecRequest], encryption_spec.EncryptionSpec]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def initialize_encryption_spec(
-        self,
-    ) -> Callable[
-        [gcd_encryption_spec.InitializeEncryptionSpecRequest], operations_pb2.Operation
-    ]:
+    def initialize_encryption_spec(self) -> Callable[[gcd_encryption_spec.InitializeEncryptionSpecRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InitializeEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
@@ -799,23 +672,12 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseEncryptionSpecServiceRestTransport._BaseGetLocation,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _GetLocation(_BaseEncryptionSpecServiceRestTransport._BaseGetLocation, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -853,26 +715,16 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -896,12 +748,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             # Send the request
             response = EncryptionSpecServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -913,9 +760,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -940,23 +785,12 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseEncryptionSpecServiceRestTransport._BaseListLocations,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _ListLocations(_BaseEncryptionSpecServiceRestTransport._BaseListLocations, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -994,26 +828,16 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1037,12 +861,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             # Send the request
             response = EncryptionSpecServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1054,9 +873,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1081,23 +898,12 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _CancelOperation(_BaseEncryptionSpecServiceRestTransport._BaseCancelOperation, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1132,28 +938,16 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1176,15 +970,8 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                EncryptionSpecServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EncryptionSpecServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1198,23 +985,12 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEncryptionSpecServiceRestTransport._BaseGetOperation,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _GetOperation(_BaseEncryptionSpecServiceRestTransport._BaseGetOperation, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1252,26 +1028,16 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1295,12 +1061,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             # Send the request
             response = EncryptionSpecServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1312,9 +1073,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1339,23 +1098,12 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEncryptionSpecServiceRestTransport._BaseListOperations,
-        EncryptionSpecServiceRestStub,
-    ):
+    class _ListOperations(_BaseEncryptionSpecServiceRestTransport._BaseListOperations, EncryptionSpecServiceRestStub):
         def __hash__(self):
             return hash("EncryptionSpecServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1393,26 +1141,16 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEncryptionSpecServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEncryptionSpecServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEncryptionSpecServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEncryptionSpecServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEncryptionSpecServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1436,12 +1174,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
 
             # Send the request
             response = EncryptionSpecServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1453,9 +1186,7 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

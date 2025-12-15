@@ -18,18 +18,9 @@ from google.cloud.rapidmigrationassessment import gapic_version as package_versi
 __version__ = package_version.__version__
 
 
-from google.cloud.rapidmigrationassessment_v1.services.rapid_migration_assessment.async_client import (
-    RapidMigrationAssessmentAsyncClient,
-)
-from google.cloud.rapidmigrationassessment_v1.services.rapid_migration_assessment.client import (
-    RapidMigrationAssessmentClient,
-)
-from google.cloud.rapidmigrationassessment_v1.types.api_entities import (
-    Annotation,
-    Collector,
-    GuestOsScan,
-    VSphereScan,
-)
+from google.cloud.rapidmigrationassessment_v1.services.rapid_migration_assessment.async_client import RapidMigrationAssessmentAsyncClient
+from google.cloud.rapidmigrationassessment_v1.services.rapid_migration_assessment.client import RapidMigrationAssessmentClient
+from google.cloud.rapidmigrationassessment_v1.types.api_entities import Annotation, Collector, GuestOsScan, VSphereScan
 from google.cloud.rapidmigrationassessment_v1.types.rapidmigrationassessment import (
     CreateAnnotationRequest,
     CreateCollectorRequest,

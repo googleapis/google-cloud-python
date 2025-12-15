@@ -126,13 +126,8 @@ class MapsPlatformDatasetsRestInterceptor:
     """
 
     def pre_create_dataset(
-        self,
-        request: maps_platform_datasets.CreateDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.CreateDatasetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maps_platform_datasets.CreateDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.CreateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -154,9 +149,7 @@ class MapsPlatformDatasetsRestInterceptor:
         return response
 
     def post_create_dataset_with_metadata(
-        self,
-        response: gmm_dataset.Dataset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gmm_dataset.Dataset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gmm_dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_dataset
 
@@ -173,13 +166,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return response, metadata
 
     def pre_delete_dataset(
-        self,
-        request: maps_platform_datasets.DeleteDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.DeleteDatasetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maps_platform_datasets.DeleteDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.DeleteDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -188,13 +176,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return request, metadata
 
     def pre_fetch_dataset_errors(
-        self,
-        request: maps_platform_datasets.FetchDatasetErrorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.FetchDatasetErrorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maps_platform_datasets.FetchDatasetErrorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.FetchDatasetErrorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_dataset_errors
 
         Override in a subclass to manipulate the request or metadata
@@ -218,13 +201,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return response
 
     def post_fetch_dataset_errors_with_metadata(
-        self,
-        response: maps_platform_datasets.FetchDatasetErrorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.FetchDatasetErrorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: maps_platform_datasets.FetchDatasetErrorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.FetchDatasetErrorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_dataset_errors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -240,13 +218,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return response, metadata
 
     def pre_get_dataset(
-        self,
-        request: maps_platform_datasets.GetDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.GetDatasetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maps_platform_datasets.GetDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.GetDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -268,9 +241,7 @@ class MapsPlatformDatasetsRestInterceptor:
         return response
 
     def post_get_dataset_with_metadata(
-        self,
-        response: dataset.Dataset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataset.Dataset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dataset
 
@@ -287,13 +258,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return response, metadata
 
     def pre_list_datasets(
-        self,
-        request: maps_platform_datasets.ListDatasetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.ListDatasetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maps_platform_datasets.ListDatasetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.ListDatasetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_datasets
 
         Override in a subclass to manipulate the request or metadata
@@ -301,9 +267,7 @@ class MapsPlatformDatasetsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_datasets(
-        self, response: maps_platform_datasets.ListDatasetsResponse
-    ) -> maps_platform_datasets.ListDatasetsResponse:
+    def post_list_datasets(self, response: maps_platform_datasets.ListDatasetsResponse) -> maps_platform_datasets.ListDatasetsResponse:
         """Post-rpc interceptor for list_datasets
 
         DEPRECATED. Please use the `post_list_datasets_with_metadata`
@@ -317,13 +281,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return response
 
     def post_list_datasets_with_metadata(
-        self,
-        response: maps_platform_datasets.ListDatasetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.ListDatasetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: maps_platform_datasets.ListDatasetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.ListDatasetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_datasets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -339,13 +298,8 @@ class MapsPlatformDatasetsRestInterceptor:
         return response, metadata
 
     def pre_update_dataset_metadata(
-        self,
-        request: maps_platform_datasets.UpdateDatasetMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        maps_platform_datasets.UpdateDatasetMetadataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: maps_platform_datasets.UpdateDatasetMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[maps_platform_datasets.UpdateDatasetMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dataset_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -353,9 +307,7 @@ class MapsPlatformDatasetsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dataset_metadata(
-        self, response: gmm_dataset.Dataset
-    ) -> gmm_dataset.Dataset:
+    def post_update_dataset_metadata(self, response: gmm_dataset.Dataset) -> gmm_dataset.Dataset:
         """Post-rpc interceptor for update_dataset_metadata
 
         DEPRECATED. Please use the `post_update_dataset_metadata_with_metadata`
@@ -369,9 +321,7 @@ class MapsPlatformDatasetsRestInterceptor:
         return response
 
     def post_update_dataset_metadata_with_metadata(
-        self,
-        response: gmm_dataset.Dataset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gmm_dataset.Dataset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gmm_dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dataset_metadata
 
@@ -467,31 +417,18 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MapsPlatformDatasetsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDataset(
-        _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset,
-        MapsPlatformDatasetsRestStub,
-    ):
+    class _CreateDataset(_BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset, MapsPlatformDatasetsRestStub):
         def __hash__(self):
             return hash("MapsPlatformDatasetsRestTransport.CreateDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -533,30 +470,18 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
-            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_transcoded_request(http_options, request)
 
-            body = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -580,13 +505,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._CreateDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -602,12 +521,8 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             resp = self._interceptor.post_create_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gmm_dataset.Dataset.to_json(response)
                 except:
@@ -628,23 +543,12 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 )
             return resp
 
-    class _DeleteDataset(
-        _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset,
-        MapsPlatformDatasetsRestStub,
-    ):
+    class _DeleteDataset(_BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset, MapsPlatformDatasetsRestStub):
         def __hash__(self):
             return hash("MapsPlatformDatasetsRestTransport.DeleteDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -679,26 +583,16 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
-            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -722,12 +616,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._DeleteDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -735,23 +624,12 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FetchDatasetErrors(
-        _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors,
-        MapsPlatformDatasetsRestStub,
-    ):
+    class _FetchDatasetErrors(_BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors, MapsPlatformDatasetsRestStub):
         def __hash__(self):
             return hash("MapsPlatformDatasetsRestTransport.FetchDatasetErrors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -793,28 +671,16 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_dataset_errors(
-                request, metadata
-            )
-            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_dataset_errors(request, metadata)
+            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -837,15 +703,8 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 )
 
             # Send the request
-            response = (
-                MapsPlatformDatasetsRestTransport._FetchDatasetErrors._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MapsPlatformDatasetsRestTransport._FetchDatasetErrors._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -861,18 +720,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             resp = self._interceptor.post_fetch_dataset_errors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_dataset_errors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_dataset_errors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        maps_platform_datasets.FetchDatasetErrorsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = maps_platform_datasets.FetchDatasetErrorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -891,23 +742,12 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 )
             return resp
 
-    class _GetDataset(
-        _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset,
-        MapsPlatformDatasetsRestStub,
-    ):
+    class _GetDataset(_BaseMapsPlatformDatasetsRestTransport._BaseGetDataset, MapsPlatformDatasetsRestStub):
         def __hash__(self):
             return hash("MapsPlatformDatasetsRestTransport.GetDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -948,26 +788,16 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
-            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -991,12 +821,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._GetDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1012,12 +837,8 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             resp = self._interceptor.post_get_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataset.Dataset.to_json(response)
                 except:
@@ -1038,23 +859,12 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 )
             return resp
 
-    class _ListDatasets(
-        _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets,
-        MapsPlatformDatasetsRestStub,
-    ):
+    class _ListDatasets(_BaseMapsPlatformDatasetsRestTransport._BaseListDatasets, MapsPlatformDatasetsRestStub):
         def __hash__(self):
             return hash("MapsPlatformDatasetsRestTransport.ListDatasets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1094,26 +904,16 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                     Response object of ListDatasets.
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
-            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1137,12 +937,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._ListDatasets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1158,16 +953,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             resp = self._interceptor.post_list_datasets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_datasets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_datasets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        maps_platform_datasets.ListDatasetsResponse.to_json(response)
-                    )
+                    response_payload = maps_platform_datasets.ListDatasetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1186,23 +975,12 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 )
             return resp
 
-    class _UpdateDatasetMetadata(
-        _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata,
-        MapsPlatformDatasetsRestStub,
-    ):
+    class _UpdateDatasetMetadata(_BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata, MapsPlatformDatasetsRestStub):
         def __hash__(self):
             return hash("MapsPlatformDatasetsRestTransport.UpdateDatasetMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1245,32 +1023,18 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_dataset_metadata(
-                request, metadata
-            )
-            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_dataset_metadata(request, metadata)
+            transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_transcoded_request(http_options, request)
 
-            body = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1293,16 +1057,8 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 )
 
             # Send the request
-            response = (
-                MapsPlatformDatasetsRestTransport._UpdateDatasetMetadata._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MapsPlatformDatasetsRestTransport._UpdateDatasetMetadata._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1318,12 +1074,8 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             resp = self._interceptor.post_update_dataset_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dataset_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dataset_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gmm_dataset.Dataset.to_json(response)
                 except:
@@ -1345,57 +1097,37 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             return resp
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[[maps_platform_datasets.CreateDatasetRequest], gmm_dataset.Dataset]:
+    def create_dataset(self) -> Callable[[maps_platform_datasets.CreateDatasetRequest], gmm_dataset.Dataset]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[[maps_platform_datasets.DeleteDatasetRequest], empty_pb2.Empty]:
+    def delete_dataset(self) -> Callable[[maps_platform_datasets.DeleteDatasetRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_dataset_errors(
-        self,
-    ) -> Callable[
-        [maps_platform_datasets.FetchDatasetErrorsRequest],
-        maps_platform_datasets.FetchDatasetErrorsResponse,
-    ]:
+    def fetch_dataset_errors(self) -> Callable[[maps_platform_datasets.FetchDatasetErrorsRequest], maps_platform_datasets.FetchDatasetErrorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchDatasetErrors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dataset(
-        self,
-    ) -> Callable[[maps_platform_datasets.GetDatasetRequest], dataset.Dataset]:
+    def get_dataset(self) -> Callable[[maps_platform_datasets.GetDatasetRequest], dataset.Dataset]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_datasets(
-        self,
-    ) -> Callable[
-        [maps_platform_datasets.ListDatasetsRequest],
-        maps_platform_datasets.ListDatasetsResponse,
-    ]:
+    def list_datasets(self) -> Callable[[maps_platform_datasets.ListDatasetsRequest], maps_platform_datasets.ListDatasetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatasets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_dataset_metadata(
-        self,
-    ) -> Callable[
-        [maps_platform_datasets.UpdateDatasetMetadataRequest], gmm_dataset.Dataset
-    ]:
+    def update_dataset_metadata(self) -> Callable[[maps_platform_datasets.UpdateDatasetMetadataRequest], gmm_dataset.Dataset]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDatasetMetadata(self._session, self._host, self._interceptor)  # type: ignore

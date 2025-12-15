@@ -21,11 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    deal_buyer_permission_type_enum,
-    private_marketplace_enums,
-    size,
-)
+from google.ads.admanager_v1.types import deal_buyer_permission_type_enum, private_marketplace_enums, size
 from google.ads.admanager_v1.types import targeting as gaa_targeting
 
 __protobuf__ = proto.module(

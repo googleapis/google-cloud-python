@@ -20,9 +20,7 @@ from .base import DiskSettingsServiceTransport
 from .rest import DiskSettingsServiceRestInterceptor, DiskSettingsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DiskSettingsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DiskSettingsServiceTransport]]
 _transport_registry["rest"] = DiskSettingsServiceRestTransport
 
 __all__ = (

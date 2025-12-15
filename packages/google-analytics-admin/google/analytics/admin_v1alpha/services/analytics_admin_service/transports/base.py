@@ -28,12 +28,8 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha import gapic_version as package_version
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
-from google.analytics.admin_v1alpha.types import (
-    expanded_data_set as gaa_expanded_data_set,
-)
-from google.analytics.admin_v1alpha.types import (
-    subproperty_event_filter as gaa_subproperty_event_filter,
-)
+from google.analytics.admin_v1alpha.types import expanded_data_set as gaa_expanded_data_set
+from google.analytics.admin_v1alpha.types import subproperty_event_filter as gaa_subproperty_event_filter
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -43,9 +39,7 @@ from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -112,23 +106,15 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -935,42 +921,23 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_account(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAccountRequest],
-        Union[resources.Account, Awaitable[resources.Account]],
-    ]:
+    def get_account(self) -> Callable[[analytics_admin.GetAccountRequest], Union[resources.Account, Awaitable[resources.Account]]]:
         raise NotImplementedError()
 
     @property
     def list_accounts(
         self,
     ) -> Callable[
-        [analytics_admin.ListAccountsRequest],
-        Union[
-            analytics_admin.ListAccountsResponse,
-            Awaitable[analytics_admin.ListAccountsResponse],
-        ],
+        [analytics_admin.ListAccountsRequest], Union[analytics_admin.ListAccountsResponse, Awaitable[analytics_admin.ListAccountsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_account(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteAccountRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_account(self) -> Callable[[analytics_admin.DeleteAccountRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def update_account(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateAccountRequest],
-        Union[resources.Account, Awaitable[resources.Account]],
-    ]:
+    def update_account(self) -> Callable[[analytics_admin.UpdateAccountRequest], Union[resources.Account, Awaitable[resources.Account]]]:
         raise NotImplementedError()
 
     @property
@@ -978,10 +945,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ProvisionAccountTicketRequest],
-        Union[
-            analytics_admin.ProvisionAccountTicketResponse,
-            Awaitable[analytics_admin.ProvisionAccountTicketResponse],
-        ],
+        Union[analytics_admin.ProvisionAccountTicketResponse, Awaitable[analytics_admin.ProvisionAccountTicketResponse]],
     ]:
         raise NotImplementedError()
 
@@ -990,77 +954,42 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListAccountSummariesRequest],
-        Union[
-            analytics_admin.ListAccountSummariesResponse,
-            Awaitable[analytics_admin.ListAccountSummariesResponse],
-        ],
+        Union[analytics_admin.ListAccountSummariesResponse, Awaitable[analytics_admin.ListAccountSummariesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetPropertyRequest],
-        Union[resources.Property, Awaitable[resources.Property]],
-    ]:
+    def get_property(self) -> Callable[[analytics_admin.GetPropertyRequest], Union[resources.Property, Awaitable[resources.Property]]]:
         raise NotImplementedError()
 
     @property
     def list_properties(
         self,
     ) -> Callable[
-        [analytics_admin.ListPropertiesRequest],
-        Union[
-            analytics_admin.ListPropertiesResponse,
-            Awaitable[analytics_admin.ListPropertiesResponse],
-        ],
+        [analytics_admin.ListPropertiesRequest], Union[analytics_admin.ListPropertiesResponse, Awaitable[analytics_admin.ListPropertiesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreatePropertyRequest],
-        Union[resources.Property, Awaitable[resources.Property]],
-    ]:
+    def create_property(self) -> Callable[[analytics_admin.CreatePropertyRequest], Union[resources.Property, Awaitable[resources.Property]]]:
         raise NotImplementedError()
 
     @property
-    def delete_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeletePropertyRequest],
-        Union[resources.Property, Awaitable[resources.Property]],
-    ]:
+    def delete_property(self) -> Callable[[analytics_admin.DeletePropertyRequest], Union[resources.Property, Awaitable[resources.Property]]]:
         raise NotImplementedError()
 
     @property
-    def update_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdatePropertyRequest],
-        Union[resources.Property, Awaitable[resources.Property]],
-    ]:
+    def update_property(self) -> Callable[[analytics_admin.UpdatePropertyRequest], Union[resources.Property, Awaitable[resources.Property]]]:
         raise NotImplementedError()
 
     @property
     def create_firebase_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateFirebaseLinkRequest],
-        Union[resources.FirebaseLink, Awaitable[resources.FirebaseLink]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateFirebaseLinkRequest], Union[resources.FirebaseLink, Awaitable[resources.FirebaseLink]]]:
         raise NotImplementedError()
 
     @property
-    def delete_firebase_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteFirebaseLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_firebase_link(self) -> Callable[[analytics_admin.DeleteFirebaseLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1068,47 +997,30 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListFirebaseLinksRequest],
-        Union[
-            analytics_admin.ListFirebaseLinksResponse,
-            Awaitable[analytics_admin.ListFirebaseLinksResponse],
-        ],
+        Union[analytics_admin.ListFirebaseLinksResponse, Awaitable[analytics_admin.ListFirebaseLinksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_global_site_tag(
         self,
-    ) -> Callable[
-        [analytics_admin.GetGlobalSiteTagRequest],
-        Union[resources.GlobalSiteTag, Awaitable[resources.GlobalSiteTag]],
-    ]:
+    ) -> Callable[[analytics_admin.GetGlobalSiteTagRequest], Union[resources.GlobalSiteTag, Awaitable[resources.GlobalSiteTag]]]:
         raise NotImplementedError()
 
     @property
     def create_google_ads_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateGoogleAdsLinkRequest],
-        Union[resources.GoogleAdsLink, Awaitable[resources.GoogleAdsLink]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateGoogleAdsLinkRequest], Union[resources.GoogleAdsLink, Awaitable[resources.GoogleAdsLink]]]:
         raise NotImplementedError()
 
     @property
     def update_google_ads_link(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateGoogleAdsLinkRequest],
-        Union[resources.GoogleAdsLink, Awaitable[resources.GoogleAdsLink]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateGoogleAdsLinkRequest], Union[resources.GoogleAdsLink, Awaitable[resources.GoogleAdsLink]]]:
         raise NotImplementedError()
 
     @property
-    def delete_google_ads_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteGoogleAdsLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_google_ads_link(self) -> Callable[[analytics_admin.DeleteGoogleAdsLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1116,20 +1028,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListGoogleAdsLinksRequest],
-        Union[
-            analytics_admin.ListGoogleAdsLinksResponse,
-            Awaitable[analytics_admin.ListGoogleAdsLinksResponse],
-        ],
+        Union[analytics_admin.ListGoogleAdsLinksResponse, Awaitable[analytics_admin.ListGoogleAdsLinksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_data_sharing_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.GetDataSharingSettingsRequest],
-        Union[resources.DataSharingSettings, Awaitable[resources.DataSharingSettings]],
-    ]:
+    ) -> Callable[[analytics_admin.GetDataSharingSettingsRequest], Union[resources.DataSharingSettings, Awaitable[resources.DataSharingSettings]]]:
         raise NotImplementedError()
 
     @property
@@ -1137,10 +1043,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetMeasurementProtocolSecretRequest],
-        Union[
-            resources.MeasurementProtocolSecret,
-            Awaitable[resources.MeasurementProtocolSecret],
-        ],
+        Union[resources.MeasurementProtocolSecret, Awaitable[resources.MeasurementProtocolSecret]],
     ]:
         raise NotImplementedError()
 
@@ -1149,10 +1052,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListMeasurementProtocolSecretsRequest],
-        Union[
-            analytics_admin.ListMeasurementProtocolSecretsResponse,
-            Awaitable[analytics_admin.ListMeasurementProtocolSecretsResponse],
-        ],
+        Union[analytics_admin.ListMeasurementProtocolSecretsResponse, Awaitable[analytics_admin.ListMeasurementProtocolSecretsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1161,20 +1061,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateMeasurementProtocolSecretRequest],
-        Union[
-            resources.MeasurementProtocolSecret,
-            Awaitable[resources.MeasurementProtocolSecret],
-        ],
+        Union[resources.MeasurementProtocolSecret, Awaitable[resources.MeasurementProtocolSecret]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_measurement_protocol_secret(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteMeasurementProtocolSecretRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteMeasurementProtocolSecretRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1182,10 +1076,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.UpdateMeasurementProtocolSecretRequest],
-        Union[
-            resources.MeasurementProtocolSecret,
-            Awaitable[resources.MeasurementProtocolSecret],
-        ],
+        Union[resources.MeasurementProtocolSecret, Awaitable[resources.MeasurementProtocolSecret]],
     ]:
         raise NotImplementedError()
 
@@ -1194,10 +1085,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.AcknowledgeUserDataCollectionRequest],
-        Union[
-            analytics_admin.AcknowledgeUserDataCollectionResponse,
-            Awaitable[analytics_admin.AcknowledgeUserDataCollectionResponse],
-        ],
+        Union[analytics_admin.AcknowledgeUserDataCollectionResponse, Awaitable[analytics_admin.AcknowledgeUserDataCollectionResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1206,10 +1094,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetSKAdNetworkConversionValueSchemaRequest],
-        Union[
-            resources.SKAdNetworkConversionValueSchema,
-            Awaitable[resources.SKAdNetworkConversionValueSchema],
-        ],
+        Union[resources.SKAdNetworkConversionValueSchema, Awaitable[resources.SKAdNetworkConversionValueSchema]],
     ]:
         raise NotImplementedError()
 
@@ -1218,20 +1103,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest],
-        Union[
-            resources.SKAdNetworkConversionValueSchema,
-            Awaitable[resources.SKAdNetworkConversionValueSchema],
-        ],
+        Union[resources.SKAdNetworkConversionValueSchema, Awaitable[resources.SKAdNetworkConversionValueSchema]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_sk_ad_network_conversion_value_schema(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1239,10 +1118,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest],
-        Union[
-            resources.SKAdNetworkConversionValueSchema,
-            Awaitable[resources.SKAdNetworkConversionValueSchema],
-        ],
+        Union[resources.SKAdNetworkConversionValueSchema, Awaitable[resources.SKAdNetworkConversionValueSchema]],
     ]:
         raise NotImplementedError()
 
@@ -1252,8 +1128,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.ListSKAdNetworkConversionValueSchemasRequest],
         Union[
-            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse,
-            Awaitable[analytics_admin.ListSKAdNetworkConversionValueSchemasResponse],
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse, Awaitable[analytics_admin.ListSKAdNetworkConversionValueSchemasResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -1263,10 +1138,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.SearchChangeHistoryEventsRequest],
-        Union[
-            analytics_admin.SearchChangeHistoryEventsResponse,
-            Awaitable[analytics_admin.SearchChangeHistoryEventsResponse],
-        ],
+        Union[analytics_admin.SearchChangeHistoryEventsResponse, Awaitable[analytics_admin.SearchChangeHistoryEventsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1274,10 +1146,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def get_google_signals_settings(
         self,
     ) -> Callable[
-        [analytics_admin.GetGoogleSignalsSettingsRequest],
-        Union[
-            resources.GoogleSignalsSettings, Awaitable[resources.GoogleSignalsSettings]
-        ],
+        [analytics_admin.GetGoogleSignalsSettingsRequest], Union[resources.GoogleSignalsSettings, Awaitable[resources.GoogleSignalsSettings]]
     ]:
         raise NotImplementedError()
 
@@ -1285,47 +1154,30 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_google_signals_settings(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateGoogleSignalsSettingsRequest],
-        Union[
-            resources.GoogleSignalsSettings, Awaitable[resources.GoogleSignalsSettings]
-        ],
+        [analytics_admin.UpdateGoogleSignalsSettingsRequest], Union[resources.GoogleSignalsSettings, Awaitable[resources.GoogleSignalsSettings]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_conversion_event(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateConversionEventRequest],
-        Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateConversionEventRequest], Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]]]:
         raise NotImplementedError()
 
     @property
     def update_conversion_event(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateConversionEventRequest],
-        Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateConversionEventRequest], Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]]]:
         raise NotImplementedError()
 
     @property
     def get_conversion_event(
         self,
-    ) -> Callable[
-        [analytics_admin.GetConversionEventRequest],
-        Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]],
-    ]:
+    ) -> Callable[[analytics_admin.GetConversionEventRequest], Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]]]:
         raise NotImplementedError()
 
     @property
-    def delete_conversion_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteConversionEventRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_conversion_event(self) -> Callable[[analytics_admin.DeleteConversionEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1333,58 +1185,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListConversionEventsRequest],
-        Union[
-            analytics_admin.ListConversionEventsResponse,
-            Awaitable[analytics_admin.ListConversionEventsResponse],
-        ],
+        Union[analytics_admin.ListConversionEventsResponse, Awaitable[analytics_admin.ListConversionEventsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_key_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateKeyEventRequest],
-        Union[resources.KeyEvent, Awaitable[resources.KeyEvent]],
-    ]:
+    def create_key_event(self) -> Callable[[analytics_admin.CreateKeyEventRequest], Union[resources.KeyEvent, Awaitable[resources.KeyEvent]]]:
         raise NotImplementedError()
 
     @property
-    def update_key_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateKeyEventRequest],
-        Union[resources.KeyEvent, Awaitable[resources.KeyEvent]],
-    ]:
+    def update_key_event(self) -> Callable[[analytics_admin.UpdateKeyEventRequest], Union[resources.KeyEvent, Awaitable[resources.KeyEvent]]]:
         raise NotImplementedError()
 
     @property
-    def get_key_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetKeyEventRequest],
-        Union[resources.KeyEvent, Awaitable[resources.KeyEvent]],
-    ]:
+    def get_key_event(self) -> Callable[[analytics_admin.GetKeyEventRequest], Union[resources.KeyEvent, Awaitable[resources.KeyEvent]]]:
         raise NotImplementedError()
 
     @property
-    def delete_key_event(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteKeyEventRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_key_event(self) -> Callable[[analytics_admin.DeleteKeyEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_key_events(
         self,
     ) -> Callable[
-        [analytics_admin.ListKeyEventsRequest],
-        Union[
-            analytics_admin.ListKeyEventsResponse,
-            Awaitable[analytics_admin.ListKeyEventsResponse],
-        ],
+        [analytics_admin.ListKeyEventsRequest], Union[analytics_admin.ListKeyEventsResponse, Awaitable[analytics_admin.ListKeyEventsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -1393,10 +1218,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetDisplayVideo360AdvertiserLinkRequest],
-        Union[
-            resources.DisplayVideo360AdvertiserLink,
-            Awaitable[resources.DisplayVideo360AdvertiserLink],
-        ],
+        Union[resources.DisplayVideo360AdvertiserLink, Awaitable[resources.DisplayVideo360AdvertiserLink]],
     ]:
         raise NotImplementedError()
 
@@ -1405,10 +1227,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListDisplayVideo360AdvertiserLinksRequest],
-        Union[
-            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse,
-            Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse],
-        ],
+        Union[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse, Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1417,20 +1236,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest],
-        Union[
-            resources.DisplayVideo360AdvertiserLink,
-            Awaitable[resources.DisplayVideo360AdvertiserLink],
-        ],
+        Union[resources.DisplayVideo360AdvertiserLink, Awaitable[resources.DisplayVideo360AdvertiserLink]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_display_video360_advertiser_link(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1438,10 +1251,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest],
-        Union[
-            resources.DisplayVideo360AdvertiserLink,
-            Awaitable[resources.DisplayVideo360AdvertiserLink],
-        ],
+        Union[resources.DisplayVideo360AdvertiserLink, Awaitable[resources.DisplayVideo360AdvertiserLink]],
     ]:
         raise NotImplementedError()
 
@@ -1450,10 +1260,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest],
-        Union[
-            resources.DisplayVideo360AdvertiserLinkProposal,
-            Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
-        ],
+        Union[resources.DisplayVideo360AdvertiserLinkProposal, Awaitable[resources.DisplayVideo360AdvertiserLinkProposal]],
     ]:
         raise NotImplementedError()
 
@@ -1464,9 +1271,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         [analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest],
         Union[
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse,
-            Awaitable[
-                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse
-            ],
+            Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1476,20 +1281,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest],
-        Union[
-            resources.DisplayVideo360AdvertiserLinkProposal,
-            Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
-        ],
+        Union[resources.DisplayVideo360AdvertiserLinkProposal, Awaitable[resources.DisplayVideo360AdvertiserLinkProposal]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_display_video360_advertiser_link_proposal(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1499,9 +1298,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         [analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest],
         Union[
             analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse,
-            Awaitable[
-                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse
-            ],
+            Awaitable[analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1511,29 +1308,20 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest],
-        Union[
-            resources.DisplayVideo360AdvertiserLinkProposal,
-            Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
-        ],
+        Union[resources.DisplayVideo360AdvertiserLinkProposal, Awaitable[resources.DisplayVideo360AdvertiserLinkProposal]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_custom_dimension(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateCustomDimensionRequest],
-        Union[resources.CustomDimension, Awaitable[resources.CustomDimension]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateCustomDimensionRequest], Union[resources.CustomDimension, Awaitable[resources.CustomDimension]]]:
         raise NotImplementedError()
 
     @property
     def update_custom_dimension(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateCustomDimensionRequest],
-        Union[resources.CustomDimension, Awaitable[resources.CustomDimension]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateCustomDimensionRequest], Union[resources.CustomDimension, Awaitable[resources.CustomDimension]]]:
         raise NotImplementedError()
 
     @property
@@ -1541,47 +1329,32 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListCustomDimensionsRequest],
-        Union[
-            analytics_admin.ListCustomDimensionsResponse,
-            Awaitable[analytics_admin.ListCustomDimensionsResponse],
-        ],
+        Union[analytics_admin.ListCustomDimensionsResponse, Awaitable[analytics_admin.ListCustomDimensionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def archive_custom_dimension(
         self,
-    ) -> Callable[
-        [analytics_admin.ArchiveCustomDimensionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.ArchiveCustomDimensionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_custom_dimension(
         self,
-    ) -> Callable[
-        [analytics_admin.GetCustomDimensionRequest],
-        Union[resources.CustomDimension, Awaitable[resources.CustomDimension]],
-    ]:
+    ) -> Callable[[analytics_admin.GetCustomDimensionRequest], Union[resources.CustomDimension, Awaitable[resources.CustomDimension]]]:
         raise NotImplementedError()
 
     @property
     def create_custom_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateCustomMetricRequest],
-        Union[resources.CustomMetric, Awaitable[resources.CustomMetric]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateCustomMetricRequest], Union[resources.CustomMetric, Awaitable[resources.CustomMetric]]]:
         raise NotImplementedError()
 
     @property
     def update_custom_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateCustomMetricRequest],
-        Union[resources.CustomMetric, Awaitable[resources.CustomMetric]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateCustomMetricRequest], Union[resources.CustomMetric, Awaitable[resources.CustomMetric]]]:
         raise NotImplementedError()
 
     @property
@@ -1589,39 +1362,25 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListCustomMetricsRequest],
-        Union[
-            analytics_admin.ListCustomMetricsResponse,
-            Awaitable[analytics_admin.ListCustomMetricsResponse],
-        ],
+        Union[analytics_admin.ListCustomMetricsResponse, Awaitable[analytics_admin.ListCustomMetricsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def archive_custom_metric(
-        self,
-    ) -> Callable[
-        [analytics_admin.ArchiveCustomMetricRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def archive_custom_metric(self) -> Callable[[analytics_admin.ArchiveCustomMetricRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_custom_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.GetCustomMetricRequest],
-        Union[resources.CustomMetric, Awaitable[resources.CustomMetric]],
-    ]:
+    ) -> Callable[[analytics_admin.GetCustomMetricRequest], Union[resources.CustomMetric, Awaitable[resources.CustomMetric]]]:
         raise NotImplementedError()
 
     @property
     def get_data_retention_settings(
         self,
     ) -> Callable[
-        [analytics_admin.GetDataRetentionSettingsRequest],
-        Union[
-            resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]
-        ],
+        [analytics_admin.GetDataRetentionSettingsRequest], Union[resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]]
     ]:
         raise NotImplementedError()
 
@@ -1629,116 +1388,62 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_data_retention_settings(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateDataRetentionSettingsRequest],
-        Union[
-            resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]
-        ],
+        [analytics_admin.UpdateDataRetentionSettingsRequest], Union[resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateDataStreamRequest],
-        Union[resources.DataStream, Awaitable[resources.DataStream]],
-    ]:
+    def create_data_stream(self) -> Callable[[analytics_admin.CreateDataStreamRequest], Union[resources.DataStream, Awaitable[resources.DataStream]]]:
         raise NotImplementedError()
 
     @property
-    def delete_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteDataStreamRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_data_stream(self) -> Callable[[analytics_admin.DeleteDataStreamRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def update_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateDataStreamRequest],
-        Union[resources.DataStream, Awaitable[resources.DataStream]],
-    ]:
+    def update_data_stream(self) -> Callable[[analytics_admin.UpdateDataStreamRequest], Union[resources.DataStream, Awaitable[resources.DataStream]]]:
         raise NotImplementedError()
 
     @property
     def list_data_streams(
         self,
     ) -> Callable[
-        [analytics_admin.ListDataStreamsRequest],
-        Union[
-            analytics_admin.ListDataStreamsResponse,
-            Awaitable[analytics_admin.ListDataStreamsResponse],
-        ],
+        [analytics_admin.ListDataStreamsRequest], Union[analytics_admin.ListDataStreamsResponse, Awaitable[analytics_admin.ListDataStreamsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetDataStreamRequest],
-        Union[resources.DataStream, Awaitable[resources.DataStream]],
-    ]:
+    def get_data_stream(self) -> Callable[[analytics_admin.GetDataStreamRequest], Union[resources.DataStream, Awaitable[resources.DataStream]]]:
         raise NotImplementedError()
 
     @property
-    def get_audience(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAudienceRequest],
-        Union[audience.Audience, Awaitable[audience.Audience]],
-    ]:
+    def get_audience(self) -> Callable[[analytics_admin.GetAudienceRequest], Union[audience.Audience, Awaitable[audience.Audience]]]:
         raise NotImplementedError()
 
     @property
     def list_audiences(
         self,
     ) -> Callable[
-        [analytics_admin.ListAudiencesRequest],
-        Union[
-            analytics_admin.ListAudiencesResponse,
-            Awaitable[analytics_admin.ListAudiencesResponse],
-        ],
+        [analytics_admin.ListAudiencesRequest], Union[analytics_admin.ListAudiencesResponse, Awaitable[analytics_admin.ListAudiencesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_audience(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateAudienceRequest],
-        Union[gaa_audience.Audience, Awaitable[gaa_audience.Audience]],
-    ]:
+    def create_audience(self) -> Callable[[analytics_admin.CreateAudienceRequest], Union[gaa_audience.Audience, Awaitable[gaa_audience.Audience]]]:
         raise NotImplementedError()
 
     @property
-    def update_audience(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateAudienceRequest],
-        Union[gaa_audience.Audience, Awaitable[gaa_audience.Audience]],
-    ]:
+    def update_audience(self) -> Callable[[analytics_admin.UpdateAudienceRequest], Union[gaa_audience.Audience, Awaitable[gaa_audience.Audience]]]:
         raise NotImplementedError()
 
     @property
-    def archive_audience(
-        self,
-    ) -> Callable[
-        [analytics_admin.ArchiveAudienceRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def archive_audience(self) -> Callable[[analytics_admin.ArchiveAudienceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_search_ads360_link(
         self,
-    ) -> Callable[
-        [analytics_admin.GetSearchAds360LinkRequest],
-        Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]],
-    ]:
+    ) -> Callable[[analytics_admin.GetSearchAds360LinkRequest], Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]]]:
         raise NotImplementedError()
 
     @property
@@ -1746,104 +1451,68 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListSearchAds360LinksRequest],
-        Union[
-            analytics_admin.ListSearchAds360LinksResponse,
-            Awaitable[analytics_admin.ListSearchAds360LinksResponse],
-        ],
+        Union[analytics_admin.ListSearchAds360LinksResponse, Awaitable[analytics_admin.ListSearchAds360LinksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_search_ads360_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateSearchAds360LinkRequest],
-        Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateSearchAds360LinkRequest], Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]]]:
         raise NotImplementedError()
 
     @property
     def delete_search_ads360_link(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteSearchAds360LinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteSearchAds360LinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_search_ads360_link(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateSearchAds360LinkRequest],
-        Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateSearchAds360LinkRequest], Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]]]:
         raise NotImplementedError()
 
     @property
     def get_attribution_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.GetAttributionSettingsRequest],
-        Union[resources.AttributionSettings, Awaitable[resources.AttributionSettings]],
-    ]:
+    ) -> Callable[[analytics_admin.GetAttributionSettingsRequest], Union[resources.AttributionSettings, Awaitable[resources.AttributionSettings]]]:
         raise NotImplementedError()
 
     @property
     def update_attribution_settings(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateAttributionSettingsRequest],
-        Union[resources.AttributionSettings, Awaitable[resources.AttributionSettings]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateAttributionSettingsRequest], Union[resources.AttributionSettings, Awaitable[resources.AttributionSettings]]]:
         raise NotImplementedError()
 
     @property
     def run_access_report(
         self,
     ) -> Callable[
-        [analytics_admin.RunAccessReportRequest],
-        Union[
-            analytics_admin.RunAccessReportResponse,
-            Awaitable[analytics_admin.RunAccessReportResponse],
-        ],
+        [analytics_admin.RunAccessReportRequest], Union[analytics_admin.RunAccessReportResponse, Awaitable[analytics_admin.RunAccessReportResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_access_binding(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateAccessBindingRequest],
-        Union[resources.AccessBinding, Awaitable[resources.AccessBinding]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateAccessBindingRequest], Union[resources.AccessBinding, Awaitable[resources.AccessBinding]]]:
         raise NotImplementedError()
 
     @property
     def get_access_binding(
         self,
-    ) -> Callable[
-        [analytics_admin.GetAccessBindingRequest],
-        Union[resources.AccessBinding, Awaitable[resources.AccessBinding]],
-    ]:
+    ) -> Callable[[analytics_admin.GetAccessBindingRequest], Union[resources.AccessBinding, Awaitable[resources.AccessBinding]]]:
         raise NotImplementedError()
 
     @property
     def update_access_binding(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateAccessBindingRequest],
-        Union[resources.AccessBinding, Awaitable[resources.AccessBinding]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateAccessBindingRequest], Union[resources.AccessBinding, Awaitable[resources.AccessBinding]]]:
         raise NotImplementedError()
 
     @property
-    def delete_access_binding(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteAccessBindingRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_access_binding(self) -> Callable[[analytics_admin.DeleteAccessBindingRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1851,10 +1520,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListAccessBindingsRequest],
-        Union[
-            analytics_admin.ListAccessBindingsResponse,
-            Awaitable[analytics_admin.ListAccessBindingsResponse],
-        ],
+        Union[analytics_admin.ListAccessBindingsResponse, Awaitable[analytics_admin.ListAccessBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1863,10 +1529,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.BatchCreateAccessBindingsRequest],
-        Union[
-            analytics_admin.BatchCreateAccessBindingsResponse,
-            Awaitable[analytics_admin.BatchCreateAccessBindingsResponse],
-        ],
+        Union[analytics_admin.BatchCreateAccessBindingsResponse, Awaitable[analytics_admin.BatchCreateAccessBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1875,10 +1538,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.BatchGetAccessBindingsRequest],
-        Union[
-            analytics_admin.BatchGetAccessBindingsResponse,
-            Awaitable[analytics_admin.BatchGetAccessBindingsResponse],
-        ],
+        Union[analytics_admin.BatchGetAccessBindingsResponse, Awaitable[analytics_admin.BatchGetAccessBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1887,31 +1547,21 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.BatchUpdateAccessBindingsRequest],
-        Union[
-            analytics_admin.BatchUpdateAccessBindingsResponse,
-            Awaitable[analytics_admin.BatchUpdateAccessBindingsResponse],
-        ],
+        Union[analytics_admin.BatchUpdateAccessBindingsResponse, Awaitable[analytics_admin.BatchUpdateAccessBindingsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def batch_delete_access_bindings(
         self,
-    ) -> Callable[
-        [analytics_admin.BatchDeleteAccessBindingsRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.BatchDeleteAccessBindingsRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_expanded_data_set(
         self,
     ) -> Callable[
-        [analytics_admin.GetExpandedDataSetRequest],
-        Union[
-            expanded_data_set.ExpandedDataSet,
-            Awaitable[expanded_data_set.ExpandedDataSet],
-        ],
+        [analytics_admin.GetExpandedDataSetRequest], Union[expanded_data_set.ExpandedDataSet, Awaitable[expanded_data_set.ExpandedDataSet]]
     ]:
         raise NotImplementedError()
 
@@ -1920,10 +1570,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListExpandedDataSetsRequest],
-        Union[
-            analytics_admin.ListExpandedDataSetsResponse,
-            Awaitable[analytics_admin.ListExpandedDataSetsResponse],
-        ],
+        Union[analytics_admin.ListExpandedDataSetsResponse, Awaitable[analytics_admin.ListExpandedDataSetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1931,11 +1578,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def create_expanded_data_set(
         self,
     ) -> Callable[
-        [analytics_admin.CreateExpandedDataSetRequest],
-        Union[
-            gaa_expanded_data_set.ExpandedDataSet,
-            Awaitable[gaa_expanded_data_set.ExpandedDataSet],
-        ],
+        [analytics_admin.CreateExpandedDataSetRequest], Union[gaa_expanded_data_set.ExpandedDataSet, Awaitable[gaa_expanded_data_set.ExpandedDataSet]]
     ]:
         raise NotImplementedError()
 
@@ -1943,30 +1586,20 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_expanded_data_set(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateExpandedDataSetRequest],
-        Union[
-            gaa_expanded_data_set.ExpandedDataSet,
-            Awaitable[gaa_expanded_data_set.ExpandedDataSet],
-        ],
+        [analytics_admin.UpdateExpandedDataSetRequest], Union[gaa_expanded_data_set.ExpandedDataSet, Awaitable[gaa_expanded_data_set.ExpandedDataSet]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_expanded_data_set(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteExpandedDataSetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteExpandedDataSetRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_channel_group(
         self,
-    ) -> Callable[
-        [analytics_admin.GetChannelGroupRequest],
-        Union[channel_group.ChannelGroup, Awaitable[channel_group.ChannelGroup]],
-    ]:
+    ) -> Callable[[analytics_admin.GetChannelGroupRequest], Union[channel_group.ChannelGroup, Awaitable[channel_group.ChannelGroup]]]:
         raise NotImplementedError()
 
     @property
@@ -1974,60 +1607,36 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListChannelGroupsRequest],
-        Union[
-            analytics_admin.ListChannelGroupsResponse,
-            Awaitable[analytics_admin.ListChannelGroupsResponse],
-        ],
+        Union[analytics_admin.ListChannelGroupsResponse, Awaitable[analytics_admin.ListChannelGroupsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_channel_group(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateChannelGroupRequest],
-        Union[
-            gaa_channel_group.ChannelGroup, Awaitable[gaa_channel_group.ChannelGroup]
-        ],
-    ]:
+    ) -> Callable[[analytics_admin.CreateChannelGroupRequest], Union[gaa_channel_group.ChannelGroup, Awaitable[gaa_channel_group.ChannelGroup]]]:
         raise NotImplementedError()
 
     @property
     def update_channel_group(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateChannelGroupRequest],
-        Union[
-            gaa_channel_group.ChannelGroup, Awaitable[gaa_channel_group.ChannelGroup]
-        ],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateChannelGroupRequest], Union[gaa_channel_group.ChannelGroup, Awaitable[gaa_channel_group.ChannelGroup]]]:
         raise NotImplementedError()
 
     @property
-    def delete_channel_group(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteChannelGroupRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_channel_group(self) -> Callable[[analytics_admin.DeleteChannelGroupRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_big_query_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateBigQueryLinkRequest],
-        Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateBigQueryLinkRequest], Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]]]:
         raise NotImplementedError()
 
     @property
     def get_big_query_link(
         self,
-    ) -> Callable[
-        [analytics_admin.GetBigQueryLinkRequest],
-        Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]],
-    ]:
+    ) -> Callable[[analytics_admin.GetBigQueryLinkRequest], Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]]]:
         raise NotImplementedError()
 
     @property
@@ -2035,29 +1644,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListBigQueryLinksRequest],
-        Union[
-            analytics_admin.ListBigQueryLinksResponse,
-            Awaitable[analytics_admin.ListBigQueryLinksResponse],
-        ],
+        Union[analytics_admin.ListBigQueryLinksResponse, Awaitable[analytics_admin.ListBigQueryLinksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_big_query_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteBigQueryLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_big_query_link(self) -> Callable[[analytics_admin.DeleteBigQueryLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_big_query_link(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateBigQueryLinkRequest],
-        Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateBigQueryLinkRequest], Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]]]:
         raise NotImplementedError()
 
     @property
@@ -2065,10 +1663,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetEnhancedMeasurementSettingsRequest],
-        Union[
-            resources.EnhancedMeasurementSettings,
-            Awaitable[resources.EnhancedMeasurementSettings],
-        ],
+        Union[resources.EnhancedMeasurementSettings, Awaitable[resources.EnhancedMeasurementSettings]],
     ]:
         raise NotImplementedError()
 
@@ -2077,38 +1672,22 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.UpdateEnhancedMeasurementSettingsRequest],
-        Union[
-            resources.EnhancedMeasurementSettings,
-            Awaitable[resources.EnhancedMeasurementSettings],
-        ],
+        Union[resources.EnhancedMeasurementSettings, Awaitable[resources.EnhancedMeasurementSettings]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_ad_sense_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAdSenseLinkRequest],
-        Union[resources.AdSenseLink, Awaitable[resources.AdSenseLink]],
-    ]:
+    def get_ad_sense_link(self) -> Callable[[analytics_admin.GetAdSenseLinkRequest], Union[resources.AdSenseLink, Awaitable[resources.AdSenseLink]]]:
         raise NotImplementedError()
 
     @property
     def create_ad_sense_link(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateAdSenseLinkRequest],
-        Union[resources.AdSenseLink, Awaitable[resources.AdSenseLink]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateAdSenseLinkRequest], Union[resources.AdSenseLink, Awaitable[resources.AdSenseLink]]]:
         raise NotImplementedError()
 
     @property
-    def delete_ad_sense_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteAdSenseLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_ad_sense_link(self) -> Callable[[analytics_admin.DeleteAdSenseLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -2116,10 +1695,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListAdSenseLinksRequest],
-        Union[
-            analytics_admin.ListAdSenseLinksResponse,
-            Awaitable[analytics_admin.ListAdSenseLinksResponse],
-        ],
+        Union[analytics_admin.ListAdSenseLinksResponse, Awaitable[analytics_admin.ListAdSenseLinksResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2127,11 +1703,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def get_event_create_rule(
         self,
     ) -> Callable[
-        [analytics_admin.GetEventCreateRuleRequest],
-        Union[
-            event_create_and_edit.EventCreateRule,
-            Awaitable[event_create_and_edit.EventCreateRule],
-        ],
+        [analytics_admin.GetEventCreateRuleRequest], Union[event_create_and_edit.EventCreateRule, Awaitable[event_create_and_edit.EventCreateRule]]
     ]:
         raise NotImplementedError()
 
@@ -2140,10 +1712,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListEventCreateRulesRequest],
-        Union[
-            analytics_admin.ListEventCreateRulesResponse,
-            Awaitable[analytics_admin.ListEventCreateRulesResponse],
-        ],
+        Union[analytics_admin.ListEventCreateRulesResponse, Awaitable[analytics_admin.ListEventCreateRulesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2151,11 +1720,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def create_event_create_rule(
         self,
     ) -> Callable[
-        [analytics_admin.CreateEventCreateRuleRequest],
-        Union[
-            event_create_and_edit.EventCreateRule,
-            Awaitable[event_create_and_edit.EventCreateRule],
-        ],
+        [analytics_admin.CreateEventCreateRuleRequest], Union[event_create_and_edit.EventCreateRule, Awaitable[event_create_and_edit.EventCreateRule]]
     ]:
         raise NotImplementedError()
 
@@ -2163,32 +1728,21 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_event_create_rule(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateEventCreateRuleRequest],
-        Union[
-            event_create_and_edit.EventCreateRule,
-            Awaitable[event_create_and_edit.EventCreateRule],
-        ],
+        [analytics_admin.UpdateEventCreateRuleRequest], Union[event_create_and_edit.EventCreateRule, Awaitable[event_create_and_edit.EventCreateRule]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_event_create_rule(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteEventCreateRuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteEventCreateRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_event_edit_rule(
         self,
     ) -> Callable[
-        [analytics_admin.GetEventEditRuleRequest],
-        Union[
-            event_create_and_edit.EventEditRule,
-            Awaitable[event_create_and_edit.EventEditRule],
-        ],
+        [analytics_admin.GetEventEditRuleRequest], Union[event_create_and_edit.EventEditRule, Awaitable[event_create_and_edit.EventEditRule]]
     ]:
         raise NotImplementedError()
 
@@ -2197,10 +1751,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListEventEditRulesRequest],
-        Union[
-            analytics_admin.ListEventEditRulesResponse,
-            Awaitable[analytics_admin.ListEventEditRulesResponse],
-        ],
+        Union[analytics_admin.ListEventEditRulesResponse, Awaitable[analytics_admin.ListEventEditRulesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2208,11 +1759,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def create_event_edit_rule(
         self,
     ) -> Callable[
-        [analytics_admin.CreateEventEditRuleRequest],
-        Union[
-            event_create_and_edit.EventEditRule,
-            Awaitable[event_create_and_edit.EventEditRule],
-        ],
+        [analytics_admin.CreateEventEditRuleRequest], Union[event_create_and_edit.EventEditRule, Awaitable[event_create_and_edit.EventEditRule]]
     ]:
         raise NotImplementedError()
 
@@ -2220,40 +1767,25 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_event_edit_rule(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateEventEditRuleRequest],
-        Union[
-            event_create_and_edit.EventEditRule,
-            Awaitable[event_create_and_edit.EventEditRule],
-        ],
+        [analytics_admin.UpdateEventEditRuleRequest], Union[event_create_and_edit.EventEditRule, Awaitable[event_create_and_edit.EventEditRule]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_event_edit_rule(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteEventEditRuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_event_edit_rule(self) -> Callable[[analytics_admin.DeleteEventEditRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def reorder_event_edit_rules(
         self,
-    ) -> Callable[
-        [analytics_admin.ReorderEventEditRulesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.ReorderEventEditRulesRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_data_redaction_settings(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateDataRedactionSettingsRequest],
-        Union[
-            resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]
-        ],
+        [analytics_admin.UpdateDataRedactionSettingsRequest], Union[resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]]
     ]:
         raise NotImplementedError()
 
@@ -2261,29 +1793,20 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def get_data_redaction_settings(
         self,
     ) -> Callable[
-        [analytics_admin.GetDataRedactionSettingsRequest],
-        Union[
-            resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]
-        ],
+        [analytics_admin.GetDataRedactionSettingsRequest], Union[resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_calculated_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.GetCalculatedMetricRequest],
-        Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]],
-    ]:
+    ) -> Callable[[analytics_admin.GetCalculatedMetricRequest], Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]]]:
         raise NotImplementedError()
 
     @property
     def create_calculated_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.CreateCalculatedMetricRequest],
-        Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]],
-    ]:
+    ) -> Callable[[analytics_admin.CreateCalculatedMetricRequest], Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]]]:
         raise NotImplementedError()
 
     @property
@@ -2291,29 +1814,20 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListCalculatedMetricsRequest],
-        Union[
-            analytics_admin.ListCalculatedMetricsResponse,
-            Awaitable[analytics_admin.ListCalculatedMetricsResponse],
-        ],
+        Union[analytics_admin.ListCalculatedMetricsResponse, Awaitable[analytics_admin.ListCalculatedMetricsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_calculated_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.UpdateCalculatedMetricRequest],
-        Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]],
-    ]:
+    ) -> Callable[[analytics_admin.UpdateCalculatedMetricRequest], Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]]]:
         raise NotImplementedError()
 
     @property
     def delete_calculated_metric(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteCalculatedMetricRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteCalculatedMetricRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -2321,10 +1835,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateRollupPropertyRequest],
-        Union[
-            analytics_admin.CreateRollupPropertyResponse,
-            Awaitable[analytics_admin.CreateRollupPropertyResponse],
-        ],
+        Union[analytics_admin.CreateRollupPropertyResponse, Awaitable[analytics_admin.CreateRollupPropertyResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2332,11 +1843,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def get_rollup_property_source_link(
         self,
     ) -> Callable[
-        [analytics_admin.GetRollupPropertySourceLinkRequest],
-        Union[
-            resources.RollupPropertySourceLink,
-            Awaitable[resources.RollupPropertySourceLink],
-        ],
+        [analytics_admin.GetRollupPropertySourceLinkRequest], Union[resources.RollupPropertySourceLink, Awaitable[resources.RollupPropertySourceLink]]
     ]:
         raise NotImplementedError()
 
@@ -2345,10 +1852,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListRollupPropertySourceLinksRequest],
-        Union[
-            analytics_admin.ListRollupPropertySourceLinksResponse,
-            Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse],
-        ],
+        Union[analytics_admin.ListRollupPropertySourceLinksResponse, Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2357,20 +1861,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateRollupPropertySourceLinkRequest],
-        Union[
-            resources.RollupPropertySourceLink,
-            Awaitable[resources.RollupPropertySourceLink],
-        ],
+        Union[resources.RollupPropertySourceLink, Awaitable[resources.RollupPropertySourceLink]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_rollup_property_source_link(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteRollupPropertySourceLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteRollupPropertySourceLinkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -2378,10 +1876,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ProvisionSubpropertyRequest],
-        Union[
-            analytics_admin.ProvisionSubpropertyResponse,
-            Awaitable[analytics_admin.ProvisionSubpropertyResponse],
-        ],
+        Union[analytics_admin.ProvisionSubpropertyResponse, Awaitable[analytics_admin.ProvisionSubpropertyResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2390,10 +1885,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateSubpropertyEventFilterRequest],
-        Union[
-            gaa_subproperty_event_filter.SubpropertyEventFilter,
-            Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
-        ],
+        Union[gaa_subproperty_event_filter.SubpropertyEventFilter, Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter]],
     ]:
         raise NotImplementedError()
 
@@ -2402,10 +1894,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetSubpropertyEventFilterRequest],
-        Union[
-            subproperty_event_filter.SubpropertyEventFilter,
-            Awaitable[subproperty_event_filter.SubpropertyEventFilter],
-        ],
+        Union[subproperty_event_filter.SubpropertyEventFilter, Awaitable[subproperty_event_filter.SubpropertyEventFilter]],
     ]:
         raise NotImplementedError()
 
@@ -2414,10 +1903,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListSubpropertyEventFiltersRequest],
-        Union[
-            analytics_admin.ListSubpropertyEventFiltersResponse,
-            Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse],
-        ],
+        Union[analytics_admin.ListSubpropertyEventFiltersResponse, Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2426,31 +1912,21 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.UpdateSubpropertyEventFilterRequest],
-        Union[
-            gaa_subproperty_event_filter.SubpropertyEventFilter,
-            Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
-        ],
+        Union[gaa_subproperty_event_filter.SubpropertyEventFilter, Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_subproperty_event_filter(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteSubpropertyEventFilterRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteSubpropertyEventFilterRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_reporting_data_annotation(
         self,
     ) -> Callable[
-        [analytics_admin.CreateReportingDataAnnotationRequest],
-        Union[
-            resources.ReportingDataAnnotation,
-            Awaitable[resources.ReportingDataAnnotation],
-        ],
+        [analytics_admin.CreateReportingDataAnnotationRequest], Union[resources.ReportingDataAnnotation, Awaitable[resources.ReportingDataAnnotation]]
     ]:
         raise NotImplementedError()
 
@@ -2458,11 +1934,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def get_reporting_data_annotation(
         self,
     ) -> Callable[
-        [analytics_admin.GetReportingDataAnnotationRequest],
-        Union[
-            resources.ReportingDataAnnotation,
-            Awaitable[resources.ReportingDataAnnotation],
-        ],
+        [analytics_admin.GetReportingDataAnnotationRequest], Union[resources.ReportingDataAnnotation, Awaitable[resources.ReportingDataAnnotation]]
     ]:
         raise NotImplementedError()
 
@@ -2471,10 +1943,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListReportingDataAnnotationsRequest],
-        Union[
-            analytics_admin.ListReportingDataAnnotationsResponse,
-            Awaitable[analytics_admin.ListReportingDataAnnotationsResponse],
-        ],
+        Union[analytics_admin.ListReportingDataAnnotationsResponse, Awaitable[analytics_admin.ListReportingDataAnnotationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2482,21 +1951,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_reporting_data_annotation(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateReportingDataAnnotationRequest],
-        Union[
-            resources.ReportingDataAnnotation,
-            Awaitable[resources.ReportingDataAnnotation],
-        ],
+        [analytics_admin.UpdateReportingDataAnnotationRequest], Union[resources.ReportingDataAnnotation, Awaitable[resources.ReportingDataAnnotation]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_reporting_data_annotation(
         self,
-    ) -> Callable[
-        [analytics_admin.DeleteReportingDataAnnotationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[analytics_admin.DeleteReportingDataAnnotationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -2504,10 +1966,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.SubmitUserDeletionRequest],
-        Union[
-            analytics_admin.SubmitUserDeletionResponse,
-            Awaitable[analytics_admin.SubmitUserDeletionResponse],
-        ],
+        Union[analytics_admin.SubmitUserDeletionResponse, Awaitable[analytics_admin.SubmitUserDeletionResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2516,10 +1975,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.ListSubpropertySyncConfigsRequest],
-        Union[
-            analytics_admin.ListSubpropertySyncConfigsResponse,
-            Awaitable[analytics_admin.ListSubpropertySyncConfigsResponse],
-        ],
+        Union[analytics_admin.ListSubpropertySyncConfigsResponse, Awaitable[analytics_admin.ListSubpropertySyncConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -2527,10 +1983,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def update_subproperty_sync_config(
         self,
     ) -> Callable[
-        [analytics_admin.UpdateSubpropertySyncConfigRequest],
-        Union[
-            resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]
-        ],
+        [analytics_admin.UpdateSubpropertySyncConfigRequest], Union[resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]]
     ]:
         raise NotImplementedError()
 
@@ -2538,10 +1991,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     def get_subproperty_sync_config(
         self,
     ) -> Callable[
-        [analytics_admin.GetSubpropertySyncConfigRequest],
-        Union[
-            resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]
-        ],
+        [analytics_admin.GetSubpropertySyncConfigRequest], Union[resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]]
     ]:
         raise NotImplementedError()
 
@@ -2550,10 +2000,7 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetReportingIdentitySettingsRequest],
-        Union[
-            resources.ReportingIdentitySettings,
-            Awaitable[resources.ReportingIdentitySettings],
-        ],
+        Union[resources.ReportingIdentitySettings, Awaitable[resources.ReportingIdentitySettings]],
     ]:
         raise NotImplementedError()
 

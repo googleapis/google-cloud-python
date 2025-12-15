@@ -22,9 +22,7 @@ from .grpc_asyncio import CloudLocationFinderGrpcAsyncIOTransport
 from .rest import CloudLocationFinderRestInterceptor, CloudLocationFinderRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CloudLocationFinderTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CloudLocationFinderTransport]]
 _transport_registry["grpc"] = CloudLocationFinderGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudLocationFinderGrpcAsyncIOTransport
 _transport_registry["rest"] = CloudLocationFinderRestTransport

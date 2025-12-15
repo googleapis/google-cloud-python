@@ -18,126 +18,46 @@ from google.cloud.discoveryengine import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.discoveryengine_v1beta.services.completion_service.async_client import (
-    CompletionServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.completion_service.client import (
-    CompletionServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.control_service.async_client import (
-    ControlServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.control_service.client import (
-    ControlServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.conversational_search_service.async_client import (
-    ConversationalSearchServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.conversational_search_service.client import (
-    ConversationalSearchServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.data_store_service.async_client import (
-    DataStoreServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.data_store_service.client import (
-    DataStoreServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.document_service.async_client import (
-    DocumentServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.document_service.client import (
-    DocumentServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.engine_service.async_client import (
-    EngineServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.engine_service.client import (
-    EngineServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.evaluation_service.async_client import (
-    EvaluationServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.evaluation_service.client import (
-    EvaluationServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.async_client import (
-    GroundedGenerationServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.client import (
-    GroundedGenerationServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.project_service.async_client import (
-    ProjectServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.project_service.client import (
-    ProjectServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.rank_service.async_client import (
-    RankServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.rank_service.client import (
-    RankServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.recommendation_service.async_client import (
-    RecommendationServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.recommendation_service.client import (
-    RecommendationServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.sample_query_service.async_client import (
-    SampleQueryServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.sample_query_service.client import (
-    SampleQueryServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.sample_query_set_service.async_client import (
-    SampleQuerySetServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.sample_query_set_service.client import (
-    SampleQuerySetServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.schema_service.async_client import (
-    SchemaServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.schema_service.client import (
-    SchemaServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.search_service.async_client import (
-    SearchServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.search_service.client import (
-    SearchServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.search_tuning_service.async_client import (
-    SearchTuningServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.search_tuning_service.client import (
-    SearchTuningServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.serving_config_service.async_client import (
-    ServingConfigServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.serving_config_service.client import (
-    ServingConfigServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.session_service.async_client import (
-    SessionServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.session_service.client import (
-    SessionServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.site_search_engine_service.async_client import (
-    SiteSearchEngineServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.site_search_engine_service.client import (
-    SiteSearchEngineServiceClient,
-)
-from google.cloud.discoveryengine_v1beta.services.user_event_service.async_client import (
-    UserEventServiceAsyncClient,
-)
-from google.cloud.discoveryengine_v1beta.services.user_event_service.client import (
-    UserEventServiceClient,
-)
+from google.cloud.discoveryengine_v1beta.services.completion_service.async_client import CompletionServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.completion_service.client import CompletionServiceClient
+from google.cloud.discoveryengine_v1beta.services.control_service.async_client import ControlServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.control_service.client import ControlServiceClient
+from google.cloud.discoveryengine_v1beta.services.conversational_search_service.async_client import ConversationalSearchServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.conversational_search_service.client import ConversationalSearchServiceClient
+from google.cloud.discoveryengine_v1beta.services.data_store_service.async_client import DataStoreServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.data_store_service.client import DataStoreServiceClient
+from google.cloud.discoveryengine_v1beta.services.document_service.async_client import DocumentServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.document_service.client import DocumentServiceClient
+from google.cloud.discoveryengine_v1beta.services.engine_service.async_client import EngineServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.engine_service.client import EngineServiceClient
+from google.cloud.discoveryengine_v1beta.services.evaluation_service.async_client import EvaluationServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.evaluation_service.client import EvaluationServiceClient
+from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.async_client import GroundedGenerationServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.client import GroundedGenerationServiceClient
+from google.cloud.discoveryengine_v1beta.services.project_service.async_client import ProjectServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.project_service.client import ProjectServiceClient
+from google.cloud.discoveryengine_v1beta.services.rank_service.async_client import RankServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.rank_service.client import RankServiceClient
+from google.cloud.discoveryengine_v1beta.services.recommendation_service.async_client import RecommendationServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.recommendation_service.client import RecommendationServiceClient
+from google.cloud.discoveryengine_v1beta.services.sample_query_service.async_client import SampleQueryServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.sample_query_service.client import SampleQueryServiceClient
+from google.cloud.discoveryengine_v1beta.services.sample_query_set_service.async_client import SampleQuerySetServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.sample_query_set_service.client import SampleQuerySetServiceClient
+from google.cloud.discoveryengine_v1beta.services.schema_service.async_client import SchemaServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.schema_service.client import SchemaServiceClient
+from google.cloud.discoveryengine_v1beta.services.search_service.async_client import SearchServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.search_service.client import SearchServiceClient
+from google.cloud.discoveryengine_v1beta.services.search_tuning_service.async_client import SearchTuningServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.search_tuning_service.client import SearchTuningServiceClient
+from google.cloud.discoveryengine_v1beta.services.serving_config_service.async_client import ServingConfigServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.serving_config_service.client import ServingConfigServiceClient
+from google.cloud.discoveryengine_v1beta.services.session_service.async_client import SessionServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.session_service.client import SessionServiceClient
+from google.cloud.discoveryengine_v1beta.services.site_search_engine_service.async_client import SiteSearchEngineServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.site_search_engine_service.client import SiteSearchEngineServiceClient
+from google.cloud.discoveryengine_v1beta.services.user_event_service.async_client import UserEventServiceAsyncClient
+from google.cloud.discoveryengine_v1beta.services.user_event_service.client import UserEventServiceClient
 from google.cloud.discoveryengine_v1beta.types.answer import Answer
 from google.cloud.discoveryengine_v1beta.types.chunk import Chunk
 from google.cloud.discoveryengine_v1beta.types.common import (
@@ -152,10 +72,7 @@ from google.cloud.discoveryengine_v1beta.types.common import (
     SolutionType,
     UserInfo,
 )
-from google.cloud.discoveryengine_v1beta.types.completion import (
-    CompletionSuggestion,
-    SuggestionDenyListEntry,
-)
+from google.cloud.discoveryengine_v1beta.types.completion import CompletionSuggestion, SuggestionDenyListEntry
 from google.cloud.discoveryengine_v1beta.types.completion_service import (
     AdvancedCompleteQueryRequest,
     AdvancedCompleteQueryResponse,
@@ -171,13 +88,7 @@ from google.cloud.discoveryengine_v1beta.types.control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
-from google.cloud.discoveryengine_v1beta.types.conversation import (
-    Conversation,
-    ConversationContext,
-    ConversationMessage,
-    Reply,
-    TextInput,
-)
+from google.cloud.discoveryengine_v1beta.types.conversation import Conversation, ConversationContext, ConversationMessage, Reply, TextInput
 from google.cloud.discoveryengine_v1beta.types.conversational_search_service import (
     AnswerQueryRequest,
     AnswerQueryResponse,
@@ -197,15 +108,8 @@ from google.cloud.discoveryengine_v1beta.types.conversational_search_service imp
     UpdateConversationRequest,
     UpdateSessionRequest,
 )
-from google.cloud.discoveryengine_v1beta.types.custom_tuning_model import (
-    CustomTuningModel,
-)
-from google.cloud.discoveryengine_v1beta.types.data_store import (
-    DataStore,
-    LanguageInfo,
-    NaturalLanguageQueryUnderstandingConfig,
-    WorkspaceConfig,
-)
+from google.cloud.discoveryengine_v1beta.types.custom_tuning_model import CustomTuningModel
+from google.cloud.discoveryengine_v1beta.types.data_store import DataStore, LanguageInfo, NaturalLanguageQueryUnderstandingConfig, WorkspaceConfig
 from google.cloud.discoveryengine_v1beta.types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -217,9 +121,7 @@ from google.cloud.discoveryengine_v1beta.types.data_store_service import (
     UpdateDataStoreRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.document import Document
-from google.cloud.discoveryengine_v1beta.types.document_processing_config import (
-    DocumentProcessingConfig,
-)
+from google.cloud.discoveryengine_v1beta.types.document_processing_config import DocumentProcessingConfig
 from google.cloud.discoveryengine_v1beta.types.document_service import (
     BatchGetDocumentsMetadataRequest,
     BatchGetDocumentsMetadataResponse,
@@ -246,10 +148,7 @@ from google.cloud.discoveryengine_v1beta.types.engine_service import (
     TuneEngineResponse,
     UpdateEngineRequest,
 )
-from google.cloud.discoveryengine_v1beta.types.evaluation import (
-    Evaluation,
-    QualityMetrics,
-)
+from google.cloud.discoveryengine_v1beta.types.evaluation import Evaluation, QualityMetrics
 from google.cloud.discoveryengine_v1beta.types.evaluation_service import (
     CreateEvaluationMetadata,
     CreateEvaluationRequest,
@@ -267,11 +166,7 @@ from google.cloud.discoveryengine_v1beta.types.grounded_generation_service impor
     GenerateGroundedContentResponse,
     GroundedGenerationContent,
 )
-from google.cloud.discoveryengine_v1beta.types.grounding import (
-    FactChunk,
-    GroundingConfig,
-    GroundingFact,
-)
+from google.cloud.discoveryengine_v1beta.types.grounding import FactChunk, GroundingConfig, GroundingFact
 from google.cloud.discoveryengine_v1beta.types.import_config import (
     AlloyDbSource,
     BigQuerySource,
@@ -300,10 +195,7 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     SpannerSource,
 )
 from google.cloud.discoveryengine_v1beta.types.project import Project
-from google.cloud.discoveryengine_v1beta.types.project_service import (
-    ProvisionProjectMetadata,
-    ProvisionProjectRequest,
-)
+from google.cloud.discoveryengine_v1beta.types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from google.cloud.discoveryengine_v1beta.types.purge_config import (
     PurgeCompletionSuggestionsMetadata,
     PurgeCompletionSuggestionsRequest,
@@ -319,15 +211,8 @@ from google.cloud.discoveryengine_v1beta.types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from google.cloud.discoveryengine_v1beta.types.rank_service import (
-    RankingRecord,
-    RankRequest,
-    RankResponse,
-)
-from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
-    RecommendRequest,
-    RecommendResponse,
-)
+from google.cloud.discoveryengine_v1beta.types.rank_service import RankingRecord, RankRequest, RankResponse
+from google.cloud.discoveryengine_v1beta.types.recommendation_service import RecommendRequest, RecommendResponse
 from google.cloud.discoveryengine_v1beta.types.sample_query import SampleQuery
 from google.cloud.discoveryengine_v1beta.types.sample_query_service import (
     CreateSampleQueryRequest,
@@ -358,10 +243,7 @@ from google.cloud.discoveryengine_v1beta.types.schema_service import (
     UpdateSchemaMetadata,
     UpdateSchemaRequest,
 )
-from google.cloud.discoveryengine_v1beta.types.search_service import (
-    SearchRequest,
-    SearchResponse,
-)
+from google.cloud.discoveryengine_v1beta.types.search_service import SearchRequest, SearchResponse
 from google.cloud.discoveryengine_v1beta.types.search_tuning_service import (
     ListCustomModelsRequest,
     ListCustomModelsResponse,
@@ -377,12 +259,7 @@ from google.cloud.discoveryengine_v1beta.types.serving_config_service import (
     UpdateServingConfigRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.session import Query, Session
-from google.cloud.discoveryengine_v1beta.types.site_search_engine import (
-    Sitemap,
-    SiteSearchEngine,
-    SiteVerificationInfo,
-    TargetSite,
-)
+from google.cloud.discoveryengine_v1beta.types.site_search_engine import Sitemap, SiteSearchEngine, SiteVerificationInfo, TargetSite
 from google.cloud.discoveryengine_v1beta.types.site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
     BatchCreateTargetSitesRequest,
@@ -428,10 +305,7 @@ from google.cloud.discoveryengine_v1beta.types.user_event import (
     TransactionInfo,
     UserEvent,
 )
-from google.cloud.discoveryengine_v1beta.types.user_event_service import (
-    CollectUserEventRequest,
-    WriteUserEventRequest,
-)
+from google.cloud.discoveryengine_v1beta.types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
     "CompletionServiceClient",

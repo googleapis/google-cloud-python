@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -335,9 +318,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._grpc_channel
 
     @property
-    def execute_patch_job(
-        self,
-    ) -> Callable[[patch_jobs.ExecutePatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
+    def execute_patch_job(self) -> Callable[[patch_jobs.ExecutePatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
         r"""Return a callable for the execute patch job method over gRPC.
 
         Patch VM instances by creating and running a patch
@@ -362,9 +343,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["execute_patch_job"]
 
     @property
-    def get_patch_job(
-        self,
-    ) -> Callable[[patch_jobs.GetPatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
+    def get_patch_job(self) -> Callable[[patch_jobs.GetPatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
         r"""Return a callable for the get patch job method over gRPC.
 
         Get the patch job. This can be used to track the
@@ -390,9 +369,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["get_patch_job"]
 
     @property
-    def cancel_patch_job(
-        self,
-    ) -> Callable[[patch_jobs.CancelPatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
+    def cancel_patch_job(self) -> Callable[[patch_jobs.CancelPatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
         r"""Return a callable for the cancel patch job method over gRPC.
 
         Cancel a patch job. The patch job must be active.
@@ -417,11 +394,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["cancel_patch_job"]
 
     @property
-    def list_patch_jobs(
-        self,
-    ) -> Callable[
-        [patch_jobs.ListPatchJobsRequest], Awaitable[patch_jobs.ListPatchJobsResponse]
-    ]:
+    def list_patch_jobs(self) -> Callable[[patch_jobs.ListPatchJobsRequest], Awaitable[patch_jobs.ListPatchJobsResponse]]:
         r"""Return a callable for the list patch jobs method over gRPC.
 
         Get a list of patch jobs.
@@ -447,10 +420,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
     @property
     def list_patch_job_instance_details(
         self,
-    ) -> Callable[
-        [patch_jobs.ListPatchJobInstanceDetailsRequest],
-        Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse],
-    ]:
+    ) -> Callable[[patch_jobs.ListPatchJobInstanceDetailsRequest], Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse]]:
         r"""Return a callable for the list patch job instance
         details method over gRPC.
 
@@ -467,9 +437,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_patch_job_instance_details" not in self._stubs:
-            self._stubs[
-                "list_patch_job_instance_details"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_patch_job_instance_details"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/ListPatchJobInstanceDetails",
                 request_serializer=patch_jobs.ListPatchJobInstanceDetailsRequest.serialize,
                 response_deserializer=patch_jobs.ListPatchJobInstanceDetailsResponse.deserialize,
@@ -477,12 +445,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["list_patch_job_instance_details"]
 
     @property
-    def create_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.CreatePatchDeploymentRequest],
-        Awaitable[patch_deployments.PatchDeployment],
-    ]:
+    def create_patch_deployment(self) -> Callable[[patch_deployments.CreatePatchDeploymentRequest], Awaitable[patch_deployments.PatchDeployment]]:
         r"""Return a callable for the create patch deployment method over gRPC.
 
         Create an OS Config patch deployment.
@@ -506,12 +469,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["create_patch_deployment"]
 
     @property
-    def get_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.GetPatchDeploymentRequest],
-        Awaitable[patch_deployments.PatchDeployment],
-    ]:
+    def get_patch_deployment(self) -> Callable[[patch_deployments.GetPatchDeploymentRequest], Awaitable[patch_deployments.PatchDeployment]]:
         r"""Return a callable for the get patch deployment method over gRPC.
 
         Get an OS Config patch deployment.
@@ -537,10 +495,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
     @property
     def list_patch_deployments(
         self,
-    ) -> Callable[
-        [patch_deployments.ListPatchDeploymentsRequest],
-        Awaitable[patch_deployments.ListPatchDeploymentsResponse],
-    ]:
+    ) -> Callable[[patch_deployments.ListPatchDeploymentsRequest], Awaitable[patch_deployments.ListPatchDeploymentsResponse]]:
         r"""Return a callable for the list patch deployments method over gRPC.
 
         Get a page of OS Config patch deployments.
@@ -564,11 +519,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["list_patch_deployments"]
 
     @property
-    def delete_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.DeletePatchDeploymentRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_patch_deployment(self) -> Callable[[patch_deployments.DeletePatchDeploymentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete patch deployment method over gRPC.
 
         Delete an OS Config patch deployment.
@@ -592,12 +543,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["delete_patch_deployment"]
 
     @property
-    def update_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.UpdatePatchDeploymentRequest],
-        Awaitable[patch_deployments.PatchDeployment],
-    ]:
+    def update_patch_deployment(self) -> Callable[[patch_deployments.UpdatePatchDeploymentRequest], Awaitable[patch_deployments.PatchDeployment]]:
         r"""Return a callable for the update patch deployment method over gRPC.
 
         Update an OS Config patch deployment.
@@ -621,12 +567,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["update_patch_deployment"]
 
     @property
-    def pause_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.PausePatchDeploymentRequest],
-        Awaitable[patch_deployments.PatchDeployment],
-    ]:
+    def pause_patch_deployment(self) -> Callable[[patch_deployments.PausePatchDeploymentRequest], Awaitable[patch_deployments.PatchDeployment]]:
         r"""Return a callable for the pause patch deployment method over gRPC.
 
         Change state of patch deployment to "PAUSED".
@@ -652,12 +593,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return self._stubs["pause_patch_deployment"]
 
     @property
-    def resume_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.ResumePatchDeploymentRequest],
-        Awaitable[patch_deployments.PatchDeployment],
-    ]:
+    def resume_patch_deployment(self) -> Callable[[patch_deployments.ResumePatchDeploymentRequest], Awaitable[patch_deployments.PatchDeployment]]:
         r"""Return a callable for the resume patch deployment method over gRPC.
 
         Change state of patch deployment back to "ACTIVE".

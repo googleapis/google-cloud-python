@@ -18,33 +18,15 @@ from google.shopping.css import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.shopping.css_v1.services.account_labels_service.async_client import (
-    AccountLabelsServiceAsyncClient,
-)
-from google.shopping.css_v1.services.account_labels_service.client import (
-    AccountLabelsServiceClient,
-)
-from google.shopping.css_v1.services.accounts_service.async_client import (
-    AccountsServiceAsyncClient,
-)
-from google.shopping.css_v1.services.accounts_service.client import (
-    AccountsServiceClient,
-)
-from google.shopping.css_v1.services.css_product_inputs_service.async_client import (
-    CssProductInputsServiceAsyncClient,
-)
-from google.shopping.css_v1.services.css_product_inputs_service.client import (
-    CssProductInputsServiceClient,
-)
-from google.shopping.css_v1.services.css_products_service.async_client import (
-    CssProductsServiceAsyncClient,
-)
-from google.shopping.css_v1.services.css_products_service.client import (
-    CssProductsServiceClient,
-)
-from google.shopping.css_v1.services.quota_service.async_client import (
-    QuotaServiceAsyncClient,
-)
+from google.shopping.css_v1.services.account_labels_service.async_client import AccountLabelsServiceAsyncClient
+from google.shopping.css_v1.services.account_labels_service.client import AccountLabelsServiceClient
+from google.shopping.css_v1.services.accounts_service.async_client import AccountsServiceAsyncClient
+from google.shopping.css_v1.services.accounts_service.client import AccountsServiceClient
+from google.shopping.css_v1.services.css_product_inputs_service.async_client import CssProductInputsServiceAsyncClient
+from google.shopping.css_v1.services.css_product_inputs_service.client import CssProductInputsServiceClient
+from google.shopping.css_v1.services.css_products_service.async_client import CssProductsServiceAsyncClient
+from google.shopping.css_v1.services.css_products_service.client import CssProductsServiceClient
+from google.shopping.css_v1.services.quota_service.async_client import QuotaServiceAsyncClient
 from google.shopping.css_v1.services.quota_service.client import QuotaServiceClient
 from google.shopping.css_v1.types.accounts import (
     Account,
@@ -78,18 +60,8 @@ from google.shopping.css_v1.types.css_product_inputs import (
     InsertCssProductInputRequest,
     UpdateCssProductInputRequest,
 )
-from google.shopping.css_v1.types.css_products import (
-    CssProduct,
-    GetCssProductRequest,
-    ListCssProductsRequest,
-    ListCssProductsResponse,
-)
-from google.shopping.css_v1.types.quota import (
-    ListQuotaGroupsRequest,
-    ListQuotaGroupsResponse,
-    MethodDetails,
-    QuotaGroup,
-)
+from google.shopping.css_v1.types.css_products import CssProduct, GetCssProductRequest, ListCssProductsRequest, ListCssProductsResponse
+from google.shopping.css_v1.types.quota import ListQuotaGroupsRequest, ListQuotaGroupsResponse, MethodDetails, QuotaGroup
 
 __all__ = (
     "AccountLabelsServiceClient",

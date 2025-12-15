@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -83,33 +72,17 @@ class PermissionServiceAsyncClient:
     permission_path = staticmethod(PermissionServiceClient.permission_path)
     parse_permission_path = staticmethod(PermissionServiceClient.parse_permission_path)
     tuned_model_path = staticmethod(PermissionServiceClient.tuned_model_path)
-    parse_tuned_model_path = staticmethod(
-        PermissionServiceClient.parse_tuned_model_path
-    )
-    common_billing_account_path = staticmethod(
-        PermissionServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        PermissionServiceClient.parse_common_billing_account_path
-    )
+    parse_tuned_model_path = staticmethod(PermissionServiceClient.parse_tuned_model_path)
+    common_billing_account_path = staticmethod(PermissionServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(PermissionServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(PermissionServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        PermissionServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        PermissionServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        PermissionServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(PermissionServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(PermissionServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(PermissionServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(PermissionServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        PermissionServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(PermissionServiceClient.parse_common_project_path)
     common_location_path = staticmethod(PermissionServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        PermissionServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(PermissionServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -145,9 +118,7 @@ class PermissionServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -214,13 +185,7 @@ class PermissionServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                PermissionServiceTransport,
-                Callable[..., PermissionServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, PermissionServiceTransport, Callable[..., PermissionServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -280,20 +245,14 @@ class PermissionServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.ai.generativelanguage_v1beta3.PermissionServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.ai.generativelanguage.v1beta3.PermissionService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -304,9 +263,7 @@ class PermissionServiceAsyncClient:
 
     async def create_permission(
         self,
-        request: Optional[
-            Union[permission_service.CreatePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[permission_service.CreatePermissionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         permission: Optional[gag_permission.Permission] = None,
@@ -396,14 +353,9 @@ class PermissionServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, permission]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -419,15 +371,11 @@ class PermissionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_permission
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_permission]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -532,14 +480,9 @@ class PermissionServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -553,15 +496,11 @@ class PermissionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_permission
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_permission]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -579,9 +518,7 @@ class PermissionServiceAsyncClient:
 
     async def list_permissions(
         self,
-        request: Optional[
-            Union[permission_service.ListPermissionsRequest, dict]
-        ] = None,
+        request: Optional[Union[permission_service.ListPermissionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -648,14 +585,9 @@ class PermissionServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -669,15 +601,11 @@ class PermissionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_permissions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -706,9 +634,7 @@ class PermissionServiceAsyncClient:
 
     async def update_permission(
         self,
-        request: Optional[
-            Union[permission_service.UpdatePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[permission_service.UpdatePermissionRequest, dict]] = None,
         *,
         permission: Optional[gag_permission.Permission] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -802,14 +728,9 @@ class PermissionServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [permission, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -825,17 +746,11 @@ class PermissionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_permission
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_permission]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("permission.name", request.permission.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("permission.name", request.permission.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -853,9 +768,7 @@ class PermissionServiceAsyncClient:
 
     async def delete_permission(
         self,
-        request: Optional[
-            Union[permission_service.DeletePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[permission_service.DeletePermissionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -909,14 +822,9 @@ class PermissionServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -930,15 +838,11 @@ class PermissionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_permission
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_permission]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -953,9 +857,7 @@ class PermissionServiceAsyncClient:
 
     async def transfer_ownership(
         self,
-        request: Optional[
-            Union[permission_service.TransferOwnershipRequest, dict]
-        ] = None,
+        request: Optional[Union[permission_service.TransferOwnershipRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1017,15 +919,11 @@ class PermissionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.transfer_ownership
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.transfer_ownership]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1048,9 +946,7 @@ class PermissionServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

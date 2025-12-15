@@ -18,12 +18,8 @@ from google.cloud.documentai import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.documentai_v1.services.document_processor_service.async_client import (
-    DocumentProcessorServiceAsyncClient,
-)
-from google.cloud.documentai_v1.services.document_processor_service.client import (
-    DocumentProcessorServiceClient,
-)
+from google.cloud.documentai_v1.services.document_processor_service.async_client import DocumentProcessorServiceAsyncClient
+from google.cloud.documentai_v1.services.document_processor_service.client import DocumentProcessorServiceClient
 from google.cloud.documentai_v1.types.barcode import Barcode
 from google.cloud.documentai_v1.types.document import Document
 from google.cloud.documentai_v1.types.document_io import (
@@ -89,17 +85,9 @@ from google.cloud.documentai_v1.types.document_processor_service import (
 )
 from google.cloud.documentai_v1.types.document_schema import DocumentSchema
 from google.cloud.documentai_v1.types.evaluation import Evaluation, EvaluationReference
-from google.cloud.documentai_v1.types.geometry import (
-    BoundingPoly,
-    NormalizedVertex,
-    Vertex,
-)
+from google.cloud.documentai_v1.types.geometry import BoundingPoly, NormalizedVertex, Vertex
 from google.cloud.documentai_v1.types.operation_metadata import CommonOperationMetadata
-from google.cloud.documentai_v1.types.processor import (
-    Processor,
-    ProcessorVersion,
-    ProcessorVersionAlias,
-)
+from google.cloud.documentai_v1.types.processor import Processor, ProcessorVersion, ProcessorVersionAlias
 from google.cloud.documentai_v1.types.processor_type import ProcessorType
 
 __all__ = (

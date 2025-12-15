@@ -61,9 +61,7 @@ from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registr
     ManagedSchemaRegistryClient,
     transports,
 )
-from google.cloud.managedkafka_schemaregistry_v1.types import (
-    schema_registry as gcms_schema_registry,
-)
+from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry as gcms_schema_registry
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
 from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
@@ -97,22 +95,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -123,94 +113,135 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert ManagedSchemaRegistryClient._get_default_mtls_endpoint(None) is None
-    assert (
-        ManagedSchemaRegistryClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert ManagedSchemaRegistryClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert ManagedSchemaRegistryClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert ManagedSchemaRegistryClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert ManagedSchemaRegistryClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert ManagedSchemaRegistryClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert ManagedSchemaRegistryClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert ManagedSchemaRegistryClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert ManagedSchemaRegistryClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert ManagedSchemaRegistryClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert ManagedSchemaRegistryClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert ManagedSchemaRegistryClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            ManagedSchemaRegistryClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                ManagedSchemaRegistryClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert ManagedSchemaRegistryClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert ManagedSchemaRegistryClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert ManagedSchemaRegistryClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert ManagedSchemaRegistryClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert ManagedSchemaRegistryClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert ManagedSchemaRegistryClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert ManagedSchemaRegistryClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             ManagedSchemaRegistryClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert ManagedSchemaRegistryClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert ManagedSchemaRegistryClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                ManagedSchemaRegistryClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert ManagedSchemaRegistryClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -218,131 +249,51 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert ManagedSchemaRegistryClient._get_client_cert_source(None, False) is None
-    assert (
-        ManagedSchemaRegistryClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
-        is None
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_client_cert_source(
-            mock_provided_cert_source, True
-        )
-        == mock_provided_cert_source
-    )
+    assert ManagedSchemaRegistryClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert ManagedSchemaRegistryClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                ManagedSchemaRegistryClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                ManagedSchemaRegistryClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert ManagedSchemaRegistryClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert ManagedSchemaRegistryClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    ManagedSchemaRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryClient),
-)
-@mock.patch.object(
-    ManagedSchemaRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient),
-)
+@mock.patch.object(ManagedSchemaRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryClient))
+@mock.patch.object(ManagedSchemaRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = ManagedSchemaRegistryClient._DEFAULT_UNIVERSE
-    default_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert ManagedSchemaRegistryClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        ManagedSchemaRegistryClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
         == ManagedSchemaRegistryClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert ManagedSchemaRegistryClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert ManagedSchemaRegistryClient._get_api_endpoint(None, None, default_universe, "always") == ManagedSchemaRegistryClient.DEFAULT_MTLS_ENDPOINT
     assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
+        ManagedSchemaRegistryClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == ManagedSchemaRegistryClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == ManagedSchemaRegistryClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
+    assert ManagedSchemaRegistryClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert ManagedSchemaRegistryClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        ManagedSchemaRegistryClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        ManagedSchemaRegistryClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        ManagedSchemaRegistryClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        ManagedSchemaRegistryClient._get_universe_domain(None, None)
-        == ManagedSchemaRegistryClient._DEFAULT_UNIVERSE
-    )
+    assert ManagedSchemaRegistryClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert ManagedSchemaRegistryClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert ManagedSchemaRegistryClient._get_universe_domain(None, None) == ManagedSchemaRegistryClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         ManagedSchemaRegistryClient._get_universe_domain("", None)
@@ -400,13 +351,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (ManagedSchemaRegistryClient, "rest"),
     ],
 )
-def test_managed_schema_registry_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_managed_schema_registry_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -414,9 +361,7 @@ def test_managed_schema_registry_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "managedkafka.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://managedkafka.googleapis.com"
+            "managedkafka.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://managedkafka.googleapis.com"
         )
 
 
@@ -428,19 +373,13 @@ def test_managed_schema_registry_client_from_service_account_info(
         (transports.ManagedSchemaRegistryRestTransport, "rest"),
     ],
 )
-def test_managed_schema_registry_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_managed_schema_registry_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -454,30 +393,20 @@ def test_managed_schema_registry_client_service_account_always_use_jwt(
         (ManagedSchemaRegistryClient, "rest"),
     ],
 )
-def test_managed_schema_registry_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_managed_schema_registry_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "managedkafka.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://managedkafka.googleapis.com"
+            "managedkafka.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://managedkafka.googleapis.com"
         )
 
 
@@ -496,36 +425,14 @@ def test_managed_schema_registry_client_get_transport_class():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryGrpcTransport,
-            "grpc",
-        ),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryRestTransport,
-            "rest",
-        ),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport, "grpc"),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    ManagedSchemaRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryClient),
-)
-@mock.patch.object(
-    ManagedSchemaRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient),
-)
-def test_managed_schema_registry_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(ManagedSchemaRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryClient))
+@mock.patch.object(ManagedSchemaRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient))
+def test_managed_schema_registry_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ManagedSchemaRegistryClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -563,9 +470,7 @@ def test_managed_schema_registry_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -597,21 +502,7 @@ def test_managed_schema_registry_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -621,9 +512,7 @@ def test_managed_schema_registry_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -632,18 +521,14 @@ def test_managed_schema_registry_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -656,78 +541,32 @@ def test_managed_schema_registry_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryRestTransport,
-            "rest",
-            "false",
-        ),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport, "grpc", "true"),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport, "grpc_asyncio", "true"),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport, "grpc", "false"),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport, "grpc_asyncio", "false"),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryRestTransport, "rest", "true"),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    ManagedSchemaRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryClient),
-)
-@mock.patch.object(
-    ManagedSchemaRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient),
-)
+@mock.patch.object(ManagedSchemaRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryClient))
+@mock.patch.object(ManagedSchemaRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_managed_schema_registry_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_managed_schema_registry_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -746,22 +585,12 @@ def test_managed_schema_registry_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -782,22 +611,15 @@ def test_managed_schema_registry_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -807,31 +629,17 @@ def test_managed_schema_registry_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize(
-    "client_class", [ManagedSchemaRegistryClient, ManagedSchemaRegistryAsyncClient]
-)
-@mock.patch.object(
-    ManagedSchemaRegistryClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ManagedSchemaRegistryClient),
-)
-@mock.patch.object(
-    ManagedSchemaRegistryAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ManagedSchemaRegistryAsyncClient),
-)
+@pytest.mark.parametrize("client_class", [ManagedSchemaRegistryClient, ManagedSchemaRegistryAsyncClient])
+@mock.patch.object(ManagedSchemaRegistryClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ManagedSchemaRegistryClient))
+@mock.patch.object(ManagedSchemaRegistryAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ManagedSchemaRegistryAsyncClient))
 def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -839,14 +647,106 @@ def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -862,28 +762,16 @@ def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -893,62 +781,26 @@ def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
-@pytest.mark.parametrize(
-    "client_class", [ManagedSchemaRegistryClient, ManagedSchemaRegistryAsyncClient]
-)
-@mock.patch.object(
-    ManagedSchemaRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryClient),
-)
-@mock.patch.object(
-    ManagedSchemaRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient),
-)
+@pytest.mark.parametrize("client_class", [ManagedSchemaRegistryClient, ManagedSchemaRegistryAsyncClient])
+@mock.patch.object(ManagedSchemaRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryClient))
+@mock.patch.object(ManagedSchemaRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ManagedSchemaRegistryAsyncClient))
 def test_managed_schema_registry_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = ManagedSchemaRegistryClient._DEFAULT_UNIVERSE
-    default_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = ManagedSchemaRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -971,19 +823,11 @@ def test_managed_schema_registry_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -991,35 +835,19 @@ def test_managed_schema_registry_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryGrpcTransport,
-            "grpc",
-        ),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryRestTransport,
-            "rest",
-        ),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport, "grpc"),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryRestTransport, "rest"),
     ],
 )
-def test_managed_schema_registry_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_managed_schema_registry_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -1030,9 +858,7 @@ def test_managed_schema_registry_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1045,29 +871,12 @@ def test_managed_schema_registry_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryRestTransport,
-            "rest",
-            None,
-        ),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport, "grpc", grpc_helpers),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryRestTransport, "rest", None),
     ],
 )
-def test_managed_schema_registry_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_managed_schema_registry_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1077,9 +886,7 @@ def test_managed_schema_registry_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1094,9 +901,7 @@ def test_managed_schema_registry_client_client_options_from_dict():
         "google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.transports.ManagedSchemaRegistryGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = ManagedSchemaRegistryClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = ManagedSchemaRegistryClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1113,23 +918,11 @@ def test_managed_schema_registry_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            ManagedSchemaRegistryClient,
-            transports.ManagedSchemaRegistryGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport, "grpc", grpc_helpers),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_managed_schema_registry_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_managed_schema_registry_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1139,9 +932,7 @@ def test_managed_schema_registry_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1151,13 +942,9 @@ def test_managed_schema_registry_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1197,9 +984,7 @@ def test_get_schema_registry(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaRegistry(
             name="name_value",
@@ -1235,12 +1020,8 @@ def test_get_schema_registry_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_schema_registry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1263,18 +1044,12 @@ def test_get_schema_registry_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_schema_registry in client._transport._wrapped_methods
-        )
+        assert client._transport.get_schema_registry in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_registry
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_schema_registry] = mock_rpc
         request = {}
         client.get_schema_registry(request)
 
@@ -1289,9 +1064,7 @@ def test_get_schema_registry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_schema_registry_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_schema_registry_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1305,17 +1078,12 @@ async def test_get_schema_registry_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_schema_registry
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_schema_registry in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_schema_registry
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_schema_registry] = mock_rpc
 
         request = {}
         await client.get_schema_registry(request)
@@ -1331,10 +1099,7 @@ async def test_get_schema_registry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_schema_registry_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.GetSchemaRegistryRequest,
-):
+async def test_get_schema_registry_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRegistryRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1345,9 +1110,7 @@ async def test_get_schema_registry_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaRegistry(
@@ -1386,9 +1149,7 @@ def test_get_schema_registry_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaRegistry()
         client.get_schema_registry(request)
 
@@ -1418,12 +1179,8 @@ async def test_get_schema_registry_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaRegistry()
-        )
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaRegistry())
         await client.get_schema_registry(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1445,9 +1202,7 @@ def test_get_schema_registry_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaRegistry()
         # Call the method with a truthy value for each flattened field,
@@ -1486,15 +1241,11 @@ async def test_get_schema_registry_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaRegistry()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaRegistry()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaRegistry())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_schema_registry(
@@ -1543,9 +1294,7 @@ def test_list_schema_registries(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.ListSchemaRegistriesResponse()
         response = client.list_schema_registries(request)
@@ -1576,12 +1325,8 @@ def test_list_schema_registries_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_schema_registries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1604,19 +1349,12 @@ def test_list_schema_registries_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_schema_registries
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_schema_registries in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_registries
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_schema_registries] = mock_rpc
         request = {}
         client.list_schema_registries(request)
 
@@ -1631,9 +1369,7 @@ def test_list_schema_registries_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_schema_registries_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_schema_registries_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1647,17 +1383,12 @@ async def test_list_schema_registries_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_schema_registries
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_schema_registries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_schema_registries
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_schema_registries] = mock_rpc
 
         request = {}
         await client.list_schema_registries(request)
@@ -1673,10 +1404,7 @@ async def test_list_schema_registries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_schema_registries_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListSchemaRegistriesRequest,
-):
+async def test_list_schema_registries_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListSchemaRegistriesRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1687,13 +1415,9 @@ async def test_list_schema_registries_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.ListSchemaRegistriesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.ListSchemaRegistriesResponse())
         response = await client.list_schema_registries(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1723,9 +1447,7 @@ def test_list_schema_registries_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         call.return_value = schema_registry.ListSchemaRegistriesResponse()
         client.list_schema_registries(request)
 
@@ -1755,12 +1477,8 @@ async def test_list_schema_registries_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.ListSchemaRegistriesResponse()
-        )
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.ListSchemaRegistriesResponse())
         await client.list_schema_registries(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1782,9 +1500,7 @@ def test_list_schema_registries_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.ListSchemaRegistriesResponse()
         # Call the method with a truthy value for each flattened field,
@@ -1823,15 +1539,11 @@ async def test_list_schema_registries_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.ListSchemaRegistriesResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.ListSchemaRegistriesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.ListSchemaRegistriesResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_schema_registries(
@@ -1880,9 +1592,7 @@ def test_create_schema_registry(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaRegistry(
             name="name_value",
@@ -1919,12 +1629,8 @@ def test_create_schema_registry_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_schema_registry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1948,19 +1654,12 @@ def test_create_schema_registry_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_schema_registry
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_schema_registry in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_schema_registry
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_schema_registry] = mock_rpc
         request = {}
         client.create_schema_registry(request)
 
@@ -1975,9 +1674,7 @@ def test_create_schema_registry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_schema_registry_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_schema_registry_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1991,17 +1688,12 @@ async def test_create_schema_registry_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_schema_registry
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_schema_registry in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_schema_registry
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_schema_registry] = mock_rpc
 
         request = {}
         await client.create_schema_registry(request)
@@ -2017,10 +1709,7 @@ async def test_create_schema_registry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_schema_registry_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcms_schema_registry.CreateSchemaRegistryRequest,
-):
+async def test_create_schema_registry_async(transport: str = "grpc_asyncio", request_type=gcms_schema_registry.CreateSchemaRegistryRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2031,9 +1720,7 @@ async def test_create_schema_registry_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaRegistry(
@@ -2072,9 +1759,7 @@ def test_create_schema_registry_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaRegistry()
         client.create_schema_registry(request)
 
@@ -2104,12 +1789,8 @@ async def test_create_schema_registry_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaRegistry()
-        )
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaRegistry())
         await client.create_schema_registry(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2131,9 +1812,7 @@ def test_create_schema_registry_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaRegistry()
         # Call the method with a truthy value for each flattened field,
@@ -2177,15 +1856,11 @@ async def test_create_schema_registry_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaRegistry()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaRegistry()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaRegistry())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_schema_registry(
@@ -2239,9 +1914,7 @@ def test_delete_schema_registry(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.delete_schema_registry(request)
@@ -2272,12 +1945,8 @@ def test_delete_schema_registry_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_schema_registry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2300,19 +1969,12 @@ def test_delete_schema_registry_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_schema_registry
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_schema_registry in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_registry
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_schema_registry] = mock_rpc
         request = {}
         client.delete_schema_registry(request)
 
@@ -2327,9 +1989,7 @@ def test_delete_schema_registry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_registry_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_schema_registry_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2343,17 +2003,12 @@ async def test_delete_schema_registry_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_schema_registry
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_schema_registry in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_schema_registry
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_schema_registry] = mock_rpc
 
         request = {}
         await client.delete_schema_registry(request)
@@ -2369,10 +2024,7 @@ async def test_delete_schema_registry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_registry_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.DeleteSchemaRegistryRequest,
-):
+async def test_delete_schema_registry_async(transport: str = "grpc_asyncio", request_type=schema_registry.DeleteSchemaRegistryRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2383,9 +2035,7 @@ async def test_delete_schema_registry_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.delete_schema_registry(request)
@@ -2417,9 +2067,7 @@ def test_delete_schema_registry_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         call.return_value = None
         client.delete_schema_registry(request)
 
@@ -2449,9 +2097,7 @@ async def test_delete_schema_registry_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_schema_registry(request)
 
@@ -2474,9 +2120,7 @@ def test_delete_schema_registry_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -2515,9 +2159,7 @@ async def test_delete_schema_registry_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -2607,9 +2249,7 @@ def test_get_context_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_context), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_context(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2636,9 +2276,7 @@ def test_get_context_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_context] = mock_rpc
         request = {}
         client.get_context(request)
@@ -2654,9 +2292,7 @@ def test_get_context_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_context_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_context_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2670,17 +2306,12 @@ async def test_get_context_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_context
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_context in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_context
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_context] = mock_rpc
 
         request = {}
         await client.get_context(request)
@@ -2696,9 +2327,7 @@ async def test_get_context_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_context_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetContextRequest
-):
+async def test_get_context_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetContextRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2779,9 +2408,7 @@ async def test_get_context_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_context), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.Context()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.Context())
         await client.get_context(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2846,9 +2473,7 @@ async def test_get_context_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.Context()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.Context()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.Context())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_context(
@@ -2934,9 +2559,7 @@ def test_list_contexts_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_contexts), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_contexts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2963,9 +2586,7 @@ def test_list_contexts_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_contexts] = mock_rpc
         request = {}
         client.list_contexts(request)
@@ -2981,9 +2602,7 @@ def test_list_contexts_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_contexts_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_contexts_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2997,17 +2616,12 @@ async def test_list_contexts_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_contexts
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_contexts in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_contexts
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_contexts] = mock_rpc
 
         request = {}
         await client.list_contexts(request)
@@ -3023,9 +2637,7 @@ async def test_list_contexts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_contexts_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListContextsRequest
-):
+async def test_list_contexts_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListContextsRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3106,9 +2718,7 @@ async def test_list_contexts_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_contexts), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_contexts(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3173,9 +2783,7 @@ async def test_list_contexts_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_contexts(
@@ -3262,9 +2870,7 @@ def test_get_schema_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3292,9 +2898,7 @@ def test_get_schema_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_schema] = mock_rpc
         request = {}
         client.get_schema(request)
@@ -3324,17 +2928,12 @@ async def test_get_schema_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_schema
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_schema in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_schema
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_schema] = mock_rpc
 
         request = {}
         await client.get_schema(request)
@@ -3350,9 +2949,7 @@ async def test_get_schema_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_schema_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRequest
-):
+async def test_get_schema_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3433,9 +3030,7 @@ async def test_get_schema_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.Schema()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.Schema())
         await client.get_schema(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3500,9 +3095,7 @@ async def test_get_schema_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.Schema()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.Schema()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.Schema())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_schema(
@@ -3589,9 +3182,7 @@ def test_get_raw_schema_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_raw_schema), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_raw_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3619,9 +3210,7 @@ def test_get_raw_schema_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_raw_schema] = mock_rpc
         request = {}
         client.get_raw_schema(request)
@@ -3637,9 +3226,7 @@ def test_get_raw_schema_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_raw_schema_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_raw_schema_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3653,17 +3240,12 @@ async def test_get_raw_schema_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_raw_schema
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_raw_schema in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_raw_schema
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_raw_schema] = mock_rpc
 
         request = {}
         await client.get_raw_schema(request)
@@ -3679,9 +3261,7 @@ async def test_get_raw_schema_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_raw_schema_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRequest
-):
+async def test_get_raw_schema_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3762,9 +3342,7 @@ async def test_get_raw_schema_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_raw_schema), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.get_raw_schema(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3829,9 +3407,7 @@ async def test_get_raw_schema_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_raw_schema(
@@ -3880,9 +3456,7 @@ def test_list_schema_versions(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody(
             content_type="content_type_value",
@@ -3919,12 +3493,8 @@ def test_list_schema_versions_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_schema_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3948,18 +3518,12 @@ def test_list_schema_versions_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_schema_versions in client._transport._wrapped_methods
-        )
+        assert client._transport.list_schema_versions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_versions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_schema_versions] = mock_rpc
         request = {}
         client.list_schema_versions(request)
 
@@ -3974,9 +3538,7 @@ def test_list_schema_versions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_schema_versions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_schema_versions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3990,17 +3552,12 @@ async def test_list_schema_versions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_schema_versions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_schema_versions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_schema_versions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_schema_versions] = mock_rpc
 
         request = {}
         await client.list_schema_versions(request)
@@ -4016,10 +3573,7 @@ async def test_list_schema_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_schema_versions_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListSchemaVersionsRequest,
-):
+async def test_list_schema_versions_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListSchemaVersionsRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4030,9 +3584,7 @@ async def test_list_schema_versions_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -4071,9 +3623,7 @@ def test_list_schema_versions_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_schema_versions(request)
 
@@ -4103,12 +3653,8 @@ async def test_list_schema_versions_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_schema_versions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4130,9 +3676,7 @@ def test_list_schema_versions_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
         # Call the method with a truthy value for each flattened field,
@@ -4171,15 +3715,11 @@ async def test_list_schema_versions_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_schema_versions(
@@ -4228,9 +3768,7 @@ def test_list_schema_types(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody(
             content_type="content_type_value",
@@ -4266,12 +3804,8 @@ def test_list_schema_types_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_schema_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4298,12 +3832,8 @@ def test_list_schema_types_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_types
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_schema_types] = mock_rpc
         request = {}
         client.list_schema_types(request)
 
@@ -4318,9 +3848,7 @@ def test_list_schema_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_schema_types_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_schema_types_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4334,17 +3862,12 @@ async def test_list_schema_types_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_schema_types
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_schema_types in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_schema_types
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_schema_types] = mock_rpc
 
         request = {}
         await client.list_schema_types(request)
@@ -4360,9 +3883,7 @@ async def test_list_schema_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_schema_types_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListSchemaTypesRequest
-):
+async def test_list_schema_types_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListSchemaTypesRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4373,9 +3894,7 @@ async def test_list_schema_types_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -4414,9 +3933,7 @@ def test_list_schema_types_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_schema_types(request)
 
@@ -4446,12 +3963,8 @@ async def test_list_schema_types_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_schema_types(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4473,9 +3986,7 @@ def test_list_schema_types_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
         # Call the method with a truthy value for each flattened field,
@@ -4514,15 +4025,11 @@ async def test_list_schema_types_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_schema_types(
@@ -4609,9 +4116,7 @@ def test_list_subjects_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subjects), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_subjects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4639,9 +4144,7 @@ def test_list_subjects_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_subjects] = mock_rpc
         request = {}
         client.list_subjects(request)
@@ -4657,9 +4160,7 @@ def test_list_subjects_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_subjects_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_subjects_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4673,17 +4174,12 @@ async def test_list_subjects_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_subjects
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_subjects in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_subjects
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_subjects] = mock_rpc
 
         request = {}
         await client.list_subjects(request)
@@ -4699,9 +4195,7 @@ async def test_list_subjects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subjects_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListSubjectsRequest
-):
+async def test_list_subjects_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListSubjectsRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4782,9 +4276,7 @@ async def test_list_subjects_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subjects), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_subjects(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4859,9 +4351,7 @@ async def test_list_subjects_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_subjects(
@@ -4920,9 +4410,7 @@ def test_list_subjects_by_schema_id(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody(
             content_type="content_type_value",
@@ -4959,12 +4447,8 @@ def test_list_subjects_by_schema_id_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_subjects_by_schema_id(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4988,19 +4472,12 @@ def test_list_subjects_by_schema_id_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_subjects_by_schema_id
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_subjects_by_schema_id in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_subjects_by_schema_id
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_subjects_by_schema_id] = mock_rpc
         request = {}
         client.list_subjects_by_schema_id(request)
 
@@ -5015,9 +4492,7 @@ def test_list_subjects_by_schema_id_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_subjects_by_schema_id_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_subjects_by_schema_id_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5031,17 +4506,12 @@ async def test_list_subjects_by_schema_id_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_subjects_by_schema_id
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_subjects_by_schema_id in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_subjects_by_schema_id
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_subjects_by_schema_id] = mock_rpc
 
         request = {}
         await client.list_subjects_by_schema_id(request)
@@ -5057,10 +4527,7 @@ async def test_list_subjects_by_schema_id_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subjects_by_schema_id_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListSubjectsBySchemaIdRequest,
-):
+async def test_list_subjects_by_schema_id_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListSubjectsBySchemaIdRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5071,9 +4538,7 @@ async def test_list_subjects_by_schema_id_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -5112,9 +4577,7 @@ def test_list_subjects_by_schema_id_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_subjects_by_schema_id(request)
 
@@ -5144,12 +4607,8 @@ async def test_list_subjects_by_schema_id_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_subjects_by_schema_id(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5171,9 +4630,7 @@ def test_list_subjects_by_schema_id_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
         # Call the method with a truthy value for each flattened field,
@@ -5222,15 +4679,11 @@ async def test_list_subjects_by_schema_id_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_subjects_by_schema_id(
@@ -5326,9 +4779,7 @@ def test_delete_subject_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subject), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_subject(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5355,9 +4806,7 @@ def test_delete_subject_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_subject] = mock_rpc
         request = {}
         client.delete_subject(request)
@@ -5373,9 +4822,7 @@ def test_delete_subject_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_subject_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_subject_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5389,17 +4836,12 @@ async def test_delete_subject_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_subject
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_subject in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_subject
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_subject] = mock_rpc
 
         request = {}
         await client.delete_subject(request)
@@ -5415,9 +4857,7 @@ async def test_delete_subject_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_subject_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.DeleteSubjectRequest
-):
+async def test_delete_subject_async(transport: str = "grpc_asyncio", request_type=schema_registry.DeleteSubjectRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5498,9 +4938,7 @@ async def test_delete_subject_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subject), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.delete_subject(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5565,9 +5003,7 @@ async def test_delete_subject_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_subject(
@@ -5660,9 +5096,7 @@ def test_lookup_version_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_version), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.lookup_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5690,9 +5124,7 @@ def test_lookup_version_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.lookup_version] = mock_rpc
         request = {}
         client.lookup_version(request)
@@ -5708,9 +5140,7 @@ def test_lookup_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_lookup_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_lookup_version_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5724,17 +5154,12 @@ async def test_lookup_version_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.lookup_version
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.lookup_version in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.lookup_version
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.lookup_version] = mock_rpc
 
         request = {}
         await client.lookup_version(request)
@@ -5750,9 +5175,7 @@ async def test_lookup_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.LookupVersionRequest
-):
+async def test_lookup_version_async(transport: str = "grpc_asyncio", request_type=schema_registry.LookupVersionRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5839,9 +5262,7 @@ async def test_lookup_version_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_version), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaVersion()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaVersion())
         await client.lookup_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5911,9 +5332,7 @@ async def test_lookup_version_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaVersion()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaVersion()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaVersion())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.lookup_version(
@@ -6010,9 +5429,7 @@ def test_get_version_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6039,9 +5456,7 @@ def test_get_version_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_version] = mock_rpc
         request = {}
         client.get_version(request)
@@ -6057,9 +5472,7 @@ def test_get_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_version_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6073,17 +5486,12 @@ async def test_get_version_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_version
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_version in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_version
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_version] = mock_rpc
 
         request = {}
         await client.get_version(request)
@@ -6099,9 +5507,7 @@ async def test_get_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetVersionRequest
-):
+async def test_get_version_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetVersionRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6188,9 +5594,7 @@ async def test_get_version_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaVersion()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaVersion())
         await client.get_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6255,9 +5659,7 @@ async def test_get_version_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaVersion()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaVersion()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaVersion())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_version(
@@ -6306,9 +5708,7 @@ def test_get_raw_schema_version(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody(
             content_type="content_type_value",
@@ -6344,12 +5744,8 @@ def test_get_raw_schema_version_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_raw_schema_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6372,19 +5768,12 @@ def test_get_raw_schema_version_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_raw_schema_version
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_raw_schema_version in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_raw_schema_version
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_raw_schema_version] = mock_rpc
         request = {}
         client.get_raw_schema_version(request)
 
@@ -6399,9 +5788,7 @@ def test_get_raw_schema_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_raw_schema_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_raw_schema_version_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6415,17 +5802,12 @@ async def test_get_raw_schema_version_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_raw_schema_version
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_raw_schema_version in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_raw_schema_version
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_raw_schema_version] = mock_rpc
 
         request = {}
         await client.get_raw_schema_version(request)
@@ -6441,9 +5823,7 @@ async def test_get_raw_schema_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_raw_schema_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetVersionRequest
-):
+async def test_get_raw_schema_version_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetVersionRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6454,9 +5834,7 @@ async def test_get_raw_schema_version_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -6495,9 +5873,7 @@ def test_get_raw_schema_version_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.get_raw_schema_version(request)
 
@@ -6527,12 +5903,8 @@ async def test_get_raw_schema_version_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.get_raw_schema_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6554,9 +5926,7 @@ def test_get_raw_schema_version_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
         # Call the method with a truthy value for each flattened field,
@@ -6595,15 +5965,11 @@ async def test_get_raw_schema_version_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_raw_schema_version(
@@ -6689,9 +6055,7 @@ def test_list_versions_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6718,9 +6082,7 @@ def test_list_versions_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_versions] = mock_rpc
         request = {}
         client.list_versions(request)
@@ -6736,9 +6098,7 @@ def test_list_versions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_versions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_versions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6752,17 +6112,12 @@ async def test_list_versions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_versions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_versions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_versions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_versions] = mock_rpc
 
         request = {}
         await client.list_versions(request)
@@ -6778,9 +6133,7 @@ async def test_list_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_versions_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListVersionsRequest
-):
+async def test_list_versions_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListVersionsRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6861,9 +6214,7 @@ async def test_list_versions_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_versions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6928,9 +6279,7 @@ async def test_list_versions_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_versions(
@@ -7015,9 +6364,7 @@ def test_create_version_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_version), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7045,9 +6392,7 @@ def test_create_version_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_version] = mock_rpc
         request = {}
         client.create_version(request)
@@ -7063,9 +6408,7 @@ def test_create_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_version_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7079,17 +6422,12 @@ async def test_create_version_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_version
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_version in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_version
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_version] = mock_rpc
 
         request = {}
         await client.create_version(request)
@@ -7105,9 +6443,7 @@ async def test_create_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.CreateVersionRequest
-):
+async def test_create_version_async(transport: str = "grpc_asyncio", request_type=schema_registry.CreateVersionRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7186,9 +6522,7 @@ async def test_create_version_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_version), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.CreateVersionResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.CreateVersionResponse())
         await client.create_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7221,9 +6555,7 @@ def test_create_version_flattened():
             id=205,
             schema_type=schema_registry_resources.Schema.SchemaType.AVRO,
             schema="schema_value",
-            references=[
-                schema_registry_resources.Schema.SchemaReference(name="name_value")
-            ],
+            references=[schema_registry_resources.Schema.SchemaReference(name="name_value")],
             normalize=True,
         )
 
@@ -7269,9 +6601,7 @@ def test_create_version_flattened_error():
             id=205,
             schema_type=schema_registry_resources.Schema.SchemaType.AVRO,
             schema="schema_value",
-            references=[
-                schema_registry_resources.Schema.SchemaReference(name="name_value")
-            ],
+            references=[schema_registry_resources.Schema.SchemaReference(name="name_value")],
             normalize=True,
         )
 
@@ -7287,9 +6617,7 @@ async def test_create_version_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.CreateVersionResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.CreateVersionResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.CreateVersionResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_version(
@@ -7298,9 +6626,7 @@ async def test_create_version_flattened_async():
             id=205,
             schema_type=schema_registry_resources.Schema.SchemaType.AVRO,
             schema="schema_value",
-            references=[
-                schema_registry_resources.Schema.SchemaReference(name="name_value")
-            ],
+            references=[schema_registry_resources.Schema.SchemaReference(name="name_value")],
             normalize=True,
         )
 
@@ -7347,9 +6673,7 @@ async def test_create_version_flattened_error_async():
             id=205,
             schema_type=schema_registry_resources.Schema.SchemaType.AVRO,
             schema="schema_value",
-            references=[
-                schema_registry_resources.Schema.SchemaReference(name="name_value")
-            ],
+            references=[schema_registry_resources.Schema.SchemaReference(name="name_value")],
             normalize=True,
         )
 
@@ -7409,9 +6733,7 @@ def test_delete_version_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7438,9 +6760,7 @@ def test_delete_version_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_version] = mock_rpc
         request = {}
         client.delete_version(request)
@@ -7456,9 +6776,7 @@ def test_delete_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_version_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7472,17 +6790,12 @@ async def test_delete_version_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_version
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_version in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_version
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_version] = mock_rpc
 
         request = {}
         await client.delete_version(request)
@@ -7498,9 +6811,7 @@ async def test_delete_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.DeleteVersionRequest
-):
+async def test_delete_version_async(transport: str = "grpc_asyncio", request_type=schema_registry.DeleteVersionRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7581,9 +6892,7 @@ async def test_delete_version_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.delete_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7648,9 +6957,7 @@ async def test_delete_version_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_version(
@@ -7699,9 +7006,7 @@ def test_list_referenced_schemas(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody(
             content_type="content_type_value",
@@ -7737,12 +7042,8 @@ def test_list_referenced_schemas_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_referenced_schemas(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7765,19 +7066,12 @@ def test_list_referenced_schemas_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_referenced_schemas
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_referenced_schemas in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_referenced_schemas
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_referenced_schemas] = mock_rpc
         request = {}
         client.list_referenced_schemas(request)
 
@@ -7792,9 +7086,7 @@ def test_list_referenced_schemas_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_referenced_schemas_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_referenced_schemas_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7808,17 +7100,12 @@ async def test_list_referenced_schemas_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_referenced_schemas
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_referenced_schemas in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_referenced_schemas
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_referenced_schemas] = mock_rpc
 
         request = {}
         await client.list_referenced_schemas(request)
@@ -7834,10 +7121,7 @@ async def test_list_referenced_schemas_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_referenced_schemas_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListReferencedSchemasRequest,
-):
+async def test_list_referenced_schemas_async(transport: str = "grpc_asyncio", request_type=schema_registry.ListReferencedSchemasRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7848,9 +7132,7 @@ async def test_list_referenced_schemas_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -7889,9 +7171,7 @@ def test_list_referenced_schemas_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_referenced_schemas(request)
 
@@ -7921,12 +7201,8 @@ async def test_list_referenced_schemas_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         await client.list_referenced_schemas(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7948,9 +7224,7 @@ def test_list_referenced_schemas_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
         # Call the method with a truthy value for each flattened field,
@@ -7989,15 +7263,11 @@ async def test_list_referenced_schemas_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(httpbody_pb2.HttpBody())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_referenced_schemas(
@@ -8046,9 +7316,7 @@ def test_check_compatibility(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.CheckCompatibilityResponse(
             is_compatible=True,
@@ -8085,12 +7353,8 @@ def test_check_compatibility_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.check_compatibility(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8114,18 +7378,12 @@ def test_check_compatibility_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.check_compatibility in client._transport._wrapped_methods
-        )
+        assert client._transport.check_compatibility in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.check_compatibility
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.check_compatibility] = mock_rpc
         request = {}
         client.check_compatibility(request)
 
@@ -8140,9 +7398,7 @@ def test_check_compatibility_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_check_compatibility_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_check_compatibility_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8156,17 +7412,12 @@ async def test_check_compatibility_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.check_compatibility
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.check_compatibility in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.check_compatibility
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.check_compatibility] = mock_rpc
 
         request = {}
         await client.check_compatibility(request)
@@ -8182,10 +7433,7 @@ async def test_check_compatibility_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_check_compatibility_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.CheckCompatibilityRequest,
-):
+async def test_check_compatibility_async(transport: str = "grpc_asyncio", request_type=schema_registry.CheckCompatibilityRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8196,9 +7444,7 @@ async def test_check_compatibility_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry.CheckCompatibilityResponse(
@@ -8237,9 +7483,7 @@ def test_check_compatibility_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         call.return_value = schema_registry.CheckCompatibilityResponse()
         client.check_compatibility(request)
 
@@ -8269,12 +7513,8 @@ async def test_check_compatibility_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.CheckCompatibilityResponse()
-        )
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.CheckCompatibilityResponse())
         await client.check_compatibility(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8296,9 +7536,7 @@ def test_check_compatibility_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.CheckCompatibilityResponse()
         # Call the method with a truthy value for each flattened field,
@@ -8342,15 +7580,11 @@ async def test_check_compatibility_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry.CheckCompatibilityResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.CheckCompatibilityResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.CheckCompatibilityResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.check_compatibility(
@@ -8404,9 +7638,7 @@ def test_get_schema_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig(
             compatibility=schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD,
@@ -8423,10 +7655,7 @@ def test_get_schema_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -8447,12 +7676,8 @@ def test_get_schema_config_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_schema_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8479,12 +7704,8 @@ def test_get_schema_config_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_schema_config] = mock_rpc
         request = {}
         client.get_schema_config(request)
 
@@ -8499,9 +7720,7 @@ def test_get_schema_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_schema_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_schema_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8515,17 +7734,12 @@ async def test_get_schema_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_schema_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_schema_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_schema_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_schema_config] = mock_rpc
 
         request = {}
         await client.get_schema_config(request)
@@ -8541,9 +7755,7 @@ async def test_get_schema_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_schema_config_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaConfigRequest
-):
+async def test_get_schema_config_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaConfigRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8554,9 +7766,7 @@ async def test_get_schema_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaConfig(
@@ -8575,10 +7785,7 @@ async def test_get_schema_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -8600,9 +7807,7 @@ def test_get_schema_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaConfig()
         client.get_schema_config(request)
 
@@ -8632,12 +7837,8 @@ async def test_get_schema_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaConfig()
-        )
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaConfig())
         await client.get_schema_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8659,9 +7860,7 @@ def test_get_schema_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig()
         # Call the method with a truthy value for each flattened field,
@@ -8700,15 +7899,11 @@ async def test_get_schema_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_schema_config(
@@ -8757,9 +7952,7 @@ def test_update_schema_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig(
             compatibility=schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD,
@@ -8776,10 +7969,7 @@ def test_update_schema_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -8800,12 +7990,8 @@ def test_update_schema_config_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_schema_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8828,18 +8014,12 @@ def test_update_schema_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_schema_config in client._transport._wrapped_methods
-        )
+        assert client._transport.update_schema_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_schema_config] = mock_rpc
         request = {}
         client.update_schema_config(request)
 
@@ -8854,9 +8034,7 @@ def test_update_schema_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_schema_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_schema_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8870,17 +8048,12 @@ async def test_update_schema_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_schema_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_schema_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_schema_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_schema_config] = mock_rpc
 
         request = {}
         await client.update_schema_config(request)
@@ -8896,10 +8069,7 @@ async def test_update_schema_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_schema_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.UpdateSchemaConfigRequest,
-):
+async def test_update_schema_config_async(transport: str = "grpc_asyncio", request_type=schema_registry.UpdateSchemaConfigRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8910,9 +8080,7 @@ async def test_update_schema_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaConfig(
@@ -8931,10 +8099,7 @@ async def test_update_schema_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -8956,9 +8121,7 @@ def test_update_schema_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaConfig()
         client.update_schema_config(request)
 
@@ -8988,12 +8151,8 @@ async def test_update_schema_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaConfig()
-        )
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaConfig())
         await client.update_schema_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9015,9 +8174,7 @@ def test_update_schema_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig()
         # Call the method with a truthy value for each flattened field,
@@ -9061,15 +8218,11 @@ async def test_update_schema_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_schema_config(
@@ -9123,9 +8276,7 @@ def test_delete_schema_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig(
             compatibility=schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD,
@@ -9142,10 +8293,7 @@ def test_delete_schema_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -9166,12 +8314,8 @@ def test_delete_schema_config_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_schema_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9194,18 +8338,12 @@ def test_delete_schema_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_schema_config in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_schema_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_schema_config] = mock_rpc
         request = {}
         client.delete_schema_config(request)
 
@@ -9220,9 +8358,7 @@ def test_delete_schema_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_schema_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9236,17 +8372,12 @@ async def test_delete_schema_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_schema_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_schema_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_schema_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_schema_config] = mock_rpc
 
         request = {}
         await client.delete_schema_config(request)
@@ -9262,10 +8393,7 @@ async def test_delete_schema_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.DeleteSchemaConfigRequest,
-):
+async def test_delete_schema_config_async(transport: str = "grpc_asyncio", request_type=schema_registry.DeleteSchemaConfigRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9276,9 +8404,7 @@ async def test_delete_schema_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaConfig(
@@ -9297,10 +8423,7 @@ async def test_delete_schema_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -9322,9 +8445,7 @@ def test_delete_schema_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaConfig()
         client.delete_schema_config(request)
 
@@ -9354,12 +8475,8 @@ async def test_delete_schema_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaConfig()
-        )
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaConfig())
         await client.delete_schema_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9381,9 +8498,7 @@ def test_delete_schema_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig()
         # Call the method with a truthy value for each flattened field,
@@ -9422,15 +8537,11 @@ async def test_delete_schema_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_schema_config(
@@ -9514,9 +8625,7 @@ def test_get_schema_mode_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema_mode), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_schema_mode(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9543,9 +8652,7 @@ def test_get_schema_mode_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_schema_mode] = mock_rpc
         request = {}
         client.get_schema_mode(request)
@@ -9561,9 +8668,7 @@ def test_get_schema_mode_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_schema_mode_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_schema_mode_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9577,17 +8682,12 @@ async def test_get_schema_mode_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_schema_mode
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_schema_mode in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_schema_mode
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_schema_mode] = mock_rpc
 
         request = {}
         await client.get_schema_mode(request)
@@ -9603,9 +8703,7 @@ async def test_get_schema_mode_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_schema_mode_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaModeRequest
-):
+async def test_get_schema_mode_async(transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaModeRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9684,9 +8782,7 @@ async def test_get_schema_mode_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema_mode), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaMode()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaMode())
         await client.get_schema_mode(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9751,9 +8847,7 @@ async def test_get_schema_mode_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaMode()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaMode())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_schema_mode(
@@ -9802,9 +8896,7 @@ def test_update_schema_mode(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode(
             mode=schema_registry_resources.SchemaMode.ModeType.READONLY,
@@ -9838,12 +8930,8 @@ def test_update_schema_mode_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_schema_mode(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9866,18 +8954,12 @@ def test_update_schema_mode_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_schema_mode in client._transport._wrapped_methods
-        )
+        assert client._transport.update_schema_mode in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_mode
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_schema_mode] = mock_rpc
         request = {}
         client.update_schema_mode(request)
 
@@ -9892,9 +8974,7 @@ def test_update_schema_mode_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_schema_mode_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_schema_mode_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9908,17 +8988,12 @@ async def test_update_schema_mode_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_schema_mode
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_schema_mode in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_schema_mode
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_schema_mode] = mock_rpc
 
         request = {}
         await client.update_schema_mode(request)
@@ -9934,10 +9009,7 @@ async def test_update_schema_mode_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_schema_mode_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.UpdateSchemaModeRequest,
-):
+async def test_update_schema_mode_async(transport: str = "grpc_asyncio", request_type=schema_registry.UpdateSchemaModeRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9948,9 +9020,7 @@ async def test_update_schema_mode_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaMode(
@@ -9987,9 +9057,7 @@ def test_update_schema_mode_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaMode()
         client.update_schema_mode(request)
 
@@ -10019,12 +9087,8 @@ async def test_update_schema_mode_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaMode()
-        )
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaMode())
         await client.update_schema_mode(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10046,9 +9110,7 @@ def test_update_schema_mode_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode()
         # Call the method with a truthy value for each flattened field,
@@ -10092,15 +9154,11 @@ async def test_update_schema_mode_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaMode()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaMode())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_schema_mode(
@@ -10154,9 +9212,7 @@ def test_delete_schema_mode(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode(
             mode=schema_registry_resources.SchemaMode.ModeType.READONLY,
@@ -10190,12 +9246,8 @@ def test_delete_schema_mode_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_schema_mode(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10218,18 +9270,12 @@ def test_delete_schema_mode_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_schema_mode in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_schema_mode in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_mode
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_schema_mode] = mock_rpc
         request = {}
         client.delete_schema_mode(request)
 
@@ -10244,9 +9290,7 @@ def test_delete_schema_mode_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_mode_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_schema_mode_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10260,17 +9304,12 @@ async def test_delete_schema_mode_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_schema_mode
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_schema_mode in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_schema_mode
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_schema_mode] = mock_rpc
 
         request = {}
         await client.delete_schema_mode(request)
@@ -10286,10 +9325,7 @@ async def test_delete_schema_mode_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_mode_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.DeleteSchemaModeRequest,
-):
+async def test_delete_schema_mode_async(transport: str = "grpc_asyncio", request_type=schema_registry.DeleteSchemaModeRequest):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10300,9 +9336,7 @@ async def test_delete_schema_mode_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaMode(
@@ -10339,9 +9373,7 @@ def test_delete_schema_mode_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaMode()
         client.delete_schema_mode(request)
 
@@ -10371,12 +9403,8 @@ async def test_delete_schema_mode_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaMode()
-        )
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaMode())
         await client.delete_schema_mode(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10398,9 +9426,7 @@ def test_delete_schema_mode_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode()
         # Call the method with a truthy value for each flattened field,
@@ -10439,15 +9465,11 @@ async def test_delete_schema_mode_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = schema_registry_resources.SchemaMode()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry_resources.SchemaMode()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry_resources.SchemaMode())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_schema_mode(
@@ -10492,18 +9514,12 @@ def test_get_schema_registry_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_schema_registry in client._transport._wrapped_methods
-        )
+        assert client._transport.get_schema_registry in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_registry
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_schema_registry] = mock_rpc
 
         request = {}
         client.get_schema_registry(request)
@@ -10518,33 +9534,29 @@ def test_get_schema_registry_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_schema_registry_rest_required_fields(
-    request_type=schema_registry.GetSchemaRegistryRequest,
-):
+def test_get_schema_registry_rest_required_fields(request_type=schema_registry.GetSchemaRegistryRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema_registry._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema_registry._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema_registry._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema_registry._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10594,9 +9606,7 @@ def test_get_schema_registry_rest_required_fields(
 
 
 def test_get_schema_registry_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_schema_registry._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -10614,9 +9624,7 @@ def test_get_schema_registry_rest_flattened():
         return_value = schema_registry_resources.SchemaRegistry()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -10640,11 +9648,7 @@ def test_get_schema_registry_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*}" % client.transport._host, args[1])
 
 
 def test_get_schema_registry_rest_flattened_error(transport: str = "rest"):
@@ -10676,19 +9680,12 @@ def test_list_schema_registries_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_schema_registries
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_schema_registries in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_registries
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_schema_registries] = mock_rpc
 
         request = {}
         client.list_schema_registries(request)
@@ -10703,33 +9700,29 @@ def test_list_schema_registries_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_schema_registries_rest_required_fields(
-    request_type=schema_registry.ListSchemaRegistriesRequest,
-):
+def test_list_schema_registries_rest_required_fields(request_type=schema_registry.ListSchemaRegistriesRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_schema_registries._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_schema_registries._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_schema_registries._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_schema_registries._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10779,9 +9772,7 @@ def test_list_schema_registries_rest_required_fields(
 
 
 def test_list_schema_registries_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_schema_registries._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -10823,11 +9814,7 @@ def test_list_schema_registries_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/schemaRegistries"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/schemaRegistries" % client.transport._host, args[1])
 
 
 def test_list_schema_registries_rest_flattened_error(transport: str = "rest"):
@@ -10859,19 +9846,12 @@ def test_create_schema_registry_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_schema_registry
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_schema_registry in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_schema_registry
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_schema_registry] = mock_rpc
 
         request = {}
         client.create_schema_registry(request)
@@ -10886,9 +9866,7 @@ def test_create_schema_registry_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_schema_registry_rest_required_fields(
-    request_type=gcms_schema_registry.CreateSchemaRegistryRequest,
-):
+def test_create_schema_registry_rest_required_fields(request_type=gcms_schema_registry.CreateSchemaRegistryRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
@@ -10896,15 +9874,13 @@ def test_create_schema_registry_rest_required_fields(
     request_init["schema_registry_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_schema_registry._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_schema_registry._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -10912,9 +9888,9 @@ def test_create_schema_registry_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["schemaRegistryId"] = "schema_registry_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_schema_registry._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_schema_registry._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10967,9 +9943,7 @@ def test_create_schema_registry_rest_required_fields(
 
 
 def test_create_schema_registry_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_schema_registry._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11021,11 +9995,7 @@ def test_create_schema_registry_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/schemaRegistries"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/schemaRegistries" % client.transport._host, args[1])
 
 
 def test_create_schema_registry_rest_flattened_error(transport: str = "rest"):
@@ -11058,19 +10028,12 @@ def test_delete_schema_registry_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_schema_registry
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_schema_registry in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_registry
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_schema_registry] = mock_rpc
 
         request = {}
         client.delete_schema_registry(request)
@@ -11085,33 +10048,29 @@ def test_delete_schema_registry_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_schema_registry_rest_required_fields(
-    request_type=schema_registry.DeleteSchemaRegistryRequest,
-):
+def test_delete_schema_registry_rest_required_fields(request_type=schema_registry.DeleteSchemaRegistryRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_schema_registry._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_schema_registry._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_schema_registry._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_schema_registry._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11158,9 +10117,7 @@ def test_delete_schema_registry_rest_required_fields(
 
 
 def test_delete_schema_registry_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_schema_registry._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -11178,9 +10135,7 @@ def test_delete_schema_registry_rest_flattened():
         return_value = None
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11202,11 +10157,7 @@ def test_delete_schema_registry_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*}" % client.transport._host, args[1])
 
 
 def test_delete_schema_registry_rest_flattened_error(transport: str = "rest"):
@@ -11242,9 +10193,7 @@ def test_get_context_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_context] = mock_rpc
 
         request = {}
@@ -11260,33 +10209,25 @@ def test_get_context_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_context_rest_required_fields(
-    request_type=schema_registry.GetContextRequest,
-):
+def test_get_context_rest_required_fields(request_type=schema_registry.GetContextRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_context._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_context._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_context._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_context._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11336,9 +10277,7 @@ def test_get_context_rest_required_fields(
 
 
 def test_get_context_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_context._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -11356,9 +10295,7 @@ def test_get_context_rest_flattened():
         return_value = schema_registry_resources.Context()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/contexts/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/contexts/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11382,11 +10319,7 @@ def test_get_context_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/contexts/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/contexts/*}" % client.transport._host, args[1])
 
 
 def test_get_context_rest_flattened_error(transport: str = "rest"):
@@ -11422,9 +10355,7 @@ def test_list_contexts_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_contexts] = mock_rpc
 
         request = {}
@@ -11440,33 +10371,25 @@ def test_list_contexts_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_contexts_rest_required_fields(
-    request_type=schema_registry.ListContextsRequest,
-):
+def test_list_contexts_rest_required_fields(request_type=schema_registry.ListContextsRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_contexts._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_contexts._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_contexts._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_contexts._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11514,9 +10437,7 @@ def test_list_contexts_rest_required_fields(
 
 
 def test_list_contexts_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_contexts._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -11534,9 +10455,7 @@ def test_list_contexts_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11558,11 +10477,7 @@ def test_list_contexts_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*}/contexts"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/schemaRegistries/*}/contexts" % client.transport._host, args[1])
 
 
 def test_list_contexts_rest_flattened_error(transport: str = "rest"):
@@ -11598,9 +10513,7 @@ def test_get_schema_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_schema] = mock_rpc
 
         request = {}
@@ -11623,24 +10536,18 @@ def test_get_schema_rest_required_fields(request_type=schema_registry.GetSchemaR
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("subject",))
     jsonified_request.update(unset_fields)
@@ -11692,9 +10599,7 @@ def test_get_schema_rest_required_fields(request_type=schema_registry.GetSchemaR
 
 
 def test_get_schema_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_schema._get_unset_required_fields({})
     assert set(unset_fields) == (set(("subject",)) & set(("name",)))
@@ -11712,9 +10617,7 @@ def test_get_schema_rest_flattened():
         return_value = schema_registry_resources.Schema()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11738,11 +10641,7 @@ def test_get_schema_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/schemas/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/schemas/**}" % client.transport._host, args[1])
 
 
 def test_get_schema_rest_flattened_error(transport: str = "rest"):
@@ -11778,9 +10677,7 @@ def test_get_raw_schema_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_raw_schema] = mock_rpc
 
         request = {}
@@ -11796,33 +10693,25 @@ def test_get_raw_schema_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_raw_schema_rest_required_fields(
-    request_type=schema_registry.GetSchemaRequest,
-):
+def test_get_raw_schema_rest_required_fields(request_type=schema_registry.GetSchemaRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_raw_schema._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_raw_schema._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_raw_schema._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_raw_schema._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("subject",))
     jsonified_request.update(unset_fields)
@@ -11872,9 +10761,7 @@ def test_get_raw_schema_rest_required_fields(
 
 
 def test_get_raw_schema_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_raw_schema._get_unset_required_fields({})
     assert set(unset_fields) == (set(("subject",)) & set(("name",)))
@@ -11892,9 +10779,7 @@ def test_get_raw_schema_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11916,11 +10801,7 @@ def test_get_raw_schema_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/schemas/**}/schema"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/schemas/**}/schema" % client.transport._host, args[1])
 
 
 def test_get_raw_schema_rest_flattened_error(transport: str = "rest"):
@@ -11952,18 +10833,12 @@ def test_list_schema_versions_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_schema_versions in client._transport._wrapped_methods
-        )
+        assert client._transport.list_schema_versions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_versions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_schema_versions] = mock_rpc
 
         request = {}
         client.list_schema_versions(request)
@@ -11978,33 +10853,29 @@ def test_list_schema_versions_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_schema_versions_rest_required_fields(
-    request_type=schema_registry.ListSchemaVersionsRequest,
-):
+def test_list_schema_versions_rest_required_fields(request_type=schema_registry.ListSchemaVersionsRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_schema_versions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_schema_versions._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_schema_versions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_schema_versions._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12059,9 +10930,7 @@ def test_list_schema_versions_rest_required_fields(
 
 
 def test_list_schema_versions_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_schema_versions._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12087,9 +10956,7 @@ def test_list_schema_versions_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12112,9 +10979,7 @@ def test_list_schema_versions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/schemas/**}/versions"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/schemas/**}/versions" % client.transport._host, args[1]
         )
 
 
@@ -12151,12 +11016,8 @@ def test_list_schema_types_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_types
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_schema_types] = mock_rpc
 
         request = {}
         client.list_schema_types(request)
@@ -12171,33 +11032,25 @@ def test_list_schema_types_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_schema_types_rest_required_fields(
-    request_type=schema_registry.ListSchemaTypesRequest,
-):
+def test_list_schema_types_rest_required_fields(request_type=schema_registry.ListSchemaTypesRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_schema_types._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_schema_types._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_schema_types._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_schema_types._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -12245,9 +11098,7 @@ def test_list_schema_types_rest_required_fields(
 
 
 def test_list_schema_types_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_schema_types._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -12265,9 +11116,7 @@ def test_list_schema_types_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12289,11 +11138,7 @@ def test_list_schema_types_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*}/schemas/types"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/schemaRegistries/*}/schemas/types" % client.transport._host, args[1])
 
 
 def test_list_schema_types_rest_flattened_error(transport: str = "rest"):
@@ -12329,9 +11174,7 @@ def test_list_subjects_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_subjects] = mock_rpc
 
         request = {}
@@ -12347,33 +11190,25 @@ def test_list_subjects_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_subjects_rest_required_fields(
-    request_type=schema_registry.ListSubjectsRequest,
-):
+def test_list_subjects_rest_required_fields(request_type=schema_registry.ListSubjectsRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_subjects._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_subjects._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_subjects._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_subjects._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12428,9 +11263,7 @@ def test_list_subjects_rest_required_fields(
 
 
 def test_list_subjects_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_subjects._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12456,9 +11289,7 @@ def test_list_subjects_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12482,11 +11313,7 @@ def test_list_subjects_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*}/subjects"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/schemaRegistries/*}/subjects" % client.transport._host, args[1])
 
 
 def test_list_subjects_rest_flattened_error(transport: str = "rest"):
@@ -12520,19 +11347,12 @@ def test_list_subjects_by_schema_id_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_subjects_by_schema_id
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_subjects_by_schema_id in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_subjects_by_schema_id
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_subjects_by_schema_id] = mock_rpc
 
         request = {}
         client.list_subjects_by_schema_id(request)
@@ -12547,33 +11367,29 @@ def test_list_subjects_by_schema_id_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_subjects_by_schema_id_rest_required_fields(
-    request_type=schema_registry.ListSubjectsBySchemaIdRequest,
-):
+def test_list_subjects_by_schema_id_rest_required_fields(request_type=schema_registry.ListSubjectsBySchemaIdRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_subjects_by_schema_id._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_subjects_by_schema_id._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_subjects_by_schema_id._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_subjects_by_schema_id._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12628,9 +11444,7 @@ def test_list_subjects_by_schema_id_rest_required_fields(
 
 
 def test_list_subjects_by_schema_id_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_subjects_by_schema_id._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12656,9 +11470,7 @@ def test_list_subjects_by_schema_id_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12683,9 +11495,7 @@ def test_list_subjects_by_schema_id_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/schemas/**}/subjects"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/schemas/**}/subjects" % client.transport._host, args[1]
         )
 
 
@@ -12724,9 +11534,7 @@ def test_delete_subject_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_subject] = mock_rpc
 
         request = {}
@@ -12742,33 +11550,25 @@ def test_delete_subject_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_subject_rest_required_fields(
-    request_type=schema_registry.DeleteSubjectRequest,
-):
+def test_delete_subject_rest_required_fields(request_type=schema_registry.DeleteSubjectRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_subject._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_subject._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_subject._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_subject._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("permanent",))
     jsonified_request.update(unset_fields)
@@ -12818,9 +11618,7 @@ def test_delete_subject_rest_required_fields(
 
 
 def test_delete_subject_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_subject._get_unset_required_fields({})
     assert set(unset_fields) == (set(("permanent",)) & set(("name",)))
@@ -12838,9 +11636,7 @@ def test_delete_subject_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12862,11 +11658,7 @@ def test_delete_subject_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*}" % client.transport._host, args[1])
 
 
 def test_delete_subject_rest_flattened_error(transport: str = "rest"):
@@ -12902,9 +11694,7 @@ def test_lookup_version_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.lookup_version] = mock_rpc
 
         request = {}
@@ -12920,9 +11710,7 @@ def test_lookup_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_lookup_version_rest_required_fields(
-    request_type=schema_registry.LookupVersionRequest,
-):
+def test_lookup_version_rest_required_fields(request_type=schema_registry.LookupVersionRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
@@ -12930,15 +11718,11 @@ def test_lookup_version_rest_required_fields(
     request_init["schema"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).lookup_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).lookup_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12946,9 +11730,7 @@ def test_lookup_version_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["schema"] = "schema_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).lookup_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).lookup_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13001,9 +11783,7 @@ def test_lookup_version_rest_required_fields(
 
 
 def test_lookup_version_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.lookup_version._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13029,9 +11809,7 @@ def test_lookup_version_rest_flattened():
         return_value = schema_registry_resources.SchemaVersion()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13056,11 +11834,7 @@ def test_lookup_version_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*}" % client.transport._host, args[1])
 
 
 def test_lookup_version_rest_flattened_error(transport: str = "rest"):
@@ -13097,9 +11871,7 @@ def test_get_version_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_version] = mock_rpc
 
         request = {}
@@ -13115,33 +11887,25 @@ def test_get_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_version_rest_required_fields(
-    request_type=schema_registry.GetVersionRequest,
-):
+def test_get_version_rest_required_fields(request_type=schema_registry.GetVersionRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_version._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("deleted",))
     jsonified_request.update(unset_fields)
@@ -13193,9 +11957,7 @@ def test_get_version_rest_required_fields(
 
 
 def test_get_version_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_version._get_unset_required_fields({})
     assert set(unset_fields) == (set(("deleted",)) & set(("name",)))
@@ -13213,9 +11975,7 @@ def test_get_version_rest_flattened():
         return_value = schema_registry_resources.SchemaVersion()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13240,9 +12000,7 @@ def test_get_version_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}" % client.transport._host, args[1]
         )
 
 
@@ -13275,19 +12033,12 @@ def test_get_raw_schema_version_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_raw_schema_version
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_raw_schema_version in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_raw_schema_version
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_raw_schema_version] = mock_rpc
 
         request = {}
         client.get_raw_schema_version(request)
@@ -13302,33 +12053,29 @@ def test_get_raw_schema_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_raw_schema_version_rest_required_fields(
-    request_type=schema_registry.GetVersionRequest,
-):
+def test_get_raw_schema_version_rest_required_fields(request_type=schema_registry.GetVersionRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_raw_schema_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_raw_schema_version._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_raw_schema_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_raw_schema_version._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("deleted",))
     jsonified_request.update(unset_fields)
@@ -13378,9 +12125,7 @@ def test_get_raw_schema_version_rest_required_fields(
 
 
 def test_get_raw_schema_version_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_raw_schema_version._get_unset_required_fields({})
     assert set(unset_fields) == (set(("deleted",)) & set(("name",)))
@@ -13398,9 +12143,7 @@ def test_get_raw_schema_version_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13423,9 +12166,7 @@ def test_get_raw_schema_version_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}/schema"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}/schema" % client.transport._host, args[1]
         )
 
 
@@ -13462,9 +12203,7 @@ def test_list_versions_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_versions] = mock_rpc
 
         request = {}
@@ -13480,33 +12219,25 @@ def test_list_versions_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_versions_rest_required_fields(
-    request_type=schema_registry.ListVersionsRequest,
-):
+def test_list_versions_rest_required_fields(request_type=schema_registry.ListVersionsRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_versions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_versions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_versions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("deleted",))
     jsonified_request.update(unset_fields)
@@ -13556,9 +12287,7 @@ def test_list_versions_rest_required_fields(
 
 
 def test_list_versions_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_versions._get_unset_required_fields({})
     assert set(unset_fields) == (set(("deleted",)) & set(("parent",)))
@@ -13576,9 +12305,7 @@ def test_list_versions_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13601,9 +12328,7 @@ def test_list_versions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*}/versions"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*}/versions" % client.transport._host, args[1]
         )
 
 
@@ -13640,9 +12365,7 @@ def test_create_version_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_version] = mock_rpc
 
         request = {}
@@ -13658,9 +12381,7 @@ def test_create_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_version_rest_required_fields(
-    request_type=schema_registry.CreateVersionRequest,
-):
+def test_create_version_rest_required_fields(request_type=schema_registry.CreateVersionRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
@@ -13668,15 +12389,11 @@ def test_create_version_rest_required_fields(
     request_init["schema"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -13684,9 +12401,7 @@ def test_create_version_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["schema"] = "schema_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13739,9 +12454,7 @@ def test_create_version_rest_required_fields(
 
 
 def test_create_version_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_version._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13767,9 +12480,7 @@ def test_create_version_rest_flattened():
         return_value = schema_registry.CreateVersionResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13778,9 +12489,7 @@ def test_create_version_rest_flattened():
             id=205,
             schema_type=schema_registry_resources.Schema.SchemaType.AVRO,
             schema="schema_value",
-            references=[
-                schema_registry_resources.Schema.SchemaReference(name="name_value")
-            ],
+            references=[schema_registry_resources.Schema.SchemaReference(name="name_value")],
             normalize=True,
         )
         mock_args.update(sample_request)
@@ -13802,9 +12511,7 @@ def test_create_version_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*}/versions"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*}/versions" % client.transport._host, args[1]
         )
 
 
@@ -13824,9 +12531,7 @@ def test_create_version_rest_flattened_error(transport: str = "rest"):
             id=205,
             schema_type=schema_registry_resources.Schema.SchemaType.AVRO,
             schema="schema_value",
-            references=[
-                schema_registry_resources.Schema.SchemaReference(name="name_value")
-            ],
+            references=[schema_registry_resources.Schema.SchemaReference(name="name_value")],
             normalize=True,
         )
 
@@ -13849,9 +12554,7 @@ def test_delete_version_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_version] = mock_rpc
 
         request = {}
@@ -13867,33 +12570,25 @@ def test_delete_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_version_rest_required_fields(
-    request_type=schema_registry.DeleteVersionRequest,
-):
+def test_delete_version_rest_required_fields(request_type=schema_registry.DeleteVersionRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_version._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("permanent",))
     jsonified_request.update(unset_fields)
@@ -13943,9 +12638,7 @@ def test_delete_version_rest_required_fields(
 
 
 def test_delete_version_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_version._get_unset_required_fields({})
     assert set(unset_fields) == (set(("permanent",)) & set(("name",)))
@@ -13963,9 +12656,7 @@ def test_delete_version_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13988,9 +12679,7 @@ def test_delete_version_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}" % client.transport._host, args[1]
         )
 
 
@@ -14023,19 +12712,12 @@ def test_list_referenced_schemas_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_referenced_schemas
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_referenced_schemas in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_referenced_schemas
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_referenced_schemas] = mock_rpc
 
         request = {}
         client.list_referenced_schemas(request)
@@ -14050,33 +12732,29 @@ def test_list_referenced_schemas_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_referenced_schemas_rest_required_fields(
-    request_type=schema_registry.ListReferencedSchemasRequest,
-):
+def test_list_referenced_schemas_rest_required_fields(request_type=schema_registry.ListReferencedSchemasRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_referenced_schemas._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_referenced_schemas._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_referenced_schemas._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_referenced_schemas._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14124,9 +12802,7 @@ def test_list_referenced_schemas_rest_required_fields(
 
 
 def test_list_referenced_schemas_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_referenced_schemas._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -14144,9 +12820,7 @@ def test_list_referenced_schemas_rest_flattened():
         return_value = httpbody_pb2.HttpBody()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14169,9 +12843,7 @@ def test_list_referenced_schemas_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}/referencedby"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/schemaRegistries/*/subjects/*/versions/*}/referencedby" % client.transport._host, args[1]
         )
 
 
@@ -14204,18 +12876,12 @@ def test_check_compatibility_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.check_compatibility in client._transport._wrapped_methods
-        )
+        assert client._transport.check_compatibility in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.check_compatibility
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.check_compatibility] = mock_rpc
 
         request = {}
         client.check_compatibility(request)
@@ -14230,9 +12896,7 @@ def test_check_compatibility_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_check_compatibility_rest_required_fields(
-    request_type=schema_registry.CheckCompatibilityRequest,
-):
+def test_check_compatibility_rest_required_fields(request_type=schema_registry.CheckCompatibilityRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
@@ -14240,15 +12904,13 @@ def test_check_compatibility_rest_required_fields(
     request_init["schema"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).check_compatibility._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).check_compatibility._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -14256,9 +12918,9 @@ def test_check_compatibility_rest_required_fields(
     jsonified_request["name"] = "name_value"
     jsonified_request["schema"] = "schema_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).check_compatibility._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).check_compatibility._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14311,9 +12973,7 @@ def test_check_compatibility_rest_required_fields(
 
 
 def test_check_compatibility_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.check_compatibility._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -14339,9 +12999,7 @@ def test_check_compatibility_rest_flattened():
         return_value = schema_registry.CheckCompatibilityResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/compatibility/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/compatibility/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14366,11 +13024,7 @@ def test_check_compatibility_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/compatibility/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/compatibility/**}" % client.transport._host, args[1])
 
 
 def test_check_compatibility_rest_flattened_error(transport: str = "rest"):
@@ -14407,12 +13061,8 @@ def test_get_schema_config_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_schema_config] = mock_rpc
 
         request = {}
         client.get_schema_config(request)
@@ -14427,33 +13077,25 @@ def test_get_schema_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_schema_config_rest_required_fields(
-    request_type=schema_registry.GetSchemaConfigRequest,
-):
+def test_get_schema_config_rest_required_fields(request_type=schema_registry.GetSchemaConfigRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("default_to_global",))
     jsonified_request.update(unset_fields)
@@ -14505,9 +13147,7 @@ def test_get_schema_config_rest_required_fields(
 
 
 def test_get_schema_config_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_schema_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(("defaultToGlobal",)) & set(("name",)))
@@ -14525,9 +13165,7 @@ def test_get_schema_config_rest_flattened():
         return_value = schema_registry_resources.SchemaConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14551,11 +13189,7 @@ def test_get_schema_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/config/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/config/**}" % client.transport._host, args[1])
 
 
 def test_get_schema_config_rest_flattened_error(transport: str = "rest"):
@@ -14587,18 +13221,12 @@ def test_update_schema_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_schema_config in client._transport._wrapped_methods
-        )
+        assert client._transport.update_schema_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_schema_config] = mock_rpc
 
         request = {}
         client.update_schema_config(request)
@@ -14613,33 +13241,29 @@ def test_update_schema_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_schema_config_rest_required_fields(
-    request_type=schema_registry.UpdateSchemaConfigRequest,
-):
+def test_update_schema_config_rest_required_fields(request_type=schema_registry.UpdateSchemaConfigRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_schema_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_schema_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_schema_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_schema_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14690,9 +13314,7 @@ def test_update_schema_config_rest_required_fields(
 
 
 def test_update_schema_config_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_schema_config._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -14718,9 +13340,7 @@ def test_update_schema_config_rest_flattened():
         return_value = schema_registry_resources.SchemaConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14745,11 +13365,7 @@ def test_update_schema_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/config/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/config/**}" % client.transport._host, args[1])
 
 
 def test_update_schema_config_rest_flattened_error(transport: str = "rest"):
@@ -14782,18 +13398,12 @@ def test_delete_schema_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_schema_config in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_schema_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_schema_config] = mock_rpc
 
         request = {}
         client.delete_schema_config(request)
@@ -14808,33 +13418,29 @@ def test_delete_schema_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_schema_config_rest_required_fields(
-    request_type=schema_registry.DeleteSchemaConfigRequest,
-):
+def test_delete_schema_config_rest_required_fields(request_type=schema_registry.DeleteSchemaConfigRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_schema_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_schema_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_schema_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_schema_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14884,9 +13490,7 @@ def test_delete_schema_config_rest_required_fields(
 
 
 def test_delete_schema_config_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_schema_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -14904,9 +13508,7 @@ def test_delete_schema_config_rest_flattened():
         return_value = schema_registry_resources.SchemaConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14930,11 +13532,7 @@ def test_delete_schema_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/config/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/config/**}" % client.transport._host, args[1])
 
 
 def test_delete_schema_config_rest_flattened_error(transport: str = "rest"):
@@ -14970,9 +13568,7 @@ def test_get_schema_mode_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_schema_mode] = mock_rpc
 
         request = {}
@@ -14988,33 +13584,25 @@ def test_get_schema_mode_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_schema_mode_rest_required_fields(
-    request_type=schema_registry.GetSchemaModeRequest,
-):
+def test_get_schema_mode_rest_required_fields(request_type=schema_registry.GetSchemaModeRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema_mode._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema_mode._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_schema_mode._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_schema_mode._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15064,9 +13652,7 @@ def test_get_schema_mode_rest_required_fields(
 
 
 def test_get_schema_mode_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_schema_mode._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -15084,9 +13670,7 @@ def test_get_schema_mode_rest_flattened():
         return_value = schema_registry_resources.SchemaMode()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -15110,11 +13694,7 @@ def test_get_schema_mode_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/mode/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/mode/**}" % client.transport._host, args[1])
 
 
 def test_get_schema_mode_rest_flattened_error(transport: str = "rest"):
@@ -15146,18 +13726,12 @@ def test_update_schema_mode_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_schema_mode in client._transport._wrapped_methods
-        )
+        assert client._transport.update_schema_mode in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_mode
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_schema_mode] = mock_rpc
 
         request = {}
         client.update_schema_mode(request)
@@ -15172,33 +13746,25 @@ def test_update_schema_mode_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_schema_mode_rest_required_fields(
-    request_type=schema_registry.UpdateSchemaModeRequest,
-):
+def test_update_schema_mode_rest_required_fields(request_type=schema_registry.UpdateSchemaModeRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_schema_mode._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_schema_mode._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_schema_mode._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_schema_mode._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15249,9 +13815,7 @@ def test_update_schema_mode_rest_required_fields(
 
 
 def test_update_schema_mode_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_schema_mode._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -15277,9 +13841,7 @@ def test_update_schema_mode_rest_flattened():
         return_value = schema_registry_resources.SchemaMode()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -15304,11 +13866,7 @@ def test_update_schema_mode_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/mode/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/mode/**}" % client.transport._host, args[1])
 
 
 def test_update_schema_mode_rest_flattened_error(transport: str = "rest"):
@@ -15341,18 +13899,12 @@ def test_delete_schema_mode_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_schema_mode in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_schema_mode in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_mode
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_schema_mode] = mock_rpc
 
         request = {}
         client.delete_schema_mode(request)
@@ -15367,33 +13919,25 @@ def test_delete_schema_mode_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_schema_mode_rest_required_fields(
-    request_type=schema_registry.DeleteSchemaModeRequest,
-):
+def test_delete_schema_mode_rest_required_fields(request_type=schema_registry.DeleteSchemaModeRequest):
     transport_class = transports.ManagedSchemaRegistryRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_schema_mode._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_schema_mode._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_schema_mode._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_schema_mode._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15443,9 +13987,7 @@ def test_delete_schema_mode_rest_required_fields(
 
 
 def test_delete_schema_mode_rest_unset_required_fields():
-    transport = transports.ManagedSchemaRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ManagedSchemaRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_schema_mode._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -15463,9 +14005,7 @@ def test_delete_schema_mode_rest_flattened():
         return_value = schema_registry_resources.SchemaMode()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -15489,11 +14029,7 @@ def test_delete_schema_mode_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/schemaRegistries/*/mode/**}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/schemaRegistries/*/mode/**}" % client.transport._host, args[1])
 
 
 def test_delete_schema_mode_rest_flattened_error(transport: str = "rest"):
@@ -15548,9 +14084,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ManagedSchemaRegistryClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = ManagedSchemaRegistryClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ManagedSchemaRegistryGrpcTransport(
@@ -15604,16 +14138,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = ManagedSchemaRegistryClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = ManagedSchemaRegistryClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -15626,9 +14156,7 @@ def test_get_schema_registry_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaRegistry()
         client.get_schema_registry(request=None)
 
@@ -15649,9 +14177,7 @@ def test_list_schema_registries_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         call.return_value = schema_registry.ListSchemaRegistriesResponse()
         client.list_schema_registries(request=None)
 
@@ -15672,9 +14198,7 @@ def test_create_schema_registry_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaRegistry()
         client.create_schema_registry(request=None)
 
@@ -15695,9 +14219,7 @@ def test_delete_schema_registry_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         call.return_value = None
         client.delete_schema_registry(request=None)
 
@@ -15802,9 +14324,7 @@ def test_list_schema_versions_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_schema_versions(request=None)
 
@@ -15825,9 +14345,7 @@ def test_list_schema_types_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_schema_types(request=None)
 
@@ -15869,9 +14387,7 @@ def test_list_subjects_by_schema_id_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_subjects_by_schema_id(request=None)
 
@@ -15955,9 +14471,7 @@ def test_get_raw_schema_version_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.get_raw_schema_version(request=None)
 
@@ -16041,9 +14555,7 @@ def test_list_referenced_schemas_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         call.return_value = httpbody_pb2.HttpBody()
         client.list_referenced_schemas(request=None)
 
@@ -16064,9 +14576,7 @@ def test_check_compatibility_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         call.return_value = schema_registry.CheckCompatibilityResponse()
         client.check_compatibility(request=None)
 
@@ -16087,9 +14597,7 @@ def test_get_schema_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaConfig()
         client.get_schema_config(request=None)
 
@@ -16110,9 +14618,7 @@ def test_update_schema_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaConfig()
         client.update_schema_config(request=None)
 
@@ -16133,9 +14639,7 @@ def test_delete_schema_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaConfig()
         client.delete_schema_config(request=None)
 
@@ -16177,9 +14681,7 @@ def test_update_schema_mode_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaMode()
         client.update_schema_mode(request=None)
 
@@ -16200,9 +14702,7 @@ def test_delete_schema_mode_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         call.return_value = schema_registry_resources.SchemaMode()
         client.delete_schema_mode(request=None)
 
@@ -16215,16 +14715,12 @@ def test_delete_schema_mode_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = ManagedSchemaRegistryAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = ManagedSchemaRegistryAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = ManagedSchemaRegistryAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = ManagedSchemaRegistryAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -16238,9 +14734,7 @@ async def test_get_schema_registry_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaRegistry(
@@ -16268,13 +14762,9 @@ async def test_list_schema_registries_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            schema_registry.ListSchemaRegistriesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(schema_registry.ListSchemaRegistriesResponse())
         await client.list_schema_registries(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16295,9 +14785,7 @@ async def test_create_schema_registry_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaRegistry(
@@ -16325,9 +14813,7 @@ async def test_delete_schema_registry_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_schema_registry(request=None)
@@ -16462,9 +14948,7 @@ async def test_list_schema_versions_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -16492,9 +14976,7 @@ async def test_list_schema_types_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -16550,9 +15032,7 @@ async def test_list_subjects_by_schema_id_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -16670,9 +15150,7 @@ async def test_get_raw_schema_version_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -16783,9 +15261,7 @@ async def test_list_referenced_schemas_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             httpbody_pb2.HttpBody(
@@ -16813,9 +15289,7 @@ async def test_check_compatibility_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry.CheckCompatibilityResponse(
@@ -16843,9 +15317,7 @@ async def test_get_schema_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaConfig(
@@ -16874,9 +15346,7 @@ async def test_update_schema_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaConfig(
@@ -16905,9 +15375,7 @@ async def test_delete_schema_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaConfig(
@@ -16963,9 +15431,7 @@ async def test_update_schema_mode_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaMode(
@@ -16992,9 +15458,7 @@ async def test_delete_schema_mode_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             schema_registry_resources.SchemaMode(
@@ -17012,28 +15476,18 @@ async def test_delete_schema_mode_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = ManagedSchemaRegistryClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = ManagedSchemaRegistryClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
-def test_get_schema_registry_rest_bad_request(
-    request_type=schema_registry.GetSchemaRegistryRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_schema_registry_rest_bad_request(request_type=schema_registry.GetSchemaRegistryRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17053,14 +15507,10 @@ def test_get_schema_registry_rest_bad_request(
     ],
 )
 def test_get_schema_registry_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17093,30 +15543,21 @@ def test_get_schema_registry_rest_call_success(request_type):
 def test_get_schema_registry_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_registry"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_schema_registry_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_registry") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_registry_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_registry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetSchemaRegistryRequest.pb(
-            schema_registry.GetSchemaRegistryRequest()
-        )
+        pb_message = schema_registry.GetSchemaRegistryRequest.pb(schema_registry.GetSchemaRegistryRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17127,9 +15568,7 @@ def test_get_schema_registry_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaRegistry.to_json(
-            schema_registry_resources.SchemaRegistry()
-        )
+        return_value = schema_registry_resources.SchemaRegistry.to_json(schema_registry_resources.SchemaRegistry())
         req.return_value.content = return_value
 
         request = schema_registry.GetSchemaRegistryRequest()
@@ -17139,10 +15578,7 @@ def test_get_schema_registry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaRegistry()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaRegistry(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaRegistry(), metadata
 
         client.get_schema_registry(
             request,
@@ -17157,20 +15593,14 @@ def test_get_schema_registry_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_schema_registries_rest_bad_request(
-    request_type=schema_registry.ListSchemaRegistriesRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_schema_registries_rest_bad_request(request_type=schema_registry.ListSchemaRegistriesRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17190,9 +15620,7 @@ def test_list_schema_registries_rest_bad_request(
     ],
 )
 def test_list_schema_registries_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -17223,30 +15651,21 @@ def test_list_schema_registries_rest_call_success(request_type):
 def test_list_schema_registries_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_registries"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_schema_registries_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_registries") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_registries_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_registries"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListSchemaRegistriesRequest.pb(
-            schema_registry.ListSchemaRegistriesRequest()
-        )
+        pb_message = schema_registry.ListSchemaRegistriesRequest.pb(schema_registry.ListSchemaRegistriesRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17257,9 +15676,7 @@ def test_list_schema_registries_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry.ListSchemaRegistriesResponse.to_json(
-            schema_registry.ListSchemaRegistriesResponse()
-        )
+        return_value = schema_registry.ListSchemaRegistriesResponse.to_json(schema_registry.ListSchemaRegistriesResponse())
         req.return_value.content = return_value
 
         request = schema_registry.ListSchemaRegistriesRequest()
@@ -17269,10 +15686,7 @@ def test_list_schema_registries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry.ListSchemaRegistriesResponse()
-        post_with_metadata.return_value = (
-            schema_registry.ListSchemaRegistriesResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry.ListSchemaRegistriesResponse(), metadata
 
         client.list_schema_registries(
             request,
@@ -17287,20 +15701,14 @@ def test_list_schema_registries_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_schema_registry_rest_bad_request(
-    request_type=gcms_schema_registry.CreateSchemaRegistryRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_schema_registry_rest_bad_request(request_type=gcms_schema_registry.CreateSchemaRegistryRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17320,9 +15728,7 @@ def test_create_schema_registry_rest_bad_request(
     ],
 )
 def test_create_schema_registry_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -17358,30 +15764,21 @@ def test_create_schema_registry_rest_call_success(request_type):
 def test_create_schema_registry_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_create_schema_registry"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_create_schema_registry_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_create_schema_registry") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_create_schema_registry_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_create_schema_registry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcms_schema_registry.CreateSchemaRegistryRequest.pb(
-            gcms_schema_registry.CreateSchemaRegistryRequest()
-        )
+        pb_message = gcms_schema_registry.CreateSchemaRegistryRequest.pb(gcms_schema_registry.CreateSchemaRegistryRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17392,9 +15789,7 @@ def test_create_schema_registry_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaRegistry.to_json(
-            schema_registry_resources.SchemaRegistry()
-        )
+        return_value = schema_registry_resources.SchemaRegistry.to_json(schema_registry_resources.SchemaRegistry())
         req.return_value.content = return_value
 
         request = gcms_schema_registry.CreateSchemaRegistryRequest()
@@ -17404,10 +15799,7 @@ def test_create_schema_registry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaRegistry()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaRegistry(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaRegistry(), metadata
 
         client.create_schema_registry(
             request,
@@ -17422,22 +15814,14 @@ def test_create_schema_registry_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_schema_registry_rest_bad_request(
-    request_type=schema_registry.DeleteSchemaRegistryRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_schema_registry_rest_bad_request(request_type=schema_registry.DeleteSchemaRegistryRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17457,14 +15841,10 @@ def test_delete_schema_registry_rest_bad_request(
     ],
 )
 def test_delete_schema_registry_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17489,23 +15869,15 @@ def test_delete_schema_registry_rest_call_success(request_type):
 def test_delete_schema_registry_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_registry"
-    ) as pre:
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_registry") as pre:
         pre.assert_not_called()
-        pb_message = schema_registry.DeleteSchemaRegistryRequest.pb(
-            schema_registry.DeleteSchemaRegistryRequest()
-        )
+        pb_message = schema_registry.DeleteSchemaRegistryRequest.pb(schema_registry.DeleteSchemaRegistryRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17536,19 +15908,13 @@ def test_delete_schema_registry_rest_interceptors(null_interceptor):
 
 
 def test_get_context_rest_bad_request(request_type=schema_registry.GetContextRequest):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/contexts/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/contexts/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17568,14 +15934,10 @@ def test_get_context_rest_bad_request(request_type=schema_registry.GetContextReq
     ],
 )
 def test_get_context_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/contexts/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/contexts/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17608,30 +15970,21 @@ def test_get_context_rest_call_success(request_type):
 def test_get_context_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_context"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_context_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_context") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_context_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_context"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetContextRequest.pb(
-            schema_registry.GetContextRequest()
-        )
+        pb_message = schema_registry.GetContextRequest.pb(schema_registry.GetContextRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17642,9 +15995,7 @@ def test_get_context_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.Context.to_json(
-            schema_registry_resources.Context()
-        )
+        return_value = schema_registry_resources.Context.to_json(schema_registry_resources.Context())
         req.return_value.content = return_value
 
         request = schema_registry.GetContextRequest()
@@ -17669,22 +16020,14 @@ def test_get_context_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_contexts_rest_bad_request(
-    request_type=schema_registry.ListContextsRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_contexts_rest_bad_request(request_type=schema_registry.ListContextsRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17704,14 +16047,10 @@ def test_list_contexts_rest_bad_request(
     ],
 )
 def test_list_contexts_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17741,30 +16080,21 @@ def test_list_contexts_rest_call_success(request_type):
 def test_list_contexts_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_contexts"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_contexts_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_contexts") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_contexts_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_contexts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListContextsRequest.pb(
-            schema_registry.ListContextsRequest()
-        )
+        pb_message = schema_registry.ListContextsRequest.pb(schema_registry.ListContextsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17801,19 +16131,13 @@ def test_list_contexts_rest_interceptors(null_interceptor):
 
 
 def test_get_schema_rest_bad_request(request_type=schema_registry.GetSchemaRequest):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17833,14 +16157,10 @@ def test_get_schema_rest_bad_request(request_type=schema_registry.GetSchemaReque
     ],
 )
 def test_get_schema_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17873,19 +16193,13 @@ def test_get_schema_rest_call_success(request_type):
 def test_get_schema_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema") as post, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema"
@@ -17893,9 +16207,7 @@ def test_get_schema_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetSchemaRequest.pb(
-            schema_registry.GetSchemaRequest()
-        )
+        pb_message = schema_registry.GetSchemaRequest.pb(schema_registry.GetSchemaRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17906,9 +16218,7 @@ def test_get_schema_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.Schema.to_json(
-            schema_registry_resources.Schema()
-        )
+        return_value = schema_registry_resources.Schema.to_json(schema_registry_resources.Schema())
         req.return_value.content = return_value
 
         request = schema_registry.GetSchemaRequest()
@@ -17934,19 +16244,13 @@ def test_get_schema_rest_interceptors(null_interceptor):
 
 
 def test_get_raw_schema_rest_bad_request(request_type=schema_registry.GetSchemaRequest):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17966,14 +16270,10 @@ def test_get_raw_schema_rest_bad_request(request_type=schema_registry.GetSchemaR
     ],
 )
 def test_get_raw_schema_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18003,30 +16303,21 @@ def test_get_raw_schema_rest_call_success(request_type):
 def test_get_raw_schema_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_raw_schema_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_raw_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetSchemaRequest.pb(
-            schema_registry.GetSchemaRequest()
-        )
+        pb_message = schema_registry.GetSchemaRequest.pb(schema_registry.GetSchemaRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18062,22 +16353,14 @@ def test_get_raw_schema_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_schema_versions_rest_bad_request(
-    request_type=schema_registry.ListSchemaVersionsRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_schema_versions_rest_bad_request(request_type=schema_registry.ListSchemaVersionsRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18097,14 +16380,10 @@ def test_list_schema_versions_rest_bad_request(
     ],
 )
 def test_list_schema_versions_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18134,30 +16413,21 @@ def test_list_schema_versions_rest_call_success(request_type):
 def test_list_schema_versions_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_versions"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_schema_versions_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_versions") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_versions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListSchemaVersionsRequest.pb(
-            schema_registry.ListSchemaVersionsRequest()
-        )
+        pb_message = schema_registry.ListSchemaVersionsRequest.pb(schema_registry.ListSchemaVersionsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18193,22 +16463,14 @@ def test_list_schema_versions_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_schema_types_rest_bad_request(
-    request_type=schema_registry.ListSchemaTypesRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_schema_types_rest_bad_request(request_type=schema_registry.ListSchemaTypesRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18228,14 +16490,10 @@ def test_list_schema_types_rest_bad_request(
     ],
 )
 def test_list_schema_types_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18265,30 +16523,21 @@ def test_list_schema_types_rest_call_success(request_type):
 def test_list_schema_types_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_types"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_schema_types_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_types") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_types_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListSchemaTypesRequest.pb(
-            schema_registry.ListSchemaTypesRequest()
-        )
+        pb_message = schema_registry.ListSchemaTypesRequest.pb(schema_registry.ListSchemaTypesRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18324,22 +16573,14 @@ def test_list_schema_types_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_subjects_rest_bad_request(
-    request_type=schema_registry.ListSubjectsRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_subjects_rest_bad_request(request_type=schema_registry.ListSubjectsRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18359,14 +16600,10 @@ def test_list_subjects_rest_bad_request(
     ],
 )
 def test_list_subjects_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18396,30 +16633,21 @@ def test_list_subjects_rest_call_success(request_type):
 def test_list_subjects_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_subjects_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_subjects"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListSubjectsRequest.pb(
-            schema_registry.ListSubjectsRequest()
-        )
+        pb_message = schema_registry.ListSubjectsRequest.pb(schema_registry.ListSubjectsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18455,22 +16683,14 @@ def test_list_subjects_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_subjects_by_schema_id_rest_bad_request(
-    request_type=schema_registry.ListSubjectsBySchemaIdRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_subjects_by_schema_id_rest_bad_request(request_type=schema_registry.ListSubjectsBySchemaIdRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18490,14 +16710,10 @@ def test_list_subjects_by_schema_id_rest_bad_request(
     ],
 )
 def test_list_subjects_by_schema_id_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/schemas/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18527,32 +16743,21 @@ def test_list_subjects_by_schema_id_rest_call_success(request_type):
 def test_list_subjects_by_schema_id_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_subjects_by_schema_id",
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_subjects_by_schema_id_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects_by_schema_id") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects_by_schema_id_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "pre_list_subjects_by_schema_id",
+        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_subjects_by_schema_id"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListSubjectsBySchemaIdRequest.pb(
-            schema_registry.ListSubjectsBySchemaIdRequest()
-        )
+        pb_message = schema_registry.ListSubjectsBySchemaIdRequest.pb(schema_registry.ListSubjectsBySchemaIdRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18588,22 +16793,14 @@ def test_list_subjects_by_schema_id_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_subject_rest_bad_request(
-    request_type=schema_registry.DeleteSubjectRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_subject_rest_bad_request(request_type=schema_registry.DeleteSubjectRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18623,14 +16820,10 @@ def test_delete_subject_rest_bad_request(
     ],
 )
 def test_delete_subject_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18660,30 +16853,21 @@ def test_delete_subject_rest_call_success(request_type):
 def test_delete_subject_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_subject"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_subject_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_delete_subject") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_subject_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_subject"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.DeleteSubjectRequest.pb(
-            schema_registry.DeleteSubjectRequest()
-        )
+        pb_message = schema_registry.DeleteSubjectRequest.pb(schema_registry.DeleteSubjectRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18719,22 +16903,14 @@ def test_delete_subject_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_lookup_version_rest_bad_request(
-    request_type=schema_registry.LookupVersionRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_lookup_version_rest_bad_request(request_type=schema_registry.LookupVersionRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18754,14 +16930,10 @@ def test_lookup_version_rest_bad_request(
     ],
 )
 def test_lookup_version_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18800,30 +16972,21 @@ def test_lookup_version_rest_call_success(request_type):
 def test_lookup_version_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_lookup_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_lookup_version_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_lookup_version") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_lookup_version_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_lookup_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.LookupVersionRequest.pb(
-            schema_registry.LookupVersionRequest()
-        )
+        pb_message = schema_registry.LookupVersionRequest.pb(schema_registry.LookupVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18834,9 +16997,7 @@ def test_lookup_version_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaVersion.to_json(
-            schema_registry_resources.SchemaVersion()
-        )
+        return_value = schema_registry_resources.SchemaVersion.to_json(schema_registry_resources.SchemaVersion())
         req.return_value.content = return_value
 
         request = schema_registry.LookupVersionRequest()
@@ -18846,10 +17007,7 @@ def test_lookup_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaVersion()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaVersion(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaVersion(), metadata
 
         client.lookup_version(
             request,
@@ -18865,19 +17023,13 @@ def test_lookup_version_rest_interceptors(null_interceptor):
 
 
 def test_get_version_rest_bad_request(request_type=schema_registry.GetVersionRequest):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18897,14 +17049,10 @@ def test_get_version_rest_bad_request(request_type=schema_registry.GetVersionReq
     ],
 )
 def test_get_version_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18943,30 +17091,21 @@ def test_get_version_rest_call_success(request_type):
 def test_get_version_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_version_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_version") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_version_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetVersionRequest.pb(
-            schema_registry.GetVersionRequest()
-        )
+        pb_message = schema_registry.GetVersionRequest.pb(schema_registry.GetVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -18977,9 +17116,7 @@ def test_get_version_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaVersion.to_json(
-            schema_registry_resources.SchemaVersion()
-        )
+        return_value = schema_registry_resources.SchemaVersion.to_json(schema_registry_resources.SchemaVersion())
         req.return_value.content = return_value
 
         request = schema_registry.GetVersionRequest()
@@ -18989,10 +17126,7 @@ def test_get_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaVersion()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaVersion(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaVersion(), metadata
 
         client.get_version(
             request,
@@ -19007,22 +17141,14 @@ def test_get_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_raw_schema_version_rest_bad_request(
-    request_type=schema_registry.GetVersionRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_raw_schema_version_rest_bad_request(request_type=schema_registry.GetVersionRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19042,14 +17168,10 @@ def test_get_raw_schema_version_rest_bad_request(
     ],
 )
 def test_get_raw_schema_version_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19079,30 +17201,21 @@ def test_get_raw_schema_version_rest_call_success(request_type):
 def test_get_raw_schema_version_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_raw_schema_version_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema_version") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema_version_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_raw_schema_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetVersionRequest.pb(
-            schema_registry.GetVersionRequest()
-        )
+        pb_message = schema_registry.GetVersionRequest.pb(schema_registry.GetVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19138,22 +17251,14 @@ def test_get_raw_schema_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_versions_rest_bad_request(
-    request_type=schema_registry.ListVersionsRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_versions_rest_bad_request(request_type=schema_registry.ListVersionsRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19173,14 +17278,10 @@ def test_list_versions_rest_bad_request(
     ],
 )
 def test_list_versions_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19210,30 +17311,21 @@ def test_list_versions_rest_call_success(request_type):
 def test_list_versions_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_versions"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_versions_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_versions") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_versions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListVersionsRequest.pb(
-            schema_registry.ListVersionsRequest()
-        )
+        pb_message = schema_registry.ListVersionsRequest.pb(schema_registry.ListVersionsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19269,22 +17361,14 @@ def test_list_versions_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_version_rest_bad_request(
-    request_type=schema_registry.CreateVersionRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_version_rest_bad_request(request_type=schema_registry.CreateVersionRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19304,14 +17388,10 @@ def test_create_version_rest_bad_request(
     ],
 )
 def test_create_version_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19342,30 +17422,21 @@ def test_create_version_rest_call_success(request_type):
 def test_create_version_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_create_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_create_version_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_create_version") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_create_version_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_create_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.CreateVersionRequest.pb(
-            schema_registry.CreateVersionRequest()
-        )
+        pb_message = schema_registry.CreateVersionRequest.pb(schema_registry.CreateVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19376,9 +17447,7 @@ def test_create_version_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry.CreateVersionResponse.to_json(
-            schema_registry.CreateVersionResponse()
-        )
+        return_value = schema_registry.CreateVersionResponse.to_json(schema_registry.CreateVersionResponse())
         req.return_value.content = return_value
 
         request = schema_registry.CreateVersionRequest()
@@ -19388,10 +17457,7 @@ def test_create_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry.CreateVersionResponse()
-        post_with_metadata.return_value = (
-            schema_registry.CreateVersionResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry.CreateVersionResponse(), metadata
 
         client.create_version(
             request,
@@ -19406,22 +17472,14 @@ def test_create_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_version_rest_bad_request(
-    request_type=schema_registry.DeleteVersionRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_version_rest_bad_request(request_type=schema_registry.DeleteVersionRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19441,14 +17499,10 @@ def test_delete_version_rest_bad_request(
     ],
 )
 def test_delete_version_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19478,30 +17532,21 @@ def test_delete_version_rest_call_success(request_type):
 def test_delete_version_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_version_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_delete_version") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_version_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.DeleteVersionRequest.pb(
-            schema_registry.DeleteVersionRequest()
-        )
+        pb_message = schema_registry.DeleteVersionRequest.pb(schema_registry.DeleteVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19537,22 +17582,14 @@ def test_delete_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_referenced_schemas_rest_bad_request(
-    request_type=schema_registry.ListReferencedSchemasRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_referenced_schemas_rest_bad_request(request_type=schema_registry.ListReferencedSchemasRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19572,14 +17609,10 @@ def test_list_referenced_schemas_rest_bad_request(
     ],
 )
 def test_list_referenced_schemas_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/schemaRegistries/sample3/subjects/sample4/versions/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19609,30 +17642,21 @@ def test_list_referenced_schemas_rest_call_success(request_type):
 def test_list_referenced_schemas_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_referenced_schemas"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_referenced_schemas_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_list_referenced_schemas") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_list_referenced_schemas_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_list_referenced_schemas"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.ListReferencedSchemasRequest.pb(
-            schema_registry.ListReferencedSchemasRequest()
-        )
+        pb_message = schema_registry.ListReferencedSchemasRequest.pb(schema_registry.ListReferencedSchemasRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19668,22 +17692,14 @@ def test_list_referenced_schemas_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_check_compatibility_rest_bad_request(
-    request_type=schema_registry.CheckCompatibilityRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_check_compatibility_rest_bad_request(request_type=schema_registry.CheckCompatibilityRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/compatibility/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/compatibility/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19703,14 +17719,10 @@ def test_check_compatibility_rest_bad_request(
     ],
 )
 def test_check_compatibility_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/compatibility/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/compatibility/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19743,30 +17755,21 @@ def test_check_compatibility_rest_call_success(request_type):
 def test_check_compatibility_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_check_compatibility"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_check_compatibility_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_check_compatibility") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_check_compatibility_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_check_compatibility"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.CheckCompatibilityRequest.pb(
-            schema_registry.CheckCompatibilityRequest()
-        )
+        pb_message = schema_registry.CheckCompatibilityRequest.pb(schema_registry.CheckCompatibilityRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19777,9 +17780,7 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry.CheckCompatibilityResponse.to_json(
-            schema_registry.CheckCompatibilityResponse()
-        )
+        return_value = schema_registry.CheckCompatibilityResponse.to_json(schema_registry.CheckCompatibilityResponse())
         req.return_value.content = return_value
 
         request = schema_registry.CheckCompatibilityRequest()
@@ -19789,10 +17790,7 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry.CheckCompatibilityResponse()
-        post_with_metadata.return_value = (
-            schema_registry.CheckCompatibilityResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry.CheckCompatibilityResponse(), metadata
 
         client.check_compatibility(
             request,
@@ -19807,22 +17805,14 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_schema_config_rest_bad_request(
-    request_type=schema_registry.GetSchemaConfigRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_schema_config_rest_bad_request(request_type=schema_registry.GetSchemaConfigRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19842,14 +17832,10 @@ def test_get_schema_config_rest_bad_request(
     ],
 )
 def test_get_schema_config_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19875,10 +17861,7 @@ def test_get_schema_config_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -19887,30 +17870,21 @@ def test_get_schema_config_rest_call_success(request_type):
 def test_get_schema_config_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_config"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_schema_config_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_config") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetSchemaConfigRequest.pb(
-            schema_registry.GetSchemaConfigRequest()
-        )
+        pb_message = schema_registry.GetSchemaConfigRequest.pb(schema_registry.GetSchemaConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -19921,9 +17895,7 @@ def test_get_schema_config_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaConfig.to_json(
-            schema_registry_resources.SchemaConfig()
-        )
+        return_value = schema_registry_resources.SchemaConfig.to_json(schema_registry_resources.SchemaConfig())
         req.return_value.content = return_value
 
         request = schema_registry.GetSchemaConfigRequest()
@@ -19933,10 +17905,7 @@ def test_get_schema_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaConfig()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaConfig(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaConfig(), metadata
 
         client.get_schema_config(
             request,
@@ -19951,22 +17920,14 @@ def test_get_schema_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_schema_config_rest_bad_request(
-    request_type=schema_registry.UpdateSchemaConfigRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_schema_config_rest_bad_request(request_type=schema_registry.UpdateSchemaConfigRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19986,14 +17947,10 @@ def test_update_schema_config_rest_bad_request(
     ],
 )
 def test_update_schema_config_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20019,10 +17976,7 @@ def test_update_schema_config_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -20031,30 +17985,21 @@ def test_update_schema_config_rest_call_success(request_type):
 def test_update_schema_config_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_config"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_update_schema_config_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_config") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_update_schema_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.UpdateSchemaConfigRequest.pb(
-            schema_registry.UpdateSchemaConfigRequest()
-        )
+        pb_message = schema_registry.UpdateSchemaConfigRequest.pb(schema_registry.UpdateSchemaConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20065,9 +18010,7 @@ def test_update_schema_config_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaConfig.to_json(
-            schema_registry_resources.SchemaConfig()
-        )
+        return_value = schema_registry_resources.SchemaConfig.to_json(schema_registry_resources.SchemaConfig())
         req.return_value.content = return_value
 
         request = schema_registry.UpdateSchemaConfigRequest()
@@ -20077,10 +18020,7 @@ def test_update_schema_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaConfig()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaConfig(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaConfig(), metadata
 
         client.update_schema_config(
             request,
@@ -20095,22 +18035,14 @@ def test_update_schema_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_schema_config_rest_bad_request(
-    request_type=schema_registry.DeleteSchemaConfigRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_schema_config_rest_bad_request(request_type=schema_registry.DeleteSchemaConfigRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20130,14 +18062,10 @@ def test_delete_schema_config_rest_bad_request(
     ],
 )
 def test_delete_schema_config_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/config/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20163,10 +18091,7 @@ def test_delete_schema_config_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaConfig)
-    assert (
-        response.compatibility
-        == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
-    )
+    assert response.compatibility == schema_registry_resources.SchemaConfig.CompatibilityType.BACKWARD
     assert response.normalize is True
     assert response.alias == "alias_value"
 
@@ -20175,30 +18100,21 @@ def test_delete_schema_config_rest_call_success(request_type):
 def test_delete_schema_config_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_config"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_schema_config_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_config") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.DeleteSchemaConfigRequest.pb(
-            schema_registry.DeleteSchemaConfigRequest()
-        )
+        pb_message = schema_registry.DeleteSchemaConfigRequest.pb(schema_registry.DeleteSchemaConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20209,9 +18125,7 @@ def test_delete_schema_config_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaConfig.to_json(
-            schema_registry_resources.SchemaConfig()
-        )
+        return_value = schema_registry_resources.SchemaConfig.to_json(schema_registry_resources.SchemaConfig())
         req.return_value.content = return_value
 
         request = schema_registry.DeleteSchemaConfigRequest()
@@ -20221,10 +18135,7 @@ def test_delete_schema_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaConfig()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaConfig(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaConfig(), metadata
 
         client.delete_schema_config(
             request,
@@ -20239,22 +18150,14 @@ def test_delete_schema_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_schema_mode_rest_bad_request(
-    request_type=schema_registry.GetSchemaModeRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_schema_mode_rest_bad_request(request_type=schema_registry.GetSchemaModeRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20274,14 +18177,10 @@ def test_get_schema_mode_rest_bad_request(
     ],
 )
 def test_get_schema_mode_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20312,30 +18211,21 @@ def test_get_schema_mode_rest_call_success(request_type):
 def test_get_schema_mode_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_mode"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_schema_mode_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_mode") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_mode_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_mode"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.GetSchemaModeRequest.pb(
-            schema_registry.GetSchemaModeRequest()
-        )
+        pb_message = schema_registry.GetSchemaModeRequest.pb(schema_registry.GetSchemaModeRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20346,9 +18236,7 @@ def test_get_schema_mode_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaMode.to_json(
-            schema_registry_resources.SchemaMode()
-        )
+        return_value = schema_registry_resources.SchemaMode.to_json(schema_registry_resources.SchemaMode())
         req.return_value.content = return_value
 
         request = schema_registry.GetSchemaModeRequest()
@@ -20358,10 +18246,7 @@ def test_get_schema_mode_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaMode()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaMode(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaMode(), metadata
 
         client.get_schema_mode(
             request,
@@ -20376,22 +18261,14 @@ def test_get_schema_mode_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_schema_mode_rest_bad_request(
-    request_type=schema_registry.UpdateSchemaModeRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_schema_mode_rest_bad_request(request_type=schema_registry.UpdateSchemaModeRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20411,14 +18288,10 @@ def test_update_schema_mode_rest_bad_request(
     ],
 )
 def test_update_schema_mode_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20449,30 +18322,21 @@ def test_update_schema_mode_rest_call_success(request_type):
 def test_update_schema_mode_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_mode"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_update_schema_mode_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_mode") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_mode_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_update_schema_mode"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.UpdateSchemaModeRequest.pb(
-            schema_registry.UpdateSchemaModeRequest()
-        )
+        pb_message = schema_registry.UpdateSchemaModeRequest.pb(schema_registry.UpdateSchemaModeRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20483,9 +18347,7 @@ def test_update_schema_mode_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaMode.to_json(
-            schema_registry_resources.SchemaMode()
-        )
+        return_value = schema_registry_resources.SchemaMode.to_json(schema_registry_resources.SchemaMode())
         req.return_value.content = return_value
 
         request = schema_registry.UpdateSchemaModeRequest()
@@ -20495,10 +18357,7 @@ def test_update_schema_mode_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaMode()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaMode(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaMode(), metadata
 
         client.update_schema_mode(
             request,
@@ -20513,22 +18372,14 @@ def test_update_schema_mode_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_schema_mode_rest_bad_request(
-    request_type=schema_registry.DeleteSchemaModeRequest,
-):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_schema_mode_rest_bad_request(request_type=schema_registry.DeleteSchemaModeRequest):
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20548,14 +18399,10 @@ def test_delete_schema_mode_rest_bad_request(
     ],
 )
 def test_delete_schema_mode_rest_call_success(request_type):
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/schemaRegistries/sample3/mode/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20586,30 +18433,21 @@ def test_delete_schema_mode_rest_call_success(request_type):
 def test_delete_schema_mode_rest_interceptors(null_interceptor):
     transport = transports.ManagedSchemaRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ManagedSchemaRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.ManagedSchemaRegistryRestInterceptor(),
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_mode"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_schema_mode_with_metadata",
+    ) as transcode, mock.patch.object(transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_mode") as post, mock.patch.object(
+        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_mode_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_mode"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = schema_registry.DeleteSchemaModeRequest.pb(
-            schema_registry.DeleteSchemaModeRequest()
-        )
+        pb_message = schema_registry.DeleteSchemaModeRequest.pb(schema_registry.DeleteSchemaModeRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20620,9 +18458,7 @@ def test_delete_schema_mode_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = schema_registry_resources.SchemaMode.to_json(
-            schema_registry_resources.SchemaMode()
-        )
+        return_value = schema_registry_resources.SchemaMode.to_json(schema_registry_resources.SchemaMode())
         req.return_value.content = return_value
 
         request = schema_registry.DeleteSchemaModeRequest()
@@ -20632,10 +18468,7 @@ def test_delete_schema_mode_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema_registry_resources.SchemaMode()
-        post_with_metadata.return_value = (
-            schema_registry_resources.SchemaMode(),
-            metadata,
-        )
+        post_with_metadata.return_value = schema_registry_resources.SchemaMode(), metadata
 
         client.delete_schema_mode(
             request,
@@ -20656,14 +18489,10 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -20710,9 +18539,7 @@ def test_get_location_rest(request_type):
     assert isinstance(response, locations_pb2.Location)
 
 
-def test_list_locations_rest_bad_request(
-    request_type=locations_pb2.ListLocationsRequest,
-):
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -20721,9 +18548,7 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -20770,22 +18595,16 @@ def test_list_locations_rest(request_type):
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -20832,22 +18651,16 @@ def test_cancel_operation_rest(request_type):
     assert response is None
 
 
-def test_delete_operation_rest_bad_request(
-    request_type=operations_pb2.DeleteOperationRequest,
-):
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -20894,22 +18707,16 @@ def test_delete_operation_rest(request_type):
     assert response is None
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -20956,22 +18763,16 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -21019,9 +18820,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -21034,9 +18833,7 @@ def test_get_schema_registry_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_registry), "__call__") as call:
         client.get_schema_registry(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21056,9 +18853,7 @@ def test_list_schema_registries_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_registries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_registries), "__call__") as call:
         client.list_schema_registries(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21078,9 +18873,7 @@ def test_create_schema_registry_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_schema_registry), "__call__") as call:
         client.create_schema_registry(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21100,9 +18893,7 @@ def test_delete_schema_registry_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_registry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_registry), "__call__") as call:
         client.delete_schema_registry(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21202,9 +18993,7 @@ def test_list_schema_versions_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_versions), "__call__") as call:
         client.list_schema_versions(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21224,9 +19013,7 @@ def test_list_schema_types_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_schema_types), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_schema_types), "__call__") as call:
         client.list_schema_types(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21266,9 +19053,7 @@ def test_list_subjects_by_schema_id_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subjects_by_schema_id), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subjects_by_schema_id), "__call__") as call:
         client.list_subjects_by_schema_id(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21348,9 +19133,7 @@ def test_get_raw_schema_version_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_raw_schema_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_raw_schema_version), "__call__") as call:
         client.get_raw_schema_version(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21430,9 +19213,7 @@ def test_list_referenced_schemas_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_referenced_schemas), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_referenced_schemas), "__call__") as call:
         client.list_referenced_schemas(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21452,9 +19233,7 @@ def test_check_compatibility_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_compatibility), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_compatibility), "__call__") as call:
         client.check_compatibility(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21474,9 +19253,7 @@ def test_get_schema_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_schema_config), "__call__") as call:
         client.get_schema_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21496,9 +19273,7 @@ def test_update_schema_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_config), "__call__") as call:
         client.update_schema_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21518,9 +19293,7 @@ def test_delete_schema_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_config), "__call__") as call:
         client.delete_schema_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21560,9 +19333,7 @@ def test_update_schema_mode_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_schema_mode), "__call__") as call:
         client.update_schema_mode(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21582,9 +19353,7 @@ def test_delete_schema_mode_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_schema_mode), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_schema_mode), "__call__") as call:
         client.delete_schema_mode(request=None)
 
         # Establish that the underlying stub method was called.
@@ -21609,10 +19378,7 @@ def test_transport_grpc_default():
 def test_managed_schema_registry_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.ManagedSchemaRegistryTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.ManagedSchemaRegistryTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_managed_schema_registry_base_transport():
@@ -21680,9 +19446,7 @@ def test_managed_schema_registry_base_transport():
 
 def test_managed_schema_registry_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.transports.ManagedSchemaRegistryTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -21757,9 +19521,7 @@ def test_managed_schema_registry_transport_auth_gdch_credentials(transport_class
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -21767,19 +19529,12 @@ def test_managed_schema_registry_transport_auth_gdch_credentials(transport_class
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.ManagedSchemaRegistryGrpcTransport, grpc_helpers),
-        (transports.ManagedSchemaRegistryGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.ManagedSchemaRegistryGrpcTransport, grpc_helpers), (transports.ManagedSchemaRegistryGrpcAsyncIOTransport, grpc_helpers_async)],
 )
-def test_managed_schema_registry_transport_create_channel(
-    transport_class, grpc_helpers
-):
+def test_managed_schema_registry_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -21802,26 +19557,14 @@ def test_managed_schema_registry_transport_create_channel(
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.ManagedSchemaRegistryGrpcTransport,
-        transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-    ],
-)
-def test_managed_schema_registry_grpc_transport_client_cert_source_for_mtls(
-    transport_class,
-):
+@pytest.mark.parametrize("transport_class", [transports.ManagedSchemaRegistryGrpcTransport, transports.ManagedSchemaRegistryGrpcAsyncIOTransport])
+def test_managed_schema_registry_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -21839,24 +19582,15 @@ def test_managed_schema_registry_grpc_transport_client_cert_source_for_mtls(
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_managed_schema_registry_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.ManagedSchemaRegistryRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.ManagedSchemaRegistryRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -21871,15 +19605,11 @@ def test_managed_schema_registry_http_transport_client_cert_source_for_mtls():
 def test_managed_schema_registry_host_no_port(transport_name):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="managedkafka.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="managedkafka.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "managedkafka.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://managedkafka.googleapis.com"
+        "managedkafka.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://managedkafka.googleapis.com"
     )
 
 
@@ -21894,15 +19624,11 @@ def test_managed_schema_registry_host_no_port(transport_name):
 def test_managed_schema_registry_host_with_port(transport_name):
     client = ManagedSchemaRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="managedkafka.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="managedkafka.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "managedkafka.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://managedkafka.googleapis.com:8000"
+        "managedkafka.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://managedkafka.googleapis.com:8000"
     )
 
 
@@ -22034,22 +19760,11 @@ def test_managed_schema_registry_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.ManagedSchemaRegistryGrpcTransport,
-        transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-    ],
-)
-def test_managed_schema_registry_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.ManagedSchemaRegistryGrpcTransport, transports.ManagedSchemaRegistryGrpcAsyncIOTransport])
+def test_managed_schema_registry_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -22067,9 +19782,7 @@ def test_managed_schema_registry_transport_channel_mtls_with_client_cert_source(
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -22088,13 +19801,7 @@ def test_managed_schema_registry_transport_channel_mtls_with_client_cert_source(
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.ManagedSchemaRegistryGrpcTransport,
-        transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-    ],
-)
+@pytest.mark.parametrize("transport_class", [transports.ManagedSchemaRegistryGrpcTransport, transports.ManagedSchemaRegistryGrpcAsyncIOTransport])
 def test_managed_schema_registry_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -22102,9 +19809,7 @@ def test_managed_schema_registry_transport_channel_mtls_with_adc(transport_class
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -22143,9 +19848,7 @@ def test_schema_path():
         schema_registry=schema_registry,
         schema=schema,
     )
-    actual = ManagedSchemaRegistryClient.schema_path(
-        project, location, schema_registry, schema
-    )
+    actual = ManagedSchemaRegistryClient.schema_path(project, location, schema_registry, schema)
     assert expected == actual
 
 
@@ -22172,9 +19875,7 @@ def test_schema_config_path():
         location=location,
         schema_registry=schema_registry,
     )
-    actual = ManagedSchemaRegistryClient.schema_config_path(
-        project, location, schema_registry
-    )
+    actual = ManagedSchemaRegistryClient.schema_config_path(project, location, schema_registry)
     assert expected == actual
 
 
@@ -22202,9 +19903,7 @@ def test_schema_context_path():
         schema_registry=schema_registry,
         context=context,
     )
-    actual = ManagedSchemaRegistryClient.schema_context_path(
-        project, location, schema_registry, context
-    )
+    actual = ManagedSchemaRegistryClient.schema_context_path(project, location, schema_registry, context)
     assert expected == actual
 
 
@@ -22231,9 +19930,7 @@ def test_schema_mode_path():
         location=location,
         schema_registry=schema_registry,
     )
-    actual = ManagedSchemaRegistryClient.schema_mode_path(
-        project, location, schema_registry
-    )
+    actual = ManagedSchemaRegistryClient.schema_mode_path(project, location, schema_registry)
     assert expected == actual
 
 
@@ -22259,9 +19956,7 @@ def test_schema_registry_path():
         location=location,
         schema_registry=schema_registry,
     )
-    actual = ManagedSchemaRegistryClient.schema_registry_path(
-        project, location, schema_registry
-    )
+    actual = ManagedSchemaRegistryClient.schema_registry_path(project, location, schema_registry)
     assert expected == actual
 
 
@@ -22289,9 +19984,7 @@ def test_schema_subject_path():
         schema_registry=schema_registry,
         subject=subject,
     )
-    actual = ManagedSchemaRegistryClient.schema_subject_path(
-        project, location, schema_registry, subject
-    )
+    actual = ManagedSchemaRegistryClient.schema_subject_path(project, location, schema_registry, subject)
     assert expected == actual
 
 
@@ -22322,9 +20015,7 @@ def test_schema_version_path():
         subject=subject,
         version=version,
     )
-    actual = ManagedSchemaRegistryClient.schema_version_path(
-        project, location, schema_registry, subject, version
-    )
+    actual = ManagedSchemaRegistryClient.schema_version_path(project, location, schema_registry, subject, version)
     assert expected == actual
 
 
@@ -22449,18 +20140,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.ManagedSchemaRegistryTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.ManagedSchemaRegistryTransport, "_prep_wrapped_messages") as prep:
         client = ManagedSchemaRegistryClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.ManagedSchemaRegistryTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.ManagedSchemaRegistryTransport, "_prep_wrapped_messages") as prep:
         transport_class = ManagedSchemaRegistryClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -22785,9 +20472,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22839,9 +20524,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22881,9 +20564,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -22930,9 +20611,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22984,9 +20663,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23026,9 +20703,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -23075,9 +20750,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23129,9 +20802,7 @@ async def test_list_locations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23171,9 +20842,7 @@ async def test_list_locations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(
             request={
                 "name": "locations",
@@ -23220,9 +20889,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23234,9 +20901,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_location_field_headers():
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -23272,9 +20937,7 @@ async def test_get_location_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -23314,9 +20977,7 @@ async def test_get_location_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(
             request={
                 "name": "locations",
@@ -23326,12 +20987,8 @@ async def test_get_location_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -23339,24 +20996,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = ManagedSchemaRegistryAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = ManagedSchemaRegistryAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = ManagedSchemaRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -23368,9 +21017,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = ManagedSchemaRegistryClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = ManagedSchemaRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -23383,16 +21030,11 @@ def test_client_ctx():
     "client_class,transport_class",
     [
         (ManagedSchemaRegistryClient, transports.ManagedSchemaRegistryGrpcTransport),
-        (
-            ManagedSchemaRegistryAsyncClient,
-            transports.ManagedSchemaRegistryGrpcAsyncIOTransport,
-        ),
+        (ManagedSchemaRegistryAsyncClient, transports.ManagedSchemaRegistryGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -23403,9 +21045,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

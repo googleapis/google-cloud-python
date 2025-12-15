@@ -24,11 +24,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.visionai_v1alpha1.types import (
-    common,
-    streams_resources,
-    streams_service,
-)
+from google.cloud.visionai_v1alpha1.types import common, streams_resources, streams_service
 
 from .base import DEFAULT_CLIENT_INFO, StreamsServiceTransport
 
@@ -79,20 +75,14 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateCluster:
@@ -105,11 +95,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -132,9 +118,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -145,11 +129,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseCreateCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseCreateCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -164,11 +144,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -191,9 +167,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -204,11 +178,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseCreateEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseCreateEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -223,11 +193,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -250,9 +216,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -263,11 +227,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseCreateSeries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseCreateSeries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -282,11 +242,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -309,9 +265,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -322,11 +276,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseCreateStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseCreateStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -339,11 +289,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -369,11 +315,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseDeleteCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseDeleteCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -386,11 +328,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -416,11 +354,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseDeleteEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseDeleteEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -433,11 +367,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -463,11 +393,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseDeleteSeries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseDeleteSeries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -480,11 +406,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -510,11 +432,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseDeleteStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseDeleteStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -527,11 +445,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -554,9 +468,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -567,11 +479,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseGenerateStreamHlsToken._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseGenerateStreamHlsToken._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -584,11 +492,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -614,11 +518,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseGetCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseGetCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -631,11 +531,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -661,11 +557,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseGetEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseGetEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -678,11 +570,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -708,11 +596,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseGetSeries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseGetSeries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -725,11 +609,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -755,11 +635,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseGetStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseGetStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -772,11 +648,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -802,11 +674,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseListClusters._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseListClusters._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -819,11 +687,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -849,11 +713,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseListEvents._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseListEvents._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -866,11 +726,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -896,11 +752,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseListSeries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseListSeries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -913,11 +765,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -943,11 +791,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseListStreams._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseListStreams._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -962,11 +806,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -989,9 +829,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1002,11 +840,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseMaterializeChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseMaterializeChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1021,11 +855,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1048,9 +878,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1061,11 +889,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseUpdateCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseUpdateCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1080,11 +904,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1107,9 +927,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1120,11 +938,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseUpdateEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseUpdateEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1139,11 +953,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1166,9 +976,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1179,11 +987,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseUpdateSeries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseUpdateSeries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1198,11 +1002,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1225,9 +1025,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1238,11 +1036,7 @@ class _BaseStreamsServiceRestTransport(StreamsServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseStreamsServiceRestTransport._BaseUpdateStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseStreamsServiceRestTransport._BaseUpdateStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

@@ -30,15 +30,9 @@ from google.cloud.run_v2.services.services.async_client import ServicesAsyncClie
 from google.cloud.run_v2.services.services.client import ServicesClient
 from google.cloud.run_v2.services.tasks.async_client import TasksAsyncClient
 from google.cloud.run_v2.services.tasks.client import TasksClient
-from google.cloud.run_v2.services.worker_pools.async_client import (
-    WorkerPoolsAsyncClient,
-)
+from google.cloud.run_v2.services.worker_pools.async_client import WorkerPoolsAsyncClient
 from google.cloud.run_v2.services.worker_pools.client import WorkerPoolsClient
-from google.cloud.run_v2.types.build import (
-    StorageSource,
-    SubmitBuildRequest,
-    SubmitBuildResponse,
-)
+from google.cloud.run_v2.types.build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from google.cloud.run_v2.types.condition import Condition
 from google.cloud.run_v2.types.execution import (
     CancelExecutionRequest,
@@ -49,11 +43,7 @@ from google.cloud.run_v2.types.execution import (
     ListExecutionsResponse,
 )
 from google.cloud.run_v2.types.execution_template import ExecutionTemplate
-from google.cloud.run_v2.types.instance_split import (
-    InstanceSplit,
-    InstanceSplitAllocationType,
-    InstanceSplitStatus,
-)
+from google.cloud.run_v2.types.instance_split import InstanceSplit, InstanceSplitAllocationType, InstanceSplitStatus
 from google.cloud.run_v2.types.job import (
     CreateJobRequest,
     DeleteJobRequest,
@@ -88,13 +78,7 @@ from google.cloud.run_v2.types.k8s_min import (
     Volume,
     VolumeMount,
 )
-from google.cloud.run_v2.types.revision import (
-    DeleteRevisionRequest,
-    GetRevisionRequest,
-    ListRevisionsRequest,
-    ListRevisionsResponse,
-    Revision,
-)
+from google.cloud.run_v2.types.revision import DeleteRevisionRequest, GetRevisionRequest, ListRevisionsRequest, ListRevisionsResponse, Revision
 from google.cloud.run_v2.types.revision_template import RevisionTemplate
 from google.cloud.run_v2.types.service import (
     CreateServiceRequest,
@@ -106,19 +90,9 @@ from google.cloud.run_v2.types.service import (
     UpdateServiceRequest,
 )
 from google.cloud.run_v2.types.status import RevisionScalingStatus
-from google.cloud.run_v2.types.task import (
-    GetTaskRequest,
-    ListTasksRequest,
-    ListTasksResponse,
-    Task,
-    TaskAttemptResult,
-)
+from google.cloud.run_v2.types.task import GetTaskRequest, ListTasksRequest, ListTasksResponse, Task, TaskAttemptResult
 from google.cloud.run_v2.types.task_template import TaskTemplate
-from google.cloud.run_v2.types.traffic_target import (
-    TrafficTarget,
-    TrafficTargetAllocationType,
-    TrafficTargetStatus,
-)
+from google.cloud.run_v2.types.traffic_target import TrafficTarget, TrafficTargetAllocationType, TrafficTargetStatus
 from google.cloud.run_v2.types.vendor_settings import (
     BinaryAuthorization,
     BuildConfig,
@@ -141,9 +115,7 @@ from google.cloud.run_v2.types.worker_pool import (
     UpdateWorkerPoolRequest,
     WorkerPool,
 )
-from google.cloud.run_v2.types.worker_pool_revision_template import (
-    WorkerPoolRevisionTemplate,
-)
+from google.cloud.run_v2.types.worker_pool_revision_template import WorkerPoolRevisionTemplate
 
 __all__ = (
     "BuildsClient",

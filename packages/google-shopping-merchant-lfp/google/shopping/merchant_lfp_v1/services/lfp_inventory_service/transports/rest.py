@@ -87,12 +87,8 @@ class LfpInventoryServiceRestInterceptor:
     """
 
     def pre_insert_lfp_inventory(
-        self,
-        request: lfpinventory.InsertLfpInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lfpinventory.InsertLfpInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lfpinventory.InsertLfpInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lfpinventory.InsertLfpInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_lfp_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -100,9 +96,7 @@ class LfpInventoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_lfp_inventory(
-        self, response: lfpinventory.LfpInventory
-    ) -> lfpinventory.LfpInventory:
+    def post_insert_lfp_inventory(self, response: lfpinventory.LfpInventory) -> lfpinventory.LfpInventory:
         """Post-rpc interceptor for insert_lfp_inventory
 
         DEPRECATED. Please use the `post_insert_lfp_inventory_with_metadata`
@@ -116,9 +110,7 @@ class LfpInventoryServiceRestInterceptor:
         return response
 
     def post_insert_lfp_inventory_with_metadata(
-        self,
-        response: lfpinventory.LfpInventory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lfpinventory.LfpInventory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lfpinventory.LfpInventory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_lfp_inventory
 
@@ -216,31 +208,18 @@ class LfpInventoryServiceRestTransport(_BaseLfpInventoryServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or LfpInventoryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _InsertLfpInventory(
-        _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory,
-        LfpInventoryServiceRestStub,
-    ):
+    class _InsertLfpInventory(_BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory, LfpInventoryServiceRestStub):
         def __hash__(self):
             return hash("LfpInventoryServiceRestTransport.InsertLfpInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -280,32 +259,18 @@ class LfpInventoryServiceRestTransport(_BaseLfpInventoryServiceRestTransport):
                     Local Inventory for the merchant.
             """
 
-            http_options = (
-                _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_http_options()
-            )
+            http_options = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_lfp_inventory(
-                request, metadata
-            )
-            transcoded_request = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_lfp_inventory(request, metadata)
+            transcoded_request = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_transcoded_request(http_options, request)
 
-            body = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpInventoryServiceRestTransport._BaseInsertLfpInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -328,16 +293,8 @@ class LfpInventoryServiceRestTransport(_BaseLfpInventoryServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                LfpInventoryServiceRestTransport._InsertLfpInventory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = LfpInventoryServiceRestTransport._InsertLfpInventory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -353,12 +310,8 @@ class LfpInventoryServiceRestTransport(_BaseLfpInventoryServiceRestTransport):
 
             resp = self._interceptor.post_insert_lfp_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_lfp_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_lfp_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lfpinventory.LfpInventory.to_json(response)
                 except:
@@ -380,9 +333,7 @@ class LfpInventoryServiceRestTransport(_BaseLfpInventoryServiceRestTransport):
             return resp
 
     @property
-    def insert_lfp_inventory(
-        self,
-    ) -> Callable[[lfpinventory.InsertLfpInventoryRequest], lfpinventory.LfpInventory]:
+    def insert_lfp_inventory(self) -> Callable[[lfpinventory.InsertLfpInventoryRequest], lfpinventory.LfpInventory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertLfpInventory(self._session, self._host, self._interceptor)  # type: ignore

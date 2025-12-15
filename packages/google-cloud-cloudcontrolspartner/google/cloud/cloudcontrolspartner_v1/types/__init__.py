@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .access_approval_requests import (
-    AccessApprovalRequest,
-    AccessReason,
-    ListAccessApprovalRequestsRequest,
-    ListAccessApprovalRequestsResponse,
-)
+from .access_approval_requests import AccessApprovalRequest, AccessReason, ListAccessApprovalRequestsRequest, ListAccessApprovalRequestsResponse
 from .completion_state import CompletionState
 from .core import OperationMetadata
 from .customer_workloads import (
@@ -43,12 +38,7 @@ from .customers import (
 from .ekm_connections import EkmConnection, EkmConnections, GetEkmConnectionsRequest
 from .partner_permissions import GetPartnerPermissionsRequest, PartnerPermissions
 from .partners import EkmMetadata, GetPartnerRequest, Partner, Sku
-from .violations import (
-    GetViolationRequest,
-    ListViolationsRequest,
-    ListViolationsResponse,
-    Violation,
-)
+from .violations import GetViolationRequest, ListViolationsRequest, ListViolationsResponse, Violation
 
 __all__ = (
     "AccessApprovalRequest",

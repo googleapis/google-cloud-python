@@ -91,20 +91,14 @@ class _BaseNetAppRestTransport(NetAppTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateActiveDirectory:
@@ -117,11 +111,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -144,9 +134,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -157,11 +145,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateActiveDirectory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -176,11 +160,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -203,9 +183,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -216,11 +194,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -235,11 +209,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -262,9 +232,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -275,11 +243,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateBackupPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -294,11 +258,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -321,9 +281,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -334,11 +292,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -353,11 +307,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -380,9 +330,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -393,11 +341,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateKmsConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateKmsConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -412,11 +356,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -439,9 +379,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -452,11 +390,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateQuotaRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -471,11 +405,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -498,9 +428,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -511,11 +439,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -530,11 +454,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -557,9 +477,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -570,11 +488,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateSnapshot._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateSnapshot._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -589,11 +503,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -616,9 +526,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -629,11 +537,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateStoragePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateStoragePool._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -648,11 +552,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -675,9 +575,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -688,11 +586,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseCreateVolume._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseCreateVolume._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -705,11 +599,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -735,11 +625,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -752,11 +638,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -782,11 +664,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -799,11 +677,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -829,11 +703,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -846,11 +716,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -876,11 +742,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -893,11 +755,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -923,11 +781,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteKmsConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -940,11 +794,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -970,11 +820,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteQuotaRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -987,11 +833,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1017,11 +859,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1034,11 +872,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1064,11 +898,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteSnapshot._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteSnapshot._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1081,11 +911,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1111,11 +937,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteStoragePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteStoragePool._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1128,11 +950,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1158,11 +976,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseDeleteVolume._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseDeleteVolume._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1175,11 +989,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1202,9 +1012,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1215,11 +1023,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseEncryptVolumes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseEncryptVolumes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1232,11 +1036,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1259,9 +1059,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1272,11 +1070,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseEstablishPeering._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseEstablishPeering._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1289,11 +1083,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1319,11 +1109,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetActiveDirectory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetActiveDirectory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1336,11 +1122,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1366,11 +1148,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1383,11 +1161,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1413,11 +1187,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetBackupPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetBackupPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1430,11 +1200,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1460,11 +1226,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1477,11 +1239,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1507,11 +1265,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetKmsConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetKmsConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1524,11 +1278,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1554,11 +1304,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetQuotaRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetQuotaRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1571,11 +1317,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1601,11 +1343,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1618,11 +1356,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1648,11 +1382,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetSnapshot._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetSnapshot._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1665,11 +1395,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1695,11 +1421,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetStoragePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetStoragePool._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1712,11 +1434,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1742,11 +1460,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseGetVolume._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseGetVolume._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1759,11 +1473,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1789,11 +1499,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListActiveDirectories._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListActiveDirectories._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1806,11 +1512,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1836,11 +1538,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListBackupPolicies._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListBackupPolicies._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1853,11 +1551,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1883,11 +1577,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListBackups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListBackups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1900,11 +1590,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1930,11 +1616,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListBackupVaults._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListBackupVaults._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1947,11 +1629,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1977,11 +1655,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListKmsConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListKmsConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1994,11 +1668,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2024,11 +1694,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListQuotaRules._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListQuotaRules._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2041,11 +1707,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2071,11 +1733,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListReplications._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListReplications._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2088,11 +1746,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2118,11 +1772,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListSnapshots._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListSnapshots._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2135,11 +1785,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2165,11 +1811,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListStoragePools._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListStoragePools._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2182,11 +1824,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2212,11 +1850,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseListVolumes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseListVolumes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2229,11 +1863,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2256,9 +1886,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2269,11 +1897,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseResumeReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseResumeReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2286,11 +1910,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2313,9 +1933,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2326,11 +1944,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseReverseReplicationDirection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2343,11 +1957,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2370,9 +1980,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2383,11 +1991,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseRevertVolume._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseRevertVolume._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2400,11 +2004,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2427,9 +2027,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2440,11 +2038,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseStopReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseStopReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2457,11 +2051,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2484,9 +2074,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2497,11 +2085,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2514,11 +2098,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2541,9 +2121,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2554,11 +2132,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseSyncReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseSyncReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2573,11 +2147,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2600,9 +2170,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2613,11 +2181,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2632,11 +2196,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2659,9 +2219,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2672,11 +2230,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateBackup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2691,11 +2245,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2718,9 +2268,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2731,11 +2279,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2750,11 +2294,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2777,9 +2317,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2790,11 +2328,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateBackupVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateBackupVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2809,11 +2343,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2836,9 +2366,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2849,11 +2377,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateKmsConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2866,11 +2390,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2893,9 +2413,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2906,11 +2424,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateQuotaRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2925,11 +2439,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2952,9 +2462,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2965,11 +2473,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateReplication._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateReplication._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2984,11 +2488,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3011,9 +2511,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3024,11 +2522,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateSnapshot._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateSnapshot._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3043,11 +2537,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3070,9 +2560,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3083,11 +2571,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateStoragePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateStoragePool._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3102,11 +2586,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3129,9 +2609,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3142,11 +2620,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseUpdateVolume._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseUpdateVolume._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3159,11 +2633,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3186,9 +2656,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3199,11 +2667,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseValidateDirectoryService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseValidateDirectoryService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3216,11 +2680,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3243,9 +2703,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3256,11 +2714,7 @@ class _BaseNetAppRestTransport(NetAppTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseNetAppRestTransport._BaseVerifyKmsConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

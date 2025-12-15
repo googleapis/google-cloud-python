@@ -618,9 +618,7 @@ class VideoAnnotationResults(proto.Message):
         number=12,
         message="TextAnnotation",
     )
-    object_annotations: MutableSequence[
-        "ObjectTrackingAnnotation"
-    ] = proto.RepeatedField(
+    object_annotations: MutableSequence["ObjectTrackingAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="ObjectTrackingAnnotation",
@@ -697,9 +695,7 @@ class AnnotateVideoProgress(proto.Message):
             ``AnnotateVideoRequest``.
     """
 
-    annotation_progress: MutableSequence[
-        "VideoAnnotationProgress"
-    ] = proto.RepeatedField(
+    annotation_progress: MutableSequence["VideoAnnotationProgress"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="VideoAnnotationProgress",

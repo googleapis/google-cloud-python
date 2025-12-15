@@ -71,20 +71,14 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAbandonInstances:
@@ -95,11 +89,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -122,9 +112,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -135,11 +123,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -151,11 +135,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -181,11 +161,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -197,11 +173,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -216,9 +188,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.pb(
-                request
-            )
+            pb_request = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -226,9 +196,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -239,11 +207,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -255,11 +219,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -282,9 +242,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -295,11 +253,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -311,11 +265,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -341,11 +291,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseDelete._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseDelete._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -357,11 +303,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -384,9 +326,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -397,11 +337,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -413,11 +349,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -432,9 +364,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.pb(
-                request
-            )
+            pb_request = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -442,9 +372,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -455,11 +383,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -471,11 +395,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -501,11 +421,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseGet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseGet._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -517,11 +433,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -544,9 +456,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -557,11 +467,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseInsert._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseInsert._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -573,11 +479,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -603,11 +505,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseList._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseList._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -619,11 +517,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -649,11 +543,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseListErrors._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -665,11 +555,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -683,9 +569,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.ListManagedInstancesInstanceGroupManagersRequest.pb(
-                request
-            )
+            pb_request = compute.ListManagedInstancesInstanceGroupManagersRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -697,11 +581,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -713,11 +593,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -731,9 +607,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.ListPerInstanceConfigsInstanceGroupManagersRequest.pb(
-                request
-            )
+            pb_request = compute.ListPerInstanceConfigsInstanceGroupManagersRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -745,11 +619,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -761,11 +631,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -788,9 +654,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -801,11 +665,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BasePatch._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BasePatch._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -817,11 +677,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -836,9 +692,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.pb(
-                request
-            )
+            pb_request = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -846,9 +700,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -859,11 +711,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -875,11 +723,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -894,9 +738,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.RecreateInstancesInstanceGroupManagerRequest.pb(
-                request
-            )
+            pb_request = compute.RecreateInstancesInstanceGroupManagerRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -904,9 +746,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -917,11 +757,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -935,11 +771,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -965,11 +797,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseResize._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseResize._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -981,11 +809,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1008,9 +832,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1021,11 +843,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -1037,11 +855,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1056,9 +870,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.SetInstanceTemplateInstanceGroupManagerRequest.pb(
-                request
-            )
+            pb_request = compute.SetInstanceTemplateInstanceGroupManagerRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1066,9 +878,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1079,11 +889,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -1095,11 +901,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1122,9 +924,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1135,11 +935,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -1151,11 +947,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1178,9 +970,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1191,11 +981,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -1207,11 +993,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1234,9 +1016,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1247,11 +1027,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -1263,11 +1039,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1290,9 +1062,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1303,11 +1073,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -1319,11 +1085,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1338,9 +1100,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.pb(
-                request
-            )
+            pb_request = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1348,9 +1108,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -1361,11 +1119,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_unset_required_fields(query_params))
 
             return query_params
 

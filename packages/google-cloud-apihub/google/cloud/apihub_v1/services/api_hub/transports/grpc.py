@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class ApiHubGrpcTransport(ApiHubTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,9 +310,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._grpc_channel
 
     @property
-    def create_api(
-        self,
-    ) -> Callable[[apihub_service.CreateApiRequest], common_fields.Api]:
+    def create_api(self) -> Callable[[apihub_service.CreateApiRequest], common_fields.Api]:
         r"""Return a callable for the create api method over gRPC.
 
         Create an API resource in the API hub.
@@ -378,9 +361,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_api"]
 
     @property
-    def list_apis(
-        self,
-    ) -> Callable[[apihub_service.ListApisRequest], apihub_service.ListApisResponse]:
+    def list_apis(self) -> Callable[[apihub_service.ListApisRequest], apihub_service.ListApisResponse]:
         r"""Return a callable for the list apis method over gRPC.
 
         List API resources in the API hub.
@@ -404,9 +385,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["list_apis"]
 
     @property
-    def update_api(
-        self,
-    ) -> Callable[[apihub_service.UpdateApiRequest], common_fields.Api]:
+    def update_api(self) -> Callable[[apihub_service.UpdateApiRequest], common_fields.Api]:
         r"""Return a callable for the update api method over gRPC.
 
         Update an API resource in the API hub. The following fields in
@@ -449,9 +428,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_api"]
 
     @property
-    def delete_api(
-        self,
-    ) -> Callable[[apihub_service.DeleteApiRequest], empty_pb2.Empty]:
+    def delete_api(self) -> Callable[[apihub_service.DeleteApiRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api method over gRPC.
 
         Delete an API resource in the API hub. API can only
@@ -476,9 +453,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_api"]
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[[apihub_service.CreateVersionRequest], common_fields.Version]:
+    def create_version(self) -> Callable[[apihub_service.CreateVersionRequest], common_fields.Version]:
         r"""Return a callable for the create version method over gRPC.
 
         Create an API version for an API resource in the API
@@ -503,9 +478,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["create_version"]
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[[apihub_service.GetVersionRequest], common_fields.Version]:
+    def get_version(self) -> Callable[[apihub_service.GetVersionRequest], common_fields.Version]:
         r"""Return a callable for the get version method over gRPC.
 
         Get details about the API version of an API resource.
@@ -532,11 +505,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_version"]
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [apihub_service.ListVersionsRequest], apihub_service.ListVersionsResponse
-    ]:
+    def list_versions(self) -> Callable[[apihub_service.ListVersionsRequest], apihub_service.ListVersionsResponse]:
         r"""Return a callable for the list versions method over gRPC.
 
         List API versions of an API resource in the API hub.
@@ -560,9 +529,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["list_versions"]
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[[apihub_service.UpdateVersionRequest], common_fields.Version]:
+    def update_version(self) -> Callable[[apihub_service.UpdateVersionRequest], common_fields.Version]:
         r"""Return a callable for the update version method over gRPC.
 
         Update API version. The following fields in the
@@ -601,9 +568,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_version"]
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[apihub_service.DeleteVersionRequest], empty_pb2.Empty]:
+    def delete_version(self) -> Callable[[apihub_service.DeleteVersionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete version method over gRPC.
 
         Delete an API version. Version can only be deleted if
@@ -629,9 +594,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_version"]
 
     @property
-    def create_spec(
-        self,
-    ) -> Callable[[apihub_service.CreateSpecRequest], common_fields.Spec]:
+    def create_spec(self) -> Callable[[apihub_service.CreateSpecRequest], common_fields.Spec]:
         r"""Return a callable for the create spec method over gRPC.
 
         Add a spec to an API version in the API hub. Multiple specs can
@@ -704,9 +667,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_spec"]
 
     @property
-    def get_spec_contents(
-        self,
-    ) -> Callable[[apihub_service.GetSpecContentsRequest], common_fields.SpecContents]:
+    def get_spec_contents(self) -> Callable[[apihub_service.GetSpecContentsRequest], common_fields.SpecContents]:
         r"""Return a callable for the get spec contents method over gRPC.
 
         Get spec contents.
@@ -730,9 +691,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_spec_contents"]
 
     @property
-    def list_specs(
-        self,
-    ) -> Callable[[apihub_service.ListSpecsRequest], apihub_service.ListSpecsResponse]:
+    def list_specs(self) -> Callable[[apihub_service.ListSpecsRequest], apihub_service.ListSpecsResponse]:
         r"""Return a callable for the list specs method over gRPC.
 
         List specs corresponding to a particular API
@@ -757,9 +716,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["list_specs"]
 
     @property
-    def update_spec(
-        self,
-    ) -> Callable[[apihub_service.UpdateSpecRequest], common_fields.Spec]:
+    def update_spec(self) -> Callable[[apihub_service.UpdateSpecRequest], common_fields.Spec]:
         r"""Return a callable for the update spec method over gRPC.
 
         Update spec. The following fields in the
@@ -805,9 +762,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_spec"]
 
     @property
-    def delete_spec(
-        self,
-    ) -> Callable[[apihub_service.DeleteSpecRequest], empty_pb2.Empty]:
+    def delete_spec(self) -> Callable[[apihub_service.DeleteSpecRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete spec method over gRPC.
 
         Delete a spec.
@@ -833,11 +788,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_spec"]
 
     @property
-    def create_api_operation(
-        self,
-    ) -> Callable[
-        [apihub_service.CreateApiOperationRequest], common_fields.ApiOperation
-    ]:
+    def create_api_operation(self) -> Callable[[apihub_service.CreateApiOperationRequest], common_fields.ApiOperation]:
         r"""Return a callable for the create api operation method over gRPC.
 
         Create an apiOperation in an API version.
@@ -863,9 +814,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["create_api_operation"]
 
     @property
-    def get_api_operation(
-        self,
-    ) -> Callable[[apihub_service.GetApiOperationRequest], common_fields.ApiOperation]:
+    def get_api_operation(self) -> Callable[[apihub_service.GetApiOperationRequest], common_fields.ApiOperation]:
         r"""Return a callable for the get api operation method over gRPC.
 
         Get details about a particular operation in API
@@ -890,12 +839,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_api_operation"]
 
     @property
-    def list_api_operations(
-        self,
-    ) -> Callable[
-        [apihub_service.ListApiOperationsRequest],
-        apihub_service.ListApiOperationsResponse,
-    ]:
+    def list_api_operations(self) -> Callable[[apihub_service.ListApiOperationsRequest], apihub_service.ListApiOperationsResponse]:
         r"""Return a callable for the list api operations method over gRPC.
 
         List operations in an API version.
@@ -919,11 +863,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["list_api_operations"]
 
     @property
-    def update_api_operation(
-        self,
-    ) -> Callable[
-        [apihub_service.UpdateApiOperationRequest], common_fields.ApiOperation
-    ]:
+    def update_api_operation(self) -> Callable[[apihub_service.UpdateApiOperationRequest], common_fields.ApiOperation]:
         r"""Return a callable for the update api operation method over gRPC.
 
         Update an operation in an API version. The following fields in
@@ -966,9 +906,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_api_operation"]
 
     @property
-    def delete_api_operation(
-        self,
-    ) -> Callable[[apihub_service.DeleteApiOperationRequest], empty_pb2.Empty]:
+    def delete_api_operation(self) -> Callable[[apihub_service.DeleteApiOperationRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api operation method over gRPC.
 
         Delete an operation in an API version and we can
@@ -995,9 +933,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_api_operation"]
 
     @property
-    def get_definition(
-        self,
-    ) -> Callable[[apihub_service.GetDefinitionRequest], common_fields.Definition]:
+    def get_definition(self) -> Callable[[apihub_service.GetDefinitionRequest], common_fields.Definition]:
         r"""Return a callable for the get definition method over gRPC.
 
         Get details about a definition in an API version.
@@ -1021,9 +957,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_definition"]
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[[apihub_service.CreateDeploymentRequest], common_fields.Deployment]:
+    def create_deployment(self) -> Callable[[apihub_service.CreateDeploymentRequest], common_fields.Deployment]:
         r"""Return a callable for the create deployment method over gRPC.
 
         Create a deployment resource in the API hub.
@@ -1049,9 +983,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["create_deployment"]
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[[apihub_service.GetDeploymentRequest], common_fields.Deployment]:
+    def get_deployment(self) -> Callable[[apihub_service.GetDeploymentRequest], common_fields.Deployment]:
         r"""Return a callable for the get deployment method over gRPC.
 
         Get details about a deployment and the API versions
@@ -1076,11 +1008,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_deployment"]
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [apihub_service.ListDeploymentsRequest], apihub_service.ListDeploymentsResponse
-    ]:
+    def list_deployments(self) -> Callable[[apihub_service.ListDeploymentsRequest], apihub_service.ListDeploymentsResponse]:
         r"""Return a callable for the list deployments method over gRPC.
 
         List deployment resources in the API hub.
@@ -1104,9 +1032,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["list_deployments"]
 
     @property
-    def update_deployment(
-        self,
-    ) -> Callable[[apihub_service.UpdateDeploymentRequest], common_fields.Deployment]:
+    def update_deployment(self) -> Callable[[apihub_service.UpdateDeploymentRequest], common_fields.Deployment]:
         r"""Return a callable for the update deployment method over gRPC.
 
         Update a deployment resource in the API hub. The following
@@ -1150,9 +1076,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_deployment"]
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[[apihub_service.DeleteDeploymentRequest], empty_pb2.Empty]:
+    def delete_deployment(self) -> Callable[[apihub_service.DeleteDeploymentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete deployment method over gRPC.
 
         Delete a deployment resource in the API hub.
@@ -1176,9 +1100,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_deployment"]
 
     @property
-    def create_attribute(
-        self,
-    ) -> Callable[[apihub_service.CreateAttributeRequest], common_fields.Attribute]:
+    def create_attribute(self) -> Callable[[apihub_service.CreateAttributeRequest], common_fields.Attribute]:
         r"""Return a callable for the create attribute method over gRPC.
 
         Create a user defined attribute.
@@ -1210,9 +1132,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["create_attribute"]
 
     @property
-    def get_attribute(
-        self,
-    ) -> Callable[[apihub_service.GetAttributeRequest], common_fields.Attribute]:
+    def get_attribute(self) -> Callable[[apihub_service.GetAttributeRequest], common_fields.Attribute]:
         r"""Return a callable for the get attribute method over gRPC.
 
         Get details about the attribute.
@@ -1236,9 +1156,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_attribute"]
 
     @property
-    def update_attribute(
-        self,
-    ) -> Callable[[apihub_service.UpdateAttributeRequest], common_fields.Attribute]:
+    def update_attribute(self) -> Callable[[apihub_service.UpdateAttributeRequest], common_fields.Attribute]:
         r"""Return a callable for the update attribute method over gRPC.
 
         Update the attribute. The following fields in the [Attribute
@@ -1287,9 +1205,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_attribute"]
 
     @property
-    def delete_attribute(
-        self,
-    ) -> Callable[[apihub_service.DeleteAttributeRequest], empty_pb2.Empty]:
+    def delete_attribute(self) -> Callable[[apihub_service.DeleteAttributeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete attribute method over gRPC.
 
         Delete an attribute.
@@ -1317,11 +1233,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_attribute"]
 
     @property
-    def list_attributes(
-        self,
-    ) -> Callable[
-        [apihub_service.ListAttributesRequest], apihub_service.ListAttributesResponse
-    ]:
+    def list_attributes(self) -> Callable[[apihub_service.ListAttributesRequest], apihub_service.ListAttributesResponse]:
         r"""Return a callable for the list attributes method over gRPC.
 
         List all attributes.
@@ -1345,11 +1257,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["list_attributes"]
 
     @property
-    def search_resources(
-        self,
-    ) -> Callable[
-        [apihub_service.SearchResourcesRequest], apihub_service.SearchResourcesResponse
-    ]:
+    def search_resources(self) -> Callable[[apihub_service.SearchResourcesRequest], apihub_service.SearchResourcesResponse]:
         r"""Return a callable for the search resources method over gRPC.
 
         Search across API-Hub resources.
@@ -1373,9 +1281,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["search_resources"]
 
     @property
-    def create_external_api(
-        self,
-    ) -> Callable[[apihub_service.CreateExternalApiRequest], common_fields.ExternalApi]:
+    def create_external_api(self) -> Callable[[apihub_service.CreateExternalApiRequest], common_fields.ExternalApi]:
         r"""Return a callable for the create external api method over gRPC.
 
         Create an External API resource in the API hub.
@@ -1399,9 +1305,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["create_external_api"]
 
     @property
-    def get_external_api(
-        self,
-    ) -> Callable[[apihub_service.GetExternalApiRequest], common_fields.ExternalApi]:
+    def get_external_api(self) -> Callable[[apihub_service.GetExternalApiRequest], common_fields.ExternalApi]:
         r"""Return a callable for the get external api method over gRPC.
 
         Get details about an External API resource in the API
@@ -1426,9 +1330,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["get_external_api"]
 
     @property
-    def update_external_api(
-        self,
-    ) -> Callable[[apihub_service.UpdateExternalApiRequest], common_fields.ExternalApi]:
+    def update_external_api(self) -> Callable[[apihub_service.UpdateExternalApiRequest], common_fields.ExternalApi]:
         r"""Return a callable for the update external api method over gRPC.
 
         Update an External API resource in the API hub. The following
@@ -1463,9 +1365,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["update_external_api"]
 
     @property
-    def delete_external_api(
-        self,
-    ) -> Callable[[apihub_service.DeleteExternalApiRequest], empty_pb2.Empty]:
+    def delete_external_api(self) -> Callable[[apihub_service.DeleteExternalApiRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete external api method over gRPC.
 
         Delete an External API resource in the API hub.
@@ -1489,12 +1389,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
         return self._stubs["delete_external_api"]
 
     @property
-    def list_external_apis(
-        self,
-    ) -> Callable[
-        [apihub_service.ListExternalApisRequest],
-        apihub_service.ListExternalApisResponse,
-    ]:
+    def list_external_apis(self) -> Callable[[apihub_service.ListExternalApisRequest], apihub_service.ListExternalApisResponse]:
         r"""Return a callable for the list external apis method over gRPC.
 
         List External API resources in the API hub.
@@ -1574,9 +1469,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1593,9 +1486,7 @@ class ApiHubGrpcTransport(ApiHubTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

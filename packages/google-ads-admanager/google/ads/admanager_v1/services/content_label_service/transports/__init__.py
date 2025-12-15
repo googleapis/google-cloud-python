@@ -20,9 +20,7 @@ from .base import ContentLabelServiceTransport
 from .rest import ContentLabelServiceRestInterceptor, ContentLabelServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ContentLabelServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ContentLabelServiceTransport]]
 _transport_registry["rest"] = ContentLabelServiceRestTransport
 
 __all__ = (

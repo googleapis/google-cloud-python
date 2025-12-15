@@ -320,12 +320,10 @@ class Template(proto.Message):
             number=8,
             enum="Template.TemplateMetadata.EnforcementType",
         )
-        multi_language_detection: "Template.TemplateMetadata.MultiLanguageDetection" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=9,
-                message="Template.TemplateMetadata.MultiLanguageDetection",
-            )
+        multi_language_detection: "Template.TemplateMetadata.MultiLanguageDetection" = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message="Template.TemplateMetadata.MultiLanguageDetection",
         )
 
     name: str = proto.Field(
@@ -1818,9 +1816,7 @@ class MaliciousUriFilterResult(proto.Message):
         number=3,
         enum="FilterMatchState",
     )
-    malicious_uri_matched_items: MutableSequence[
-        MaliciousUriMatchedItem
-    ] = proto.RepeatedField(
+    malicious_uri_matched_items: MutableSequence[MaliciousUriMatchedItem] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=MaliciousUriMatchedItem,

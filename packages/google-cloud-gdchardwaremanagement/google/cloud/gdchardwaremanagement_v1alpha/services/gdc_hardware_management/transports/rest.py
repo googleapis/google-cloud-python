@@ -377,9 +377,7 @@ class GDCHardwareManagementRestInterceptor:
     """
 
     def pre_cancel_order(
-        self,
-        request: service.CancelOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CancelOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CancelOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_order
 
@@ -388,9 +386,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_cancel_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_order
 
         DEPRECATED. Please use the `post_cancel_order_with_metadata`
@@ -404,9 +400,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_cancel_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_order
 
@@ -423,9 +417,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_create_comment(
-        self,
-        request: service.CreateCommentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateCommentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_comment
 
@@ -434,9 +426,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_create_comment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_comment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_comment
 
         DEPRECATED. Please use the `post_create_comment_with_metadata`
@@ -450,9 +440,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_create_comment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_comment
 
@@ -469,9 +457,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_create_hardware(
-        self,
-        request: service.CreateHardwareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateHardwareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_hardware
 
@@ -480,9 +466,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_create_hardware(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_hardware(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_hardware
 
         DEPRECATED. Please use the `post_create_hardware_with_metadata`
@@ -496,9 +480,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_create_hardware_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_hardware
 
@@ -515,12 +497,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_create_hardware_group(
-        self,
-        request: service.CreateHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateHardwareGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -528,9 +506,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_create_hardware_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_hardware_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_hardware_group
 
         DEPRECATED. Please use the `post_create_hardware_group_with_metadata`
@@ -544,9 +520,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_create_hardware_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_hardware_group
 
@@ -563,9 +537,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_create_order(
-        self,
-        request: service.CreateOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_order
 
@@ -574,9 +546,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_create_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_order
 
         DEPRECATED. Please use the `post_create_order_with_metadata`
@@ -590,9 +560,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_create_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_order
 
@@ -609,9 +577,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_create_site(
-        self,
-        request: service.CreateSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_site
 
@@ -620,9 +586,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_create_site(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_site(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_site
 
         DEPRECATED. Please use the `post_create_site_with_metadata`
@@ -636,9 +600,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_create_site_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_site
 
@@ -655,9 +617,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_create_zone(
-        self,
-        request: service.CreateZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_zone
 
@@ -666,9 +626,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_create_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_zone
 
         DEPRECATED. Please use the `post_create_zone_with_metadata`
@@ -682,9 +640,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_create_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_zone
 
@@ -701,9 +657,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_delete_hardware(
-        self,
-        request: service.DeleteHardwareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteHardwareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_hardware
 
@@ -712,9 +666,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_hardware(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_hardware(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_hardware
 
         DEPRECATED. Please use the `post_delete_hardware_with_metadata`
@@ -728,9 +680,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_delete_hardware_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_hardware
 
@@ -747,12 +697,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_delete_hardware_group(
-        self,
-        request: service.DeleteHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DeleteHardwareGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -760,9 +706,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_hardware_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_hardware_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_hardware_group
 
         DEPRECATED. Please use the `post_delete_hardware_group_with_metadata`
@@ -776,9 +720,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_delete_hardware_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_hardware_group
 
@@ -795,9 +737,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_delete_order(
-        self,
-        request: service.DeleteOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_order
 
@@ -806,9 +746,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_order
 
         DEPRECATED. Please use the `post_delete_order_with_metadata`
@@ -822,9 +760,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_delete_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_order
 
@@ -841,9 +777,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_delete_site(
-        self,
-        request: service.DeleteSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_site
 
@@ -852,9 +786,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_site(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_site(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_site
 
         DEPRECATED. Please use the `post_delete_site_with_metadata`
@@ -868,9 +800,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_delete_site_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_site
 
@@ -887,9 +817,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_delete_zone(
-        self,
-        request: service.DeleteZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_zone
 
@@ -898,9 +826,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_zone
 
         DEPRECATED. Please use the `post_delete_zone_with_metadata`
@@ -914,9 +840,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_delete_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_zone
 
@@ -933,12 +857,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_change_log_entry(
-        self,
-        request: service.GetChangeLogEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetChangeLogEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetChangeLogEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetChangeLogEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_change_log_entry
 
         Override in a subclass to manipulate the request or metadata
@@ -946,9 +866,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_get_change_log_entry(
-        self, response: resources.ChangeLogEntry
-    ) -> resources.ChangeLogEntry:
+    def post_get_change_log_entry(self, response: resources.ChangeLogEntry) -> resources.ChangeLogEntry:
         """Post-rpc interceptor for get_change_log_entry
 
         DEPRECATED. Please use the `post_get_change_log_entry_with_metadata`
@@ -962,9 +880,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_change_log_entry_with_metadata(
-        self,
-        response: resources.ChangeLogEntry,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.ChangeLogEntry, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.ChangeLogEntry, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_change_log_entry
 
@@ -981,9 +897,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_comment(
-        self,
-        request: service.GetCommentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetCommentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_comment
 
@@ -1006,9 +920,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_comment_with_metadata(
-        self,
-        response: resources.Comment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Comment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_comment
 
@@ -1025,9 +937,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_hardware(
-        self,
-        request: service.GetHardwareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetHardwareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_hardware
 
@@ -1050,9 +960,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_hardware_with_metadata(
-        self,
-        response: resources.Hardware,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Hardware, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Hardware, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_hardware
 
@@ -1069,12 +977,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_hardware_group(
-        self,
-        request: service.GetHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetHardwareGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1082,9 +986,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_get_hardware_group(
-        self, response: resources.HardwareGroup
-    ) -> resources.HardwareGroup:
+    def post_get_hardware_group(self, response: resources.HardwareGroup) -> resources.HardwareGroup:
         """Post-rpc interceptor for get_hardware_group
 
         DEPRECATED. Please use the `post_get_hardware_group_with_metadata`
@@ -1098,9 +1000,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_hardware_group_with_metadata(
-        self,
-        response: resources.HardwareGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.HardwareGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.HardwareGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_hardware_group
 
@@ -1117,9 +1017,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_order(
-        self,
-        request: service.GetOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_order
 
@@ -1142,9 +1040,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_order_with_metadata(
-        self,
-        response: resources.Order,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Order, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Order, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_order
 
@@ -1161,9 +1057,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_site(
-        self,
-        request: service.GetSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_site
 
@@ -1186,9 +1080,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_site_with_metadata(
-        self,
-        response: resources.Site,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Site, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Site, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_site
 
@@ -1205,9 +1097,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_sku(
-        self,
-        request: service.GetSkuRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetSkuRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetSkuRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sku
 
@@ -1247,9 +1137,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_zone(
-        self,
-        request: service.GetZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_zone
 
@@ -1272,9 +1160,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_get_zone_with_metadata(
-        self,
-        response: resources.Zone,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Zone, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Zone, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_zone
 
@@ -1291,12 +1177,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_change_log_entries(
-        self,
-        request: service.ListChangeLogEntriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListChangeLogEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListChangeLogEntriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListChangeLogEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_change_log_entries
 
         Override in a subclass to manipulate the request or metadata
@@ -1304,9 +1186,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_change_log_entries(
-        self, response: service.ListChangeLogEntriesResponse
-    ) -> service.ListChangeLogEntriesResponse:
+    def post_list_change_log_entries(self, response: service.ListChangeLogEntriesResponse) -> service.ListChangeLogEntriesResponse:
         """Post-rpc interceptor for list_change_log_entries
 
         DEPRECATED. Please use the `post_list_change_log_entries_with_metadata`
@@ -1320,12 +1200,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_change_log_entries_with_metadata(
-        self,
-        response: service.ListChangeLogEntriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListChangeLogEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListChangeLogEntriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListChangeLogEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_change_log_entries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1341,9 +1217,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_comments(
-        self,
-        request: service.ListCommentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListCommentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListCommentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_comments
 
@@ -1352,9 +1226,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_comments(
-        self, response: service.ListCommentsResponse
-    ) -> service.ListCommentsResponse:
+    def post_list_comments(self, response: service.ListCommentsResponse) -> service.ListCommentsResponse:
         """Post-rpc interceptor for list_comments
 
         DEPRECATED. Please use the `post_list_comments_with_metadata`
@@ -1368,9 +1240,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_comments_with_metadata(
-        self,
-        response: service.ListCommentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListCommentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListCommentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_comments
 
@@ -1387,9 +1257,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_hardware(
-        self,
-        request: service.ListHardwareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListHardwareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_hardware
 
@@ -1398,9 +1266,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_hardware(
-        self, response: service.ListHardwareResponse
-    ) -> service.ListHardwareResponse:
+    def post_list_hardware(self, response: service.ListHardwareResponse) -> service.ListHardwareResponse:
         """Post-rpc interceptor for list_hardware
 
         DEPRECATED. Please use the `post_list_hardware_with_metadata`
@@ -1414,9 +1280,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_hardware_with_metadata(
-        self,
-        response: service.ListHardwareResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListHardwareResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListHardwareResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_hardware
 
@@ -1433,12 +1297,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_hardware_groups(
-        self,
-        request: service.ListHardwareGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListHardwareGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListHardwareGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListHardwareGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_hardware_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -1446,9 +1306,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_hardware_groups(
-        self, response: service.ListHardwareGroupsResponse
-    ) -> service.ListHardwareGroupsResponse:
+    def post_list_hardware_groups(self, response: service.ListHardwareGroupsResponse) -> service.ListHardwareGroupsResponse:
         """Post-rpc interceptor for list_hardware_groups
 
         DEPRECATED. Please use the `post_list_hardware_groups_with_metadata`
@@ -1462,12 +1320,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_hardware_groups_with_metadata(
-        self,
-        response: service.ListHardwareGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListHardwareGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListHardwareGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListHardwareGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_hardware_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1483,9 +1337,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_orders(
-        self,
-        request: service.ListOrdersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListOrdersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListOrdersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_orders
 
@@ -1494,9 +1346,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_orders(
-        self, response: service.ListOrdersResponse
-    ) -> service.ListOrdersResponse:
+    def post_list_orders(self, response: service.ListOrdersResponse) -> service.ListOrdersResponse:
         """Post-rpc interceptor for list_orders
 
         DEPRECATED. Please use the `post_list_orders_with_metadata`
@@ -1510,9 +1360,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_orders_with_metadata(
-        self,
-        response: service.ListOrdersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListOrdersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListOrdersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_orders
 
@@ -1529,9 +1377,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_sites(
-        self,
-        request: service.ListSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sites
 
@@ -1540,9 +1386,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sites(
-        self, response: service.ListSitesResponse
-    ) -> service.ListSitesResponse:
+    def post_list_sites(self, response: service.ListSitesResponse) -> service.ListSitesResponse:
         """Post-rpc interceptor for list_sites
 
         DEPRECATED. Please use the `post_list_sites_with_metadata`
@@ -1556,9 +1400,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_sites_with_metadata(
-        self,
-        response: service.ListSitesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListSitesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sites
 
@@ -1575,9 +1417,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_skus(
-        self,
-        request: service.ListSkusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListSkusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSkusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_skus
 
@@ -1586,9 +1426,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_skus(
-        self, response: service.ListSkusResponse
-    ) -> service.ListSkusResponse:
+    def post_list_skus(self, response: service.ListSkusResponse) -> service.ListSkusResponse:
         """Post-rpc interceptor for list_skus
 
         DEPRECATED. Please use the `post_list_skus_with_metadata`
@@ -1602,9 +1440,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_skus_with_metadata(
-        self,
-        response: service.ListSkusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListSkusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSkusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_skus
 
@@ -1621,9 +1457,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_list_zones(
-        self,
-        request: service.ListZonesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListZonesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_zones
 
@@ -1632,9 +1466,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_zones(
-        self, response: service.ListZonesResponse
-    ) -> service.ListZonesResponse:
+    def post_list_zones(self, response: service.ListZonesResponse) -> service.ListZonesResponse:
         """Post-rpc interceptor for list_zones
 
         DEPRECATED. Please use the `post_list_zones_with_metadata`
@@ -1648,9 +1480,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_list_zones_with_metadata(
-        self,
-        response: service.ListZonesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListZonesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZonesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_zones
 
@@ -1667,12 +1497,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_record_action_on_comment(
-        self,
-        request: service.RecordActionOnCommentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RecordActionOnCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.RecordActionOnCommentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RecordActionOnCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for record_action_on_comment
 
         Override in a subclass to manipulate the request or metadata
@@ -1680,9 +1506,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_record_action_on_comment(
-        self, response: resources.Comment
-    ) -> resources.Comment:
+    def post_record_action_on_comment(self, response: resources.Comment) -> resources.Comment:
         """Post-rpc interceptor for record_action_on_comment
 
         DEPRECATED. Please use the `post_record_action_on_comment_with_metadata`
@@ -1696,9 +1520,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_record_action_on_comment_with_metadata(
-        self,
-        response: resources.Comment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Comment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for record_action_on_comment
 
@@ -1715,12 +1537,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_request_order_date_change(
-        self,
-        request: service.RequestOrderDateChangeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RequestOrderDateChangeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.RequestOrderDateChangeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RequestOrderDateChangeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for request_order_date_change
 
         Override in a subclass to manipulate the request or metadata
@@ -1728,9 +1546,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_request_order_date_change(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_request_order_date_change(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for request_order_date_change
 
         DEPRECATED. Please use the `post_request_order_date_change_with_metadata`
@@ -1744,9 +1560,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_request_order_date_change_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for request_order_date_change
 
@@ -1763,9 +1577,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_signal_zone_state(
-        self,
-        request: service.SignalZoneStateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.SignalZoneStateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SignalZoneStateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for signal_zone_state
 
@@ -1774,9 +1586,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_signal_zone_state(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_signal_zone_state(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for signal_zone_state
 
         DEPRECATED. Please use the `post_signal_zone_state_with_metadata`
@@ -1790,9 +1600,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_signal_zone_state_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for signal_zone_state
 
@@ -1809,9 +1617,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_submit_order(
-        self,
-        request: service.SubmitOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.SubmitOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SubmitOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_order
 
@@ -1820,9 +1626,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_submit_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_submit_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for submit_order
 
         DEPRECATED. Please use the `post_submit_order_with_metadata`
@@ -1836,9 +1640,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_submit_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for submit_order
 
@@ -1855,9 +1657,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_update_hardware(
-        self,
-        request: service.UpdateHardwareRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateHardwareRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_hardware
 
@@ -1866,9 +1666,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_update_hardware(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_hardware(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_hardware
 
         DEPRECATED. Please use the `post_update_hardware_with_metadata`
@@ -1882,9 +1680,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_update_hardware_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_hardware
 
@@ -1901,12 +1697,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_update_hardware_group(
-        self,
-        request: service.UpdateHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateHardwareGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1914,9 +1706,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_update_hardware_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_hardware_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_hardware_group
 
         DEPRECATED. Please use the `post_update_hardware_group_with_metadata`
@@ -1930,9 +1720,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_update_hardware_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_hardware_group
 
@@ -1949,9 +1737,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_update_order(
-        self,
-        request: service.UpdateOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_order
 
@@ -1960,9 +1746,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_update_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_order
 
         DEPRECATED. Please use the `post_update_order_with_metadata`
@@ -1976,9 +1760,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_update_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_order
 
@@ -1995,9 +1777,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_update_site(
-        self,
-        request: service.UpdateSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_site
 
@@ -2006,9 +1786,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_update_site(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_site(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_site
 
         DEPRECATED. Please use the `post_update_site_with_metadata`
@@ -2022,9 +1800,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_update_site_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_site
 
@@ -2041,9 +1817,7 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_update_zone(
-        self,
-        request: service.UpdateZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_zone
 
@@ -2052,9 +1826,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_update_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_zone
 
         DEPRECATED. Please use the `post_update_zone_with_metadata`
@@ -2068,9 +1840,7 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def post_update_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_zone
 
@@ -2087,12 +1857,8 @@ class GDCHardwareManagementRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2100,9 +1866,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2112,12 +1876,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2125,9 +1885,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2137,12 +1895,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2160,12 +1914,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2183,12 +1933,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2196,9 +1942,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2208,12 +1952,8 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2221,9 +1961,7 @@ class GDCHardwareManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2312,9 +2050,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2367,30 +2103,17 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CancelOrder(
-        _BaseGDCHardwareManagementRestTransport._BaseCancelOrder,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CancelOrder(_BaseGDCHardwareManagementRestTransport._BaseCancelOrder, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CancelOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2433,30 +2156,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_order(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2480,13 +2191,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CancelOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2500,12 +2205,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_cancel_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2526,23 +2227,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _CreateComment(
-        _BaseGDCHardwareManagementRestTransport._BaseCreateComment,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CreateComment(_BaseGDCHardwareManagementRestTransport._BaseCreateComment, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CreateComment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2585,30 +2275,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_comment(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2632,13 +2310,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateComment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2652,12 +2324,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_create_comment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_comment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_comment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2678,23 +2346,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _CreateHardware(
-        _BaseGDCHardwareManagementRestTransport._BaseCreateHardware,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CreateHardware(_BaseGDCHardwareManagementRestTransport._BaseCreateHardware, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CreateHardware")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2737,30 +2394,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_create_hardware(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2784,13 +2429,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateHardware._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2804,12 +2443,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_create_hardware(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_hardware_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_hardware_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2830,23 +2465,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _CreateHardwareGroup(
-        _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CreateHardwareGroup(_BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CreateHardwareGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2889,32 +2513,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_hardware_group(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_hardware_group(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2937,16 +2547,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._CreateHardwareGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GDCHardwareManagementRestTransport._CreateHardwareGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2960,12 +2562,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_create_hardware_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_hardware_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_hardware_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2986,23 +2584,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _CreateOrder(
-        _BaseGDCHardwareManagementRestTransport._BaseCreateOrder,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CreateOrder(_BaseGDCHardwareManagementRestTransport._BaseCreateOrder, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CreateOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3045,30 +2632,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_create_order(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3092,13 +2667,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3112,12 +2681,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_create_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3138,23 +2703,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _CreateSite(
-        _BaseGDCHardwareManagementRestTransport._BaseCreateSite,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CreateSite(_BaseGDCHardwareManagementRestTransport._BaseCreateSite, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CreateSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3197,30 +2751,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_http_options()
 
             request, metadata = self._interceptor.pre_create_site(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3244,13 +2786,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3264,12 +2800,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_create_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3290,23 +2822,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _CreateZone(
-        _BaseGDCHardwareManagementRestTransport._BaseCreateZone,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CreateZone(_BaseGDCHardwareManagementRestTransport._BaseCreateZone, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CreateZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3349,30 +2870,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_http_options()
 
             request, metadata = self._interceptor.pre_create_zone(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3396,13 +2905,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3416,12 +2919,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_create_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3442,23 +2941,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _DeleteHardware(
-        _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware,
-        GDCHardwareManagementRestStub,
-    ):
+    class _DeleteHardware(_BaseGDCHardwareManagementRestTransport._BaseDeleteHardware, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.DeleteHardware")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3500,26 +2988,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_hardware(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3543,12 +3021,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteHardware._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3562,12 +3035,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_delete_hardware(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_hardware_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_hardware_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3588,23 +3057,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _DeleteHardwareGroup(
-        _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup,
-        GDCHardwareManagementRestStub,
-    ):
+    class _DeleteHardwareGroup(_BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.DeleteHardwareGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3646,28 +3104,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_hardware_group(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_hardware_group(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3690,15 +3136,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._DeleteHardwareGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GDCHardwareManagementRestTransport._DeleteHardwareGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3712,12 +3151,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_delete_hardware_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_hardware_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_hardware_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3738,23 +3173,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _DeleteOrder(
-        _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder,
-        GDCHardwareManagementRestStub,
-    ):
+    class _DeleteOrder(_BaseGDCHardwareManagementRestTransport._BaseDeleteOrder, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.DeleteOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3796,26 +3220,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_order(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3839,12 +3253,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3858,12 +3267,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_delete_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3884,23 +3289,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _DeleteSite(
-        _BaseGDCHardwareManagementRestTransport._BaseDeleteSite,
-        GDCHardwareManagementRestStub,
-    ):
+    class _DeleteSite(_BaseGDCHardwareManagementRestTransport._BaseDeleteSite, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.DeleteSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3942,26 +3336,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_site(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3985,12 +3369,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4004,12 +3383,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_delete_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4030,23 +3405,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _DeleteZone(
-        _BaseGDCHardwareManagementRestTransport._BaseDeleteZone,
-        GDCHardwareManagementRestStub,
-    ):
+    class _DeleteZone(_BaseGDCHardwareManagementRestTransport._BaseDeleteZone, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.DeleteZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4088,26 +3452,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_zone(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4131,12 +3485,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4150,12 +3499,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_delete_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4176,23 +3521,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetChangeLogEntry(
-        _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetChangeLogEntry(_BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetChangeLogEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4233,28 +3567,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_change_log_entry(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_change_log_entry(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4277,15 +3599,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._GetChangeLogEntry._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GDCHardwareManagementRestTransport._GetChangeLogEntry._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4301,12 +3616,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_change_log_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_change_log_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_change_log_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.ChangeLogEntry.to_json(response)
                 except:
@@ -4327,23 +3638,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetComment(
-        _BaseGDCHardwareManagementRestTransport._BaseGetComment,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetComment(_BaseGDCHardwareManagementRestTransport._BaseGetComment, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetComment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4382,26 +3682,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A comment on an order.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_comment(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4425,12 +3715,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetComment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4446,12 +3731,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_comment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_comment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_comment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Comment.to_json(response)
                 except:
@@ -4472,23 +3753,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetHardware(
-        _BaseGDCHardwareManagementRestTransport._BaseGetHardware,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetHardware(_BaseGDCHardwareManagementRestTransport._BaseGetHardware, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetHardware")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4529,26 +3799,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_get_hardware(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4572,12 +3832,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetHardware._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4593,12 +3848,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_hardware(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_hardware_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_hardware_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Hardware.to_json(response)
                 except:
@@ -4619,23 +3870,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetHardwareGroup(
-        _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetHardwareGroup(_BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetHardwareGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4677,28 +3917,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_hardware_group(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_hardware_group(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4721,15 +3949,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._GetHardwareGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GDCHardwareManagementRestTransport._GetHardwareGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4745,12 +3966,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_hardware_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_hardware_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_hardware_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.HardwareGroup.to_json(response)
                 except:
@@ -4771,23 +3988,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetOrder(
-        _BaseGDCHardwareManagementRestTransport._BaseGetOrder,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetOrder(_BaseGDCHardwareManagementRestTransport._BaseGetOrder, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4826,26 +4032,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     An order for GDC hardware.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_get_order(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4869,12 +4065,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4890,12 +4081,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Order.to_json(response)
                 except:
@@ -4916,23 +4103,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetSite(
-        _BaseGDCHardwareManagementRestTransport._BaseGetSite,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetSite(_BaseGDCHardwareManagementRestTransport._BaseGetSite, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4973,26 +4149,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_get_site(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5016,12 +4182,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5037,12 +4198,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Site.to_json(response)
                 except:
@@ -5063,23 +4220,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetSku(
-        _BaseGDCHardwareManagementRestTransport._BaseGetSku,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetSku(_BaseGDCHardwareManagementRestTransport._BaseGetSku, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetSku")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5120,26 +4266,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_http_options()
 
             request, metadata = self._interceptor.pre_get_sku(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5163,12 +4299,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetSku._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5184,12 +4315,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_sku(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_sku_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_sku_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Sku.to_json(response)
                 except:
@@ -5210,23 +4337,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _GetZone(
-        _BaseGDCHardwareManagementRestTransport._BaseGetZone,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetZone(_BaseGDCHardwareManagementRestTransport._BaseGetZone, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5265,26 +4381,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A zone holding a set of hardware.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_http_options()
 
             request, metadata = self._interceptor.pre_get_zone(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5308,12 +4414,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5329,12 +4430,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_get_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Zone.to_json(response)
                 except:
@@ -5355,23 +4452,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListChangeLogEntries(
-        _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListChangeLogEntries(_BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListChangeLogEntries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5410,28 +4496,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of change log entries.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_change_log_entries(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_change_log_entries(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5454,15 +4528,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._ListChangeLogEntries._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GDCHardwareManagementRestTransport._ListChangeLogEntries._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5478,16 +4545,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_change_log_entries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_change_log_entries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_change_log_entries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListChangeLogEntriesResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListChangeLogEntriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5506,23 +4567,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListComments(
-        _BaseGDCHardwareManagementRestTransport._BaseListComments,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListComments(_BaseGDCHardwareManagementRestTransport._BaseListComments, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListComments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5561,26 +4611,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A request to list comments.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListComments._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_comments(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5604,12 +4644,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListComments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5625,12 +4660,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_comments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_comments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_comments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListCommentsResponse.to_json(response)
                 except:
@@ -5651,23 +4682,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListHardware(
-        _BaseGDCHardwareManagementRestTransport._BaseListHardware,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListHardware(_BaseGDCHardwareManagementRestTransport._BaseListHardware, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListHardware")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5706,26 +4726,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of hardware.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_list_hardware(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5749,12 +4759,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListHardware._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5770,12 +4775,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_hardware(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_hardware_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_hardware_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListHardwareResponse.to_json(response)
                 except:
@@ -5796,23 +4797,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListHardwareGroups(
-        _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListHardwareGroups(_BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListHardwareGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5851,28 +4841,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of hardware groups.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_hardware_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_hardware_groups(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5895,15 +4873,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._ListHardwareGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GDCHardwareManagementRestTransport._ListHardwareGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5919,16 +4890,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_hardware_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_hardware_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_hardware_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListHardwareGroupsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListHardwareGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5947,23 +4912,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListOrders(
-        _BaseGDCHardwareManagementRestTransport._BaseListOrders,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListOrders(_BaseGDCHardwareManagementRestTransport._BaseListOrders, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListOrders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6002,26 +4956,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of orders.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_orders(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6045,12 +4989,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListOrders._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6066,12 +5005,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_orders(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_orders_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_orders_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListOrdersResponse.to_json(response)
                 except:
@@ -6092,23 +5027,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListSites(
-        _BaseGDCHardwareManagementRestTransport._BaseListSites,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListSites(_BaseGDCHardwareManagementRestTransport._BaseListSites, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListSites")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6147,26 +5071,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of sites.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListSites._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sites(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6190,12 +5104,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6211,12 +5120,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSitesResponse.to_json(response)
                 except:
@@ -6237,23 +5142,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListSkus(
-        _BaseGDCHardwareManagementRestTransport._BaseListSkus,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListSkus(_BaseGDCHardwareManagementRestTransport._BaseListSkus, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListSkus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6292,26 +5186,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of SKUs.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_http_options()
 
             request, metadata = self._interceptor.pre_list_skus(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6335,12 +5219,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListSkus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6356,12 +5235,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_skus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_skus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_skus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSkusResponse.to_json(response)
                 except:
@@ -6382,23 +5257,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _ListZones(
-        _BaseGDCHardwareManagementRestTransport._BaseListZones,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListZones(_BaseGDCHardwareManagementRestTransport._BaseListZones, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListZones")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6437,26 +5301,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of zones.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListZones._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_http_options()
 
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6480,12 +5334,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListZones._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6501,12 +5350,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_list_zones(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_zones_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_zones_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListZonesResponse.to_json(response)
                 except:
@@ -6527,23 +5372,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _RecordActionOnComment(
-        _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment,
-        GDCHardwareManagementRestStub,
-    ):
+    class _RecordActionOnComment(_BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.RecordActionOnComment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6584,32 +5418,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A comment on an order.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_http_options()
 
-            request, metadata = self._interceptor.pre_record_action_on_comment(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_record_action_on_comment(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6632,16 +5452,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._RecordActionOnComment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GDCHardwareManagementRestTransport._RecordActionOnComment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6657,12 +5469,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_record_action_on_comment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_record_action_on_comment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_record_action_on_comment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Comment.to_json(response)
                 except:
@@ -6683,23 +5491,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _RequestOrderDateChange(
-        _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange,
-        GDCHardwareManagementRestStub,
-    ):
+    class _RequestOrderDateChange(_BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.RequestOrderDateChange")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6743,32 +5540,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_http_options()
 
-            request, metadata = self._interceptor.pre_request_order_date_change(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_request_order_date_change(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6792,13 +5575,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._RequestOrderDateChange._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6812,12 +5589,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_request_order_date_change(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_request_order_date_change_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_request_order_date_change_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6838,23 +5611,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _SignalZoneState(
-        _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState,
-        GDCHardwareManagementRestStub,
-    ):
+    class _SignalZoneState(_BaseGDCHardwareManagementRestTransport._BaseSignalZoneState, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.SignalZoneState")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6898,32 +5660,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_http_options()
 
-            request, metadata = self._interceptor.pre_signal_zone_state(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_signal_zone_state(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6946,16 +5694,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._SignalZoneState._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GDCHardwareManagementRestTransport._SignalZoneState._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6969,12 +5709,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_signal_zone_state(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_signal_zone_state_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_signal_zone_state_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6995,23 +5731,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _SubmitOrder(
-        _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder,
-        GDCHardwareManagementRestStub,
-    ):
+    class _SubmitOrder(_BaseGDCHardwareManagementRestTransport._BaseSubmitOrder, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.SubmitOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7054,30 +5779,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_submit_order(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7101,13 +5814,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._SubmitOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7121,12 +5828,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_submit_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_submit_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_submit_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7147,23 +5850,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _UpdateHardware(
-        _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware,
-        GDCHardwareManagementRestStub,
-    ):
+    class _UpdateHardware(_BaseGDCHardwareManagementRestTransport._BaseUpdateHardware, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.UpdateHardware")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7206,30 +5898,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_update_hardware(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7253,13 +5933,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateHardware._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7273,12 +5947,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_update_hardware(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_hardware_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_hardware_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7299,23 +5969,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _UpdateHardwareGroup(
-        _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup,
-        GDCHardwareManagementRestStub,
-    ):
+    class _UpdateHardwareGroup(_BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.UpdateHardwareGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7358,32 +6017,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_hardware_group(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_hardware_group(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7406,16 +6051,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._UpdateHardwareGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GDCHardwareManagementRestTransport._UpdateHardwareGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7429,12 +6066,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_update_hardware_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_hardware_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_hardware_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7455,23 +6088,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _UpdateOrder(
-        _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder,
-        GDCHardwareManagementRestStub,
-    ):
+    class _UpdateOrder(_BaseGDCHardwareManagementRestTransport._BaseUpdateOrder, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.UpdateOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7514,30 +6136,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_update_order(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7561,13 +6171,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7581,12 +6185,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_update_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7607,23 +6207,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _UpdateSite(
-        _BaseGDCHardwareManagementRestTransport._BaseUpdateSite,
-        GDCHardwareManagementRestStub,
-    ):
+    class _UpdateSite(_BaseGDCHardwareManagementRestTransport._BaseUpdateSite, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.UpdateSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7666,30 +6255,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_http_options()
 
             request, metadata = self._interceptor.pre_update_site(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7713,13 +6290,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7733,12 +6304,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_update_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7759,23 +6326,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
             return resp
 
-    class _UpdateZone(
-        _BaseGDCHardwareManagementRestTransport._BaseUpdateZone,
-        GDCHardwareManagementRestStub,
-    ):
+    class _UpdateZone(_BaseGDCHardwareManagementRestTransport._BaseUpdateZone, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.UpdateZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7818,30 +6374,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_http_options()
 
             request, metadata = self._interceptor.pre_update_zone(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7865,13 +6409,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7885,12 +6423,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             resp = self._interceptor.post_update_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7912,105 +6446,79 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             return resp
 
     @property
-    def cancel_order(
-        self,
-    ) -> Callable[[service.CancelOrderRequest], operations_pb2.Operation]:
+    def cancel_order(self) -> Callable[[service.CancelOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_comment(
-        self,
-    ) -> Callable[[service.CreateCommentRequest], operations_pb2.Operation]:
+    def create_comment(self) -> Callable[[service.CreateCommentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_hardware(
-        self,
-    ) -> Callable[[service.CreateHardwareRequest], operations_pb2.Operation]:
+    def create_hardware(self) -> Callable[[service.CreateHardwareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateHardware(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_hardware_group(
-        self,
-    ) -> Callable[[service.CreateHardwareGroupRequest], operations_pb2.Operation]:
+    def create_hardware_group(self) -> Callable[[service.CreateHardwareGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateHardwareGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_order(
-        self,
-    ) -> Callable[[service.CreateOrderRequest], operations_pb2.Operation]:
+    def create_order(self) -> Callable[[service.CreateOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_site(
-        self,
-    ) -> Callable[[service.CreateSiteRequest], operations_pb2.Operation]:
+    def create_site(self) -> Callable[[service.CreateSiteRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSite(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_zone(
-        self,
-    ) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
+    def create_zone(self) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_hardware(
-        self,
-    ) -> Callable[[service.DeleteHardwareRequest], operations_pb2.Operation]:
+    def delete_hardware(self) -> Callable[[service.DeleteHardwareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteHardware(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_hardware_group(
-        self,
-    ) -> Callable[[service.DeleteHardwareGroupRequest], operations_pb2.Operation]:
+    def delete_hardware_group(self) -> Callable[[service.DeleteHardwareGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteHardwareGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_order(
-        self,
-    ) -> Callable[[service.DeleteOrderRequest], operations_pb2.Operation]:
+    def delete_order(self) -> Callable[[service.DeleteOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_site(
-        self,
-    ) -> Callable[[service.DeleteSiteRequest], operations_pb2.Operation]:
+    def delete_site(self) -> Callable[[service.DeleteSiteRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSite(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_zone(
-        self,
-    ) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
+    def delete_zone(self) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_change_log_entry(
-        self,
-    ) -> Callable[[service.GetChangeLogEntryRequest], resources.ChangeLogEntry]:
+    def get_change_log_entry(self) -> Callable[[service.GetChangeLogEntryRequest], resources.ChangeLogEntry]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetChangeLogEntry(self._session, self._host, self._interceptor)  # type: ignore
@@ -8022,17 +6530,13 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
         return self._GetComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_hardware(
-        self,
-    ) -> Callable[[service.GetHardwareRequest], resources.Hardware]:
+    def get_hardware(self) -> Callable[[service.GetHardwareRequest], resources.Hardware]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHardware(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_hardware_group(
-        self,
-    ) -> Callable[[service.GetHardwareGroupRequest], resources.HardwareGroup]:
+    def get_hardware_group(self) -> Callable[[service.GetHardwareGroupRequest], resources.HardwareGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHardwareGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -8062,141 +6566,103 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
         return self._GetZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_change_log_entries(
-        self,
-    ) -> Callable[
-        [service.ListChangeLogEntriesRequest], service.ListChangeLogEntriesResponse
-    ]:
+    def list_change_log_entries(self) -> Callable[[service.ListChangeLogEntriesRequest], service.ListChangeLogEntriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChangeLogEntries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_comments(
-        self,
-    ) -> Callable[[service.ListCommentsRequest], service.ListCommentsResponse]:
+    def list_comments(self) -> Callable[[service.ListCommentsRequest], service.ListCommentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListComments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_hardware(
-        self,
-    ) -> Callable[[service.ListHardwareRequest], service.ListHardwareResponse]:
+    def list_hardware(self) -> Callable[[service.ListHardwareRequest], service.ListHardwareResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListHardware(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_hardware_groups(
-        self,
-    ) -> Callable[
-        [service.ListHardwareGroupsRequest], service.ListHardwareGroupsResponse
-    ]:
+    def list_hardware_groups(self) -> Callable[[service.ListHardwareGroupsRequest], service.ListHardwareGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListHardwareGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_orders(
-        self,
-    ) -> Callable[[service.ListOrdersRequest], service.ListOrdersResponse]:
+    def list_orders(self) -> Callable[[service.ListOrdersRequest], service.ListOrdersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sites(
-        self,
-    ) -> Callable[[service.ListSitesRequest], service.ListSitesResponse]:
+    def list_sites(self) -> Callable[[service.ListSitesRequest], service.ListSitesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSites(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_skus(
-        self,
-    ) -> Callable[[service.ListSkusRequest], service.ListSkusResponse]:
+    def list_skus(self) -> Callable[[service.ListSkusRequest], service.ListSkusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSkus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListZones(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def record_action_on_comment(
-        self,
-    ) -> Callable[[service.RecordActionOnCommentRequest], resources.Comment]:
+    def record_action_on_comment(self) -> Callable[[service.RecordActionOnCommentRequest], resources.Comment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RecordActionOnComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def request_order_date_change(
-        self,
-    ) -> Callable[[service.RequestOrderDateChangeRequest], operations_pb2.Operation]:
+    def request_order_date_change(self) -> Callable[[service.RequestOrderDateChangeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RequestOrderDateChange(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def signal_zone_state(
-        self,
-    ) -> Callable[[service.SignalZoneStateRequest], operations_pb2.Operation]:
+    def signal_zone_state(self) -> Callable[[service.SignalZoneStateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SignalZoneState(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def submit_order(
-        self,
-    ) -> Callable[[service.SubmitOrderRequest], operations_pb2.Operation]:
+    def submit_order(self) -> Callable[[service.SubmitOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SubmitOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_hardware(
-        self,
-    ) -> Callable[[service.UpdateHardwareRequest], operations_pb2.Operation]:
+    def update_hardware(self) -> Callable[[service.UpdateHardwareRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateHardware(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_hardware_group(
-        self,
-    ) -> Callable[[service.UpdateHardwareGroupRequest], operations_pb2.Operation]:
+    def update_hardware_group(self) -> Callable[[service.UpdateHardwareGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateHardwareGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_order(
-        self,
-    ) -> Callable[[service.UpdateOrderRequest], operations_pb2.Operation]:
+    def update_order(self) -> Callable[[service.UpdateOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_site(
-        self,
-    ) -> Callable[[service.UpdateSiteRequest], operations_pb2.Operation]:
+    def update_site(self) -> Callable[[service.UpdateSiteRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSite(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_zone(
-        self,
-    ) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
+    def update_zone(self) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateZone(self._session, self._host, self._interceptor)  # type: ignore
@@ -8205,23 +6671,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseGDCHardwareManagementRestTransport._BaseGetLocation,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetLocation(_BaseGDCHardwareManagementRestTransport._BaseGetLocation, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8259,26 +6714,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8302,12 +6747,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8319,9 +6759,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8346,23 +6784,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseGDCHardwareManagementRestTransport._BaseListLocations,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListLocations(_BaseGDCHardwareManagementRestTransport._BaseListLocations, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8400,26 +6827,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8443,12 +6860,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8460,9 +6872,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8487,23 +6897,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseGDCHardwareManagementRestTransport._BaseCancelOperation,
-        GDCHardwareManagementRestStub,
-    ):
+    class _CancelOperation(_BaseGDCHardwareManagementRestTransport._BaseCancelOperation, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8539,32 +6938,18 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8587,16 +6972,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GDCHardwareManagementRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8610,23 +6987,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation,
-        GDCHardwareManagementRestStub,
-    ):
+    class _DeleteOperation(_BaseGDCHardwareManagementRestTransport._BaseDeleteOperation, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8661,28 +7027,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8705,15 +7059,8 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 )
 
             # Send the request
-            response = (
-                GDCHardwareManagementRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GDCHardwareManagementRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8727,23 +7074,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseGDCHardwareManagementRestTransport._BaseGetOperation,
-        GDCHardwareManagementRestStub,
-    ):
+    class _GetOperation(_BaseGDCHardwareManagementRestTransport._BaseGetOperation, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8781,26 +7117,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8824,12 +7150,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8841,9 +7162,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8868,23 +7187,12 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseGDCHardwareManagementRestTransport._BaseListOperations,
-        GDCHardwareManagementRestStub,
-    ):
+    class _ListOperations(_BaseGDCHardwareManagementRestTransport._BaseListOperations, GDCHardwareManagementRestStub):
         def __hash__(self):
             return hash("GDCHardwareManagementRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8922,26 +7230,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8965,12 +7263,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8982,9 +7275,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

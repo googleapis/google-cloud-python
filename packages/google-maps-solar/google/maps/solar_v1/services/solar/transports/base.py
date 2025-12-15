@@ -29,9 +29,7 @@ import google.protobuf
 from google.maps.solar_v1 import gapic_version as package_version
 from google.maps.solar_v1.types import solar_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class SolarTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -191,29 +181,16 @@ class SolarTransport(abc.ABC):
     def find_closest_building_insights(
         self,
     ) -> Callable[
-        [solar_service.FindClosestBuildingInsightsRequest],
-        Union[
-            solar_service.BuildingInsights, Awaitable[solar_service.BuildingInsights]
-        ],
+        [solar_service.FindClosestBuildingInsightsRequest], Union[solar_service.BuildingInsights, Awaitable[solar_service.BuildingInsights]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_data_layers(
-        self,
-    ) -> Callable[
-        [solar_service.GetDataLayersRequest],
-        Union[solar_service.DataLayers, Awaitable[solar_service.DataLayers]],
-    ]:
+    def get_data_layers(self) -> Callable[[solar_service.GetDataLayersRequest], Union[solar_service.DataLayers, Awaitable[solar_service.DataLayers]]]:
         raise NotImplementedError()
 
     @property
-    def get_geo_tiff(
-        self,
-    ) -> Callable[
-        [solar_service.GetGeoTiffRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    def get_geo_tiff(self) -> Callable[[solar_service.GetGeoTiffRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property

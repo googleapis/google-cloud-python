@@ -18,12 +18,8 @@ from google.cloud.gsuiteaddons import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons.async_client import (
-    GSuiteAddOnsAsyncClient,
-)
-from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons.client import (
-    GSuiteAddOnsClient,
-)
+from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons.async_client import GSuiteAddOnsAsyncClient
+from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons.client import GSuiteAddOnsClient
 from google.cloud.gsuiteaddons_v1.types.gsuiteaddons import (
     AddOns,
     Authorization,

@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
 from google.cloud.network_security_v1alpha1.types import firewall_activation
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class FirewallActivationTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -253,10 +243,7 @@ class FirewallActivationTransport(abc.ABC):
         self,
     ) -> Callable[
         [firewall_activation.ListFirewallEndpointsRequest],
-        Union[
-            firewall_activation.ListFirewallEndpointsResponse,
-            Awaitable[firewall_activation.ListFirewallEndpointsResponse],
-        ],
+        Union[firewall_activation.ListFirewallEndpointsResponse, Awaitable[firewall_activation.ListFirewallEndpointsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -264,39 +251,26 @@ class FirewallActivationTransport(abc.ABC):
     def get_firewall_endpoint(
         self,
     ) -> Callable[
-        [firewall_activation.GetFirewallEndpointRequest],
-        Union[
-            firewall_activation.FirewallEndpoint,
-            Awaitable[firewall_activation.FirewallEndpoint],
-        ],
+        [firewall_activation.GetFirewallEndpointRequest], Union[firewall_activation.FirewallEndpoint, Awaitable[firewall_activation.FirewallEndpoint]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_firewall_endpoint(
         self,
-    ) -> Callable[
-        [firewall_activation.CreateFirewallEndpointRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[firewall_activation.CreateFirewallEndpointRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_firewall_endpoint(
         self,
-    ) -> Callable[
-        [firewall_activation.DeleteFirewallEndpointRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[firewall_activation.DeleteFirewallEndpointRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_firewall_endpoint(
         self,
-    ) -> Callable[
-        [firewall_activation.UpdateFirewallEndpointRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[firewall_activation.UpdateFirewallEndpointRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -304,10 +278,7 @@ class FirewallActivationTransport(abc.ABC):
         self,
     ) -> Callable[
         [firewall_activation.ListFirewallEndpointAssociationsRequest],
-        Union[
-            firewall_activation.ListFirewallEndpointAssociationsResponse,
-            Awaitable[firewall_activation.ListFirewallEndpointAssociationsResponse],
-        ],
+        Union[firewall_activation.ListFirewallEndpointAssociationsResponse, Awaitable[firewall_activation.ListFirewallEndpointAssociationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -316,10 +287,7 @@ class FirewallActivationTransport(abc.ABC):
         self,
     ) -> Callable[
         [firewall_activation.GetFirewallEndpointAssociationRequest],
-        Union[
-            firewall_activation.FirewallEndpointAssociation,
-            Awaitable[firewall_activation.FirewallEndpointAssociation],
-        ],
+        Union[firewall_activation.FirewallEndpointAssociation, Awaitable[firewall_activation.FirewallEndpointAssociation]],
     ]:
         raise NotImplementedError()
 
@@ -327,8 +295,7 @@ class FirewallActivationTransport(abc.ABC):
     def create_firewall_endpoint_association(
         self,
     ) -> Callable[
-        [firewall_activation.CreateFirewallEndpointAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [firewall_activation.CreateFirewallEndpointAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -336,8 +303,7 @@ class FirewallActivationTransport(abc.ABC):
     def delete_firewall_endpoint_association(
         self,
     ) -> Callable[
-        [firewall_activation.DeleteFirewallEndpointAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [firewall_activation.DeleteFirewallEndpointAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -345,8 +311,7 @@ class FirewallActivationTransport(abc.ABC):
     def update_firewall_endpoint_association(
         self,
     ) -> Callable[
-        [firewall_activation.UpdateFirewallEndpointAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [firewall_activation.UpdateFirewallEndpointAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -355,20 +320,14 @@ class FirewallActivationTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -386,19 +345,13 @@ class FirewallActivationTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -416,22 +369,13 @@ class FirewallActivationTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

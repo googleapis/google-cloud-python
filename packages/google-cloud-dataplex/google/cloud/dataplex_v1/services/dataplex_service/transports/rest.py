@@ -344,9 +344,7 @@ class DataplexServiceRestInterceptor:
     """
 
     def pre_cancel_job(
-        self,
-        request: service.CancelJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CancelJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CancelJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_job
 
@@ -356,9 +354,7 @@ class DataplexServiceRestInterceptor:
         return request, metadata
 
     def pre_create_asset(
-        self,
-        request: service.CreateAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_asset
 
@@ -367,9 +363,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_asset
 
         DEPRECATED. Please use the `post_create_asset_with_metadata`
@@ -383,9 +377,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_create_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_asset
 
@@ -402,12 +394,8 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_create_environment(
-        self,
-        request: service.CreateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -415,9 +403,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
 
         DEPRECATED. Please use the `post_create_environment_with_metadata`
@@ -431,9 +417,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_create_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_environment
 
@@ -450,9 +434,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_create_lake(
-        self,
-        request: service.CreateLakeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateLakeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateLakeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_lake
 
@@ -461,9 +443,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_lake(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_lake(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_lake
 
         DEPRECATED. Please use the `post_create_lake_with_metadata`
@@ -477,9 +457,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_create_lake_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_lake
 
@@ -496,9 +474,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_create_task(
-        self,
-        request: service.CreateTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_task
 
@@ -507,9 +483,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_task(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_task(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_task
 
         DEPRECATED. Please use the `post_create_task_with_metadata`
@@ -523,9 +497,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_create_task_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_task
 
@@ -542,9 +514,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_create_zone(
-        self,
-        request: service.CreateZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_zone
 
@@ -553,9 +523,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_zone
 
         DEPRECATED. Please use the `post_create_zone_with_metadata`
@@ -569,9 +537,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_create_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_zone
 
@@ -588,9 +554,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_asset(
-        self,
-        request: service.DeleteAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_asset
 
@@ -599,9 +563,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_asset
 
         DEPRECATED. Please use the `post_delete_asset_with_metadata`
@@ -615,9 +577,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_delete_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_asset
 
@@ -634,12 +594,8 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_environment(
-        self,
-        request: service.DeleteEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DeleteEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -647,9 +603,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_environment
 
         DEPRECATED. Please use the `post_delete_environment_with_metadata`
@@ -663,9 +617,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_delete_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_environment
 
@@ -682,9 +634,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_lake(
-        self,
-        request: service.DeleteLakeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteLakeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteLakeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_lake
 
@@ -693,9 +643,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_lake(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_lake(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_lake
 
         DEPRECATED. Please use the `post_delete_lake_with_metadata`
@@ -709,9 +657,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_delete_lake_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_lake
 
@@ -728,9 +674,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_task(
-        self,
-        request: service.DeleteTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_task
 
@@ -739,9 +683,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_task(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_task(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_task
 
         DEPRECATED. Please use the `post_delete_task_with_metadata`
@@ -755,9 +697,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_delete_task_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_task
 
@@ -774,9 +714,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_zone(
-        self,
-        request: service.DeleteZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_zone
 
@@ -785,9 +723,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_zone
 
         DEPRECATED. Please use the `post_delete_zone_with_metadata`
@@ -801,9 +737,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_delete_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_zone
 
@@ -820,9 +754,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_asset(
-        self,
-        request: service.GetAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_asset
 
@@ -845,9 +777,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_get_asset_with_metadata(
-        self,
-        response: resources.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_asset
 
@@ -864,9 +794,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_environment(
-        self,
-        request: service.GetEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_environment
 
@@ -875,9 +803,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_environment(
-        self, response: analyze.Environment
-    ) -> analyze.Environment:
+    def post_get_environment(self, response: analyze.Environment) -> analyze.Environment:
         """Post-rpc interceptor for get_environment
 
         DEPRECATED. Please use the `post_get_environment_with_metadata`
@@ -891,9 +817,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_get_environment_with_metadata(
-        self,
-        response: analyze.Environment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: analyze.Environment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[analyze.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_environment
 
@@ -910,9 +834,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_job(
-        self,
-        request: service.GetJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
@@ -952,9 +874,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_lake(
-        self,
-        request: service.GetLakeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetLakeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetLakeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lake
 
@@ -977,9 +897,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_get_lake_with_metadata(
-        self,
-        response: resources.Lake,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Lake, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Lake, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_lake
 
@@ -996,9 +914,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_task(
-        self,
-        request: service.GetTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_task
 
@@ -1038,9 +954,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_zone(
-        self,
-        request: service.GetZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_zone
 
@@ -1063,9 +977,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_get_zone_with_metadata(
-        self,
-        response: resources.Zone,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Zone, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Zone, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_zone
 
@@ -1082,12 +994,8 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_asset_actions(
-        self,
-        request: service.ListAssetActionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListAssetActionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListAssetActionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListAssetActionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_asset_actions
 
         Override in a subclass to manipulate the request or metadata
@@ -1095,9 +1003,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_asset_actions(
-        self, response: service.ListActionsResponse
-    ) -> service.ListActionsResponse:
+    def post_list_asset_actions(self, response: service.ListActionsResponse) -> service.ListActionsResponse:
         """Post-rpc interceptor for list_asset_actions
 
         DEPRECATED. Please use the `post_list_asset_actions_with_metadata`
@@ -1111,9 +1017,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_asset_actions_with_metadata(
-        self,
-        response: service.ListActionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListActionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListActionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_asset_actions
 
@@ -1130,9 +1034,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_assets(
-        self,
-        request: service.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
@@ -1141,9 +1043,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assets(
-        self, response: service.ListAssetsResponse
-    ) -> service.ListAssetsResponse:
+    def post_list_assets(self, response: service.ListAssetsResponse) -> service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
         DEPRECATED. Please use the `post_list_assets_with_metadata`
@@ -1157,9 +1057,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_assets_with_metadata(
-        self,
-        response: service.ListAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
@@ -1176,12 +1074,8 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_environments(
-        self,
-        request: service.ListEnvironmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListEnvironmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_environments
 
         Override in a subclass to manipulate the request or metadata
@@ -1189,9 +1083,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_environments(
-        self, response: service.ListEnvironmentsResponse
-    ) -> service.ListEnvironmentsResponse:
+    def post_list_environments(self, response: service.ListEnvironmentsResponse) -> service.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
 
         DEPRECATED. Please use the `post_list_environments_with_metadata`
@@ -1205,12 +1097,8 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_environments_with_metadata(
-        self,
-        response: service.ListEnvironmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListEnvironmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_environments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1226,9 +1114,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_jobs(
-        self,
-        request: service.ListJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
@@ -1237,9 +1123,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_jobs(
-        self, response: service.ListJobsResponse
-    ) -> service.ListJobsResponse:
+    def post_list_jobs(self, response: service.ListJobsResponse) -> service.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
         DEPRECATED. Please use the `post_list_jobs_with_metadata`
@@ -1253,9 +1137,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_jobs_with_metadata(
-        self,
-        response: service.ListJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_jobs
 
@@ -1272,9 +1154,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_lake_actions(
-        self,
-        request: service.ListLakeActionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListLakeActionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListLakeActionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lake_actions
 
@@ -1283,9 +1163,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lake_actions(
-        self, response: service.ListActionsResponse
-    ) -> service.ListActionsResponse:
+    def post_list_lake_actions(self, response: service.ListActionsResponse) -> service.ListActionsResponse:
         """Post-rpc interceptor for list_lake_actions
 
         DEPRECATED. Please use the `post_list_lake_actions_with_metadata`
@@ -1299,9 +1177,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_lake_actions_with_metadata(
-        self,
-        response: service.ListActionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListActionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListActionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lake_actions
 
@@ -1318,9 +1194,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_lakes(
-        self,
-        request: service.ListLakesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListLakesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListLakesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lakes
 
@@ -1329,9 +1203,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lakes(
-        self, response: service.ListLakesResponse
-    ) -> service.ListLakesResponse:
+    def post_list_lakes(self, response: service.ListLakesResponse) -> service.ListLakesResponse:
         """Post-rpc interceptor for list_lakes
 
         DEPRECATED. Please use the `post_list_lakes_with_metadata`
@@ -1345,9 +1217,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_lakes_with_metadata(
-        self,
-        response: service.ListLakesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListLakesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListLakesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lakes
 
@@ -1364,9 +1234,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_sessions(
-        self,
-        request: service.ListSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListSessionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sessions
 
@@ -1375,9 +1243,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sessions(
-        self, response: service.ListSessionsResponse
-    ) -> service.ListSessionsResponse:
+    def post_list_sessions(self, response: service.ListSessionsResponse) -> service.ListSessionsResponse:
         """Post-rpc interceptor for list_sessions
 
         DEPRECATED. Please use the `post_list_sessions_with_metadata`
@@ -1391,9 +1257,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_sessions_with_metadata(
-        self,
-        response: service.ListSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListSessionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sessions
 
@@ -1410,9 +1274,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_tasks(
-        self,
-        request: service.ListTasksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListTasksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tasks
 
@@ -1421,9 +1283,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tasks(
-        self, response: service.ListTasksResponse
-    ) -> service.ListTasksResponse:
+    def post_list_tasks(self, response: service.ListTasksResponse) -> service.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
         DEPRECATED. Please use the `post_list_tasks_with_metadata`
@@ -1437,9 +1297,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_tasks_with_metadata(
-        self,
-        response: service.ListTasksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListTasksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tasks
 
@@ -1456,9 +1314,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_zone_actions(
-        self,
-        request: service.ListZoneActionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListZoneActionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZoneActionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_zone_actions
 
@@ -1467,9 +1323,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_zone_actions(
-        self, response: service.ListActionsResponse
-    ) -> service.ListActionsResponse:
+    def post_list_zone_actions(self, response: service.ListActionsResponse) -> service.ListActionsResponse:
         """Post-rpc interceptor for list_zone_actions
 
         DEPRECATED. Please use the `post_list_zone_actions_with_metadata`
@@ -1483,9 +1337,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_zone_actions_with_metadata(
-        self,
-        response: service.ListActionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListActionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListActionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_zone_actions
 
@@ -1502,9 +1354,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_list_zones(
-        self,
-        request: service.ListZonesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListZonesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_zones
 
@@ -1513,9 +1363,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_zones(
-        self, response: service.ListZonesResponse
-    ) -> service.ListZonesResponse:
+    def post_list_zones(self, response: service.ListZonesResponse) -> service.ListZonesResponse:
         """Post-rpc interceptor for list_zones
 
         DEPRECATED. Please use the `post_list_zones_with_metadata`
@@ -1529,9 +1377,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_list_zones_with_metadata(
-        self,
-        response: service.ListZonesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListZonesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZonesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_zones
 
@@ -1548,9 +1394,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_run_task(
-        self,
-        request: service.RunTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.RunTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RunTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_task
 
@@ -1559,9 +1403,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_run_task(
-        self, response: service.RunTaskResponse
-    ) -> service.RunTaskResponse:
+    def post_run_task(self, response: service.RunTaskResponse) -> service.RunTaskResponse:
         """Post-rpc interceptor for run_task
 
         DEPRECATED. Please use the `post_run_task_with_metadata`
@@ -1575,9 +1417,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_run_task_with_metadata(
-        self,
-        response: service.RunTaskResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.RunTaskResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RunTaskResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_task
 
@@ -1594,9 +1434,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_update_asset(
-        self,
-        request: service.UpdateAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_asset
 
@@ -1605,9 +1443,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_asset
 
         DEPRECATED. Please use the `post_update_asset_with_metadata`
@@ -1621,9 +1457,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_update_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_asset
 
@@ -1640,12 +1474,8 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_update_environment(
-        self,
-        request: service.UpdateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -1653,9 +1483,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_environment
 
         DEPRECATED. Please use the `post_update_environment_with_metadata`
@@ -1669,9 +1497,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_update_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_environment
 
@@ -1688,9 +1514,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_update_lake(
-        self,
-        request: service.UpdateLakeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateLakeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateLakeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_lake
 
@@ -1699,9 +1523,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_lake(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_lake(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_lake
 
         DEPRECATED. Please use the `post_update_lake_with_metadata`
@@ -1715,9 +1537,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_update_lake_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_lake
 
@@ -1734,9 +1554,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_update_task(
-        self,
-        request: service.UpdateTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_task
 
@@ -1745,9 +1563,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_task(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_task(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_task
 
         DEPRECATED. Please use the `post_update_task_with_metadata`
@@ -1761,9 +1577,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_update_task_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_task
 
@@ -1780,9 +1594,7 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_update_zone(
-        self,
-        request: service.UpdateZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_zone
 
@@ -1791,9 +1603,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_zone
 
         DEPRECATED. Please use the `post_update_zone_with_metadata`
@@ -1807,9 +1617,7 @@ class DataplexServiceRestInterceptor:
         return response
 
     def post_update_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_zone
 
@@ -1826,12 +1634,8 @@ class DataplexServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1839,9 +1643,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1851,12 +1653,8 @@ class DataplexServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1864,9 +1662,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1876,12 +1672,8 @@ class DataplexServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1899,12 +1691,8 @@ class DataplexServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1922,12 +1710,8 @@ class DataplexServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1935,9 +1719,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1947,12 +1729,8 @@ class DataplexServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1960,9 +1738,7 @@ class DataplexServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2056,9 +1832,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2128,29 +1902,17 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CancelJob(
-        _BaseDataplexServiceRestTransport._BaseCancelJob, DataplexServiceRestStub
-    ):
+    class _CancelJob(_BaseDataplexServiceRestTransport._BaseCancelJob, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CancelJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2186,34 +1948,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCancelJob._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCancelJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_job(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCancelJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCancelJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataplexServiceRestTransport._BaseCancelJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCancelJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseCancelJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCancelJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2237,13 +1983,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CancelJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2251,22 +1991,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateAsset(
-        _BaseDataplexServiceRestTransport._BaseCreateAsset, DataplexServiceRestStub
-    ):
+    class _CreateAsset(_BaseDataplexServiceRestTransport._BaseCreateAsset, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CreateAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2309,30 +2039,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCreateAsset._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_asset(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCreateAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2356,13 +2074,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CreateAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2376,12 +2088,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_create_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2402,23 +2110,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _CreateEnvironment(
-        _BaseDataplexServiceRestTransport._BaseCreateEnvironment,
-        DataplexServiceRestStub,
-    ):
+    class _CreateEnvironment(_BaseDataplexServiceRestTransport._BaseCreateEnvironment, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CreateEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2461,32 +2158,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_environment(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2510,13 +2193,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CreateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2530,12 +2207,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_create_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2556,22 +2229,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _CreateLake(
-        _BaseDataplexServiceRestTransport._BaseCreateLake, DataplexServiceRestStub
-    ):
+    class _CreateLake(_BaseDataplexServiceRestTransport._BaseCreateLake, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CreateLake")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2614,30 +2277,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCreateLake._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCreateLake._get_http_options()
 
             request, metadata = self._interceptor.pre_create_lake(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateLake._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateLake._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseCreateLake._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCreateLake._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCreateLake._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCreateLake._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2661,13 +2312,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CreateLake._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2681,12 +2326,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_create_lake(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_lake_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_lake_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2707,22 +2348,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _CreateTask(
-        _BaseDataplexServiceRestTransport._BaseCreateTask, DataplexServiceRestStub
-    ):
+    class _CreateTask(_BaseDataplexServiceRestTransport._BaseCreateTask, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CreateTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2765,30 +2396,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCreateTask._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCreateTask._get_http_options()
 
             request, metadata = self._interceptor.pre_create_task(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateTask._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseCreateTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCreateTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCreateTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCreateTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2812,13 +2431,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CreateTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2832,12 +2445,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_create_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2858,22 +2467,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _CreateZone(
-        _BaseDataplexServiceRestTransport._BaseCreateZone, DataplexServiceRestStub
-    ):
+    class _CreateZone(_BaseDataplexServiceRestTransport._BaseCreateZone, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CreateZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2916,30 +2515,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCreateZone._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCreateZone._get_http_options()
 
             request, metadata = self._interceptor.pre_create_zone(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateZone._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseCreateZone._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCreateZone._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCreateZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCreateZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2963,13 +2550,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CreateZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2983,12 +2564,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_create_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3009,22 +2586,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _DeleteAsset(
-        _BaseDataplexServiceRestTransport._BaseDeleteAsset, DataplexServiceRestStub
-    ):
+    class _DeleteAsset(_BaseDataplexServiceRestTransport._BaseDeleteAsset, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.DeleteAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3066,26 +2633,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseDeleteAsset._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseDeleteAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseDeleteAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3109,12 +2666,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._DeleteAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3128,12 +2680,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_delete_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3154,23 +2702,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEnvironment(
-        _BaseDataplexServiceRestTransport._BaseDeleteEnvironment,
-        DataplexServiceRestStub,
-    ):
+    class _DeleteEnvironment(_BaseDataplexServiceRestTransport._BaseDeleteEnvironment, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.DeleteEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3212,28 +2749,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_environment(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3257,12 +2782,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._DeleteEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3276,12 +2796,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_delete_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3302,22 +2818,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _DeleteLake(
-        _BaseDataplexServiceRestTransport._BaseDeleteLake, DataplexServiceRestStub
-    ):
+    class _DeleteLake(_BaseDataplexServiceRestTransport._BaseDeleteLake, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.DeleteLake")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3359,26 +2865,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseDeleteLake._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseDeleteLake._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_lake(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteLake._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteLake._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteLake._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseDeleteLake._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3402,12 +2898,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._DeleteLake._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3421,12 +2912,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_delete_lake(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_lake_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_lake_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3447,22 +2934,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _DeleteTask(
-        _BaseDataplexServiceRestTransport._BaseDeleteTask, DataplexServiceRestStub
-    ):
+    class _DeleteTask(_BaseDataplexServiceRestTransport._BaseDeleteTask, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.DeleteTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3504,26 +2981,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseDeleteTask._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseDeleteTask._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_task(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseDeleteTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3547,12 +3014,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._DeleteTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3566,12 +3028,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_delete_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3592,22 +3050,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _DeleteZone(
-        _BaseDataplexServiceRestTransport._BaseDeleteZone, DataplexServiceRestStub
-    ):
+    class _DeleteZone(_BaseDataplexServiceRestTransport._BaseDeleteZone, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.DeleteZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3649,26 +3097,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseDeleteZone._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseDeleteZone._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_zone(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteZone._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseDeleteZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3692,12 +3130,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._DeleteZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3711,12 +3144,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_delete_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3737,22 +3166,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _GetAsset(
-        _BaseDataplexServiceRestTransport._BaseGetAsset, DataplexServiceRestStub
-    ):
+    class _GetAsset(_BaseDataplexServiceRestTransport._BaseGetAsset, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3794,30 +3213,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetAsset._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseGetAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseGetAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3841,12 +3246,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3862,12 +3262,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_get_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Asset.to_json(response)
                 except:
@@ -3888,22 +3284,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _GetEnvironment(
-        _BaseDataplexServiceRestTransport._BaseGetEnvironment, DataplexServiceRestStub
-    ):
+    class _GetEnvironment(_BaseDataplexServiceRestTransport._BaseGetEnvironment, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3945,26 +3331,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_environment(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3988,12 +3364,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4009,12 +3380,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_get_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = analyze.Environment.to_json(response)
                 except:
@@ -4035,22 +3402,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _GetJob(
-        _BaseDataplexServiceRestTransport._BaseGetJob, DataplexServiceRestStub
-    ):
+    class _GetJob(_BaseDataplexServiceRestTransport._BaseGetJob, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4091,30 +3448,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetJob._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseGetJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseGetJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4138,12 +3481,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4159,12 +3497,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Job.to_json(response)
                 except:
@@ -4185,22 +3519,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _GetLake(
-        _BaseDataplexServiceRestTransport._BaseGetLake, DataplexServiceRestStub
-    ):
+    class _GetLake(_BaseDataplexServiceRestTransport._BaseGetLake, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetLake")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4255,30 +3579,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetLake._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetLake._get_http_options()
 
             request, metadata = self._interceptor.pre_get_lake(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseGetLake._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetLake._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseGetLake._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetLake._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4302,12 +3612,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetLake._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4323,12 +3628,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_get_lake(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lake_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lake_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Lake.to_json(response)
                 except:
@@ -4349,22 +3650,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _GetTask(
-        _BaseDataplexServiceRestTransport._BaseGetTask, DataplexServiceRestStub
-    ):
+    class _GetTask(_BaseDataplexServiceRestTransport._BaseGetTask, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4403,30 +3694,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     A task represents a user-visible job.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetTask._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetTask._get_http_options()
 
             request, metadata = self._interceptor.pre_get_task(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseGetTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseGetTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4450,12 +3727,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4471,12 +3743,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_get_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
                 except:
@@ -4497,22 +3765,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _GetZone(
-        _BaseDataplexServiceRestTransport._BaseGetZone, DataplexServiceRestStub
-    ):
+    class _GetZone(_BaseDataplexServiceRestTransport._BaseGetZone, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4559,30 +3817,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetZone._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetZone._get_http_options()
 
             request, metadata = self._interceptor.pre_get_zone(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseGetZone._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetZone._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseGetZone._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4606,12 +3850,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4627,12 +3866,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_get_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Zone.to_json(response)
                 except:
@@ -4653,22 +3888,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListAssetActions(
-        _BaseDataplexServiceRestTransport._BaseListAssetActions, DataplexServiceRestStub
-    ):
+    class _ListAssetActions(_BaseDataplexServiceRestTransport._BaseListAssetActions, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListAssetActions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4707,28 +3932,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List actions response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListAssetActions._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListAssetActions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_asset_actions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListAssetActions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_asset_actions(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListAssetActions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListAssetActions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListAssetActions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4752,12 +3965,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListAssetActions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4773,12 +3981,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_asset_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_asset_actions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_asset_actions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListActionsResponse.to_json(response)
                 except:
@@ -4799,22 +4003,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListAssets(
-        _BaseDataplexServiceRestTransport._BaseListAssets, DataplexServiceRestStub
-    ):
+    class _ListAssets(_BaseDataplexServiceRestTransport._BaseListAssets, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4853,26 +4047,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List assets response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListAssets._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListAssets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4896,12 +4080,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4917,12 +4096,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListAssetsResponse.to_json(response)
                 except:
@@ -4943,22 +4118,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListEnvironments(
-        _BaseDataplexServiceRestTransport._BaseListEnvironments, DataplexServiceRestStub
-    ):
+    class _ListEnvironments(_BaseDataplexServiceRestTransport._BaseListEnvironments, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListEnvironments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4997,28 +4162,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List environments response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListEnvironments._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_environments(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_environments(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5042,12 +4195,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListEnvironments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5063,16 +4211,10 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_environments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_environments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_environments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListEnvironmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListEnvironmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5091,22 +4233,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListJobs(
-        _BaseDataplexServiceRestTransport._BaseListJobs, DataplexServiceRestStub
-    ):
+    class _ListJobs(_BaseDataplexServiceRestTransport._BaseListJobs, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5145,30 +4277,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List jobs response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListJobs._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseListJobs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseListJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5192,12 +4310,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5213,12 +4326,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListJobsResponse.to_json(response)
                 except:
@@ -5239,22 +4348,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListLakeActions(
-        _BaseDataplexServiceRestTransport._BaseListLakeActions, DataplexServiceRestStub
-    ):
+    class _ListLakeActions(_BaseDataplexServiceRestTransport._BaseListLakeActions, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListLakeActions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5293,28 +4392,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List actions response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListLakeActions._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListLakeActions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_lake_actions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListLakeActions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_lake_actions(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListLakeActions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListLakeActions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListLakeActions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5338,12 +4425,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListLakeActions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5359,12 +4441,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_lake_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lake_actions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lake_actions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListActionsResponse.to_json(response)
                 except:
@@ -5385,22 +4463,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListLakes(
-        _BaseDataplexServiceRestTransport._BaseListLakes, DataplexServiceRestStub
-    ):
+    class _ListLakes(_BaseDataplexServiceRestTransport._BaseListLakes, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListLakes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5439,28 +4507,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List lakes response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListLakes._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListLakes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_lakes(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListLakes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListLakes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseListLakes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListLakes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5484,12 +4540,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListLakes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5505,12 +4556,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_lakes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lakes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lakes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListLakesResponse.to_json(response)
                 except:
@@ -5531,22 +4578,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListSessions(
-        _BaseDataplexServiceRestTransport._BaseListSessions, DataplexServiceRestStub
-    ):
+    class _ListSessions(_BaseDataplexServiceRestTransport._BaseListSessions, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListSessions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5585,26 +4622,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List sessions response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListSessions._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListSessions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sessions(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListSessions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListSessions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListSessions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListSessions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5628,12 +4655,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListSessions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5649,12 +4671,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_sessions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sessions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSessionsResponse.to_json(response)
                 except:
@@ -5675,22 +4693,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListTasks(
-        _BaseDataplexServiceRestTransport._BaseListTasks, DataplexServiceRestStub
-    ):
+    class _ListTasks(_BaseDataplexServiceRestTransport._BaseListTasks, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListTasks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5729,28 +4737,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List tasks response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListTasks._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListTasks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tasks(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListTasks._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListTasks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseListTasks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListTasks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5774,12 +4770,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListTasks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5795,12 +4786,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_tasks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tasks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListTasksResponse.to_json(response)
                 except:
@@ -5821,22 +4808,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListZoneActions(
-        _BaseDataplexServiceRestTransport._BaseListZoneActions, DataplexServiceRestStub
-    ):
+    class _ListZoneActions(_BaseDataplexServiceRestTransport._BaseListZoneActions, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListZoneActions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5875,28 +4852,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List actions response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListZoneActions._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListZoneActions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_zone_actions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListZoneActions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_zone_actions(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListZoneActions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListZoneActions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListZoneActions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5920,12 +4885,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListZoneActions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5941,12 +4901,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_zone_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_zone_actions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_zone_actions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListActionsResponse.to_json(response)
                 except:
@@ -5967,22 +4923,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListZones(
-        _BaseDataplexServiceRestTransport._BaseListZones, DataplexServiceRestStub
-    ):
+    class _ListZones(_BaseDataplexServiceRestTransport._BaseListZones, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListZones")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6021,28 +4967,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     List zones response.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListZones._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListZones._get_http_options()
 
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListZones._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListZones._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseListZones._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListZones._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6066,12 +5000,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListZones._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6087,12 +5016,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_list_zones(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_zones_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_zones_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListZonesResponse.to_json(response)
                 except:
@@ -6113,22 +5038,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _RunTask(
-        _BaseDataplexServiceRestTransport._BaseRunTask, DataplexServiceRestStub
-    ):
+    class _RunTask(_BaseDataplexServiceRestTransport._BaseRunTask, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.RunTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6168,36 +5083,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseRunTask._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseRunTask._get_http_options()
 
             request, metadata = self._interceptor.pre_run_task(request, metadata)
-            transcoded_request = (
-                _BaseDataplexServiceRestTransport._BaseRunTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseRunTask._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataplexServiceRestTransport._BaseRunTask._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataplexServiceRestTransport._BaseRunTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataplexServiceRestTransport._BaseRunTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseRunTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6221,13 +5118,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._RunTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6243,12 +5134,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_run_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.RunTaskResponse.to_json(response)
                 except:
@@ -6269,22 +5156,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAsset(
-        _BaseDataplexServiceRestTransport._BaseUpdateAsset, DataplexServiceRestStub
-    ):
+    class _UpdateAsset(_BaseDataplexServiceRestTransport._BaseUpdateAsset, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.UpdateAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6327,30 +5204,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_update_asset(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseUpdateAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6374,13 +5239,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._UpdateAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6394,12 +5253,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_update_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6420,23 +5275,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEnvironment(
-        _BaseDataplexServiceRestTransport._BaseUpdateEnvironment,
-        DataplexServiceRestStub,
-    ):
+    class _UpdateEnvironment(_BaseDataplexServiceRestTransport._BaseUpdateEnvironment, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.UpdateEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6479,32 +5323,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_environment(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6528,13 +5358,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._UpdateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6548,12 +5372,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_update_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6574,22 +5394,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLake(
-        _BaseDataplexServiceRestTransport._BaseUpdateLake, DataplexServiceRestStub
-    ):
+    class _UpdateLake(_BaseDataplexServiceRestTransport._BaseUpdateLake, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.UpdateLake")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6632,30 +5442,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseUpdateLake._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_http_options()
 
             request, metadata = self._interceptor.pre_update_lake(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseUpdateLake._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6679,13 +5477,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._UpdateLake._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6699,12 +5491,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_update_lake(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_lake_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_lake_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6725,22 +5513,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _UpdateTask(
-        _BaseDataplexServiceRestTransport._BaseUpdateTask, DataplexServiceRestStub
-    ):
+    class _UpdateTask(_BaseDataplexServiceRestTransport._BaseUpdateTask, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.UpdateTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6783,30 +5561,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseUpdateTask._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_http_options()
 
             request, metadata = self._interceptor.pre_update_task(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseUpdateTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6830,13 +5596,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._UpdateTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6850,12 +5610,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_update_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6876,22 +5632,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _UpdateZone(
-        _BaseDataplexServiceRestTransport._BaseUpdateZone, DataplexServiceRestStub
-    ):
+    class _UpdateZone(_BaseDataplexServiceRestTransport._BaseUpdateZone, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.UpdateZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6934,30 +5680,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseUpdateZone._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_http_options()
 
             request, metadata = self._interceptor.pre_update_zone(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseUpdateZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6981,13 +5715,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._UpdateZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7001,12 +5729,8 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             resp = self._interceptor.post_update_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7034,81 +5758,61 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._CancelJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
+    def create_asset(self) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
+    def create_environment(self) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_lake(
-        self,
-    ) -> Callable[[service.CreateLakeRequest], operations_pb2.Operation]:
+    def create_lake(self) -> Callable[[service.CreateLakeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLake(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[[service.CreateTaskRequest], operations_pb2.Operation]:
+    def create_task(self) -> Callable[[service.CreateTaskRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_zone(
-        self,
-    ) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
+    def create_zone(self) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
+    def delete_asset(self) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
+    def delete_environment(self) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_lake(
-        self,
-    ) -> Callable[[service.DeleteLakeRequest], operations_pb2.Operation]:
+    def delete_lake(self) -> Callable[[service.DeleteLakeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLake(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[[service.DeleteTaskRequest], operations_pb2.Operation]:
+    def delete_task(self) -> Callable[[service.DeleteTaskRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_zone(
-        self,
-    ) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
+    def delete_zone(self) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteZone(self._session, self._host, self._interceptor)  # type: ignore
@@ -7120,9 +5824,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._GetAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[service.GetEnvironmentRequest], analyze.Environment]:
+    def get_environment(self) -> Callable[[service.GetEnvironmentRequest], analyze.Environment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEnvironment(self._session, self._host, self._interceptor)  # type: ignore
@@ -7152,81 +5854,61 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._GetZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_asset_actions(
-        self,
-    ) -> Callable[[service.ListAssetActionsRequest], service.ListActionsResponse]:
+    def list_asset_actions(self) -> Callable[[service.ListAssetActionsRequest], service.ListActionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssetActions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
+    def list_assets(self) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
+    def list_environments(self) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEnvironments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[[service.ListJobsRequest], service.ListJobsResponse]:
+    def list_jobs(self) -> Callable[[service.ListJobsRequest], service.ListJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lake_actions(
-        self,
-    ) -> Callable[[service.ListLakeActionsRequest], service.ListActionsResponse]:
+    def list_lake_actions(self) -> Callable[[service.ListLakeActionsRequest], service.ListActionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLakeActions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lakes(
-        self,
-    ) -> Callable[[service.ListLakesRequest], service.ListLakesResponse]:
+    def list_lakes(self) -> Callable[[service.ListLakesRequest], service.ListLakesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLakes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[[service.ListSessionsRequest], service.ListSessionsResponse]:
+    def list_sessions(self) -> Callable[[service.ListSessionsRequest], service.ListSessionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSessions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[[service.ListTasksRequest], service.ListTasksResponse]:
+    def list_tasks(self) -> Callable[[service.ListTasksRequest], service.ListTasksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTasks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_zone_actions(
-        self,
-    ) -> Callable[[service.ListZoneActionsRequest], service.ListActionsResponse]:
+    def list_zone_actions(self) -> Callable[[service.ListZoneActionsRequest], service.ListActionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListZoneActions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListZones(self._session, self._host, self._interceptor)  # type: ignore
@@ -7238,41 +5920,31 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._RunTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[[service.UpdateAssetRequest], operations_pb2.Operation]:
+    def update_asset(self) -> Callable[[service.UpdateAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_environment(
-        self,
-    ) -> Callable[[service.UpdateEnvironmentRequest], operations_pb2.Operation]:
+    def update_environment(self) -> Callable[[service.UpdateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_lake(
-        self,
-    ) -> Callable[[service.UpdateLakeRequest], operations_pb2.Operation]:
+    def update_lake(self) -> Callable[[service.UpdateLakeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLake(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_task(
-        self,
-    ) -> Callable[[service.UpdateTaskRequest], operations_pb2.Operation]:
+    def update_task(self) -> Callable[[service.UpdateTaskRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_zone(
-        self,
-    ) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
+    def update_zone(self) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateZone(self._session, self._host, self._interceptor)  # type: ignore
@@ -7281,22 +5953,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataplexServiceRestTransport._BaseGetLocation, DataplexServiceRestStub
-    ):
+    class _GetLocation(_BaseDataplexServiceRestTransport._BaseGetLocation, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7334,26 +5996,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7377,12 +6029,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7394,9 +6041,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7421,22 +6066,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataplexServiceRestTransport._BaseListLocations, DataplexServiceRestStub
-    ):
+    class _ListLocations(_BaseDataplexServiceRestTransport._BaseListLocations, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7474,26 +6109,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7517,12 +6142,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7534,9 +6154,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7561,22 +6179,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataplexServiceRestTransport._BaseCancelOperation, DataplexServiceRestStub
-    ):
+    class _CancelOperation(_BaseDataplexServiceRestTransport._BaseCancelOperation, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7612,32 +6220,18 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7661,13 +6255,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7681,22 +6269,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataplexServiceRestTransport._BaseDeleteOperation, DataplexServiceRestStub
-    ):
+    class _DeleteOperation(_BaseDataplexServiceRestTransport._BaseDeleteOperation, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7731,28 +6309,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7776,12 +6342,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7795,22 +6356,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataplexServiceRestTransport._BaseGetOperation, DataplexServiceRestStub
-    ):
+    class _GetOperation(_BaseDataplexServiceRestTransport._BaseGetOperation, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7848,26 +6399,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7891,12 +6432,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7908,9 +6444,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7935,22 +6469,12 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataplexServiceRestTransport._BaseListOperations, DataplexServiceRestStub
-    ):
+    class _ListOperations(_BaseDataplexServiceRestTransport._BaseListOperations, DataplexServiceRestStub):
         def __hash__(self):
             return hash("DataplexServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7988,26 +6512,16 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataplexServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataplexServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8031,12 +6545,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
 
             # Send the request
             response = DataplexServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8048,9 +6557,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

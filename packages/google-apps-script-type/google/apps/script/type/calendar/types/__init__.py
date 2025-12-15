@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .calendar_addon_manifest import (
-    CalendarAddOnManifest,
-    CalendarExtensionPoint,
-    ConferenceSolution,
-)
+from .calendar_addon_manifest import CalendarAddOnManifest, CalendarExtensionPoint, ConferenceSolution
 
 __all__ = (
     "CalendarAddOnManifest",

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -54,9 +43,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.networkconnectivity_v1.services.cross_network_automation_service import (
-    pagers,
-)
+from google.cloud.networkconnectivity_v1.services.cross_network_automation_service import pagers
 from google.cloud.networkconnectivity_v1.types import common, cross_network_automation
 
 from .client import CrossNetworkAutomationServiceClient
@@ -82,83 +69,35 @@ class CrossNetworkAutomationServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = CrossNetworkAutomationServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CrossNetworkAutomationServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        CrossNetworkAutomationServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = CrossNetworkAutomationServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = CrossNetworkAutomationServiceClient._DEFAULT_UNIVERSE
 
     network_path = staticmethod(CrossNetworkAutomationServiceClient.network_path)
-    parse_network_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_network_path
-    )
+    parse_network_path = staticmethod(CrossNetworkAutomationServiceClient.parse_network_path)
     project_path = staticmethod(CrossNetworkAutomationServiceClient.project_path)
-    parse_project_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_project_path
-    )
-    service_attachment_path = staticmethod(
-        CrossNetworkAutomationServiceClient.service_attachment_path
-    )
-    parse_service_attachment_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_service_attachment_path
-    )
-    service_class_path = staticmethod(
-        CrossNetworkAutomationServiceClient.service_class_path
-    )
-    parse_service_class_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_service_class_path
-    )
-    service_connection_map_path = staticmethod(
-        CrossNetworkAutomationServiceClient.service_connection_map_path
-    )
-    parse_service_connection_map_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_service_connection_map_path
-    )
-    service_connection_policy_path = staticmethod(
-        CrossNetworkAutomationServiceClient.service_connection_policy_path
-    )
-    parse_service_connection_policy_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_service_connection_policy_path
-    )
-    service_connection_token_path = staticmethod(
-        CrossNetworkAutomationServiceClient.service_connection_token_path
-    )
-    parse_service_connection_token_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_service_connection_token_path
-    )
+    parse_project_path = staticmethod(CrossNetworkAutomationServiceClient.parse_project_path)
+    service_attachment_path = staticmethod(CrossNetworkAutomationServiceClient.service_attachment_path)
+    parse_service_attachment_path = staticmethod(CrossNetworkAutomationServiceClient.parse_service_attachment_path)
+    service_class_path = staticmethod(CrossNetworkAutomationServiceClient.service_class_path)
+    parse_service_class_path = staticmethod(CrossNetworkAutomationServiceClient.parse_service_class_path)
+    service_connection_map_path = staticmethod(CrossNetworkAutomationServiceClient.service_connection_map_path)
+    parse_service_connection_map_path = staticmethod(CrossNetworkAutomationServiceClient.parse_service_connection_map_path)
+    service_connection_policy_path = staticmethod(CrossNetworkAutomationServiceClient.service_connection_policy_path)
+    parse_service_connection_policy_path = staticmethod(CrossNetworkAutomationServiceClient.parse_service_connection_policy_path)
+    service_connection_token_path = staticmethod(CrossNetworkAutomationServiceClient.service_connection_token_path)
+    parse_service_connection_token_path = staticmethod(CrossNetworkAutomationServiceClient.parse_service_connection_token_path)
     subnetwork_path = staticmethod(CrossNetworkAutomationServiceClient.subnetwork_path)
-    parse_subnetwork_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_subnetwork_path
-    )
-    common_billing_account_path = staticmethod(
-        CrossNetworkAutomationServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        CrossNetworkAutomationServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        CrossNetworkAutomationServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        CrossNetworkAutomationServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        CrossNetworkAutomationServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        CrossNetworkAutomationServiceClient.parse_common_location_path
-    )
+    parse_subnetwork_path = staticmethod(CrossNetworkAutomationServiceClient.parse_subnetwork_path)
+    common_billing_account_path = staticmethod(CrossNetworkAutomationServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CrossNetworkAutomationServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(CrossNetworkAutomationServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(CrossNetworkAutomationServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(CrossNetworkAutomationServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(CrossNetworkAutomationServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(CrossNetworkAutomationServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(CrossNetworkAutomationServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(CrossNetworkAutomationServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(CrossNetworkAutomationServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -194,9 +133,7 @@ class CrossNetworkAutomationServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -264,11 +201,7 @@ class CrossNetworkAutomationServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                CrossNetworkAutomationServiceTransport,
-                Callable[..., CrossNetworkAutomationServiceTransport],
-            ]
+            Union[str, CrossNetworkAutomationServiceTransport, Callable[..., CrossNetworkAutomationServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -329,20 +262,14 @@ class CrossNetworkAutomationServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networkconnectivity_v1.CrossNetworkAutomationServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -353,9 +280,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def list_service_connection_maps(
         self,
-        request: Optional[
-            Union[cross_network_automation.ListServiceConnectionMapsRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.ListServiceConnectionMapsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -424,20 +349,13 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.ListServiceConnectionMapsRequest
-        ):
+        if not isinstance(request, cross_network_automation.ListServiceConnectionMapsRequest):
             request = cross_network_automation.ListServiceConnectionMapsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -447,15 +365,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_service_connection_maps
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_service_connection_maps]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -484,9 +398,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def get_service_connection_map(
         self,
-        request: Optional[
-            Union[cross_network_automation.GetServiceConnectionMapRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.GetServiceConnectionMapRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -547,20 +459,13 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.GetServiceConnectionMapRequest
-        ):
+        if not isinstance(request, cross_network_automation.GetServiceConnectionMapRequest):
             request = cross_network_automation.GetServiceConnectionMapRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -570,15 +475,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service_connection_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service_connection_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -596,14 +497,10 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def create_service_connection_map(
         self,
-        request: Optional[
-            Union[cross_network_automation.CreateServiceConnectionMapRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.CreateServiceConnectionMapRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        service_connection_map: Optional[
-            cross_network_automation.ServiceConnectionMap
-        ] = None,
+        service_connection_map: Optional[cross_network_automation.ServiceConnectionMap] = None,
         service_connection_map_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -692,23 +589,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, service_connection_map, service_connection_map_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.CreateServiceConnectionMapRequest
-        ):
-            request = cross_network_automation.CreateServiceConnectionMapRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.CreateServiceConnectionMapRequest):
+            request = cross_network_automation.CreateServiceConnectionMapRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -721,15 +609,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_service_connection_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_service_connection_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -755,13 +639,9 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def update_service_connection_map(
         self,
-        request: Optional[
-            Union[cross_network_automation.UpdateServiceConnectionMapRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.UpdateServiceConnectionMapRequest, dict]] = None,
         *,
-        service_connection_map: Optional[
-            cross_network_automation.ServiceConnectionMap
-        ] = None,
+        service_connection_map: Optional[cross_network_automation.ServiceConnectionMap] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -843,23 +723,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_connection_map, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.UpdateServiceConnectionMapRequest
-        ):
-            request = cross_network_automation.UpdateServiceConnectionMapRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.UpdateServiceConnectionMapRequest):
+            request = cross_network_automation.UpdateServiceConnectionMapRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -870,16 +741,12 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_service_connection_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_service_connection_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_connection_map.name", request.service_connection_map.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("service_connection_map.name", request.service_connection_map.name),)),
         )
 
         # Validate the universe domain.
@@ -906,9 +773,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def delete_service_connection_map(
         self,
-        request: Optional[
-            Union[cross_network_automation.DeleteServiceConnectionMapRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.DeleteServiceConnectionMapRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -986,23 +851,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.DeleteServiceConnectionMapRequest
-        ):
-            request = cross_network_automation.DeleteServiceConnectionMapRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.DeleteServiceConnectionMapRequest):
+            request = cross_network_automation.DeleteServiceConnectionMapRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1011,15 +867,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_service_connection_map
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_service_connection_map]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1045,9 +897,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def list_service_connection_policies(
         self,
-        request: Optional[
-            Union[cross_network_automation.ListServiceConnectionPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.ListServiceConnectionPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1116,23 +966,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.ListServiceConnectionPoliciesRequest
-        ):
-            request = cross_network_automation.ListServiceConnectionPoliciesRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.ListServiceConnectionPoliciesRequest):
+            request = cross_network_automation.ListServiceConnectionPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1141,15 +982,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_service_connection_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_service_connection_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1178,9 +1015,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def get_service_connection_policy(
         self,
-        request: Optional[
-            Union[cross_network_automation.GetServiceConnectionPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.GetServiceConnectionPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1242,23 +1077,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.GetServiceConnectionPolicyRequest
-        ):
-            request = cross_network_automation.GetServiceConnectionPolicyRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.GetServiceConnectionPolicyRequest):
+            request = cross_network_automation.GetServiceConnectionPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1267,15 +1093,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service_connection_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service_connection_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1293,14 +1115,10 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def create_service_connection_policy(
         self,
-        request: Optional[
-            Union[cross_network_automation.CreateServiceConnectionPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.CreateServiceConnectionPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        service_connection_policy: Optional[
-            cross_network_automation.ServiceConnectionPolicy
-        ] = None,
+        service_connection_policy: Optional[cross_network_automation.ServiceConnectionPolicy] = None,
         service_connection_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1387,28 +1205,15 @@ class CrossNetworkAutomationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            service_connection_policy,
-            service_connection_policy_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, service_connection_policy, service_connection_policy_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.CreateServiceConnectionPolicyRequest
-        ):
-            request = cross_network_automation.CreateServiceConnectionPolicyRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.CreateServiceConnectionPolicyRequest):
+            request = cross_network_automation.CreateServiceConnectionPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1421,15 +1226,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_service_connection_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_service_connection_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1455,13 +1256,9 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def update_service_connection_policy(
         self,
-        request: Optional[
-            Union[cross_network_automation.UpdateServiceConnectionPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.UpdateServiceConnectionPolicyRequest, dict]] = None,
         *,
-        service_connection_policy: Optional[
-            cross_network_automation.ServiceConnectionPolicy
-        ] = None,
+        service_connection_policy: Optional[cross_network_automation.ServiceConnectionPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1543,23 +1340,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_connection_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.UpdateServiceConnectionPolicyRequest
-        ):
-            request = cross_network_automation.UpdateServiceConnectionPolicyRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.UpdateServiceConnectionPolicyRequest):
+            request = cross_network_automation.UpdateServiceConnectionPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1570,21 +1358,12 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_service_connection_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_service_connection_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "service_connection_policy.name",
-                        request.service_connection_policy.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("service_connection_policy.name", request.service_connection_policy.name),)),
         )
 
         # Validate the universe domain.
@@ -1611,9 +1390,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def delete_service_connection_policy(
         self,
-        request: Optional[
-            Union[cross_network_automation.DeleteServiceConnectionPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.DeleteServiceConnectionPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1691,23 +1468,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.DeleteServiceConnectionPolicyRequest
-        ):
-            request = cross_network_automation.DeleteServiceConnectionPolicyRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.DeleteServiceConnectionPolicyRequest):
+            request = cross_network_automation.DeleteServiceConnectionPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1716,15 +1484,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_service_connection_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_service_connection_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1750,9 +1514,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def list_service_classes(
         self,
-        request: Optional[
-            Union[cross_network_automation.ListServiceClassesRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.ListServiceClassesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1819,14 +1581,9 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1840,15 +1597,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_service_classes
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_service_classes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1877,9 +1630,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def get_service_class(
         self,
-        request: Optional[
-            Union[cross_network_automation.GetServiceClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.GetServiceClassRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1940,14 +1691,9 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1961,15 +1707,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1987,9 +1729,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def update_service_class(
         self,
-        request: Optional[
-            Union[cross_network_automation.UpdateServiceClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.UpdateServiceClassRequest, dict]] = None,
         *,
         service_class: Optional[cross_network_automation.ServiceClass] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2070,14 +1810,9 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [service_class, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2093,17 +1828,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_service_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_service_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("service_class.name", request.service_class.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("service_class.name", request.service_class.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2129,9 +1858,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def delete_service_class(
         self,
-        request: Optional[
-            Union[cross_network_automation.DeleteServiceClassRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.DeleteServiceClassRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2208,14 +1935,9 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2229,15 +1951,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_service_class
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_service_class]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2263,9 +1981,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def get_service_connection_token(
         self,
-        request: Optional[
-            Union[cross_network_automation.GetServiceConnectionTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.GetServiceConnectionTokenRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2327,20 +2043,13 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.GetServiceConnectionTokenRequest
-        ):
+        if not isinstance(request, cross_network_automation.GetServiceConnectionTokenRequest):
             request = cross_network_automation.GetServiceConnectionTokenRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2350,15 +2059,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_service_connection_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_service_connection_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2376,9 +2081,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def list_service_connection_tokens(
         self,
-        request: Optional[
-            Union[cross_network_automation.ListServiceConnectionTokensRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.ListServiceConnectionTokensRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2447,23 +2150,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.ListServiceConnectionTokensRequest
-        ):
-            request = cross_network_automation.ListServiceConnectionTokensRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.ListServiceConnectionTokensRequest):
+            request = cross_network_automation.ListServiceConnectionTokensRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2472,15 +2166,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_service_connection_tokens
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_service_connection_tokens]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2509,14 +2199,10 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def create_service_connection_token(
         self,
-        request: Optional[
-            Union[cross_network_automation.CreateServiceConnectionTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.CreateServiceConnectionTokenRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        service_connection_token: Optional[
-            cross_network_automation.ServiceConnectionToken
-        ] = None,
+        service_connection_token: Optional[cross_network_automation.ServiceConnectionToken] = None,
         service_connection_token_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2604,28 +2290,15 @@ class CrossNetworkAutomationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            service_connection_token,
-            service_connection_token_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, service_connection_token, service_connection_token_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.CreateServiceConnectionTokenRequest
-        ):
-            request = cross_network_automation.CreateServiceConnectionTokenRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.CreateServiceConnectionTokenRequest):
+            request = cross_network_automation.CreateServiceConnectionTokenRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2638,15 +2311,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_service_connection_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_service_connection_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2672,9 +2341,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
     async def delete_service_connection_token(
         self,
-        request: Optional[
-            Union[cross_network_automation.DeleteServiceConnectionTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[cross_network_automation.DeleteServiceConnectionTokenRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2752,23 +2419,14 @@ class CrossNetworkAutomationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, cross_network_automation.DeleteServiceConnectionTokenRequest
-        ):
-            request = cross_network_automation.DeleteServiceConnectionTokenRequest(
-                request
-            )
+        if not isinstance(request, cross_network_automation.DeleteServiceConnectionTokenRequest):
+            request = cross_network_automation.DeleteServiceConnectionTokenRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2777,15 +2435,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_service_connection_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_service_connection_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2846,9 +2500,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2901,9 +2553,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2960,9 +2610,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3015,9 +2663,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3133,9 +2779,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3255,9 +2899,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3311,15 +2953,11 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3372,9 +3010,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3427,9 +3063,7 @@ class CrossNetworkAutomationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3452,9 +3086,7 @@ class CrossNetworkAutomationServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

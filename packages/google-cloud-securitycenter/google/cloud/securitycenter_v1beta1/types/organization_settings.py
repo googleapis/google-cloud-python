@@ -91,12 +91,10 @@ class OrganizationSettings(proto.Message):
             proto.STRING,
             number=1,
         )
-        inclusion_mode: "OrganizationSettings.AssetDiscoveryConfig.InclusionMode" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="OrganizationSettings.AssetDiscoveryConfig.InclusionMode",
-            )
+        inclusion_mode: "OrganizationSettings.AssetDiscoveryConfig.InclusionMode" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="OrganizationSettings.AssetDiscoveryConfig.InclusionMode",
         )
 
     name: str = proto.Field(

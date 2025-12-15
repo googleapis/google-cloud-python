@@ -29,12 +29,8 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.securitycenter_v1beta1 import gapic_version as package_version
-from google.cloud.securitycenter_v1beta1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1beta1.types import (
-    security_marks as gcs_security_marks,
-)
+from google.cloud.securitycenter_v1beta1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1beta1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1beta1.types import finding
 from google.cloud.securitycenter_v1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1beta1.types import organization_settings
@@ -42,9 +38,7 @@ from google.cloud.securitycenter_v1beta1.types import securitycenter_service
 from google.cloud.securitycenter_v1beta1.types import source
 from google.cloud.securitycenter_v1beta1.types import source as gcs_source
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -106,23 +100,15 @@ class SecurityCenterTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -344,30 +330,15 @@ class SecurityCenterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateSourceRequest],
-        Union[gcs_source.Source, Awaitable[gcs_source.Source]],
-    ]:
+    def create_source(self) -> Callable[[securitycenter_service.CreateSourceRequest], Union[gcs_source.Source, Awaitable[gcs_source.Source]]]:
         raise NotImplementedError()
 
     @property
-    def create_finding(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateFindingRequest],
-        Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]],
-    ]:
+    def create_finding(self) -> Callable[[securitycenter_service.CreateFindingRequest], Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -375,20 +346,12 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GetOrganizationSettingsRequest],
-        Union[
-            organization_settings.OrganizationSettings,
-            Awaitable[organization_settings.OrganizationSettings],
-        ],
+        Union[organization_settings.OrganizationSettings, Awaitable[organization_settings.OrganizationSettings]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetSourceRequest],
-        Union[source.Source, Awaitable[source.Source]],
-    ]:
+    def get_source(self) -> Callable[[securitycenter_service.GetSourceRequest], Union[source.Source, Awaitable[source.Source]]]:
         raise NotImplementedError()
 
     @property
@@ -396,10 +359,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GroupAssetsRequest],
-        Union[
-            securitycenter_service.GroupAssetsResponse,
-            Awaitable[securitycenter_service.GroupAssetsResponse],
-        ],
+        Union[securitycenter_service.GroupAssetsResponse, Awaitable[securitycenter_service.GroupAssetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -408,10 +368,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.GroupFindingsRequest],
-        Union[
-            securitycenter_service.GroupFindingsResponse,
-            Awaitable[securitycenter_service.GroupFindingsResponse],
-        ],
+        Union[securitycenter_service.GroupFindingsResponse, Awaitable[securitycenter_service.GroupFindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -420,10 +377,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListAssetsRequest],
-        Union[
-            securitycenter_service.ListAssetsResponse,
-            Awaitable[securitycenter_service.ListAssetsResponse],
-        ],
+        Union[securitycenter_service.ListAssetsResponse, Awaitable[securitycenter_service.ListAssetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -432,10 +386,7 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListFindingsRequest],
-        Union[
-            securitycenter_service.ListFindingsResponse,
-            Awaitable[securitycenter_service.ListFindingsResponse],
-        ],
+        Union[securitycenter_service.ListFindingsResponse, Awaitable[securitycenter_service.ListFindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -444,38 +395,22 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.ListSourcesRequest],
-        Union[
-            securitycenter_service.ListSourcesResponse,
-            Awaitable[securitycenter_service.ListSourcesResponse],
-        ],
+        Union[securitycenter_service.ListSourcesResponse, Awaitable[securitycenter_service.ListSourcesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def run_asset_discovery(
         self,
-    ) -> Callable[
-        [securitycenter_service.RunAssetDiscoveryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[securitycenter_service.RunAssetDiscoveryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_finding_state(
-        self,
-    ) -> Callable[
-        [securitycenter_service.SetFindingStateRequest],
-        Union[finding.Finding, Awaitable[finding.Finding]],
-    ]:
+    def set_finding_state(self) -> Callable[[securitycenter_service.SetFindingStateRequest], Union[finding.Finding, Awaitable[finding.Finding]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -483,20 +418,12 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_finding(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateFindingRequest],
-        Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]],
-    ]:
+    def update_finding(self) -> Callable[[securitycenter_service.UpdateFindingRequest], Union[gcs_finding.Finding, Awaitable[gcs_finding.Finding]]]:
         raise NotImplementedError()
 
     @property
@@ -504,31 +431,19 @@ class SecurityCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [securitycenter_service.UpdateOrganizationSettingsRequest],
-        Union[
-            gcs_organization_settings.OrganizationSettings,
-            Awaitable[gcs_organization_settings.OrganizationSettings],
-        ],
+        Union[gcs_organization_settings.OrganizationSettings, Awaitable[gcs_organization_settings.OrganizationSettings]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateSourceRequest],
-        Union[gcs_source.Source, Awaitable[gcs_source.Source]],
-    ]:
+    def update_source(self) -> Callable[[securitycenter_service.UpdateSourceRequest], Union[gcs_source.Source, Awaitable[gcs_source.Source]]]:
         raise NotImplementedError()
 
     @property
     def update_security_marks(
         self,
     ) -> Callable[
-        [securitycenter_service.UpdateSecurityMarksRequest],
-        Union[
-            gcs_security_marks.SecurityMarks,
-            Awaitable[gcs_security_marks.SecurityMarks],
-        ],
+        [securitycenter_service.UpdateSecurityMarksRequest], Union[gcs_security_marks.SecurityMarks, Awaitable[gcs_security_marks.SecurityMarks]]
     ]:
         raise NotImplementedError()
 

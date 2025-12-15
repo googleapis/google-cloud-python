@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -51,13 +40,8 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.services.site_search_engine_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1beta.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
+from google.cloud.discoveryengine_v1beta.services.site_search_engine_service import pagers
+from google.cloud.discoveryengine_v1beta.types import site_search_engine, site_search_engine_service
 
 from .client import SiteSearchEngineServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
@@ -82,51 +66,25 @@ class SiteSearchEngineServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = SiteSearchEngineServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = SiteSearchEngineServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        SiteSearchEngineServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = SiteSearchEngineServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SiteSearchEngineServiceClient._DEFAULT_UNIVERSE
 
     sitemap_path = staticmethod(SiteSearchEngineServiceClient.sitemap_path)
     parse_sitemap_path = staticmethod(SiteSearchEngineServiceClient.parse_sitemap_path)
-    site_search_engine_path = staticmethod(
-        SiteSearchEngineServiceClient.site_search_engine_path
-    )
-    parse_site_search_engine_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_site_search_engine_path
-    )
+    site_search_engine_path = staticmethod(SiteSearchEngineServiceClient.site_search_engine_path)
+    parse_site_search_engine_path = staticmethod(SiteSearchEngineServiceClient.parse_site_search_engine_path)
     target_site_path = staticmethod(SiteSearchEngineServiceClient.target_site_path)
-    parse_target_site_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_target_site_path
-    )
-    common_billing_account_path = staticmethod(
-        SiteSearchEngineServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_common_billing_account_path
-    )
+    parse_target_site_path = staticmethod(SiteSearchEngineServiceClient.parse_target_site_path)
+    common_billing_account_path = staticmethod(SiteSearchEngineServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(SiteSearchEngineServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SiteSearchEngineServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        SiteSearchEngineServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        SiteSearchEngineServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        SiteSearchEngineServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        SiteSearchEngineServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(SiteSearchEngineServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(SiteSearchEngineServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(SiteSearchEngineServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(SiteSearchEngineServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(SiteSearchEngineServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(SiteSearchEngineServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(SiteSearchEngineServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -162,9 +120,7 @@ class SiteSearchEngineServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -231,13 +187,7 @@ class SiteSearchEngineServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                SiteSearchEngineServiceTransport,
-                Callable[..., SiteSearchEngineServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, SiteSearchEngineServiceTransport, Callable[..., SiteSearchEngineServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,20 +247,14 @@ class SiteSearchEngineServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -321,9 +265,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def get_site_search_engine(
         self,
-        request: Optional[
-            Union[site_search_engine_service.GetSiteSearchEngineRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.GetSiteSearchEngineRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -397,20 +339,13 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, site_search_engine_service.GetSiteSearchEngineRequest
-        ):
+        if not isinstance(request, site_search_engine_service.GetSiteSearchEngineRequest):
             request = site_search_engine_service.GetSiteSearchEngineRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -420,15 +355,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_site_search_engine
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_site_search_engine]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -446,9 +377,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def create_target_site(
         self,
-        request: Optional[
-            Union[site_search_engine_service.CreateTargetSiteRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.CreateTargetSiteRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         target_site: Optional[site_search_engine.TargetSite] = None,
@@ -536,14 +465,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, target_site]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -559,15 +483,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_target_site
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_target_site]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -593,9 +513,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def batch_create_target_sites(
         self,
-        request: Optional[
-            Union[site_search_engine_service.BatchCreateTargetSitesRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.BatchCreateTargetSitesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -665,22 +583,16 @@ class SiteSearchEngineServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, site_search_engine_service.BatchCreateTargetSitesRequest
-        ):
+        if not isinstance(request, site_search_engine_service.BatchCreateTargetSitesRequest):
             request = site_search_engine_service.BatchCreateTargetSitesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_create_target_sites
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_create_target_sites]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -706,9 +618,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def get_target_site(
         self,
-        request: Optional[
-            Union[site_search_engine_service.GetTargetSiteRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.GetTargetSiteRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -785,14 +695,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -806,15 +711,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_target_site
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_target_site]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -832,9 +733,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def update_target_site(
         self,
-        request: Optional[
-            Union[site_search_engine_service.UpdateTargetSiteRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.UpdateTargetSiteRequest, dict]] = None,
         *,
         target_site: Optional[site_search_engine.TargetSite] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -917,14 +816,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [target_site]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -938,17 +832,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_target_site
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_target_site]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("target_site.name", request.target_site.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("target_site.name", request.target_site.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -974,9 +862,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def delete_target_site(
         self,
-        request: Optional[
-            Union[site_search_engine_service.DeleteTargetSiteRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.DeleteTargetSiteRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1067,14 +953,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1088,15 +969,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_target_site
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_target_site]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1122,9 +999,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def list_target_sites(
         self,
-        request: Optional[
-            Union[site_search_engine_service.ListTargetSitesRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.ListTargetSitesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1202,14 +1077,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1223,15 +1093,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_target_sites
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_target_sites]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1260,9 +1126,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def create_sitemap(
         self,
-        request: Optional[
-            Union[site_search_engine_service.CreateSitemapRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.CreateSitemapRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         sitemap: Optional[site_search_engine.Sitemap] = None,
@@ -1350,14 +1214,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, sitemap]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1373,15 +1232,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_sitemap
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_sitemap]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1407,9 +1262,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def delete_sitemap(
         self,
-        request: Optional[
-            Union[site_search_engine_service.DeleteSitemapRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.DeleteSitemapRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1500,14 +1353,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1521,15 +1369,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_sitemap
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_sitemap]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1555,9 +1399,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def fetch_sitemaps(
         self,
-        request: Optional[
-            Union[site_search_engine_service.FetchSitemapsRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.FetchSitemapsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1626,14 +1468,9 @@ class SiteSearchEngineServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1647,15 +1484,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_sitemaps
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_sitemaps]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1673,9 +1506,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def enable_advanced_site_search(
         self,
-        request: Optional[
-            Union[site_search_engine_service.EnableAdvancedSiteSearchRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.EnableAdvancedSiteSearchRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1739,26 +1570,16 @@ class SiteSearchEngineServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, site_search_engine_service.EnableAdvancedSiteSearchRequest
-        ):
-            request = site_search_engine_service.EnableAdvancedSiteSearchRequest(
-                request
-            )
+        if not isinstance(request, site_search_engine_service.EnableAdvancedSiteSearchRequest):
+            request = site_search_engine_service.EnableAdvancedSiteSearchRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.enable_advanced_site_search
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.enable_advanced_site_search]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("site_search_engine", request.site_search_engine),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("site_search_engine", request.site_search_engine),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1784,9 +1605,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def disable_advanced_site_search(
         self,
-        request: Optional[
-            Union[site_search_engine_service.DisableAdvancedSiteSearchRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.DisableAdvancedSiteSearchRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1850,26 +1669,16 @@ class SiteSearchEngineServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, site_search_engine_service.DisableAdvancedSiteSearchRequest
-        ):
-            request = site_search_engine_service.DisableAdvancedSiteSearchRequest(
-                request
-            )
+        if not isinstance(request, site_search_engine_service.DisableAdvancedSiteSearchRequest):
+            request = site_search_engine_service.DisableAdvancedSiteSearchRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.disable_advanced_site_search
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.disable_advanced_site_search]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("site_search_engine", request.site_search_engine),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("site_search_engine", request.site_search_engine),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1895,9 +1704,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def recrawl_uris(
         self,
-        request: Optional[
-            Union[site_search_engine_service.RecrawlUrisRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.RecrawlUrisRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1966,17 +1773,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.recrawl_uris
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.recrawl_uris]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("site_search_engine", request.site_search_engine),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("site_search_engine", request.site_search_engine),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2002,9 +1803,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def batch_verify_target_sites(
         self,
-        request: Optional[
-            Union[site_search_engine_service.BatchVerifyTargetSitesRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.BatchVerifyTargetSitesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2069,22 +1868,16 @@ class SiteSearchEngineServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, site_search_engine_service.BatchVerifyTargetSitesRequest
-        ):
+        if not isinstance(request, site_search_engine_service.BatchVerifyTargetSitesRequest):
             request = site_search_engine_service.BatchVerifyTargetSitesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_verify_target_sites
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_verify_target_sites]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2110,9 +1903,7 @@ class SiteSearchEngineServiceAsyncClient:
 
     async def fetch_domain_verification_status(
         self,
-        request: Optional[
-            Union[site_search_engine_service.FetchDomainVerificationStatusRequest, dict]
-        ] = None,
+        request: Optional[Union[site_search_engine_service.FetchDomainVerificationStatusRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2175,26 +1966,16 @@ class SiteSearchEngineServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, site_search_engine_service.FetchDomainVerificationStatusRequest
-        ):
-            request = site_search_engine_service.FetchDomainVerificationStatusRequest(
-                request
-            )
+        if not isinstance(request, site_search_engine_service.FetchDomainVerificationStatusRequest):
+            request = site_search_engine_service.FetchDomainVerificationStatusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_domain_verification_status
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_domain_verification_status]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("site_search_engine", request.site_search_engine),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("site_search_engine", request.site_search_engine),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2258,9 +2039,7 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2313,9 +2092,7 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2371,9 +2148,7 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2393,9 +2168,7 @@ class SiteSearchEngineServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

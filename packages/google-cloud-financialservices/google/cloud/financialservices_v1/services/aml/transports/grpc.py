@@ -30,13 +30,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.financialservices_v1.types import (
-    backtest_result as gcf_backtest_result,
-)
+from google.cloud.financialservices_v1.types import backtest_result as gcf_backtest_result
 from google.cloud.financialservices_v1.types import engine_config as gcf_engine_config
-from google.cloud.financialservices_v1.types import (
-    prediction_result as gcf_prediction_result,
-)
+from google.cloud.financialservices_v1.types import prediction_result as gcf_prediction_result
 from google.cloud.financialservices_v1.types import backtest_result
 from google.cloud.financialservices_v1.types import dataset
 from google.cloud.financialservices_v1.types import dataset as gcf_dataset
@@ -62,9 +58,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -74,10 +68,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -96,11 +87,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -236,18 +223,14 @@ class AMLGrpcTransport(AMLTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -281,9 +264,7 @@ class AMLGrpcTransport(AMLTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -350,17 +331,13 @@ class AMLGrpcTransport(AMLTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists instances.
@@ -384,9 +361,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
+    def get_instance(self) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets an instance.
@@ -410,9 +385,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[gcf_instance.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[gcf_instance.CreateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates an instance.
@@ -436,9 +409,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["create_instance"]
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[gcf_instance.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[gcf_instance.UpdateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates the parameters of a single Instance.
@@ -462,9 +433,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["update_instance"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[instance.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[instance.DeleteInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes an instance.
@@ -488,9 +457,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["delete_instance"]
 
     @property
-    def import_registered_parties(
-        self,
-    ) -> Callable[[instance.ImportRegisteredPartiesRequest], operations_pb2.Operation]:
+    def import_registered_parties(self) -> Callable[[instance.ImportRegisteredPartiesRequest], operations_pb2.Operation]:
         r"""Return a callable for the import registered parties method over gRPC.
 
         Imports the list of registered parties. See `Create and manage
@@ -517,9 +484,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["import_registered_parties"]
 
     @property
-    def export_registered_parties(
-        self,
-    ) -> Callable[[instance.ExportRegisteredPartiesRequest], operations_pb2.Operation]:
+    def export_registered_parties(self) -> Callable[[instance.ExportRegisteredPartiesRequest], operations_pb2.Operation]:
         r"""Return a callable for the export registered parties method over gRPC.
 
         Exports the list of registered parties. See `Create and manage
@@ -545,9 +510,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["export_registered_parties"]
 
     @property
-    def list_datasets(
-        self,
-    ) -> Callable[[dataset.ListDatasetsRequest], dataset.ListDatasetsResponse]:
+    def list_datasets(self) -> Callable[[dataset.ListDatasetsRequest], dataset.ListDatasetsResponse]:
         r"""Return a callable for the list datasets method over gRPC.
 
         Lists datasets.
@@ -595,9 +558,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_dataset"]
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[[gcf_dataset.CreateDatasetRequest], operations_pb2.Operation]:
+    def create_dataset(self) -> Callable[[gcf_dataset.CreateDatasetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create dataset method over gRPC.
 
         Creates a dataset.
@@ -621,9 +582,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["create_dataset"]
 
     @property
-    def update_dataset(
-        self,
-    ) -> Callable[[gcf_dataset.UpdateDatasetRequest], operations_pb2.Operation]:
+    def update_dataset(self) -> Callable[[gcf_dataset.UpdateDatasetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update dataset method over gRPC.
 
         Updates the parameters of a single Dataset.
@@ -647,9 +606,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["update_dataset"]
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[[dataset.DeleteDatasetRequest], operations_pb2.Operation]:
+    def delete_dataset(self) -> Callable[[dataset.DeleteDatasetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete dataset method over gRPC.
 
         Deletes a dataset.
@@ -673,9 +630,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["delete_dataset"]
 
     @property
-    def list_models(
-        self,
-    ) -> Callable[[model.ListModelsRequest], model.ListModelsResponse]:
+    def list_models(self) -> Callable[[model.ListModelsRequest], model.ListModelsResponse]:
         r"""Return a callable for the list models method over gRPC.
 
         Lists models.
@@ -723,9 +678,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_model"]
 
     @property
-    def create_model(
-        self,
-    ) -> Callable[[gcf_model.CreateModelRequest], operations_pb2.Operation]:
+    def create_model(self) -> Callable[[gcf_model.CreateModelRequest], operations_pb2.Operation]:
         r"""Return a callable for the create model method over gRPC.
 
         Creates a model.
@@ -749,9 +702,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["create_model"]
 
     @property
-    def update_model(
-        self,
-    ) -> Callable[[gcf_model.UpdateModelRequest], operations_pb2.Operation]:
+    def update_model(self) -> Callable[[gcf_model.UpdateModelRequest], operations_pb2.Operation]:
         r"""Return a callable for the update model method over gRPC.
 
         Updates the parameters of a single Model.
@@ -775,9 +726,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["update_model"]
 
     @property
-    def export_model_metadata(
-        self,
-    ) -> Callable[[gcf_model.ExportModelMetadataRequest], operations_pb2.Operation]:
+    def export_model_metadata(self) -> Callable[[gcf_model.ExportModelMetadataRequest], operations_pb2.Operation]:
         r"""Return a callable for the export model metadata method over gRPC.
 
         Export governance information for a Model resource. For
@@ -803,9 +752,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["export_model_metadata"]
 
     @property
-    def delete_model(
-        self,
-    ) -> Callable[[model.DeleteModelRequest], operations_pb2.Operation]:
+    def delete_model(self) -> Callable[[model.DeleteModelRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete model method over gRPC.
 
         Deletes a model.
@@ -829,12 +776,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["delete_model"]
 
     @property
-    def list_engine_configs(
-        self,
-    ) -> Callable[
-        [engine_config.ListEngineConfigsRequest],
-        engine_config.ListEngineConfigsResponse,
-    ]:
+    def list_engine_configs(self) -> Callable[[engine_config.ListEngineConfigsRequest], engine_config.ListEngineConfigsResponse]:
         r"""Return a callable for the list engine configs method over gRPC.
 
         Lists engine configs.
@@ -858,9 +800,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["list_engine_configs"]
 
     @property
-    def get_engine_config(
-        self,
-    ) -> Callable[[engine_config.GetEngineConfigRequest], engine_config.EngineConfig]:
+    def get_engine_config(self) -> Callable[[engine_config.GetEngineConfigRequest], engine_config.EngineConfig]:
         r"""Return a callable for the get engine config method over gRPC.
 
         Gets an engine config.
@@ -884,11 +824,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_engine_config"]
 
     @property
-    def create_engine_config(
-        self,
-    ) -> Callable[
-        [gcf_engine_config.CreateEngineConfigRequest], operations_pb2.Operation
-    ]:
+    def create_engine_config(self) -> Callable[[gcf_engine_config.CreateEngineConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create engine config method over gRPC.
 
         Creates an engine config.
@@ -912,11 +848,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["create_engine_config"]
 
     @property
-    def update_engine_config(
-        self,
-    ) -> Callable[
-        [gcf_engine_config.UpdateEngineConfigRequest], operations_pb2.Operation
-    ]:
+    def update_engine_config(self) -> Callable[[gcf_engine_config.UpdateEngineConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the update engine config method over gRPC.
 
         Updates the parameters of a single EngineConfig.
@@ -940,11 +872,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["update_engine_config"]
 
     @property
-    def export_engine_config_metadata(
-        self,
-    ) -> Callable[
-        [gcf_engine_config.ExportEngineConfigMetadataRequest], operations_pb2.Operation
-    ]:
+    def export_engine_config_metadata(self) -> Callable[[gcf_engine_config.ExportEngineConfigMetadataRequest], operations_pb2.Operation]:
         r"""Return a callable for the export engine config metadata method over gRPC.
 
         Export governance information for an EngineConfig resource. For
@@ -962,9 +890,7 @@ class AMLGrpcTransport(AMLTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_engine_config_metadata" not in self._stubs:
-            self._stubs[
-                "export_engine_config_metadata"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["export_engine_config_metadata"] = self._logged_channel.unary_unary(
                 "/google.cloud.financialservices.v1.AML/ExportEngineConfigMetadata",
                 request_serializer=gcf_engine_config.ExportEngineConfigMetadataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -972,9 +898,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["export_engine_config_metadata"]
 
     @property
-    def delete_engine_config(
-        self,
-    ) -> Callable[[engine_config.DeleteEngineConfigRequest], operations_pb2.Operation]:
+    def delete_engine_config(self) -> Callable[[engine_config.DeleteEngineConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete engine config method over gRPC.
 
         Deletes an engine config.
@@ -998,11 +922,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["delete_engine_config"]
 
     @property
-    def get_engine_version(
-        self,
-    ) -> Callable[
-        [engine_version.GetEngineVersionRequest], engine_version.EngineVersion
-    ]:
+    def get_engine_version(self) -> Callable[[engine_version.GetEngineVersionRequest], engine_version.EngineVersion]:
         r"""Return a callable for the get engine version method over gRPC.
 
         Gets a single EngineVersion.
@@ -1026,12 +946,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_engine_version"]
 
     @property
-    def list_engine_versions(
-        self,
-    ) -> Callable[
-        [engine_version.ListEngineVersionsRequest],
-        engine_version.ListEngineVersionsResponse,
-    ]:
+    def list_engine_versions(self) -> Callable[[engine_version.ListEngineVersionsRequest], engine_version.ListEngineVersionsResponse]:
         r"""Return a callable for the list engine versions method over gRPC.
 
         Lists EngineVersions for given location.
@@ -1055,12 +970,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["list_engine_versions"]
 
     @property
-    def list_prediction_results(
-        self,
-    ) -> Callable[
-        [prediction_result.ListPredictionResultsRequest],
-        prediction_result.ListPredictionResultsResponse,
-    ]:
+    def list_prediction_results(self) -> Callable[[prediction_result.ListPredictionResultsRequest], prediction_result.ListPredictionResultsResponse]:
         r"""Return a callable for the list prediction results method over gRPC.
 
         List PredictionResults.
@@ -1084,12 +994,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["list_prediction_results"]
 
     @property
-    def get_prediction_result(
-        self,
-    ) -> Callable[
-        [prediction_result.GetPredictionResultRequest],
-        prediction_result.PredictionResult,
-    ]:
+    def get_prediction_result(self) -> Callable[[prediction_result.GetPredictionResultRequest], prediction_result.PredictionResult]:
         r"""Return a callable for the get prediction result method over gRPC.
 
         Gets a PredictionResult.
@@ -1113,11 +1018,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_prediction_result"]
 
     @property
-    def create_prediction_result(
-        self,
-    ) -> Callable[
-        [gcf_prediction_result.CreatePredictionResultRequest], operations_pb2.Operation
-    ]:
+    def create_prediction_result(self) -> Callable[[gcf_prediction_result.CreatePredictionResultRequest], operations_pb2.Operation]:
         r"""Return a callable for the create prediction result method over gRPC.
 
         Create a PredictionResult.
@@ -1141,11 +1042,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["create_prediction_result"]
 
     @property
-    def update_prediction_result(
-        self,
-    ) -> Callable[
-        [gcf_prediction_result.UpdatePredictionResultRequest], operations_pb2.Operation
-    ]:
+    def update_prediction_result(self) -> Callable[[gcf_prediction_result.UpdatePredictionResultRequest], operations_pb2.Operation]:
         r"""Return a callable for the update prediction result method over gRPC.
 
         Updates the parameters of a single PredictionResult.
@@ -1169,12 +1066,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["update_prediction_result"]
 
     @property
-    def export_prediction_result_metadata(
-        self,
-    ) -> Callable[
-        [gcf_prediction_result.ExportPredictionResultMetadataRequest],
-        operations_pb2.Operation,
-    ]:
+    def export_prediction_result_metadata(self) -> Callable[[gcf_prediction_result.ExportPredictionResultMetadataRequest], operations_pb2.Operation]:
         r"""Return a callable for the export prediction result
         metadata method over gRPC.
 
@@ -1193,9 +1085,7 @@ class AMLGrpcTransport(AMLTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_prediction_result_metadata" not in self._stubs:
-            self._stubs[
-                "export_prediction_result_metadata"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["export_prediction_result_metadata"] = self._logged_channel.unary_unary(
                 "/google.cloud.financialservices.v1.AML/ExportPredictionResultMetadata",
                 request_serializer=gcf_prediction_result.ExportPredictionResultMetadataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1203,11 +1093,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["export_prediction_result_metadata"]
 
     @property
-    def delete_prediction_result(
-        self,
-    ) -> Callable[
-        [prediction_result.DeletePredictionResultRequest], operations_pb2.Operation
-    ]:
+    def delete_prediction_result(self) -> Callable[[prediction_result.DeletePredictionResultRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete prediction result method over gRPC.
 
         Deletes a PredictionResult.
@@ -1231,12 +1117,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["delete_prediction_result"]
 
     @property
-    def list_backtest_results(
-        self,
-    ) -> Callable[
-        [backtest_result.ListBacktestResultsRequest],
-        backtest_result.ListBacktestResultsResponse,
-    ]:
+    def list_backtest_results(self) -> Callable[[backtest_result.ListBacktestResultsRequest], backtest_result.ListBacktestResultsResponse]:
         r"""Return a callable for the list backtest results method over gRPC.
 
         List BacktestResults.
@@ -1260,11 +1141,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["list_backtest_results"]
 
     @property
-    def get_backtest_result(
-        self,
-    ) -> Callable[
-        [backtest_result.GetBacktestResultRequest], backtest_result.BacktestResult
-    ]:
+    def get_backtest_result(self) -> Callable[[backtest_result.GetBacktestResultRequest], backtest_result.BacktestResult]:
         r"""Return a callable for the get backtest result method over gRPC.
 
         Gets a BacktestResult.
@@ -1288,11 +1165,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["get_backtest_result"]
 
     @property
-    def create_backtest_result(
-        self,
-    ) -> Callable[
-        [gcf_backtest_result.CreateBacktestResultRequest], operations_pb2.Operation
-    ]:
+    def create_backtest_result(self) -> Callable[[gcf_backtest_result.CreateBacktestResultRequest], operations_pb2.Operation]:
         r"""Return a callable for the create backtest result method over gRPC.
 
         Create a BacktestResult.
@@ -1316,11 +1189,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["create_backtest_result"]
 
     @property
-    def update_backtest_result(
-        self,
-    ) -> Callable[
-        [gcf_backtest_result.UpdateBacktestResultRequest], operations_pb2.Operation
-    ]:
+    def update_backtest_result(self) -> Callable[[gcf_backtest_result.UpdateBacktestResultRequest], operations_pb2.Operation]:
         r"""Return a callable for the update backtest result method over gRPC.
 
         Updates the parameters of a single BacktestResult.
@@ -1344,12 +1213,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["update_backtest_result"]
 
     @property
-    def export_backtest_result_metadata(
-        self,
-    ) -> Callable[
-        [gcf_backtest_result.ExportBacktestResultMetadataRequest],
-        operations_pb2.Operation,
-    ]:
+    def export_backtest_result_metadata(self) -> Callable[[gcf_backtest_result.ExportBacktestResultMetadataRequest], operations_pb2.Operation]:
         r"""Return a callable for the export backtest result
         metadata method over gRPC.
 
@@ -1368,9 +1232,7 @@ class AMLGrpcTransport(AMLTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_backtest_result_metadata" not in self._stubs:
-            self._stubs[
-                "export_backtest_result_metadata"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["export_backtest_result_metadata"] = self._logged_channel.unary_unary(
                 "/google.cloud.financialservices.v1.AML/ExportBacktestResultMetadata",
                 request_serializer=gcf_backtest_result.ExportBacktestResultMetadataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1378,11 +1240,7 @@ class AMLGrpcTransport(AMLTransport):
         return self._stubs["export_backtest_result_metadata"]
 
     @property
-    def delete_backtest_result(
-        self,
-    ) -> Callable[
-        [backtest_result.DeleteBacktestResultRequest], operations_pb2.Operation
-    ]:
+    def delete_backtest_result(self) -> Callable[[backtest_result.DeleteBacktestResultRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete backtest result method over gRPC.
 
         Deletes a BacktestResult.
@@ -1462,9 +1320,7 @@ class AMLGrpcTransport(AMLTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1481,9 +1337,7 @@ class AMLGrpcTransport(AMLTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

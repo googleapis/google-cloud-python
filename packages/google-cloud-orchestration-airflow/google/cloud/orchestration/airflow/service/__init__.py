@@ -18,18 +18,10 @@ from google.cloud.orchestration.airflow.service import gapic_version as package_
 __version__ = package_version.__version__
 
 
-from google.cloud.orchestration.airflow.service_v1.services.environments.async_client import (
-    EnvironmentsAsyncClient,
-)
-from google.cloud.orchestration.airflow.service_v1.services.environments.client import (
-    EnvironmentsClient,
-)
-from google.cloud.orchestration.airflow.service_v1.services.image_versions.async_client import (
-    ImageVersionsAsyncClient,
-)
-from google.cloud.orchestration.airflow.service_v1.services.image_versions.client import (
-    ImageVersionsClient,
-)
+from google.cloud.orchestration.airflow.service_v1.services.environments.async_client import EnvironmentsAsyncClient
+from google.cloud.orchestration.airflow.service_v1.services.environments.client import EnvironmentsClient
+from google.cloud.orchestration.airflow.service_v1.services.image_versions.async_client import ImageVersionsAsyncClient
+from google.cloud.orchestration.airflow.service_v1.services.image_versions.client import ImageVersionsClient
 from google.cloud.orchestration.airflow.service_v1.types.environments import (
     AirflowMetadataRetentionPolicyConfig,
     CheckUpgradeRequest,
@@ -92,14 +84,8 @@ from google.cloud.orchestration.airflow.service_v1.types.environments import (
     WebServerNetworkAccessControl,
     WorkloadsConfig,
 )
-from google.cloud.orchestration.airflow.service_v1.types.image_versions import (
-    ImageVersion,
-    ListImageVersionsRequest,
-    ListImageVersionsResponse,
-)
-from google.cloud.orchestration.airflow.service_v1.types.operations import (
-    OperationMetadata,
-)
+from google.cloud.orchestration.airflow.service_v1.types.image_versions import ImageVersion, ListImageVersionsRequest, ListImageVersionsResponse
+from google.cloud.orchestration.airflow.service_v1.types.operations import OperationMetadata
 
 __all__ = (
     "EnvironmentsClient",

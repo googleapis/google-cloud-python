@@ -95,13 +95,8 @@ class AutomaticImprovementsServiceRestInterceptor:
     """
 
     def pre_get_automatic_improvements(
-        self,
-        request: automaticimprovements.GetAutomaticImprovementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        automaticimprovements.GetAutomaticImprovementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: automaticimprovements.GetAutomaticImprovementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[automaticimprovements.GetAutomaticImprovementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_automatic_improvements
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class AutomaticImprovementsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_automatic_improvements(
-        self, response: automaticimprovements.AutomaticImprovements
-    ) -> automaticimprovements.AutomaticImprovements:
+    def post_get_automatic_improvements(self, response: automaticimprovements.AutomaticImprovements) -> automaticimprovements.AutomaticImprovements:
         """Post-rpc interceptor for get_automatic_improvements
 
         DEPRECATED. Please use the `post_get_automatic_improvements_with_metadata`
@@ -125,13 +118,8 @@ class AutomaticImprovementsServiceRestInterceptor:
         return response
 
     def post_get_automatic_improvements_with_metadata(
-        self,
-        response: automaticimprovements.AutomaticImprovements,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        automaticimprovements.AutomaticImprovements,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: automaticimprovements.AutomaticImprovements, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[automaticimprovements.AutomaticImprovements, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_automatic_improvements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -147,13 +135,8 @@ class AutomaticImprovementsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_automatic_improvements(
-        self,
-        request: automaticimprovements.UpdateAutomaticImprovementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        automaticimprovements.UpdateAutomaticImprovementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: automaticimprovements.UpdateAutomaticImprovementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[automaticimprovements.UpdateAutomaticImprovementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_automatic_improvements
 
         Override in a subclass to manipulate the request or metadata
@@ -177,13 +160,8 @@ class AutomaticImprovementsServiceRestInterceptor:
         return response
 
     def post_update_automatic_improvements_with_metadata(
-        self,
-        response: automaticimprovements.AutomaticImprovements,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        automaticimprovements.AutomaticImprovements,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: automaticimprovements.AutomaticImprovements, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[automaticimprovements.AutomaticImprovements, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_automatic_improvements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -206,9 +184,7 @@ class AutomaticImprovementsServiceRestStub:
     _interceptor: AutomaticImprovementsServiceRestInterceptor
 
 
-class AutomaticImprovementsServiceRestTransport(
-    _BaseAutomaticImprovementsServiceRestTransport
-):
+class AutomaticImprovementsServiceRestTransport(_BaseAutomaticImprovementsServiceRestTransport):
     """REST backend synchronous transport for AutomaticImprovementsService.
 
     Service to manage the automatic improvements of an account.
@@ -282,33 +258,20 @@ class AutomaticImprovementsServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AutomaticImprovementsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _GetAutomaticImprovements(
-        _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements,
-        AutomaticImprovementsServiceRestStub,
+        _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements, AutomaticImprovementsServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "AutomaticImprovementsServiceRestTransport.GetAutomaticImprovements"
-            )
+            return hash("AutomaticImprovementsServiceRestTransport.GetAutomaticImprovements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -352,28 +315,18 @@ class AutomaticImprovementsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements._get_http_options()
-            )
+            http_options = _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_automatic_improvements(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_automatic_improvements(request, metadata)
             transcoded_request = _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutomaticImprovementsServiceRestTransport._BaseGetAutomaticImprovements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -397,12 +350,7 @@ class AutomaticImprovementsServiceRestTransport(
 
             # Send the request
             response = AutomaticImprovementsServiceRestTransport._GetAutomaticImprovements._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -418,16 +366,10 @@ class AutomaticImprovementsServiceRestTransport(
 
             resp = self._interceptor.post_get_automatic_improvements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_automatic_improvements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_automatic_improvements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        automaticimprovements.AutomaticImprovements.to_json(response)
-                    )
+                    response_payload = automaticimprovements.AutomaticImprovements.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -447,24 +389,13 @@ class AutomaticImprovementsServiceRestTransport(
             return resp
 
     class _UpdateAutomaticImprovements(
-        _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements,
-        AutomaticImprovementsServiceRestStub,
+        _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements, AutomaticImprovementsServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "AutomaticImprovementsServiceRestTransport.UpdateAutomaticImprovements"
-            )
+            return hash("AutomaticImprovementsServiceRestTransport.UpdateAutomaticImprovements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -509,32 +440,20 @@ class AutomaticImprovementsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_http_options()
-            )
+            http_options = _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_automatic_improvements(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_automatic_improvements(request, metadata)
             transcoded_request = _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutomaticImprovementsServiceRestTransport._BaseUpdateAutomaticImprovements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -558,13 +477,7 @@ class AutomaticImprovementsServiceRestTransport(
 
             # Send the request
             response = AutomaticImprovementsServiceRestTransport._UpdateAutomaticImprovements._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -580,19 +493,10 @@ class AutomaticImprovementsServiceRestTransport(
 
             resp = self._interceptor.post_update_automatic_improvements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_automatic_improvements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_automatic_improvements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        automaticimprovements.AutomaticImprovements.to_json(response)
-                    )
+                    response_payload = automaticimprovements.AutomaticImprovements.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -614,10 +518,7 @@ class AutomaticImprovementsServiceRestTransport(
     @property
     def get_automatic_improvements(
         self,
-    ) -> Callable[
-        [automaticimprovements.GetAutomaticImprovementsRequest],
-        automaticimprovements.AutomaticImprovements,
-    ]:
+    ) -> Callable[[automaticimprovements.GetAutomaticImprovementsRequest], automaticimprovements.AutomaticImprovements]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAutomaticImprovements(self._session, self._host, self._interceptor)  # type: ignore
@@ -625,10 +526,7 @@ class AutomaticImprovementsServiceRestTransport(
     @property
     def update_automatic_improvements(
         self,
-    ) -> Callable[
-        [automaticimprovements.UpdateAutomaticImprovementsRequest],
-        automaticimprovements.AutomaticImprovements,
-    ]:
+    ) -> Callable[[automaticimprovements.UpdateAutomaticImprovementsRequest], automaticimprovements.AutomaticImprovements]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAutomaticImprovements(self._session, self._host, self._interceptor)  # type: ignore

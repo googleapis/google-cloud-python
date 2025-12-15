@@ -155,12 +155,10 @@ class ConverseConversationRequest(proto.Message):
         proto.STRING,
         number=7,
     )
-    summary_spec: search_service.SearchRequest.ContentSearchSpec.SummarySpec = (
-        proto.Field(
-            proto.MESSAGE,
-            number=8,
-            message=search_service.SearchRequest.ContentSearchSpec.SummarySpec,
-        )
+    summary_spec: search_service.SearchRequest.ContentSearchSpec.SummarySpec = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=search_service.SearchRequest.ContentSearchSpec.SummarySpec,
     )
     filter: str = proto.Field(
         proto.STRING,
@@ -197,9 +195,7 @@ class ConverseConversationResponse(proto.Message):
         number=2,
         message=gcd_conversation.Conversation,
     )
-    search_results: MutableSequence[
-        search_service.SearchResponse.SearchResult
-    ] = proto.RepeatedField(
+    search_results: MutableSequence[search_service.SearchResponse.SearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=search_service.SearchResponse.SearchResult,
@@ -524,9 +520,7 @@ class AnswerQueryRequest(proto.Message):
             proto.BOOL,
             number=1,
         )
-        safety_settings: MutableSequence[
-            "AnswerQueryRequest.SafetySpec.SafetySetting"
-        ] = proto.RepeatedField(
+        safety_settings: MutableSequence["AnswerQueryRequest.SafetySpec.SafetySetting"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="AnswerQueryRequest.SafetySpec.SafetySetting",
@@ -581,12 +575,10 @@ class AnswerQueryRequest(proto.Message):
             proto.BOOL,
             number=2,
         )
-        filtering_level: "AnswerQueryRequest.GroundingSpec.FilteringLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                enum="AnswerQueryRequest.GroundingSpec.FilteringLevel",
-            )
+        filtering_level: "AnswerQueryRequest.GroundingSpec.FilteringLevel" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="AnswerQueryRequest.GroundingSpec.FilteringLevel",
         )
 
     class AnswerGenerationSpec(proto.Message):
@@ -816,9 +808,7 @@ class AnswerQueryRequest(proto.Message):
                 number=5,
                 enum=search_service.SearchRequest.ContentSearchSpec.SearchResultMode,
             )
-            data_store_specs: MutableSequence[
-                search_service.SearchRequest.DataStoreSpec
-            ] = proto.RepeatedField(
+            data_store_specs: MutableSequence[search_service.SearchRequest.DataStoreSpec] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=7,
                 message=search_service.SearchRequest.DataStoreSpec,
@@ -1032,9 +1022,7 @@ class AnswerQueryRequest(proto.Message):
                     message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo",
                 )
 
-            search_results: MutableSequence[
-                "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult"
-            ] = proto.RepeatedField(
+            search_results: MutableSequence["AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult",
@@ -1046,13 +1034,11 @@ class AnswerQueryRequest(proto.Message):
             oneof="input",
             message="AnswerQueryRequest.SearchSpec.SearchParams",
         )
-        search_result_list: "AnswerQueryRequest.SearchSpec.SearchResultList" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="input",
-                message="AnswerQueryRequest.SearchSpec.SearchResultList",
-            )
+        search_result_list: "AnswerQueryRequest.SearchSpec.SearchResultList" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="input",
+            message="AnswerQueryRequest.SearchSpec.SearchResultList",
         )
 
     class QueryUnderstandingSpec(proto.Message):
@@ -1102,9 +1088,7 @@ class AnswerQueryRequest(proto.Message):
                 NON_ANSWER_SEEKING_QUERY_V2 = 4
                 USER_DEFINED_CLASSIFICATION_QUERY = 5
 
-            types: MutableSequence[
-                "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"
-            ] = proto.RepeatedField(
+            types: MutableSequence["AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"] = proto.RepeatedField(
                 proto.ENUM,
                 number=1,
                 enum="AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type",
@@ -1245,18 +1229,14 @@ class AnswerQueryRequest(proto.Message):
                     message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata",
                 )
 
-            chunk_info: "AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    oneof="content",
-                    message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo",
-                )
+            chunk_info: "AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="content",
+                message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo",
             )
 
-        end_user_metadata: MutableSequence[
-            "AnswerQueryRequest.EndUserSpec.EndUserMetaData"
-        ] = proto.RepeatedField(
+        end_user_metadata: MutableSequence["AnswerQueryRequest.EndUserSpec.EndUserMetaData"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AnswerQueryRequest.EndUserSpec.EndUserMetaData",

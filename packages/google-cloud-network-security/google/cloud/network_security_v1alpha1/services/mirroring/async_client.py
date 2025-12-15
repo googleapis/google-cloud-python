@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -86,51 +75,27 @@ class MirroringAsyncClient:
     _DEFAULT_UNIVERSE = MirroringClient._DEFAULT_UNIVERSE
 
     forwarding_rule_path = staticmethod(MirroringClient.forwarding_rule_path)
-    parse_forwarding_rule_path = staticmethod(
-        MirroringClient.parse_forwarding_rule_path
-    )
+    parse_forwarding_rule_path = staticmethod(MirroringClient.parse_forwarding_rule_path)
     mirroring_deployment_path = staticmethod(MirroringClient.mirroring_deployment_path)
-    parse_mirroring_deployment_path = staticmethod(
-        MirroringClient.parse_mirroring_deployment_path
-    )
-    mirroring_deployment_group_path = staticmethod(
-        MirroringClient.mirroring_deployment_group_path
-    )
-    parse_mirroring_deployment_group_path = staticmethod(
-        MirroringClient.parse_mirroring_deployment_group_path
-    )
-    mirroring_endpoint_group_path = staticmethod(
-        MirroringClient.mirroring_endpoint_group_path
-    )
-    parse_mirroring_endpoint_group_path = staticmethod(
-        MirroringClient.parse_mirroring_endpoint_group_path
-    )
-    mirroring_endpoint_group_association_path = staticmethod(
-        MirroringClient.mirroring_endpoint_group_association_path
-    )
-    parse_mirroring_endpoint_group_association_path = staticmethod(
-        MirroringClient.parse_mirroring_endpoint_group_association_path
-    )
+    parse_mirroring_deployment_path = staticmethod(MirroringClient.parse_mirroring_deployment_path)
+    mirroring_deployment_group_path = staticmethod(MirroringClient.mirroring_deployment_group_path)
+    parse_mirroring_deployment_group_path = staticmethod(MirroringClient.parse_mirroring_deployment_group_path)
+    mirroring_endpoint_group_path = staticmethod(MirroringClient.mirroring_endpoint_group_path)
+    parse_mirroring_endpoint_group_path = staticmethod(MirroringClient.parse_mirroring_endpoint_group_path)
+    mirroring_endpoint_group_association_path = staticmethod(MirroringClient.mirroring_endpoint_group_association_path)
+    parse_mirroring_endpoint_group_association_path = staticmethod(MirroringClient.parse_mirroring_endpoint_group_association_path)
     network_path = staticmethod(MirroringClient.network_path)
     parse_network_path = staticmethod(MirroringClient.parse_network_path)
-    common_billing_account_path = staticmethod(
-        MirroringClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        MirroringClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(MirroringClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(MirroringClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(MirroringClient.common_folder_path)
     parse_common_folder_path = staticmethod(MirroringClient.parse_common_folder_path)
     common_organization_path = staticmethod(MirroringClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        MirroringClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(MirroringClient.parse_common_organization_path)
     common_project_path = staticmethod(MirroringClient.common_project_path)
     parse_common_project_path = staticmethod(MirroringClient.parse_common_project_path)
     common_location_path = staticmethod(MirroringClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        MirroringClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(MirroringClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -166,9 +131,7 @@ class MirroringAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -235,9 +198,7 @@ class MirroringAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, MirroringTransport, Callable[..., MirroringTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, MirroringTransport, Callable[..., MirroringTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,20 +258,14 @@ class MirroringAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networksecurity_v1alpha1.MirroringAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networksecurity.v1alpha1.Mirroring",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -321,9 +276,7 @@ class MirroringAsyncClient:
 
     async def list_mirroring_endpoint_groups(
         self,
-        request: Optional[
-            Union[mirroring.ListMirroringEndpointGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.ListMirroringEndpointGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -394,14 +347,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -415,15 +363,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_mirroring_endpoint_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_mirroring_endpoint_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -452,9 +396,7 @@ class MirroringAsyncClient:
 
     async def get_mirroring_endpoint_group(
         self,
-        request: Optional[
-            Union[mirroring.GetMirroringEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.GetMirroringEndpointGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -530,14 +472,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -551,15 +488,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_mirroring_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_mirroring_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -577,9 +510,7 @@ class MirroringAsyncClient:
 
     async def create_mirroring_endpoint_group(
         self,
-        request: Optional[
-            Union[mirroring.CreateMirroringEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.CreateMirroringEndpointGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         mirroring_endpoint_group: Optional[mirroring.MirroringEndpointGroup] = None,
@@ -674,19 +605,10 @@ class MirroringAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            mirroring_endpoint_group,
-            mirroring_endpoint_group_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, mirroring_endpoint_group, mirroring_endpoint_group_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -704,15 +626,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_mirroring_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_mirroring_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -738,9 +656,7 @@ class MirroringAsyncClient:
 
     async def update_mirroring_endpoint_group(
         self,
-        request: Optional[
-            Union[mirroring.UpdateMirroringEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.UpdateMirroringEndpointGroupRequest, dict]] = None,
         *,
         mirroring_endpoint_group: Optional[mirroring.MirroringEndpointGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -825,14 +741,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [mirroring_endpoint_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -848,21 +759,12 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_mirroring_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_mirroring_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "mirroring_endpoint_group.name",
-                        request.mirroring_endpoint_group.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("mirroring_endpoint_group.name", request.mirroring_endpoint_group.name),)),
         )
 
         # Validate the universe domain.
@@ -889,9 +791,7 @@ class MirroringAsyncClient:
 
     async def delete_mirroring_endpoint_group(
         self,
-        request: Optional[
-            Union[mirroring.DeleteMirroringEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.DeleteMirroringEndpointGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -970,14 +870,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -991,15 +886,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_mirroring_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_mirroring_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1025,9 +916,7 @@ class MirroringAsyncClient:
 
     async def list_mirroring_endpoint_group_associations(
         self,
-        request: Optional[
-            Union[mirroring.ListMirroringEndpointGroupAssociationsRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.ListMirroringEndpointGroupAssociationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1098,20 +987,13 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, mirroring.ListMirroringEndpointGroupAssociationsRequest
-        ):
+        if not isinstance(request, mirroring.ListMirroringEndpointGroupAssociationsRequest):
             request = mirroring.ListMirroringEndpointGroupAssociationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1121,15 +1003,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_mirroring_endpoint_group_associations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_mirroring_endpoint_group_associations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1158,9 +1036,7 @@ class MirroringAsyncClient:
 
     async def get_mirroring_endpoint_group_association(
         self,
-        request: Optional[
-            Union[mirroring.GetMirroringEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.GetMirroringEndpointGroupAssociationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1236,20 +1112,13 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, mirroring.GetMirroringEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, mirroring.GetMirroringEndpointGroupAssociationRequest):
             request = mirroring.GetMirroringEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1259,15 +1128,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_mirroring_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_mirroring_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1285,14 +1150,10 @@ class MirroringAsyncClient:
 
     async def create_mirroring_endpoint_group_association(
         self,
-        request: Optional[
-            Union[mirroring.CreateMirroringEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.CreateMirroringEndpointGroupAssociationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        mirroring_endpoint_group_association: Optional[
-            mirroring.MirroringEndpointGroupAssociation
-        ] = None,
+        mirroring_endpoint_group_association: Optional[mirroring.MirroringEndpointGroupAssociation] = None,
         mirroring_endpoint_group_association_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1385,25 +1246,14 @@ class MirroringAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            mirroring_endpoint_group_association,
-            mirroring_endpoint_group_association_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, mirroring_endpoint_group_association, mirroring_endpoint_group_association_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, mirroring.CreateMirroringEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, mirroring.CreateMirroringEndpointGroupAssociationRequest):
             request = mirroring.CreateMirroringEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1411,25 +1261,17 @@ class MirroringAsyncClient:
         if parent is not None:
             request.parent = parent
         if mirroring_endpoint_group_association is not None:
-            request.mirroring_endpoint_group_association = (
-                mirroring_endpoint_group_association
-            )
+            request.mirroring_endpoint_group_association = mirroring_endpoint_group_association
         if mirroring_endpoint_group_association_id is not None:
-            request.mirroring_endpoint_group_association_id = (
-                mirroring_endpoint_group_association_id
-            )
+            request.mirroring_endpoint_group_association_id = mirroring_endpoint_group_association_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_mirroring_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_mirroring_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1455,13 +1297,9 @@ class MirroringAsyncClient:
 
     async def update_mirroring_endpoint_group_association(
         self,
-        request: Optional[
-            Union[mirroring.UpdateMirroringEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.UpdateMirroringEndpointGroupAssociationRequest, dict]] = None,
         *,
-        mirroring_endpoint_group_association: Optional[
-            mirroring.MirroringEndpointGroupAssociation
-        ] = None,
+        mirroring_endpoint_group_association: Optional[mirroring.MirroringEndpointGroupAssociation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1545,47 +1383,31 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [mirroring_endpoint_group_association, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, mirroring.UpdateMirroringEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, mirroring.UpdateMirroringEndpointGroupAssociationRequest):
             request = mirroring.UpdateMirroringEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if mirroring_endpoint_group_association is not None:
-            request.mirroring_endpoint_group_association = (
-                mirroring_endpoint_group_association
-            )
+            request.mirroring_endpoint_group_association = mirroring_endpoint_group_association
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_mirroring_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_mirroring_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "mirroring_endpoint_group_association.name",
-                        request.mirroring_endpoint_group_association.name,
-                    ),
-                )
+                (("mirroring_endpoint_group_association.name", request.mirroring_endpoint_group_association.name),)
             ),
         )
 
@@ -1613,9 +1435,7 @@ class MirroringAsyncClient:
 
     async def delete_mirroring_endpoint_group_association(
         self,
-        request: Optional[
-            Union[mirroring.DeleteMirroringEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.DeleteMirroringEndpointGroupAssociationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1692,20 +1512,13 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, mirroring.DeleteMirroringEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, mirroring.DeleteMirroringEndpointGroupAssociationRequest):
             request = mirroring.DeleteMirroringEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1715,15 +1528,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_mirroring_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_mirroring_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1749,9 +1558,7 @@ class MirroringAsyncClient:
 
     async def list_mirroring_deployment_groups(
         self,
-        request: Optional[
-            Union[mirroring.ListMirroringDeploymentGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.ListMirroringDeploymentGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1822,14 +1629,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1843,15 +1645,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_mirroring_deployment_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_mirroring_deployment_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1880,9 +1678,7 @@ class MirroringAsyncClient:
 
     async def get_mirroring_deployment_group(
         self,
-        request: Optional[
-            Union[mirroring.GetMirroringDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.GetMirroringDeploymentGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1951,14 +1747,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1972,15 +1763,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_mirroring_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_mirroring_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1998,9 +1785,7 @@ class MirroringAsyncClient:
 
     async def create_mirroring_deployment_group(
         self,
-        request: Optional[
-            Union[mirroring.CreateMirroringDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.CreateMirroringDeploymentGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         mirroring_deployment_group: Optional[mirroring.MirroringDeploymentGroup] = None,
@@ -2096,19 +1881,10 @@ class MirroringAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            mirroring_deployment_group,
-            mirroring_deployment_group_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, mirroring_deployment_group, mirroring_deployment_group_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2126,15 +1902,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_mirroring_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_mirroring_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2160,9 +1932,7 @@ class MirroringAsyncClient:
 
     async def update_mirroring_deployment_group(
         self,
-        request: Optional[
-            Union[mirroring.UpdateMirroringDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.UpdateMirroringDeploymentGroupRequest, dict]] = None,
         *,
         mirroring_deployment_group: Optional[mirroring.MirroringDeploymentGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2248,14 +2018,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [mirroring_deployment_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2271,21 +2036,12 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_mirroring_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_mirroring_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "mirroring_deployment_group.name",
-                        request.mirroring_deployment_group.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("mirroring_deployment_group.name", request.mirroring_deployment_group.name),)),
         )
 
         # Validate the universe domain.
@@ -2312,9 +2068,7 @@ class MirroringAsyncClient:
 
     async def delete_mirroring_deployment_group(
         self,
-        request: Optional[
-            Union[mirroring.DeleteMirroringDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.DeleteMirroringDeploymentGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2393,14 +2147,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2414,15 +2163,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_mirroring_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_mirroring_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2448,9 +2193,7 @@ class MirroringAsyncClient:
 
     async def list_mirroring_deployments(
         self,
-        request: Optional[
-            Union[mirroring.ListMirroringDeploymentsRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.ListMirroringDeploymentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2521,14 +2264,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2542,15 +2280,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_mirroring_deployments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_mirroring_deployments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2651,14 +2385,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2672,15 +2401,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_mirroring_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_mirroring_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2698,9 +2423,7 @@ class MirroringAsyncClient:
 
     async def create_mirroring_deployment(
         self,
-        request: Optional[
-            Union[mirroring.CreateMirroringDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.CreateMirroringDeploymentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         mirroring_deployment: Optional[mirroring.MirroringDeployment] = None,
@@ -2798,14 +2521,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, mirroring_deployment, mirroring_deployment_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2823,15 +2541,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_mirroring_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_mirroring_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2857,9 +2571,7 @@ class MirroringAsyncClient:
 
     async def update_mirroring_deployment(
         self,
-        request: Optional[
-            Union[mirroring.UpdateMirroringDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.UpdateMirroringDeploymentRequest, dict]] = None,
         *,
         mirroring_deployment: Optional[mirroring.MirroringDeployment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2947,14 +2659,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [mirroring_deployment, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2970,17 +2677,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_mirroring_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_mirroring_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("mirroring_deployment.name", request.mirroring_deployment.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("mirroring_deployment.name", request.mirroring_deployment.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3006,9 +2707,7 @@ class MirroringAsyncClient:
 
     async def delete_mirroring_deployment(
         self,
-        request: Optional[
-            Union[mirroring.DeleteMirroringDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[mirroring.DeleteMirroringDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3085,14 +2784,9 @@ class MirroringAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3106,15 +2800,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_mirroring_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_mirroring_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3175,9 +2865,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3230,9 +2918,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3289,9 +2975,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3344,9 +3028,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3462,9 +3144,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3584,9 +3264,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3640,15 +3318,11 @@ class MirroringAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3701,9 +3375,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3756,9 +3428,7 @@ class MirroringAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3781,9 +3451,7 @@ class MirroringAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

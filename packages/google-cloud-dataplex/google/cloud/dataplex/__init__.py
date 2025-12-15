@@ -18,52 +18,22 @@ from google.cloud.dataplex import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.dataplex_v1.services.business_glossary_service.async_client import (
-    BusinessGlossaryServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.business_glossary_service.client import (
-    BusinessGlossaryServiceClient,
-)
-from google.cloud.dataplex_v1.services.catalog_service.async_client import (
-    CatalogServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.catalog_service.client import (
-    CatalogServiceClient,
-)
-from google.cloud.dataplex_v1.services.cmek_service.async_client import (
-    CmekServiceAsyncClient,
-)
+from google.cloud.dataplex_v1.services.business_glossary_service.async_client import BusinessGlossaryServiceAsyncClient
+from google.cloud.dataplex_v1.services.business_glossary_service.client import BusinessGlossaryServiceClient
+from google.cloud.dataplex_v1.services.catalog_service.async_client import CatalogServiceAsyncClient
+from google.cloud.dataplex_v1.services.catalog_service.client import CatalogServiceClient
+from google.cloud.dataplex_v1.services.cmek_service.async_client import CmekServiceAsyncClient
 from google.cloud.dataplex_v1.services.cmek_service.client import CmekServiceClient
-from google.cloud.dataplex_v1.services.content_service.async_client import (
-    ContentServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.content_service.client import (
-    ContentServiceClient,
-)
-from google.cloud.dataplex_v1.services.data_scan_service.async_client import (
-    DataScanServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.data_scan_service.client import (
-    DataScanServiceClient,
-)
-from google.cloud.dataplex_v1.services.data_taxonomy_service.async_client import (
-    DataTaxonomyServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.data_taxonomy_service.client import (
-    DataTaxonomyServiceClient,
-)
-from google.cloud.dataplex_v1.services.dataplex_service.async_client import (
-    DataplexServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.dataplex_service.client import (
-    DataplexServiceClient,
-)
-from google.cloud.dataplex_v1.services.metadata_service.async_client import (
-    MetadataServiceAsyncClient,
-)
-from google.cloud.dataplex_v1.services.metadata_service.client import (
-    MetadataServiceClient,
-)
+from google.cloud.dataplex_v1.services.content_service.async_client import ContentServiceAsyncClient
+from google.cloud.dataplex_v1.services.content_service.client import ContentServiceClient
+from google.cloud.dataplex_v1.services.data_scan_service.async_client import DataScanServiceAsyncClient
+from google.cloud.dataplex_v1.services.data_scan_service.client import DataScanServiceClient
+from google.cloud.dataplex_v1.services.data_taxonomy_service.async_client import DataTaxonomyServiceAsyncClient
+from google.cloud.dataplex_v1.services.data_taxonomy_service.client import DataTaxonomyServiceClient
+from google.cloud.dataplex_v1.services.dataplex_service.async_client import DataplexServiceAsyncClient
+from google.cloud.dataplex_v1.services.dataplex_service.client import DataplexServiceClient
+from google.cloud.dataplex_v1.services.metadata_service.async_client import MetadataServiceAsyncClient
+from google.cloud.dataplex_v1.services.metadata_service.client import MetadataServiceClient
 from google.cloud.dataplex_v1.types.analyze import Content, Environment, Session
 from google.cloud.dataplex_v1.types.business_glossary import (
     CreateGlossaryCategoryRequest,
@@ -155,18 +125,9 @@ from google.cloud.dataplex_v1.types.content import (
     ListContentResponse,
     UpdateContentRequest,
 )
-from google.cloud.dataplex_v1.types.data_discovery import (
-    DataDiscoveryResult,
-    DataDiscoverySpec,
-)
-from google.cloud.dataplex_v1.types.data_documentation import (
-    DataDocumentationResult,
-    DataDocumentationSpec,
-)
-from google.cloud.dataplex_v1.types.data_profile import (
-    DataProfileResult,
-    DataProfileSpec,
-)
+from google.cloud.dataplex_v1.types.data_discovery import DataDiscoveryResult, DataDiscoverySpec
+from google.cloud.dataplex_v1.types.data_documentation import DataDocumentationResult, DataDocumentationSpec
+from google.cloud.dataplex_v1.types.data_profile import DataProfileResult, DataProfileSpec
 from google.cloud.dataplex_v1.types.data_quality import (
     DataQualityColumnResult,
     DataQualityDimension,
@@ -217,9 +178,7 @@ from google.cloud.dataplex_v1.types.datascans import (
     RunDataScanResponse,
     UpdateDataScanRequest,
 )
-from google.cloud.dataplex_v1.types.datascans_common import (
-    DataScanCatalogPublishingStatus,
-)
+from google.cloud.dataplex_v1.types.datascans_common import DataScanCatalogPublishingStatus
 from google.cloud.dataplex_v1.types.logs import (
     BusinessGlossaryEvent,
     DataQualityScanRuleResult,
@@ -250,14 +209,7 @@ from google.cloud.dataplex_v1.types.metadata_ import (
     UpdateEntityRequest,
 )
 from google.cloud.dataplex_v1.types.processing import DataSource, ScannedData, Trigger
-from google.cloud.dataplex_v1.types.resources import (
-    Action,
-    Asset,
-    AssetStatus,
-    Lake,
-    State,
-    Zone,
-)
+from google.cloud.dataplex_v1.types.resources import Action, Asset, AssetStatus, Lake, State, Zone
 from google.cloud.dataplex_v1.types.security import DataAccessSpec, ResourceAccessSpec
 from google.cloud.dataplex_v1.types.service import (
     CancelJobRequest,

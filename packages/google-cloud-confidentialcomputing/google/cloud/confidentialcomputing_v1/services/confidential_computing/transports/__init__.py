@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import ConfidentialComputingTransport
 from .grpc import ConfidentialComputingGrpcTransport
 from .grpc_asyncio import ConfidentialComputingGrpcAsyncIOTransport
-from .rest import (
-    ConfidentialComputingRestInterceptor,
-    ConfidentialComputingRestTransport,
-)
+from .rest import ConfidentialComputingRestInterceptor, ConfidentialComputingRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ConfidentialComputingTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ConfidentialComputingTransport]]
 _transport_registry["grpc"] = ConfidentialComputingGrpcTransport
 _transport_registry["grpc_asyncio"] = ConfidentialComputingGrpcAsyncIOTransport
 _transport_registry["rest"] = ConfidentialComputingRestTransport

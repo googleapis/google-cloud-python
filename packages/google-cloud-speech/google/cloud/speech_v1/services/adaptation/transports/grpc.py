@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class AdaptationGrpcTransport(AdaptationTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -324,9 +309,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._grpc_channel
 
     @property
-    def create_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.CreatePhraseSetRequest], resource.PhraseSet]:
+    def create_phrase_set(self) -> Callable[[cloud_speech_adaptation.CreatePhraseSetRequest], resource.PhraseSet]:
         r"""Return a callable for the create phrase set method over gRPC.
 
         Create a set of phrase hints. Each item in the set
@@ -353,9 +336,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["create_phrase_set"]
 
     @property
-    def get_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.GetPhraseSetRequest], resource.PhraseSet]:
+    def get_phrase_set(self) -> Callable[[cloud_speech_adaptation.GetPhraseSetRequest], resource.PhraseSet]:
         r"""Return a callable for the get phrase set method over gRPC.
 
         Get a phrase set.
@@ -379,12 +360,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["get_phrase_set"]
 
     @property
-    def list_phrase_set(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.ListPhraseSetRequest],
-        cloud_speech_adaptation.ListPhraseSetResponse,
-    ]:
+    def list_phrase_set(self) -> Callable[[cloud_speech_adaptation.ListPhraseSetRequest], cloud_speech_adaptation.ListPhraseSetResponse]:
         r"""Return a callable for the list phrase set method over gRPC.
 
         List phrase sets.
@@ -408,9 +384,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["list_phrase_set"]
 
     @property
-    def update_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.UpdatePhraseSetRequest], resource.PhraseSet]:
+    def update_phrase_set(self) -> Callable[[cloud_speech_adaptation.UpdatePhraseSetRequest], resource.PhraseSet]:
         r"""Return a callable for the update phrase set method over gRPC.
 
         Update a phrase set.
@@ -434,9 +408,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["update_phrase_set"]
 
     @property
-    def delete_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.DeletePhraseSetRequest], empty_pb2.Empty]:
+    def delete_phrase_set(self) -> Callable[[cloud_speech_adaptation.DeletePhraseSetRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete phrase set method over gRPC.
 
         Delete a phrase set.
@@ -460,11 +432,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["delete_phrase_set"]
 
     @property
-    def create_custom_class(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.CreateCustomClassRequest], resource.CustomClass
-    ]:
+    def create_custom_class(self) -> Callable[[cloud_speech_adaptation.CreateCustomClassRequest], resource.CustomClass]:
         r"""Return a callable for the create custom class method over gRPC.
 
         Create a custom class.
@@ -488,11 +456,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["create_custom_class"]
 
     @property
-    def get_custom_class(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.GetCustomClassRequest], resource.CustomClass
-    ]:
+    def get_custom_class(self) -> Callable[[cloud_speech_adaptation.GetCustomClassRequest], resource.CustomClass]:
         r"""Return a callable for the get custom class method over gRPC.
 
         Get a custom class.
@@ -516,12 +480,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["get_custom_class"]
 
     @property
-    def list_custom_classes(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.ListCustomClassesRequest],
-        cloud_speech_adaptation.ListCustomClassesResponse,
-    ]:
+    def list_custom_classes(self) -> Callable[[cloud_speech_adaptation.ListCustomClassesRequest], cloud_speech_adaptation.ListCustomClassesResponse]:
         r"""Return a callable for the list custom classes method over gRPC.
 
         List custom classes.
@@ -545,11 +504,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["list_custom_classes"]
 
     @property
-    def update_custom_class(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.UpdateCustomClassRequest], resource.CustomClass
-    ]:
+    def update_custom_class(self) -> Callable[[cloud_speech_adaptation.UpdateCustomClassRequest], resource.CustomClass]:
         r"""Return a callable for the update custom class method over gRPC.
 
         Update a custom class.
@@ -573,9 +528,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
         return self._stubs["update_custom_class"]
 
     @property
-    def delete_custom_class(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.DeleteCustomClassRequest], empty_pb2.Empty]:
+    def delete_custom_class(self) -> Callable[[cloud_speech_adaptation.DeleteCustomClassRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete custom class method over gRPC.
 
         Delete a custom class.
@@ -621,9 +574,7 @@ class AdaptationGrpcTransport(AdaptationTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

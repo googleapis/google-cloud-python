@@ -75,20 +75,14 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateCluster:
@@ -101,11 +95,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -128,9 +118,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -141,11 +129,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -160,11 +144,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -187,9 +167,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -200,11 +178,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -219,11 +193,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -246,9 +216,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -259,11 +227,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -278,11 +242,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -305,9 +265,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -318,11 +276,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -337,11 +291,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -364,9 +314,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -377,11 +325,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -396,11 +340,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -423,9 +363,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -436,11 +374,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -455,11 +389,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -482,9 +412,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -495,11 +423,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -514,11 +438,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -541,9 +461,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -554,11 +472,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -573,11 +487,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -600,9 +510,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -613,11 +521,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -632,11 +536,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -659,9 +559,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -672,11 +570,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -691,11 +585,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -718,9 +608,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -731,11 +619,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -748,11 +632,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -778,11 +658,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -795,11 +671,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -825,11 +697,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -842,11 +710,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -872,11 +736,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -889,11 +749,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -919,11 +775,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -936,11 +788,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -966,11 +814,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -983,11 +827,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1013,11 +853,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1030,11 +866,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1060,11 +892,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1077,11 +905,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1107,11 +931,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1124,11 +944,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1154,11 +970,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1171,11 +983,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1201,11 +1009,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1218,11 +1022,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1236,9 +1036,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest.pb(
-                request
-            )
+            pb_request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1250,11 +1048,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1267,11 +1061,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1297,11 +1087,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1314,11 +1100,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1344,11 +1126,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1361,11 +1139,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1391,11 +1165,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1408,11 +1178,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1438,11 +1204,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1455,11 +1217,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1485,11 +1243,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1502,11 +1256,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1532,11 +1282,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1549,11 +1295,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1579,11 +1321,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1596,11 +1334,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1626,11 +1360,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1643,11 +1373,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1673,11 +1399,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1690,11 +1412,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1720,11 +1438,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1737,11 +1451,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1767,11 +1477,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetNode._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetNode._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1784,11 +1490,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1814,11 +1516,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetNodeType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1831,11 +1529,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1861,11 +1555,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1878,11 +1568,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1908,11 +1594,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1925,11 +1607,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1955,11 +1633,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetSubnet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1972,11 +1646,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2002,11 +1672,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2019,11 +1685,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2046,9 +1708,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2059,11 +1719,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2076,11 +1732,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2106,11 +1758,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListClusters._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListClusters._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2123,11 +1771,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2153,11 +1797,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2170,11 +1810,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2200,11 +1836,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2217,11 +1849,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2247,11 +1875,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2264,11 +1888,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2294,11 +1914,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListLoggingServers._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2311,11 +1927,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2341,11 +1953,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2358,11 +1966,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2388,11 +1992,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2405,11 +2005,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2435,11 +2031,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2452,11 +2044,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2482,11 +2070,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListNodes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListNodes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2499,11 +2083,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2529,11 +2109,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListNodeTypes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2546,11 +2122,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2576,11 +2148,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2593,11 +2161,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2623,11 +2187,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2640,11 +2200,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2658,9 +2214,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest.pb(
-                request
-            )
+            pb_request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2672,11 +2226,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2689,11 +2239,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2719,11 +2265,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2736,11 +2278,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2766,11 +2304,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListSubnets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListSubnets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2783,11 +2317,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2813,11 +2343,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2830,11 +2356,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2857,9 +2379,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2870,11 +2390,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2887,11 +2403,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2914,9 +2426,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2927,11 +2437,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2944,11 +2450,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2971,9 +2473,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2984,11 +2484,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3001,11 +2497,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3028,9 +2520,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3041,11 +2531,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3058,11 +2544,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3088,11 +2570,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3105,11 +2583,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3135,11 +2609,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3152,11 +2622,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3179,9 +2645,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3192,11 +2656,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3211,11 +2671,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3238,9 +2694,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3251,11 +2705,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3270,11 +2720,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3297,9 +2743,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3310,11 +2754,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3329,11 +2769,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3356,9 +2792,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3369,11 +2803,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3388,11 +2818,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3415,9 +2841,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3428,11 +2852,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3447,11 +2867,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3474,9 +2890,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3487,11 +2901,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3506,11 +2916,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3533,9 +2939,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3546,11 +2950,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3565,11 +2965,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3592,9 +2988,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3605,11 +2999,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3624,11 +3014,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3651,9 +3037,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3664,11 +3048,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3683,11 +3063,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3710,9 +3086,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3723,11 +3097,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3742,11 +3112,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3769,9 +3135,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3782,11 +3146,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3801,11 +3161,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3828,9 +3184,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3841,11 +3195,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3860,11 +3210,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3887,9 +3233,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3900,11 +3244,7 @@ class _BaseVmwareEngineRestTransport(VmwareEngineTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

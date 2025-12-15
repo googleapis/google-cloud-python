@@ -15,15 +15,7 @@
 #
 from .barcode import Barcode
 from .document import Document
-from .document_io import (
-    BatchDocumentsInputConfig,
-    DocumentOutputConfig,
-    GcsDocument,
-    GcsDocuments,
-    GcsPrefix,
-    OcrConfig,
-    RawDocument,
-)
+from .document_io import BatchDocumentsInputConfig, DocumentOutputConfig, GcsDocument, GcsDocuments, GcsPrefix, OcrConfig, RawDocument
 from .document_processor_service import (
     BatchProcessMetadata,
     BatchProcessRequest,

@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class ListFirewallEndpointsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[firewall_activation.FirewallEndpoint]:
@@ -137,9 +120,7 @@ class ListFirewallEndpointsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[firewall_activation.ListFirewallEndpointsResponse]
-        ],
+        method: Callable[..., Awaitable[firewall_activation.ListFirewallEndpointsResponse]],
         request: firewall_activation.ListFirewallEndpointsRequest,
         response: firewall_activation.ListFirewallEndpointsResponse,
         *,
@@ -175,18 +156,11 @@ class ListFirewallEndpointsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[firewall_activation.ListFirewallEndpointsResponse]:
+    async def pages(self) -> AsyncIterator[firewall_activation.ListFirewallEndpointsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[firewall_activation.FirewallEndpoint]:
@@ -221,9 +195,7 @@ class ListFirewallEndpointAssociationsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., firewall_activation.ListFirewallEndpointAssociationsResponse
-        ],
+        method: Callable[..., firewall_activation.ListFirewallEndpointAssociationsResponse],
         request: firewall_activation.ListFirewallEndpointAssociationsRequest,
         response: firewall_activation.ListFirewallEndpointAssociationsResponse,
         *,
@@ -249,9 +221,7 @@ class ListFirewallEndpointAssociationsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = firewall_activation.ListFirewallEndpointAssociationsRequest(
-            request
-        )
+        self._request = firewall_activation.ListFirewallEndpointAssociationsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -261,18 +231,11 @@ class ListFirewallEndpointAssociationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[firewall_activation.ListFirewallEndpointAssociationsResponse]:
+    def pages(self) -> Iterator[firewall_activation.ListFirewallEndpointAssociationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[firewall_activation.FirewallEndpointAssociation]:
@@ -303,9 +266,7 @@ class ListFirewallEndpointAssociationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[firewall_activation.ListFirewallEndpointAssociationsResponse]
-        ],
+        method: Callable[..., Awaitable[firewall_activation.ListFirewallEndpointAssociationsResponse]],
         request: firewall_activation.ListFirewallEndpointAssociationsRequest,
         response: firewall_activation.ListFirewallEndpointAssociationsResponse,
         *,
@@ -331,9 +292,7 @@ class ListFirewallEndpointAssociationsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = firewall_activation.ListFirewallEndpointAssociationsRequest(
-            request
-        )
+        self._request = firewall_activation.ListFirewallEndpointAssociationsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -343,23 +302,14 @@ class ListFirewallEndpointAssociationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[firewall_activation.ListFirewallEndpointAssociationsResponse]:
+    async def pages(self) -> AsyncIterator[firewall_activation.ListFirewallEndpointAssociationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[firewall_activation.FirewallEndpointAssociation]:
+    def __aiter__(self) -> AsyncIterator[firewall_activation.FirewallEndpointAssociation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.firewall_endpoint_associations:

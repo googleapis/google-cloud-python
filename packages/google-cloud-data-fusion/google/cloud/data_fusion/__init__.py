@@ -18,9 +18,7 @@ from google.cloud.data_fusion import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.data_fusion_v1.services.data_fusion.async_client import (
-    DataFusionAsyncClient,
-)
+from google.cloud.data_fusion_v1.services.data_fusion.async_client import DataFusionAsyncClient
 from google.cloud.data_fusion_v1.services.data_fusion.client import DataFusionClient
 from google.cloud.data_fusion_v1.types.datafusion import (
     Accelerator,

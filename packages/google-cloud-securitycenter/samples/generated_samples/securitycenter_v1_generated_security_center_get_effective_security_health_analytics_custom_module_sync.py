@@ -44,9 +44,7 @@ def sample_get_effective_security_health_analytics_custom_module():
     )
 
     # Make the request
-    response = client.get_effective_security_health_analytics_custom_module(
-        request=request
-    )
+    response = client.get_effective_security_health_analytics_custom_module(request=request)
 
     # Handle the response
     print(response)

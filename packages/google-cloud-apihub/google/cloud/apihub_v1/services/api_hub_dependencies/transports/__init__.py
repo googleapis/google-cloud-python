@@ -22,9 +22,7 @@ from .grpc_asyncio import ApiHubDependenciesGrpcAsyncIOTransport
 from .rest import ApiHubDependenciesRestInterceptor, ApiHubDependenciesRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ApiHubDependenciesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ApiHubDependenciesTransport]]
 _transport_registry["grpc"] = ApiHubDependenciesGrpcTransport
 _transport_registry["grpc_asyncio"] = ApiHubDependenciesGrpcAsyncIOTransport
 _transport_registry["rest"] = ApiHubDependenciesRestTransport

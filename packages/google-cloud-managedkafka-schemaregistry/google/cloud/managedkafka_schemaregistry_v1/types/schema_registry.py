@@ -96,9 +96,7 @@ class ListSchemaRegistriesResponse(proto.Message):
             The schema registry instances.
     """
 
-    schema_registries: MutableSequence[
-        schema_registry_resources.SchemaRegistry
-    ] = proto.RepeatedField(
+    schema_registries: MutableSequence[schema_registry_resources.SchemaRegistry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=schema_registry_resources.SchemaRegistry,
@@ -528,9 +526,7 @@ class CreateVersionRequest(proto.Message):
         proto.STRING,
         number=5,
     )
-    references: MutableSequence[
-        schema_registry_resources.Schema.SchemaReference
-    ] = proto.RepeatedField(
+    references: MutableSequence[schema_registry_resources.Schema.SchemaReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=schema_registry_resources.Schema.SchemaReference,
@@ -607,9 +603,7 @@ class LookupVersionRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    references: MutableSequence[
-        schema_registry_resources.Schema.SchemaReference
-    ] = proto.RepeatedField(
+    references: MutableSequence[schema_registry_resources.Schema.SchemaReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=schema_registry_resources.Schema.SchemaReference,
@@ -727,9 +721,7 @@ class CheckCompatibilityRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    references: MutableSequence[
-        schema_registry_resources.Schema.SchemaReference
-    ] = proto.RepeatedField(
+    references: MutableSequence[schema_registry_resources.Schema.SchemaReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=schema_registry_resources.Schema.SchemaReference,
@@ -835,13 +827,11 @@ class UpdateSchemaConfigRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    compatibility: schema_registry_resources.SchemaConfig.CompatibilityType = (
-        proto.Field(
-            proto.ENUM,
-            number=2,
-            optional=True,
-            enum=schema_registry_resources.SchemaConfig.CompatibilityType,
-        )
+    compatibility: schema_registry_resources.SchemaConfig.CompatibilityType = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=schema_registry_resources.SchemaConfig.CompatibilityType,
     )
     normalize: bool = proto.Field(
         proto.BOOL,

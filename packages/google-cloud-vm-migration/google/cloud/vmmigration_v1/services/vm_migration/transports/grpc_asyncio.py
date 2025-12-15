@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -269,18 +258,14 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -316,9 +301,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -341,19 +324,13 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[
-        [vmmigration.ListSourcesRequest], Awaitable[vmmigration.ListSourcesResponse]
-    ]:
+    def list_sources(self) -> Callable[[vmmigration.ListSourcesRequest], Awaitable[vmmigration.ListSourcesResponse]]:
         r"""Return a callable for the list sources method over gRPC.
 
         Lists Sources in a given project and location.
@@ -377,9 +354,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_sources"]
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[vmmigration.GetSourceRequest], Awaitable[vmmigration.Source]]:
+    def get_source(self) -> Callable[[vmmigration.GetSourceRequest], Awaitable[vmmigration.Source]]:
         r"""Return a callable for the get source method over gRPC.
 
         Gets details of a single Source.
@@ -403,11 +378,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_source"]
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_source(self) -> Callable[[vmmigration.CreateSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create source method over gRPC.
 
         Creates a new Source in a given project and location.
@@ -431,11 +402,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_source"]
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[
-        [vmmigration.UpdateSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_source(self) -> Callable[[vmmigration.UpdateSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update source method over gRPC.
 
         Updates the parameters of a single Source.
@@ -459,11 +426,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["update_source"]
 
     @property
-    def delete_source(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_source(self) -> Callable[[vmmigration.DeleteSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete source method over gRPC.
 
         Deletes a single Source.
@@ -487,12 +450,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_source"]
 
     @property
-    def fetch_inventory(
-        self,
-    ) -> Callable[
-        [vmmigration.FetchInventoryRequest],
-        Awaitable[vmmigration.FetchInventoryResponse],
-    ]:
+    def fetch_inventory(self) -> Callable[[vmmigration.FetchInventoryRequest], Awaitable[vmmigration.FetchInventoryResponse]]:
         r"""Return a callable for the fetch inventory method over gRPC.
 
         List remote source's inventory of VMs.
@@ -522,12 +480,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["fetch_inventory"]
 
     @property
-    def fetch_storage_inventory(
-        self,
-    ) -> Callable[
-        [vmmigration.FetchStorageInventoryRequest],
-        Awaitable[vmmigration.FetchStorageInventoryResponse],
-    ]:
+    def fetch_storage_inventory(self) -> Callable[[vmmigration.FetchStorageInventoryRequest], Awaitable[vmmigration.FetchStorageInventoryResponse]]:
         r"""Return a callable for the fetch storage inventory method over gRPC.
 
         List remote source's inventory of storage resources.
@@ -559,10 +512,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
     @property
     def list_utilization_reports(
         self,
-    ) -> Callable[
-        [vmmigration.ListUtilizationReportsRequest],
-        Awaitable[vmmigration.ListUtilizationReportsResponse],
-    ]:
+    ) -> Callable[[vmmigration.ListUtilizationReportsRequest], Awaitable[vmmigration.ListUtilizationReportsResponse]]:
         r"""Return a callable for the list utilization reports method over gRPC.
 
         Lists Utilization Reports of the given Source.
@@ -586,12 +536,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_utilization_reports"]
 
     @property
-    def get_utilization_report(
-        self,
-    ) -> Callable[
-        [vmmigration.GetUtilizationReportRequest],
-        Awaitable[vmmigration.UtilizationReport],
-    ]:
+    def get_utilization_report(self) -> Callable[[vmmigration.GetUtilizationReportRequest], Awaitable[vmmigration.UtilizationReport]]:
         r"""Return a callable for the get utilization report method over gRPC.
 
         Gets a single Utilization Report.
@@ -615,12 +560,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_utilization_report"]
 
     @property
-    def create_utilization_report(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateUtilizationReportRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_utilization_report(self) -> Callable[[vmmigration.CreateUtilizationReportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create utilization report method over gRPC.
 
         Creates a new UtilizationReport.
@@ -644,12 +584,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_utilization_report"]
 
     @property
-    def delete_utilization_report(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteUtilizationReportRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_utilization_report(self) -> Callable[[vmmigration.DeleteUtilizationReportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete utilization report method over gRPC.
 
         Deletes a single Utilization Report.
@@ -675,10 +610,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
     @property
     def list_datacenter_connectors(
         self,
-    ) -> Callable[
-        [vmmigration.ListDatacenterConnectorsRequest],
-        Awaitable[vmmigration.ListDatacenterConnectorsResponse],
-    ]:
+    ) -> Callable[[vmmigration.ListDatacenterConnectorsRequest], Awaitable[vmmigration.ListDatacenterConnectorsResponse]]:
         r"""Return a callable for the list datacenter connectors method over gRPC.
 
         Lists DatacenterConnectors in a given Source.
@@ -694,9 +626,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_datacenter_connectors" not in self._stubs:
-            self._stubs[
-                "list_datacenter_connectors"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_datacenter_connectors"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors",
                 request_serializer=vmmigration.ListDatacenterConnectorsRequest.serialize,
                 response_deserializer=vmmigration.ListDatacenterConnectorsResponse.deserialize,
@@ -704,12 +634,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_datacenter_connectors"]
 
     @property
-    def get_datacenter_connector(
-        self,
-    ) -> Callable[
-        [vmmigration.GetDatacenterConnectorRequest],
-        Awaitable[vmmigration.DatacenterConnector],
-    ]:
+    def get_datacenter_connector(self) -> Callable[[vmmigration.GetDatacenterConnectorRequest], Awaitable[vmmigration.DatacenterConnector]]:
         r"""Return a callable for the get datacenter connector method over gRPC.
 
         Gets details of a single DatacenterConnector.
@@ -733,12 +658,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_datacenter_connector"]
 
     @property
-    def create_datacenter_connector(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateDatacenterConnectorRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_datacenter_connector(self) -> Callable[[vmmigration.CreateDatacenterConnectorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create datacenter connector method over gRPC.
 
         Creates a new DatacenterConnector in a given Source.
@@ -754,9 +674,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_datacenter_connector" not in self._stubs:
-            self._stubs[
-                "create_datacenter_connector"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_datacenter_connector"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector",
                 request_serializer=vmmigration.CreateDatacenterConnectorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -764,12 +682,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_datacenter_connector"]
 
     @property
-    def delete_datacenter_connector(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteDatacenterConnectorRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_datacenter_connector(self) -> Callable[[vmmigration.DeleteDatacenterConnectorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete datacenter connector method over gRPC.
 
         Deletes a single DatacenterConnector.
@@ -785,9 +698,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_datacenter_connector" not in self._stubs:
-            self._stubs[
-                "delete_datacenter_connector"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_datacenter_connector"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
                 request_serializer=vmmigration.DeleteDatacenterConnectorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -795,11 +706,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_datacenter_connector"]
 
     @property
-    def upgrade_appliance(
-        self,
-    ) -> Callable[
-        [vmmigration.UpgradeApplianceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def upgrade_appliance(self) -> Callable[[vmmigration.UpgradeApplianceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the upgrade appliance method over gRPC.
 
         Upgrades the appliance relate to this
@@ -824,11 +731,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["upgrade_appliance"]
 
     @property
-    def create_migrating_vm(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateMigratingVmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_migrating_vm(self) -> Callable[[vmmigration.CreateMigratingVmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create migrating vm method over gRPC.
 
         Creates a new MigratingVm in a given Source.
@@ -852,12 +755,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_migrating_vm"]
 
     @property
-    def list_migrating_vms(
-        self,
-    ) -> Callable[
-        [vmmigration.ListMigratingVmsRequest],
-        Awaitable[vmmigration.ListMigratingVmsResponse],
-    ]:
+    def list_migrating_vms(self) -> Callable[[vmmigration.ListMigratingVmsRequest], Awaitable[vmmigration.ListMigratingVmsResponse]]:
         r"""Return a callable for the list migrating vms method over gRPC.
 
         Lists MigratingVms in a given Source.
@@ -881,11 +779,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_migrating_vms"]
 
     @property
-    def get_migrating_vm(
-        self,
-    ) -> Callable[
-        [vmmigration.GetMigratingVmRequest], Awaitable[vmmigration.MigratingVm]
-    ]:
+    def get_migrating_vm(self) -> Callable[[vmmigration.GetMigratingVmRequest], Awaitable[vmmigration.MigratingVm]]:
         r"""Return a callable for the get migrating vm method over gRPC.
 
         Gets details of a single MigratingVm.
@@ -909,11 +803,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_migrating_vm"]
 
     @property
-    def update_migrating_vm(
-        self,
-    ) -> Callable[
-        [vmmigration.UpdateMigratingVmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_migrating_vm(self) -> Callable[[vmmigration.UpdateMigratingVmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update migrating vm method over gRPC.
 
         Updates the parameters of a single MigratingVm.
@@ -937,11 +827,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["update_migrating_vm"]
 
     @property
-    def delete_migrating_vm(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteMigratingVmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_migrating_vm(self) -> Callable[[vmmigration.DeleteMigratingVmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete migrating vm method over gRPC.
 
         Deletes a single MigratingVm.
@@ -965,11 +851,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_migrating_vm"]
 
     @property
-    def start_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.StartMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def start_migration(self) -> Callable[[vmmigration.StartMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start migration method over gRPC.
 
         Starts migration for a VM. Starts the process of
@@ -995,11 +877,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["start_migration"]
 
     @property
-    def resume_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.ResumeMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def resume_migration(self) -> Callable[[vmmigration.ResumeMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the resume migration method over gRPC.
 
         Resumes a migration for a VM. When called on a paused
@@ -1028,11 +906,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["resume_migration"]
 
     @property
-    def pause_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.PauseMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def pause_migration(self) -> Callable[[vmmigration.PauseMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the pause migration method over gRPC.
 
         Pauses a migration for a VM. If cycle tasks are
@@ -1059,11 +933,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["pause_migration"]
 
     @property
-    def finalize_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.FinalizeMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def finalize_migration(self) -> Callable[[vmmigration.FinalizeMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the finalize migration method over gRPC.
 
         Marks a migration as completed, deleting migration
@@ -1089,11 +959,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["finalize_migration"]
 
     @property
-    def extend_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.ExtendMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def extend_migration(self) -> Callable[[vmmigration.ExtendMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the extend migration method over gRPC.
 
         Extend the migrating VM time to live.
@@ -1117,11 +983,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["extend_migration"]
 
     @property
-    def create_clone_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateCloneJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_clone_job(self) -> Callable[[vmmigration.CreateCloneJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create clone job method over gRPC.
 
         Initiates a Clone of a specific migrating VM.
@@ -1145,11 +1007,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_clone_job"]
 
     @property
-    def cancel_clone_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CancelCloneJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def cancel_clone_job(self) -> Callable[[vmmigration.CancelCloneJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the cancel clone job method over gRPC.
 
         Initiates the cancellation of a running clone job.
@@ -1173,11 +1031,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["cancel_clone_job"]
 
     @property
-    def list_clone_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListCloneJobsRequest], Awaitable[vmmigration.ListCloneJobsResponse]
-    ]:
+    def list_clone_jobs(self) -> Callable[[vmmigration.ListCloneJobsRequest], Awaitable[vmmigration.ListCloneJobsResponse]]:
         r"""Return a callable for the list clone jobs method over gRPC.
 
         Lists the CloneJobs of a migrating VM. Only 25 most
@@ -1202,9 +1056,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_clone_jobs"]
 
     @property
-    def get_clone_job(
-        self,
-    ) -> Callable[[vmmigration.GetCloneJobRequest], Awaitable[vmmigration.CloneJob]]:
+    def get_clone_job(self) -> Callable[[vmmigration.GetCloneJobRequest], Awaitable[vmmigration.CloneJob]]:
         r"""Return a callable for the get clone job method over gRPC.
 
         Gets details of a single CloneJob.
@@ -1228,11 +1080,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_clone_job"]
 
     @property
-    def create_cutover_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateCutoverJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_cutover_job(self) -> Callable[[vmmigration.CreateCutoverJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create cutover job method over gRPC.
 
         Initiates a Cutover of a specific migrating VM.
@@ -1258,11 +1106,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_cutover_job"]
 
     @property
-    def cancel_cutover_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CancelCutoverJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def cancel_cutover_job(self) -> Callable[[vmmigration.CancelCutoverJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the cancel cutover job method over gRPC.
 
         Initiates the cancellation of a running cutover job.
@@ -1286,12 +1130,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["cancel_cutover_job"]
 
     @property
-    def list_cutover_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListCutoverJobsRequest],
-        Awaitable[vmmigration.ListCutoverJobsResponse],
-    ]:
+    def list_cutover_jobs(self) -> Callable[[vmmigration.ListCutoverJobsRequest], Awaitable[vmmigration.ListCutoverJobsResponse]]:
         r"""Return a callable for the list cutover jobs method over gRPC.
 
         Lists the CutoverJobs of a migrating VM. Only 25 most
@@ -1316,11 +1155,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_cutover_jobs"]
 
     @property
-    def get_cutover_job(
-        self,
-    ) -> Callable[
-        [vmmigration.GetCutoverJobRequest], Awaitable[vmmigration.CutoverJob]
-    ]:
+    def get_cutover_job(self) -> Callable[[vmmigration.GetCutoverJobRequest], Awaitable[vmmigration.CutoverJob]]:
         r"""Return a callable for the get cutover job method over gRPC.
 
         Gets details of a single CutoverJob.
@@ -1344,11 +1179,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_cutover_job"]
 
     @property
-    def list_groups(
-        self,
-    ) -> Callable[
-        [vmmigration.ListGroupsRequest], Awaitable[vmmigration.ListGroupsResponse]
-    ]:
+    def list_groups(self) -> Callable[[vmmigration.ListGroupsRequest], Awaitable[vmmigration.ListGroupsResponse]]:
         r"""Return a callable for the list groups method over gRPC.
 
         Lists Groups in a given project and location.
@@ -1372,9 +1203,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_groups"]
 
     @property
-    def get_group(
-        self,
-    ) -> Callable[[vmmigration.GetGroupRequest], Awaitable[vmmigration.Group]]:
+    def get_group(self) -> Callable[[vmmigration.GetGroupRequest], Awaitable[vmmigration.Group]]:
         r"""Return a callable for the get group method over gRPC.
 
         Gets details of a single Group.
@@ -1398,11 +1227,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_group"]
 
     @property
-    def create_group(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateGroupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_group(self) -> Callable[[vmmigration.CreateGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create group method over gRPC.
 
         Creates a new Group in a given project and location.
@@ -1426,11 +1251,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_group"]
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[
-        [vmmigration.UpdateGroupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_group(self) -> Callable[[vmmigration.UpdateGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update group method over gRPC.
 
         Updates the parameters of a single Group.
@@ -1454,11 +1275,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["update_group"]
 
     @property
-    def delete_group(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteGroupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_group(self) -> Callable[[vmmigration.DeleteGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete group method over gRPC.
 
         Deletes a single Group.
@@ -1482,11 +1299,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_group"]
 
     @property
-    def add_group_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.AddGroupMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def add_group_migration(self) -> Callable[[vmmigration.AddGroupMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the add group migration method over gRPC.
 
         Adds a MigratingVm to a Group.
@@ -1510,11 +1323,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["add_group_migration"]
 
     @property
-    def remove_group_migration(
-        self,
-    ) -> Callable[
-        [vmmigration.RemoveGroupMigrationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def remove_group_migration(self) -> Callable[[vmmigration.RemoveGroupMigrationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the remove group migration method over gRPC.
 
         Removes a MigratingVm from a Group.
@@ -1538,12 +1347,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["remove_group_migration"]
 
     @property
-    def list_target_projects(
-        self,
-    ) -> Callable[
-        [vmmigration.ListTargetProjectsRequest],
-        Awaitable[vmmigration.ListTargetProjectsResponse],
-    ]:
+    def list_target_projects(self) -> Callable[[vmmigration.ListTargetProjectsRequest], Awaitable[vmmigration.ListTargetProjectsResponse]]:
         r"""Return a callable for the list target projects method over gRPC.
 
         Lists TargetProjects in a given project.
@@ -1570,11 +1374,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_target_projects"]
 
     @property
-    def get_target_project(
-        self,
-    ) -> Callable[
-        [vmmigration.GetTargetProjectRequest], Awaitable[vmmigration.TargetProject]
-    ]:
+    def get_target_project(self) -> Callable[[vmmigration.GetTargetProjectRequest], Awaitable[vmmigration.TargetProject]]:
         r"""Return a callable for the get target project method over gRPC.
 
         Gets details of a single TargetProject.
@@ -1601,11 +1401,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_target_project"]
 
     @property
-    def create_target_project(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateTargetProjectRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_target_project(self) -> Callable[[vmmigration.CreateTargetProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create target project method over gRPC.
 
         Creates a new TargetProject in a given project.
@@ -1632,11 +1428,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_target_project"]
 
     @property
-    def update_target_project(
-        self,
-    ) -> Callable[
-        [vmmigration.UpdateTargetProjectRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_target_project(self) -> Callable[[vmmigration.UpdateTargetProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update target project method over gRPC.
 
         Updates the parameters of a single TargetProject.
@@ -1663,11 +1455,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["update_target_project"]
 
     @property
-    def delete_target_project(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteTargetProjectRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_target_project(self) -> Callable[[vmmigration.DeleteTargetProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete target project method over gRPC.
 
         Deletes a single TargetProject.
@@ -1694,12 +1482,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_target_project"]
 
     @property
-    def list_replication_cycles(
-        self,
-    ) -> Callable[
-        [vmmigration.ListReplicationCyclesRequest],
-        Awaitable[vmmigration.ListReplicationCyclesResponse],
-    ]:
+    def list_replication_cycles(self) -> Callable[[vmmigration.ListReplicationCyclesRequest], Awaitable[vmmigration.ListReplicationCyclesResponse]]:
         r"""Return a callable for the list replication cycles method over gRPC.
 
         Lists ReplicationCycles in a given MigratingVM.
@@ -1723,12 +1506,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_replication_cycles"]
 
     @property
-    def get_replication_cycle(
-        self,
-    ) -> Callable[
-        [vmmigration.GetReplicationCycleRequest],
-        Awaitable[vmmigration.ReplicationCycle],
-    ]:
+    def get_replication_cycle(self) -> Callable[[vmmigration.GetReplicationCycleRequest], Awaitable[vmmigration.ReplicationCycle]]:
         r"""Return a callable for the get replication cycle method over gRPC.
 
         Gets details of a single ReplicationCycle.
@@ -1752,12 +1530,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_replication_cycle"]
 
     @property
-    def list_image_imports(
-        self,
-    ) -> Callable[
-        [vmmigration.ListImageImportsRequest],
-        Awaitable[vmmigration.ListImageImportsResponse],
-    ]:
+    def list_image_imports(self) -> Callable[[vmmigration.ListImageImportsRequest], Awaitable[vmmigration.ListImageImportsResponse]]:
         r"""Return a callable for the list image imports method over gRPC.
 
         Lists ImageImports in a given project.
@@ -1781,11 +1554,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_image_imports"]
 
     @property
-    def get_image_import(
-        self,
-    ) -> Callable[
-        [vmmigration.GetImageImportRequest], Awaitable[vmmigration.ImageImport]
-    ]:
+    def get_image_import(self) -> Callable[[vmmigration.GetImageImportRequest], Awaitable[vmmigration.ImageImport]]:
         r"""Return a callable for the get image import method over gRPC.
 
         Gets details of a single ImageImport.
@@ -1809,11 +1578,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_image_import"]
 
     @property
-    def create_image_import(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateImageImportRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_image_import(self) -> Callable[[vmmigration.CreateImageImportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create image import method over gRPC.
 
         Creates a new ImageImport in a given project.
@@ -1837,11 +1602,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_image_import"]
 
     @property
-    def delete_image_import(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteImageImportRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_image_import(self) -> Callable[[vmmigration.DeleteImageImportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete image import method over gRPC.
 
         Deletes a single ImageImport.
@@ -1865,12 +1626,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_image_import"]
 
     @property
-    def list_image_import_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListImageImportJobsRequest],
-        Awaitable[vmmigration.ListImageImportJobsResponse],
-    ]:
+    def list_image_import_jobs(self) -> Callable[[vmmigration.ListImageImportJobsRequest], Awaitable[vmmigration.ListImageImportJobsResponse]]:
         r"""Return a callable for the list image import jobs method over gRPC.
 
         Lists ImageImportJobs in a given project.
@@ -1894,11 +1650,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_image_import_jobs"]
 
     @property
-    def get_image_import_job(
-        self,
-    ) -> Callable[
-        [vmmigration.GetImageImportJobRequest], Awaitable[vmmigration.ImageImportJob]
-    ]:
+    def get_image_import_job(self) -> Callable[[vmmigration.GetImageImportJobRequest], Awaitable[vmmigration.ImageImportJob]]:
         r"""Return a callable for the get image import job method over gRPC.
 
         Gets details of a single ImageImportJob.
@@ -1922,11 +1674,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_image_import_job"]
 
     @property
-    def cancel_image_import_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CancelImageImportJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def cancel_image_import_job(self) -> Callable[[vmmigration.CancelImageImportJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the cancel image import job method over gRPC.
 
         Initiates the cancellation of a running
@@ -1951,11 +1699,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["cancel_image_import_job"]
 
     @property
-    def create_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_disk_migration_job(self) -> Callable[[vmmigration.CreateDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create disk migration job method over gRPC.
 
         Creates a new disk migration job in a given Source.
@@ -1979,12 +1723,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["create_disk_migration_job"]
 
     @property
-    def list_disk_migration_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListDiskMigrationJobsRequest],
-        Awaitable[vmmigration.ListDiskMigrationJobsResponse],
-    ]:
+    def list_disk_migration_jobs(self) -> Callable[[vmmigration.ListDiskMigrationJobsRequest], Awaitable[vmmigration.ListDiskMigrationJobsResponse]]:
         r"""Return a callable for the list disk migration jobs method over gRPC.
 
         Lists DiskMigrationJobs in a given Source.
@@ -2008,12 +1747,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["list_disk_migration_jobs"]
 
     @property
-    def get_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.GetDiskMigrationJobRequest],
-        Awaitable[vmmigration.DiskMigrationJob],
-    ]:
+    def get_disk_migration_job(self) -> Callable[[vmmigration.GetDiskMigrationJobRequest], Awaitable[vmmigration.DiskMigrationJob]]:
         r"""Return a callable for the get disk migration job method over gRPC.
 
         Gets details of a single DiskMigrationJob.
@@ -2037,11 +1771,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["get_disk_migration_job"]
 
     @property
-    def update_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.UpdateDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_disk_migration_job(self) -> Callable[[vmmigration.UpdateDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update disk migration job method over gRPC.
 
         Updates the parameters of a single DiskMigrationJob.
@@ -2065,11 +1795,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["update_disk_migration_job"]
 
     @property
-    def delete_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_disk_migration_job(self) -> Callable[[vmmigration.DeleteDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete disk migration job method over gRPC.
 
         Deletes a single DiskMigrationJob.
@@ -2093,11 +1819,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_disk_migration_job"]
 
     @property
-    def run_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.RunDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def run_disk_migration_job(self) -> Callable[[vmmigration.RunDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the run disk migration job method over gRPC.
 
         Runs the disk migration job.
@@ -2121,11 +1843,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["run_disk_migration_job"]
 
     @property
-    def cancel_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CancelDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def cancel_disk_migration_job(self) -> Callable[[vmmigration.CancelDiskMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the cancel disk migration job method over gRPC.
 
         Cancels the disk migration job.
@@ -2559,9 +2277,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2578,9 +2294,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

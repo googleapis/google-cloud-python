@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import uuid
 
 from google.api_core import exceptions as core_exceptions
@@ -53,9 +42,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager import (
-    pagers,
-)
+from google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager import pagers
 from google.cloud.privilegedaccessmanager_v1.types import privilegedaccessmanager
 
 from .client import PrivilegedAccessManagerClient
@@ -103,45 +90,23 @@ class PrivilegedAccessManagerAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = PrivilegedAccessManagerClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = PrivilegedAccessManagerClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        PrivilegedAccessManagerClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = PrivilegedAccessManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = PrivilegedAccessManagerClient._DEFAULT_UNIVERSE
 
     entitlement_path = staticmethod(PrivilegedAccessManagerClient.entitlement_path)
-    parse_entitlement_path = staticmethod(
-        PrivilegedAccessManagerClient.parse_entitlement_path
-    )
+    parse_entitlement_path = staticmethod(PrivilegedAccessManagerClient.parse_entitlement_path)
     grant_path = staticmethod(PrivilegedAccessManagerClient.grant_path)
     parse_grant_path = staticmethod(PrivilegedAccessManagerClient.parse_grant_path)
-    common_billing_account_path = staticmethod(
-        PrivilegedAccessManagerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        PrivilegedAccessManagerClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(PrivilegedAccessManagerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(PrivilegedAccessManagerClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(PrivilegedAccessManagerClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        PrivilegedAccessManagerClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        PrivilegedAccessManagerClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        PrivilegedAccessManagerClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        PrivilegedAccessManagerClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        PrivilegedAccessManagerClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        PrivilegedAccessManagerClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        PrivilegedAccessManagerClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(PrivilegedAccessManagerClient.parse_common_folder_path)
+    common_organization_path = staticmethod(PrivilegedAccessManagerClient.common_organization_path)
+    parse_common_organization_path = staticmethod(PrivilegedAccessManagerClient.parse_common_organization_path)
+    common_project_path = staticmethod(PrivilegedAccessManagerClient.common_project_path)
+    parse_common_project_path = staticmethod(PrivilegedAccessManagerClient.parse_common_project_path)
+    common_location_path = staticmethod(PrivilegedAccessManagerClient.common_location_path)
+    parse_common_location_path = staticmethod(PrivilegedAccessManagerClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -177,9 +142,7 @@ class PrivilegedAccessManagerAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -246,13 +209,7 @@ class PrivilegedAccessManagerAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                PrivilegedAccessManagerTransport,
-                Callable[..., PrivilegedAccessManagerTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, PrivilegedAccessManagerTransport, Callable[..., PrivilegedAccessManagerTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -312,20 +269,14 @@ class PrivilegedAccessManagerAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.privilegedaccessmanager_v1.PrivilegedAccessManagerAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.privilegedaccessmanager.v1.PrivilegedAccessManager",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -336,9 +287,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def check_onboarding_status(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.CheckOnboardingStatusRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.CheckOnboardingStatusRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -392,22 +341,16 @@ class PrivilegedAccessManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, privilegedaccessmanager.CheckOnboardingStatusRequest
-        ):
+        if not isinstance(request, privilegedaccessmanager.CheckOnboardingStatusRequest):
             request = privilegedaccessmanager.CheckOnboardingStatusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.check_onboarding_status
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.check_onboarding_status]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -425,9 +368,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def list_entitlements(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.ListEntitlementsRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.ListEntitlementsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -496,14 +437,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -517,15 +453,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_entitlements
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_entitlements]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -554,9 +486,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def search_entitlements(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.SearchEntitlementsRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.SearchEntitlementsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -620,15 +550,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_entitlements
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_entitlements]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -657,9 +583,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def get_entitlement(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.GetEntitlementRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.GetEntitlementRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -723,14 +647,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -744,15 +663,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -770,9 +685,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def create_entitlement(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.CreateEntitlementRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.CreateEntitlementRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         entitlement: Optional[privilegedaccessmanager.Entitlement] = None,
@@ -869,14 +782,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, entitlement, entitlement_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -894,15 +802,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -928,9 +832,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def delete_entitlement(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.DeleteEntitlementRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.DeleteEntitlementRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1001,14 +903,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1022,15 +919,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1056,9 +949,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def update_entitlement(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.UpdateEntitlementRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.UpdateEntitlementRequest, dict]] = None,
         *,
         entitlement: Optional[privilegedaccessmanager.Entitlement] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1165,14 +1056,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [entitlement, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1188,17 +1074,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("entitlement.name", request.entitlement.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("entitlement.name", request.entitlement.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1224,9 +1104,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def list_grants(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.ListGrantsRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.ListGrantsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1294,14 +1172,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1315,15 +1188,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_grants
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_grants]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1352,9 +1221,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def search_grants(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.SearchGrantsRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.SearchGrantsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1418,15 +1285,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_grants
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_grants]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1517,14 +1380,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1538,15 +1396,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_grant
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_grant]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1564,9 +1418,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def create_grant(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.CreateGrantRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.CreateGrantRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         grant: Optional[privilegedaccessmanager.Grant] = None,
@@ -1638,14 +1490,9 @@ class PrivilegedAccessManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, grant]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1661,15 +1508,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_grant
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_grant]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1687,9 +1530,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def approve_grant(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.ApproveGrantRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.ApproveGrantRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1751,15 +1592,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.approve_grant
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.approve_grant]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1839,15 +1676,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.deny_grant
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.deny_grant]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1865,9 +1698,7 @@ class PrivilegedAccessManagerAsyncClient:
 
     async def revoke_grant(
         self,
-        request: Optional[
-            Union[privilegedaccessmanager.RevokeGrantRequest, dict]
-        ] = None,
+        request: Optional[Union[privilegedaccessmanager.RevokeGrantRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1934,15 +1765,11 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.revoke_grant
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.revoke_grant]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2003,9 +1830,7 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2058,9 +1883,7 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2117,9 +1940,7 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2169,9 +1990,7 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2224,9 +2043,7 @@ class PrivilegedAccessManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2249,9 +2066,7 @@ class PrivilegedAccessManagerAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

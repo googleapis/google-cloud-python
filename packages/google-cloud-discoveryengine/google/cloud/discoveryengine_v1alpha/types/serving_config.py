@@ -306,12 +306,10 @@ class ServingConfig(proto.Message):
                 data store.
         """
 
-        content_search_spec: search_service.SearchRequest.ContentSearchSpec = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message=search_service.SearchRequest.ContentSearchSpec,
-            )
+        content_search_spec: search_service.SearchRequest.ContentSearchSpec = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=search_service.SearchRequest.ContentSearchSpec,
         )
 
     media_config: MediaConfig = proto.Field(

@@ -31,14 +31,7 @@ from .cloudtasks import (
     UpdateQueueRequest,
 )
 from .queue import Queue, RateLimits, RetryConfig, StackdriverLoggingConfig
-from .target import (
-    AppEngineHttpRequest,
-    AppEngineRouting,
-    HttpMethod,
-    HttpRequest,
-    OAuthToken,
-    OidcToken,
-)
+from .target import AppEngineHttpRequest, AppEngineRouting, HttpMethod, HttpRequest, OAuthToken, OidcToken
 from .task import Attempt, Task
 
 __all__ = (

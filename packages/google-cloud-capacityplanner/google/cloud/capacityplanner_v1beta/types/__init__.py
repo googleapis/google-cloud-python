@@ -16,15 +16,7 @@
 from .allocation import Allocation
 from .future_reservation import FutureReservation
 from .location import LocationIdentifier, LocationLevel
-from .resource import (
-    ResourceAttribute,
-    ResourceContainer,
-    ResourceIdentifier,
-    ResourceIdKey,
-    ResourceValue,
-    Unit,
-    Value,
-)
+from .resource import ResourceAttribute, ResourceContainer, ResourceIdentifier, ResourceIdKey, ResourceValue, Unit, Value
 from .usage_service import (
     BigQueryDestination,
     ExportForecastsRequest,

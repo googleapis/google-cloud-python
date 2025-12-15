@@ -170,13 +170,11 @@ class Company(proto.Message):
         number=10,
         optional=True,
     )
-    credit_status: company_enums.CompanyCreditStatusEnum.CompanyCreditStatus = (
-        proto.Field(
-            proto.ENUM,
-            number=11,
-            optional=True,
-            enum=company_enums.CompanyCreditStatusEnum.CompanyCreditStatus,
-        )
+    credit_status: company_enums.CompanyCreditStatusEnum.CompanyCreditStatus = proto.Field(
+        proto.ENUM,
+        number=11,
+        optional=True,
+        enum=company_enums.CompanyCreditStatusEnum.CompanyCreditStatus,
     )
     applied_labels: MutableSequence[applied_label.AppliedLabel] = proto.RepeatedField(
         proto.MESSAGE,

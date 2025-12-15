@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,12 +310,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         return self._grpc_channel
 
     @property
-    def list_authorized_certificates(
-        self,
-    ) -> Callable[
-        [appengine.ListAuthorizedCertificatesRequest],
-        appengine.ListAuthorizedCertificatesResponse,
-    ]:
+    def list_authorized_certificates(self) -> Callable[[appengine.ListAuthorizedCertificatesRequest], appengine.ListAuthorizedCertificatesResponse]:
         r"""Return a callable for the list authorized certificates method over gRPC.
 
         Lists all SSL certificates the user is authorized to
@@ -347,9 +327,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_authorized_certificates" not in self._stubs:
-            self._stubs[
-                "list_authorized_certificates"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_authorized_certificates"] = self._logged_channel.unary_unary(
                 "/google.appengine.v1.AuthorizedCertificates/ListAuthorizedCertificates",
                 request_serializer=appengine.ListAuthorizedCertificatesRequest.serialize,
                 response_deserializer=appengine.ListAuthorizedCertificatesResponse.deserialize,
@@ -357,11 +335,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         return self._stubs["list_authorized_certificates"]
 
     @property
-    def get_authorized_certificate(
-        self,
-    ) -> Callable[
-        [appengine.GetAuthorizedCertificateRequest], certificate.AuthorizedCertificate
-    ]:
+    def get_authorized_certificate(self) -> Callable[[appengine.GetAuthorizedCertificateRequest], certificate.AuthorizedCertificate]:
         r"""Return a callable for the get authorized certificate method over gRPC.
 
         Gets the specified SSL certificate.
@@ -377,9 +351,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "get_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_authorized_certificate"] = self._logged_channel.unary_unary(
                 "/google.appengine.v1.AuthorizedCertificates/GetAuthorizedCertificate",
                 request_serializer=appengine.GetAuthorizedCertificateRequest.serialize,
                 response_deserializer=certificate.AuthorizedCertificate.deserialize,
@@ -387,12 +359,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         return self._stubs["get_authorized_certificate"]
 
     @property
-    def create_authorized_certificate(
-        self,
-    ) -> Callable[
-        [appengine.CreateAuthorizedCertificateRequest],
-        certificate.AuthorizedCertificate,
-    ]:
+    def create_authorized_certificate(self) -> Callable[[appengine.CreateAuthorizedCertificateRequest], certificate.AuthorizedCertificate]:
         r"""Return a callable for the create authorized certificate method over gRPC.
 
         Uploads the specified SSL certificate.
@@ -408,9 +375,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "create_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_authorized_certificate"] = self._logged_channel.unary_unary(
                 "/google.appengine.v1.AuthorizedCertificates/CreateAuthorizedCertificate",
                 request_serializer=appengine.CreateAuthorizedCertificateRequest.serialize,
                 response_deserializer=certificate.AuthorizedCertificate.deserialize,
@@ -418,12 +383,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         return self._stubs["create_authorized_certificate"]
 
     @property
-    def update_authorized_certificate(
-        self,
-    ) -> Callable[
-        [appengine.UpdateAuthorizedCertificateRequest],
-        certificate.AuthorizedCertificate,
-    ]:
+    def update_authorized_certificate(self) -> Callable[[appengine.UpdateAuthorizedCertificateRequest], certificate.AuthorizedCertificate]:
         r"""Return a callable for the update authorized certificate method over gRPC.
 
         Updates the specified SSL certificate. To renew a certificate
@@ -444,9 +404,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "update_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_authorized_certificate"] = self._logged_channel.unary_unary(
                 "/google.appengine.v1.AuthorizedCertificates/UpdateAuthorizedCertificate",
                 request_serializer=appengine.UpdateAuthorizedCertificateRequest.serialize,
                 response_deserializer=certificate.AuthorizedCertificate.deserialize,
@@ -454,9 +412,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         return self._stubs["update_authorized_certificate"]
 
     @property
-    def delete_authorized_certificate(
-        self,
-    ) -> Callable[[appengine.DeleteAuthorizedCertificateRequest], empty_pb2.Empty]:
+    def delete_authorized_certificate(self) -> Callable[[appengine.DeleteAuthorizedCertificateRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete authorized certificate method over gRPC.
 
         Deletes the specified SSL certificate.
@@ -472,9 +428,7 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "delete_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_authorized_certificate"] = self._logged_channel.unary_unary(
                 "/google.appengine.v1.AuthorizedCertificates/DeleteAuthorizedCertificate",
                 request_serializer=appengine.DeleteAuthorizedCertificateRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,

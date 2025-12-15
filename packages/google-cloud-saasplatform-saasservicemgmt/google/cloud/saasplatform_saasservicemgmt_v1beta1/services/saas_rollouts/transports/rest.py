@@ -31,10 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import (
-    rollouts_resources,
-    rollouts_service,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import rollouts_resources, rollouts_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSaasRolloutsRestTransport
@@ -157,12 +154,8 @@ class SaasRolloutsRestInterceptor:
     """
 
     def pre_create_rollout(
-        self,
-        request: rollouts_service.CreateRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.CreateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: rollouts_service.CreateRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.CreateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -170,9 +163,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_rollout(
-        self, response: rollouts_resources.Rollout
-    ) -> rollouts_resources.Rollout:
+    def post_create_rollout(self, response: rollouts_resources.Rollout) -> rollouts_resources.Rollout:
         """Post-rpc interceptor for create_rollout
 
         DEPRECATED. Please use the `post_create_rollout_with_metadata`
@@ -186,9 +177,7 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_create_rollout_with_metadata(
-        self,
-        response: rollouts_resources.Rollout,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: rollouts_resources.Rollout, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[rollouts_resources.Rollout, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_rollout
 
@@ -205,13 +194,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_create_rollout_kind(
-        self,
-        request: rollouts_service.CreateRolloutKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.CreateRolloutKindRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rollouts_service.CreateRolloutKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.CreateRolloutKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_rollout_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -219,9 +203,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_rollout_kind(
-        self, response: rollouts_resources.RolloutKind
-    ) -> rollouts_resources.RolloutKind:
+    def post_create_rollout_kind(self, response: rollouts_resources.RolloutKind) -> rollouts_resources.RolloutKind:
         """Post-rpc interceptor for create_rollout_kind
 
         DEPRECATED. Please use the `post_create_rollout_kind_with_metadata`
@@ -235,9 +217,7 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_create_rollout_kind_with_metadata(
-        self,
-        response: rollouts_resources.RolloutKind,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: rollouts_resources.RolloutKind, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[rollouts_resources.RolloutKind, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_rollout_kind
 
@@ -254,12 +234,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_delete_rollout(
-        self,
-        request: rollouts_service.DeleteRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.DeleteRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: rollouts_service.DeleteRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.DeleteRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -268,13 +244,8 @@ class SaasRolloutsRestInterceptor:
         return request, metadata
 
     def pre_delete_rollout_kind(
-        self,
-        request: rollouts_service.DeleteRolloutKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.DeleteRolloutKindRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rollouts_service.DeleteRolloutKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.DeleteRolloutKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_rollout_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -283,12 +254,8 @@ class SaasRolloutsRestInterceptor:
         return request, metadata
 
     def pre_get_rollout(
-        self,
-        request: rollouts_service.GetRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.GetRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: rollouts_service.GetRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.GetRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -296,9 +263,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_rollout(
-        self, response: rollouts_resources.Rollout
-    ) -> rollouts_resources.Rollout:
+    def post_get_rollout(self, response: rollouts_resources.Rollout) -> rollouts_resources.Rollout:
         """Post-rpc interceptor for get_rollout
 
         DEPRECATED. Please use the `post_get_rollout_with_metadata`
@@ -312,9 +277,7 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_get_rollout_with_metadata(
-        self,
-        response: rollouts_resources.Rollout,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: rollouts_resources.Rollout, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[rollouts_resources.Rollout, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_rollout
 
@@ -331,12 +294,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_get_rollout_kind(
-        self,
-        request: rollouts_service.GetRolloutKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.GetRolloutKindRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: rollouts_service.GetRolloutKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.GetRolloutKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rollout_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -344,9 +303,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_rollout_kind(
-        self, response: rollouts_resources.RolloutKind
-    ) -> rollouts_resources.RolloutKind:
+    def post_get_rollout_kind(self, response: rollouts_resources.RolloutKind) -> rollouts_resources.RolloutKind:
         """Post-rpc interceptor for get_rollout_kind
 
         DEPRECATED. Please use the `post_get_rollout_kind_with_metadata`
@@ -360,9 +317,7 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_get_rollout_kind_with_metadata(
-        self,
-        response: rollouts_resources.RolloutKind,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: rollouts_resources.RolloutKind, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[rollouts_resources.RolloutKind, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_rollout_kind
 
@@ -379,13 +334,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_list_rollout_kinds(
-        self,
-        request: rollouts_service.ListRolloutKindsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.ListRolloutKindsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rollouts_service.ListRolloutKindsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.ListRolloutKindsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_rollout_kinds
 
         Override in a subclass to manipulate the request or metadata
@@ -393,9 +343,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_rollout_kinds(
-        self, response: rollouts_service.ListRolloutKindsResponse
-    ) -> rollouts_service.ListRolloutKindsResponse:
+    def post_list_rollout_kinds(self, response: rollouts_service.ListRolloutKindsResponse) -> rollouts_service.ListRolloutKindsResponse:
         """Post-rpc interceptor for list_rollout_kinds
 
         DEPRECATED. Please use the `post_list_rollout_kinds_with_metadata`
@@ -409,13 +357,8 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_list_rollout_kinds_with_metadata(
-        self,
-        response: rollouts_service.ListRolloutKindsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.ListRolloutKindsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: rollouts_service.ListRolloutKindsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.ListRolloutKindsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_rollout_kinds
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -431,12 +374,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_list_rollouts(
-        self,
-        request: rollouts_service.ListRolloutsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: rollouts_service.ListRolloutsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_rollouts
 
         Override in a subclass to manipulate the request or metadata
@@ -444,9 +383,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_rollouts(
-        self, response: rollouts_service.ListRolloutsResponse
-    ) -> rollouts_service.ListRolloutsResponse:
+    def post_list_rollouts(self, response: rollouts_service.ListRolloutsResponse) -> rollouts_service.ListRolloutsResponse:
         """Post-rpc interceptor for list_rollouts
 
         DEPRECATED. Please use the `post_list_rollouts_with_metadata`
@@ -460,12 +397,8 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_list_rollouts_with_metadata(
-        self,
-        response: rollouts_service.ListRolloutsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: rollouts_service.ListRolloutsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_rollouts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -481,12 +414,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_update_rollout(
-        self,
-        request: rollouts_service.UpdateRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.UpdateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: rollouts_service.UpdateRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.UpdateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -494,9 +423,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_rollout(
-        self, response: rollouts_resources.Rollout
-    ) -> rollouts_resources.Rollout:
+    def post_update_rollout(self, response: rollouts_resources.Rollout) -> rollouts_resources.Rollout:
         """Post-rpc interceptor for update_rollout
 
         DEPRECATED. Please use the `post_update_rollout_with_metadata`
@@ -510,9 +437,7 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_update_rollout_with_metadata(
-        self,
-        response: rollouts_resources.Rollout,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: rollouts_resources.Rollout, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[rollouts_resources.Rollout, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_rollout
 
@@ -529,13 +454,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_update_rollout_kind(
-        self,
-        request: rollouts_service.UpdateRolloutKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rollouts_service.UpdateRolloutKindRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rollouts_service.UpdateRolloutKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rollouts_service.UpdateRolloutKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_rollout_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -543,9 +463,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_rollout_kind(
-        self, response: rollouts_resources.RolloutKind
-    ) -> rollouts_resources.RolloutKind:
+    def post_update_rollout_kind(self, response: rollouts_resources.RolloutKind) -> rollouts_resources.RolloutKind:
         """Post-rpc interceptor for update_rollout_kind
 
         DEPRECATED. Please use the `post_update_rollout_kind_with_metadata`
@@ -559,9 +477,7 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def post_update_rollout_kind_with_metadata(
-        self,
-        response: rollouts_resources.RolloutKind,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: rollouts_resources.RolloutKind, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[rollouts_resources.RolloutKind, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_rollout_kind
 
@@ -578,12 +494,8 @@ class SaasRolloutsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -591,9 +503,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -603,12 +513,8 @@ class SaasRolloutsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -616,9 +522,7 @@ class SaasRolloutsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -707,30 +611,18 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SaasRolloutsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateRollout(
-        _BaseSaasRolloutsRestTransport._BaseCreateRollout, SaasRolloutsRestStub
-    ):
+    class _CreateRollout(_BaseSaasRolloutsRestTransport._BaseCreateRollout, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.CreateRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -773,30 +665,18 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_create_rollout(request, metadata)
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseCreateRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -820,13 +700,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._CreateRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -842,12 +716,8 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_create_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = rollouts_resources.Rollout.to_json(response)
                 except:
@@ -868,22 +738,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _CreateRolloutKind(
-        _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind, SaasRolloutsRestStub
-    ):
+    class _CreateRolloutKind(_BaseSaasRolloutsRestTransport._BaseCreateRolloutKind, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.CreateRolloutKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -928,32 +788,18 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_rollout_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_rollout_kind(request, metadata)
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseCreateRolloutKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -977,13 +823,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._CreateRolloutKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -999,12 +839,8 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_create_rollout_kind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_rollout_kind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_rollout_kind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = rollouts_resources.RolloutKind.to_json(response)
                 except:
@@ -1025,22 +861,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _DeleteRollout(
-        _BaseSaasRolloutsRestTransport._BaseDeleteRollout, SaasRolloutsRestStub
-    ):
+    class _DeleteRollout(_BaseSaasRolloutsRestTransport._BaseDeleteRollout, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.DeleteRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1076,26 +902,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseDeleteRollout._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseDeleteRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_rollout(request, metadata)
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseDeleteRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseDeleteRollout._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseDeleteRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseDeleteRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1119,12 +935,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._DeleteRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1132,22 +943,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteRolloutKind(
-        _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind, SaasRolloutsRestStub
-    ):
+    class _DeleteRolloutKind(_BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.DeleteRolloutKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1183,28 +984,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_rollout_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_rollout_kind(request, metadata)
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseDeleteRolloutKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1228,12 +1017,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._DeleteRolloutKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1241,22 +1025,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetRollout(
-        _BaseSaasRolloutsRestTransport._BaseGetRollout, SaasRolloutsRestStub
-    ):
+    class _GetRollout(_BaseSaasRolloutsRestTransport._BaseGetRollout, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.GetRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1298,30 +1072,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseGetRollout._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseGetRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rollout(request, metadata)
-            transcoded_request = (
-                _BaseSaasRolloutsRestTransport._BaseGetRollout._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseGetRollout._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasRolloutsRestTransport._BaseGetRollout._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseGetRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1345,12 +1105,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._GetRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1366,12 +1121,8 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_get_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = rollouts_resources.Rollout.to_json(response)
                 except:
@@ -1392,22 +1143,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _GetRolloutKind(
-        _BaseSaasRolloutsRestTransport._BaseGetRolloutKind, SaasRolloutsRestStub
-    ):
+    class _GetRolloutKind(_BaseSaasRolloutsRestTransport._BaseGetRolloutKind, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.GetRolloutKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1451,28 +1192,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseGetRolloutKind._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseGetRolloutKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_rollout_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseGetRolloutKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_rollout_kind(request, metadata)
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseGetRolloutKind._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseGetRolloutKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseGetRolloutKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1496,12 +1225,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._GetRolloutKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1517,12 +1241,8 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_get_rollout_kind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_rollout_kind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_rollout_kind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = rollouts_resources.RolloutKind.to_json(response)
                 except:
@@ -1543,22 +1263,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _ListRolloutKinds(
-        _BaseSaasRolloutsRestTransport._BaseListRolloutKinds, SaasRolloutsRestStub
-    ):
+    class _ListRolloutKinds(_BaseSaasRolloutsRestTransport._BaseListRolloutKinds, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.ListRolloutKinds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1600,28 +1310,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseListRolloutKinds._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseListRolloutKinds._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_rollout_kinds(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseListRolloutKinds._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_rollout_kinds(request, metadata)
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseListRolloutKinds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseListRolloutKinds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseListRolloutKinds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1645,12 +1343,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._ListRolloutKinds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1666,16 +1359,10 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_list_rollout_kinds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_rollout_kinds_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_rollout_kinds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        rollouts_service.ListRolloutKindsResponse.to_json(response)
-                    )
+                    response_payload = rollouts_service.ListRolloutKindsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1694,22 +1381,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _ListRollouts(
-        _BaseSaasRolloutsRestTransport._BaseListRollouts, SaasRolloutsRestStub
-    ):
+    class _ListRollouts(_BaseSaasRolloutsRestTransport._BaseListRollouts, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.ListRollouts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1751,28 +1428,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseListRollouts._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseListRollouts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_rollouts(request, metadata)
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseListRollouts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseListRollouts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasRolloutsRestTransport._BaseListRollouts._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseListRollouts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1796,12 +1461,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._ListRollouts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1817,16 +1477,10 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_list_rollouts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_rollouts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_rollouts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = rollouts_service.ListRolloutsResponse.to_json(
-                        response
-                    )
+                    response_payload = rollouts_service.ListRolloutsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1845,22 +1499,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _UpdateRollout(
-        _BaseSaasRolloutsRestTransport._BaseUpdateRollout, SaasRolloutsRestStub
-    ):
+    class _UpdateRollout(_BaseSaasRolloutsRestTransport._BaseUpdateRollout, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.UpdateRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1903,30 +1547,18 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_update_rollout(request, metadata)
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseUpdateRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1950,13 +1582,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._UpdateRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1972,12 +1598,8 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_update_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = rollouts_resources.Rollout.to_json(response)
                 except:
@@ -1998,22 +1620,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 )
             return resp
 
-    class _UpdateRolloutKind(
-        _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind, SaasRolloutsRestStub
-    ):
+    class _UpdateRolloutKind(_BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.UpdateRolloutKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2058,32 +1670,18 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_rollout_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_rollout_kind(request, metadata)
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseUpdateRolloutKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2107,13 +1705,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._UpdateRolloutKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2129,12 +1721,8 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             resp = self._interceptor.post_update_rollout_kind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_rollout_kind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_rollout_kind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = rollouts_resources.RolloutKind.to_json(response)
                 except:
@@ -2156,92 +1744,61 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
             return resp
 
     @property
-    def create_rollout(
-        self,
-    ) -> Callable[[rollouts_service.CreateRolloutRequest], rollouts_resources.Rollout]:
+    def create_rollout(self) -> Callable[[rollouts_service.CreateRolloutRequest], rollouts_resources.Rollout]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.CreateRolloutKindRequest], rollouts_resources.RolloutKind
-    ]:
+    def create_rollout_kind(self) -> Callable[[rollouts_service.CreateRolloutKindRequest], rollouts_resources.RolloutKind]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRolloutKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_rollout(
-        self,
-    ) -> Callable[[rollouts_service.DeleteRolloutRequest], empty_pb2.Empty]:
+    def delete_rollout(self) -> Callable[[rollouts_service.DeleteRolloutRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_rollout_kind(
-        self,
-    ) -> Callable[[rollouts_service.DeleteRolloutKindRequest], empty_pb2.Empty]:
+    def delete_rollout_kind(self) -> Callable[[rollouts_service.DeleteRolloutKindRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRolloutKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[[rollouts_service.GetRolloutRequest], rollouts_resources.Rollout]:
+    def get_rollout(self) -> Callable[[rollouts_service.GetRolloutRequest], rollouts_resources.Rollout]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.GetRolloutKindRequest], rollouts_resources.RolloutKind
-    ]:
+    def get_rollout_kind(self) -> Callable[[rollouts_service.GetRolloutKindRequest], rollouts_resources.RolloutKind]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRolloutKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_rollout_kinds(
-        self,
-    ) -> Callable[
-        [rollouts_service.ListRolloutKindsRequest],
-        rollouts_service.ListRolloutKindsResponse,
-    ]:
+    def list_rollout_kinds(self) -> Callable[[rollouts_service.ListRolloutKindsRequest], rollouts_service.ListRolloutKindsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRolloutKinds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_rollouts(
-        self,
-    ) -> Callable[
-        [rollouts_service.ListRolloutsRequest], rollouts_service.ListRolloutsResponse
-    ]:
+    def list_rollouts(self) -> Callable[[rollouts_service.ListRolloutsRequest], rollouts_service.ListRolloutsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRollouts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_rollout(
-        self,
-    ) -> Callable[[rollouts_service.UpdateRolloutRequest], rollouts_resources.Rollout]:
+    def update_rollout(self) -> Callable[[rollouts_service.UpdateRolloutRequest], rollouts_resources.Rollout]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.UpdateRolloutKindRequest], rollouts_resources.RolloutKind
-    ]:
+    def update_rollout_kind(self) -> Callable[[rollouts_service.UpdateRolloutKindRequest], rollouts_resources.RolloutKind]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRolloutKind(self._session, self._host, self._interceptor)  # type: ignore
@@ -2250,22 +1807,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseSaasRolloutsRestTransport._BaseGetLocation, SaasRolloutsRestStub
-    ):
+    class _GetLocation(_BaseSaasRolloutsRestTransport._BaseGetLocation, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2303,30 +1850,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseSaasRolloutsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasRolloutsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2350,12 +1883,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2367,9 +1895,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2394,22 +1920,12 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSaasRolloutsRestTransport._BaseListLocations, SaasRolloutsRestStub
-    ):
+    class _ListLocations(_BaseSaasRolloutsRestTransport._BaseListLocations, SaasRolloutsRestStub):
         def __hash__(self):
             return hash("SaasRolloutsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2447,26 +1963,16 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSaasRolloutsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSaasRolloutsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSaasRolloutsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasRolloutsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasRolloutsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasRolloutsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2490,12 +1996,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
 
             # Send the request
             response = SaasRolloutsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2507,9 +2008,7 @@ class SaasRolloutsRestTransport(_BaseSaasRolloutsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

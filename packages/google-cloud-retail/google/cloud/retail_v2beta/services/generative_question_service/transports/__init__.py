@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import GenerativeQuestionServiceTransport
 from .grpc import GenerativeQuestionServiceGrpcTransport
 from .grpc_asyncio import GenerativeQuestionServiceGrpcAsyncIOTransport
-from .rest import (
-    GenerativeQuestionServiceRestInterceptor,
-    GenerativeQuestionServiceRestTransport,
-)
+from .rest import GenerativeQuestionServiceRestInterceptor, GenerativeQuestionServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GenerativeQuestionServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GenerativeQuestionServiceTransport]]
 _transport_registry["grpc"] = GenerativeQuestionServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = GenerativeQuestionServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = GenerativeQuestionServiceRestTransport

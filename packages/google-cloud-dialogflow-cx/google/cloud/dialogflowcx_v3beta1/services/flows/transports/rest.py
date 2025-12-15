@@ -159,9 +159,7 @@ class FlowsRestInterceptor:
     """
 
     def pre_create_flow(
-        self,
-        request: gcdc_flow.CreateFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcdc_flow.CreateFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_flow.CreateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_flow
 
@@ -184,9 +182,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_create_flow_with_metadata(
-        self,
-        response: gcdc_flow.Flow,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_flow.Flow, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_flow
 
@@ -203,9 +199,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_delete_flow(
-        self,
-        request: flow.DeleteFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.DeleteFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.DeleteFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_flow
 
@@ -215,9 +209,7 @@ class FlowsRestInterceptor:
         return request, metadata
 
     def pre_export_flow(
-        self,
-        request: flow.ExportFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.ExportFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.ExportFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_flow
 
@@ -226,9 +218,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_export_flow(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_flow(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_flow
 
         DEPRECATED. Please use the `post_export_flow_with_metadata`
@@ -242,9 +232,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_export_flow_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_flow
 
@@ -261,9 +249,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_get_flow(
-        self,
-        request: flow.GetFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.GetFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.GetFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_flow
 
@@ -303,12 +289,8 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_get_flow_validation_result(
-        self,
-        request: flow.GetFlowValidationResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        flow.GetFlowValidationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: flow.GetFlowValidationResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[flow.GetFlowValidationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_flow_validation_result
 
         Override in a subclass to manipulate the request or metadata
@@ -316,9 +298,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_flow_validation_result(
-        self, response: flow.FlowValidationResult
-    ) -> flow.FlowValidationResult:
+    def post_get_flow_validation_result(self, response: flow.FlowValidationResult) -> flow.FlowValidationResult:
         """Post-rpc interceptor for get_flow_validation_result
 
         DEPRECATED. Please use the `post_get_flow_validation_result_with_metadata`
@@ -332,9 +312,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_get_flow_validation_result_with_metadata(
-        self,
-        response: flow.FlowValidationResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: flow.FlowValidationResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.FlowValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_flow_validation_result
 
@@ -351,9 +329,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_import_flow(
-        self,
-        request: flow.ImportFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.ImportFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.ImportFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_flow
 
@@ -362,9 +338,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_import_flow(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_flow(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_flow
 
         DEPRECATED. Please use the `post_import_flow_with_metadata`
@@ -378,9 +352,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_import_flow_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_flow
 
@@ -397,9 +369,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_list_flows(
-        self,
-        request: flow.ListFlowsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.ListFlowsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.ListFlowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_flows
 
@@ -408,9 +378,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_flows(
-        self, response: flow.ListFlowsResponse
-    ) -> flow.ListFlowsResponse:
+    def post_list_flows(self, response: flow.ListFlowsResponse) -> flow.ListFlowsResponse:
         """Post-rpc interceptor for list_flows
 
         DEPRECATED. Please use the `post_list_flows_with_metadata`
@@ -424,9 +392,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_list_flows_with_metadata(
-        self,
-        response: flow.ListFlowsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: flow.ListFlowsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.ListFlowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_flows
 
@@ -443,9 +409,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_train_flow(
-        self,
-        request: flow.TrainFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.TrainFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.TrainFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for train_flow
 
@@ -454,9 +418,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_train_flow(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_train_flow(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_flow
 
         DEPRECATED. Please use the `post_train_flow_with_metadata`
@@ -470,9 +432,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_train_flow_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for train_flow
 
@@ -489,9 +449,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_update_flow(
-        self,
-        request: gcdc_flow.UpdateFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcdc_flow.UpdateFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_flow.UpdateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_flow
 
@@ -514,9 +472,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_update_flow_with_metadata(
-        self,
-        response: gcdc_flow.Flow,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_flow.Flow, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_flow
 
@@ -533,9 +489,7 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_validate_flow(
-        self,
-        request: flow.ValidateFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: flow.ValidateFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.ValidateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate_flow
 
@@ -544,9 +498,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_validate_flow(
-        self, response: flow.FlowValidationResult
-    ) -> flow.FlowValidationResult:
+    def post_validate_flow(self, response: flow.FlowValidationResult) -> flow.FlowValidationResult:
         """Post-rpc interceptor for validate_flow
 
         DEPRECATED. Please use the `post_validate_flow_with_metadata`
@@ -560,9 +512,7 @@ class FlowsRestInterceptor:
         return response
 
     def post_validate_flow_with_metadata(
-        self,
-        response: flow.FlowValidationResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: flow.FlowValidationResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[flow.FlowValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for validate_flow
 
@@ -579,12 +529,8 @@ class FlowsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -592,9 +538,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -604,12 +548,8 @@ class FlowsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -617,9 +557,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -629,12 +567,8 @@ class FlowsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -652,12 +586,8 @@ class FlowsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -665,9 +595,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -677,12 +605,8 @@ class FlowsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -690,9 +614,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -782,9 +704,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -842,9 +762,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 path_prefix="v3beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -854,15 +772,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.CreateFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -929,29 +839,15 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseCreateFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_create_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseCreateFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseCreateFlow._get_transcoded_request(http_options, request)
 
-            body = _BaseFlowsRestTransport._BaseCreateFlow._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlowsRestTransport._BaseCreateFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseCreateFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseCreateFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -975,13 +871,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._CreateFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -997,12 +887,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_create_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_flow.Flow.to_json(response)
                 except:
@@ -1028,15 +914,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.DeleteFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1075,25 +953,13 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseDeleteFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseDeleteFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseDeleteFlow._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseDeleteFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseDeleteFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1116,14 +982,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
 
             # Send the request
-            response = FlowsRestTransport._DeleteFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FlowsRestTransport._DeleteFlow._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1135,15 +994,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.ExportFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1190,29 +1041,15 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseExportFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_export_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseExportFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseExportFlow._get_transcoded_request(http_options, request)
 
-            body = _BaseFlowsRestTransport._BaseExportFlow._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlowsRestTransport._BaseExportFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseExportFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseExportFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1236,13 +1073,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._ExportFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1256,12 +1087,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_export_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1287,15 +1114,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.GetFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1361,23 +1180,13 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseGetFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_get_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseGetFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseGetFlow._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFlowsRestTransport._BaseGetFlow._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFlowsRestTransport._BaseGetFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1400,14 +1209,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
 
             # Send the request
-            response = FlowsRestTransport._GetFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FlowsRestTransport._GetFlow._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1422,12 +1224,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_get_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = flow.Flow.to_json(response)
                 except:
@@ -1448,22 +1246,12 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
             return resp
 
-    class _GetFlowValidationResult(
-        _BaseFlowsRestTransport._BaseGetFlowValidationResult, FlowsRestStub
-    ):
+    class _GetFlowValidationResult(_BaseFlowsRestTransport._BaseGetFlowValidationResult, FlowsRestStub):
         def __hash__(self):
             return hash("FlowsRestTransport.GetFlowValidationResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1506,28 +1294,16 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             """
 
-            http_options = (
-                _BaseFlowsRestTransport._BaseGetFlowValidationResult._get_http_options()
-            )
+            http_options = _BaseFlowsRestTransport._BaseGetFlowValidationResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_flow_validation_result(
-                request, metadata
-            )
-            transcoded_request = _BaseFlowsRestTransport._BaseGetFlowValidationResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_flow_validation_result(request, metadata)
+            transcoded_request = _BaseFlowsRestTransport._BaseGetFlowValidationResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFlowsRestTransport._BaseGetFlowValidationResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFlowsRestTransport._BaseGetFlowValidationResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1551,12 +1327,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._GetFlowValidationResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1572,12 +1343,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_get_flow_validation_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_flow_validation_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_flow_validation_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = flow.FlowValidationResult.to_json(response)
                 except:
@@ -1603,15 +1370,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.ImportFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1658,29 +1417,15 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseImportFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_import_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseImportFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseImportFlow._get_transcoded_request(http_options, request)
 
-            body = _BaseFlowsRestTransport._BaseImportFlow._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlowsRestTransport._BaseImportFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseImportFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseImportFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1704,13 +1449,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._ImportFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1724,12 +1463,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_import_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1755,15 +1490,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.ListFlows")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1808,25 +1535,13 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseListFlows._get_http_options()
 
             request, metadata = self._interceptor.pre_list_flows(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseListFlows._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseListFlows._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseListFlows._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseListFlows._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1849,14 +1564,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
 
             # Send the request
-            response = FlowsRestTransport._ListFlows._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FlowsRestTransport._ListFlows._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1871,12 +1579,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_list_flows(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_flows_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_flows_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = flow.ListFlowsResponse.to_json(response)
                 except:
@@ -1902,15 +1606,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.TrainFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1957,29 +1653,15 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseTrainFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_train_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseTrainFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseTrainFlow._get_transcoded_request(http_options, request)
 
-            body = _BaseFlowsRestTransport._BaseTrainFlow._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlowsRestTransport._BaseTrainFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseTrainFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseTrainFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2003,13 +1685,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._TrainFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2023,12 +1699,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_train_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_train_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_train_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2054,15 +1726,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.UpdateFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2129,29 +1793,15 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseUpdateFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_update_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseUpdateFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseUpdateFlow._get_transcoded_request(http_options, request)
 
-            body = _BaseFlowsRestTransport._BaseUpdateFlow._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlowsRestTransport._BaseUpdateFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseUpdateFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseUpdateFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2175,13 +1825,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._UpdateFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2197,12 +1841,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_update_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_flow.Flow.to_json(response)
                 except:
@@ -2228,15 +1868,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.ValidateFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2282,29 +1914,15 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseValidateFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_validate_flow(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseValidateFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseValidateFlow._get_transcoded_request(http_options, request)
 
-            body = _BaseFlowsRestTransport._BaseValidateFlow._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFlowsRestTransport._BaseValidateFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseValidateFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseValidateFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2328,13 +1946,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._ValidateFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2350,12 +1962,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             resp = self._interceptor.post_validate_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_validate_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_validate_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = flow.FlowValidationResult.to_json(response)
                 except:
@@ -2389,9 +1997,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
         return self._DeleteFlow(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_flow(
-        self,
-    ) -> Callable[[flow.ExportFlowRequest], operations_pb2.Operation]:
+    def export_flow(self) -> Callable[[flow.ExportFlowRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportFlow(self._session, self._host, self._interceptor)  # type: ignore
@@ -2403,17 +2009,13 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
         return self._GetFlow(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_flow_validation_result(
-        self,
-    ) -> Callable[[flow.GetFlowValidationResultRequest], flow.FlowValidationResult]:
+    def get_flow_validation_result(self) -> Callable[[flow.GetFlowValidationResultRequest], flow.FlowValidationResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFlowValidationResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_flow(
-        self,
-    ) -> Callable[[flow.ImportFlowRequest], operations_pb2.Operation]:
+    def import_flow(self) -> Callable[[flow.ImportFlowRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportFlow(self._session, self._host, self._interceptor)  # type: ignore
@@ -2437,9 +2039,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
         return self._UpdateFlow(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def validate_flow(
-        self,
-    ) -> Callable[[flow.ValidateFlowRequest], flow.FlowValidationResult]:
+    def validate_flow(self) -> Callable[[flow.ValidateFlowRequest], flow.FlowValidationResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ValidateFlow(self._session, self._host, self._interceptor)  # type: ignore
@@ -2453,15 +2053,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2502,25 +2094,13 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2543,14 +2123,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
 
             # Send the request
-            response = FlowsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FlowsRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2561,9 +2134,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2593,15 +2164,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2639,30 +2202,16 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseFlowsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseFlowsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2685,14 +2234,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
 
             # Send the request
-            response = FlowsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FlowsRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2703,9 +2245,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2735,15 +2275,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2778,32 +2310,16 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFlowsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseFlowsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseFlowsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2827,12 +2343,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2851,15 +2362,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2900,25 +2403,13 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             http_options = _BaseFlowsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2941,14 +2432,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 )
 
             # Send the request
-            response = FlowsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FlowsRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2959,9 +2443,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2991,15 +2473,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return hash("FlowsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3037,30 +2511,16 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseFlowsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseFlowsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseFlowsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFlowsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFlowsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFlowsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3084,12 +2544,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
             # Send the request
             response = FlowsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3101,9 +2556,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

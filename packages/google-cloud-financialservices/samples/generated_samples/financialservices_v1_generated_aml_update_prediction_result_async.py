@@ -42,9 +42,7 @@ async def sample_update_prediction_result():
     prediction_result = financialservices_v1.PredictionResult()
     prediction_result.dataset = "dataset_value"
     prediction_result.model = "model_value"
-    prediction_result.outputs.prediction_destination.write_disposition = (
-        "WRITE_TRUNCATE"
-    )
+    prediction_result.outputs.prediction_destination.write_disposition = "WRITE_TRUNCATE"
 
     request = financialservices_v1.UpdatePredictionResultRequest(
         prediction_result=prediction_result,

@@ -71,20 +71,14 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAddHealthCheck:
@@ -95,11 +89,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -122,9 +112,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -135,11 +123,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -151,11 +135,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -178,9 +158,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -191,11 +169,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseAddInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseAddInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -207,11 +181,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -237,11 +207,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseAggregatedList._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseAggregatedList._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -253,11 +219,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -283,11 +245,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseDelete._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseDelete._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -299,11 +257,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -329,11 +283,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseGet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseGet._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -345,11 +295,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -372,9 +318,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -385,11 +329,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseGetHealth._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseGetHealth._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -401,11 +341,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -428,9 +364,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -441,11 +375,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseInsert._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseInsert._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -457,11 +387,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -487,11 +413,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseList._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseList._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -503,11 +425,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -530,9 +448,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -543,11 +459,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -559,11 +471,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -586,9 +494,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -599,11 +505,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseRemoveInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -615,11 +517,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -642,9 +540,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -655,11 +551,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseSetBackup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseSetBackup._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -671,11 +563,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -698,9 +586,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -711,11 +597,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -727,11 +609,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -754,9 +632,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=False)
             return body
 
         @staticmethod
@@ -767,11 +643,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                     use_integers_for_enums=False,
                 )
             )
-            query_params.update(
-                _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_unset_required_fields(query_params))
 
             return query_params
 

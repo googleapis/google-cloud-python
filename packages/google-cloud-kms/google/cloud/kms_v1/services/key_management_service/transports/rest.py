@@ -315,12 +315,8 @@ class KeyManagementServiceRestInterceptor:
     """
 
     def pre_asymmetric_decrypt(
-        self,
-        request: service.AsymmetricDecryptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.AsymmetricDecryptRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.AsymmetricDecryptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.AsymmetricDecryptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for asymmetric_decrypt
 
         Override in a subclass to manipulate the request or metadata
@@ -328,9 +324,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_asymmetric_decrypt(
-        self, response: service.AsymmetricDecryptResponse
-    ) -> service.AsymmetricDecryptResponse:
+    def post_asymmetric_decrypt(self, response: service.AsymmetricDecryptResponse) -> service.AsymmetricDecryptResponse:
         """Post-rpc interceptor for asymmetric_decrypt
 
         DEPRECATED. Please use the `post_asymmetric_decrypt_with_metadata`
@@ -344,12 +338,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_asymmetric_decrypt_with_metadata(
-        self,
-        response: service.AsymmetricDecryptResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.AsymmetricDecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.AsymmetricDecryptResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.AsymmetricDecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for asymmetric_decrypt
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -365,9 +355,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_asymmetric_sign(
-        self,
-        request: service.AsymmetricSignRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.AsymmetricSignRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.AsymmetricSignRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for asymmetric_sign
 
@@ -376,9 +364,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_asymmetric_sign(
-        self, response: service.AsymmetricSignResponse
-    ) -> service.AsymmetricSignResponse:
+    def post_asymmetric_sign(self, response: service.AsymmetricSignResponse) -> service.AsymmetricSignResponse:
         """Post-rpc interceptor for asymmetric_sign
 
         DEPRECATED. Please use the `post_asymmetric_sign_with_metadata`
@@ -392,9 +378,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_asymmetric_sign_with_metadata(
-        self,
-        response: service.AsymmetricSignResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.AsymmetricSignResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.AsymmetricSignResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for asymmetric_sign
 
@@ -411,9 +395,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_create_crypto_key(
-        self,
-        request: service.CreateCryptoKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateCryptoKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateCryptoKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_crypto_key
 
@@ -422,9 +404,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_crypto_key(
-        self, response: resources.CryptoKey
-    ) -> resources.CryptoKey:
+    def post_create_crypto_key(self, response: resources.CryptoKey) -> resources.CryptoKey:
         """Post-rpc interceptor for create_crypto_key
 
         DEPRECATED. Please use the `post_create_crypto_key_with_metadata`
@@ -438,9 +418,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_create_crypto_key_with_metadata(
-        self,
-        response: resources.CryptoKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_crypto_key
 
@@ -457,12 +435,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_create_crypto_key_version(
-        self,
-        request: service.CreateCryptoKeyVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateCryptoKeyVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_crypto_key_version
 
         Override in a subclass to manipulate the request or metadata
@@ -470,9 +444,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_crypto_key_version(
-        self, response: resources.CryptoKeyVersion
-    ) -> resources.CryptoKeyVersion:
+    def post_create_crypto_key_version(self, response: resources.CryptoKeyVersion) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for create_crypto_key_version
 
         DEPRECATED. Please use the `post_create_crypto_key_version_with_metadata`
@@ -486,9 +458,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_create_crypto_key_version_with_metadata(
-        self,
-        response: resources.CryptoKeyVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKeyVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_crypto_key_version
 
@@ -505,9 +475,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_create_import_job(
-        self,
-        request: service.CreateImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_import_job
 
@@ -516,9 +484,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_import_job(
-        self, response: resources.ImportJob
-    ) -> resources.ImportJob:
+    def post_create_import_job(self, response: resources.ImportJob) -> resources.ImportJob:
         """Post-rpc interceptor for create_import_job
 
         DEPRECATED. Please use the `post_create_import_job_with_metadata`
@@ -532,9 +498,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_create_import_job_with_metadata(
-        self,
-        response: resources.ImportJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.ImportJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.ImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_import_job
 
@@ -551,9 +515,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_create_key_ring(
-        self,
-        request: service.CreateKeyRingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateKeyRingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateKeyRingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_key_ring
 
@@ -576,9 +538,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_create_key_ring_with_metadata(
-        self,
-        response: resources.KeyRing,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.KeyRing, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.KeyRing, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_key_ring
 
@@ -595,9 +555,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_decapsulate(
-        self,
-        request: service.DecapsulateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DecapsulateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DecapsulateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for decapsulate
 
@@ -606,9 +564,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_decapsulate(
-        self, response: service.DecapsulateResponse
-    ) -> service.DecapsulateResponse:
+    def post_decapsulate(self, response: service.DecapsulateResponse) -> service.DecapsulateResponse:
         """Post-rpc interceptor for decapsulate
 
         DEPRECATED. Please use the `post_decapsulate_with_metadata`
@@ -622,9 +578,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_decapsulate_with_metadata(
-        self,
-        response: service.DecapsulateResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.DecapsulateResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DecapsulateResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for decapsulate
 
@@ -641,9 +595,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_decrypt(
-        self,
-        request: service.DecryptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DecryptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DecryptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for decrypt
 
@@ -652,9 +604,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_decrypt(
-        self, response: service.DecryptResponse
-    ) -> service.DecryptResponse:
+    def post_decrypt(self, response: service.DecryptResponse) -> service.DecryptResponse:
         """Post-rpc interceptor for decrypt
 
         DEPRECATED. Please use the `post_decrypt_with_metadata`
@@ -668,9 +618,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_decrypt_with_metadata(
-        self,
-        response: service.DecryptResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.DecryptResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for decrypt
 
@@ -687,12 +635,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_destroy_crypto_key_version(
-        self,
-        request: service.DestroyCryptoKeyVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DestroyCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DestroyCryptoKeyVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DestroyCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for destroy_crypto_key_version
 
         Override in a subclass to manipulate the request or metadata
@@ -700,9 +644,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_destroy_crypto_key_version(
-        self, response: resources.CryptoKeyVersion
-    ) -> resources.CryptoKeyVersion:
+    def post_destroy_crypto_key_version(self, response: resources.CryptoKeyVersion) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for destroy_crypto_key_version
 
         DEPRECATED. Please use the `post_destroy_crypto_key_version_with_metadata`
@@ -716,9 +658,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_destroy_crypto_key_version_with_metadata(
-        self,
-        response: resources.CryptoKeyVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKeyVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for destroy_crypto_key_version
 
@@ -735,9 +675,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_encrypt(
-        self,
-        request: service.EncryptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.EncryptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.EncryptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for encrypt
 
@@ -746,9 +684,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_encrypt(
-        self, response: service.EncryptResponse
-    ) -> service.EncryptResponse:
+    def post_encrypt(self, response: service.EncryptResponse) -> service.EncryptResponse:
         """Post-rpc interceptor for encrypt
 
         DEPRECATED. Please use the `post_encrypt_with_metadata`
@@ -762,9 +698,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_encrypt_with_metadata(
-        self,
-        response: service.EncryptResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.EncryptResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.EncryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for encrypt
 
@@ -781,12 +715,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_random_bytes(
-        self,
-        request: service.GenerateRandomBytesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GenerateRandomBytesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GenerateRandomBytesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GenerateRandomBytesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_random_bytes
 
         Override in a subclass to manipulate the request or metadata
@@ -794,9 +724,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_random_bytes(
-        self, response: service.GenerateRandomBytesResponse
-    ) -> service.GenerateRandomBytesResponse:
+    def post_generate_random_bytes(self, response: service.GenerateRandomBytesResponse) -> service.GenerateRandomBytesResponse:
         """Post-rpc interceptor for generate_random_bytes
 
         DEPRECATED. Please use the `post_generate_random_bytes_with_metadata`
@@ -810,12 +738,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_generate_random_bytes_with_metadata(
-        self,
-        response: service.GenerateRandomBytesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GenerateRandomBytesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.GenerateRandomBytesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GenerateRandomBytesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_random_bytes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -831,9 +755,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_crypto_key(
-        self,
-        request: service.GetCryptoKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetCryptoKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetCryptoKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_crypto_key
 
@@ -856,9 +778,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_get_crypto_key_with_metadata(
-        self,
-        response: resources.CryptoKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_crypto_key
 
@@ -875,12 +795,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_crypto_key_version(
-        self,
-        request: service.GetCryptoKeyVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetCryptoKeyVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_crypto_key_version
 
         Override in a subclass to manipulate the request or metadata
@@ -888,9 +804,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_crypto_key_version(
-        self, response: resources.CryptoKeyVersion
-    ) -> resources.CryptoKeyVersion:
+    def post_get_crypto_key_version(self, response: resources.CryptoKeyVersion) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for get_crypto_key_version
 
         DEPRECATED. Please use the `post_get_crypto_key_version_with_metadata`
@@ -904,9 +818,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_get_crypto_key_version_with_metadata(
-        self,
-        response: resources.CryptoKeyVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKeyVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_crypto_key_version
 
@@ -923,9 +835,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_import_job(
-        self,
-        request: service.GetImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_import_job
 
@@ -948,9 +858,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_get_import_job_with_metadata(
-        self,
-        response: resources.ImportJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.ImportJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.ImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_import_job
 
@@ -967,9 +875,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_key_ring(
-        self,
-        request: service.GetKeyRingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetKeyRingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetKeyRingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_key_ring
 
@@ -992,9 +898,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_get_key_ring_with_metadata(
-        self,
-        response: resources.KeyRing,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.KeyRing, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.KeyRing, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_key_ring
 
@@ -1011,9 +915,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_public_key(
-        self,
-        request: service.GetPublicKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetPublicKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetPublicKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_public_key
 
@@ -1036,9 +938,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_get_public_key_with_metadata(
-        self,
-        response: resources.PublicKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.PublicKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.PublicKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_public_key
 
@@ -1055,12 +955,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_import_crypto_key_version(
-        self,
-        request: service.ImportCryptoKeyVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ImportCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ImportCryptoKeyVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ImportCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_crypto_key_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1068,9 +964,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_crypto_key_version(
-        self, response: resources.CryptoKeyVersion
-    ) -> resources.CryptoKeyVersion:
+    def post_import_crypto_key_version(self, response: resources.CryptoKeyVersion) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for import_crypto_key_version
 
         DEPRECATED. Please use the `post_import_crypto_key_version_with_metadata`
@@ -1084,9 +978,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_import_crypto_key_version_with_metadata(
-        self,
-        response: resources.CryptoKeyVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKeyVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_crypto_key_version
 
@@ -1103,9 +995,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_list_crypto_keys(
-        self,
-        request: service.ListCryptoKeysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListCryptoKeysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListCryptoKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_crypto_keys
 
@@ -1114,9 +1004,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_crypto_keys(
-        self, response: service.ListCryptoKeysResponse
-    ) -> service.ListCryptoKeysResponse:
+    def post_list_crypto_keys(self, response: service.ListCryptoKeysResponse) -> service.ListCryptoKeysResponse:
         """Post-rpc interceptor for list_crypto_keys
 
         DEPRECATED. Please use the `post_list_crypto_keys_with_metadata`
@@ -1130,9 +1018,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_list_crypto_keys_with_metadata(
-        self,
-        response: service.ListCryptoKeysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListCryptoKeysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListCryptoKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_crypto_keys
 
@@ -1149,12 +1035,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_list_crypto_key_versions(
-        self,
-        request: service.ListCryptoKeyVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCryptoKeyVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListCryptoKeyVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCryptoKeyVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_crypto_key_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -1162,9 +1044,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_crypto_key_versions(
-        self, response: service.ListCryptoKeyVersionsResponse
-    ) -> service.ListCryptoKeyVersionsResponse:
+    def post_list_crypto_key_versions(self, response: service.ListCryptoKeyVersionsResponse) -> service.ListCryptoKeyVersionsResponse:
         """Post-rpc interceptor for list_crypto_key_versions
 
         DEPRECATED. Please use the `post_list_crypto_key_versions_with_metadata`
@@ -1178,12 +1058,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_list_crypto_key_versions_with_metadata(
-        self,
-        response: service.ListCryptoKeyVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCryptoKeyVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListCryptoKeyVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCryptoKeyVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_crypto_key_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1199,9 +1075,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_list_import_jobs(
-        self,
-        request: service.ListImportJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListImportJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListImportJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_import_jobs
 
@@ -1210,9 +1084,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_import_jobs(
-        self, response: service.ListImportJobsResponse
-    ) -> service.ListImportJobsResponse:
+    def post_list_import_jobs(self, response: service.ListImportJobsResponse) -> service.ListImportJobsResponse:
         """Post-rpc interceptor for list_import_jobs
 
         DEPRECATED. Please use the `post_list_import_jobs_with_metadata`
@@ -1226,9 +1098,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_list_import_jobs_with_metadata(
-        self,
-        response: service.ListImportJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListImportJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_import_jobs
 
@@ -1245,9 +1115,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_list_key_rings(
-        self,
-        request: service.ListKeyRingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListKeyRingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListKeyRingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_key_rings
 
@@ -1256,9 +1124,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_key_rings(
-        self, response: service.ListKeyRingsResponse
-    ) -> service.ListKeyRingsResponse:
+    def post_list_key_rings(self, response: service.ListKeyRingsResponse) -> service.ListKeyRingsResponse:
         """Post-rpc interceptor for list_key_rings
 
         DEPRECATED. Please use the `post_list_key_rings_with_metadata`
@@ -1272,9 +1138,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_list_key_rings_with_metadata(
-        self,
-        response: service.ListKeyRingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListKeyRingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListKeyRingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_key_rings
 
@@ -1291,9 +1155,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_mac_sign(
-        self,
-        request: service.MacSignRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.MacSignRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.MacSignRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mac_sign
 
@@ -1302,9 +1164,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_mac_sign(
-        self, response: service.MacSignResponse
-    ) -> service.MacSignResponse:
+    def post_mac_sign(self, response: service.MacSignResponse) -> service.MacSignResponse:
         """Post-rpc interceptor for mac_sign
 
         DEPRECATED. Please use the `post_mac_sign_with_metadata`
@@ -1318,9 +1178,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_mac_sign_with_metadata(
-        self,
-        response: service.MacSignResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.MacSignResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.MacSignResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mac_sign
 
@@ -1337,9 +1195,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_mac_verify(
-        self,
-        request: service.MacVerifyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.MacVerifyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.MacVerifyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mac_verify
 
@@ -1348,9 +1204,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_mac_verify(
-        self, response: service.MacVerifyResponse
-    ) -> service.MacVerifyResponse:
+    def post_mac_verify(self, response: service.MacVerifyResponse) -> service.MacVerifyResponse:
         """Post-rpc interceptor for mac_verify
 
         DEPRECATED. Please use the `post_mac_verify_with_metadata`
@@ -1364,9 +1218,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_mac_verify_with_metadata(
-        self,
-        response: service.MacVerifyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.MacVerifyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.MacVerifyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mac_verify
 
@@ -1383,9 +1235,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_raw_decrypt(
-        self,
-        request: service.RawDecryptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.RawDecryptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RawDecryptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for raw_decrypt
 
@@ -1394,9 +1244,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_raw_decrypt(
-        self, response: service.RawDecryptResponse
-    ) -> service.RawDecryptResponse:
+    def post_raw_decrypt(self, response: service.RawDecryptResponse) -> service.RawDecryptResponse:
         """Post-rpc interceptor for raw_decrypt
 
         DEPRECATED. Please use the `post_raw_decrypt_with_metadata`
@@ -1410,9 +1258,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_raw_decrypt_with_metadata(
-        self,
-        response: service.RawDecryptResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.RawDecryptResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RawDecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for raw_decrypt
 
@@ -1429,9 +1275,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_raw_encrypt(
-        self,
-        request: service.RawEncryptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.RawEncryptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RawEncryptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for raw_encrypt
 
@@ -1440,9 +1284,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_raw_encrypt(
-        self, response: service.RawEncryptResponse
-    ) -> service.RawEncryptResponse:
+    def post_raw_encrypt(self, response: service.RawEncryptResponse) -> service.RawEncryptResponse:
         """Post-rpc interceptor for raw_encrypt
 
         DEPRECATED. Please use the `post_raw_encrypt_with_metadata`
@@ -1456,9 +1298,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_raw_encrypt_with_metadata(
-        self,
-        response: service.RawEncryptResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.RawEncryptResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.RawEncryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for raw_encrypt
 
@@ -1475,12 +1315,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_restore_crypto_key_version(
-        self,
-        request: service.RestoreCryptoKeyVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RestoreCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.RestoreCryptoKeyVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RestoreCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_crypto_key_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1488,9 +1324,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_crypto_key_version(
-        self, response: resources.CryptoKeyVersion
-    ) -> resources.CryptoKeyVersion:
+    def post_restore_crypto_key_version(self, response: resources.CryptoKeyVersion) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for restore_crypto_key_version
 
         DEPRECATED. Please use the `post_restore_crypto_key_version_with_metadata`
@@ -1504,9 +1338,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_restore_crypto_key_version_with_metadata(
-        self,
-        response: resources.CryptoKeyVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKeyVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_crypto_key_version
 
@@ -1523,9 +1355,7 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_update_crypto_key(
-        self,
-        request: service.UpdateCryptoKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateCryptoKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateCryptoKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_crypto_key
 
@@ -1534,9 +1364,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_crypto_key(
-        self, response: resources.CryptoKey
-    ) -> resources.CryptoKey:
+    def post_update_crypto_key(self, response: resources.CryptoKey) -> resources.CryptoKey:
         """Post-rpc interceptor for update_crypto_key
 
         DEPRECATED. Please use the `post_update_crypto_key_with_metadata`
@@ -1550,9 +1378,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_update_crypto_key_with_metadata(
-        self,
-        response: resources.CryptoKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_crypto_key
 
@@ -1569,13 +1395,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_update_crypto_key_primary_version(
-        self,
-        request: service.UpdateCryptoKeyPrimaryVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateCryptoKeyPrimaryVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.UpdateCryptoKeyPrimaryVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateCryptoKeyPrimaryVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_crypto_key_primary_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1583,9 +1404,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_crypto_key_primary_version(
-        self, response: resources.CryptoKey
-    ) -> resources.CryptoKey:
+    def post_update_crypto_key_primary_version(self, response: resources.CryptoKey) -> resources.CryptoKey:
         """Post-rpc interceptor for update_crypto_key_primary_version
 
         DEPRECATED. Please use the `post_update_crypto_key_primary_version_with_metadata`
@@ -1599,9 +1418,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_update_crypto_key_primary_version_with_metadata(
-        self,
-        response: resources.CryptoKey,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKey, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_crypto_key_primary_version
 
@@ -1618,12 +1435,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_update_crypto_key_version(
-        self,
-        request: service.UpdateCryptoKeyVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateCryptoKeyVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateCryptoKeyVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_crypto_key_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1631,9 +1444,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_crypto_key_version(
-        self, response: resources.CryptoKeyVersion
-    ) -> resources.CryptoKeyVersion:
+    def post_update_crypto_key_version(self, response: resources.CryptoKeyVersion) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for update_crypto_key_version
 
         DEPRECATED. Please use the `post_update_crypto_key_version_with_metadata`
@@ -1647,9 +1458,7 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def post_update_crypto_key_version_with_metadata(
-        self,
-        response: resources.CryptoKeyVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CryptoKeyVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_crypto_key_version
 
@@ -1666,12 +1475,8 @@ class KeyManagementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1679,9 +1484,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1691,12 +1494,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1704,9 +1503,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1716,12 +1513,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1739,12 +1532,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1762,13 +1551,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1776,9 +1560,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1788,12 +1570,8 @@ class KeyManagementServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1801,9 +1579,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1903,31 +1679,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or KeyManagementServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AsymmetricDecrypt(
-        _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt,
-        KeyManagementServiceRestStub,
-    ):
+    class _AsymmetricDecrypt(_BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.AsymmetricDecrypt")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1970,32 +1733,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_http_options()
 
-            request, metadata = self._interceptor.pre_asymmetric_decrypt(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_asymmetric_decrypt(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2018,16 +1767,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._AsymmetricDecrypt._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = KeyManagementServiceRestTransport._AsymmetricDecrypt._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2043,16 +1784,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_asymmetric_decrypt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_asymmetric_decrypt_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_asymmetric_decrypt_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.AsymmetricDecryptResponse.to_json(
-                        response
-                    )
+                    response_payload = service.AsymmetricDecryptResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2071,23 +1806,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _AsymmetricSign(
-        _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign,
-        KeyManagementServiceRestStub,
-    ):
+    class _AsymmetricSign(_BaseKeyManagementServiceRestTransport._BaseAsymmetricSign, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.AsymmetricSign")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2130,30 +1854,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_http_options()
 
             request, metadata = self._interceptor.pre_asymmetric_sign(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2177,13 +1889,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._AsymmetricSign._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2199,12 +1905,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_asymmetric_sign(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_asymmetric_sign_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_asymmetric_sign_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.AsymmetricSignResponse.to_json(response)
                 except:
@@ -2225,23 +1927,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _CreateCryptoKey(
-        _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey,
-        KeyManagementServiceRestStub,
-    ):
+    class _CreateCryptoKey(_BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.CreateCryptoKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2291,32 +1982,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_crypto_key(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_crypto_key(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2340,13 +2017,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._CreateCryptoKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2362,12 +2033,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_create_crypto_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_crypto_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_crypto_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
                 except:
@@ -2388,23 +2055,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _CreateCryptoKeyVersion(
-        _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _CreateCryptoKeyVersion(_BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.CreateCryptoKeyVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2460,32 +2116,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_crypto_key_version(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_crypto_key_version(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2508,16 +2150,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._CreateCryptoKeyVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = KeyManagementServiceRestTransport._CreateCryptoKeyVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2533,12 +2167,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_create_crypto_key_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_crypto_key_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_crypto_key_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
                 except:
@@ -2559,23 +2189,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _CreateImportJob(
-        _BaseKeyManagementServiceRestTransport._BaseCreateImportJob,
-        KeyManagementServiceRestStub,
-    ):
+    class _CreateImportJob(_BaseKeyManagementServiceRestTransport._BaseCreateImportJob, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.CreateImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2661,32 +2280,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_import_job(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2710,13 +2315,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._CreateImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2732,12 +2331,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_create_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.ImportJob.to_json(response)
                 except:
@@ -2758,23 +2353,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _CreateKeyRing(
-        _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing,
-        KeyManagementServiceRestStub,
-    ):
+    class _CreateKeyRing(_BaseKeyManagementServiceRestTransport._BaseCreateKeyRing, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.CreateKeyRing")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2818,30 +2402,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_http_options()
 
             request, metadata = self._interceptor.pre_create_key_ring(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2865,13 +2437,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._CreateKeyRing._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2887,12 +2453,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_create_key_ring(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_key_ring_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_key_ring_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.KeyRing.to_json(response)
                 except:
@@ -2913,23 +2475,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _Decapsulate(
-        _BaseKeyManagementServiceRestTransport._BaseDecapsulate,
-        KeyManagementServiceRestStub,
-    ):
+    class _Decapsulate(_BaseKeyManagementServiceRestTransport._BaseDecapsulate, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.Decapsulate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2972,30 +2523,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_http_options()
 
             request, metadata = self._interceptor.pre_decapsulate(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3019,13 +2558,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._Decapsulate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3041,12 +2574,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_decapsulate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_decapsulate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_decapsulate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DecapsulateResponse.to_json(response)
                 except:
@@ -3067,23 +2596,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _Decrypt(
-        _BaseKeyManagementServiceRestTransport._BaseDecrypt,
-        KeyManagementServiceRestStub,
-    ):
+    class _Decrypt(_BaseKeyManagementServiceRestTransport._BaseDecrypt, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.Decrypt")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3126,30 +2644,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_http_options()
 
             request, metadata = self._interceptor.pre_decrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3173,13 +2679,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._Decrypt._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3195,12 +2695,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_decrypt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_decrypt_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_decrypt_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DecryptResponse.to_json(response)
                 except:
@@ -3221,23 +2717,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _DestroyCryptoKeyVersion(
-        _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _DestroyCryptoKeyVersion(_BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.DestroyCryptoKeyVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3294,32 +2779,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_destroy_crypto_key_version(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_destroy_crypto_key_version(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3343,13 +2814,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._DestroyCryptoKeyVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3365,12 +2830,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_destroy_crypto_key_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_destroy_crypto_key_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_destroy_crypto_key_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
                 except:
@@ -3391,23 +2852,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _Encrypt(
-        _BaseKeyManagementServiceRestTransport._BaseEncrypt,
-        KeyManagementServiceRestStub,
-    ):
+    class _Encrypt(_BaseKeyManagementServiceRestTransport._BaseEncrypt, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.Encrypt")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3450,30 +2900,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_http_options()
 
             request, metadata = self._interceptor.pre_encrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3497,13 +2935,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._Encrypt._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3519,12 +2951,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_encrypt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_encrypt_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_encrypt_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.EncryptResponse.to_json(response)
                 except:
@@ -3545,23 +2973,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _GenerateRandomBytes(
-        _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes,
-        KeyManagementServiceRestStub,
-    ):
+    class _GenerateRandomBytes(_BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GenerateRandomBytes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3604,32 +3021,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_random_bytes(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_random_bytes(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3652,16 +3055,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._GenerateRandomBytes._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = KeyManagementServiceRestTransport._GenerateRandomBytes._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3677,16 +3072,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_generate_random_bytes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_random_bytes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_random_bytes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.GenerateRandomBytesResponse.to_json(
-                        response
-                    )
+                    response_payload = service.GenerateRandomBytesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3705,23 +3094,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _GetCryptoKey(
-        _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetCryptoKey(_BaseKeyManagementServiceRestTransport._BaseGetCryptoKey, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetCryptoKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3770,26 +3148,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_http_options()
 
             request, metadata = self._interceptor.pre_get_crypto_key(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3813,12 +3181,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetCryptoKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3834,12 +3197,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_get_crypto_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_crypto_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_crypto_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
                 except:
@@ -3860,23 +3219,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _GetCryptoKeyVersion(
-        _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetCryptoKeyVersion(_BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetCryptoKeyVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3931,28 +3279,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_crypto_key_version(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_crypto_key_version(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3975,15 +3311,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._GetCryptoKeyVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = KeyManagementServiceRestTransport._GetCryptoKeyVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3999,12 +3328,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_get_crypto_key_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_crypto_key_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_crypto_key_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
                 except:
@@ -4025,23 +3350,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _GetImportJob(
-        _BaseKeyManagementServiceRestTransport._BaseGetImportJob,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetImportJob(_BaseKeyManagementServiceRestTransport._BaseGetImportJob, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4126,26 +3440,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_import_job(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4169,12 +3473,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4190,12 +3489,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_get_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.ImportJob.to_json(response)
                 except:
@@ -4216,23 +3511,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _GetKeyRing(
-        _BaseKeyManagementServiceRestTransport._BaseGetKeyRing,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetKeyRing(_BaseKeyManagementServiceRestTransport._BaseGetKeyRing, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetKeyRing")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4275,26 +3559,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_http_options()
 
             request, metadata = self._interceptor.pre_get_key_ring(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4318,12 +3592,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetKeyRing._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4339,12 +3608,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_get_key_ring(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_key_ring_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_key_ring_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.KeyRing.to_json(response)
                 except:
@@ -4365,23 +3630,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _GetPublicKey(
-        _BaseKeyManagementServiceRestTransport._BaseGetPublicKey,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetPublicKey(_BaseKeyManagementServiceRestTransport._BaseGetPublicKey, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetPublicKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4425,26 +3679,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_get_public_key(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4468,12 +3712,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetPublicKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4489,12 +3728,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_get_public_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_public_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_public_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.PublicKey.to_json(response)
                 except:
@@ -4515,23 +3750,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _ImportCryptoKeyVersion(
-        _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _ImportCryptoKeyVersion(_BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.ImportCryptoKeyVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4587,32 +3811,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_crypto_key_version(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_crypto_key_version(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4635,16 +3845,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._ImportCryptoKeyVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = KeyManagementServiceRestTransport._ImportCryptoKeyVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4660,12 +3862,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_import_crypto_key_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_crypto_key_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_crypto_key_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
                 except:
@@ -4686,23 +3884,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _ListCryptoKeys(
-        _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys,
-        KeyManagementServiceRestStub,
-    ):
+    class _ListCryptoKeys(_BaseKeyManagementServiceRestTransport._BaseListCryptoKeys, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.ListCryptoKeys")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4744,28 +3931,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_crypto_keys(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_crypto_keys(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4789,12 +3964,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._ListCryptoKeys._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4810,12 +3980,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_list_crypto_keys(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_crypto_keys_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_crypto_keys_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListCryptoKeysResponse.to_json(response)
                 except:
@@ -4836,23 +4002,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _ListCryptoKeyVersions(
-        _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions,
-        KeyManagementServiceRestStub,
-    ):
+    class _ListCryptoKeyVersions(_BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.ListCryptoKeyVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4894,28 +4049,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_crypto_key_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_crypto_key_versions(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4938,15 +4081,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._ListCryptoKeyVersions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = KeyManagementServiceRestTransport._ListCryptoKeyVersions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4962,16 +4098,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_list_crypto_key_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_crypto_key_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_crypto_key_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListCryptoKeyVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListCryptoKeyVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4990,23 +4120,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _ListImportJobs(
-        _BaseKeyManagementServiceRestTransport._BaseListImportJobs,
-        KeyManagementServiceRestStub,
-    ):
+    class _ListImportJobs(_BaseKeyManagementServiceRestTransport._BaseListImportJobs, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.ListImportJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5048,28 +4167,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_import_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_import_jobs(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5093,12 +4200,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._ListImportJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5114,12 +4216,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_list_import_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_import_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_import_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListImportJobsResponse.to_json(response)
                 except:
@@ -5140,23 +4238,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _ListKeyRings(
-        _BaseKeyManagementServiceRestTransport._BaseListKeyRings,
-        KeyManagementServiceRestStub,
-    ):
+    class _ListKeyRings(_BaseKeyManagementServiceRestTransport._BaseListKeyRings, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.ListKeyRings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5198,26 +4285,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_key_rings(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5241,12 +4318,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._ListKeyRings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5262,12 +4334,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_list_key_rings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_key_rings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_key_rings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListKeyRingsResponse.to_json(response)
                 except:
@@ -5288,23 +4356,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _MacSign(
-        _BaseKeyManagementServiceRestTransport._BaseMacSign,
-        KeyManagementServiceRestStub,
-    ):
+    class _MacSign(_BaseKeyManagementServiceRestTransport._BaseMacSign, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.MacSign")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5347,30 +4404,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseMacSign._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_http_options()
 
             request, metadata = self._interceptor.pre_mac_sign(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5394,13 +4439,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._MacSign._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5416,12 +4455,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_mac_sign(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_mac_sign_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mac_sign_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.MacSignResponse.to_json(response)
                 except:
@@ -5442,23 +4477,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _MacVerify(
-        _BaseKeyManagementServiceRestTransport._BaseMacVerify,
-        KeyManagementServiceRestStub,
-    ):
+    class _MacVerify(_BaseKeyManagementServiceRestTransport._BaseMacVerify, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.MacVerify")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5501,30 +4525,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_http_options()
 
             request, metadata = self._interceptor.pre_mac_verify(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5548,13 +4560,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._MacVerify._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5570,12 +4576,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_mac_verify(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_mac_verify_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mac_verify_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.MacVerifyResponse.to_json(response)
                 except:
@@ -5596,23 +4598,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _RawDecrypt(
-        _BaseKeyManagementServiceRestTransport._BaseRawDecrypt,
-        KeyManagementServiceRestStub,
-    ):
+    class _RawDecrypt(_BaseKeyManagementServiceRestTransport._BaseRawDecrypt, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.RawDecrypt")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5655,30 +4646,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_http_options()
 
             request, metadata = self._interceptor.pre_raw_decrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5702,13 +4681,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._RawDecrypt._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5724,12 +4697,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_raw_decrypt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_raw_decrypt_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_raw_decrypt_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.RawDecryptResponse.to_json(response)
                 except:
@@ -5750,23 +4719,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _RawEncrypt(
-        _BaseKeyManagementServiceRestTransport._BaseRawEncrypt,
-        KeyManagementServiceRestStub,
-    ):
+    class _RawEncrypt(_BaseKeyManagementServiceRestTransport._BaseRawEncrypt, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.RawEncrypt")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5809,30 +4767,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_http_options()
 
             request, metadata = self._interceptor.pre_raw_encrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5856,13 +4802,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._RawEncrypt._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5878,12 +4818,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_raw_encrypt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_raw_encrypt_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_raw_encrypt_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.RawEncryptResponse.to_json(response)
                 except:
@@ -5904,23 +4840,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _RestoreCryptoKeyVersion(
-        _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _RestoreCryptoKeyVersion(_BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.RestoreCryptoKeyVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5977,32 +4902,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_crypto_key_version(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restore_crypto_key_version(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6026,13 +4937,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._RestoreCryptoKeyVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6048,12 +4953,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_restore_crypto_key_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_crypto_key_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_crypto_key_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
                 except:
@@ -6074,23 +4975,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCryptoKey(
-        _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey,
-        KeyManagementServiceRestStub,
-    ):
+    class _UpdateCryptoKey(_BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.UpdateCryptoKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6140,32 +5030,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_crypto_key(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_crypto_key(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6189,13 +5065,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._UpdateCryptoKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6211,12 +5081,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_update_crypto_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_crypto_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_crypto_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
                 except:
@@ -6237,25 +5103,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCryptoKeyPrimaryVersion(
-        _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _UpdateCryptoKeyPrimaryVersion(_BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion, KeyManagementServiceRestStub):
         def __hash__(self):
-            return hash(
-                "KeyManagementServiceRestTransport.UpdateCryptoKeyPrimaryVersion"
-            )
+            return hash("KeyManagementServiceRestTransport.UpdateCryptoKeyPrimaryVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6306,32 +5159,20 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_crypto_key_primary_version(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_crypto_key_primary_version(request, metadata)
             transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6355,13 +5196,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._UpdateCryptoKeyPrimaryVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6377,15 +5212,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_update_crypto_key_primary_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_crypto_key_primary_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_crypto_key_primary_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
                 except:
@@ -6406,23 +5234,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCryptoKeyVersion(
-        _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion,
-        KeyManagementServiceRestStub,
-    ):
+    class _UpdateCryptoKeyVersion(_BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.UpdateCryptoKeyVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6478,32 +5295,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_crypto_key_version(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_crypto_key_version(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6526,16 +5329,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._UpdateCryptoKeyVersion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = KeyManagementServiceRestTransport._UpdateCryptoKeyVersion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6551,12 +5346,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             resp = self._interceptor.post_update_crypto_key_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_crypto_key_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_crypto_key_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
                 except:
@@ -6578,59 +5369,43 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             return resp
 
     @property
-    def asymmetric_decrypt(
-        self,
-    ) -> Callable[
-        [service.AsymmetricDecryptRequest], service.AsymmetricDecryptResponse
-    ]:
+    def asymmetric_decrypt(self) -> Callable[[service.AsymmetricDecryptRequest], service.AsymmetricDecryptResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AsymmetricDecrypt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def asymmetric_sign(
-        self,
-    ) -> Callable[[service.AsymmetricSignRequest], service.AsymmetricSignResponse]:
+    def asymmetric_sign(self) -> Callable[[service.AsymmetricSignRequest], service.AsymmetricSignResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AsymmetricSign(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_crypto_key(
-        self,
-    ) -> Callable[[service.CreateCryptoKeyRequest], resources.CryptoKey]:
+    def create_crypto_key(self) -> Callable[[service.CreateCryptoKeyRequest], resources.CryptoKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCryptoKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_crypto_key_version(
-        self,
-    ) -> Callable[[service.CreateCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
+    def create_crypto_key_version(self) -> Callable[[service.CreateCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCryptoKeyVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_import_job(
-        self,
-    ) -> Callable[[service.CreateImportJobRequest], resources.ImportJob]:
+    def create_import_job(self) -> Callable[[service.CreateImportJobRequest], resources.ImportJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_key_ring(
-        self,
-    ) -> Callable[[service.CreateKeyRingRequest], resources.KeyRing]:
+    def create_key_ring(self) -> Callable[[service.CreateKeyRingRequest], resources.KeyRing]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateKeyRing(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def decapsulate(
-        self,
-    ) -> Callable[[service.DecapsulateRequest], service.DecapsulateResponse]:
+    def decapsulate(self) -> Callable[[service.DecapsulateRequest], service.DecapsulateResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Decapsulate(self._session, self._host, self._interceptor)  # type: ignore
@@ -6642,9 +5417,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
         return self._Decrypt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def destroy_crypto_key_version(
-        self,
-    ) -> Callable[[service.DestroyCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
+    def destroy_crypto_key_version(self) -> Callable[[service.DestroyCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DestroyCryptoKeyVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -6656,35 +5429,25 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
         return self._Encrypt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_random_bytes(
-        self,
-    ) -> Callable[
-        [service.GenerateRandomBytesRequest], service.GenerateRandomBytesResponse
-    ]:
+    def generate_random_bytes(self) -> Callable[[service.GenerateRandomBytesRequest], service.GenerateRandomBytesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateRandomBytes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_crypto_key(
-        self,
-    ) -> Callable[[service.GetCryptoKeyRequest], resources.CryptoKey]:
+    def get_crypto_key(self) -> Callable[[service.GetCryptoKeyRequest], resources.CryptoKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCryptoKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_crypto_key_version(
-        self,
-    ) -> Callable[[service.GetCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
+    def get_crypto_key_version(self) -> Callable[[service.GetCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCryptoKeyVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_import_job(
-        self,
-    ) -> Callable[[service.GetImportJobRequest], resources.ImportJob]:
+    def get_import_job(self) -> Callable[[service.GetImportJobRequest], resources.ImportJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetImportJob(self._session, self._host, self._interceptor)  # type: ignore
@@ -6696,51 +5459,37 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
         return self._GetKeyRing(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_public_key(
-        self,
-    ) -> Callable[[service.GetPublicKeyRequest], resources.PublicKey]:
+    def get_public_key(self) -> Callable[[service.GetPublicKeyRequest], resources.PublicKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPublicKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_crypto_key_version(
-        self,
-    ) -> Callable[[service.ImportCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
+    def import_crypto_key_version(self) -> Callable[[service.ImportCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportCryptoKeyVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_crypto_keys(
-        self,
-    ) -> Callable[[service.ListCryptoKeysRequest], service.ListCryptoKeysResponse]:
+    def list_crypto_keys(self) -> Callable[[service.ListCryptoKeysRequest], service.ListCryptoKeysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCryptoKeys(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_crypto_key_versions(
-        self,
-    ) -> Callable[
-        [service.ListCryptoKeyVersionsRequest], service.ListCryptoKeyVersionsResponse
-    ]:
+    def list_crypto_key_versions(self) -> Callable[[service.ListCryptoKeyVersionsRequest], service.ListCryptoKeyVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCryptoKeyVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_import_jobs(
-        self,
-    ) -> Callable[[service.ListImportJobsRequest], service.ListImportJobsResponse]:
+    def list_import_jobs(self) -> Callable[[service.ListImportJobsRequest], service.ListImportJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListImportJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_key_rings(
-        self,
-    ) -> Callable[[service.ListKeyRingsRequest], service.ListKeyRingsResponse]:
+    def list_key_rings(self) -> Callable[[service.ListKeyRingsRequest], service.ListKeyRingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListKeyRings(self._session, self._host, self._interceptor)  # type: ignore
@@ -6752,57 +5501,43 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
         return self._MacSign(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def mac_verify(
-        self,
-    ) -> Callable[[service.MacVerifyRequest], service.MacVerifyResponse]:
+    def mac_verify(self) -> Callable[[service.MacVerifyRequest], service.MacVerifyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MacVerify(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def raw_decrypt(
-        self,
-    ) -> Callable[[service.RawDecryptRequest], service.RawDecryptResponse]:
+    def raw_decrypt(self) -> Callable[[service.RawDecryptRequest], service.RawDecryptResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RawDecrypt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def raw_encrypt(
-        self,
-    ) -> Callable[[service.RawEncryptRequest], service.RawEncryptResponse]:
+    def raw_encrypt(self) -> Callable[[service.RawEncryptRequest], service.RawEncryptResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RawEncrypt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_crypto_key_version(
-        self,
-    ) -> Callable[[service.RestoreCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
+    def restore_crypto_key_version(self) -> Callable[[service.RestoreCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreCryptoKeyVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_crypto_key(
-        self,
-    ) -> Callable[[service.UpdateCryptoKeyRequest], resources.CryptoKey]:
+    def update_crypto_key(self) -> Callable[[service.UpdateCryptoKeyRequest], resources.CryptoKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCryptoKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_crypto_key_primary_version(
-        self,
-    ) -> Callable[[service.UpdateCryptoKeyPrimaryVersionRequest], resources.CryptoKey]:
+    def update_crypto_key_primary_version(self) -> Callable[[service.UpdateCryptoKeyPrimaryVersionRequest], resources.CryptoKey]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCryptoKeyPrimaryVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_crypto_key_version(
-        self,
-    ) -> Callable[[service.UpdateCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
+    def update_crypto_key_version(self) -> Callable[[service.UpdateCryptoKeyVersionRequest], resources.CryptoKeyVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCryptoKeyVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -6811,23 +5546,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseKeyManagementServiceRestTransport._BaseGetLocation,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetLocation(_BaseKeyManagementServiceRestTransport._BaseGetLocation, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6865,26 +5589,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6908,12 +5622,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6925,9 +5634,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6952,23 +5659,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseKeyManagementServiceRestTransport._BaseListLocations,
-        KeyManagementServiceRestStub,
-    ):
+    class _ListLocations(_BaseKeyManagementServiceRestTransport._BaseListLocations, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7006,26 +5702,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7049,12 +5735,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7066,9 +5747,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7093,23 +5772,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseKeyManagementServiceRestTransport._BaseGetIamPolicy, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7147,26 +5815,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7190,12 +5848,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7207,9 +5860,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7234,23 +5885,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy,
-        KeyManagementServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseKeyManagementServiceRestTransport._BaseSetIamPolicy, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7289,30 +5929,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7336,13 +5964,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7354,9 +5976,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7381,23 +6001,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions,
-        KeyManagementServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseKeyManagementServiceRestTransport._BaseTestIamPermissions, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7436,32 +6045,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7484,16 +6079,8 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                KeyManagementServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = KeyManagementServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7505,9 +6092,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7532,23 +6117,12 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseKeyManagementServiceRestTransport._BaseGetOperation,
-        KeyManagementServiceRestStub,
-    ):
+    class _GetOperation(_BaseKeyManagementServiceRestTransport._BaseGetOperation, KeyManagementServiceRestStub):
         def __hash__(self):
             return hash("KeyManagementServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7586,26 +6160,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7629,12 +6193,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
 
             # Send the request
             response = KeyManagementServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7646,9 +6205,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

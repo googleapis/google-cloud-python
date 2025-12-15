@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.parametermanager_v1 import gapic_version as package_version
 from google.cloud.parametermanager_v1.types import service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class ParameterManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -259,129 +249,73 @@ class ParameterManagerTransport(abc.ABC):
     @property
     def list_parameters(
         self,
-    ) -> Callable[
-        [service.ListParametersRequest],
-        Union[
-            service.ListParametersResponse, Awaitable[service.ListParametersResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListParametersRequest], Union[service.ListParametersResponse, Awaitable[service.ListParametersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_parameter(
-        self,
-    ) -> Callable[
-        [service.GetParameterRequest],
-        Union[service.Parameter, Awaitable[service.Parameter]],
-    ]:
+    def get_parameter(self) -> Callable[[service.GetParameterRequest], Union[service.Parameter, Awaitable[service.Parameter]]]:
         raise NotImplementedError()
 
     @property
-    def create_parameter(
-        self,
-    ) -> Callable[
-        [service.CreateParameterRequest],
-        Union[service.Parameter, Awaitable[service.Parameter]],
-    ]:
+    def create_parameter(self) -> Callable[[service.CreateParameterRequest], Union[service.Parameter, Awaitable[service.Parameter]]]:
         raise NotImplementedError()
 
     @property
-    def update_parameter(
-        self,
-    ) -> Callable[
-        [service.UpdateParameterRequest],
-        Union[service.Parameter, Awaitable[service.Parameter]],
-    ]:
+    def update_parameter(self) -> Callable[[service.UpdateParameterRequest], Union[service.Parameter, Awaitable[service.Parameter]]]:
         raise NotImplementedError()
 
     @property
-    def delete_parameter(
-        self,
-    ) -> Callable[
-        [service.DeleteParameterRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_parameter(self) -> Callable[[service.DeleteParameterRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_parameter_versions(
         self,
     ) -> Callable[
-        [service.ListParameterVersionsRequest],
-        Union[
-            service.ListParameterVersionsResponse,
-            Awaitable[service.ListParameterVersionsResponse],
-        ],
+        [service.ListParameterVersionsRequest], Union[service.ListParameterVersionsResponse, Awaitable[service.ListParameterVersionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_parameter_version(
         self,
-    ) -> Callable[
-        [service.GetParameterVersionRequest],
-        Union[service.ParameterVersion, Awaitable[service.ParameterVersion]],
-    ]:
+    ) -> Callable[[service.GetParameterVersionRequest], Union[service.ParameterVersion, Awaitable[service.ParameterVersion]]]:
         raise NotImplementedError()
 
     @property
     def render_parameter_version(
         self,
     ) -> Callable[
-        [service.RenderParameterVersionRequest],
-        Union[
-            service.RenderParameterVersionResponse,
-            Awaitable[service.RenderParameterVersionResponse],
-        ],
+        [service.RenderParameterVersionRequest], Union[service.RenderParameterVersionResponse, Awaitable[service.RenderParameterVersionResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_parameter_version(
         self,
-    ) -> Callable[
-        [service.CreateParameterVersionRequest],
-        Union[service.ParameterVersion, Awaitable[service.ParameterVersion]],
-    ]:
+    ) -> Callable[[service.CreateParameterVersionRequest], Union[service.ParameterVersion, Awaitable[service.ParameterVersion]]]:
         raise NotImplementedError()
 
     @property
     def update_parameter_version(
         self,
-    ) -> Callable[
-        [service.UpdateParameterVersionRequest],
-        Union[service.ParameterVersion, Awaitable[service.ParameterVersion]],
-    ]:
+    ) -> Callable[[service.UpdateParameterVersionRequest], Union[service.ParameterVersion, Awaitable[service.ParameterVersion]]]:
         raise NotImplementedError()
 
     @property
-    def delete_parameter_version(
-        self,
-    ) -> Callable[
-        [service.DeleteParameterVersionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_parameter_version(self) -> Callable[[service.DeleteParameterVersionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

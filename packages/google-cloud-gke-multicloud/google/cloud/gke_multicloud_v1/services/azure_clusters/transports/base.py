@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.gke_multicloud_v1 import gapic_version as package_version
 from google.cloud.gke_multicloud_v1.types import azure_resources, azure_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class AzureClustersTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -367,88 +357,59 @@ class AzureClustersTransport(abc.ABC):
     @property
     def create_azure_client(
         self,
-    ) -> Callable[
-        [azure_service.CreateAzureClientRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.CreateAzureClientRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_azure_client(
         self,
-    ) -> Callable[
-        [azure_service.GetAzureClientRequest],
-        Union[azure_resources.AzureClient, Awaitable[azure_resources.AzureClient]],
-    ]:
+    ) -> Callable[[azure_service.GetAzureClientRequest], Union[azure_resources.AzureClient, Awaitable[azure_resources.AzureClient]]]:
         raise NotImplementedError()
 
     @property
     def list_azure_clients(
         self,
     ) -> Callable[
-        [azure_service.ListAzureClientsRequest],
-        Union[
-            azure_service.ListAzureClientsResponse,
-            Awaitable[azure_service.ListAzureClientsResponse],
-        ],
+        [azure_service.ListAzureClientsRequest], Union[azure_service.ListAzureClientsResponse, Awaitable[azure_service.ListAzureClientsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_azure_client(
         self,
-    ) -> Callable[
-        [azure_service.DeleteAzureClientRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.DeleteAzureClientRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_azure_cluster(
         self,
-    ) -> Callable[
-        [azure_service.CreateAzureClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.CreateAzureClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_azure_cluster(
         self,
-    ) -> Callable[
-        [azure_service.UpdateAzureClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.UpdateAzureClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_azure_cluster(
         self,
-    ) -> Callable[
-        [azure_service.GetAzureClusterRequest],
-        Union[azure_resources.AzureCluster, Awaitable[azure_resources.AzureCluster]],
-    ]:
+    ) -> Callable[[azure_service.GetAzureClusterRequest], Union[azure_resources.AzureCluster, Awaitable[azure_resources.AzureCluster]]]:
         raise NotImplementedError()
 
     @property
     def list_azure_clusters(
         self,
     ) -> Callable[
-        [azure_service.ListAzureClustersRequest],
-        Union[
-            azure_service.ListAzureClustersResponse,
-            Awaitable[azure_service.ListAzureClustersResponse],
-        ],
+        [azure_service.ListAzureClustersRequest], Union[azure_service.ListAzureClustersResponse, Awaitable[azure_service.ListAzureClustersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_azure_cluster(
         self,
-    ) -> Callable[
-        [azure_service.DeleteAzureClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.DeleteAzureClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -456,10 +417,7 @@ class AzureClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [azure_service.GenerateAzureClusterAgentTokenRequest],
-        Union[
-            azure_service.GenerateAzureClusterAgentTokenResponse,
-            Awaitable[azure_service.GenerateAzureClusterAgentTokenResponse],
-        ],
+        Union[azure_service.GenerateAzureClusterAgentTokenResponse, Awaitable[azure_service.GenerateAzureClusterAgentTokenResponse]],
     ]:
         raise NotImplementedError()
 
@@ -468,38 +426,26 @@ class AzureClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [azure_service.GenerateAzureAccessTokenRequest],
-        Union[
-            azure_service.GenerateAzureAccessTokenResponse,
-            Awaitable[azure_service.GenerateAzureAccessTokenResponse],
-        ],
+        Union[azure_service.GenerateAzureAccessTokenResponse, Awaitable[azure_service.GenerateAzureAccessTokenResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_azure_node_pool(
         self,
-    ) -> Callable[
-        [azure_service.CreateAzureNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.CreateAzureNodePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_azure_node_pool(
         self,
-    ) -> Callable[
-        [azure_service.UpdateAzureNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.UpdateAzureNodePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_azure_node_pool(
         self,
-    ) -> Callable[
-        [azure_service.GetAzureNodePoolRequest],
-        Union[azure_resources.AzureNodePool, Awaitable[azure_resources.AzureNodePool]],
-    ]:
+    ) -> Callable[[azure_service.GetAzureNodePoolRequest], Union[azure_resources.AzureNodePool, Awaitable[azure_resources.AzureNodePool]]]:
         raise NotImplementedError()
 
     @property
@@ -507,55 +453,35 @@ class AzureClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [azure_service.ListAzureNodePoolsRequest],
-        Union[
-            azure_service.ListAzureNodePoolsResponse,
-            Awaitable[azure_service.ListAzureNodePoolsResponse],
-        ],
+        Union[azure_service.ListAzureNodePoolsResponse, Awaitable[azure_service.ListAzureNodePoolsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_azure_node_pool(
         self,
-    ) -> Callable[
-        [azure_service.DeleteAzureNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[azure_service.DeleteAzureNodePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_azure_open_id_config(
         self,
     ) -> Callable[
-        [azure_service.GetAzureOpenIdConfigRequest],
-        Union[
-            azure_resources.AzureOpenIdConfig,
-            Awaitable[azure_resources.AzureOpenIdConfig],
-        ],
+        [azure_service.GetAzureOpenIdConfigRequest], Union[azure_resources.AzureOpenIdConfig, Awaitable[azure_resources.AzureOpenIdConfig]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_azure_json_web_keys(
         self,
-    ) -> Callable[
-        [azure_service.GetAzureJsonWebKeysRequest],
-        Union[
-            azure_resources.AzureJsonWebKeys,
-            Awaitable[azure_resources.AzureJsonWebKeys],
-        ],
-    ]:
+    ) -> Callable[[azure_service.GetAzureJsonWebKeysRequest], Union[azure_resources.AzureJsonWebKeys, Awaitable[azure_resources.AzureJsonWebKeys]]]:
         raise NotImplementedError()
 
     @property
     def get_azure_server_config(
         self,
     ) -> Callable[
-        [azure_service.GetAzureServerConfigRequest],
-        Union[
-            azure_resources.AzureServerConfig,
-            Awaitable[azure_resources.AzureServerConfig],
-        ],
+        [azure_service.GetAzureServerConfigRequest], Union[azure_resources.AzureServerConfig, Awaitable[azure_resources.AzureServerConfig]]
     ]:
         raise NotImplementedError()
 
@@ -564,20 +490,14 @@ class AzureClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

@@ -221,16 +221,12 @@ class AuthorizationPolicy(proto.Message):
                 message="AuthorizationPolicy.Rule.Destination.HttpHeaderMatch",
             )
 
-        sources: MutableSequence[
-            "AuthorizationPolicy.Rule.Source"
-        ] = proto.RepeatedField(
+        sources: MutableSequence["AuthorizationPolicy.Rule.Source"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AuthorizationPolicy.Rule.Source",
         )
-        destinations: MutableSequence[
-            "AuthorizationPolicy.Rule.Destination"
-        ] = proto.RepeatedField(
+        destinations: MutableSequence["AuthorizationPolicy.Rule.Destination"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="AuthorizationPolicy.Rule.Destination",
@@ -321,9 +317,7 @@ class ListAuthorizationPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    authorization_policies: MutableSequence[
-        "AuthorizationPolicy"
-    ] = proto.RepeatedField(
+    authorization_policies: MutableSequence["AuthorizationPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AuthorizationPolicy",

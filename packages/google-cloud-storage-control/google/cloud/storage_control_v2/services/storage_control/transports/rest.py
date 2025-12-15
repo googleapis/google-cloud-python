@@ -283,13 +283,8 @@ class StorageControlRestInterceptor:
     """
 
     def pre_get_folder_intelligence_config(
-        self,
-        request: storage_control.GetFolderIntelligenceConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.GetFolderIntelligenceConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_control.GetFolderIntelligenceConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.GetFolderIntelligenceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_folder_intelligence_config
 
         Override in a subclass to manipulate the request or metadata
@@ -297,9 +292,7 @@ class StorageControlRestInterceptor:
         """
         return request, metadata
 
-    def post_get_folder_intelligence_config(
-        self, response: storage_control.IntelligenceConfig
-    ) -> storage_control.IntelligenceConfig:
+    def post_get_folder_intelligence_config(self, response: storage_control.IntelligenceConfig) -> storage_control.IntelligenceConfig:
         """Post-rpc interceptor for get_folder_intelligence_config
 
         DEPRECATED. Please use the `post_get_folder_intelligence_config_with_metadata`
@@ -313,12 +306,8 @@ class StorageControlRestInterceptor:
         return response
 
     def post_get_folder_intelligence_config_with_metadata(
-        self,
-        response: storage_control.IntelligenceConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_control.IntelligenceConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_folder_intelligence_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -334,13 +323,8 @@ class StorageControlRestInterceptor:
         return response, metadata
 
     def pre_get_organization_intelligence_config(
-        self,
-        request: storage_control.GetOrganizationIntelligenceConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.GetOrganizationIntelligenceConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_control.GetOrganizationIntelligenceConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.GetOrganizationIntelligenceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_organization_intelligence_config
 
         Override in a subclass to manipulate the request or metadata
@@ -348,9 +332,7 @@ class StorageControlRestInterceptor:
         """
         return request, metadata
 
-    def post_get_organization_intelligence_config(
-        self, response: storage_control.IntelligenceConfig
-    ) -> storage_control.IntelligenceConfig:
+    def post_get_organization_intelligence_config(self, response: storage_control.IntelligenceConfig) -> storage_control.IntelligenceConfig:
         """Post-rpc interceptor for get_organization_intelligence_config
 
         DEPRECATED. Please use the `post_get_organization_intelligence_config_with_metadata`
@@ -364,12 +346,8 @@ class StorageControlRestInterceptor:
         return response
 
     def post_get_organization_intelligence_config_with_metadata(
-        self,
-        response: storage_control.IntelligenceConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_control.IntelligenceConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_organization_intelligence_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -385,13 +363,8 @@ class StorageControlRestInterceptor:
         return response, metadata
 
     def pre_get_project_intelligence_config(
-        self,
-        request: storage_control.GetProjectIntelligenceConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.GetProjectIntelligenceConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_control.GetProjectIntelligenceConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.GetProjectIntelligenceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_project_intelligence_config
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +372,7 @@ class StorageControlRestInterceptor:
         """
         return request, metadata
 
-    def post_get_project_intelligence_config(
-        self, response: storage_control.IntelligenceConfig
-    ) -> storage_control.IntelligenceConfig:
+    def post_get_project_intelligence_config(self, response: storage_control.IntelligenceConfig) -> storage_control.IntelligenceConfig:
         """Post-rpc interceptor for get_project_intelligence_config
 
         DEPRECATED. Please use the `post_get_project_intelligence_config_with_metadata`
@@ -415,12 +386,8 @@ class StorageControlRestInterceptor:
         return response
 
     def post_get_project_intelligence_config_with_metadata(
-        self,
-        response: storage_control.IntelligenceConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_control.IntelligenceConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_project_intelligence_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -436,13 +403,8 @@ class StorageControlRestInterceptor:
         return response, metadata
 
     def pre_update_folder_intelligence_config(
-        self,
-        request: storage_control.UpdateFolderIntelligenceConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.UpdateFolderIntelligenceConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_control.UpdateFolderIntelligenceConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.UpdateFolderIntelligenceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_folder_intelligence_config
 
         Override in a subclass to manipulate the request or metadata
@@ -450,9 +412,7 @@ class StorageControlRestInterceptor:
         """
         return request, metadata
 
-    def post_update_folder_intelligence_config(
-        self, response: storage_control.IntelligenceConfig
-    ) -> storage_control.IntelligenceConfig:
+    def post_update_folder_intelligence_config(self, response: storage_control.IntelligenceConfig) -> storage_control.IntelligenceConfig:
         """Post-rpc interceptor for update_folder_intelligence_config
 
         DEPRECATED. Please use the `post_update_folder_intelligence_config_with_metadata`
@@ -466,12 +426,8 @@ class StorageControlRestInterceptor:
         return response
 
     def post_update_folder_intelligence_config_with_metadata(
-        self,
-        response: storage_control.IntelligenceConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_control.IntelligenceConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_folder_intelligence_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -487,13 +443,8 @@ class StorageControlRestInterceptor:
         return response, metadata
 
     def pre_update_organization_intelligence_config(
-        self,
-        request: storage_control.UpdateOrganizationIntelligenceConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.UpdateOrganizationIntelligenceConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_control.UpdateOrganizationIntelligenceConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.UpdateOrganizationIntelligenceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_organization_intelligence_config
 
         Override in a subclass to manipulate the request or metadata
@@ -501,9 +452,7 @@ class StorageControlRestInterceptor:
         """
         return request, metadata
 
-    def post_update_organization_intelligence_config(
-        self, response: storage_control.IntelligenceConfig
-    ) -> storage_control.IntelligenceConfig:
+    def post_update_organization_intelligence_config(self, response: storage_control.IntelligenceConfig) -> storage_control.IntelligenceConfig:
         """Post-rpc interceptor for update_organization_intelligence_config
 
         DEPRECATED. Please use the `post_update_organization_intelligence_config_with_metadata`
@@ -517,12 +466,8 @@ class StorageControlRestInterceptor:
         return response
 
     def post_update_organization_intelligence_config_with_metadata(
-        self,
-        response: storage_control.IntelligenceConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_control.IntelligenceConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_organization_intelligence_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -538,13 +483,8 @@ class StorageControlRestInterceptor:
         return response, metadata
 
     def pre_update_project_intelligence_config(
-        self,
-        request: storage_control.UpdateProjectIntelligenceConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.UpdateProjectIntelligenceConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_control.UpdateProjectIntelligenceConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.UpdateProjectIntelligenceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_project_intelligence_config
 
         Override in a subclass to manipulate the request or metadata
@@ -552,9 +492,7 @@ class StorageControlRestInterceptor:
         """
         return request, metadata
 
-    def post_update_project_intelligence_config(
-        self, response: storage_control.IntelligenceConfig
-    ) -> storage_control.IntelligenceConfig:
+    def post_update_project_intelligence_config(self, response: storage_control.IntelligenceConfig) -> storage_control.IntelligenceConfig:
         """Post-rpc interceptor for update_project_intelligence_config
 
         DEPRECATED. Please use the `post_update_project_intelligence_config_with_metadata`
@@ -568,12 +506,8 @@ class StorageControlRestInterceptor:
         return response
 
     def post_update_project_intelligence_config_with_metadata(
-        self,
-        response: storage_control.IntelligenceConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_control.IntelligenceConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_control.IntelligenceConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_project_intelligence_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -669,9 +603,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -698,17 +630,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAnywhereCache(
-        _BaseStorageControlRestTransport._BaseCreateAnywhereCache,
-        StorageControlRestStub,
-    ):
+    class _CreateAnywhereCache(_BaseStorageControlRestTransport._BaseCreateAnywhereCache, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.CreateAnywhereCache")
 
@@ -720,13 +647,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            raise NotImplementedError(
-                "Method CreateAnywhereCache is not available over REST transport"
-            )
+            raise NotImplementedError("Method CreateAnywhereCache is not available over REST transport")
 
-    class _CreateFolder(
-        _BaseStorageControlRestTransport._BaseCreateFolder, StorageControlRestStub
-    ):
+    class _CreateFolder(_BaseStorageControlRestTransport._BaseCreateFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.CreateFolder")
 
@@ -738,14 +661,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.Folder:
-            raise NotImplementedError(
-                "Method CreateFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method CreateFolder is not available over REST transport")
 
-    class _CreateManagedFolder(
-        _BaseStorageControlRestTransport._BaseCreateManagedFolder,
-        StorageControlRestStub,
-    ):
+    class _CreateManagedFolder(_BaseStorageControlRestTransport._BaseCreateManagedFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.CreateManagedFolder")
 
@@ -757,13 +675,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.ManagedFolder:
-            raise NotImplementedError(
-                "Method CreateManagedFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method CreateManagedFolder is not available over REST transport")
 
-    class _DeleteFolder(
-        _BaseStorageControlRestTransport._BaseDeleteFolder, StorageControlRestStub
-    ):
+    class _DeleteFolder(_BaseStorageControlRestTransport._BaseDeleteFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.DeleteFolder")
 
@@ -775,14 +689,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
-            raise NotImplementedError(
-                "Method DeleteFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method DeleteFolder is not available over REST transport")
 
-    class _DeleteManagedFolder(
-        _BaseStorageControlRestTransport._BaseDeleteManagedFolder,
-        StorageControlRestStub,
-    ):
+    class _DeleteManagedFolder(_BaseStorageControlRestTransport._BaseDeleteManagedFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.DeleteManagedFolder")
 
@@ -794,14 +703,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
-            raise NotImplementedError(
-                "Method DeleteManagedFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method DeleteManagedFolder is not available over REST transport")
 
-    class _DisableAnywhereCache(
-        _BaseStorageControlRestTransport._BaseDisableAnywhereCache,
-        StorageControlRestStub,
-    ):
+    class _DisableAnywhereCache(_BaseStorageControlRestTransport._BaseDisableAnywhereCache, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.DisableAnywhereCache")
 
@@ -813,13 +717,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.AnywhereCache:
-            raise NotImplementedError(
-                "Method DisableAnywhereCache is not available over REST transport"
-            )
+            raise NotImplementedError("Method DisableAnywhereCache is not available over REST transport")
 
-    class _GetAnywhereCache(
-        _BaseStorageControlRestTransport._BaseGetAnywhereCache, StorageControlRestStub
-    ):
+    class _GetAnywhereCache(_BaseStorageControlRestTransport._BaseGetAnywhereCache, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetAnywhereCache")
 
@@ -831,13 +731,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.AnywhereCache:
-            raise NotImplementedError(
-                "Method GetAnywhereCache is not available over REST transport"
-            )
+            raise NotImplementedError("Method GetAnywhereCache is not available over REST transport")
 
-    class _GetFolder(
-        _BaseStorageControlRestTransport._BaseGetFolder, StorageControlRestStub
-    ):
+    class _GetFolder(_BaseStorageControlRestTransport._BaseGetFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetFolder")
 
@@ -849,27 +745,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.Folder:
-            raise NotImplementedError(
-                "Method GetFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method GetFolder is not available over REST transport")
 
-    class _GetFolderIntelligenceConfig(
-        _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig,
-        StorageControlRestStub,
-    ):
+    class _GetFolderIntelligenceConfig(_BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetFolderIntelligenceConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -918,28 +801,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_folder_intelligence_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_folder_intelligence_config(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -962,15 +833,8 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
 
             # Send the request
-            response = (
-                StorageControlRestTransport._GetFolderIntelligenceConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageControlRestTransport._GetFolderIntelligenceConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -986,19 +850,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_get_folder_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_folder_intelligence_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_folder_intelligence_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_control.IntelligenceConfig.to_json(
-                        response
-                    )
+                    response_payload = storage_control.IntelligenceConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1017,9 +872,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseStorageControlRestTransport._BaseGetIamPolicy, StorageControlRestStub
-    ):
+    class _GetIamPolicy(_BaseStorageControlRestTransport._BaseGetIamPolicy, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetIamPolicy")
 
@@ -1031,13 +884,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
-            raise NotImplementedError(
-                "Method GetIamPolicy is not available over REST transport"
-            )
+            raise NotImplementedError("Method GetIamPolicy is not available over REST transport")
 
-    class _GetManagedFolder(
-        _BaseStorageControlRestTransport._BaseGetManagedFolder, StorageControlRestStub
-    ):
+    class _GetManagedFolder(_BaseStorageControlRestTransport._BaseGetManagedFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetManagedFolder")
 
@@ -1049,27 +898,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.ManagedFolder:
-            raise NotImplementedError(
-                "Method GetManagedFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method GetManagedFolder is not available over REST transport")
 
-    class _GetOrganizationIntelligenceConfig(
-        _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig,
-        StorageControlRestStub,
-    ):
+    class _GetOrganizationIntelligenceConfig(_BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetOrganizationIntelligenceConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1118,31 +954,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_organization_intelligence_config(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_organization_intelligence_config(request, metadata)
             transcoded_request = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1166,12 +989,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             # Send the request
             response = StorageControlRestTransport._GetOrganizationIntelligenceConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1187,19 +1005,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_get_organization_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_organization_intelligence_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_organization_intelligence_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_control.IntelligenceConfig.to_json(
-                        response
-                    )
+                    response_payload = storage_control.IntelligenceConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1218,23 +1027,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
-    class _GetProjectIntelligenceConfig(
-        _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig,
-        StorageControlRestStub,
-    ):
+    class _GetProjectIntelligenceConfig(_BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetProjectIntelligenceConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1283,28 +1081,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_project_intelligence_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_project_intelligence_config(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1327,15 +1113,8 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
 
             # Send the request
-            response = (
-                StorageControlRestTransport._GetProjectIntelligenceConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = StorageControlRestTransport._GetProjectIntelligenceConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1351,19 +1130,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_get_project_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_project_intelligence_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_project_intelligence_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_control.IntelligenceConfig.to_json(
-                        response
-                    )
+                    response_payload = storage_control.IntelligenceConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1382,9 +1152,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
-    class _GetStorageLayout(
-        _BaseStorageControlRestTransport._BaseGetStorageLayout, StorageControlRestStub
-    ):
+    class _GetStorageLayout(_BaseStorageControlRestTransport._BaseGetStorageLayout, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetStorageLayout")
 
@@ -1396,13 +1164,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.StorageLayout:
-            raise NotImplementedError(
-                "Method GetStorageLayout is not available over REST transport"
-            )
+            raise NotImplementedError("Method GetStorageLayout is not available over REST transport")
 
-    class _ListAnywhereCaches(
-        _BaseStorageControlRestTransport._BaseListAnywhereCaches, StorageControlRestStub
-    ):
+    class _ListAnywhereCaches(_BaseStorageControlRestTransport._BaseListAnywhereCaches, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.ListAnywhereCaches")
 
@@ -1414,13 +1178,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.ListAnywhereCachesResponse:
-            raise NotImplementedError(
-                "Method ListAnywhereCaches is not available over REST transport"
-            )
+            raise NotImplementedError("Method ListAnywhereCaches is not available over REST transport")
 
-    class _ListFolders(
-        _BaseStorageControlRestTransport._BaseListFolders, StorageControlRestStub
-    ):
+    class _ListFolders(_BaseStorageControlRestTransport._BaseListFolders, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.ListFolders")
 
@@ -1432,13 +1192,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.ListFoldersResponse:
-            raise NotImplementedError(
-                "Method ListFolders is not available over REST transport"
-            )
+            raise NotImplementedError("Method ListFolders is not available over REST transport")
 
-    class _ListManagedFolders(
-        _BaseStorageControlRestTransport._BaseListManagedFolders, StorageControlRestStub
-    ):
+    class _ListManagedFolders(_BaseStorageControlRestTransport._BaseListManagedFolders, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.ListManagedFolders")
 
@@ -1450,13 +1206,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.ListManagedFoldersResponse:
-            raise NotImplementedError(
-                "Method ListManagedFolders is not available over REST transport"
-            )
+            raise NotImplementedError("Method ListManagedFolders is not available over REST transport")
 
-    class _PauseAnywhereCache(
-        _BaseStorageControlRestTransport._BasePauseAnywhereCache, StorageControlRestStub
-    ):
+    class _PauseAnywhereCache(_BaseStorageControlRestTransport._BasePauseAnywhereCache, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.PauseAnywhereCache")
 
@@ -1468,13 +1220,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.AnywhereCache:
-            raise NotImplementedError(
-                "Method PauseAnywhereCache is not available over REST transport"
-            )
+            raise NotImplementedError("Method PauseAnywhereCache is not available over REST transport")
 
-    class _RenameFolder(
-        _BaseStorageControlRestTransport._BaseRenameFolder, StorageControlRestStub
-    ):
+    class _RenameFolder(_BaseStorageControlRestTransport._BaseRenameFolder, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.RenameFolder")
 
@@ -1486,14 +1234,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            raise NotImplementedError(
-                "Method RenameFolder is not available over REST transport"
-            )
+            raise NotImplementedError("Method RenameFolder is not available over REST transport")
 
-    class _ResumeAnywhereCache(
-        _BaseStorageControlRestTransport._BaseResumeAnywhereCache,
-        StorageControlRestStub,
-    ):
+    class _ResumeAnywhereCache(_BaseStorageControlRestTransport._BaseResumeAnywhereCache, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.ResumeAnywhereCache")
 
@@ -1505,13 +1248,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.AnywhereCache:
-            raise NotImplementedError(
-                "Method ResumeAnywhereCache is not available over REST transport"
-            )
+            raise NotImplementedError("Method ResumeAnywhereCache is not available over REST transport")
 
-    class _SetIamPolicy(
-        _BaseStorageControlRestTransport._BaseSetIamPolicy, StorageControlRestStub
-    ):
+    class _SetIamPolicy(_BaseStorageControlRestTransport._BaseSetIamPolicy, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.SetIamPolicy")
 
@@ -1523,13 +1262,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
-            raise NotImplementedError(
-                "Method SetIamPolicy is not available over REST transport"
-            )
+            raise NotImplementedError("Method SetIamPolicy is not available over REST transport")
 
-    class _TestIamPermissions(
-        _BaseStorageControlRestTransport._BaseTestIamPermissions, StorageControlRestStub
-    ):
+    class _TestIamPermissions(_BaseStorageControlRestTransport._BaseTestIamPermissions, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.TestIamPermissions")
 
@@ -1541,14 +1276,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
-            raise NotImplementedError(
-                "Method TestIamPermissions is not available over REST transport"
-            )
+            raise NotImplementedError("Method TestIamPermissions is not available over REST transport")
 
-    class _UpdateAnywhereCache(
-        _BaseStorageControlRestTransport._BaseUpdateAnywhereCache,
-        StorageControlRestStub,
-    ):
+    class _UpdateAnywhereCache(_BaseStorageControlRestTransport._BaseUpdateAnywhereCache, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.UpdateAnywhereCache")
 
@@ -1560,27 +1290,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            raise NotImplementedError(
-                "Method UpdateAnywhereCache is not available over REST transport"
-            )
+            raise NotImplementedError("Method UpdateAnywhereCache is not available over REST transport")
 
-    class _UpdateFolderIntelligenceConfig(
-        _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig,
-        StorageControlRestStub,
-    ):
+    class _UpdateFolderIntelligenceConfig(_BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.UpdateFolderIntelligenceConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1630,32 +1347,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_folder_intelligence_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_folder_intelligence_config(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1679,13 +1382,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             # Send the request
             response = StorageControlRestTransport._UpdateFolderIntelligenceConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1701,19 +1398,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_update_folder_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_folder_intelligence_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_folder_intelligence_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_control.IntelligenceConfig.to_json(
-                        response
-                    )
+                    response_payload = storage_control.IntelligenceConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1732,25 +1420,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
-    class _UpdateOrganizationIntelligenceConfig(
-        _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig,
-        StorageControlRestStub,
-    ):
+    class _UpdateOrganizationIntelligenceConfig(_BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig, StorageControlRestStub):
         def __hash__(self):
-            return hash(
-                "StorageControlRestTransport.UpdateOrganizationIntelligenceConfig"
-            )
+            return hash("StorageControlRestTransport.UpdateOrganizationIntelligenceConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1800,35 +1475,20 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_organization_intelligence_config(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_organization_intelligence_config(request, metadata)
             transcoded_request = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1852,13 +1512,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             # Send the request
             response = StorageControlRestTransport._UpdateOrganizationIntelligenceConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1874,19 +1528,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_update_organization_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_organization_intelligence_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_organization_intelligence_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_control.IntelligenceConfig.to_json(
-                        response
-                    )
+                    response_payload = storage_control.IntelligenceConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1905,23 +1550,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
-    class _UpdateProjectIntelligenceConfig(
-        _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig,
-        StorageControlRestStub,
-    ):
+    class _UpdateProjectIntelligenceConfig(_BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig, StorageControlRestStub):
         def __hash__(self):
             return hash("StorageControlRestTransport.UpdateProjectIntelligenceConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1971,35 +1605,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_project_intelligence_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_project_intelligence_config(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2023,13 +1640,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             # Send the request
             response = StorageControlRestTransport._UpdateProjectIntelligenceConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2045,19 +1656,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_update_project_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_project_intelligence_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_project_intelligence_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_control.IntelligenceConfig.to_json(
-                        response
-                    )
+                    response_payload = storage_control.IntelligenceConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2077,102 +1679,67 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             return resp
 
     @property
-    def create_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.CreateAnywhereCacheRequest], operations_pb2.Operation
-    ]:
+    def create_anywhere_cache(self) -> Callable[[storage_control.CreateAnywhereCacheRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_folder(
-        self,
-    ) -> Callable[[storage_control.CreateFolderRequest], storage_control.Folder]:
+    def create_folder(self) -> Callable[[storage_control.CreateFolderRequest], storage_control.Folder]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_managed_folder(
-        self,
-    ) -> Callable[
-        [storage_control.CreateManagedFolderRequest], storage_control.ManagedFolder
-    ]:
+    def create_managed_folder(self) -> Callable[[storage_control.CreateManagedFolderRequest], storage_control.ManagedFolder]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateManagedFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_folder(
-        self,
-    ) -> Callable[[storage_control.DeleteFolderRequest], empty_pb2.Empty]:
+    def delete_folder(self) -> Callable[[storage_control.DeleteFolderRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_managed_folder(
-        self,
-    ) -> Callable[[storage_control.DeleteManagedFolderRequest], empty_pb2.Empty]:
+    def delete_managed_folder(self) -> Callable[[storage_control.DeleteManagedFolderRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteManagedFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def disable_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.DisableAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def disable_anywhere_cache(self) -> Callable[[storage_control.DisableAnywhereCacheRequest], storage_control.AnywhereCache]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.GetAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def get_anywhere_cache(self) -> Callable[[storage_control.GetAnywhereCacheRequest], storage_control.AnywhereCache]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_folder(
-        self,
-    ) -> Callable[[storage_control.GetFolderRequest], storage_control.Folder]:
+    def get_folder(self) -> Callable[[storage_control.GetFolderRequest], storage_control.Folder]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_folder_intelligence_config(
-        self,
-    ) -> Callable[
-        [storage_control.GetFolderIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    def get_folder_intelligence_config(self) -> Callable[[storage_control.GetFolderIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFolderIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_managed_folder(
-        self,
-    ) -> Callable[
-        [storage_control.GetManagedFolderRequest], storage_control.ManagedFolder
-    ]:
+    def get_managed_folder(self) -> Callable[[storage_control.GetManagedFolderRequest], storage_control.ManagedFolder]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetManagedFolder(self._session, self._host, self._interceptor)  # type: ignore
@@ -2180,120 +1747,73 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     @property
     def get_organization_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.GetOrganizationIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.GetOrganizationIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganizationIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_project_intelligence_config(
-        self,
-    ) -> Callable[
-        [storage_control.GetProjectIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    def get_project_intelligence_config(self) -> Callable[[storage_control.GetProjectIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProjectIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_storage_layout(
-        self,
-    ) -> Callable[
-        [storage_control.GetStorageLayoutRequest], storage_control.StorageLayout
-    ]:
+    def get_storage_layout(self) -> Callable[[storage_control.GetStorageLayoutRequest], storage_control.StorageLayout]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStorageLayout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_anywhere_caches(
-        self,
-    ) -> Callable[
-        [storage_control.ListAnywhereCachesRequest],
-        storage_control.ListAnywhereCachesResponse,
-    ]:
+    def list_anywhere_caches(self) -> Callable[[storage_control.ListAnywhereCachesRequest], storage_control.ListAnywhereCachesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAnywhereCaches(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_folders(
-        self,
-    ) -> Callable[
-        [storage_control.ListFoldersRequest], storage_control.ListFoldersResponse
-    ]:
+    def list_folders(self) -> Callable[[storage_control.ListFoldersRequest], storage_control.ListFoldersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFolders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_managed_folders(
-        self,
-    ) -> Callable[
-        [storage_control.ListManagedFoldersRequest],
-        storage_control.ListManagedFoldersResponse,
-    ]:
+    def list_managed_folders(self) -> Callable[[storage_control.ListManagedFoldersRequest], storage_control.ListManagedFoldersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListManagedFolders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pause_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.PauseAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def pause_anywhere_cache(self) -> Callable[[storage_control.PauseAnywhereCacheRequest], storage_control.AnywhereCache]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PauseAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rename_folder(
-        self,
-    ) -> Callable[[storage_control.RenameFolderRequest], operations_pb2.Operation]:
+    def rename_folder(self) -> Callable[[storage_control.RenameFolderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenameFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.ResumeAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def resume_anywhere_cache(self) -> Callable[[storage_control.ResumeAnywhereCacheRequest], storage_control.AnywhereCache]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.UpdateAnywhereCacheRequest], operations_pb2.Operation
-    ]:
+    def update_anywhere_cache(self) -> Callable[[storage_control.UpdateAnywhereCacheRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
@@ -2301,10 +1821,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     @property
     def update_folder_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.UpdateFolderIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.UpdateFolderIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFolderIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -2312,10 +1829,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     @property
     def update_organization_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.UpdateOrganizationIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.UpdateOrganizationIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateOrganizationIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -2323,10 +1837,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     @property
     def update_project_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.UpdateProjectIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.UpdateProjectIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProjectIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore

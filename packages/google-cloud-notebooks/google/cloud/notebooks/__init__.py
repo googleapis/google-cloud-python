@@ -18,24 +18,12 @@ from google.cloud.notebooks import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.notebooks_v1.services.managed_notebook_service.async_client import (
-    ManagedNotebookServiceAsyncClient,
-)
-from google.cloud.notebooks_v1.services.managed_notebook_service.client import (
-    ManagedNotebookServiceClient,
-)
-from google.cloud.notebooks_v1.services.notebook_service.async_client import (
-    NotebookServiceAsyncClient,
-)
-from google.cloud.notebooks_v1.services.notebook_service.client import (
-    NotebookServiceClient,
-)
+from google.cloud.notebooks_v1.services.managed_notebook_service.async_client import ManagedNotebookServiceAsyncClient
+from google.cloud.notebooks_v1.services.managed_notebook_service.client import ManagedNotebookServiceClient
+from google.cloud.notebooks_v1.services.notebook_service.async_client import NotebookServiceAsyncClient
+from google.cloud.notebooks_v1.services.notebook_service.client import NotebookServiceClient
 from google.cloud.notebooks_v1.types.diagnostic_config import DiagnosticConfig
-from google.cloud.notebooks_v1.types.environment import (
-    ContainerImage,
-    Environment,
-    VmImage,
-)
+from google.cloud.notebooks_v1.types.environment import ContainerImage, Environment, VmImage
 from google.cloud.notebooks_v1.types.event import Event
 from google.cloud.notebooks_v1.types.execution import Execution, ExecutionTemplate
 from google.cloud.notebooks_v1.types.instance import Instance, ReservationAffinity

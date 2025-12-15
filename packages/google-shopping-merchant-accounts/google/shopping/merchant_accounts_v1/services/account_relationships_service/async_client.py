@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -46,9 +35,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.shopping.merchant_accounts_v1.services.account_relationships_service import (
-    pagers,
-)
+from google.shopping.merchant_accounts_v1.services.account_relationships_service import pagers
 from google.shopping.merchant_accounts_v1.types import accountrelationships
 
 from .client import AccountRelationshipsServiceClient
@@ -74,51 +61,23 @@ class AccountRelationshipsServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = AccountRelationshipsServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AccountRelationshipsServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = AccountRelationshipsServiceClient._DEFAULT_UNIVERSE
 
     account_path = staticmethod(AccountRelationshipsServiceClient.account_path)
-    parse_account_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_account_path
-    )
-    account_relationship_path = staticmethod(
-        AccountRelationshipsServiceClient.account_relationship_path
-    )
-    parse_account_relationship_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_account_relationship_path
-    )
-    common_billing_account_path = staticmethod(
-        AccountRelationshipsServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        AccountRelationshipsServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AccountRelationshipsServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        AccountRelationshipsServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        AccountRelationshipsServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        AccountRelationshipsServiceClient.parse_common_location_path
-    )
+    parse_account_path = staticmethod(AccountRelationshipsServiceClient.parse_account_path)
+    account_relationship_path = staticmethod(AccountRelationshipsServiceClient.account_relationship_path)
+    parse_account_relationship_path = staticmethod(AccountRelationshipsServiceClient.parse_account_relationship_path)
+    common_billing_account_path = staticmethod(AccountRelationshipsServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AccountRelationshipsServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(AccountRelationshipsServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(AccountRelationshipsServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AccountRelationshipsServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AccountRelationshipsServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(AccountRelationshipsServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(AccountRelationshipsServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(AccountRelationshipsServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(AccountRelationshipsServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -154,9 +113,7 @@ class AccountRelationshipsServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -223,13 +180,7 @@ class AccountRelationshipsServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                AccountRelationshipsServiceTransport,
-                Callable[..., AccountRelationshipsServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AccountRelationshipsServiceTransport, Callable[..., AccountRelationshipsServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -289,20 +240,14 @@ class AccountRelationshipsServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.shopping.merchant.accounts_v1.AccountRelationshipsServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.shopping.merchant.accounts.v1.AccountRelationshipsService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -313,9 +258,7 @@ class AccountRelationshipsServiceAsyncClient:
 
     async def get_account_relationship(
         self,
-        request: Optional[
-            Union[accountrelationships.GetAccountRelationshipRequest, dict]
-        ] = None,
+        request: Optional[Union[accountrelationships.GetAccountRelationshipRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -392,14 +335,9 @@ class AccountRelationshipsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -413,15 +351,11 @@ class AccountRelationshipsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_account_relationship
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_account_relationship]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -439,9 +373,7 @@ class AccountRelationshipsServiceAsyncClient:
 
     async def update_account_relationship(
         self,
-        request: Optional[
-            Union[accountrelationships.UpdateAccountRelationshipRequest, dict]
-        ] = None,
+        request: Optional[Union[accountrelationships.UpdateAccountRelationshipRequest, dict]] = None,
         *,
         account_relationship: Optional[accountrelationships.AccountRelationship] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -528,20 +460,13 @@ class AccountRelationshipsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [account_relationship, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, accountrelationships.UpdateAccountRelationshipRequest
-        ):
+        if not isinstance(request, accountrelationships.UpdateAccountRelationshipRequest):
             request = accountrelationships.UpdateAccountRelationshipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -553,17 +478,11 @@ class AccountRelationshipsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_account_relationship
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_account_relationship]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("account_relationship.name", request.account_relationship.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account_relationship.name", request.account_relationship.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -581,9 +500,7 @@ class AccountRelationshipsServiceAsyncClient:
 
     async def list_account_relationships(
         self,
-        request: Optional[
-            Union[accountrelationships.ListAccountRelationshipsRequest, dict]
-        ] = None,
+        request: Optional[Union[accountrelationships.ListAccountRelationshipsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -651,20 +568,13 @@ class AccountRelationshipsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, accountrelationships.ListAccountRelationshipsRequest
-        ):
+        if not isinstance(request, accountrelationships.ListAccountRelationshipsRequest):
             request = accountrelationships.ListAccountRelationshipsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -674,15 +584,11 @@ class AccountRelationshipsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_account_relationships
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_account_relationships]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -716,9 +622,7 @@ class AccountRelationshipsServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

@@ -18,12 +18,8 @@ from google.cloud.clouddms import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.clouddms_v1.services.data_migration_service.async_client import (
-    DataMigrationServiceAsyncClient,
-)
-from google.cloud.clouddms_v1.services.data_migration_service.client import (
-    DataMigrationServiceClient,
-)
+from google.cloud.clouddms_v1.services.data_migration_service.async_client import DataMigrationServiceAsyncClient
+from google.cloud.clouddms_v1.services.data_migration_service.client import DataMigrationServiceClient
 from google.cloud.clouddms_v1.types.clouddms import (
     ApplyConversionWorkspaceRequest,
     CommitConversionWorkspaceRequest,

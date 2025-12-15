@@ -149,9 +149,7 @@ class ModelArmorRestInterceptor:
     """
 
     def pre_create_template(
-        self,
-        request: service.CreateTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_template
 
@@ -174,9 +172,7 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_create_template_with_metadata(
-        self,
-        response: service.Template,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Template, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Template, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_template
 
@@ -193,9 +189,7 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_delete_template(
-        self,
-        request: service.DeleteTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_template
 
@@ -205,9 +199,7 @@ class ModelArmorRestInterceptor:
         return request, metadata
 
     def pre_get_floor_setting(
-        self,
-        request: service.GetFloorSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetFloorSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetFloorSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_floor_setting
 
@@ -216,9 +208,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_get_floor_setting(
-        self, response: service.FloorSetting
-    ) -> service.FloorSetting:
+    def post_get_floor_setting(self, response: service.FloorSetting) -> service.FloorSetting:
         """Post-rpc interceptor for get_floor_setting
 
         DEPRECATED. Please use the `post_get_floor_setting_with_metadata`
@@ -232,9 +222,7 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_get_floor_setting_with_metadata(
-        self,
-        response: service.FloorSetting,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.FloorSetting, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.FloorSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_floor_setting
 
@@ -251,9 +239,7 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_get_template(
-        self,
-        request: service.GetTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_template
 
@@ -276,9 +262,7 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_get_template_with_metadata(
-        self,
-        response: service.Template,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Template, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Template, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_template
 
@@ -295,9 +279,7 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_list_templates(
-        self,
-        request: service.ListTemplatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListTemplatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_templates
 
@@ -306,9 +288,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_list_templates(
-        self, response: service.ListTemplatesResponse
-    ) -> service.ListTemplatesResponse:
+    def post_list_templates(self, response: service.ListTemplatesResponse) -> service.ListTemplatesResponse:
         """Post-rpc interceptor for list_templates
 
         DEPRECATED. Please use the `post_list_templates_with_metadata`
@@ -322,9 +302,7 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_list_templates_with_metadata(
-        self,
-        response: service.ListTemplatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListTemplatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_templates
 
@@ -341,12 +319,8 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_sanitize_model_response(
-        self,
-        request: service.SanitizeModelResponseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SanitizeModelResponseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.SanitizeModelResponseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SanitizeModelResponseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sanitize_model_response
 
         Override in a subclass to manipulate the request or metadata
@@ -354,9 +328,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_sanitize_model_response(
-        self, response: service.SanitizeModelResponseResponse
-    ) -> service.SanitizeModelResponseResponse:
+    def post_sanitize_model_response(self, response: service.SanitizeModelResponseResponse) -> service.SanitizeModelResponseResponse:
         """Post-rpc interceptor for sanitize_model_response
 
         DEPRECATED. Please use the `post_sanitize_model_response_with_metadata`
@@ -370,12 +342,8 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_sanitize_model_response_with_metadata(
-        self,
-        response: service.SanitizeModelResponseResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SanitizeModelResponseResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.SanitizeModelResponseResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SanitizeModelResponseResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sanitize_model_response
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -391,12 +359,8 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_sanitize_user_prompt(
-        self,
-        request: service.SanitizeUserPromptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SanitizeUserPromptRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.SanitizeUserPromptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SanitizeUserPromptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sanitize_user_prompt
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +368,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_sanitize_user_prompt(
-        self, response: service.SanitizeUserPromptResponse
-    ) -> service.SanitizeUserPromptResponse:
+    def post_sanitize_user_prompt(self, response: service.SanitizeUserPromptResponse) -> service.SanitizeUserPromptResponse:
         """Post-rpc interceptor for sanitize_user_prompt
 
         DEPRECATED. Please use the `post_sanitize_user_prompt_with_metadata`
@@ -420,12 +382,8 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_sanitize_user_prompt_with_metadata(
-        self,
-        response: service.SanitizeUserPromptResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SanitizeUserPromptResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.SanitizeUserPromptResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SanitizeUserPromptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sanitize_user_prompt
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -441,12 +399,8 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_update_floor_setting(
-        self,
-        request: service.UpdateFloorSettingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateFloorSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateFloorSettingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateFloorSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_floor_setting
 
         Override in a subclass to manipulate the request or metadata
@@ -454,9 +408,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_update_floor_setting(
-        self, response: service.FloorSetting
-    ) -> service.FloorSetting:
+    def post_update_floor_setting(self, response: service.FloorSetting) -> service.FloorSetting:
         """Post-rpc interceptor for update_floor_setting
 
         DEPRECATED. Please use the `post_update_floor_setting_with_metadata`
@@ -470,9 +422,7 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_update_floor_setting_with_metadata(
-        self,
-        response: service.FloorSetting,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.FloorSetting, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.FloorSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_floor_setting
 
@@ -489,9 +439,7 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_update_template(
-        self,
-        request: service.UpdateTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_template
 
@@ -514,9 +462,7 @@ class ModelArmorRestInterceptor:
         return response
 
     def post_update_template_with_metadata(
-        self,
-        response: service.Template,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Template, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Template, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_template
 
@@ -533,12 +479,8 @@ class ModelArmorRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -546,9 +488,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -558,12 +498,8 @@ class ModelArmorRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -571,9 +507,7 @@ class ModelArmorRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -662,30 +596,18 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ModelArmorRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateTemplate(
-        _BaseModelArmorRestTransport._BaseCreateTemplate, ModelArmorRestStub
-    ):
+    class _CreateTemplate(_BaseModelArmorRestTransport._BaseCreateTemplate, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.CreateTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -725,34 +647,18 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                     Message describing Template resource
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseCreateTemplate._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseCreateTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_create_template(request, metadata)
-            transcoded_request = _BaseModelArmorRestTransport._BaseCreateTemplate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseCreateTemplate._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseModelArmorRestTransport._BaseCreateTemplate._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseModelArmorRestTransport._BaseCreateTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseCreateTemplate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseCreateTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -776,13 +682,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._CreateTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -798,12 +698,8 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_create_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Template.to_json(response)
                 except:
@@ -824,22 +720,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _DeleteTemplate(
-        _BaseModelArmorRestTransport._BaseDeleteTemplate, ModelArmorRestStub
-    ):
+    class _DeleteTemplate(_BaseModelArmorRestTransport._BaseDeleteTemplate, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.DeleteTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -874,28 +760,16 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseDeleteTemplate._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseDeleteTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_template(request, metadata)
-            transcoded_request = _BaseModelArmorRestTransport._BaseDeleteTemplate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseDeleteTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseDeleteTemplate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseDeleteTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -919,12 +793,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._DeleteTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -932,22 +801,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetFloorSetting(
-        _BaseModelArmorRestTransport._BaseGetFloorSetting, ModelArmorRestStub
-    ):
+    class _GetFloorSetting(_BaseModelArmorRestTransport._BaseGetFloorSetting, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.GetFloorSetting")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -988,28 +847,16 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseGetFloorSetting._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseGetFloorSetting._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_floor_setting(
-                request, metadata
-            )
-            transcoded_request = _BaseModelArmorRestTransport._BaseGetFloorSetting._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_floor_setting(request, metadata)
+            transcoded_request = _BaseModelArmorRestTransport._BaseGetFloorSetting._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseModelArmorRestTransport._BaseGetFloorSetting._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelArmorRestTransport._BaseGetFloorSetting._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1033,12 +880,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._GetFloorSetting._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1054,12 +896,8 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_get_floor_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_floor_setting_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_floor_setting_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.FloorSetting.to_json(response)
                 except:
@@ -1080,22 +918,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _GetTemplate(
-        _BaseModelArmorRestTransport._BaseGetTemplate, ModelArmorRestStub
-    ):
+    class _GetTemplate(_BaseModelArmorRestTransport._BaseGetTemplate, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.GetTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1134,30 +962,16 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                     Message describing Template resource
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseGetTemplate._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseGetTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_template(request, metadata)
-            transcoded_request = (
-                _BaseModelArmorRestTransport._BaseGetTemplate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseGetTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseGetTemplate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseGetTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1181,12 +995,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._GetTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1202,12 +1011,8 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_get_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Template.to_json(response)
                 except:
@@ -1228,22 +1033,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _ListTemplates(
-        _BaseModelArmorRestTransport._BaseListTemplates, ModelArmorRestStub
-    ):
+    class _ListTemplates(_BaseModelArmorRestTransport._BaseListTemplates, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.ListTemplates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1285,30 +1080,16 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseListTemplates._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseListTemplates._get_http_options()
 
             request, metadata = self._interceptor.pre_list_templates(request, metadata)
-            transcoded_request = (
-                _BaseModelArmorRestTransport._BaseListTemplates._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseListTemplates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseListTemplates._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseListTemplates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1332,12 +1113,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._ListTemplates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1353,12 +1129,8 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_list_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_templates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_templates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListTemplatesResponse.to_json(response)
                 except:
@@ -1379,22 +1151,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _SanitizeModelResponse(
-        _BaseModelArmorRestTransport._BaseSanitizeModelResponse, ModelArmorRestStub
-    ):
+    class _SanitizeModelResponse(_BaseModelArmorRestTransport._BaseSanitizeModelResponse, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.SanitizeModelResponse")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1434,32 +1196,18 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                     Sanitized Model Response Response.
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_http_options()
 
-            request, metadata = self._interceptor.pre_sanitize_model_response(
-                request, metadata
-            )
-            transcoded_request = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_sanitize_model_response(request, metadata)
+            transcoded_request = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_transcoded_request(http_options, request)
 
-            body = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelArmorRestTransport._BaseSanitizeModelResponse._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1483,13 +1231,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._SanitizeModelResponse._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1505,16 +1247,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_sanitize_model_response(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sanitize_model_response_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_sanitize_model_response_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.SanitizeModelResponseResponse.to_json(
-                        response
-                    )
+                    response_payload = service.SanitizeModelResponseResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1533,22 +1269,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _SanitizeUserPrompt(
-        _BaseModelArmorRestTransport._BaseSanitizeUserPrompt, ModelArmorRestStub
-    ):
+    class _SanitizeUserPrompt(_BaseModelArmorRestTransport._BaseSanitizeUserPrompt, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.SanitizeUserPrompt")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1588,32 +1314,18 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                     Sanitized User Prompt Response.
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_http_options()
 
-            request, metadata = self._interceptor.pre_sanitize_user_prompt(
-                request, metadata
-            )
-            transcoded_request = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_sanitize_user_prompt(request, metadata)
+            transcoded_request = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_transcoded_request(http_options, request)
 
-            body = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelArmorRestTransport._BaseSanitizeUserPrompt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1637,13 +1349,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._SanitizeUserPrompt._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1659,16 +1365,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_sanitize_user_prompt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sanitize_user_prompt_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_sanitize_user_prompt_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.SanitizeUserPromptResponse.to_json(
-                        response
-                    )
+                    response_payload = service.SanitizeUserPromptResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1687,22 +1387,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _UpdateFloorSetting(
-        _BaseModelArmorRestTransport._BaseUpdateFloorSetting, ModelArmorRestStub
-    ):
+    class _UpdateFloorSetting(_BaseModelArmorRestTransport._BaseUpdateFloorSetting, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.UpdateFloorSetting")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1744,32 +1434,18 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_floor_setting(
-                request, metadata
-            )
-            transcoded_request = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_floor_setting(request, metadata)
+            transcoded_request = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_transcoded_request(http_options, request)
 
-            body = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelArmorRestTransport._BaseUpdateFloorSetting._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1793,13 +1469,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._UpdateFloorSetting._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1815,12 +1485,8 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_update_floor_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_floor_setting_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_floor_setting_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.FloorSetting.to_json(response)
                 except:
@@ -1841,22 +1507,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
-    class _UpdateTemplate(
-        _BaseModelArmorRestTransport._BaseUpdateTemplate, ModelArmorRestStub
-    ):
+    class _UpdateTemplate(_BaseModelArmorRestTransport._BaseUpdateTemplate, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.UpdateTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1896,34 +1552,18 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                     Message describing Template resource
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseUpdateTemplate._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseUpdateTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_update_template(request, metadata)
-            transcoded_request = _BaseModelArmorRestTransport._BaseUpdateTemplate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseUpdateTemplate._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseModelArmorRestTransport._BaseUpdateTemplate._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseModelArmorRestTransport._BaseUpdateTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseUpdateTemplate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseUpdateTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1947,13 +1587,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._UpdateTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1969,12 +1603,8 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             resp = self._interceptor.post_update_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Template.to_json(response)
                 except:
@@ -1996,25 +1626,19 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             return resp
 
     @property
-    def create_template(
-        self,
-    ) -> Callable[[service.CreateTemplateRequest], service.Template]:
+    def create_template(self) -> Callable[[service.CreateTemplateRequest], service.Template]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_template(
-        self,
-    ) -> Callable[[service.DeleteTemplateRequest], empty_pb2.Empty]:
+    def delete_template(self) -> Callable[[service.DeleteTemplateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_floor_setting(
-        self,
-    ) -> Callable[[service.GetFloorSettingRequest], service.FloorSetting]:
+    def get_floor_setting(self) -> Callable[[service.GetFloorSettingRequest], service.FloorSetting]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFloorSetting(self._session, self._host, self._interceptor)  # type: ignore
@@ -2026,45 +1650,31 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
         return self._GetTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_templates(
-        self,
-    ) -> Callable[[service.ListTemplatesRequest], service.ListTemplatesResponse]:
+    def list_templates(self) -> Callable[[service.ListTemplatesRequest], service.ListTemplatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def sanitize_model_response(
-        self,
-    ) -> Callable[
-        [service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse
-    ]:
+    def sanitize_model_response(self) -> Callable[[service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SanitizeModelResponse(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def sanitize_user_prompt(
-        self,
-    ) -> Callable[
-        [service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse
-    ]:
+    def sanitize_user_prompt(self) -> Callable[[service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SanitizeUserPrompt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_floor_setting(
-        self,
-    ) -> Callable[[service.UpdateFloorSettingRequest], service.FloorSetting]:
+    def update_floor_setting(self) -> Callable[[service.UpdateFloorSettingRequest], service.FloorSetting]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFloorSetting(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_template(
-        self,
-    ) -> Callable[[service.UpdateTemplateRequest], service.Template]:
+    def update_template(self) -> Callable[[service.UpdateTemplateRequest], service.Template]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -2073,22 +1683,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseModelArmorRestTransport._BaseGetLocation, ModelArmorRestStub
-    ):
+    class _GetLocation(_BaseModelArmorRestTransport._BaseGetLocation, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2126,30 +1726,16 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseModelArmorRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2173,12 +1759,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2190,9 +1771,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2217,22 +1796,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseModelArmorRestTransport._BaseListLocations, ModelArmorRestStub
-    ):
+    class _ListLocations(_BaseModelArmorRestTransport._BaseListLocations, ModelArmorRestStub):
         def __hash__(self):
             return hash("ModelArmorRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2270,30 +1839,16 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseModelArmorRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseModelArmorRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseModelArmorRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseModelArmorRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelArmorRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelArmorRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2317,12 +1872,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
 
             # Send the request
             response = ModelArmorRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2334,9 +1884,7 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

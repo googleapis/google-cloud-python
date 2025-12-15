@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -83,9 +72,7 @@ class ApiHubCollectAsyncClient:
     api_path = staticmethod(ApiHubCollectClient.api_path)
     parse_api_path = staticmethod(ApiHubCollectClient.parse_api_path)
     api_operation_path = staticmethod(ApiHubCollectClient.api_operation_path)
-    parse_api_operation_path = staticmethod(
-        ApiHubCollectClient.parse_api_operation_path
-    )
+    parse_api_operation_path = staticmethod(ApiHubCollectClient.parse_api_operation_path)
     attribute_path = staticmethod(ApiHubCollectClient.attribute_path)
     parse_attribute_path = staticmethod(ApiHubCollectClient.parse_attribute_path)
     definition_path = staticmethod(ApiHubCollectClient.definition_path)
@@ -93,37 +80,21 @@ class ApiHubCollectAsyncClient:
     deployment_path = staticmethod(ApiHubCollectClient.deployment_path)
     parse_deployment_path = staticmethod(ApiHubCollectClient.parse_deployment_path)
     plugin_instance_path = staticmethod(ApiHubCollectClient.plugin_instance_path)
-    parse_plugin_instance_path = staticmethod(
-        ApiHubCollectClient.parse_plugin_instance_path
-    )
+    parse_plugin_instance_path = staticmethod(ApiHubCollectClient.parse_plugin_instance_path)
     spec_path = staticmethod(ApiHubCollectClient.spec_path)
     parse_spec_path = staticmethod(ApiHubCollectClient.parse_spec_path)
     version_path = staticmethod(ApiHubCollectClient.version_path)
     parse_version_path = staticmethod(ApiHubCollectClient.parse_version_path)
-    common_billing_account_path = staticmethod(
-        ApiHubCollectClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ApiHubCollectClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ApiHubCollectClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ApiHubCollectClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ApiHubCollectClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ApiHubCollectClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ApiHubCollectClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ApiHubCollectClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ApiHubCollectClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ApiHubCollectClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ApiHubCollectClient.parse_common_organization_path)
     common_project_path = staticmethod(ApiHubCollectClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ApiHubCollectClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ApiHubCollectClient.parse_common_project_path)
     common_location_path = staticmethod(ApiHubCollectClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ApiHubCollectClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ApiHubCollectClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -159,9 +130,7 @@ class ApiHubCollectAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -228,9 +197,7 @@ class ApiHubCollectAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, ApiHubCollectTransport, Callable[..., ApiHubCollectTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ApiHubCollectTransport, Callable[..., ApiHubCollectTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -290,20 +257,14 @@ class ApiHubCollectAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.apihub_v1.ApiHubCollectAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.apihub.v1.ApiHubCollect",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -410,14 +371,9 @@ class ApiHubCollectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [location, collection_type, api_data]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -435,15 +391,11 @@ class ApiHubCollectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.collect_api_data
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.collect_api_data]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -504,9 +456,7 @@ class ApiHubCollectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -559,9 +509,7 @@ class ApiHubCollectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -618,9 +566,7 @@ class ApiHubCollectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -673,9 +619,7 @@ class ApiHubCollectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -725,9 +669,7 @@ class ApiHubCollectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -780,9 +722,7 @@ class ApiHubCollectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -805,9 +745,7 @@ class ApiHubCollectAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

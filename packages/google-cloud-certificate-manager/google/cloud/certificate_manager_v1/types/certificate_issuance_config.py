@@ -103,9 +103,7 @@ class ListCertificateIssuanceConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_issuance_configs: MutableSequence[
-        "CertificateIssuanceConfig"
-    ] = proto.RepeatedField(
+    certificate_issuance_configs: MutableSequence["CertificateIssuanceConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CertificateIssuanceConfig",

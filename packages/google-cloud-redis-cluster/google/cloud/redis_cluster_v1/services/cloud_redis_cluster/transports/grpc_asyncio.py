@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -288,18 +277,14 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -335,9 +320,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -360,20 +343,13 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.ListClustersRequest],
-        Awaitable[cloud_redis_cluster.ListClustersResponse],
-    ]:
+    def list_clusters(self) -> Callable[[cloud_redis_cluster.ListClustersRequest], Awaitable[cloud_redis_cluster.ListClustersResponse]]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists all Redis clusters owned by a project in either the
@@ -406,11 +382,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["list_clusters"]
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.GetClusterRequest], Awaitable[cloud_redis_cluster.Cluster]
-    ]:
+    def get_cluster(self) -> Callable[[cloud_redis_cluster.GetClusterRequest], Awaitable[cloud_redis_cluster.Cluster]]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Gets the details of a specific Redis cluster.
@@ -434,11 +406,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.UpdateClusterRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_cluster(self) -> Callable[[cloud_redis_cluster.UpdateClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Updates the metadata and configuration of a specific
@@ -467,11 +435,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.DeleteClusterRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_cluster(self) -> Callable[[cloud_redis_cluster.DeleteClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes a specific Redis cluster. Cluster stops
@@ -496,11 +460,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.CreateClusterRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_cluster(self) -> Callable[[cloud_redis_cluster.CreateClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a Redis cluster based on the specified
@@ -535,10 +495,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
     @property
     def get_cluster_certificate_authority(
         self,
-    ) -> Callable[
-        [cloud_redis_cluster.GetClusterCertificateAuthorityRequest],
-        Awaitable[cloud_redis_cluster.CertificateAuthority],
-    ]:
+    ) -> Callable[[cloud_redis_cluster.GetClusterCertificateAuthorityRequest], Awaitable[cloud_redis_cluster.CertificateAuthority]]:
         r"""Return a callable for the get cluster certificate
         authority method over gRPC.
 
@@ -556,9 +513,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cluster_certificate_authority" not in self._stubs:
-            self._stubs[
-                "get_cluster_certificate_authority"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_cluster_certificate_authority"] = self._logged_channel.unary_unary(
                 "/google.cloud.redis.cluster.v1.CloudRedisCluster/GetClusterCertificateAuthority",
                 request_serializer=cloud_redis_cluster.GetClusterCertificateAuthorityRequest.serialize,
                 response_deserializer=cloud_redis_cluster.CertificateAuthority.deserialize,
@@ -568,10 +523,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
     @property
     def reschedule_cluster_maintenance(
         self,
-    ) -> Callable[
-        [cloud_redis_cluster.RescheduleClusterMaintenanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cloud_redis_cluster.RescheduleClusterMaintenanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the reschedule cluster maintenance method over gRPC.
 
         Reschedules upcoming maintenance event.
@@ -587,9 +539,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reschedule_cluster_maintenance" not in self._stubs:
-            self._stubs[
-                "reschedule_cluster_maintenance"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["reschedule_cluster_maintenance"] = self._logged_channel.unary_unary(
                 "/google.cloud.redis.cluster.v1.CloudRedisCluster/RescheduleClusterMaintenance",
                 request_serializer=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -599,10 +549,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
     @property
     def list_backup_collections(
         self,
-    ) -> Callable[
-        [cloud_redis_cluster.ListBackupCollectionsRequest],
-        Awaitable[cloud_redis_cluster.ListBackupCollectionsResponse],
-    ]:
+    ) -> Callable[[cloud_redis_cluster.ListBackupCollectionsRequest], Awaitable[cloud_redis_cluster.ListBackupCollectionsResponse]]:
         r"""Return a callable for the list backup collections method over gRPC.
 
         Lists all backup collections owned by a consumer project in
@@ -631,12 +578,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["list_backup_collections"]
 
     @property
-    def get_backup_collection(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.GetBackupCollectionRequest],
-        Awaitable[cloud_redis_cluster.BackupCollection],
-    ]:
+    def get_backup_collection(self) -> Callable[[cloud_redis_cluster.GetBackupCollectionRequest], Awaitable[cloud_redis_cluster.BackupCollection]]:
         r"""Return a callable for the get backup collection method over gRPC.
 
         Get a backup collection.
@@ -660,12 +602,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["get_backup_collection"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.ListBackupsRequest],
-        Awaitable[cloud_redis_cluster.ListBackupsResponse],
-    ]:
+    def list_backups(self) -> Callable[[cloud_redis_cluster.ListBackupsRequest], Awaitable[cloud_redis_cluster.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists all backups owned by a backup collection.
@@ -689,11 +626,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["list_backups"]
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.GetBackupRequest], Awaitable[cloud_redis_cluster.Backup]
-    ]:
+    def get_backup(self) -> Callable[[cloud_redis_cluster.GetBackupRequest], Awaitable[cloud_redis_cluster.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Gets the details of a specific backup.
@@ -717,11 +650,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["get_backup"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.DeleteBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup(self) -> Callable[[cloud_redis_cluster.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a specific backup.
@@ -745,11 +674,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["delete_backup"]
 
     @property
-    def export_backup(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.ExportBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def export_backup(self) -> Callable[[cloud_redis_cluster.ExportBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export backup method over gRPC.
 
         Exports a specific backup to a customer target Cloud
@@ -774,11 +699,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         return self._stubs["export_backup"]
 
     @property
-    def backup_cluster(
-        self,
-    ) -> Callable[
-        [cloud_redis_cluster.BackupClusterRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def backup_cluster(self) -> Callable[[cloud_redis_cluster.BackupClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the backup cluster method over gRPC.
 
         Backup Redis Cluster.
@@ -986,9 +907,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1005,9 +924,7 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

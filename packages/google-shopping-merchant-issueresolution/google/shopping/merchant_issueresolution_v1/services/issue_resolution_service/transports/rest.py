@@ -103,13 +103,8 @@ class IssueResolutionServiceRestInterceptor:
     """
 
     def pre_render_account_issues(
-        self,
-        request: issueresolution.RenderAccountIssuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        issueresolution.RenderAccountIssuesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: issueresolution.RenderAccountIssuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[issueresolution.RenderAccountIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for render_account_issues
 
         Override in a subclass to manipulate the request or metadata
@@ -117,9 +112,7 @@ class IssueResolutionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_render_account_issues(
-        self, response: issueresolution.RenderAccountIssuesResponse
-    ) -> issueresolution.RenderAccountIssuesResponse:
+    def post_render_account_issues(self, response: issueresolution.RenderAccountIssuesResponse) -> issueresolution.RenderAccountIssuesResponse:
         """Post-rpc interceptor for render_account_issues
 
         DEPRECATED. Please use the `post_render_account_issues_with_metadata`
@@ -133,13 +126,8 @@ class IssueResolutionServiceRestInterceptor:
         return response
 
     def post_render_account_issues_with_metadata(
-        self,
-        response: issueresolution.RenderAccountIssuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        issueresolution.RenderAccountIssuesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: issueresolution.RenderAccountIssuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[issueresolution.RenderAccountIssuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for render_account_issues
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -155,13 +143,8 @@ class IssueResolutionServiceRestInterceptor:
         return response, metadata
 
     def pre_render_product_issues(
-        self,
-        request: issueresolution.RenderProductIssuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        issueresolution.RenderProductIssuesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: issueresolution.RenderProductIssuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[issueresolution.RenderProductIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for render_product_issues
 
         Override in a subclass to manipulate the request or metadata
@@ -169,9 +152,7 @@ class IssueResolutionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_render_product_issues(
-        self, response: issueresolution.RenderProductIssuesResponse
-    ) -> issueresolution.RenderProductIssuesResponse:
+    def post_render_product_issues(self, response: issueresolution.RenderProductIssuesResponse) -> issueresolution.RenderProductIssuesResponse:
         """Post-rpc interceptor for render_product_issues
 
         DEPRECATED. Please use the `post_render_product_issues_with_metadata`
@@ -185,13 +166,8 @@ class IssueResolutionServiceRestInterceptor:
         return response
 
     def post_render_product_issues_with_metadata(
-        self,
-        response: issueresolution.RenderProductIssuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        issueresolution.RenderProductIssuesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: issueresolution.RenderProductIssuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[issueresolution.RenderProductIssuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for render_product_issues
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -207,12 +183,8 @@ class IssueResolutionServiceRestInterceptor:
         return response, metadata
 
     def pre_trigger_action(
-        self,
-        request: issueresolution.TriggerActionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        issueresolution.TriggerActionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: issueresolution.TriggerActionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[issueresolution.TriggerActionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for trigger_action
 
         Override in a subclass to manipulate the request or metadata
@@ -220,9 +192,7 @@ class IssueResolutionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_trigger_action(
-        self, response: issueresolution.TriggerActionResponse
-    ) -> issueresolution.TriggerActionResponse:
+    def post_trigger_action(self, response: issueresolution.TriggerActionResponse) -> issueresolution.TriggerActionResponse:
         """Post-rpc interceptor for trigger_action
 
         DEPRECATED. Please use the `post_trigger_action_with_metadata`
@@ -236,12 +206,8 @@ class IssueResolutionServiceRestInterceptor:
         return response
 
     def post_trigger_action_with_metadata(
-        self,
-        response: issueresolution.TriggerActionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        issueresolution.TriggerActionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: issueresolution.TriggerActionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[issueresolution.TriggerActionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for trigger_action
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -337,31 +303,18 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IssueResolutionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _RenderAccountIssues(
-        _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues,
-        IssueResolutionServiceRestStub,
-    ):
+    class _RenderAccountIssues(_BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues, IssueResolutionServiceRestStub):
         def __hash__(self):
             return hash("IssueResolutionServiceRestTransport.RenderAccountIssues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -406,32 +359,18 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_http_options()
-            )
+            http_options = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_http_options()
 
-            request, metadata = self._interceptor.pre_render_account_issues(
-                request, metadata
-            )
-            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_render_account_issues(request, metadata)
+            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_transcoded_request(http_options, request)
 
-            body = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -454,16 +393,8 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                IssueResolutionServiceRestTransport._RenderAccountIssues._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IssueResolutionServiceRestTransport._RenderAccountIssues._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -479,16 +410,10 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             resp = self._interceptor.post_render_account_issues(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_render_account_issues_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_render_account_issues_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        issueresolution.RenderAccountIssuesResponse.to_json(response)
-                    )
+                    response_payload = issueresolution.RenderAccountIssuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -507,23 +432,12 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
                 )
             return resp
 
-    class _RenderProductIssues(
-        _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues,
-        IssueResolutionServiceRestStub,
-    ):
+    class _RenderProductIssues(_BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues, IssueResolutionServiceRestStub):
         def __hash__(self):
             return hash("IssueResolutionServiceRestTransport.RenderProductIssues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -568,32 +482,18 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_http_options()
-            )
+            http_options = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_http_options()
 
-            request, metadata = self._interceptor.pre_render_product_issues(
-                request, metadata
-            )
-            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_render_product_issues(request, metadata)
+            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_transcoded_request(http_options, request)
 
-            body = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -616,16 +516,8 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                IssueResolutionServiceRestTransport._RenderProductIssues._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IssueResolutionServiceRestTransport._RenderProductIssues._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -641,16 +533,10 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             resp = self._interceptor.post_render_product_issues(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_render_product_issues_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_render_product_issues_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        issueresolution.RenderProductIssuesResponse.to_json(response)
-                    )
+                    response_payload = issueresolution.RenderProductIssuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -669,23 +555,12 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
                 )
             return resp
 
-    class _TriggerAction(
-        _BaseIssueResolutionServiceRestTransport._BaseTriggerAction,
-        IssueResolutionServiceRestStub,
-    ):
+    class _TriggerAction(_BaseIssueResolutionServiceRestTransport._BaseTriggerAction, IssueResolutionServiceRestStub):
         def __hash__(self):
             return hash("IssueResolutionServiceRestTransport.TriggerAction")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -727,30 +602,18 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_http_options()
-            )
+            http_options = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_http_options()
 
             request, metadata = self._interceptor.pre_trigger_action(request, metadata)
-            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_transcoded_request(http_options, request)
 
-            body = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -774,13 +637,7 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             # Send the request
             response = IssueResolutionServiceRestTransport._TriggerAction._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -796,16 +653,10 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
 
             resp = self._interceptor.post_trigger_action(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_trigger_action_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_trigger_action_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = issueresolution.TriggerActionResponse.to_json(
-                        response
-                    )
+                    response_payload = issueresolution.TriggerActionResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -825,33 +676,19 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
             return resp
 
     @property
-    def render_account_issues(
-        self,
-    ) -> Callable[
-        [issueresolution.RenderAccountIssuesRequest],
-        issueresolution.RenderAccountIssuesResponse,
-    ]:
+    def render_account_issues(self) -> Callable[[issueresolution.RenderAccountIssuesRequest], issueresolution.RenderAccountIssuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenderAccountIssues(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def render_product_issues(
-        self,
-    ) -> Callable[
-        [issueresolution.RenderProductIssuesRequest],
-        issueresolution.RenderProductIssuesResponse,
-    ]:
+    def render_product_issues(self) -> Callable[[issueresolution.RenderProductIssuesRequest], issueresolution.RenderProductIssuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RenderProductIssues(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def trigger_action(
-        self,
-    ) -> Callable[
-        [issueresolution.TriggerActionRequest], issueresolution.TriggerActionResponse
-    ]:
+    def trigger_action(self) -> Callable[[issueresolution.TriggerActionRequest], issueresolution.TriggerActionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TriggerAction(self._session, self._host, self._interceptor)  # type: ignore

@@ -101,12 +101,10 @@ class SubpropertyEventFilterCondition(proto.Message):
             FULL_REGEXP = 5
             PARTIAL_REGEXP = 6
 
-        match_type: "SubpropertyEventFilterCondition.StringFilter.MatchType" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="SubpropertyEventFilterCondition.StringFilter.MatchType",
-            )
+        match_type: "SubpropertyEventFilterCondition.StringFilter.MatchType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SubpropertyEventFilterCondition.StringFilter.MatchType",
         )
         value: str = proto.Field(
             proto.STRING,
@@ -194,9 +192,7 @@ class SubpropertyEventFilterExpressionList(proto.Message):
             Subproperty event filter expressions
     """
 
-    filter_expressions: MutableSequence[
-        "SubpropertyEventFilterExpression"
-    ] = proto.RepeatedField(
+    filter_expressions: MutableSequence["SubpropertyEventFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SubpropertyEventFilterExpression",
@@ -280,9 +276,7 @@ class SubpropertyEventFilter(proto.Message):
         number=2,
         optional=True,
     )
-    filter_clauses: MutableSequence[
-        "SubpropertyEventFilterClause"
-    ] = proto.RepeatedField(
+    filter_clauses: MutableSequence["SubpropertyEventFilterClause"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="SubpropertyEventFilterClause",

@@ -22,9 +22,7 @@ from .grpc_asyncio import DataTaxonomyServiceGrpcAsyncIOTransport
 from .rest import DataTaxonomyServiceRestInterceptor, DataTaxonomyServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DataTaxonomyServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DataTaxonomyServiceTransport]]
 _transport_registry["grpc"] = DataTaxonomyServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataTaxonomyServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = DataTaxonomyServiceRestTransport

@@ -29,9 +29,7 @@ import google.protobuf
 from google.analytics.data_v1alpha import gapic_version as package_version
 from google.analytics.data_v1alpha.types import analytics_data_api
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -231,20 +221,14 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.RunFunnelReportRequest],
-        Union[
-            analytics_data_api.RunFunnelReportResponse,
-            Awaitable[analytics_data_api.RunFunnelReportResponse],
-        ],
+        Union[analytics_data_api.RunFunnelReportResponse, Awaitable[analytics_data_api.RunFunnelReportResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.CreateAudienceListRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[analytics_data_api.CreateAudienceListRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -252,10 +236,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.QueryAudienceListRequest],
-        Union[
-            analytics_data_api.QueryAudienceListResponse,
-            Awaitable[analytics_data_api.QueryAudienceListResponse],
-        ],
+        Union[analytics_data_api.QueryAudienceListResponse, Awaitable[analytics_data_api.QueryAudienceListResponse]],
     ]:
         raise NotImplementedError()
 
@@ -264,22 +245,14 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.SheetExportAudienceListRequest],
-        Union[
-            analytics_data_api.SheetExportAudienceListResponse,
-            Awaitable[analytics_data_api.SheetExportAudienceListResponse],
-        ],
+        Union[analytics_data_api.SheetExportAudienceListResponse, Awaitable[analytics_data_api.SheetExportAudienceListResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetAudienceListRequest],
-        Union[
-            analytics_data_api.AudienceList, Awaitable[analytics_data_api.AudienceList]
-        ],
-    ]:
+    ) -> Callable[[analytics_data_api.GetAudienceListRequest], Union[analytics_data_api.AudienceList, Awaitable[analytics_data_api.AudienceList]]]:
         raise NotImplementedError()
 
     @property
@@ -287,10 +260,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.ListAudienceListsRequest],
-        Union[
-            analytics_data_api.ListAudienceListsResponse,
-            Awaitable[analytics_data_api.ListAudienceListsResponse],
-        ],
+        Union[analytics_data_api.ListAudienceListsResponse, Awaitable[analytics_data_api.ListAudienceListsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -299,10 +269,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.CreateRecurringAudienceListRequest],
-        Union[
-            analytics_data_api.RecurringAudienceList,
-            Awaitable[analytics_data_api.RecurringAudienceList],
-        ],
+        Union[analytics_data_api.RecurringAudienceList, Awaitable[analytics_data_api.RecurringAudienceList]],
     ]:
         raise NotImplementedError()
 
@@ -311,10 +278,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.GetRecurringAudienceListRequest],
-        Union[
-            analytics_data_api.RecurringAudienceList,
-            Awaitable[analytics_data_api.RecurringAudienceList],
-        ],
+        Union[analytics_data_api.RecurringAudienceList, Awaitable[analytics_data_api.RecurringAudienceList]],
     ]:
         raise NotImplementedError()
 
@@ -323,10 +287,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.ListRecurringAudienceListsRequest],
-        Union[
-            analytics_data_api.ListRecurringAudienceListsResponse,
-            Awaitable[analytics_data_api.ListRecurringAudienceListsResponse],
-        ],
+        Union[analytics_data_api.ListRecurringAudienceListsResponse, Awaitable[analytics_data_api.ListRecurringAudienceListsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -335,20 +296,14 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.GetPropertyQuotasSnapshotRequest],
-        Union[
-            analytics_data_api.PropertyQuotasSnapshot,
-            Awaitable[analytics_data_api.PropertyQuotasSnapshot],
-        ],
+        Union[analytics_data_api.PropertyQuotasSnapshot, Awaitable[analytics_data_api.PropertyQuotasSnapshot]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_report_task(
         self,
-    ) -> Callable[
-        [analytics_data_api.CreateReportTaskRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[analytics_data_api.CreateReportTaskRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -356,20 +311,14 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.QueryReportTaskRequest],
-        Union[
-            analytics_data_api.QueryReportTaskResponse,
-            Awaitable[analytics_data_api.QueryReportTaskResponse],
-        ],
+        Union[analytics_data_api.QueryReportTaskResponse, Awaitable[analytics_data_api.QueryReportTaskResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_report_task(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetReportTaskRequest],
-        Union[analytics_data_api.ReportTask, Awaitable[analytics_data_api.ReportTask]],
-    ]:
+    ) -> Callable[[analytics_data_api.GetReportTaskRequest], Union[analytics_data_api.ReportTask, Awaitable[analytics_data_api.ReportTask]]]:
         raise NotImplementedError()
 
     @property
@@ -377,10 +326,7 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_data_api.ListReportTasksRequest],
-        Union[
-            analytics_data_api.ListReportTasksResponse,
-            Awaitable[analytics_data_api.ListReportTasksResponse],
-        ],
+        Union[analytics_data_api.ListReportTasksResponse, Awaitable[analytics_data_api.ListReportTasksResponse]],
     ]:
         raise NotImplementedError()
 

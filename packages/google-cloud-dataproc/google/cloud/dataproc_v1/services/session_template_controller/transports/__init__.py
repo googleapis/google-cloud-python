@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import SessionTemplateControllerTransport
 from .grpc import SessionTemplateControllerGrpcTransport
 from .grpc_asyncio import SessionTemplateControllerGrpcAsyncIOTransport
-from .rest import (
-    SessionTemplateControllerRestInterceptor,
-    SessionTemplateControllerRestTransport,
-)
+from .rest import SessionTemplateControllerRestInterceptor, SessionTemplateControllerRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SessionTemplateControllerTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SessionTemplateControllerTransport]]
 _transport_registry["grpc"] = SessionTemplateControllerGrpcTransport
 _transport_registry["grpc_asyncio"] = SessionTemplateControllerGrpcAsyncIOTransport
 _transport_registry["rest"] = SessionTemplateControllerRestTransport

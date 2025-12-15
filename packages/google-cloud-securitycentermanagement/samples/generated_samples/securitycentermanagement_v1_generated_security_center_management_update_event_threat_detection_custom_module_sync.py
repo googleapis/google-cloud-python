@@ -39,9 +39,7 @@ def sample_update_event_threat_detection_custom_module():
     client = securitycentermanagement_v1.SecurityCenterManagementClient()
 
     # Initialize request argument(s)
-    request = (
-        securitycentermanagement_v1.UpdateEventThreatDetectionCustomModuleRequest()
-    )
+    request = securitycentermanagement_v1.UpdateEventThreatDetectionCustomModuleRequest()
 
     # Make the request
     response = client.update_event_threat_detection_custom_module(request=request)

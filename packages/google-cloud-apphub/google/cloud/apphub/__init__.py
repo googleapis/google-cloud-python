@@ -61,27 +61,10 @@ from google.cloud.apphub_v1.types.apphub_service import (
     UpdateWorkloadRequest,
 )
 from google.cloud.apphub_v1.types.application import Application, Scope
-from google.cloud.apphub_v1.types.attributes import (
-    Attributes,
-    ContactInfo,
-    Criticality,
-    Environment,
-)
-from google.cloud.apphub_v1.types.service import (
-    DiscoveredService,
-    Service,
-    ServiceProperties,
-    ServiceReference,
-)
-from google.cloud.apphub_v1.types.service_project_attachment import (
-    ServiceProjectAttachment,
-)
-from google.cloud.apphub_v1.types.workload import (
-    DiscoveredWorkload,
-    Workload,
-    WorkloadProperties,
-    WorkloadReference,
-)
+from google.cloud.apphub_v1.types.attributes import Attributes, ContactInfo, Criticality, Environment
+from google.cloud.apphub_v1.types.service import DiscoveredService, Service, ServiceProperties, ServiceReference
+from google.cloud.apphub_v1.types.service_project_attachment import ServiceProjectAttachment
+from google.cloud.apphub_v1.types.workload import DiscoveredWorkload, Workload, WorkloadProperties, WorkloadReference
 
 __all__ = (
     "AppHubClient",

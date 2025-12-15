@@ -105,9 +105,7 @@ class RevisionsRestInterceptor:
     """
 
     def pre_delete_revision(
-        self,
-        request: revision.DeleteRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: revision.DeleteRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[revision.DeleteRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_revision
 
@@ -116,9 +114,7 @@ class RevisionsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_revision(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_revision(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_revision
 
         DEPRECATED. Please use the `post_delete_revision_with_metadata`
@@ -132,9 +128,7 @@ class RevisionsRestInterceptor:
         return response
 
     def post_delete_revision_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_revision
 
@@ -151,9 +145,7 @@ class RevisionsRestInterceptor:
         return response, metadata
 
     def pre_get_revision(
-        self,
-        request: revision.GetRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: revision.GetRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[revision.GetRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_revision
 
@@ -176,9 +168,7 @@ class RevisionsRestInterceptor:
         return response
 
     def post_get_revision_with_metadata(
-        self,
-        response: revision.Revision,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: revision.Revision, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[revision.Revision, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_revision
 
@@ -195,9 +185,7 @@ class RevisionsRestInterceptor:
         return response, metadata
 
     def pre_list_revisions(
-        self,
-        request: revision.ListRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: revision.ListRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[revision.ListRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_revisions
 
@@ -206,9 +194,7 @@ class RevisionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_revisions(
-        self, response: revision.ListRevisionsResponse
-    ) -> revision.ListRevisionsResponse:
+    def post_list_revisions(self, response: revision.ListRevisionsResponse) -> revision.ListRevisionsResponse:
         """Post-rpc interceptor for list_revisions
 
         DEPRECATED. Please use the `post_list_revisions_with_metadata`
@@ -222,9 +208,7 @@ class RevisionsRestInterceptor:
         return response
 
     def post_list_revisions_with_metadata(
-        self,
-        response: revision.ListRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: revision.ListRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[revision.ListRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_revisions
 
@@ -241,12 +225,8 @@ class RevisionsRestInterceptor:
         return response, metadata
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -264,12 +244,8 @@ class RevisionsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +253,7 @@ class RevisionsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -289,12 +263,8 @@ class RevisionsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +272,7 @@ class RevisionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -314,12 +282,8 @@ class RevisionsRestInterceptor:
         return response
 
     def pre_wait_operation(
-        self,
-        request: operations_pb2.WaitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -327,9 +291,7 @@ class RevisionsRestInterceptor:
         """
         return request, metadata
 
-    def post_wait_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_wait_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the response
@@ -418,9 +380,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -473,29 +433,17 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _DeleteRevision(
-        _BaseRevisionsRestTransport._BaseDeleteRevision, RevisionsRestStub
-    ):
+    class _DeleteRevision(_BaseRevisionsRestTransport._BaseDeleteRevision, RevisionsRestStub):
         def __hash__(self):
             return hash("RevisionsRestTransport.DeleteRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -541,30 +489,16 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseDeleteRevision._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseDeleteRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_revision(request, metadata)
-            transcoded_request = (
-                _BaseRevisionsRestTransport._BaseDeleteRevision._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRevisionsRestTransport._BaseDeleteRevision._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseDeleteRevision._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseDeleteRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -588,12 +522,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._DeleteRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -607,12 +536,8 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             resp = self._interceptor.post_delete_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -638,15 +563,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             return hash("RevisionsRestTransport.GetRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -691,30 +608,16 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseGetRevision._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseGetRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_get_revision(request, metadata)
-            transcoded_request = (
-                _BaseRevisionsRestTransport._BaseGetRevision._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRevisionsRestTransport._BaseGetRevision._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseGetRevision._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseGetRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -738,12 +641,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._GetRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -759,12 +657,8 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             resp = self._interceptor.post_get_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = revision.Revision.to_json(response)
                 except:
@@ -785,22 +679,12 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
                 )
             return resp
 
-    class _ListRevisions(
-        _BaseRevisionsRestTransport._BaseListRevisions, RevisionsRestStub
-    ):
+    class _ListRevisions(_BaseRevisionsRestTransport._BaseListRevisions, RevisionsRestStub):
         def __hash__(self):
             return hash("RevisionsRestTransport.ListRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -842,30 +726,16 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseListRevisions._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseListRevisions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_revisions(request, metadata)
-            transcoded_request = (
-                _BaseRevisionsRestTransport._BaseListRevisions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRevisionsRestTransport._BaseListRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseListRevisions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseListRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -889,12 +759,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._ListRevisions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -910,12 +775,8 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             resp = self._interceptor.post_list_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = revision.ListRevisionsResponse.to_json(response)
                 except:
@@ -937,25 +798,19 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             return resp
 
     @property
-    def delete_revision(
-        self,
-    ) -> Callable[[revision.DeleteRevisionRequest], operations_pb2.Operation]:
+    def delete_revision(self) -> Callable[[revision.DeleteRevisionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_revision(
-        self,
-    ) -> Callable[[revision.GetRevisionRequest], revision.Revision]:
+    def get_revision(self) -> Callable[[revision.GetRevisionRequest], revision.Revision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_revisions(
-        self,
-    ) -> Callable[[revision.ListRevisionsRequest], revision.ListRevisionsResponse]:
+    def list_revisions(self) -> Callable[[revision.ListRevisionsRequest], revision.ListRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRevisions(self._session, self._host, self._interceptor)  # type: ignore
@@ -964,22 +819,12 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseRevisionsRestTransport._BaseDeleteOperation, RevisionsRestStub
-    ):
+    class _DeleteOperation(_BaseRevisionsRestTransport._BaseDeleteOperation, RevisionsRestStub):
         def __hash__(self):
             return hash("RevisionsRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1014,30 +859,16 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRevisionsRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseRevisionsRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1061,12 +892,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1080,22 +906,12 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseRevisionsRestTransport._BaseGetOperation, RevisionsRestStub
-    ):
+    class _GetOperation(_BaseRevisionsRestTransport._BaseGetOperation, RevisionsRestStub):
         def __hash__(self):
             return hash("RevisionsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1133,30 +949,16 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseRevisionsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRevisionsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1180,12 +982,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1197,9 +994,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1224,22 +1019,12 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseRevisionsRestTransport._BaseListOperations, RevisionsRestStub
-    ):
+    class _ListOperations(_BaseRevisionsRestTransport._BaseListOperations, RevisionsRestStub):
         def __hash__(self):
             return hash("RevisionsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1277,30 +1062,16 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseRevisionsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRevisionsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1324,12 +1095,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1341,9 +1107,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1368,22 +1132,12 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
     def wait_operation(self):
         return self._WaitOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _WaitOperation(
-        _BaseRevisionsRestTransport._BaseWaitOperation, RevisionsRestStub
-    ):
+    class _WaitOperation(_BaseRevisionsRestTransport._BaseWaitOperation, RevisionsRestStub):
         def __hash__(self):
             return hash("RevisionsRestTransport.WaitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1422,36 +1176,18 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
                 operations_pb2.Operation: Response from WaitOperation method.
             """
 
-            http_options = (
-                _BaseRevisionsRestTransport._BaseWaitOperation._get_http_options()
-            )
+            http_options = _BaseRevisionsRestTransport._BaseWaitOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_wait_operation(request, metadata)
-            transcoded_request = (
-                _BaseRevisionsRestTransport._BaseWaitOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRevisionsRestTransport._BaseWaitOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRevisionsRestTransport._BaseWaitOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRevisionsRestTransport._BaseWaitOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRevisionsRestTransport._BaseWaitOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRevisionsRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1475,13 +1211,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
 
             # Send the request
             response = RevisionsRestTransport._WaitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1493,9 +1223,7 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

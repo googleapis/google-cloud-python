@@ -39,15 +39,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -65,12 +57,7 @@ from google.type import date_pb2  # type: ignore
 from google.type import decimal_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 
-from google.cloud.channel_v1.services.cloud_channel_service import (
-    CloudChannelServiceAsyncClient,
-    CloudChannelServiceClient,
-    pagers,
-    transports,
-)
+from google.cloud.channel_v1.services.cloud_channel_service import CloudChannelServiceAsyncClient, CloudChannelServiceClient, pagers, transports
 from google.cloud.channel_v1.types import (
     channel_partner_links,
     common,
@@ -114,22 +101,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -140,94 +119,135 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert CloudChannelServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        CloudChannelServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        CloudChannelServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        CloudChannelServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        CloudChannelServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        CloudChannelServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert CloudChannelServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert CloudChannelServiceClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert CloudChannelServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert CloudChannelServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert CloudChannelServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert CloudChannelServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert CloudChannelServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert CloudChannelServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert CloudChannelServiceClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert CloudChannelServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert CloudChannelServiceClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            CloudChannelServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                CloudChannelServiceClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert CloudChannelServiceClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert CloudChannelServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert CloudChannelServiceClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert CloudChannelServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert CloudChannelServiceClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert CloudChannelServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert CloudChannelServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             CloudChannelServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert CloudChannelServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert CloudChannelServiceClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert CloudChannelServiceClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert CloudChannelServiceClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert CloudChannelServiceClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                CloudChannelServiceClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert CloudChannelServiceClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert CloudChannelServiceClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -235,129 +255,51 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert CloudChannelServiceClient._get_client_cert_source(None, False) is None
-    assert (
-        CloudChannelServiceClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
-        is None
-    )
-    assert (
-        CloudChannelServiceClient._get_client_cert_source(
-            mock_provided_cert_source, True
-        )
-        == mock_provided_cert_source
-    )
+    assert CloudChannelServiceClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert CloudChannelServiceClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                CloudChannelServiceClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                CloudChannelServiceClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert CloudChannelServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert CloudChannelServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    CloudChannelServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceClient),
-)
-@mock.patch.object(
-    CloudChannelServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceAsyncClient),
-)
+@mock.patch.object(CloudChannelServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceClient))
+@mock.patch.object(CloudChannelServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = CloudChannelServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert CloudChannelServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        CloudChannelServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        CloudChannelServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        CloudChannelServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
         == CloudChannelServiceClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert CloudChannelServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert CloudChannelServiceClient._get_api_endpoint(None, None, default_universe, "always") == CloudChannelServiceClient.DEFAULT_MTLS_ENDPOINT
     assert (
-        CloudChannelServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        CloudChannelServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
+        CloudChannelServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == CloudChannelServiceClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        CloudChannelServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == CloudChannelServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        CloudChannelServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        CloudChannelServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
+    assert CloudChannelServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert CloudChannelServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        CloudChannelServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        CloudChannelServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        CloudChannelServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        CloudChannelServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        CloudChannelServiceClient._get_universe_domain(None, None)
-        == CloudChannelServiceClient._DEFAULT_UNIVERSE
-    )
+    assert CloudChannelServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert CloudChannelServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert CloudChannelServiceClient._get_universe_domain(None, None) == CloudChannelServiceClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         CloudChannelServiceClient._get_universe_domain("", None)
@@ -414,13 +356,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (CloudChannelServiceAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_cloud_channel_service_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_cloud_channel_service_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -437,19 +375,13 @@ def test_cloud_channel_service_client_from_service_account_info(
         (transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_cloud_channel_service_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_cloud_channel_service_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -462,23 +394,15 @@ def test_cloud_channel_service_client_service_account_always_use_jwt(
         (CloudChannelServiceAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_cloud_channel_service_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_cloud_channel_service_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
@@ -499,31 +423,13 @@ def test_cloud_channel_service_client_get_transport_class():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            CloudChannelServiceClient,
-            transports.CloudChannelServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport, "grpc"),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-@mock.patch.object(
-    CloudChannelServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceClient),
-)
-@mock.patch.object(
-    CloudChannelServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceAsyncClient),
-)
-def test_cloud_channel_service_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(CloudChannelServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceClient))
+@mock.patch.object(CloudChannelServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceAsyncClient))
+def test_cloud_channel_service_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(CloudChannelServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -561,9 +467,7 @@ def test_cloud_channel_service_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -595,21 +499,7 @@ def test_cloud_channel_service_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -619,9 +509,7 @@ def test_cloud_channel_service_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -630,18 +518,14 @@ def test_cloud_channel_service_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -654,66 +538,30 @@ def test_cloud_channel_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            CloudChannelServiceClient,
-            transports.CloudChannelServiceGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
-        (
-            CloudChannelServiceClient,
-            transports.CloudChannelServiceGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
+        (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport, "grpc", "true"),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio", "true"),
+        (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport, "grpc", "false"),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio", "false"),
     ],
 )
-@mock.patch.object(
-    CloudChannelServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceClient),
-)
-@mock.patch.object(
-    CloudChannelServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceAsyncClient),
-)
+@mock.patch.object(CloudChannelServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceClient))
+@mock.patch.object(CloudChannelServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_cloud_channel_service_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_cloud_channel_service_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -732,22 +580,12 @@ def test_cloud_channel_service_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -768,22 +606,15 @@ def test_cloud_channel_service_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -793,31 +624,17 @@ def test_cloud_channel_service_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize(
-    "client_class", [CloudChannelServiceClient, CloudChannelServiceAsyncClient]
-)
-@mock.patch.object(
-    CloudChannelServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CloudChannelServiceClient),
-)
-@mock.patch.object(
-    CloudChannelServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CloudChannelServiceAsyncClient),
-)
+@pytest.mark.parametrize("client_class", [CloudChannelServiceClient, CloudChannelServiceAsyncClient])
+@mock.patch.object(CloudChannelServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudChannelServiceClient))
+@mock.patch.object(CloudChannelServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudChannelServiceAsyncClient))
 def test_cloud_channel_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -825,14 +642,106 @@ def test_cloud_channel_service_client_get_mtls_endpoint_and_cert_source(client_c
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -848,28 +757,16 @@ def test_cloud_channel_service_client_get_mtls_endpoint_and_cert_source(client_c
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -879,62 +776,26 @@ def test_cloud_channel_service_client_get_mtls_endpoint_and_cert_source(client_c
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
-@pytest.mark.parametrize(
-    "client_class", [CloudChannelServiceClient, CloudChannelServiceAsyncClient]
-)
-@mock.patch.object(
-    CloudChannelServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceClient),
-)
-@mock.patch.object(
-    CloudChannelServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(CloudChannelServiceAsyncClient),
-)
+@pytest.mark.parametrize("client_class", [CloudChannelServiceClient, CloudChannelServiceAsyncClient])
+@mock.patch.object(CloudChannelServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceClient))
+@mock.patch.object(CloudChannelServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudChannelServiceAsyncClient))
 def test_cloud_channel_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = CloudChannelServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = CloudChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -957,19 +818,11 @@ def test_cloud_channel_service_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -977,30 +830,18 @@ def test_cloud_channel_service_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            CloudChannelServiceClient,
-            transports.CloudChannelServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport, "grpc"),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_cloud_channel_service_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_cloud_channel_service_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -1011,9 +852,7 @@ def test_cloud_channel_service_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1026,23 +865,11 @@ def test_cloud_channel_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            CloudChannelServiceClient,
-            transports.CloudChannelServiceGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport, "grpc", grpc_helpers),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_cloud_channel_service_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_cloud_channel_service_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1052,9 +879,7 @@ def test_cloud_channel_service_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1065,13 +890,9 @@ def test_cloud_channel_service_client_client_options_credentials_file(
 
 
 def test_cloud_channel_service_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.channel_v1.services.cloud_channel_service.transports.CloudChannelServiceGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.channel_v1.services.cloud_channel_service.transports.CloudChannelServiceGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
-        client = CloudChannelServiceClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = CloudChannelServiceClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1088,23 +909,11 @@ def test_cloud_channel_service_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            CloudChannelServiceClient,
-            transports.CloudChannelServiceGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport, "grpc", grpc_helpers),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_cloud_channel_service_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_cloud_channel_service_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1114,9 +923,7 @@ def test_cloud_channel_service_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1126,13 +933,9 @@ def test_cloud_channel_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1209,9 +1012,7 @@ def test_list_customers_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_customers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1240,9 +1041,7 @@ def test_list_customers_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_customers] = mock_rpc
         request = {}
         client.list_customers(request)
@@ -1258,9 +1057,7 @@ def test_list_customers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_customers_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_customers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1274,17 +1071,12 @@ async def test_list_customers_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_customers
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_customers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_customers
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_customers] = mock_rpc
 
         request = {}
         await client.list_customers(request)
@@ -1300,9 +1092,7 @@ async def test_list_customers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_customers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListCustomersRequest
-):
+async def test_list_customers_async(transport: str = "grpc_asyncio", request_type=service.ListCustomersRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1381,9 +1171,7 @@ async def test_list_customers_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListCustomersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListCustomersResponse())
         await client.list_customers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1439,9 +1227,7 @@ def test_list_customers_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_customers(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -1501,9 +1287,7 @@ async def test_list_customers_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListCustomersResponse(
@@ -1551,9 +1335,7 @@ async def test_list_customers_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListCustomersResponse(
@@ -1585,9 +1367,7 @@ async def test_list_customers_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_customers(request={})
-        ).pages:
+        async for page_ in (await client.list_customers(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1642,10 +1422,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 def test_get_customer_non_empty_request_with_auto_populated_field():
@@ -1665,9 +1442,7 @@ def test_get_customer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1694,9 +1469,7 @@ def test_get_customer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_customer] = mock_rpc
         request = {}
         client.get_customer(request)
@@ -1712,9 +1485,7 @@ def test_get_customer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_customer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_customer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1728,17 +1499,12 @@ async def test_get_customer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_customer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_customer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_customer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_customer] = mock_rpc
 
         request = {}
         await client.get_customer(request)
@@ -1754,9 +1520,7 @@ async def test_get_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_customer_async(
-    transport: str = "grpc_asyncio", request_type=service.GetCustomerRequest
-):
+async def test_get_customer_async(transport: str = "grpc_asyncio", request_type=service.GetCustomerRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1800,10 +1564,7 @@ async def test_get_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 @pytest.mark.asyncio
@@ -1968,9 +1729,7 @@ def test_check_cloud_identity_accounts_exist(request_type, transport: str = "grp
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.CheckCloudIdentityAccountsExistResponse()
         response = client.check_cloud_identity_accounts_exist(request)
@@ -2003,12 +1762,8 @@ def test_check_cloud_identity_accounts_exist_non_empty_request_with_auto_populat
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.check_cloud_identity_accounts_exist(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2033,19 +1788,12 @@ def test_check_cloud_identity_accounts_exist_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.check_cloud_identity_accounts_exist
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.check_cloud_identity_accounts_exist in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.check_cloud_identity_accounts_exist
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.check_cloud_identity_accounts_exist] = mock_rpc
         request = {}
         client.check_cloud_identity_accounts_exist(request)
 
@@ -2060,9 +1808,7 @@ def test_check_cloud_identity_accounts_exist_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_check_cloud_identity_accounts_exist_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_check_cloud_identity_accounts_exist_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2076,17 +1822,12 @@ async def test_check_cloud_identity_accounts_exist_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.check_cloud_identity_accounts_exist
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.check_cloud_identity_accounts_exist in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.check_cloud_identity_accounts_exist
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.check_cloud_identity_accounts_exist] = mock_rpc
 
         request = {}
         await client.check_cloud_identity_accounts_exist(request)
@@ -2103,8 +1844,7 @@ async def test_check_cloud_identity_accounts_exist_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_check_cloud_identity_accounts_exist_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CheckCloudIdentityAccountsExistRequest,
+    transport: str = "grpc_asyncio", request_type=service.CheckCloudIdentityAccountsExistRequest
 ):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2116,13 +1856,9 @@ async def test_check_cloud_identity_accounts_exist_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.CheckCloudIdentityAccountsExistResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.CheckCloudIdentityAccountsExistResponse())
         response = await client.check_cloud_identity_accounts_exist(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2152,9 +1888,7 @@ def test_check_cloud_identity_accounts_exist_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
         call.return_value = service.CheckCloudIdentityAccountsExistResponse()
         client.check_cloud_identity_accounts_exist(request)
 
@@ -2184,12 +1918,8 @@ async def test_check_cloud_identity_accounts_exist_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.CheckCloudIdentityAccountsExistResponse()
-        )
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.CheckCloudIdentityAccountsExistResponse())
         await client.check_cloud_identity_accounts_exist(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2254,10 +1984,7 @@ def test_create_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 def test_create_customer_non_empty_request_with_auto_populated_field():
@@ -2277,9 +2004,7 @@ def test_create_customer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2306,9 +2031,7 @@ def test_create_customer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_customer] = mock_rpc
         request = {}
         client.create_customer(request)
@@ -2324,9 +2047,7 @@ def test_create_customer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_customer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_customer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2340,17 +2061,12 @@ async def test_create_customer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_customer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_customer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_customer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_customer] = mock_rpc
 
         request = {}
         await client.create_customer(request)
@@ -2366,9 +2082,7 @@ async def test_create_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_customer_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateCustomerRequest
-):
+async def test_create_customer_async(transport: str = "grpc_asyncio", request_type=service.CreateCustomerRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2412,10 +2126,7 @@ async def test_create_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 @pytest.mark.asyncio
@@ -2531,10 +2242,7 @@ def test_update_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 def test_update_customer_non_empty_request_with_auto_populated_field():
@@ -2552,9 +2260,7 @@ def test_update_customer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2579,9 +2285,7 @@ def test_update_customer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_customer] = mock_rpc
         request = {}
         client.update_customer(request)
@@ -2597,9 +2301,7 @@ def test_update_customer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_customer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_customer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2613,17 +2315,12 @@ async def test_update_customer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_customer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_customer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_customer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_customer] = mock_rpc
 
         request = {}
         await client.update_customer(request)
@@ -2639,9 +2336,7 @@ async def test_update_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_customer_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateCustomerRequest
-):
+async def test_update_customer_async(transport: str = "grpc_asyncio", request_type=service.UpdateCustomerRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2685,10 +2380,7 @@ async def test_update_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 @pytest.mark.asyncio
@@ -2805,9 +2497,7 @@ def test_delete_customer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2834,9 +2524,7 @@ def test_delete_customer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_customer] = mock_rpc
         request = {}
         client.delete_customer(request)
@@ -2852,9 +2540,7 @@ def test_delete_customer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_customer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_customer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2868,17 +2554,12 @@ async def test_delete_customer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_customer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_customer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_customer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_customer] = mock_rpc
 
         request = {}
         await client.delete_customer(request)
@@ -2894,9 +2575,7 @@ async def test_delete_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_customer_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteCustomerRequest
-):
+async def test_delete_customer_async(transport: str = "grpc_asyncio", request_type=service.DeleteCustomerRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3115,10 +2794,7 @@ def test_import_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 def test_import_customer_non_empty_request_with_auto_populated_field():
@@ -3144,9 +2820,7 @@ def test_import_customer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.import_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3179,9 +2853,7 @@ def test_import_customer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.import_customer] = mock_rpc
         request = {}
         client.import_customer(request)
@@ -3197,9 +2869,7 @@ def test_import_customer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_customer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_import_customer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3213,17 +2883,12 @@ async def test_import_customer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.import_customer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.import_customer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.import_customer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.import_customer] = mock_rpc
 
         request = {}
         await client.import_customer(request)
@@ -3239,9 +2904,7 @@ async def test_import_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_customer_async(
-    transport: str = "grpc_asyncio", request_type=service.ImportCustomerRequest
-):
+async def test_import_customer_async(transport: str = "grpc_asyncio", request_type=service.ImportCustomerRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3285,10 +2948,7 @@ async def test_import_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
-    assert (
-        response.customer_attestation_state
-        == customers.Customer.CustomerAttestationState.EXEMPT
-    )
+    assert response.customer_attestation_state == customers.Customer.CustomerAttestationState.EXEMPT
 
 
 @pytest.mark.asyncio
@@ -3373,9 +3033,7 @@ def test_provision_cloud_identity(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.provision_cloud_identity(request)
@@ -3406,12 +3064,8 @@ def test_provision_cloud_identity_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.provision_cloud_identity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3434,19 +3088,12 @@ def test_provision_cloud_identity_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.provision_cloud_identity
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.provision_cloud_identity in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.provision_cloud_identity
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.provision_cloud_identity] = mock_rpc
         request = {}
         client.provision_cloud_identity(request)
 
@@ -3466,9 +3113,7 @@ def test_provision_cloud_identity_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_provision_cloud_identity_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_provision_cloud_identity_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3482,17 +3127,12 @@ async def test_provision_cloud_identity_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.provision_cloud_identity
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.provision_cloud_identity in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.provision_cloud_identity
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.provision_cloud_identity] = mock_rpc
 
         request = {}
         await client.provision_cloud_identity(request)
@@ -3513,9 +3153,7 @@ async def test_provision_cloud_identity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_provision_cloud_identity_async(
-    transport: str = "grpc_asyncio", request_type=service.ProvisionCloudIdentityRequest
-):
+async def test_provision_cloud_identity_async(transport: str = "grpc_asyncio", request_type=service.ProvisionCloudIdentityRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3526,13 +3164,9 @@ async def test_provision_cloud_identity_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.provision_cloud_identity(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3562,9 +3196,7 @@ def test_provision_cloud_identity_field_headers():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.provision_cloud_identity(request)
 
@@ -3594,12 +3226,8 @@ async def test_provision_cloud_identity_field_headers_async():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.provision_cloud_identity(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3633,9 +3261,7 @@ def test_list_entitlements(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListEntitlementsResponse(
             next_page_token="next_page_token_value",
@@ -3670,12 +3296,8 @@ def test_list_entitlements_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_entitlements(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3703,12 +3325,8 @@ def test_list_entitlements_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_entitlements
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_entitlements] = mock_rpc
         request = {}
         client.list_entitlements(request)
 
@@ -3723,9 +3341,7 @@ def test_list_entitlements_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_entitlements_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_entitlements_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3739,17 +3355,12 @@ async def test_list_entitlements_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_entitlements
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_entitlements in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_entitlements
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_entitlements] = mock_rpc
 
         request = {}
         await client.list_entitlements(request)
@@ -3765,9 +3376,7 @@ async def test_list_entitlements_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entitlements_async(
-    transport: str = "grpc_asyncio", request_type=service.ListEntitlementsRequest
-):
+async def test_list_entitlements_async(transport: str = "grpc_asyncio", request_type=service.ListEntitlementsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3778,9 +3387,7 @@ async def test_list_entitlements_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListEntitlementsResponse(
@@ -3817,9 +3424,7 @@ def test_list_entitlements_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         call.return_value = service.ListEntitlementsResponse()
         client.list_entitlements(request)
 
@@ -3849,12 +3454,8 @@ async def test_list_entitlements_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListEntitlementsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListEntitlementsResponse())
         await client.list_entitlements(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3877,9 +3478,7 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementsResponse(
@@ -3912,9 +3511,7 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_entitlements(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -3933,9 +3530,7 @@ def test_list_entitlements_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementsResponse(
@@ -3976,11 +3571,7 @@ async def test_list_entitlements_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementsResponse(
@@ -4028,11 +3619,7 @@ async def test_list_entitlements_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementsResponse(
@@ -4064,9 +3651,7 @@ async def test_list_entitlements_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_entitlements(request={})
-        ).pages:
+        async for page_ in (await client.list_entitlements(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4090,9 +3675,7 @@ def test_list_transferable_skus(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListTransferableSkusResponse(
             next_page_token="next_page_token_value",
@@ -4131,12 +3714,8 @@ def test_list_transferable_skus_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_transferable_skus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4164,19 +3743,12 @@ def test_list_transferable_skus_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_transferable_skus
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_transferable_skus in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_transferable_skus
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_transferable_skus] = mock_rpc
         request = {}
         client.list_transferable_skus(request)
 
@@ -4191,9 +3763,7 @@ def test_list_transferable_skus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_transferable_skus_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_transferable_skus_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4207,17 +3777,12 @@ async def test_list_transferable_skus_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_transferable_skus
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_transferable_skus in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_transferable_skus
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_transferable_skus] = mock_rpc
 
         request = {}
         await client.list_transferable_skus(request)
@@ -4233,9 +3798,7 @@ async def test_list_transferable_skus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_transferable_skus_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTransferableSkusRequest
-):
+async def test_list_transferable_skus_async(transport: str = "grpc_asyncio", request_type=service.ListTransferableSkusRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4246,9 +3809,7 @@ async def test_list_transferable_skus_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListTransferableSkusResponse(
@@ -4285,9 +3846,7 @@ def test_list_transferable_skus_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         call.return_value = service.ListTransferableSkusResponse()
         client.list_transferable_skus(request)
 
@@ -4317,12 +3876,8 @@ async def test_list_transferable_skus_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListTransferableSkusResponse()
-        )
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListTransferableSkusResponse())
         await client.list_transferable_skus(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4345,9 +3900,7 @@ def test_list_transferable_skus_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableSkusResponse(
@@ -4380,9 +3933,7 @@ def test_list_transferable_skus_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_transferable_skus(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -4401,9 +3952,7 @@ def test_list_transferable_skus_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableSkusResponse(
@@ -4444,11 +3993,7 @@ async def test_list_transferable_skus_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableSkusResponse(
@@ -4496,11 +4041,7 @@ async def test_list_transferable_skus_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableSkusResponse(
@@ -4532,9 +4073,7 @@ async def test_list_transferable_skus_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_transferable_skus(request={})
-        ).pages:
+        async for page_ in (await client.list_transferable_skus(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4558,9 +4097,7 @@ def test_list_transferable_offers(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListTransferableOffersResponse(
             next_page_token="next_page_token_value",
@@ -4600,12 +4137,8 @@ def test_list_transferable_offers_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_transferable_offers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4634,19 +4167,12 @@ def test_list_transferable_offers_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_transferable_offers
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_transferable_offers in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_transferable_offers
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_transferable_offers] = mock_rpc
         request = {}
         client.list_transferable_offers(request)
 
@@ -4661,9 +4187,7 @@ def test_list_transferable_offers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_transferable_offers_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_transferable_offers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4677,17 +4201,12 @@ async def test_list_transferable_offers_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_transferable_offers
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_transferable_offers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_transferable_offers
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_transferable_offers] = mock_rpc
 
         request = {}
         await client.list_transferable_offers(request)
@@ -4703,9 +4222,7 @@ async def test_list_transferable_offers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_transferable_offers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTransferableOffersRequest
-):
+async def test_list_transferable_offers_async(transport: str = "grpc_asyncio", request_type=service.ListTransferableOffersRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4716,9 +4233,7 @@ async def test_list_transferable_offers_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListTransferableOffersResponse(
@@ -4755,9 +4270,7 @@ def test_list_transferable_offers_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         call.return_value = service.ListTransferableOffersResponse()
         client.list_transferable_offers(request)
 
@@ -4787,12 +4300,8 @@ async def test_list_transferable_offers_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListTransferableOffersResponse()
-        )
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListTransferableOffersResponse())
         await client.list_transferable_offers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4815,9 +4324,7 @@ def test_list_transferable_offers_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableOffersResponse(
@@ -4850,12 +4357,8 @@ def test_list_transferable_offers_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_transferable_offers(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_transferable_offers(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -4873,9 +4376,7 @@ def test_list_transferable_offers_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableOffersResponse(
@@ -4916,11 +4417,7 @@ async def test_list_transferable_offers_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableOffersResponse(
@@ -4968,11 +4465,7 @@ async def test_list_transferable_offers_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTransferableOffersResponse(
@@ -5004,9 +4497,7 @@ async def test_list_transferable_offers_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_transferable_offers(request={})
-        ).pages:
+        async for page_ in (await client.list_transferable_offers(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5036,9 +4527,7 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
             name="name_value",
             offer="offer_value",
             provisioning_state=entitlements.Entitlement.ProvisioningState.ACTIVE,
-            suspension_reasons=[
-                entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
-            ],
+            suspension_reasons=[entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED],
             purchase_order_id="purchase_order_id_value",
             billing_account="billing_account_value",
             price_reference_id="price_reference_id_value",
@@ -5055,12 +4544,8 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
     assert isinstance(response, entitlements.Entitlement)
     assert response.name == "name_value"
     assert response.offer == "offer_value"
-    assert (
-        response.provisioning_state == entitlements.Entitlement.ProvisioningState.ACTIVE
-    )
-    assert response.suspension_reasons == [
-        entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
-    ]
+    assert response.provisioning_state == entitlements.Entitlement.ProvisioningState.ACTIVE
+    assert response.suspension_reasons == [entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED]
     assert response.purchase_order_id == "purchase_order_id_value"
     assert response.billing_account == "billing_account_value"
     assert response.price_reference_id == "price_reference_id_value"
@@ -5083,9 +4568,7 @@ def test_get_entitlement_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5112,9 +4595,7 @@ def test_get_entitlement_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_entitlement] = mock_rpc
         request = {}
         client.get_entitlement(request)
@@ -5130,9 +4611,7 @@ def test_get_entitlement_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_entitlement_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_entitlement_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5146,17 +4625,12 @@ async def test_get_entitlement_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_entitlement
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_entitlement in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_entitlement
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_entitlement] = mock_rpc
 
         request = {}
         await client.get_entitlement(request)
@@ -5172,9 +4646,7 @@ async def test_get_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_entitlement_async(
-    transport: str = "grpc_asyncio", request_type=service.GetEntitlementRequest
-):
+async def test_get_entitlement_async(transport: str = "grpc_asyncio", request_type=service.GetEntitlementRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5192,9 +4664,7 @@ async def test_get_entitlement_async(
                 name="name_value",
                 offer="offer_value",
                 provisioning_state=entitlements.Entitlement.ProvisioningState.ACTIVE,
-                suspension_reasons=[
-                    entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
-                ],
+                suspension_reasons=[entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED],
                 purchase_order_id="purchase_order_id_value",
                 billing_account="billing_account_value",
                 price_reference_id="price_reference_id_value",
@@ -5212,12 +4682,8 @@ async def test_get_entitlement_async(
     assert isinstance(response, entitlements.Entitlement)
     assert response.name == "name_value"
     assert response.offer == "offer_value"
-    assert (
-        response.provisioning_state == entitlements.Entitlement.ProvisioningState.ACTIVE
-    )
-    assert response.suspension_reasons == [
-        entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
-    ]
+    assert response.provisioning_state == entitlements.Entitlement.ProvisioningState.ACTIVE
+    assert response.suspension_reasons == [entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED]
     assert response.purchase_order_id == "purchase_order_id_value"
     assert response.billing_account == "billing_account_value"
     assert response.price_reference_id == "price_reference_id_value"
@@ -5271,9 +4737,7 @@ async def test_get_entitlement_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            entitlements.Entitlement()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(entitlements.Entitlement())
         await client.get_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5307,9 +4771,7 @@ def test_create_entitlement(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_entitlement(request)
@@ -5341,12 +4803,8 @@ def test_create_entitlement_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5370,18 +4828,12 @@ def test_create_entitlement_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_entitlement in client._transport._wrapped_methods
-        )
+        assert client._transport.create_entitlement in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_entitlement
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_entitlement] = mock_rpc
         request = {}
         client.create_entitlement(request)
 
@@ -5401,9 +4853,7 @@ def test_create_entitlement_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_entitlement_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_entitlement_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5417,17 +4867,12 @@ async def test_create_entitlement_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_entitlement
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_entitlement in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_entitlement
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_entitlement] = mock_rpc
 
         request = {}
         await client.create_entitlement(request)
@@ -5448,9 +4893,7 @@ async def test_create_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entitlement_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateEntitlementRequest
-):
+async def test_create_entitlement_async(transport: str = "grpc_asyncio", request_type=service.CreateEntitlementRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5461,13 +4904,9 @@ async def test_create_entitlement_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5497,9 +4936,7 @@ def test_create_entitlement_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_entitlement(request)
 
@@ -5529,12 +4966,8 @@ async def test_create_entitlement_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5568,9 +5001,7 @@ def test_change_parameters(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.change_parameters(request)
@@ -5603,12 +5034,8 @@ def test_change_parameters_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.change_parameters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5637,12 +5064,8 @@ def test_change_parameters_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.change_parameters
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.change_parameters] = mock_rpc
         request = {}
         client.change_parameters(request)
 
@@ -5662,9 +5085,7 @@ def test_change_parameters_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_change_parameters_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_change_parameters_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5678,17 +5099,12 @@ async def test_change_parameters_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.change_parameters
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.change_parameters in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.change_parameters
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.change_parameters] = mock_rpc
 
         request = {}
         await client.change_parameters(request)
@@ -5709,9 +5125,7 @@ async def test_change_parameters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_change_parameters_async(
-    transport: str = "grpc_asyncio", request_type=service.ChangeParametersRequest
-):
+async def test_change_parameters_async(transport: str = "grpc_asyncio", request_type=service.ChangeParametersRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5722,13 +5136,9 @@ async def test_change_parameters_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.change_parameters(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5758,9 +5168,7 @@ def test_change_parameters_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.change_parameters(request)
 
@@ -5790,12 +5198,8 @@ async def test_change_parameters_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.change_parameters(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5829,9 +5233,7 @@ def test_change_renewal_settings(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.change_renewal_settings(request)
@@ -5863,12 +5265,8 @@ def test_change_renewal_settings_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.change_renewal_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5892,19 +5290,12 @@ def test_change_renewal_settings_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.change_renewal_settings
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.change_renewal_settings in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.change_renewal_settings
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.change_renewal_settings] = mock_rpc
         request = {}
         client.change_renewal_settings(request)
 
@@ -5924,9 +5315,7 @@ def test_change_renewal_settings_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_change_renewal_settings_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_change_renewal_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5940,17 +5329,12 @@ async def test_change_renewal_settings_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.change_renewal_settings
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.change_renewal_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.change_renewal_settings
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.change_renewal_settings] = mock_rpc
 
         request = {}
         await client.change_renewal_settings(request)
@@ -5971,9 +5355,7 @@ async def test_change_renewal_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_change_renewal_settings_async(
-    transport: str = "grpc_asyncio", request_type=service.ChangeRenewalSettingsRequest
-):
+async def test_change_renewal_settings_async(transport: str = "grpc_asyncio", request_type=service.ChangeRenewalSettingsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5984,13 +5366,9 @@ async def test_change_renewal_settings_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.change_renewal_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6020,9 +5398,7 @@ def test_change_renewal_settings_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.change_renewal_settings(request)
 
@@ -6052,12 +5428,8 @@ async def test_change_renewal_settings_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.change_renewal_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6128,9 +5500,7 @@ def test_change_offer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.change_offer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6162,9 +5532,7 @@ def test_change_offer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.change_offer] = mock_rpc
         request = {}
         client.change_offer(request)
@@ -6185,9 +5553,7 @@ def test_change_offer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_change_offer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_change_offer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6201,17 +5567,12 @@ async def test_change_offer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.change_offer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.change_offer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.change_offer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.change_offer] = mock_rpc
 
         request = {}
         await client.change_offer(request)
@@ -6232,9 +5593,7 @@ async def test_change_offer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_change_offer_async(
-    transport: str = "grpc_asyncio", request_type=service.ChangeOfferRequest
-):
+async def test_change_offer_async(transport: str = "grpc_asyncio", request_type=service.ChangeOfferRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6247,9 +5606,7 @@ async def test_change_offer_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.change_offer(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6310,9 +5667,7 @@ async def test_change_offer_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.change_offer(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6346,9 +5701,7 @@ def test_start_paid_service(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.start_paid_service(request)
@@ -6380,12 +5733,8 @@ def test_start_paid_service_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.start_paid_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6409,18 +5758,12 @@ def test_start_paid_service_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.start_paid_service in client._transport._wrapped_methods
-        )
+        assert client._transport.start_paid_service in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.start_paid_service
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.start_paid_service] = mock_rpc
         request = {}
         client.start_paid_service(request)
 
@@ -6440,9 +5783,7 @@ def test_start_paid_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_start_paid_service_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_start_paid_service_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6456,17 +5797,12 @@ async def test_start_paid_service_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.start_paid_service
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.start_paid_service in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.start_paid_service
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.start_paid_service] = mock_rpc
 
         request = {}
         await client.start_paid_service(request)
@@ -6487,9 +5823,7 @@ async def test_start_paid_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_paid_service_async(
-    transport: str = "grpc_asyncio", request_type=service.StartPaidServiceRequest
-):
+async def test_start_paid_service_async(transport: str = "grpc_asyncio", request_type=service.StartPaidServiceRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6500,13 +5834,9 @@ async def test_start_paid_service_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.start_paid_service(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6536,9 +5866,7 @@ def test_start_paid_service_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.start_paid_service(request)
 
@@ -6568,12 +5896,8 @@ async def test_start_paid_service_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.start_paid_service(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6607,9 +5931,7 @@ def test_suspend_entitlement(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.suspend_entitlement(request)
@@ -6641,12 +5963,8 @@ def test_suspend_entitlement_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.suspend_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6670,18 +5988,12 @@ def test_suspend_entitlement_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.suspend_entitlement in client._transport._wrapped_methods
-        )
+        assert client._transport.suspend_entitlement in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.suspend_entitlement
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.suspend_entitlement] = mock_rpc
         request = {}
         client.suspend_entitlement(request)
 
@@ -6701,9 +6013,7 @@ def test_suspend_entitlement_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_suspend_entitlement_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_suspend_entitlement_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6717,17 +6027,12 @@ async def test_suspend_entitlement_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.suspend_entitlement
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.suspend_entitlement in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.suspend_entitlement
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.suspend_entitlement] = mock_rpc
 
         request = {}
         await client.suspend_entitlement(request)
@@ -6748,9 +6053,7 @@ async def test_suspend_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_suspend_entitlement_async(
-    transport: str = "grpc_asyncio", request_type=service.SuspendEntitlementRequest
-):
+async def test_suspend_entitlement_async(transport: str = "grpc_asyncio", request_type=service.SuspendEntitlementRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6761,13 +6064,9 @@ async def test_suspend_entitlement_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.suspend_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6797,9 +6096,7 @@ def test_suspend_entitlement_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.suspend_entitlement(request)
 
@@ -6829,12 +6126,8 @@ async def test_suspend_entitlement_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.suspend_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6868,9 +6161,7 @@ def test_cancel_entitlement(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.cancel_entitlement(request)
@@ -6902,12 +6193,8 @@ def test_cancel_entitlement_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.cancel_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6931,18 +6218,12 @@ def test_cancel_entitlement_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.cancel_entitlement in client._transport._wrapped_methods
-        )
+        assert client._transport.cancel_entitlement in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.cancel_entitlement
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.cancel_entitlement] = mock_rpc
         request = {}
         client.cancel_entitlement(request)
 
@@ -6962,9 +6243,7 @@ def test_cancel_entitlement_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_cancel_entitlement_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_cancel_entitlement_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6978,17 +6257,12 @@ async def test_cancel_entitlement_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.cancel_entitlement
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.cancel_entitlement in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.cancel_entitlement
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.cancel_entitlement] = mock_rpc
 
         request = {}
         await client.cancel_entitlement(request)
@@ -7009,9 +6283,7 @@ async def test_cancel_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_entitlement_async(
-    transport: str = "grpc_asyncio", request_type=service.CancelEntitlementRequest
-):
+async def test_cancel_entitlement_async(transport: str = "grpc_asyncio", request_type=service.CancelEntitlementRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7022,13 +6294,9 @@ async def test_cancel_entitlement_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.cancel_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7058,9 +6326,7 @@ def test_cancel_entitlement_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.cancel_entitlement(request)
 
@@ -7090,12 +6356,8 @@ async def test_cancel_entitlement_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.cancel_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7129,9 +6391,7 @@ def test_activate_entitlement(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.activate_entitlement(request)
@@ -7163,12 +6423,8 @@ def test_activate_entitlement_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.activate_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7192,18 +6448,12 @@ def test_activate_entitlement_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.activate_entitlement in client._transport._wrapped_methods
-        )
+        assert client._transport.activate_entitlement in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.activate_entitlement
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.activate_entitlement] = mock_rpc
         request = {}
         client.activate_entitlement(request)
 
@@ -7223,9 +6473,7 @@ def test_activate_entitlement_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_activate_entitlement_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_activate_entitlement_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7239,17 +6487,12 @@ async def test_activate_entitlement_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.activate_entitlement
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.activate_entitlement in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.activate_entitlement
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.activate_entitlement] = mock_rpc
 
         request = {}
         await client.activate_entitlement(request)
@@ -7270,9 +6513,7 @@ async def test_activate_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_activate_entitlement_async(
-    transport: str = "grpc_asyncio", request_type=service.ActivateEntitlementRequest
-):
+async def test_activate_entitlement_async(transport: str = "grpc_asyncio", request_type=service.ActivateEntitlementRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7283,13 +6524,9 @@ async def test_activate_entitlement_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.activate_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7319,9 +6556,7 @@ def test_activate_entitlement_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.activate_entitlement(request)
 
@@ -7351,12 +6586,8 @@ async def test_activate_entitlement_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.activate_entitlement(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7390,9 +6621,7 @@ def test_transfer_entitlements(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.transfer_entitlements(request)
@@ -7425,12 +6654,8 @@ def test_transfer_entitlements_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.transfer_entitlements(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7455,19 +6680,12 @@ def test_transfer_entitlements_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.transfer_entitlements
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.transfer_entitlements in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.transfer_entitlements
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.transfer_entitlements] = mock_rpc
         request = {}
         client.transfer_entitlements(request)
 
@@ -7487,9 +6705,7 @@ def test_transfer_entitlements_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_transfer_entitlements_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_transfer_entitlements_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7503,17 +6719,12 @@ async def test_transfer_entitlements_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.transfer_entitlements
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.transfer_entitlements in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.transfer_entitlements
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.transfer_entitlements] = mock_rpc
 
         request = {}
         await client.transfer_entitlements(request)
@@ -7534,9 +6745,7 @@ async def test_transfer_entitlements_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_transfer_entitlements_async(
-    transport: str = "grpc_asyncio", request_type=service.TransferEntitlementsRequest
-):
+async def test_transfer_entitlements_async(transport: str = "grpc_asyncio", request_type=service.TransferEntitlementsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7547,13 +6756,9 @@ async def test_transfer_entitlements_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.transfer_entitlements(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7583,9 +6788,7 @@ def test_transfer_entitlements_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.transfer_entitlements(request)
 
@@ -7615,12 +6818,8 @@ async def test_transfer_entitlements_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.transfer_entitlements(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7654,9 +6853,7 @@ def test_transfer_entitlements_to_google(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.transfer_entitlements_to_google(request)
@@ -7688,12 +6885,8 @@ def test_transfer_entitlements_to_google_non_empty_request_with_auto_populated_f
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.transfer_entitlements_to_google(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7717,19 +6910,12 @@ def test_transfer_entitlements_to_google_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.transfer_entitlements_to_google
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.transfer_entitlements_to_google in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.transfer_entitlements_to_google
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.transfer_entitlements_to_google] = mock_rpc
         request = {}
         client.transfer_entitlements_to_google(request)
 
@@ -7749,9 +6935,7 @@ def test_transfer_entitlements_to_google_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_transfer_entitlements_to_google_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_transfer_entitlements_to_google_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7765,17 +6949,12 @@ async def test_transfer_entitlements_to_google_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.transfer_entitlements_to_google
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.transfer_entitlements_to_google in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.transfer_entitlements_to_google
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.transfer_entitlements_to_google] = mock_rpc
 
         request = {}
         await client.transfer_entitlements_to_google(request)
@@ -7796,10 +6975,7 @@ async def test_transfer_entitlements_to_google_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_transfer_entitlements_to_google_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.TransferEntitlementsToGoogleRequest,
-):
+async def test_transfer_entitlements_to_google_async(transport: str = "grpc_asyncio", request_type=service.TransferEntitlementsToGoogleRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7810,13 +6986,9 @@ async def test_transfer_entitlements_to_google_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.transfer_entitlements_to_google(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7846,9 +7018,7 @@ def test_transfer_entitlements_to_google_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.transfer_entitlements_to_google(request)
 
@@ -7878,12 +7048,8 @@ async def test_transfer_entitlements_to_google_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.transfer_entitlements_to_google(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7917,9 +7083,7 @@ def test_list_channel_partner_links(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListChannelPartnerLinksResponse(
             next_page_token="next_page_token_value",
@@ -7954,12 +7118,8 @@ def test_list_channel_partner_links_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_channel_partner_links(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7983,19 +7143,12 @@ def test_list_channel_partner_links_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_channel_partner_links
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_channel_partner_links in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_channel_partner_links
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_channel_partner_links] = mock_rpc
         request = {}
         client.list_channel_partner_links(request)
 
@@ -8010,9 +7163,7 @@ def test_list_channel_partner_links_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_channel_partner_links_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_channel_partner_links_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8026,17 +7177,12 @@ async def test_list_channel_partner_links_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_channel_partner_links
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_channel_partner_links in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_channel_partner_links
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_channel_partner_links] = mock_rpc
 
         request = {}
         await client.list_channel_partner_links(request)
@@ -8052,9 +7198,7 @@ async def test_list_channel_partner_links_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_channel_partner_links_async(
-    transport: str = "grpc_asyncio", request_type=service.ListChannelPartnerLinksRequest
-):
+async def test_list_channel_partner_links_async(transport: str = "grpc_asyncio", request_type=service.ListChannelPartnerLinksRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8065,9 +7209,7 @@ async def test_list_channel_partner_links_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListChannelPartnerLinksResponse(
@@ -8104,9 +7246,7 @@ def test_list_channel_partner_links_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         call.return_value = service.ListChannelPartnerLinksResponse()
         client.list_channel_partner_links(request)
 
@@ -8136,12 +7276,8 @@ async def test_list_channel_partner_links_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListChannelPartnerLinksResponse()
-        )
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListChannelPartnerLinksResponse())
         await client.list_channel_partner_links(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8164,9 +7300,7 @@ def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerLinksResponse(
@@ -8199,12 +7333,8 @@ def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_channel_partner_links(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_channel_partner_links(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -8212,9 +7342,7 @@ def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, channel_partner_links.ChannelPartnerLink) for i in results
-        )
+        assert all(isinstance(i, channel_partner_links.ChannelPartnerLink) for i in results)
 
 
 def test_list_channel_partner_links_pages(transport_name: str = "grpc"):
@@ -8224,9 +7352,7 @@ def test_list_channel_partner_links_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerLinksResponse(
@@ -8267,11 +7393,7 @@ async def test_list_channel_partner_links_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerLinksResponse(
@@ -8309,9 +7431,7 @@ async def test_list_channel_partner_links_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(
-            isinstance(i, channel_partner_links.ChannelPartnerLink) for i in responses
-        )
+        assert all(isinstance(i, channel_partner_links.ChannelPartnerLink) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -8321,11 +7441,7 @@ async def test_list_channel_partner_links_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerLinksResponse(
@@ -8357,9 +7473,7 @@ async def test_list_channel_partner_links_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_channel_partner_links(request={})
-        ).pages:
+        async for page_ in (await client.list_channel_partner_links(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8383,9 +7497,7 @@ def test_get_channel_partner_link(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = channel_partner_links.ChannelPartnerLink(
             name="name_value",
@@ -8427,12 +7539,8 @@ def test_get_channel_partner_link_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_channel_partner_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8455,19 +7563,12 @@ def test_get_channel_partner_link_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_channel_partner_link
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_channel_partner_link in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_channel_partner_link
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_channel_partner_link] = mock_rpc
         request = {}
         client.get_channel_partner_link(request)
 
@@ -8482,9 +7583,7 @@ def test_get_channel_partner_link_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_channel_partner_link_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_channel_partner_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8498,17 +7597,12 @@ async def test_get_channel_partner_link_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_channel_partner_link
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_channel_partner_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_channel_partner_link
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_channel_partner_link] = mock_rpc
 
         request = {}
         await client.get_channel_partner_link(request)
@@ -8524,9 +7618,7 @@ async def test_get_channel_partner_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_channel_partner_link_async(
-    transport: str = "grpc_asyncio", request_type=service.GetChannelPartnerLinkRequest
-):
+async def test_get_channel_partner_link_async(transport: str = "grpc_asyncio", request_type=service.GetChannelPartnerLinkRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8537,9 +7629,7 @@ async def test_get_channel_partner_link_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             channel_partner_links.ChannelPartnerLink(
@@ -8584,9 +7674,7 @@ def test_get_channel_partner_link_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
         call.return_value = channel_partner_links.ChannelPartnerLink()
         client.get_channel_partner_link(request)
 
@@ -8616,12 +7704,8 @@ async def test_get_channel_partner_link_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            channel_partner_links.ChannelPartnerLink()
-        )
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel_partner_links.ChannelPartnerLink())
         await client.get_channel_partner_link(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8655,9 +7739,7 @@ def test_create_channel_partner_link(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = channel_partner_links.ChannelPartnerLink(
             name="name_value",
@@ -8699,12 +7781,8 @@ def test_create_channel_partner_link_non_empty_request_with_auto_populated_field
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_channel_partner_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8727,19 +7805,12 @@ def test_create_channel_partner_link_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_channel_partner_link
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_channel_partner_link in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_channel_partner_link
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_channel_partner_link] = mock_rpc
         request = {}
         client.create_channel_partner_link(request)
 
@@ -8754,9 +7825,7 @@ def test_create_channel_partner_link_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_channel_partner_link_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_channel_partner_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8770,17 +7839,12 @@ async def test_create_channel_partner_link_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_channel_partner_link
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_channel_partner_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_channel_partner_link
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_partner_link] = mock_rpc
 
         request = {}
         await client.create_channel_partner_link(request)
@@ -8796,10 +7860,7 @@ async def test_create_channel_partner_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_channel_partner_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateChannelPartnerLinkRequest,
-):
+async def test_create_channel_partner_link_async(transport: str = "grpc_asyncio", request_type=service.CreateChannelPartnerLinkRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8810,9 +7871,7 @@ async def test_create_channel_partner_link_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             channel_partner_links.ChannelPartnerLink(
@@ -8857,9 +7916,7 @@ def test_create_channel_partner_link_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
         call.return_value = channel_partner_links.ChannelPartnerLink()
         client.create_channel_partner_link(request)
 
@@ -8889,12 +7946,8 @@ async def test_create_channel_partner_link_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            channel_partner_links.ChannelPartnerLink()
-        )
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel_partner_links.ChannelPartnerLink())
         await client.create_channel_partner_link(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8928,9 +7981,7 @@ def test_update_channel_partner_link(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = channel_partner_links.ChannelPartnerLink(
             name="name_value",
@@ -8972,12 +8023,8 @@ def test_update_channel_partner_link_non_empty_request_with_auto_populated_field
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_channel_partner_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9000,19 +8047,12 @@ def test_update_channel_partner_link_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_channel_partner_link
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_channel_partner_link in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_channel_partner_link
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_channel_partner_link] = mock_rpc
         request = {}
         client.update_channel_partner_link(request)
 
@@ -9027,9 +8067,7 @@ def test_update_channel_partner_link_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_channel_partner_link_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_channel_partner_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9043,17 +8081,12 @@ async def test_update_channel_partner_link_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_channel_partner_link
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_channel_partner_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_channel_partner_link
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_channel_partner_link] = mock_rpc
 
         request = {}
         await client.update_channel_partner_link(request)
@@ -9069,10 +8102,7 @@ async def test_update_channel_partner_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_channel_partner_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.UpdateChannelPartnerLinkRequest,
-):
+async def test_update_channel_partner_link_async(transport: str = "grpc_asyncio", request_type=service.UpdateChannelPartnerLinkRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9083,9 +8113,7 @@ async def test_update_channel_partner_link_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             channel_partner_links.ChannelPartnerLink(
@@ -9130,9 +8158,7 @@ def test_update_channel_partner_link_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
         call.return_value = channel_partner_links.ChannelPartnerLink()
         client.update_channel_partner_link(request)
 
@@ -9162,12 +8188,8 @@ async def test_update_channel_partner_link_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            channel_partner_links.ChannelPartnerLink()
-        )
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel_partner_links.ChannelPartnerLink())
         await client.update_channel_partner_link(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9201,9 +8223,7 @@ def test_get_customer_repricing_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig(
             name="name_value",
@@ -9237,12 +8257,8 @@ def test_get_customer_repricing_config_non_empty_request_with_auto_populated_fie
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_customer_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9265,19 +8281,12 @@ def test_get_customer_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_customer_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_customer_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_customer_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_customer_repricing_config] = mock_rpc
         request = {}
         client.get_customer_repricing_config(request)
 
@@ -9292,9 +8301,7 @@ def test_get_customer_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_customer_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_customer_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9308,17 +8315,12 @@ async def test_get_customer_repricing_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_customer_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_customer_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_customer_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_customer_repricing_config] = mock_rpc
 
         request = {}
         await client.get_customer_repricing_config(request)
@@ -9334,10 +8336,7 @@ async def test_get_customer_repricing_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_customer_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetCustomerRepricingConfigRequest,
-):
+async def test_get_customer_repricing_config_async(transport: str = "grpc_asyncio", request_type=service.GetCustomerRepricingConfigRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9348,9 +8347,7 @@ async def test_get_customer_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.CustomerRepricingConfig(
@@ -9387,9 +8384,7 @@ def test_get_customer_repricing_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         call.return_value = repricing.CustomerRepricingConfig()
         client.get_customer_repricing_config(request)
 
@@ -9419,12 +8414,8 @@ async def test_get_customer_repricing_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.CustomerRepricingConfig()
-        )
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.CustomerRepricingConfig())
         await client.get_customer_repricing_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9446,9 +8437,7 @@ def test_get_customer_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig()
         # Call the method with a truthy value for each flattened field,
@@ -9487,15 +8476,11 @@ async def test_get_customer_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.CustomerRepricingConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.CustomerRepricingConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_customer_repricing_config(
@@ -9544,9 +8529,7 @@ def test_list_customer_repricing_configs(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListCustomerRepricingConfigsResponse(
             next_page_token="next_page_token_value",
@@ -9582,12 +8565,8 @@ def test_list_customer_repricing_configs_non_empty_request_with_auto_populated_f
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_customer_repricing_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9612,19 +8591,12 @@ def test_list_customer_repricing_configs_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_customer_repricing_configs
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_customer_repricing_configs in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_customer_repricing_configs
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_customer_repricing_configs] = mock_rpc
         request = {}
         client.list_customer_repricing_configs(request)
 
@@ -9639,9 +8611,7 @@ def test_list_customer_repricing_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_customer_repricing_configs_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_customer_repricing_configs_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9655,17 +8625,12 @@ async def test_list_customer_repricing_configs_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_customer_repricing_configs
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_customer_repricing_configs in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_customer_repricing_configs
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_customer_repricing_configs] = mock_rpc
 
         request = {}
         await client.list_customer_repricing_configs(request)
@@ -9681,10 +8646,7 @@ async def test_list_customer_repricing_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_customer_repricing_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListCustomerRepricingConfigsRequest,
-):
+async def test_list_customer_repricing_configs_async(transport: str = "grpc_asyncio", request_type=service.ListCustomerRepricingConfigsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9695,9 +8657,7 @@ async def test_list_customer_repricing_configs_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListCustomerRepricingConfigsResponse(
@@ -9734,9 +8694,7 @@ def test_list_customer_repricing_configs_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         call.return_value = service.ListCustomerRepricingConfigsResponse()
         client.list_customer_repricing_configs(request)
 
@@ -9766,12 +8724,8 @@ async def test_list_customer_repricing_configs_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListCustomerRepricingConfigsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListCustomerRepricingConfigsResponse())
         await client.list_customer_repricing_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9793,9 +8747,7 @@ def test_list_customer_repricing_configs_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListCustomerRepricingConfigsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -9834,15 +8786,11 @@ async def test_list_customer_repricing_configs_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListCustomerRepricingConfigsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListCustomerRepricingConfigsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListCustomerRepricingConfigsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_customer_repricing_configs(
@@ -9880,9 +8828,7 @@ def test_list_customer_repricing_configs_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListCustomerRepricingConfigsResponse(
@@ -9915,12 +8861,8 @@ def test_list_customer_repricing_configs_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_customer_repricing_configs(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_customer_repricing_configs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -9938,9 +8880,7 @@ def test_list_customer_repricing_configs_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListCustomerRepricingConfigsResponse(
@@ -9981,11 +8921,7 @@ async def test_list_customer_repricing_configs_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListCustomerRepricingConfigsResponse(
@@ -10033,11 +8969,7 @@ async def test_list_customer_repricing_configs_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListCustomerRepricingConfigsResponse(
@@ -10069,9 +9001,7 @@ async def test_list_customer_repricing_configs_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_customer_repricing_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_customer_repricing_configs(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10095,9 +9025,7 @@ def test_create_customer_repricing_config(request_type, transport: str = "grpc")
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig(
             name="name_value",
@@ -10131,12 +9059,8 @@ def test_create_customer_repricing_config_non_empty_request_with_auto_populated_
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_customer_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10159,19 +9083,12 @@ def test_create_customer_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_customer_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_customer_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_customer_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_customer_repricing_config] = mock_rpc
         request = {}
         client.create_customer_repricing_config(request)
 
@@ -10186,9 +9103,7 @@ def test_create_customer_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_customer_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_customer_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10202,17 +9117,12 @@ async def test_create_customer_repricing_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_customer_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_customer_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_customer_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_customer_repricing_config] = mock_rpc
 
         request = {}
         await client.create_customer_repricing_config(request)
@@ -10228,10 +9138,7 @@ async def test_create_customer_repricing_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_customer_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateCustomerRepricingConfigRequest,
-):
+async def test_create_customer_repricing_config_async(transport: str = "grpc_asyncio", request_type=service.CreateCustomerRepricingConfigRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10242,9 +9149,7 @@ async def test_create_customer_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.CustomerRepricingConfig(
@@ -10281,9 +9186,7 @@ def test_create_customer_repricing_config_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         call.return_value = repricing.CustomerRepricingConfig()
         client.create_customer_repricing_config(request)
 
@@ -10313,12 +9216,8 @@ async def test_create_customer_repricing_config_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.CustomerRepricingConfig()
-        )
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.CustomerRepricingConfig())
         await client.create_customer_repricing_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10340,18 +9239,14 @@ def test_create_customer_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_customer_repricing_config(
             parent="parent_value",
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -10377,9 +9272,7 @@ def test_create_customer_repricing_config_flattened_error():
         client.create_customer_repricing_config(
             service.CreateCustomerRepricingConfigRequest(),
             parent="parent_value",
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
 
@@ -10390,22 +9283,16 @@ async def test_create_customer_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.CustomerRepricingConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.CustomerRepricingConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_customer_repricing_config(
             parent="parent_value",
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -10432,9 +9319,7 @@ async def test_create_customer_repricing_config_flattened_error_async():
         await client.create_customer_repricing_config(
             service.CreateCustomerRepricingConfigRequest(),
             parent="parent_value",
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
 
@@ -10456,9 +9341,7 @@ def test_update_customer_repricing_config(request_type, transport: str = "grpc")
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig(
             name="name_value",
@@ -10490,12 +9373,8 @@ def test_update_customer_repricing_config_non_empty_request_with_auto_populated_
     request = service.UpdateCustomerRepricingConfigRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_customer_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10516,19 +9395,12 @@ def test_update_customer_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_customer_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_customer_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_customer_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_customer_repricing_config] = mock_rpc
         request = {}
         client.update_customer_repricing_config(request)
 
@@ -10543,9 +9415,7 @@ def test_update_customer_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_customer_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_customer_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10559,17 +9429,12 @@ async def test_update_customer_repricing_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_customer_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_customer_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_customer_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_customer_repricing_config] = mock_rpc
 
         request = {}
         await client.update_customer_repricing_config(request)
@@ -10585,10 +9450,7 @@ async def test_update_customer_repricing_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_customer_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.UpdateCustomerRepricingConfigRequest,
-):
+async def test_update_customer_repricing_config_async(transport: str = "grpc_asyncio", request_type=service.UpdateCustomerRepricingConfigRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10599,9 +9461,7 @@ async def test_update_customer_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.CustomerRepricingConfig(
@@ -10638,9 +9498,7 @@ def test_update_customer_repricing_config_field_headers():
     request.customer_repricing_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         call.return_value = repricing.CustomerRepricingConfig()
         client.update_customer_repricing_config(request)
 
@@ -10670,12 +9528,8 @@ async def test_update_customer_repricing_config_field_headers_async():
     request.customer_repricing_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.CustomerRepricingConfig()
-        )
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.CustomerRepricingConfig())
         await client.update_customer_repricing_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10697,17 +9551,13 @@ def test_update_customer_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_customer_repricing_config(
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -10729,9 +9579,7 @@ def test_update_customer_repricing_config_flattened_error():
     with pytest.raises(ValueError):
         client.update_customer_repricing_config(
             service.UpdateCustomerRepricingConfigRequest(),
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
 
@@ -10742,21 +9590,15 @@ async def test_update_customer_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.CustomerRepricingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.CustomerRepricingConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.CustomerRepricingConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_customer_repricing_config(
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -10779,9 +9621,7 @@ async def test_update_customer_repricing_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_customer_repricing_config(
             service.UpdateCustomerRepricingConfigRequest(),
-            customer_repricing_config=repricing.CustomerRepricingConfig(
-                name="name_value"
-            ),
+            customer_repricing_config=repricing.CustomerRepricingConfig(name="name_value"),
         )
 
 
@@ -10803,9 +9643,7 @@ def test_delete_customer_repricing_config(request_type, transport: str = "grpc")
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.delete_customer_repricing_config(request)
@@ -10836,12 +9674,8 @@ def test_delete_customer_repricing_config_non_empty_request_with_auto_populated_
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_customer_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10864,19 +9698,12 @@ def test_delete_customer_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_customer_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_customer_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_customer_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_customer_repricing_config] = mock_rpc
         request = {}
         client.delete_customer_repricing_config(request)
 
@@ -10891,9 +9718,7 @@ def test_delete_customer_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_customer_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_customer_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10907,17 +9732,12 @@ async def test_delete_customer_repricing_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_customer_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_customer_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_customer_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_customer_repricing_config] = mock_rpc
 
         request = {}
         await client.delete_customer_repricing_config(request)
@@ -10933,10 +9753,7 @@ async def test_delete_customer_repricing_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_customer_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteCustomerRepricingConfigRequest,
-):
+async def test_delete_customer_repricing_config_async(transport: str = "grpc_asyncio", request_type=service.DeleteCustomerRepricingConfigRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10947,9 +9764,7 @@ async def test_delete_customer_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.delete_customer_repricing_config(request)
@@ -10981,9 +9796,7 @@ def test_delete_customer_repricing_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         call.return_value = None
         client.delete_customer_repricing_config(request)
 
@@ -11013,9 +9826,7 @@ async def test_delete_customer_repricing_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_customer_repricing_config(request)
 
@@ -11038,9 +9849,7 @@ def test_delete_customer_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -11079,9 +9888,7 @@ async def test_delete_customer_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -11134,9 +9941,7 @@ def test_get_channel_partner_repricing_config(request_type, transport: str = "gr
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig(
             name="name_value",
@@ -11170,12 +9975,8 @@ def test_get_channel_partner_repricing_config_non_empty_request_with_auto_popula
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_channel_partner_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -11198,19 +9999,12 @@ def test_get_channel_partner_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_channel_partner_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_channel_partner_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_channel_partner_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_channel_partner_repricing_config] = mock_rpc
         request = {}
         client.get_channel_partner_repricing_config(request)
 
@@ -11225,9 +10019,7 @@ def test_get_channel_partner_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_channel_partner_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_channel_partner_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -11241,17 +10033,12 @@ async def test_get_channel_partner_repricing_config_async_use_cached_wrapped_rpc
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_channel_partner_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_channel_partner_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_channel_partner_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_channel_partner_repricing_config] = mock_rpc
 
         request = {}
         await client.get_channel_partner_repricing_config(request)
@@ -11268,8 +10055,7 @@ async def test_get_channel_partner_repricing_config_async_use_cached_wrapped_rpc
 
 @pytest.mark.asyncio
 async def test_get_channel_partner_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetChannelPartnerRepricingConfigRequest,
+    transport: str = "grpc_asyncio", request_type=service.GetChannelPartnerRepricingConfigRequest
 ):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11281,9 +10067,7 @@ async def test_get_channel_partner_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.ChannelPartnerRepricingConfig(
@@ -11320,9 +10104,7 @@ def test_get_channel_partner_repricing_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         client.get_channel_partner_repricing_config(request)
 
@@ -11352,12 +10134,8 @@ async def test_get_channel_partner_repricing_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.ChannelPartnerRepricingConfig()
-        )
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.ChannelPartnerRepricingConfig())
         await client.get_channel_partner_repricing_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11379,9 +10157,7 @@ def test_get_channel_partner_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         # Call the method with a truthy value for each flattened field,
@@ -11420,15 +10196,11 @@ async def test_get_channel_partner_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.ChannelPartnerRepricingConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.ChannelPartnerRepricingConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_channel_partner_repricing_config(
@@ -11477,9 +10249,7 @@ def test_list_channel_partner_repricing_configs(request_type, transport: str = "
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListChannelPartnerRepricingConfigsResponse(
             next_page_token="next_page_token_value",
@@ -11515,12 +10285,8 @@ def test_list_channel_partner_repricing_configs_non_empty_request_with_auto_popu
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_channel_partner_repricing_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -11545,19 +10311,12 @@ def test_list_channel_partner_repricing_configs_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_channel_partner_repricing_configs
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_channel_partner_repricing_configs in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_channel_partner_repricing_configs
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_channel_partner_repricing_configs] = mock_rpc
         request = {}
         client.list_channel_partner_repricing_configs(request)
 
@@ -11572,9 +10331,7 @@ def test_list_channel_partner_repricing_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_channel_partner_repricing_configs_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_channel_partner_repricing_configs_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -11588,17 +10345,12 @@ async def test_list_channel_partner_repricing_configs_async_use_cached_wrapped_r
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_channel_partner_repricing_configs
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_channel_partner_repricing_configs in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_channel_partner_repricing_configs
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_channel_partner_repricing_configs] = mock_rpc
 
         request = {}
         await client.list_channel_partner_repricing_configs(request)
@@ -11615,8 +10367,7 @@ async def test_list_channel_partner_repricing_configs_async_use_cached_wrapped_r
 
 @pytest.mark.asyncio
 async def test_list_channel_partner_repricing_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListChannelPartnerRepricingConfigsRequest,
+    transport: str = "grpc_asyncio", request_type=service.ListChannelPartnerRepricingConfigsRequest
 ):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11628,9 +10379,7 @@ async def test_list_channel_partner_repricing_configs_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListChannelPartnerRepricingConfigsResponse(
@@ -11667,9 +10416,7 @@ def test_list_channel_partner_repricing_configs_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
         client.list_channel_partner_repricing_configs(request)
 
@@ -11699,12 +10446,8 @@ async def test_list_channel_partner_repricing_configs_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListChannelPartnerRepricingConfigsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListChannelPartnerRepricingConfigsResponse())
         await client.list_channel_partner_repricing_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11726,9 +10469,7 @@ def test_list_channel_partner_repricing_configs_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -11767,15 +10508,11 @@ async def test_list_channel_partner_repricing_configs_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListChannelPartnerRepricingConfigsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListChannelPartnerRepricingConfigsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_channel_partner_repricing_configs(
@@ -11813,9 +10550,7 @@ def test_list_channel_partner_repricing_configs_pager(transport_name: str = "grp
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerRepricingConfigsResponse(
@@ -11848,12 +10583,8 @@ def test_list_channel_partner_repricing_configs_pager(transport_name: str = "grp
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_channel_partner_repricing_configs(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_channel_partner_repricing_configs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -11861,9 +10592,7 @@ def test_list_channel_partner_repricing_configs_pager(transport_name: str = "grp
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, repricing.ChannelPartnerRepricingConfig) for i in results
-        )
+        assert all(isinstance(i, repricing.ChannelPartnerRepricingConfig) for i in results)
 
 
 def test_list_channel_partner_repricing_configs_pages(transport_name: str = "grpc"):
@@ -11873,9 +10602,7 @@ def test_list_channel_partner_repricing_configs_pages(transport_name: str = "grp
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerRepricingConfigsResponse(
@@ -11916,11 +10643,7 @@ async def test_list_channel_partner_repricing_configs_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerRepricingConfigsResponse(
@@ -11958,9 +10681,7 @@ async def test_list_channel_partner_repricing_configs_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(
-            isinstance(i, repricing.ChannelPartnerRepricingConfig) for i in responses
-        )
+        assert all(isinstance(i, repricing.ChannelPartnerRepricingConfig) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -11970,11 +10691,7 @@ async def test_list_channel_partner_repricing_configs_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListChannelPartnerRepricingConfigsResponse(
@@ -12006,9 +10723,7 @@ async def test_list_channel_partner_repricing_configs_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_channel_partner_repricing_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_channel_partner_repricing_configs(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12032,9 +10747,7 @@ def test_create_channel_partner_repricing_config(request_type, transport: str = 
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig(
             name="name_value",
@@ -12068,12 +10781,8 @@ def test_create_channel_partner_repricing_config_non_empty_request_with_auto_pop
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_channel_partner_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -12096,19 +10805,12 @@ def test_create_channel_partner_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_channel_partner_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_channel_partner_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_channel_partner_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_channel_partner_repricing_config] = mock_rpc
         request = {}
         client.create_channel_partner_repricing_config(request)
 
@@ -12123,9 +10825,7 @@ def test_create_channel_partner_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_channel_partner_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_channel_partner_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -12139,17 +10839,12 @@ async def test_create_channel_partner_repricing_config_async_use_cached_wrapped_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_channel_partner_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_channel_partner_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_channel_partner_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_partner_repricing_config] = mock_rpc
 
         request = {}
         await client.create_channel_partner_repricing_config(request)
@@ -12166,8 +10861,7 @@ async def test_create_channel_partner_repricing_config_async_use_cached_wrapped_
 
 @pytest.mark.asyncio
 async def test_create_channel_partner_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateChannelPartnerRepricingConfigRequest,
+    transport: str = "grpc_asyncio", request_type=service.CreateChannelPartnerRepricingConfigRequest
 ):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12179,9 +10873,7 @@ async def test_create_channel_partner_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.ChannelPartnerRepricingConfig(
@@ -12218,9 +10910,7 @@ def test_create_channel_partner_repricing_config_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         client.create_channel_partner_repricing_config(request)
 
@@ -12250,12 +10940,8 @@ async def test_create_channel_partner_repricing_config_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.ChannelPartnerRepricingConfig()
-        )
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.ChannelPartnerRepricingConfig())
         await client.create_channel_partner_repricing_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12277,18 +10963,14 @@ def test_create_channel_partner_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_channel_partner_repricing_config(
             parent="parent_value",
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -12314,9 +10996,7 @@ def test_create_channel_partner_repricing_config_flattened_error():
         client.create_channel_partner_repricing_config(
             service.CreateChannelPartnerRepricingConfigRequest(),
             parent="parent_value",
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
 
@@ -12327,22 +11007,16 @@ async def test_create_channel_partner_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.ChannelPartnerRepricingConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.ChannelPartnerRepricingConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_channel_partner_repricing_config(
             parent="parent_value",
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -12369,9 +11043,7 @@ async def test_create_channel_partner_repricing_config_flattened_error_async():
         await client.create_channel_partner_repricing_config(
             service.CreateChannelPartnerRepricingConfigRequest(),
             parent="parent_value",
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
 
@@ -12393,9 +11065,7 @@ def test_update_channel_partner_repricing_config(request_type, transport: str = 
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig(
             name="name_value",
@@ -12427,12 +11097,8 @@ def test_update_channel_partner_repricing_config_non_empty_request_with_auto_pop
     request = service.UpdateChannelPartnerRepricingConfigRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_channel_partner_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -12453,19 +11119,12 @@ def test_update_channel_partner_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_channel_partner_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_channel_partner_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_channel_partner_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_channel_partner_repricing_config] = mock_rpc
         request = {}
         client.update_channel_partner_repricing_config(request)
 
@@ -12480,9 +11139,7 @@ def test_update_channel_partner_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_channel_partner_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_channel_partner_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -12496,17 +11153,12 @@ async def test_update_channel_partner_repricing_config_async_use_cached_wrapped_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_channel_partner_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_channel_partner_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_channel_partner_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_channel_partner_repricing_config] = mock_rpc
 
         request = {}
         await client.update_channel_partner_repricing_config(request)
@@ -12523,8 +11175,7 @@ async def test_update_channel_partner_repricing_config_async_use_cached_wrapped_
 
 @pytest.mark.asyncio
 async def test_update_channel_partner_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.UpdateChannelPartnerRepricingConfigRequest,
+    transport: str = "grpc_asyncio", request_type=service.UpdateChannelPartnerRepricingConfigRequest
 ):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12536,9 +11187,7 @@ async def test_update_channel_partner_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.ChannelPartnerRepricingConfig(
@@ -12575,9 +11224,7 @@ def test_update_channel_partner_repricing_config_field_headers():
     request.channel_partner_repricing_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         client.update_channel_partner_repricing_config(request)
 
@@ -12607,12 +11254,8 @@ async def test_update_channel_partner_repricing_config_field_headers_async():
     request.channel_partner_repricing_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.ChannelPartnerRepricingConfig()
-        )
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.ChannelPartnerRepricingConfig())
         await client.update_channel_partner_repricing_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12634,17 +11277,13 @@ def test_update_channel_partner_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_channel_partner_repricing_config(
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -12666,9 +11305,7 @@ def test_update_channel_partner_repricing_config_flattened_error():
     with pytest.raises(ValueError):
         client.update_channel_partner_repricing_config(
             service.UpdateChannelPartnerRepricingConfigRequest(),
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
 
@@ -12679,21 +11316,15 @@ async def test_update_channel_partner_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = repricing.ChannelPartnerRepricingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            repricing.ChannelPartnerRepricingConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(repricing.ChannelPartnerRepricingConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_channel_partner_repricing_config(
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -12716,9 +11347,7 @@ async def test_update_channel_partner_repricing_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_channel_partner_repricing_config(
             service.UpdateChannelPartnerRepricingConfigRequest(),
-            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
-                name="name_value"
-            ),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(name="name_value"),
         )
 
 
@@ -12740,9 +11369,7 @@ def test_delete_channel_partner_repricing_config(request_type, transport: str = 
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.delete_channel_partner_repricing_config(request)
@@ -12773,12 +11400,8 @@ def test_delete_channel_partner_repricing_config_non_empty_request_with_auto_pop
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_channel_partner_repricing_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -12801,19 +11424,12 @@ def test_delete_channel_partner_repricing_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_channel_partner_repricing_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_channel_partner_repricing_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_channel_partner_repricing_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_channel_partner_repricing_config] = mock_rpc
         request = {}
         client.delete_channel_partner_repricing_config(request)
 
@@ -12828,9 +11444,7 @@ def test_delete_channel_partner_repricing_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_channel_partner_repricing_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_channel_partner_repricing_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -12844,17 +11458,12 @@ async def test_delete_channel_partner_repricing_config_async_use_cached_wrapped_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_channel_partner_repricing_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_channel_partner_repricing_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_channel_partner_repricing_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_channel_partner_repricing_config] = mock_rpc
 
         request = {}
         await client.delete_channel_partner_repricing_config(request)
@@ -12871,8 +11480,7 @@ async def test_delete_channel_partner_repricing_config_async_use_cached_wrapped_
 
 @pytest.mark.asyncio
 async def test_delete_channel_partner_repricing_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteChannelPartnerRepricingConfigRequest,
+    transport: str = "grpc_asyncio", request_type=service.DeleteChannelPartnerRepricingConfigRequest
 ):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12884,9 +11492,7 @@ async def test_delete_channel_partner_repricing_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.delete_channel_partner_repricing_config(request)
@@ -12918,9 +11524,7 @@ def test_delete_channel_partner_repricing_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         call.return_value = None
         client.delete_channel_partner_repricing_config(request)
 
@@ -12950,9 +11554,7 @@ async def test_delete_channel_partner_repricing_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_channel_partner_repricing_config(request)
 
@@ -12975,9 +11577,7 @@ def test_delete_channel_partner_repricing_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -13016,9 +11616,7 @@ async def test_delete_channel_partner_repricing_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -13107,9 +11705,7 @@ def test_list_sku_groups_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_sku_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13137,9 +11733,7 @@ def test_list_sku_groups_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_sku_groups] = mock_rpc
         request = {}
         client.list_sku_groups(request)
@@ -13155,9 +11749,7 @@ def test_list_sku_groups_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_sku_groups_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_sku_groups_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -13171,17 +11763,12 @@ async def test_list_sku_groups_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_sku_groups
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_sku_groups in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_sku_groups
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_sku_groups] = mock_rpc
 
         request = {}
         await client.list_sku_groups(request)
@@ -13197,9 +11784,7 @@ async def test_list_sku_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sku_groups_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSkuGroupsRequest
-):
+async def test_list_sku_groups_async(transport: str = "grpc_asyncio", request_type=service.ListSkuGroupsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13278,9 +11863,7 @@ async def test_list_sku_groups_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSkuGroupsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSkuGroupsResponse())
         await client.list_sku_groups(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -13345,9 +11928,7 @@ async def test_list_sku_groups_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = service.ListSkuGroupsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSkuGroupsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSkuGroupsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_sku_groups(
@@ -13418,9 +11999,7 @@ def test_list_sku_groups_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_sku_groups(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -13480,9 +12059,7 @@ async def test_list_sku_groups_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_groups), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkuGroupsResponse(
@@ -13530,9 +12107,7 @@ async def test_list_sku_groups_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_groups), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkuGroupsResponse(
@@ -13564,9 +12139,7 @@ async def test_list_sku_groups_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sku_groups(request={})
-        ).pages:
+        async for page_ in (await client.list_sku_groups(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13590,9 +12163,7 @@ def test_list_sku_group_billable_skus(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListSkuGroupBillableSkusResponse(
             next_page_token="next_page_token_value",
@@ -13627,12 +12198,8 @@ def test_list_sku_group_billable_skus_non_empty_request_with_auto_populated_fiel
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_sku_group_billable_skus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13656,19 +12223,12 @@ def test_list_sku_group_billable_skus_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_sku_group_billable_skus
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_sku_group_billable_skus in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_sku_group_billable_skus
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_sku_group_billable_skus] = mock_rpc
         request = {}
         client.list_sku_group_billable_skus(request)
 
@@ -13683,9 +12243,7 @@ def test_list_sku_group_billable_skus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_sku_group_billable_skus_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_sku_group_billable_skus_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -13699,17 +12257,12 @@ async def test_list_sku_group_billable_skus_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_sku_group_billable_skus
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_sku_group_billable_skus in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_sku_group_billable_skus
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_sku_group_billable_skus] = mock_rpc
 
         request = {}
         await client.list_sku_group_billable_skus(request)
@@ -13725,10 +12278,7 @@ async def test_list_sku_group_billable_skus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sku_group_billable_skus_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListSkuGroupBillableSkusRequest,
-):
+async def test_list_sku_group_billable_skus_async(transport: str = "grpc_asyncio", request_type=service.ListSkuGroupBillableSkusRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13739,9 +12289,7 @@ async def test_list_sku_group_billable_skus_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListSkuGroupBillableSkusResponse(
@@ -13778,9 +12326,7 @@ def test_list_sku_group_billable_skus_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         call.return_value = service.ListSkuGroupBillableSkusResponse()
         client.list_sku_group_billable_skus(request)
 
@@ -13810,12 +12356,8 @@ async def test_list_sku_group_billable_skus_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSkuGroupBillableSkusResponse()
-        )
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSkuGroupBillableSkusResponse())
         await client.list_sku_group_billable_skus(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -13837,9 +12379,7 @@ def test_list_sku_group_billable_skus_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListSkuGroupBillableSkusResponse()
         # Call the method with a truthy value for each flattened field,
@@ -13878,15 +12418,11 @@ async def test_list_sku_group_billable_skus_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListSkuGroupBillableSkusResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSkuGroupBillableSkusResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSkuGroupBillableSkusResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_sku_group_billable_skus(
@@ -13924,9 +12460,7 @@ def test_list_sku_group_billable_skus_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkuGroupBillableSkusResponse(
@@ -13959,12 +12493,8 @@ def test_list_sku_group_billable_skus_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_sku_group_billable_skus(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_sku_group_billable_skus(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -13982,9 +12512,7 @@ def test_list_sku_group_billable_skus_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkuGroupBillableSkusResponse(
@@ -14025,11 +12553,7 @@ async def test_list_sku_group_billable_skus_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkuGroupBillableSkusResponse(
@@ -14077,11 +12601,7 @@ async def test_list_sku_group_billable_skus_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkuGroupBillableSkusResponse(
@@ -14113,9 +12633,7 @@ async def test_list_sku_group_billable_skus_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sku_group_billable_skus(request={})
-        ).pages:
+        async for page_ in (await client.list_sku_group_billable_skus(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14176,9 +12694,7 @@ def test_lookup_offer_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.lookup_offer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14205,9 +12721,7 @@ def test_lookup_offer_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.lookup_offer] = mock_rpc
         request = {}
         client.lookup_offer(request)
@@ -14223,9 +12737,7 @@ def test_lookup_offer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_lookup_offer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_lookup_offer_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -14239,17 +12751,12 @@ async def test_lookup_offer_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.lookup_offer
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.lookup_offer in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.lookup_offer
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.lookup_offer] = mock_rpc
 
         request = {}
         await client.lookup_offer(request)
@@ -14265,9 +12772,7 @@ async def test_lookup_offer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_offer_async(
-    transport: str = "grpc_asyncio", request_type=service.LookupOfferRequest
-):
+async def test_lookup_offer_async(transport: str = "grpc_asyncio", request_type=service.LookupOfferRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14419,9 +12924,7 @@ def test_list_products_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14450,9 +12953,7 @@ def test_list_products_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_products] = mock_rpc
         request = {}
         client.list_products(request)
@@ -14468,9 +12969,7 @@ def test_list_products_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_products_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_products_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -14484,17 +12983,12 @@ async def test_list_products_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_products
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_products in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_products
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_products] = mock_rpc
 
         request = {}
         await client.list_products(request)
@@ -14510,9 +13004,7 @@ async def test_list_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_products_async(
-    transport: str = "grpc_asyncio", request_type=service.ListProductsRequest
-):
+async def test_list_products_async(transport: str = "grpc_asyncio", request_type=service.ListProductsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14647,9 +13139,7 @@ async def test_list_products_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_products), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_products), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListProductsResponse(
@@ -14697,9 +13187,7 @@ async def test_list_products_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_products), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_products), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListProductsResponse(
@@ -14731,9 +13219,7 @@ async def test_list_products_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_products(request={})
-        ).pages:
+        async for page_ in (await client.list_products(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14795,9 +13281,7 @@ def test_list_skus_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_skus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14827,9 +13311,7 @@ def test_list_skus_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_skus] = mock_rpc
         request = {}
         client.list_skus(request)
@@ -14859,17 +13341,12 @@ async def test_list_skus_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_skus
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_skus in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_skus
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_skus] = mock_rpc
 
         request = {}
         await client.list_skus(request)
@@ -14885,9 +13362,7 @@ async def test_list_skus_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_skus_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSkusRequest
-):
+async def test_list_skus_async(transport: str = "grpc_asyncio", request_type=service.ListSkusRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14966,9 +13441,7 @@ async def test_list_skus_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSkusResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSkusResponse())
         await client.list_skus(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -15024,9 +13497,7 @@ def test_list_skus_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_skus(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -15086,9 +13557,7 @@ async def test_list_skus_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_skus), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkusResponse(
@@ -15136,9 +13605,7 @@ async def test_list_skus_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_skus), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkusResponse(
@@ -15170,9 +13637,7 @@ async def test_list_skus_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_skus(request={})
-        ).pages:
+        async for page_ in (await client.list_skus(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15234,9 +13699,7 @@ def test_list_offers_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_offers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -15266,9 +13729,7 @@ def test_list_offers_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_offers] = mock_rpc
         request = {}
         client.list_offers(request)
@@ -15284,9 +13745,7 @@ def test_list_offers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_offers_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_offers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -15300,17 +13759,12 @@ async def test_list_offers_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_offers
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_offers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_offers
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_offers] = mock_rpc
 
         request = {}
         await client.list_offers(request)
@@ -15326,9 +13780,7 @@ async def test_list_offers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_offers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListOffersRequest
-):
+async def test_list_offers_async(transport: str = "grpc_asyncio", request_type=service.ListOffersRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15407,9 +13859,7 @@ async def test_list_offers_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListOffersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListOffersResponse())
         await client.list_offers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -15465,9 +13915,7 @@ def test_list_offers_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_offers(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -15527,9 +13975,7 @@ async def test_list_offers_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_offers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_offers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListOffersResponse(
@@ -15577,9 +14023,7 @@ async def test_list_offers_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_offers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_offers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListOffersResponse(
@@ -15611,9 +14055,7 @@ async def test_list_offers_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_offers(request={})
-        ).pages:
+        async for page_ in (await client.list_offers(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15637,9 +14079,7 @@ def test_list_purchasable_skus(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListPurchasableSkusResponse(
             next_page_token="next_page_token_value",
@@ -15675,12 +14115,8 @@ def test_list_purchasable_skus_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_purchasable_skus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -15705,19 +14141,12 @@ def test_list_purchasable_skus_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_purchasable_skus
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_purchasable_skus in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_purchasable_skus
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_purchasable_skus] = mock_rpc
         request = {}
         client.list_purchasable_skus(request)
 
@@ -15732,9 +14161,7 @@ def test_list_purchasable_skus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_purchasable_skus_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_purchasable_skus_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -15748,17 +14175,12 @@ async def test_list_purchasable_skus_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_purchasable_skus
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_purchasable_skus in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_purchasable_skus
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_purchasable_skus] = mock_rpc
 
         request = {}
         await client.list_purchasable_skus(request)
@@ -15774,9 +14196,7 @@ async def test_list_purchasable_skus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_purchasable_skus_async(
-    transport: str = "grpc_asyncio", request_type=service.ListPurchasableSkusRequest
-):
+async def test_list_purchasable_skus_async(transport: str = "grpc_asyncio", request_type=service.ListPurchasableSkusRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15787,9 +14207,7 @@ async def test_list_purchasable_skus_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListPurchasableSkusResponse(
@@ -15826,9 +14244,7 @@ def test_list_purchasable_skus_field_headers():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         call.return_value = service.ListPurchasableSkusResponse()
         client.list_purchasable_skus(request)
 
@@ -15858,12 +14274,8 @@ async def test_list_purchasable_skus_field_headers_async():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListPurchasableSkusResponse()
-        )
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListPurchasableSkusResponse())
         await client.list_purchasable_skus(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -15886,9 +14298,7 @@ def test_list_purchasable_skus_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableSkusResponse(
@@ -15921,9 +14331,7 @@ def test_list_purchasable_skus_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("customer", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer", ""),)),)
         pager = client.list_purchasable_skus(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -15942,9 +14350,7 @@ def test_list_purchasable_skus_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableSkusResponse(
@@ -15985,11 +14391,7 @@ async def test_list_purchasable_skus_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableSkusResponse(
@@ -16037,11 +14439,7 @@ async def test_list_purchasable_skus_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableSkusResponse(
@@ -16073,9 +14471,7 @@ async def test_list_purchasable_skus_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_purchasable_skus(request={})
-        ).pages:
+        async for page_ in (await client.list_purchasable_skus(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16099,9 +14495,7 @@ def test_list_purchasable_offers(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListPurchasableOffersResponse(
             next_page_token="next_page_token_value",
@@ -16137,12 +14531,8 @@ def test_list_purchasable_offers_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_purchasable_offers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -16167,19 +14557,12 @@ def test_list_purchasable_offers_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_purchasable_offers
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_purchasable_offers in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_purchasable_offers
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_purchasable_offers] = mock_rpc
         request = {}
         client.list_purchasable_offers(request)
 
@@ -16194,9 +14577,7 @@ def test_list_purchasable_offers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_purchasable_offers_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_purchasable_offers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -16210,17 +14591,12 @@ async def test_list_purchasable_offers_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_purchasable_offers
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_purchasable_offers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_purchasable_offers
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_purchasable_offers] = mock_rpc
 
         request = {}
         await client.list_purchasable_offers(request)
@@ -16236,9 +14612,7 @@ async def test_list_purchasable_offers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_purchasable_offers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListPurchasableOffersRequest
-):
+async def test_list_purchasable_offers_async(transport: str = "grpc_asyncio", request_type=service.ListPurchasableOffersRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16249,9 +14623,7 @@ async def test_list_purchasable_offers_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListPurchasableOffersResponse(
@@ -16288,9 +14660,7 @@ def test_list_purchasable_offers_field_headers():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         call.return_value = service.ListPurchasableOffersResponse()
         client.list_purchasable_offers(request)
 
@@ -16320,12 +14690,8 @@ async def test_list_purchasable_offers_field_headers_async():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListPurchasableOffersResponse()
-        )
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListPurchasableOffersResponse())
         await client.list_purchasable_offers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -16348,9 +14714,7 @@ def test_list_purchasable_offers_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableOffersResponse(
@@ -16383,9 +14747,7 @@ def test_list_purchasable_offers_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("customer", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer", ""),)),)
         pager = client.list_purchasable_offers(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -16404,9 +14766,7 @@ def test_list_purchasable_offers_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableOffersResponse(
@@ -16447,11 +14807,7 @@ async def test_list_purchasable_offers_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableOffersResponse(
@@ -16499,11 +14855,7 @@ async def test_list_purchasable_offers_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListPurchasableOffersResponse(
@@ -16535,9 +14887,7 @@ async def test_list_purchasable_offers_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_purchasable_offers(request={})
-        ).pages:
+        async for page_ in (await client.list_purchasable_offers(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16561,9 +14911,7 @@ def test_query_eligible_billing_accounts(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.QueryEligibleBillingAccountsResponse()
         response = client.query_eligible_billing_accounts(request)
@@ -16594,12 +14942,8 @@ def test_query_eligible_billing_accounts_non_empty_request_with_auto_populated_f
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.query_eligible_billing_accounts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -16622,19 +14966,12 @@ def test_query_eligible_billing_accounts_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.query_eligible_billing_accounts
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.query_eligible_billing_accounts in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.query_eligible_billing_accounts
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.query_eligible_billing_accounts] = mock_rpc
         request = {}
         client.query_eligible_billing_accounts(request)
 
@@ -16649,9 +14986,7 @@ def test_query_eligible_billing_accounts_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_query_eligible_billing_accounts_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_query_eligible_billing_accounts_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -16665,17 +15000,12 @@ async def test_query_eligible_billing_accounts_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.query_eligible_billing_accounts
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.query_eligible_billing_accounts in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.query_eligible_billing_accounts
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.query_eligible_billing_accounts] = mock_rpc
 
         request = {}
         await client.query_eligible_billing_accounts(request)
@@ -16691,10 +15021,7 @@ async def test_query_eligible_billing_accounts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_eligible_billing_accounts_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.QueryEligibleBillingAccountsRequest,
-):
+async def test_query_eligible_billing_accounts_async(transport: str = "grpc_asyncio", request_type=service.QueryEligibleBillingAccountsRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16705,13 +15032,9 @@ async def test_query_eligible_billing_accounts_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.QueryEligibleBillingAccountsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.QueryEligibleBillingAccountsResponse())
         response = await client.query_eligible_billing_accounts(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -16741,9 +15064,7 @@ def test_query_eligible_billing_accounts_field_headers():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
         call.return_value = service.QueryEligibleBillingAccountsResponse()
         client.query_eligible_billing_accounts(request)
 
@@ -16773,12 +15094,8 @@ async def test_query_eligible_billing_accounts_field_headers_async():
     request.customer = "customer_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.QueryEligibleBillingAccountsResponse()
-        )
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.QueryEligibleBillingAccountsResponse())
         await client.query_eligible_billing_accounts(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -16812,9 +15129,7 @@ def test_register_subscriber(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.RegisterSubscriberResponse(
             topic="topic_value",
@@ -16850,12 +15165,8 @@ def test_register_subscriber_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.register_subscriber(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -16880,18 +15191,12 @@ def test_register_subscriber_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.register_subscriber in client._transport._wrapped_methods
-        )
+        assert client._transport.register_subscriber in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.register_subscriber
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.register_subscriber] = mock_rpc
         request = {}
         client.register_subscriber(request)
 
@@ -16906,9 +15211,7 @@ def test_register_subscriber_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_register_subscriber_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_register_subscriber_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -16922,17 +15225,12 @@ async def test_register_subscriber_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.register_subscriber
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.register_subscriber in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.register_subscriber
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.register_subscriber] = mock_rpc
 
         request = {}
         await client.register_subscriber(request)
@@ -16948,9 +15246,7 @@ async def test_register_subscriber_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_register_subscriber_async(
-    transport: str = "grpc_asyncio", request_type=service.RegisterSubscriberRequest
-):
+async def test_register_subscriber_async(transport: str = "grpc_asyncio", request_type=service.RegisterSubscriberRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16961,9 +15257,7 @@ async def test_register_subscriber_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.RegisterSubscriberResponse(
@@ -17000,9 +15294,7 @@ def test_register_subscriber_field_headers():
     request.account = "account_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
         call.return_value = service.RegisterSubscriberResponse()
         client.register_subscriber(request)
 
@@ -17032,12 +15324,8 @@ async def test_register_subscriber_field_headers_async():
     request.account = "account_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.RegisterSubscriberResponse()
-        )
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.RegisterSubscriberResponse())
         await client.register_subscriber(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -17071,9 +15359,7 @@ def test_unregister_subscriber(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.UnregisterSubscriberResponse(
             topic="topic_value",
@@ -17109,12 +15395,8 @@ def test_unregister_subscriber_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.unregister_subscriber(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -17139,19 +15421,12 @@ def test_unregister_subscriber_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.unregister_subscriber
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.unregister_subscriber in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.unregister_subscriber
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.unregister_subscriber] = mock_rpc
         request = {}
         client.unregister_subscriber(request)
 
@@ -17166,9 +15441,7 @@ def test_unregister_subscriber_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_unregister_subscriber_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_unregister_subscriber_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -17182,17 +15455,12 @@ async def test_unregister_subscriber_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.unregister_subscriber
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.unregister_subscriber in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.unregister_subscriber
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.unregister_subscriber] = mock_rpc
 
         request = {}
         await client.unregister_subscriber(request)
@@ -17208,9 +15476,7 @@ async def test_unregister_subscriber_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_unregister_subscriber_async(
-    transport: str = "grpc_asyncio", request_type=service.UnregisterSubscriberRequest
-):
+async def test_unregister_subscriber_async(transport: str = "grpc_asyncio", request_type=service.UnregisterSubscriberRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17221,9 +15487,7 @@ async def test_unregister_subscriber_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.UnregisterSubscriberResponse(
@@ -17260,9 +15524,7 @@ def test_unregister_subscriber_field_headers():
     request.account = "account_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
         call.return_value = service.UnregisterSubscriberResponse()
         client.unregister_subscriber(request)
 
@@ -17292,12 +15554,8 @@ async def test_unregister_subscriber_field_headers_async():
     request.account = "account_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.UnregisterSubscriberResponse()
-        )
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.UnregisterSubscriberResponse())
         await client.unregister_subscriber(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -17372,9 +15630,7 @@ def test_list_subscribers_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_subscribers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -17403,12 +15659,8 @@ def test_list_subscribers_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_subscribers
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_subscribers] = mock_rpc
         request = {}
         client.list_subscribers(request)
 
@@ -17423,9 +15675,7 @@ def test_list_subscribers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_subscribers_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_subscribers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -17439,17 +15689,12 @@ async def test_list_subscribers_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_subscribers
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_subscribers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_subscribers
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_subscribers] = mock_rpc
 
         request = {}
         await client.list_subscribers(request)
@@ -17465,9 +15710,7 @@ async def test_list_subscribers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subscribers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSubscribersRequest
-):
+async def test_list_subscribers_async(transport: str = "grpc_asyncio", request_type=service.ListSubscribersRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17550,9 +15793,7 @@ async def test_list_subscribers_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSubscribersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListSubscribersResponse())
         await client.list_subscribers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -17608,9 +15849,7 @@ def test_list_subscribers_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("account", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account", ""),)),)
         pager = client.list_subscribers(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -17670,9 +15909,7 @@ async def test_list_subscribers_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subscribers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subscribers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubscribersResponse(
@@ -17720,9 +15957,7 @@ async def test_list_subscribers_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_subscribers), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_subscribers), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubscribersResponse(
@@ -17754,9 +15989,7 @@ async def test_list_subscribers_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_subscribers(request={})
-        ).pages:
+        async for page_ in (await client.list_subscribers(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -17780,9 +16013,7 @@ def test_list_entitlement_changes(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListEntitlementChangesResponse(
             next_page_token="next_page_token_value",
@@ -17818,12 +16049,8 @@ def test_list_entitlement_changes_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_entitlement_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -17848,19 +16075,12 @@ def test_list_entitlement_changes_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_entitlement_changes
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_entitlement_changes in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_entitlement_changes
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_entitlement_changes] = mock_rpc
         request = {}
         client.list_entitlement_changes(request)
 
@@ -17875,9 +16095,7 @@ def test_list_entitlement_changes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_entitlement_changes_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_entitlement_changes_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -17891,17 +16109,12 @@ async def test_list_entitlement_changes_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_entitlement_changes
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_entitlement_changes in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_entitlement_changes
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_entitlement_changes] = mock_rpc
 
         request = {}
         await client.list_entitlement_changes(request)
@@ -17917,9 +16130,7 @@ async def test_list_entitlement_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entitlement_changes_async(
-    transport: str = "grpc_asyncio", request_type=service.ListEntitlementChangesRequest
-):
+async def test_list_entitlement_changes_async(transport: str = "grpc_asyncio", request_type=service.ListEntitlementChangesRequest):
     client = CloudChannelServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17930,9 +16141,7 @@ async def test_list_entitlement_changes_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListEntitlementChangesResponse(
@@ -17969,9 +16178,7 @@ def test_list_entitlement_changes_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         call.return_value = service.ListEntitlementChangesResponse()
         client.list_entitlement_changes(request)
 
@@ -18001,12 +16208,8 @@ async def test_list_entitlement_changes_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListEntitlementChangesResponse()
-        )
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListEntitlementChangesResponse())
         await client.list_entitlement_changes(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -18028,9 +16231,7 @@ def test_list_entitlement_changes_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListEntitlementChangesResponse()
         # Call the method with a truthy value for each flattened field,
@@ -18069,15 +16270,11 @@ async def test_list_entitlement_changes_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListEntitlementChangesResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListEntitlementChangesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.ListEntitlementChangesResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_entitlement_changes(
@@ -18115,9 +16312,7 @@ def test_list_entitlement_changes_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementChangesResponse(
@@ -18150,12 +16345,8 @@ def test_list_entitlement_changes_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_entitlement_changes(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_entitlement_changes(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -18163,9 +16354,7 @@ def test_list_entitlement_changes_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, entitlement_changes.EntitlementChange) for i in results
-        )
+        assert all(isinstance(i, entitlement_changes.EntitlementChange) for i in results)
 
 
 def test_list_entitlement_changes_pages(transport_name: str = "grpc"):
@@ -18175,9 +16364,7 @@ def test_list_entitlement_changes_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementChangesResponse(
@@ -18218,11 +16405,7 @@ async def test_list_entitlement_changes_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementChangesResponse(
@@ -18260,9 +16443,7 @@ async def test_list_entitlement_changes_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(
-            isinstance(i, entitlement_changes.EntitlementChange) for i in responses
-        )
+        assert all(isinstance(i, entitlement_changes.EntitlementChange) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -18272,11 +16453,7 @@ async def test_list_entitlement_changes_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEntitlementChangesResponse(
@@ -18308,9 +16485,7 @@ async def test_list_entitlement_changes_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_entitlement_changes(request={})
-        ).pages:
+        async for page_ in (await client.list_entitlement_changes(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -18353,9 +16528,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CloudChannelServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = CloudChannelServiceClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.CloudChannelServiceGrpcTransport(
@@ -18408,16 +16581,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = CloudChannelServiceClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = CloudChannelServiceClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -18472,9 +16641,7 @@ def test_check_cloud_identity_accounts_exist_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
         call.return_value = service.CheckCloudIdentityAccountsExistResponse()
         client.check_cloud_identity_accounts_exist(request=None)
 
@@ -18579,9 +16746,7 @@ def test_provision_cloud_identity_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.provision_cloud_identity(request=None)
 
@@ -18602,9 +16767,7 @@ def test_list_entitlements_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         call.return_value = service.ListEntitlementsResponse()
         client.list_entitlements(request=None)
 
@@ -18625,9 +16788,7 @@ def test_list_transferable_skus_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         call.return_value = service.ListTransferableSkusResponse()
         client.list_transferable_skus(request=None)
 
@@ -18648,9 +16809,7 @@ def test_list_transferable_offers_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         call.return_value = service.ListTransferableOffersResponse()
         client.list_transferable_offers(request=None)
 
@@ -18692,9 +16851,7 @@ def test_create_entitlement_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_entitlement(request=None)
 
@@ -18715,9 +16872,7 @@ def test_change_parameters_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.change_parameters(request=None)
 
@@ -18738,9 +16893,7 @@ def test_change_renewal_settings_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.change_renewal_settings(request=None)
 
@@ -18782,9 +16935,7 @@ def test_start_paid_service_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.start_paid_service(request=None)
 
@@ -18805,9 +16956,7 @@ def test_suspend_entitlement_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.suspend_entitlement(request=None)
 
@@ -18828,9 +16977,7 @@ def test_cancel_entitlement_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.cancel_entitlement(request=None)
 
@@ -18851,9 +16998,7 @@ def test_activate_entitlement_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.activate_entitlement(request=None)
 
@@ -18874,9 +17019,7 @@ def test_transfer_entitlements_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.transfer_entitlements(request=None)
 
@@ -18897,9 +17040,7 @@ def test_transfer_entitlements_to_google_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.transfer_entitlements_to_google(request=None)
 
@@ -18920,9 +17061,7 @@ def test_list_channel_partner_links_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         call.return_value = service.ListChannelPartnerLinksResponse()
         client.list_channel_partner_links(request=None)
 
@@ -18943,9 +17082,7 @@ def test_get_channel_partner_link_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
         call.return_value = channel_partner_links.ChannelPartnerLink()
         client.get_channel_partner_link(request=None)
 
@@ -18966,9 +17103,7 @@ def test_create_channel_partner_link_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
         call.return_value = channel_partner_links.ChannelPartnerLink()
         client.create_channel_partner_link(request=None)
 
@@ -18989,9 +17124,7 @@ def test_update_channel_partner_link_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
         call.return_value = channel_partner_links.ChannelPartnerLink()
         client.update_channel_partner_link(request=None)
 
@@ -19012,9 +17145,7 @@ def test_get_customer_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         call.return_value = repricing.CustomerRepricingConfig()
         client.get_customer_repricing_config(request=None)
 
@@ -19035,9 +17166,7 @@ def test_list_customer_repricing_configs_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         call.return_value = service.ListCustomerRepricingConfigsResponse()
         client.list_customer_repricing_configs(request=None)
 
@@ -19058,9 +17187,7 @@ def test_create_customer_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         call.return_value = repricing.CustomerRepricingConfig()
         client.create_customer_repricing_config(request=None)
 
@@ -19081,9 +17208,7 @@ def test_update_customer_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         call.return_value = repricing.CustomerRepricingConfig()
         client.update_customer_repricing_config(request=None)
 
@@ -19104,9 +17229,7 @@ def test_delete_customer_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         call.return_value = None
         client.delete_customer_repricing_config(request=None)
 
@@ -19127,9 +17250,7 @@ def test_get_channel_partner_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         client.get_channel_partner_repricing_config(request=None)
 
@@ -19150,9 +17271,7 @@ def test_list_channel_partner_repricing_configs_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
         client.list_channel_partner_repricing_configs(request=None)
 
@@ -19173,9 +17292,7 @@ def test_create_channel_partner_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         client.create_channel_partner_repricing_config(request=None)
 
@@ -19196,9 +17313,7 @@ def test_update_channel_partner_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         call.return_value = repricing.ChannelPartnerRepricingConfig()
         client.update_channel_partner_repricing_config(request=None)
 
@@ -19219,9 +17334,7 @@ def test_delete_channel_partner_repricing_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         call.return_value = None
         client.delete_channel_partner_repricing_config(request=None)
 
@@ -19263,9 +17376,7 @@ def test_list_sku_group_billable_skus_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         call.return_value = service.ListSkuGroupBillableSkusResponse()
         client.list_sku_group_billable_skus(request=None)
 
@@ -19370,9 +17481,7 @@ def test_list_purchasable_skus_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         call.return_value = service.ListPurchasableSkusResponse()
         client.list_purchasable_skus(request=None)
 
@@ -19393,9 +17502,7 @@ def test_list_purchasable_offers_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         call.return_value = service.ListPurchasableOffersResponse()
         client.list_purchasable_offers(request=None)
 
@@ -19416,9 +17523,7 @@ def test_query_eligible_billing_accounts_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
         call.return_value = service.QueryEligibleBillingAccountsResponse()
         client.query_eligible_billing_accounts(request=None)
 
@@ -19439,9 +17544,7 @@ def test_register_subscriber_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
         call.return_value = service.RegisterSubscriberResponse()
         client.register_subscriber(request=None)
 
@@ -19462,9 +17565,7 @@ def test_unregister_subscriber_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
         call.return_value = service.UnregisterSubscriberResponse()
         client.unregister_subscriber(request=None)
 
@@ -19506,9 +17607,7 @@ def test_list_entitlement_changes_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         call.return_value = service.ListEntitlementChangesResponse()
         client.list_entitlement_changes(request=None)
 
@@ -19521,16 +17620,12 @@ def test_list_entitlement_changes_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = CloudChannelServiceAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = CloudChannelServiceAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = CloudChannelServiceAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = CloudChannelServiceAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -19606,13 +17701,9 @@ async def test_check_cloud_identity_accounts_exist_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.check_cloud_identity_accounts_exist), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.CheckCloudIdentityAccountsExistResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.CheckCloudIdentityAccountsExistResponse())
         await client.check_cloud_identity_accounts_exist(request=None)
 
         # Establish that the underlying stub method was called.
@@ -19761,13 +17852,9 @@ async def test_provision_cloud_identity_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provision_cloud_identity), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.provision_cloud_identity), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.provision_cloud_identity(request=None)
 
         # Establish that the underlying stub method was called.
@@ -19788,9 +17875,7 @@ async def test_list_entitlements_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlements), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListEntitlementsResponse(
@@ -19817,9 +17902,7 @@ async def test_list_transferable_skus_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListTransferableSkusResponse(
@@ -19846,9 +17929,7 @@ async def test_list_transferable_offers_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_transferable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_transferable_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListTransferableOffersResponse(
@@ -19882,9 +17963,7 @@ async def test_get_entitlement_empty_call_grpc_asyncio():
                 name="name_value",
                 offer="offer_value",
                 provisioning_state=entitlements.Entitlement.ProvisioningState.ACTIVE,
-                suspension_reasons=[
-                    entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
-                ],
+                suspension_reasons=[entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED],
                 purchase_order_id="purchase_order_id_value",
                 billing_account="billing_account_value",
                 price_reference_id="price_reference_id_value",
@@ -19910,13 +17989,9 @@ async def test_create_entitlement_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_entitlement(request=None)
 
         # Establish that the underlying stub method was called.
@@ -19937,13 +18012,9 @@ async def test_change_parameters_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_parameters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_parameters), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.change_parameters(request=None)
 
         # Establish that the underlying stub method was called.
@@ -19964,13 +18035,9 @@ async def test_change_renewal_settings_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.change_renewal_settings), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.change_renewal_settings), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.change_renewal_settings(request=None)
 
         # Establish that the underlying stub method was called.
@@ -19993,9 +18060,7 @@ async def test_change_offer_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.change_offer(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20016,13 +18081,9 @@ async def test_start_paid_service_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_paid_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_paid_service), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.start_paid_service(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20043,13 +18104,9 @@ async def test_suspend_entitlement_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suspend_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.suspend_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.suspend_entitlement(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20070,13 +18127,9 @@ async def test_cancel_entitlement_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.cancel_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.cancel_entitlement(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20097,13 +18150,9 @@ async def test_activate_entitlement_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_entitlement), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.activate_entitlement), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.activate_entitlement(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20124,13 +18173,9 @@ async def test_transfer_entitlements_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.transfer_entitlements(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20151,13 +18196,9 @@ async def test_transfer_entitlements_to_google_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_entitlements_to_google), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.transfer_entitlements_to_google), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.transfer_entitlements_to_google(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20178,9 +18219,7 @@ async def test_list_channel_partner_links_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_links), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_links), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListChannelPartnerLinksResponse(
@@ -20207,9 +18246,7 @@ async def test_get_channel_partner_link_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             channel_partner_links.ChannelPartnerLink(
@@ -20240,9 +18277,7 @@ async def test_create_channel_partner_link_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             channel_partner_links.ChannelPartnerLink(
@@ -20273,9 +18308,7 @@ async def test_update_channel_partner_link_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_link), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_link), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             channel_partner_links.ChannelPartnerLink(
@@ -20306,9 +18339,7 @@ async def test_get_customer_repricing_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.CustomerRepricingConfig(
@@ -20335,9 +18366,7 @@ async def test_list_customer_repricing_configs_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_customer_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_customer_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListCustomerRepricingConfigsResponse(
@@ -20364,9 +18393,7 @@ async def test_create_customer_repricing_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.CustomerRepricingConfig(
@@ -20393,9 +18420,7 @@ async def test_update_customer_repricing_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.CustomerRepricingConfig(
@@ -20422,9 +18447,7 @@ async def test_delete_customer_repricing_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_customer_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_customer_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_customer_repricing_config(request=None)
@@ -20447,9 +18470,7 @@ async def test_get_channel_partner_repricing_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.ChannelPartnerRepricingConfig(
@@ -20476,9 +18497,7 @@ async def test_list_channel_partner_repricing_configs_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_channel_partner_repricing_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_channel_partner_repricing_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListChannelPartnerRepricingConfigsResponse(
@@ -20505,9 +18524,7 @@ async def test_create_channel_partner_repricing_config_empty_call_grpc_asyncio()
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.ChannelPartnerRepricingConfig(
@@ -20534,9 +18551,7 @@ async def test_update_channel_partner_repricing_config_empty_call_grpc_asyncio()
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             repricing.ChannelPartnerRepricingConfig(
@@ -20563,9 +18578,7 @@ async def test_delete_channel_partner_repricing_config_empty_call_grpc_asyncio()
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_channel_partner_repricing_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_channel_partner_repricing_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_channel_partner_repricing_config(request=None)
@@ -20615,9 +18628,7 @@ async def test_list_sku_group_billable_skus_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_sku_group_billable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_sku_group_billable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListSkuGroupBillableSkusResponse(
@@ -20753,9 +18764,7 @@ async def test_list_purchasable_skus_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_skus), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListPurchasableSkusResponse(
@@ -20782,9 +18791,7 @@ async def test_list_purchasable_offers_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_purchasable_offers), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_purchasable_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListPurchasableOffersResponse(
@@ -20811,13 +18818,9 @@ async def test_query_eligible_billing_accounts_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.query_eligible_billing_accounts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.query_eligible_billing_accounts), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.QueryEligibleBillingAccountsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.QueryEligibleBillingAccountsResponse())
         await client.query_eligible_billing_accounts(request=None)
 
         # Establish that the underlying stub method was called.
@@ -20838,9 +18841,7 @@ async def test_register_subscriber_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.register_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.register_subscriber), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.RegisterSubscriberResponse(
@@ -20867,9 +18868,7 @@ async def test_unregister_subscriber_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unregister_subscriber), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unregister_subscriber), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.UnregisterSubscriberResponse(
@@ -20925,9 +18924,7 @@ async def test_list_entitlement_changes_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entitlement_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entitlement_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListEntitlementChangesResponse(
@@ -20958,17 +18955,12 @@ def test_transport_grpc_default():
 def test_cloud_channel_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.CloudChannelServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.CloudChannelServiceTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_cloud_channel_service_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.channel_v1.services.cloud_channel_service.transports.CloudChannelServiceTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.channel_v1.services.cloud_channel_service.transports.CloudChannelServiceTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.CloudChannelServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -21054,9 +19046,7 @@ def test_cloud_channel_service_base_transport():
 
 def test_cloud_channel_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.channel_v1.services.cloud_channel_service.transports.CloudChannelServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -21130,9 +19120,7 @@ def test_cloud_channel_service_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -21140,17 +19128,12 @@ def test_cloud_channel_service_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.CloudChannelServiceGrpcTransport, grpc_helpers),
-        (transports.CloudChannelServiceGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.CloudChannelServiceGrpcTransport, grpc_helpers), (transports.CloudChannelServiceGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_cloud_channel_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -21173,26 +19156,14 @@ def test_cloud_channel_service_transport_create_channel(transport_class, grpc_he
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CloudChannelServiceGrpcTransport,
-        transports.CloudChannelServiceGrpcAsyncIOTransport,
-    ],
-)
-def test_cloud_channel_service_grpc_transport_client_cert_source_for_mtls(
-    transport_class,
-):
+@pytest.mark.parametrize("transport_class", [transports.CloudChannelServiceGrpcTransport, transports.CloudChannelServiceGrpcAsyncIOTransport])
+def test_cloud_channel_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -21210,14 +19181,9 @@ def test_cloud_channel_service_grpc_transport_client_cert_source_for_mtls(
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 @pytest.mark.parametrize(
@@ -21230,9 +19196,7 @@ def test_cloud_channel_service_grpc_transport_client_cert_source_for_mtls(
 def test_cloud_channel_service_host_no_port(transport_name):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="cloudchannel.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="cloudchannel.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == ("cloudchannel.googleapis.com:443")
@@ -21248,9 +19212,7 @@ def test_cloud_channel_service_host_no_port(transport_name):
 def test_cloud_channel_service_host_with_port(transport_name):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="cloudchannel.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="cloudchannel.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == ("cloudchannel.googleapis.com:8000")
@@ -21284,22 +19246,11 @@ def test_cloud_channel_service_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CloudChannelServiceGrpcTransport,
-        transports.CloudChannelServiceGrpcAsyncIOTransport,
-    ],
-)
-def test_cloud_channel_service_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.CloudChannelServiceGrpcTransport, transports.CloudChannelServiceGrpcAsyncIOTransport])
+def test_cloud_channel_service_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -21317,9 +19268,7 @@ def test_cloud_channel_service_transport_channel_mtls_with_client_cert_source(
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -21338,13 +19287,7 @@ def test_cloud_channel_service_transport_channel_mtls_with_client_cert_source(
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CloudChannelServiceGrpcTransport,
-        transports.CloudChannelServiceGrpcAsyncIOTransport,
-    ],
-)
+@pytest.mark.parametrize("transport_class", [transports.CloudChannelServiceGrpcTransport, transports.CloudChannelServiceGrpcAsyncIOTransport])
 def test_cloud_channel_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -21352,9 +19295,7 @@ def test_cloud_channel_service_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -21466,9 +19407,7 @@ def test_channel_partner_link_path():
         account=account,
         channel_partner_link=channel_partner_link,
     )
-    actual = CloudChannelServiceClient.channel_partner_link_path(
-        account, channel_partner_link
-    )
+    actual = CloudChannelServiceClient.channel_partner_link_path(account, channel_partner_link)
     assert expected == actual
 
 
@@ -21493,9 +19432,7 @@ def test_channel_partner_repricing_config_path():
         channel_partner=channel_partner,
         channel_partner_repricing_config=channel_partner_repricing_config,
     )
-    actual = CloudChannelServiceClient.channel_partner_repricing_config_path(
-        account, channel_partner, channel_partner_repricing_config
-    )
+    actual = CloudChannelServiceClient.channel_partner_repricing_config_path(account, channel_partner, channel_partner_repricing_config)
     assert expected == actual
 
 
@@ -21544,9 +19481,7 @@ def test_customer_repricing_config_path():
         customer=customer,
         customer_repricing_config=customer_repricing_config,
     )
-    actual = CloudChannelServiceClient.customer_repricing_config_path(
-        account, customer, customer_repricing_config
-    )
+    actual = CloudChannelServiceClient.customer_repricing_config_path(account, customer, customer_repricing_config)
     assert expected == actual
 
 
@@ -21567,12 +19502,10 @@ def test_entitlement_path():
     account = "whelk"
     customer = "octopus"
     entitlement = "oyster"
-    expected = (
-        "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
-            account=account,
-            customer=customer,
-            entitlement=entitlement,
-        )
+    expected = "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
+        account=account,
+        customer=customer,
+        entitlement=entitlement,
     )
     actual = CloudChannelServiceClient.entitlement_path(account, customer, entitlement)
     assert expected == actual
@@ -21786,18 +19719,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.CloudChannelServiceTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.CloudChannelServiceTransport, "_prep_wrapped_messages") as prep:
         client = CloudChannelServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.CloudChannelServiceTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.CloudChannelServiceTransport, "_prep_wrapped_messages") as prep:
         transport_class = CloudChannelServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -22122,9 +20051,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22176,9 +20103,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22218,9 +20143,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -22267,9 +20190,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22321,9 +20242,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -22363,9 +20282,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -22375,12 +20292,8 @@ async def test_list_operations_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -22388,12 +20301,8 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = CloudChannelServiceAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = CloudChannelServiceAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -22404,9 +20313,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = CloudChannelServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -22419,16 +20326,11 @@ def test_client_ctx():
     "client_class,transport_class",
     [
         (CloudChannelServiceClient, transports.CloudChannelServiceGrpcTransport),
-        (
-            CloudChannelServiceAsyncClient,
-            transports.CloudChannelServiceGrpcAsyncIOTransport,
-        ),
+        (CloudChannelServiceAsyncClient, transports.CloudChannelServiceGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -22439,9 +20341,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

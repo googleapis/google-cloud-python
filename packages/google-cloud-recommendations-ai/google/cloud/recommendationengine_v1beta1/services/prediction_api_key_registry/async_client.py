@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -44,12 +33,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry import (
-    pagers,
-)
-from google.cloud.recommendationengine_v1beta1.types import (
-    prediction_apikey_registry_service,
-)
+from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry import pagers
+from google.cloud.recommendationengine_v1beta1.types import prediction_apikey_registry_service
 
 from .client import PredictionApiKeyRegistryClient
 from .transports.base import DEFAULT_CLIENT_INFO, PredictionApiKeyRegistryTransport
@@ -80,49 +65,23 @@ class PredictionApiKeyRegistryAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = PredictionApiKeyRegistryClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = PredictionApiKeyRegistryClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = PredictionApiKeyRegistryClient._DEFAULT_UNIVERSE
 
     event_store_path = staticmethod(PredictionApiKeyRegistryClient.event_store_path)
-    parse_event_store_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_event_store_path
-    )
-    prediction_api_key_registration_path = staticmethod(
-        PredictionApiKeyRegistryClient.prediction_api_key_registration_path
-    )
-    parse_prediction_api_key_registration_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_prediction_api_key_registration_path
-    )
-    common_billing_account_path = staticmethod(
-        PredictionApiKeyRegistryClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_common_billing_account_path
-    )
+    parse_event_store_path = staticmethod(PredictionApiKeyRegistryClient.parse_event_store_path)
+    prediction_api_key_registration_path = staticmethod(PredictionApiKeyRegistryClient.prediction_api_key_registration_path)
+    parse_prediction_api_key_registration_path = staticmethod(PredictionApiKeyRegistryClient.parse_prediction_api_key_registration_path)
+    common_billing_account_path = staticmethod(PredictionApiKeyRegistryClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(PredictionApiKeyRegistryClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(PredictionApiKeyRegistryClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        PredictionApiKeyRegistryClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        PredictionApiKeyRegistryClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        PredictionApiKeyRegistryClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        PredictionApiKeyRegistryClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(PredictionApiKeyRegistryClient.parse_common_folder_path)
+    common_organization_path = staticmethod(PredictionApiKeyRegistryClient.common_organization_path)
+    parse_common_organization_path = staticmethod(PredictionApiKeyRegistryClient.parse_common_organization_path)
+    common_project_path = staticmethod(PredictionApiKeyRegistryClient.common_project_path)
+    parse_common_project_path = staticmethod(PredictionApiKeyRegistryClient.parse_common_project_path)
+    common_location_path = staticmethod(PredictionApiKeyRegistryClient.common_location_path)
+    parse_common_location_path = staticmethod(PredictionApiKeyRegistryClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -158,9 +117,7 @@ class PredictionApiKeyRegistryAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -227,13 +184,7 @@ class PredictionApiKeyRegistryAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                PredictionApiKeyRegistryTransport,
-                Callable[..., PredictionApiKeyRegistryTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, PredictionApiKeyRegistryTransport, Callable[..., PredictionApiKeyRegistryTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -293,20 +244,14 @@ class PredictionApiKeyRegistryAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.recommendationengine_v1beta1.PredictionApiKeyRegistryAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -317,17 +262,10 @@ class PredictionApiKeyRegistryAsyncClient:
 
     async def create_prediction_api_key_registration(
         self,
-        request: Optional[
-            Union[
-                prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        prediction_api_key_registration: Optional[
-            prediction_apikey_registry_service.PredictionApiKeyRegistration
-        ] = None,
+        prediction_api_key_registration: Optional[prediction_apikey_registry_service.PredictionApiKeyRegistration] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -394,24 +332,14 @@ class PredictionApiKeyRegistryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, prediction_api_key_registration]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
-        ):
-            request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
-                request
-            )
+        if not isinstance(request, prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest):
+            request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -422,15 +350,11 @@ class PredictionApiKeyRegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_prediction_api_key_registration
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_prediction_api_key_registration]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -448,12 +372,7 @@ class PredictionApiKeyRegistryAsyncClient:
 
     async def list_prediction_api_key_registrations(
         self,
-        request: Optional[
-            Union[
-                prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -522,24 +441,14 @@ class PredictionApiKeyRegistryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
-        ):
-            request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-                request
-            )
+        if not isinstance(request, prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest):
+            request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -548,15 +457,11 @@ class PredictionApiKeyRegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_prediction_api_key_registrations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_prediction_api_key_registrations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -585,12 +490,7 @@ class PredictionApiKeyRegistryAsyncClient:
 
     async def delete_prediction_api_key_registration(
         self,
-        request: Optional[
-            Union[
-                prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -646,24 +546,14 @@ class PredictionApiKeyRegistryAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
-        ):
-            request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
-                request
-            )
+        if not isinstance(request, prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest):
+            request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -672,15 +562,11 @@ class PredictionApiKeyRegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_prediction_api_key_registration
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_prediction_api_key_registration]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -700,9 +586,7 @@ class PredictionApiKeyRegistryAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

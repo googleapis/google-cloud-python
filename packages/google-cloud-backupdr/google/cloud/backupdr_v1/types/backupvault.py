@@ -23,12 +23,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.backupdr_v1.types import (
-    backupvault_ba,
-    backupvault_cloudsql,
-    backupvault_disk,
-    backupvault_gce,
-)
+from google.cloud.backupdr_v1.types import backupvault_ba, backupvault_cloudsql, backupvault_disk, backupvault_gce
 
 __protobuf__ = proto.module(
     package="google.cloud.backupdr.v1",
@@ -585,13 +580,11 @@ class DataSource(proto.Message):
         oneof="source_resource",
         message="DataSourceGcpResource",
     )
-    data_source_backup_appliance_application: "DataSourceBackupApplianceApplication" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=27,
-            oneof="source_resource",
-            message="DataSourceBackupApplianceApplication",
-        )
+    data_source_backup_appliance_application: "DataSourceBackupApplianceApplication" = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        oneof="source_resource",
+        message="DataSourceBackupApplianceApplication",
     )
     backup_blocked_by_vault_access_restriction: bool = proto.Field(
         proto.BOOL,
@@ -1293,13 +1286,11 @@ class Backup(proto.Message):
         optional=True,
         message=timestamp_pb2.Timestamp,
     )
-    backup_retention_inheritance: "BackupVault.BackupRetentionInheritance" = (
-        proto.Field(
-            proto.ENUM,
-            number=30,
-            optional=True,
-            enum="BackupVault.BackupRetentionInheritance",
-        )
+    backup_retention_inheritance: "BackupVault.BackupRetentionInheritance" = proto.Field(
+        proto.ENUM,
+        number=30,
+        optional=True,
+        enum="BackupVault.BackupRetentionInheritance",
     )
     expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -2386,13 +2377,11 @@ class RestoreBackupRequest(proto.Message):
         oneof="target_environment",
         message=backupvault_disk.DiskTargetEnvironment,
     )
-    region_disk_target_environment: backupvault_disk.RegionDiskTargetEnvironment = (
-        proto.Field(
-            proto.MESSAGE,
-            number=6,
-            oneof="target_environment",
-            message=backupvault_disk.RegionDiskTargetEnvironment,
-        )
+    region_disk_target_environment: backupvault_disk.RegionDiskTargetEnvironment = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="target_environment",
+        message=backupvault_disk.RegionDiskTargetEnvironment,
     )
     compute_instance_restore_properties: backupvault_gce.ComputeInstanceRestoreProperties = proto.Field(
         proto.MESSAGE,

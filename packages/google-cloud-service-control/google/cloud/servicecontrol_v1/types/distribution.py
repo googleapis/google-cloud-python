@@ -228,9 +228,7 @@ class Distribution(proto.Message):
         oneof="bucket_option",
         message=ExplicitBuckets,
     )
-    exemplars: MutableSequence[
-        distribution_pb2.Distribution.Exemplar
-    ] = proto.RepeatedField(
+    exemplars: MutableSequence[distribution_pb2.Distribution.Exemplar] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=distribution_pb2.Distribution.Exemplar,

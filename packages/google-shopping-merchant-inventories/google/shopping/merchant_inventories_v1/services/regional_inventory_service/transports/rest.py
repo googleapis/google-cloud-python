@@ -100,13 +100,8 @@ class RegionalInventoryServiceRestInterceptor:
     """
 
     def pre_delete_regional_inventory(
-        self,
-        request: regionalinventory.DeleteRegionalInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        regionalinventory.DeleteRegionalInventoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: regionalinventory.DeleteRegionalInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[regionalinventory.DeleteRegionalInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_regional_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -115,13 +110,8 @@ class RegionalInventoryServiceRestInterceptor:
         return request, metadata
 
     def pre_insert_regional_inventory(
-        self,
-        request: regionalinventory.InsertRegionalInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        regionalinventory.InsertRegionalInventoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: regionalinventory.InsertRegionalInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[regionalinventory.InsertRegionalInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_regional_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -129,9 +119,7 @@ class RegionalInventoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_regional_inventory(
-        self, response: regionalinventory.RegionalInventory
-    ) -> regionalinventory.RegionalInventory:
+    def post_insert_regional_inventory(self, response: regionalinventory.RegionalInventory) -> regionalinventory.RegionalInventory:
         """Post-rpc interceptor for insert_regional_inventory
 
         DEPRECATED. Please use the `post_insert_regional_inventory_with_metadata`
@@ -145,12 +133,8 @@ class RegionalInventoryServiceRestInterceptor:
         return response
 
     def post_insert_regional_inventory_with_metadata(
-        self,
-        response: regionalinventory.RegionalInventory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        regionalinventory.RegionalInventory, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: regionalinventory.RegionalInventory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[regionalinventory.RegionalInventory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_regional_inventory
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -166,13 +150,8 @@ class RegionalInventoryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_regional_inventories(
-        self,
-        request: regionalinventory.ListRegionalInventoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        regionalinventory.ListRegionalInventoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: regionalinventory.ListRegionalInventoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[regionalinventory.ListRegionalInventoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_regional_inventories
 
         Override in a subclass to manipulate the request or metadata
@@ -196,13 +175,8 @@ class RegionalInventoryServiceRestInterceptor:
         return response
 
     def post_list_regional_inventories_with_metadata(
-        self,
-        response: regionalinventory.ListRegionalInventoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        regionalinventory.ListRegionalInventoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: regionalinventory.ListRegionalInventoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[regionalinventory.ListRegionalInventoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_regional_inventories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -298,31 +272,18 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionalInventoryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteRegionalInventory(
-        _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory,
-        RegionalInventoryServiceRestStub,
-    ):
+    class _DeleteRegionalInventory(_BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory, RegionalInventoryServiceRestStub):
         def __hash__(self):
             return hash("RegionalInventoryServiceRestTransport.DeleteRegionalInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -358,28 +319,18 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_http_options()
-            )
+            http_options = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_regional_inventory(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_regional_inventory(request, metadata)
             transcoded_request = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -403,12 +354,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             # Send the request
             response = RegionalInventoryServiceRestTransport._DeleteRegionalInventory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -416,23 +362,12 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _InsertRegionalInventory(
-        _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory,
-        RegionalInventoryServiceRestStub,
-    ):
+    class _InsertRegionalInventory(_BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory, RegionalInventoryServiceRestStub):
         def __hash__(self):
             return hash("RegionalInventoryServiceRestTransport.InsertRegionalInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -480,32 +415,20 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             """
 
-            http_options = (
-                _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_http_options()
-            )
+            http_options = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_regional_inventory(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_insert_regional_inventory(request, metadata)
             transcoded_request = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -529,13 +452,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             # Send the request
             response = RegionalInventoryServiceRestTransport._InsertRegionalInventory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -551,16 +468,10 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             resp = self._interceptor.post_insert_regional_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_regional_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_regional_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = regionalinventory.RegionalInventory.to_json(
-                        response
-                    )
+                    response_payload = regionalinventory.RegionalInventory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -579,23 +490,12 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
                 )
             return resp
 
-    class _ListRegionalInventories(
-        _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories,
-        RegionalInventoryServiceRestStub,
-    ):
+    class _ListRegionalInventories(_BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories, RegionalInventoryServiceRestStub):
         def __hash__(self):
             return hash("RegionalInventoryServiceRestTransport.ListRegionalInventories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -637,28 +537,18 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             """
 
-            http_options = (
-                _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_http_options()
-            )
+            http_options = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_regional_inventories(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_regional_inventories(request, metadata)
             transcoded_request = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -682,12 +572,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             # Send the request
             response = RegionalInventoryServiceRestTransport._ListRegionalInventories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -703,18 +588,10 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
 
             resp = self._interceptor.post_list_regional_inventories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_regional_inventories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_regional_inventories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        regionalinventory.ListRegionalInventoriesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = regionalinventory.ListRegionalInventoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -734,20 +611,13 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             return resp
 
     @property
-    def delete_regional_inventory(
-        self,
-    ) -> Callable[[regionalinventory.DeleteRegionalInventoryRequest], empty_pb2.Empty]:
+    def delete_regional_inventory(self) -> Callable[[regionalinventory.DeleteRegionalInventoryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRegionalInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_regional_inventory(
-        self,
-    ) -> Callable[
-        [regionalinventory.InsertRegionalInventoryRequest],
-        regionalinventory.RegionalInventory,
-    ]:
+    def insert_regional_inventory(self) -> Callable[[regionalinventory.InsertRegionalInventoryRequest], regionalinventory.RegionalInventory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertRegionalInventory(self._session, self._host, self._interceptor)  # type: ignore
@@ -755,10 +625,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
     @property
     def list_regional_inventories(
         self,
-    ) -> Callable[
-        [regionalinventory.ListRegionalInventoriesRequest],
-        regionalinventory.ListRegionalInventoriesResponse,
-    ]:
+    ) -> Callable[[regionalinventory.ListRegionalInventoriesRequest], regionalinventory.ListRegionalInventoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRegionalInventories(self._session, self._host, self._interceptor)  # type: ignore

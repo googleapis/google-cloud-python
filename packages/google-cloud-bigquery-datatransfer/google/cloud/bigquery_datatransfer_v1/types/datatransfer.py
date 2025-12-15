@@ -956,9 +956,7 @@ class ListTransferLogsRequest(proto.Message):
         proto.INT32,
         number=5,
     )
-    message_types: MutableSequence[
-        transfer.TransferMessage.MessageSeverity
-    ] = proto.RepeatedField(
+    message_types: MutableSequence[transfer.TransferMessage.MessageSeverity] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=transfer.TransferMessage.MessageSeverity,

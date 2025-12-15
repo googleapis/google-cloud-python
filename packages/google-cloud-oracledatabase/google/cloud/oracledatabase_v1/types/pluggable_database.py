@@ -256,9 +256,7 @@ class PluggableDatabaseProperties(proto.Message):
         proto.STRING,
         number=10,
     )
-    pdb_node_level_details: MutableSequence[
-        "PluggableDatabaseNodeLevelDetails"
-    ] = proto.RepeatedField(
+    pdb_node_level_details: MutableSequence["PluggableDatabaseNodeLevelDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="PluggableDatabaseNodeLevelDetails",

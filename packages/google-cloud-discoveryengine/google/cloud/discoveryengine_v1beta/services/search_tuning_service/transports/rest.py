@@ -97,13 +97,8 @@ class SearchTuningServiceRestInterceptor:
     """
 
     def pre_list_custom_models(
-        self,
-        request: search_tuning_service.ListCustomModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        search_tuning_service.ListCustomModelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: search_tuning_service.ListCustomModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[search_tuning_service.ListCustomModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_custom_models
 
         Override in a subclass to manipulate the request or metadata
@@ -111,9 +106,7 @@ class SearchTuningServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_custom_models(
-        self, response: search_tuning_service.ListCustomModelsResponse
-    ) -> search_tuning_service.ListCustomModelsResponse:
+    def post_list_custom_models(self, response: search_tuning_service.ListCustomModelsResponse) -> search_tuning_service.ListCustomModelsResponse:
         """Post-rpc interceptor for list_custom_models
 
         DEPRECATED. Please use the `post_list_custom_models_with_metadata`
@@ -127,13 +120,8 @@ class SearchTuningServiceRestInterceptor:
         return response
 
     def post_list_custom_models_with_metadata(
-        self,
-        response: search_tuning_service.ListCustomModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        search_tuning_service.ListCustomModelsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: search_tuning_service.ListCustomModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[search_tuning_service.ListCustomModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_custom_models
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -149,13 +137,8 @@ class SearchTuningServiceRestInterceptor:
         return response, metadata
 
     def pre_train_custom_model(
-        self,
-        request: search_tuning_service.TrainCustomModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        search_tuning_service.TrainCustomModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: search_tuning_service.TrainCustomModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[search_tuning_service.TrainCustomModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for train_custom_model
 
         Override in a subclass to manipulate the request or metadata
@@ -163,9 +146,7 @@ class SearchTuningServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_train_custom_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_train_custom_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_custom_model
 
         DEPRECATED. Please use the `post_train_custom_model_with_metadata`
@@ -179,9 +160,7 @@ class SearchTuningServiceRestInterceptor:
         return response
 
     def post_train_custom_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for train_custom_model
 
@@ -198,12 +177,8 @@ class SearchTuningServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -221,12 +196,8 @@ class SearchTuningServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +205,7 @@ class SearchTuningServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -246,12 +215,8 @@ class SearchTuningServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -259,9 +224,7 @@ class SearchTuningServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -350,9 +313,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -516,30 +477,17 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ListCustomModels(
-        _BaseSearchTuningServiceRestTransport._BaseListCustomModels,
-        SearchTuningServiceRestStub,
-    ):
+    class _ListCustomModels(_BaseSearchTuningServiceRestTransport._BaseListCustomModels, SearchTuningServiceRestStub):
         def __hash__(self):
             return hash("SearchTuningServiceRestTransport.ListCustomModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -583,28 +531,16 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSearchTuningServiceRestTransport._BaseListCustomModels._get_http_options()
-            )
+            http_options = _BaseSearchTuningServiceRestTransport._BaseListCustomModels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_custom_models(
-                request, metadata
-            )
-            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseListCustomModels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_custom_models(request, metadata)
+            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseListCustomModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSearchTuningServiceRestTransport._BaseListCustomModels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSearchTuningServiceRestTransport._BaseListCustomModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -628,12 +564,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             # Send the request
             response = SearchTuningServiceRestTransport._ListCustomModels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -649,16 +580,10 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             resp = self._interceptor.post_list_custom_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_custom_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_custom_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        search_tuning_service.ListCustomModelsResponse.to_json(response)
-                    )
+                    response_payload = search_tuning_service.ListCustomModelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -677,23 +602,12 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
                 )
             return resp
 
-    class _TrainCustomModel(
-        _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel,
-        SearchTuningServiceRestStub,
-    ):
+    class _TrainCustomModel(_BaseSearchTuningServiceRestTransport._BaseTrainCustomModel, SearchTuningServiceRestStub):
         def __hash__(self):
             return hash("SearchTuningServiceRestTransport.TrainCustomModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -738,32 +652,18 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_http_options()
-            )
+            http_options = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_train_custom_model(
-                request, metadata
-            )
-            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_train_custom_model(request, metadata)
+            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_transcoded_request(http_options, request)
 
-            body = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSearchTuningServiceRestTransport._BaseTrainCustomModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -787,13 +687,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             # Send the request
             response = SearchTuningServiceRestTransport._TrainCustomModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -807,12 +701,8 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             resp = self._interceptor.post_train_custom_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_train_custom_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_train_custom_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -834,22 +724,13 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             return resp
 
     @property
-    def list_custom_models(
-        self,
-    ) -> Callable[
-        [search_tuning_service.ListCustomModelsRequest],
-        search_tuning_service.ListCustomModelsResponse,
-    ]:
+    def list_custom_models(self) -> Callable[[search_tuning_service.ListCustomModelsRequest], search_tuning_service.ListCustomModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def train_custom_model(
-        self,
-    ) -> Callable[
-        [search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation
-    ]:
+    def train_custom_model(self) -> Callable[[search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TrainCustomModel(self._session, self._host, self._interceptor)  # type: ignore
@@ -858,23 +739,12 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSearchTuningServiceRestTransport._BaseCancelOperation,
-        SearchTuningServiceRestStub,
-    ):
+    class _CancelOperation(_BaseSearchTuningServiceRestTransport._BaseCancelOperation, SearchTuningServiceRestStub):
         def __hash__(self):
             return hash("SearchTuningServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -910,32 +780,18 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSearchTuningServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -959,13 +815,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             # Send the request
             response = SearchTuningServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -979,23 +829,12 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSearchTuningServiceRestTransport._BaseGetOperation,
-        SearchTuningServiceRestStub,
-    ):
+    class _GetOperation(_BaseSearchTuningServiceRestTransport._BaseGetOperation, SearchTuningServiceRestStub):
         def __hash__(self):
             return hash("SearchTuningServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1033,26 +872,16 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSearchTuningServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSearchTuningServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSearchTuningServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSearchTuningServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1076,12 +905,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             # Send the request
             response = SearchTuningServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1093,9 +917,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1120,23 +942,12 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSearchTuningServiceRestTransport._BaseListOperations,
-        SearchTuningServiceRestStub,
-    ):
+    class _ListOperations(_BaseSearchTuningServiceRestTransport._BaseListOperations, SearchTuningServiceRestStub):
         def __hash__(self):
             return hash("SearchTuningServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1174,26 +985,16 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSearchTuningServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSearchTuningServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSearchTuningServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSearchTuningServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSearchTuningServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1217,12 +1018,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
 
             # Send the request
             response = SearchTuningServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1234,9 +1030,7 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

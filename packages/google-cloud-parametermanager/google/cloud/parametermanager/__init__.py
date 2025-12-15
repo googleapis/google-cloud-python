@@ -18,12 +18,8 @@ from google.cloud.parametermanager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.parametermanager_v1.services.parameter_manager.async_client import (
-    ParameterManagerAsyncClient,
-)
-from google.cloud.parametermanager_v1.services.parameter_manager.client import (
-    ParameterManagerClient,
-)
+from google.cloud.parametermanager_v1.services.parameter_manager.async_client import ParameterManagerAsyncClient
+from google.cloud.parametermanager_v1.services.parameter_manager.client import ParameterManagerClient
 from google.cloud.parametermanager_v1.types.service import (
     CreateParameterRequest,
     CreateParameterVersionRequest,

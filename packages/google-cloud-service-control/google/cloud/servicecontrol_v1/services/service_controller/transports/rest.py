@@ -95,12 +95,8 @@ class ServiceControllerRestInterceptor:
     """
 
     def pre_check(
-        self,
-        request: service_controller.CheckRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service_controller.CheckRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service_controller.CheckRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service_controller.CheckRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check
 
         Override in a subclass to manipulate the request or metadata
@@ -108,9 +104,7 @@ class ServiceControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_check(
-        self, response: service_controller.CheckResponse
-    ) -> service_controller.CheckResponse:
+    def post_check(self, response: service_controller.CheckResponse) -> service_controller.CheckResponse:
         """Post-rpc interceptor for check
 
         DEPRECATED. Please use the `post_check_with_metadata`
@@ -124,12 +118,8 @@ class ServiceControllerRestInterceptor:
         return response
 
     def post_check_with_metadata(
-        self,
-        response: service_controller.CheckResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service_controller.CheckResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service_controller.CheckResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service_controller.CheckResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -145,12 +135,8 @@ class ServiceControllerRestInterceptor:
         return response, metadata
 
     def pre_report(
-        self,
-        request: service_controller.ReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service_controller.ReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service_controller.ReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service_controller.ReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for report
 
         Override in a subclass to manipulate the request or metadata
@@ -158,9 +144,7 @@ class ServiceControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_report(
-        self, response: service_controller.ReportResponse
-    ) -> service_controller.ReportResponse:
+    def post_report(self, response: service_controller.ReportResponse) -> service_controller.ReportResponse:
         """Post-rpc interceptor for report
 
         DEPRECATED. Please use the `post_report_with_metadata`
@@ -174,12 +158,8 @@ class ServiceControllerRestInterceptor:
         return response
 
     def post_report_with_metadata(
-        self,
-        response: service_controller.ReportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service_controller.ReportResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service_controller.ReportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service_controller.ReportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,30 +257,18 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ServiceControllerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Check(
-        _BaseServiceControllerRestTransport._BaseCheck, ServiceControllerRestStub
-    ):
+    class _Check(_BaseServiceControllerRestTransport._BaseCheck, ServiceControllerRestStub):
         def __hash__(self):
             return hash("ServiceControllerRestTransport.Check")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -342,36 +310,18 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_http_options()
-            )
+            http_options = _BaseServiceControllerRestTransport._BaseCheck._get_http_options()
 
             request, metadata = self._interceptor.pre_check(request, metadata)
-            transcoded_request = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseServiceControllerRestTransport._BaseCheck._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseServiceControllerRestTransport._BaseCheck._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseServiceControllerRestTransport._BaseCheck._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -395,13 +345,7 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
 
             # Send the request
             response = ServiceControllerRestTransport._Check._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -417,16 +361,10 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
 
             resp = self._interceptor.post_check(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_check_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service_controller.CheckResponse.to_json(
-                        response
-                    )
+                    response_payload = service_controller.CheckResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -445,22 +383,12 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
                 )
             return resp
 
-    class _Report(
-        _BaseServiceControllerRestTransport._BaseReport, ServiceControllerRestStub
-    ):
+    class _Report(_BaseServiceControllerRestTransport._BaseReport, ServiceControllerRestStub):
         def __hash__(self):
             return hash("ServiceControllerRestTransport.Report")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -503,36 +431,18 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceControllerRestTransport._BaseReport._get_http_options()
-            )
+            http_options = _BaseServiceControllerRestTransport._BaseReport._get_http_options()
 
             request, metadata = self._interceptor.pre_report(request, metadata)
-            transcoded_request = (
-                _BaseServiceControllerRestTransport._BaseReport._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseServiceControllerRestTransport._BaseReport._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseServiceControllerRestTransport._BaseReport._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseServiceControllerRestTransport._BaseReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseServiceControllerRestTransport._BaseReport._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseServiceControllerRestTransport._BaseReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -556,13 +466,7 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
 
             # Send the request
             response = ServiceControllerRestTransport._Report._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -578,16 +482,10 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
 
             resp = self._interceptor.post_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service_controller.ReportResponse.to_json(
-                        response
-                    )
+                    response_payload = service_controller.ReportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -607,19 +505,13 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
             return resp
 
     @property
-    def check(
-        self,
-    ) -> Callable[[service_controller.CheckRequest], service_controller.CheckResponse]:
+    def check(self) -> Callable[[service_controller.CheckRequest], service_controller.CheckResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Check(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def report(
-        self,
-    ) -> Callable[
-        [service_controller.ReportRequest], service_controller.ReportResponse
-    ]:
+    def report(self) -> Callable[[service_controller.ReportRequest], service_controller.ReportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Report(self._session, self._host, self._interceptor)  # type: ignore

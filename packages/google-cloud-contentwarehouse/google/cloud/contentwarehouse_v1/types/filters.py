@@ -393,9 +393,7 @@ class CustomWeightsMetadata(proto.Message):
             relevance boosting.
     """
 
-    weighted_schema_properties: MutableSequence[
-        "WeightedSchemaProperty"
-    ] = proto.RepeatedField(
+    weighted_schema_properties: MutableSequence["WeightedSchemaProperty"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="WeightedSchemaProperty",

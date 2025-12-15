@@ -122,12 +122,8 @@ class OrganizationsRestInterceptor:
     """
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +145,7 @@ class OrganizationsRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -168,12 +162,8 @@ class OrganizationsRestInterceptor:
         return response, metadata
 
     def pre_get_organization(
-        self,
-        request: organizations.GetOrganizationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        organizations.GetOrganizationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: organizations.GetOrganizationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[organizations.GetOrganizationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_organization
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +171,7 @@ class OrganizationsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_organization(
-        self, response: organizations.Organization
-    ) -> organizations.Organization:
+    def post_get_organization(self, response: organizations.Organization) -> organizations.Organization:
         """Post-rpc interceptor for get_organization
 
         DEPRECATED. Please use the `post_get_organization_with_metadata`
@@ -197,9 +185,7 @@ class OrganizationsRestInterceptor:
         return response
 
     def post_get_organization_with_metadata(
-        self,
-        response: organizations.Organization,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: organizations.Organization, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[organizations.Organization, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_organization
 
@@ -216,13 +202,8 @@ class OrganizationsRestInterceptor:
         return response, metadata
 
     def pre_search_organizations(
-        self,
-        request: organizations.SearchOrganizationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        organizations.SearchOrganizationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: organizations.SearchOrganizationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[organizations.SearchOrganizationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_organizations
 
         Override in a subclass to manipulate the request or metadata
@@ -230,9 +211,7 @@ class OrganizationsRestInterceptor:
         """
         return request, metadata
 
-    def post_search_organizations(
-        self, response: organizations.SearchOrganizationsResponse
-    ) -> organizations.SearchOrganizationsResponse:
+    def post_search_organizations(self, response: organizations.SearchOrganizationsResponse) -> organizations.SearchOrganizationsResponse:
         """Post-rpc interceptor for search_organizations
 
         DEPRECATED. Please use the `post_search_organizations_with_metadata`
@@ -246,13 +225,8 @@ class OrganizationsRestInterceptor:
         return response
 
     def post_search_organizations_with_metadata(
-        self,
-        response: organizations.SearchOrganizationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        organizations.SearchOrganizationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: organizations.SearchOrganizationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[organizations.SearchOrganizationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_organizations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -268,12 +242,8 @@ class OrganizationsRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -295,9 +265,7 @@ class OrganizationsRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -314,13 +282,8 @@ class OrganizationsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -328,9 +291,7 @@ class OrganizationsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -344,13 +305,8 @@ class OrganizationsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -366,12 +322,8 @@ class OrganizationsRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -379,9 +331,7 @@ class OrganizationsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -470,30 +420,18 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OrganizationsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetIamPolicy(
-        _BaseOrganizationsRestTransport._BaseGetIamPolicy, OrganizationsRestStub
-    ):
+    class _GetIamPolicy(_BaseOrganizationsRestTransport._BaseGetIamPolicy, OrganizationsRestStub):
         def __hash__(self):
             return hash("OrganizationsRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -608,30 +546,18 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationsRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -655,13 +581,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             # Send the request
             response = OrganizationsRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -677,12 +597,8 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -703,22 +619,12 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
                 )
             return resp
 
-    class _GetOrganization(
-        _BaseOrganizationsRestTransport._BaseGetOrganization, OrganizationsRestStub
-    ):
+    class _GetOrganization(_BaseOrganizationsRestTransport._BaseGetOrganization, OrganizationsRestStub):
         def __hash__(self):
             return hash("OrganizationsRestTransport.GetOrganization")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -763,28 +669,16 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrganizationsRestTransport._BaseGetOrganization._get_http_options()
-            )
+            http_options = _BaseOrganizationsRestTransport._BaseGetOrganization._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_organization(
-                request, metadata
-            )
-            transcoded_request = _BaseOrganizationsRestTransport._BaseGetOrganization._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_organization(request, metadata)
+            transcoded_request = _BaseOrganizationsRestTransport._BaseGetOrganization._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationsRestTransport._BaseGetOrganization._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationsRestTransport._BaseGetOrganization._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -808,12 +702,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             # Send the request
             response = OrganizationsRestTransport._GetOrganization._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -829,12 +718,8 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             resp = self._interceptor.post_get_organization(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_organization_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_organization_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = organizations.Organization.to_json(response)
                 except:
@@ -855,22 +740,12 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
                 )
             return resp
 
-    class _SearchOrganizations(
-        _BaseOrganizationsRestTransport._BaseSearchOrganizations, OrganizationsRestStub
-    ):
+    class _SearchOrganizations(_BaseOrganizationsRestTransport._BaseSearchOrganizations, OrganizationsRestStub):
         def __hash__(self):
             return hash("OrganizationsRestTransport.SearchOrganizations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -911,28 +786,16 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrganizationsRestTransport._BaseSearchOrganizations._get_http_options()
-            )
+            http_options = _BaseOrganizationsRestTransport._BaseSearchOrganizations._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_organizations(
-                request, metadata
-            )
-            transcoded_request = _BaseOrganizationsRestTransport._BaseSearchOrganizations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_organizations(request, metadata)
+            transcoded_request = _BaseOrganizationsRestTransport._BaseSearchOrganizations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationsRestTransport._BaseSearchOrganizations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationsRestTransport._BaseSearchOrganizations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -956,12 +819,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             # Send the request
             response = OrganizationsRestTransport._SearchOrganizations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -977,16 +835,10 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             resp = self._interceptor.post_search_organizations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_organizations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_organizations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        organizations.SearchOrganizationsResponse.to_json(response)
-                    )
+                    response_payload = organizations.SearchOrganizationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1005,22 +857,12 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseOrganizationsRestTransport._BaseSetIamPolicy, OrganizationsRestStub
-    ):
+    class _SetIamPolicy(_BaseOrganizationsRestTransport._BaseSetIamPolicy, OrganizationsRestStub):
         def __hash__(self):
             return hash("OrganizationsRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1135,30 +977,18 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationsRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1182,13 +1012,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             # Send the request
             response = OrganizationsRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1204,12 +1028,8 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1230,22 +1050,12 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseOrganizationsRestTransport._BaseTestIamPermissions, OrganizationsRestStub
-    ):
+    class _TestIamPermissions(_BaseOrganizationsRestTransport._BaseTestIamPermissions, OrganizationsRestStub):
         def __hash__(self):
             return hash("OrganizationsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1285,32 +1095,18 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1334,13 +1130,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             # Send the request
             response = OrganizationsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1356,12 +1146,8 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1383,47 +1169,31 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
             return resp
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_organization(
-        self,
-    ) -> Callable[[organizations.GetOrganizationRequest], organizations.Organization]:
+    def get_organization(self) -> Callable[[organizations.GetOrganizationRequest], organizations.Organization]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganization(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_organizations(
-        self,
-    ) -> Callable[
-        [organizations.SearchOrganizationsRequest],
-        organizations.SearchOrganizationsResponse,
-    ]:
+    def search_organizations(self) -> Callable[[organizations.SearchOrganizationsRequest], organizations.SearchOrganizationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchOrganizations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
@@ -1432,22 +1202,12 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOrganizationsRestTransport._BaseGetOperation, OrganizationsRestStub
-    ):
+    class _GetOperation(_BaseOrganizationsRestTransport._BaseGetOperation, OrganizationsRestStub):
         def __hash__(self):
             return hash("OrganizationsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1485,26 +1245,16 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrganizationsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOrganizationsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrganizationsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1528,12 +1278,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
 
             # Send the request
             response = OrganizationsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1545,9 +1290,7 @@ class OrganizationsRestTransport(_BaseOrganizationsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

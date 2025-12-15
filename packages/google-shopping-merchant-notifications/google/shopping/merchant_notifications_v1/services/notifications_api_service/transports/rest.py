@@ -124,13 +124,8 @@ class NotificationsApiServiceRestInterceptor:
     """
 
     def pre_create_notification_subscription(
-        self,
-        request: notificationsapi.CreateNotificationSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.CreateNotificationSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: notificationsapi.CreateNotificationSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.CreateNotificationSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_notification_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -138,9 +133,7 @@ class NotificationsApiServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_notification_subscription(
-        self, response: notificationsapi.NotificationSubscription
-    ) -> notificationsapi.NotificationSubscription:
+    def post_create_notification_subscription(self, response: notificationsapi.NotificationSubscription) -> notificationsapi.NotificationSubscription:
         """Post-rpc interceptor for create_notification_subscription
 
         DEPRECATED. Please use the `post_create_notification_subscription_with_metadata`
@@ -154,13 +147,8 @@ class NotificationsApiServiceRestInterceptor:
         return response
 
     def post_create_notification_subscription_with_metadata(
-        self,
-        response: notificationsapi.NotificationSubscription,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.NotificationSubscription,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: notificationsapi.NotificationSubscription, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.NotificationSubscription, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_notification_subscription
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -176,13 +164,8 @@ class NotificationsApiServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_notification_subscription(
-        self,
-        request: notificationsapi.DeleteNotificationSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.DeleteNotificationSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: notificationsapi.DeleteNotificationSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.DeleteNotificationSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_notification_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -191,13 +174,8 @@ class NotificationsApiServiceRestInterceptor:
         return request, metadata
 
     def pre_get_notification_subscription(
-        self,
-        request: notificationsapi.GetNotificationSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.GetNotificationSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: notificationsapi.GetNotificationSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.GetNotificationSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_notification_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -205,9 +183,7 @@ class NotificationsApiServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_notification_subscription(
-        self, response: notificationsapi.NotificationSubscription
-    ) -> notificationsapi.NotificationSubscription:
+    def post_get_notification_subscription(self, response: notificationsapi.NotificationSubscription) -> notificationsapi.NotificationSubscription:
         """Post-rpc interceptor for get_notification_subscription
 
         DEPRECATED. Please use the `post_get_notification_subscription_with_metadata`
@@ -221,13 +197,8 @@ class NotificationsApiServiceRestInterceptor:
         return response
 
     def post_get_notification_subscription_with_metadata(
-        self,
-        response: notificationsapi.NotificationSubscription,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.NotificationSubscription,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: notificationsapi.NotificationSubscription, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.NotificationSubscription, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_notification_subscription
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -243,13 +214,8 @@ class NotificationsApiServiceRestInterceptor:
         return response, metadata
 
     def pre_get_notification_subscription_health_metrics(
-        self,
-        request: notificationsapi.GetNotificationSubscriptionHealthMetricsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.GetNotificationSubscriptionHealthMetricsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: notificationsapi.GetNotificationSubscriptionHealthMetricsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.GetNotificationSubscriptionHealthMetricsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_notification_subscription_health_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -273,13 +239,8 @@ class NotificationsApiServiceRestInterceptor:
         return response
 
     def post_get_notification_subscription_health_metrics_with_metadata(
-        self,
-        response: notificationsapi.NotificationSubscriptionHealthMetrics,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.NotificationSubscriptionHealthMetrics,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: notificationsapi.NotificationSubscriptionHealthMetrics, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.NotificationSubscriptionHealthMetrics, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_notification_subscription_health_metrics
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -295,13 +256,8 @@ class NotificationsApiServiceRestInterceptor:
         return response, metadata
 
     def pre_list_notification_subscriptions(
-        self,
-        request: notificationsapi.ListNotificationSubscriptionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.ListNotificationSubscriptionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: notificationsapi.ListNotificationSubscriptionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.ListNotificationSubscriptionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_notification_subscriptions
 
         Override in a subclass to manipulate the request or metadata
@@ -325,13 +281,8 @@ class NotificationsApiServiceRestInterceptor:
         return response
 
     def post_list_notification_subscriptions_with_metadata(
-        self,
-        response: notificationsapi.ListNotificationSubscriptionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.ListNotificationSubscriptionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: notificationsapi.ListNotificationSubscriptionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.ListNotificationSubscriptionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_notification_subscriptions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -347,13 +298,8 @@ class NotificationsApiServiceRestInterceptor:
         return response, metadata
 
     def pre_update_notification_subscription(
-        self,
-        request: notificationsapi.UpdateNotificationSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.UpdateNotificationSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: notificationsapi.UpdateNotificationSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.UpdateNotificationSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_notification_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -361,9 +307,7 @@ class NotificationsApiServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_notification_subscription(
-        self, response: notificationsapi.NotificationSubscription
-    ) -> notificationsapi.NotificationSubscription:
+    def post_update_notification_subscription(self, response: notificationsapi.NotificationSubscription) -> notificationsapi.NotificationSubscription:
         """Post-rpc interceptor for update_notification_subscription
 
         DEPRECATED. Please use the `post_update_notification_subscription_with_metadata`
@@ -377,13 +321,8 @@ class NotificationsApiServiceRestInterceptor:
         return response
 
     def post_update_notification_subscription_with_metadata(
-        self,
-        response: notificationsapi.NotificationSubscription,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        notificationsapi.NotificationSubscription,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: notificationsapi.NotificationSubscription, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[notificationsapi.NotificationSubscription, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_notification_subscription
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -478,33 +417,20 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or NotificationsApiServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CreateNotificationSubscription(
-        _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription,
-        NotificationsApiServiceRestStub,
+        _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription, NotificationsApiServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "NotificationsApiServiceRestTransport.CreateNotificationSubscription"
-            )
+            return hash("NotificationsApiServiceRestTransport.CreateNotificationSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -549,32 +475,20 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_notification_subscription(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_notification_subscription(request, metadata)
             transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -598,13 +512,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             # Send the request
             response = NotificationsApiServiceRestTransport._CreateNotificationSubscription._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -620,19 +528,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_create_notification_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_notification_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_notification_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        notificationsapi.NotificationSubscription.to_json(response)
-                    )
+                    response_payload = notificationsapi.NotificationSubscription.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -652,24 +551,13 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             return resp
 
     class _DeleteNotificationSubscription(
-        _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription,
-        NotificationsApiServiceRestStub,
+        _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription, NotificationsApiServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "NotificationsApiServiceRestTransport.DeleteNotificationSubscription"
-            )
+            return hash("NotificationsApiServiceRestTransport.DeleteNotificationSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -706,28 +594,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_notification_subscription(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_notification_subscription(request, metadata)
             transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -751,12 +629,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             # Send the request
             response = NotificationsApiServiceRestTransport._DeleteNotificationSubscription._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -764,25 +637,12 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetNotificationSubscription(
-        _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription,
-        NotificationsApiServiceRestStub,
-    ):
+    class _GetNotificationSubscription(_BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription, NotificationsApiServiceRestStub):
         def __hash__(self):
-            return hash(
-                "NotificationsApiServiceRestTransport.GetNotificationSubscription"
-            )
+            return hash("NotificationsApiServiceRestTransport.GetNotificationSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -826,28 +686,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_notification_subscription(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_notification_subscription(request, metadata)
             transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -871,12 +721,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             # Send the request
             response = NotificationsApiServiceRestTransport._GetNotificationSubscription._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -892,19 +737,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_get_notification_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_notification_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_notification_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        notificationsapi.NotificationSubscription.to_json(response)
-                    )
+                    response_payload = notificationsapi.NotificationSubscription.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -924,24 +760,13 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             return resp
 
     class _GetNotificationSubscriptionHealthMetrics(
-        _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscriptionHealthMetrics,
-        NotificationsApiServiceRestStub,
+        _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscriptionHealthMetrics, NotificationsApiServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "NotificationsApiServiceRestTransport.GetNotificationSubscriptionHealthMetrics"
-            )
+            return hash("NotificationsApiServiceRestTransport.GetNotificationSubscriptionHealthMetrics")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -984,16 +809,9 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscriptionHealthMetrics._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscriptionHealthMetrics._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_notification_subscription_health_metrics(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_notification_subscription_health_metrics(request, metadata)
             transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscriptionHealthMetrics._get_transcoded_request(
                 http_options, request
             )
@@ -1003,12 +821,8 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1032,12 +846,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             # Send the request
             response = NotificationsApiServiceRestTransport._GetNotificationSubscriptionHealthMetrics._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1051,25 +860,12 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_notification_subscription_health_metrics(
-                resp
-            )
+            resp = self._interceptor.post_get_notification_subscription_health_metrics(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_notification_subscription_health_metrics_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_notification_subscription_health_metrics_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        notificationsapi.NotificationSubscriptionHealthMetrics.to_json(
-                            response
-                        )
-                    )
+                    response_payload = notificationsapi.NotificationSubscriptionHealthMetrics.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1089,24 +885,13 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             return resp
 
     class _ListNotificationSubscriptions(
-        _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions,
-        NotificationsApiServiceRestStub,
+        _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions, NotificationsApiServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "NotificationsApiServiceRestTransport.ListNotificationSubscriptions"
-            )
+            return hash("NotificationsApiServiceRestTransport.ListNotificationSubscriptions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1149,28 +934,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_notification_subscriptions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_notification_subscriptions(request, metadata)
             transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1194,12 +969,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             # Send the request
             response = NotificationsApiServiceRestTransport._ListNotificationSubscriptions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1215,21 +985,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_list_notification_subscriptions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_notification_subscriptions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_notification_subscriptions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        notificationsapi.ListNotificationSubscriptionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = notificationsapi.ListNotificationSubscriptionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1249,24 +1008,13 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             return resp
 
     class _UpdateNotificationSubscription(
-        _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription,
-        NotificationsApiServiceRestStub,
+        _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription, NotificationsApiServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "NotificationsApiServiceRestTransport.UpdateNotificationSubscription"
-            )
+            return hash("NotificationsApiServiceRestTransport.UpdateNotificationSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1311,32 +1059,20 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_notification_subscription(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_notification_subscription(request, metadata)
             transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1360,13 +1096,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             # Send the request
             response = NotificationsApiServiceRestTransport._UpdateNotificationSubscription._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1382,19 +1112,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_update_notification_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_notification_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_notification_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        notificationsapi.NotificationSubscription.to_json(response)
-                    )
+                    response_payload = notificationsapi.NotificationSubscription.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1416,20 +1137,13 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     @property
     def create_notification_subscription(
         self,
-    ) -> Callable[
-        [notificationsapi.CreateNotificationSubscriptionRequest],
-        notificationsapi.NotificationSubscription,
-    ]:
+    ) -> Callable[[notificationsapi.CreateNotificationSubscriptionRequest], notificationsapi.NotificationSubscription]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_notification_subscription(
-        self,
-    ) -> Callable[
-        [notificationsapi.DeleteNotificationSubscriptionRequest], empty_pb2.Empty
-    ]:
+    def delete_notification_subscription(self) -> Callable[[notificationsapi.DeleteNotificationSubscriptionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
@@ -1437,10 +1151,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     @property
     def get_notification_subscription(
         self,
-    ) -> Callable[
-        [notificationsapi.GetNotificationSubscriptionRequest],
-        notificationsapi.NotificationSubscription,
-    ]:
+    ) -> Callable[[notificationsapi.GetNotificationSubscriptionRequest], notificationsapi.NotificationSubscription]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
@@ -1448,10 +1159,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     @property
     def get_notification_subscription_health_metrics(
         self,
-    ) -> Callable[
-        [notificationsapi.GetNotificationSubscriptionHealthMetricsRequest],
-        notificationsapi.NotificationSubscriptionHealthMetrics,
-    ]:
+    ) -> Callable[[notificationsapi.GetNotificationSubscriptionHealthMetricsRequest], notificationsapi.NotificationSubscriptionHealthMetrics]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNotificationSubscriptionHealthMetrics(self._session, self._host, self._interceptor)  # type: ignore
@@ -1459,10 +1167,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     @property
     def list_notification_subscriptions(
         self,
-    ) -> Callable[
-        [notificationsapi.ListNotificationSubscriptionsRequest],
-        notificationsapi.ListNotificationSubscriptionsResponse,
-    ]:
+    ) -> Callable[[notificationsapi.ListNotificationSubscriptionsRequest], notificationsapi.ListNotificationSubscriptionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNotificationSubscriptions(self._session, self._host, self._interceptor)  # type: ignore
@@ -1470,10 +1175,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     @property
     def update_notification_subscription(
         self,
-    ) -> Callable[
-        [notificationsapi.UpdateNotificationSubscriptionRequest],
-        notificationsapi.NotificationSubscription,
-    ]:
+    ) -> Callable[[notificationsapi.UpdateNotificationSubscriptionRequest], notificationsapi.NotificationSubscription]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore

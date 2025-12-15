@@ -112,12 +112,8 @@ class ApplicationsRestInterceptor:
     """
 
     def pre_create_application(
-        self,
-        request: appengine.CreateApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.CreateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.CreateApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.CreateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_application
 
         Override in a subclass to manipulate the request or metadata
@@ -125,9 +121,7 @@ class ApplicationsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_application
 
         DEPRECATED. Please use the `post_create_application_with_metadata`
@@ -141,9 +135,7 @@ class ApplicationsRestInterceptor:
         return response
 
     def post_create_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_application
 
@@ -160,12 +152,8 @@ class ApplicationsRestInterceptor:
         return response, metadata
 
     def pre_get_application(
-        self,
-        request: appengine.GetApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.GetApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.GetApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.GetApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_application
 
         Override in a subclass to manipulate the request or metadata
@@ -173,9 +161,7 @@ class ApplicationsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_application(
-        self, response: application.Application
-    ) -> application.Application:
+    def post_get_application(self, response: application.Application) -> application.Application:
         """Post-rpc interceptor for get_application
 
         DEPRECATED. Please use the `post_get_application_with_metadata`
@@ -189,9 +175,7 @@ class ApplicationsRestInterceptor:
         return response
 
     def post_get_application_with_metadata(
-        self,
-        response: application.Application,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: application.Application, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[application.Application, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_application
 
@@ -208,12 +192,8 @@ class ApplicationsRestInterceptor:
         return response, metadata
 
     def pre_repair_application(
-        self,
-        request: appengine.RepairApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.RepairApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.RepairApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.RepairApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for repair_application
 
         Override in a subclass to manipulate the request or metadata
@@ -221,9 +201,7 @@ class ApplicationsRestInterceptor:
         """
         return request, metadata
 
-    def post_repair_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_repair_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for repair_application
 
         DEPRECATED. Please use the `post_repair_application_with_metadata`
@@ -237,9 +215,7 @@ class ApplicationsRestInterceptor:
         return response
 
     def post_repair_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for repair_application
 
@@ -256,12 +232,8 @@ class ApplicationsRestInterceptor:
         return response, metadata
 
     def pre_update_application(
-        self,
-        request: appengine.UpdateApplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.UpdateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: appengine.UpdateApplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.UpdateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_application
 
         Override in a subclass to manipulate the request or metadata
@@ -269,9 +241,7 @@ class ApplicationsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_application(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_application(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application
 
         DEPRECATED. Please use the `post_update_application_with_metadata`
@@ -285,9 +255,7 @@ class ApplicationsRestInterceptor:
         return response
 
     def post_update_application_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_application
 
@@ -383,9 +351,7 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -425,29 +391,17 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateApplication(
-        _BaseApplicationsRestTransport._BaseCreateApplication, ApplicationsRestStub
-    ):
+    class _CreateApplication(_BaseApplicationsRestTransport._BaseCreateApplication, ApplicationsRestStub):
         def __hash__(self):
             return hash("ApplicationsRestTransport.CreateApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -490,32 +444,18 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseApplicationsRestTransport._BaseCreateApplication._get_http_options()
-            )
+            http_options = _BaseApplicationsRestTransport._BaseCreateApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_application(
-                request, metadata
-            )
-            transcoded_request = _BaseApplicationsRestTransport._BaseCreateApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_application(request, metadata)
+            transcoded_request = _BaseApplicationsRestTransport._BaseCreateApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseApplicationsRestTransport._BaseCreateApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApplicationsRestTransport._BaseCreateApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseApplicationsRestTransport._BaseCreateApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApplicationsRestTransport._BaseCreateApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -539,13 +479,7 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             # Send the request
             response = ApplicationsRestTransport._CreateApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -559,12 +493,8 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             resp = self._interceptor.post_create_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -585,22 +515,12 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
                 )
             return resp
 
-    class _GetApplication(
-        _BaseApplicationsRestTransport._BaseGetApplication, ApplicationsRestStub
-    ):
+    class _GetApplication(_BaseApplicationsRestTransport._BaseGetApplication, ApplicationsRestStub):
         def __hash__(self):
             return hash("ApplicationsRestTransport.GetApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -642,26 +562,16 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseApplicationsRestTransport._BaseGetApplication._get_http_options()
-            )
+            http_options = _BaseApplicationsRestTransport._BaseGetApplication._get_http_options()
 
             request, metadata = self._interceptor.pre_get_application(request, metadata)
-            transcoded_request = _BaseApplicationsRestTransport._BaseGetApplication._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseApplicationsRestTransport._BaseGetApplication._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseApplicationsRestTransport._BaseGetApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApplicationsRestTransport._BaseGetApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -685,12 +595,7 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             # Send the request
             response = ApplicationsRestTransport._GetApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -706,12 +611,8 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             resp = self._interceptor.post_get_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = application.Application.to_json(response)
                 except:
@@ -732,22 +633,12 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
                 )
             return resp
 
-    class _RepairApplication(
-        _BaseApplicationsRestTransport._BaseRepairApplication, ApplicationsRestStub
-    ):
+    class _RepairApplication(_BaseApplicationsRestTransport._BaseRepairApplication, ApplicationsRestStub):
         def __hash__(self):
             return hash("ApplicationsRestTransport.RepairApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -791,32 +682,18 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseApplicationsRestTransport._BaseRepairApplication._get_http_options()
-            )
+            http_options = _BaseApplicationsRestTransport._BaseRepairApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_repair_application(
-                request, metadata
-            )
-            transcoded_request = _BaseApplicationsRestTransport._BaseRepairApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_repair_application(request, metadata)
+            transcoded_request = _BaseApplicationsRestTransport._BaseRepairApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseApplicationsRestTransport._BaseRepairApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApplicationsRestTransport._BaseRepairApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseApplicationsRestTransport._BaseRepairApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApplicationsRestTransport._BaseRepairApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -840,13 +717,7 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             # Send the request
             response = ApplicationsRestTransport._RepairApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -860,12 +731,8 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             resp = self._interceptor.post_repair_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_repair_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_repair_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -886,22 +753,12 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
                 )
             return resp
 
-    class _UpdateApplication(
-        _BaseApplicationsRestTransport._BaseUpdateApplication, ApplicationsRestStub
-    ):
+    class _UpdateApplication(_BaseApplicationsRestTransport._BaseUpdateApplication, ApplicationsRestStub):
         def __hash__(self):
             return hash("ApplicationsRestTransport.UpdateApplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -944,32 +801,18 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseApplicationsRestTransport._BaseUpdateApplication._get_http_options()
-            )
+            http_options = _BaseApplicationsRestTransport._BaseUpdateApplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_application(
-                request, metadata
-            )
-            transcoded_request = _BaseApplicationsRestTransport._BaseUpdateApplication._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_application(request, metadata)
+            transcoded_request = _BaseApplicationsRestTransport._BaseUpdateApplication._get_transcoded_request(http_options, request)
 
-            body = _BaseApplicationsRestTransport._BaseUpdateApplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseApplicationsRestTransport._BaseUpdateApplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseApplicationsRestTransport._BaseUpdateApplication._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseApplicationsRestTransport._BaseUpdateApplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -993,13 +836,7 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             # Send the request
             response = ApplicationsRestTransport._UpdateApplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1013,12 +850,8 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
 
             resp = self._interceptor.post_update_application(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_application_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_application_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1040,33 +873,25 @@ class ApplicationsRestTransport(_BaseApplicationsRestTransport):
             return resp
 
     @property
-    def create_application(
-        self,
-    ) -> Callable[[appengine.CreateApplicationRequest], operations_pb2.Operation]:
+    def create_application(self) -> Callable[[appengine.CreateApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_application(
-        self,
-    ) -> Callable[[appengine.GetApplicationRequest], application.Application]:
+    def get_application(self) -> Callable[[appengine.GetApplicationRequest], application.Application]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def repair_application(
-        self,
-    ) -> Callable[[appengine.RepairApplicationRequest], operations_pb2.Operation]:
+    def repair_application(self) -> Callable[[appengine.RepairApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RepairApplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_application(
-        self,
-    ) -> Callable[[appengine.UpdateApplicationRequest], operations_pb2.Operation]:
+    def update_application(self) -> Callable[[appengine.UpdateApplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApplication(self._session, self._host, self._interceptor)  # type: ignore

@@ -41,9 +41,7 @@ async def sample_create_report_config():
     # Initialize request argument(s)
     report_config = migrationcenter_v1.ReportConfig()
     report_config.group_preferenceset_assignments.group = "group_value"
-    report_config.group_preferenceset_assignments.preference_set = (
-        "preference_set_value"
-    )
+    report_config.group_preferenceset_assignments.preference_set = "preference_set_value"
 
     request = migrationcenter_v1.CreateReportConfigRequest(
         parent="parent_value",

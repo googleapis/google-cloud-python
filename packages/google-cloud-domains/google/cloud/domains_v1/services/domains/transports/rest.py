@@ -200,12 +200,8 @@ class DomainsRestInterceptor:
     """
 
     def pre_configure_contact_settings(
-        self,
-        request: domains.ConfigureContactSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ConfigureContactSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.ConfigureContactSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ConfigureContactSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for configure_contact_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -213,9 +209,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_configure_contact_settings(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_configure_contact_settings(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for configure_contact_settings
 
         DEPRECATED. Please use the `post_configure_contact_settings_with_metadata`
@@ -229,9 +223,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_configure_contact_settings_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for configure_contact_settings
 
@@ -248,12 +240,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_configure_dns_settings(
-        self,
-        request: domains.ConfigureDnsSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ConfigureDnsSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.ConfigureDnsSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ConfigureDnsSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for configure_dns_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -261,9 +249,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_configure_dns_settings(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_configure_dns_settings(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for configure_dns_settings
 
         DEPRECATED. Please use the `post_configure_dns_settings_with_metadata`
@@ -277,9 +263,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_configure_dns_settings_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for configure_dns_settings
 
@@ -296,13 +280,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_configure_management_settings(
-        self,
-        request: domains.ConfigureManagementSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ConfigureManagementSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: domains.ConfigureManagementSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ConfigureManagementSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for configure_management_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -310,9 +289,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_configure_management_settings(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_configure_management_settings(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for configure_management_settings
 
         DEPRECATED. Please use the `post_configure_management_settings_with_metadata`
@@ -326,9 +303,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_configure_management_settings_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for configure_management_settings
 
@@ -345,12 +320,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_delete_registration(
-        self,
-        request: domains.DeleteRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.DeleteRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.DeleteRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.DeleteRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +329,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_registration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_registration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_registration
 
         DEPRECATED. Please use the `post_delete_registration_with_metadata`
@@ -374,9 +343,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_delete_registration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_registration
 
@@ -393,12 +360,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_export_registration(
-        self,
-        request: domains.ExportRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ExportRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.ExportRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ExportRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -406,9 +369,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_export_registration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_registration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_registration
 
         DEPRECATED. Please use the `post_export_registration_with_metadata`
@@ -422,9 +383,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_export_registration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_registration
 
@@ -441,9 +400,7 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_get_registration(
-        self,
-        request: domains.GetRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: domains.GetRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.GetRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_registration
 
@@ -452,9 +409,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_registration(
-        self, response: domains.Registration
-    ) -> domains.Registration:
+    def post_get_registration(self, response: domains.Registration) -> domains.Registration:
         """Post-rpc interceptor for get_registration
 
         DEPRECATED. Please use the `post_get_registration_with_metadata`
@@ -468,9 +423,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_get_registration_with_metadata(
-        self,
-        response: domains.Registration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: domains.Registration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.Registration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_registration
 
@@ -487,12 +440,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_list_registrations(
-        self,
-        request: domains.ListRegistrationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ListRegistrationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.ListRegistrationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ListRegistrationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_registrations
 
         Override in a subclass to manipulate the request or metadata
@@ -500,9 +449,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_registrations(
-        self, response: domains.ListRegistrationsResponse
-    ) -> domains.ListRegistrationsResponse:
+    def post_list_registrations(self, response: domains.ListRegistrationsResponse) -> domains.ListRegistrationsResponse:
         """Post-rpc interceptor for list_registrations
 
         DEPRECATED. Please use the `post_list_registrations_with_metadata`
@@ -516,12 +463,8 @@ class DomainsRestInterceptor:
         return response
 
     def post_list_registrations_with_metadata(
-        self,
-        response: domains.ListRegistrationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ListRegistrationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: domains.ListRegistrationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ListRegistrationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_registrations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -537,9 +480,7 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_register_domain(
-        self,
-        request: domains.RegisterDomainRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: domains.RegisterDomainRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.RegisterDomainRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for register_domain
 
@@ -548,9 +489,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_register_domain(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_register_domain(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for register_domain
 
         DEPRECATED. Please use the `post_register_domain_with_metadata`
@@ -564,9 +503,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_register_domain_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for register_domain
 
@@ -583,12 +520,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_reset_authorization_code(
-        self,
-        request: domains.ResetAuthorizationCodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.ResetAuthorizationCodeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.ResetAuthorizationCodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.ResetAuthorizationCodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_authorization_code
 
         Override in a subclass to manipulate the request or metadata
@@ -596,9 +529,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_authorization_code(
-        self, response: domains.AuthorizationCode
-    ) -> domains.AuthorizationCode:
+    def post_reset_authorization_code(self, response: domains.AuthorizationCode) -> domains.AuthorizationCode:
         """Post-rpc interceptor for reset_authorization_code
 
         DEPRECATED. Please use the `post_reset_authorization_code_with_metadata`
@@ -612,9 +543,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_reset_authorization_code_with_metadata(
-        self,
-        response: domains.AuthorizationCode,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: domains.AuthorizationCode, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.AuthorizationCode, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_authorization_code
 
@@ -631,13 +560,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_retrieve_authorization_code(
-        self,
-        request: domains.RetrieveAuthorizationCodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.RetrieveAuthorizationCodeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: domains.RetrieveAuthorizationCodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.RetrieveAuthorizationCodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retrieve_authorization_code
 
         Override in a subclass to manipulate the request or metadata
@@ -645,9 +569,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_retrieve_authorization_code(
-        self, response: domains.AuthorizationCode
-    ) -> domains.AuthorizationCode:
+    def post_retrieve_authorization_code(self, response: domains.AuthorizationCode) -> domains.AuthorizationCode:
         """Post-rpc interceptor for retrieve_authorization_code
 
         DEPRECATED. Please use the `post_retrieve_authorization_code_with_metadata`
@@ -661,9 +583,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_retrieve_authorization_code_with_metadata(
-        self,
-        response: domains.AuthorizationCode,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: domains.AuthorizationCode, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.AuthorizationCode, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retrieve_authorization_code
 
@@ -680,13 +600,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_retrieve_register_parameters(
-        self,
-        request: domains.RetrieveRegisterParametersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.RetrieveRegisterParametersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: domains.RetrieveRegisterParametersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.RetrieveRegisterParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retrieve_register_parameters
 
         Override in a subclass to manipulate the request or metadata
@@ -694,9 +609,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_retrieve_register_parameters(
-        self, response: domains.RetrieveRegisterParametersResponse
-    ) -> domains.RetrieveRegisterParametersResponse:
+    def post_retrieve_register_parameters(self, response: domains.RetrieveRegisterParametersResponse) -> domains.RetrieveRegisterParametersResponse:
         """Post-rpc interceptor for retrieve_register_parameters
 
         DEPRECATED. Please use the `post_retrieve_register_parameters_with_metadata`
@@ -710,13 +623,8 @@ class DomainsRestInterceptor:
         return response
 
     def post_retrieve_register_parameters_with_metadata(
-        self,
-        response: domains.RetrieveRegisterParametersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.RetrieveRegisterParametersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: domains.RetrieveRegisterParametersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.RetrieveRegisterParametersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retrieve_register_parameters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -732,13 +640,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_retrieve_transfer_parameters(
-        self,
-        request: domains.RetrieveTransferParametersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.RetrieveTransferParametersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: domains.RetrieveTransferParametersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.RetrieveTransferParametersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retrieve_transfer_parameters
 
         Override in a subclass to manipulate the request or metadata
@@ -746,9 +649,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_retrieve_transfer_parameters(
-        self, response: domains.RetrieveTransferParametersResponse
-    ) -> domains.RetrieveTransferParametersResponse:
+    def post_retrieve_transfer_parameters(self, response: domains.RetrieveTransferParametersResponse) -> domains.RetrieveTransferParametersResponse:
         """Post-rpc interceptor for retrieve_transfer_parameters
 
         DEPRECATED. Please use the `post_retrieve_transfer_parameters_with_metadata`
@@ -762,13 +663,8 @@ class DomainsRestInterceptor:
         return response
 
     def post_retrieve_transfer_parameters_with_metadata(
-        self,
-        response: domains.RetrieveTransferParametersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.RetrieveTransferParametersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: domains.RetrieveTransferParametersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.RetrieveTransferParametersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retrieve_transfer_parameters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -784,9 +680,7 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_search_domains(
-        self,
-        request: domains.SearchDomainsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: domains.SearchDomainsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.SearchDomainsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_domains
 
@@ -795,9 +689,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_search_domains(
-        self, response: domains.SearchDomainsResponse
-    ) -> domains.SearchDomainsResponse:
+    def post_search_domains(self, response: domains.SearchDomainsResponse) -> domains.SearchDomainsResponse:
         """Post-rpc interceptor for search_domains
 
         DEPRECATED. Please use the `post_search_domains_with_metadata`
@@ -811,9 +703,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_search_domains_with_metadata(
-        self,
-        response: domains.SearchDomainsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: domains.SearchDomainsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.SearchDomainsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_domains
 
@@ -830,9 +720,7 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_transfer_domain(
-        self,
-        request: domains.TransferDomainRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: domains.TransferDomainRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[domains.TransferDomainRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for transfer_domain
 
@@ -841,9 +729,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_transfer_domain(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_transfer_domain(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for transfer_domain
 
         DEPRECATED. Please use the `post_transfer_domain_with_metadata`
@@ -857,9 +743,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_transfer_domain_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for transfer_domain
 
@@ -876,12 +760,8 @@ class DomainsRestInterceptor:
         return response, metadata
 
     def pre_update_registration(
-        self,
-        request: domains.UpdateRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        domains.UpdateRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: domains.UpdateRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[domains.UpdateRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -889,9 +769,7 @@ class DomainsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_registration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_registration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_registration
 
         DEPRECATED. Please use the `post_update_registration_with_metadata`
@@ -905,9 +783,7 @@ class DomainsRestInterceptor:
         return response
 
     def post_update_registration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_registration
 
@@ -1004,9 +880,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1046,29 +920,17 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ConfigureContactSettings(
-        _BaseDomainsRestTransport._BaseConfigureContactSettings, DomainsRestStub
-    ):
+    class _ConfigureContactSettings(_BaseDomainsRestTransport._BaseConfigureContactSettings, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.ConfigureContactSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1112,32 +974,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseConfigureContactSettings._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_configure_contact_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_configure_contact_settings(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseConfigureContactSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1161,13 +1009,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._ConfigureContactSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1181,12 +1023,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_configure_contact_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_configure_contact_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_configure_contact_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1207,22 +1045,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _ConfigureDnsSettings(
-        _BaseDomainsRestTransport._BaseConfigureDnsSettings, DomainsRestStub
-    ):
+    class _ConfigureDnsSettings(_BaseDomainsRestTransport._BaseConfigureDnsSettings, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.ConfigureDnsSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1265,32 +1093,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_configure_dns_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_configure_dns_settings(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseConfigureDnsSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1314,13 +1128,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._ConfigureDnsSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1334,12 +1142,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_configure_dns_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_configure_dns_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_configure_dns_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1360,22 +1164,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _ConfigureManagementSettings(
-        _BaseDomainsRestTransport._BaseConfigureManagementSettings, DomainsRestStub
-    ):
+    class _ConfigureManagementSettings(_BaseDomainsRestTransport._BaseConfigureManagementSettings, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.ConfigureManagementSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1419,32 +1213,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_configure_management_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_configure_management_settings(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseConfigureManagementSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1468,13 +1248,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._ConfigureManagementSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1488,15 +1262,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_configure_management_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_configure_management_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_configure_management_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1517,22 +1284,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _DeleteRegistration(
-        _BaseDomainsRestTransport._BaseDeleteRegistration, DomainsRestStub
-    ):
+    class _DeleteRegistration(_BaseDomainsRestTransport._BaseDeleteRegistration, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.DeleteRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1574,28 +1331,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseDeleteRegistration._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseDeleteRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_registration(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseDeleteRegistration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_registration(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseDeleteRegistration._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseDeleteRegistration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseDeleteRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1619,12 +1364,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._DeleteRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1638,12 +1378,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_delete_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1664,22 +1400,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _ExportRegistration(
-        _BaseDomainsRestTransport._BaseExportRegistration, DomainsRestStub
-    ):
+    class _ExportRegistration(_BaseDomainsRestTransport._BaseExportRegistration, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.ExportRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1722,32 +1448,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseExportRegistration._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseExportRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_registration(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseExportRegistration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_registration(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseExportRegistration._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseExportRegistration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseExportRegistration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseExportRegistration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseExportRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1771,13 +1483,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._ExportRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1791,12 +1497,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_export_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1817,22 +1519,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _GetRegistration(
-        _BaseDomainsRestTransport._BaseGetRegistration, DomainsRestStub
-    ):
+    class _GetRegistration(_BaseDomainsRestTransport._BaseGetRegistration, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.GetRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1893,32 +1585,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseGetRegistration._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseGetRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_registration(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseDomainsRestTransport._BaseGetRegistration._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_registration(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseGetRegistration._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDomainsRestTransport._BaseGetRegistration._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDomainsRestTransport._BaseGetRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1942,12 +1618,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._GetRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1963,12 +1634,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_get_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = domains.Registration.to_json(response)
                 except:
@@ -1989,22 +1656,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _ListRegistrations(
-        _BaseDomainsRestTransport._BaseListRegistrations, DomainsRestStub
-    ):
+    class _ListRegistrations(_BaseDomainsRestTransport._BaseListRegistrations, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.ListRegistrations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2043,30 +1700,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                     Response for the ``ListRegistrations`` method.
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseListRegistrations._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseListRegistrations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_registrations(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseListRegistrations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_registrations(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseListRegistrations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDomainsRestTransport._BaseListRegistrations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDomainsRestTransport._BaseListRegistrations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2090,12 +1733,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._ListRegistrations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2111,16 +1749,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_list_registrations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_registrations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_registrations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = domains.ListRegistrationsResponse.to_json(
-                        response
-                    )
+                    response_payload = domains.ListRegistrationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2139,22 +1771,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _RegisterDomain(
-        _BaseDomainsRestTransport._BaseRegisterDomain, DomainsRestStub
-    ):
+    class _RegisterDomain(_BaseDomainsRestTransport._BaseRegisterDomain, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.RegisterDomain")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2197,34 +1819,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseRegisterDomain._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseRegisterDomain._get_http_options()
 
             request, metadata = self._interceptor.pre_register_domain(request, metadata)
-            transcoded_request = (
-                _BaseDomainsRestTransport._BaseRegisterDomain._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDomainsRestTransport._BaseRegisterDomain._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseRegisterDomain._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseRegisterDomain._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDomainsRestTransport._BaseRegisterDomain._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDomainsRestTransport._BaseRegisterDomain._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2248,13 +1854,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._RegisterDomain._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2268,12 +1868,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_register_domain(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_register_domain_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_register_domain_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2294,22 +1890,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _ResetAuthorizationCode(
-        _BaseDomainsRestTransport._BaseResetAuthorizationCode, DomainsRestStub
-    ):
+    class _ResetAuthorizationCode(_BaseDomainsRestTransport._BaseResetAuthorizationCode, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.ResetAuthorizationCode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2349,32 +1935,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                     Defines an authorization code.
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_http_options()
 
-            request, metadata = self._interceptor.pre_reset_authorization_code(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reset_authorization_code(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseResetAuthorizationCode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2398,13 +1970,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._ResetAuthorizationCode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2420,12 +1986,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_reset_authorization_code(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_authorization_code_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_authorization_code_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = domains.AuthorizationCode.to_json(response)
                 except:
@@ -2446,22 +2008,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _RetrieveAuthorizationCode(
-        _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode, DomainsRestStub
-    ):
+    class _RetrieveAuthorizationCode(_BaseDomainsRestTransport._BaseRetrieveAuthorizationCode, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.RetrieveAuthorizationCode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2501,28 +2053,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                         Defines an authorization code.
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode._get_http_options()
 
-            request, metadata = self._interceptor.pre_retrieve_authorization_code(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_retrieve_authorization_code(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseRetrieveAuthorizationCode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2546,12 +2086,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._RetrieveAuthorizationCode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2567,12 +2102,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_retrieve_authorization_code(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_retrieve_authorization_code_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retrieve_authorization_code_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = domains.AuthorizationCode.to_json(response)
                 except:
@@ -2593,22 +2124,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _RetrieveRegisterParameters(
-        _BaseDomainsRestTransport._BaseRetrieveRegisterParameters, DomainsRestStub
-    ):
+    class _RetrieveRegisterParameters(_BaseDomainsRestTransport._BaseRetrieveRegisterParameters, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.RetrieveRegisterParameters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2648,28 +2169,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                         Response for the ``RetrieveRegisterParameters`` method.
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseRetrieveRegisterParameters._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseRetrieveRegisterParameters._get_http_options()
 
-            request, metadata = self._interceptor.pre_retrieve_register_parameters(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseRetrieveRegisterParameters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_retrieve_register_parameters(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseRetrieveRegisterParameters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseRetrieveRegisterParameters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseRetrieveRegisterParameters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2693,12 +2202,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._RetrieveRegisterParameters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2714,16 +2218,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_retrieve_register_parameters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_retrieve_register_parameters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retrieve_register_parameters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        domains.RetrieveRegisterParametersResponse.to_json(response)
-                    )
+                    response_payload = domains.RetrieveRegisterParametersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2742,22 +2240,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _RetrieveTransferParameters(
-        _BaseDomainsRestTransport._BaseRetrieveTransferParameters, DomainsRestStub
-    ):
+    class _RetrieveTransferParameters(_BaseDomainsRestTransport._BaseRetrieveTransferParameters, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.RetrieveTransferParameters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2797,28 +2285,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                         Response for the ``RetrieveTransferParameters`` method.
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseRetrieveTransferParameters._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseRetrieveTransferParameters._get_http_options()
 
-            request, metadata = self._interceptor.pre_retrieve_transfer_parameters(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseRetrieveTransferParameters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_retrieve_transfer_parameters(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseRetrieveTransferParameters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseRetrieveTransferParameters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseRetrieveTransferParameters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2842,12 +2318,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._RetrieveTransferParameters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2863,16 +2334,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_retrieve_transfer_parameters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_retrieve_transfer_parameters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retrieve_transfer_parameters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        domains.RetrieveTransferParametersResponse.to_json(response)
-                    )
+                    response_payload = domains.RetrieveTransferParametersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2896,15 +2361,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             return hash("DomainsRestTransport.SearchDomains")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2943,30 +2400,16 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                     Response for the ``SearchDomains`` method.
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseSearchDomains._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseSearchDomains._get_http_options()
 
             request, metadata = self._interceptor.pre_search_domains(request, metadata)
-            transcoded_request = (
-                _BaseDomainsRestTransport._BaseSearchDomains._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDomainsRestTransport._BaseSearchDomains._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDomainsRestTransport._BaseSearchDomains._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDomainsRestTransport._BaseSearchDomains._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2990,12 +2433,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._SearchDomains._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3011,12 +2449,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_search_domains(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_domains_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_domains_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = domains.SearchDomainsResponse.to_json(response)
                 except:
@@ -3037,22 +2471,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _TransferDomain(
-        _BaseDomainsRestTransport._BaseTransferDomain, DomainsRestStub
-    ):
+    class _TransferDomain(_BaseDomainsRestTransport._BaseTransferDomain, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.TransferDomain")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3095,34 +2519,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseTransferDomain._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseTransferDomain._get_http_options()
 
             request, metadata = self._interceptor.pre_transfer_domain(request, metadata)
-            transcoded_request = (
-                _BaseDomainsRestTransport._BaseTransferDomain._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDomainsRestTransport._BaseTransferDomain._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseTransferDomain._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseTransferDomain._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDomainsRestTransport._BaseTransferDomain._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDomainsRestTransport._BaseTransferDomain._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3146,13 +2554,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._TransferDomain._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3166,12 +2568,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_transfer_domain(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_transfer_domain_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_transfer_domain_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3192,22 +2590,12 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
                 )
             return resp
 
-    class _UpdateRegistration(
-        _BaseDomainsRestTransport._BaseUpdateRegistration, DomainsRestStub
-    ):
+    class _UpdateRegistration(_BaseDomainsRestTransport._BaseUpdateRegistration, DomainsRestStub):
         def __hash__(self):
             return hash("DomainsRestTransport.UpdateRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3250,32 +2638,18 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             """
 
-            http_options = (
-                _BaseDomainsRestTransport._BaseUpdateRegistration._get_http_options()
-            )
+            http_options = _BaseDomainsRestTransport._BaseUpdateRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_registration(
-                request, metadata
-            )
-            transcoded_request = _BaseDomainsRestTransport._BaseUpdateRegistration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_registration(request, metadata)
+            transcoded_request = _BaseDomainsRestTransport._BaseUpdateRegistration._get_transcoded_request(http_options, request)
 
-            body = _BaseDomainsRestTransport._BaseUpdateRegistration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDomainsRestTransport._BaseUpdateRegistration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDomainsRestTransport._BaseUpdateRegistration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDomainsRestTransport._BaseUpdateRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3299,13 +2673,7 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             # Send the request
             response = DomainsRestTransport._UpdateRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3319,12 +2687,8 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
 
             resp = self._interceptor.post_update_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3346,133 +2710,91 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             return resp
 
     @property
-    def configure_contact_settings(
-        self,
-    ) -> Callable[[domains.ConfigureContactSettingsRequest], operations_pb2.Operation]:
+    def configure_contact_settings(self) -> Callable[[domains.ConfigureContactSettingsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ConfigureContactSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def configure_dns_settings(
-        self,
-    ) -> Callable[[domains.ConfigureDnsSettingsRequest], operations_pb2.Operation]:
+    def configure_dns_settings(self) -> Callable[[domains.ConfigureDnsSettingsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ConfigureDnsSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def configure_management_settings(
-        self,
-    ) -> Callable[
-        [domains.ConfigureManagementSettingsRequest], operations_pb2.Operation
-    ]:
+    def configure_management_settings(self) -> Callable[[domains.ConfigureManagementSettingsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ConfigureManagementSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_registration(
-        self,
-    ) -> Callable[[domains.DeleteRegistrationRequest], operations_pb2.Operation]:
+    def delete_registration(self) -> Callable[[domains.DeleteRegistrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRegistration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_registration(
-        self,
-    ) -> Callable[[domains.ExportRegistrationRequest], operations_pb2.Operation]:
+    def export_registration(self) -> Callable[[domains.ExportRegistrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportRegistration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_registration(
-        self,
-    ) -> Callable[[domains.GetRegistrationRequest], domains.Registration]:
+    def get_registration(self) -> Callable[[domains.GetRegistrationRequest], domains.Registration]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRegistration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_registrations(
-        self,
-    ) -> Callable[
-        [domains.ListRegistrationsRequest], domains.ListRegistrationsResponse
-    ]:
+    def list_registrations(self) -> Callable[[domains.ListRegistrationsRequest], domains.ListRegistrationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRegistrations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def register_domain(
-        self,
-    ) -> Callable[[domains.RegisterDomainRequest], operations_pb2.Operation]:
+    def register_domain(self) -> Callable[[domains.RegisterDomainRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RegisterDomain(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_authorization_code(
-        self,
-    ) -> Callable[[domains.ResetAuthorizationCodeRequest], domains.AuthorizationCode]:
+    def reset_authorization_code(self) -> Callable[[domains.ResetAuthorizationCodeRequest], domains.AuthorizationCode]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetAuthorizationCode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retrieve_authorization_code(
-        self,
-    ) -> Callable[
-        [domains.RetrieveAuthorizationCodeRequest], domains.AuthorizationCode
-    ]:
+    def retrieve_authorization_code(self) -> Callable[[domains.RetrieveAuthorizationCodeRequest], domains.AuthorizationCode]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetrieveAuthorizationCode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retrieve_register_parameters(
-        self,
-    ) -> Callable[
-        [domains.RetrieveRegisterParametersRequest],
-        domains.RetrieveRegisterParametersResponse,
-    ]:
+    def retrieve_register_parameters(self) -> Callable[[domains.RetrieveRegisterParametersRequest], domains.RetrieveRegisterParametersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetrieveRegisterParameters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retrieve_transfer_parameters(
-        self,
-    ) -> Callable[
-        [domains.RetrieveTransferParametersRequest],
-        domains.RetrieveTransferParametersResponse,
-    ]:
+    def retrieve_transfer_parameters(self) -> Callable[[domains.RetrieveTransferParametersRequest], domains.RetrieveTransferParametersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetrieveTransferParameters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_domains(
-        self,
-    ) -> Callable[[domains.SearchDomainsRequest], domains.SearchDomainsResponse]:
+    def search_domains(self) -> Callable[[domains.SearchDomainsRequest], domains.SearchDomainsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchDomains(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def transfer_domain(
-        self,
-    ) -> Callable[[domains.TransferDomainRequest], operations_pb2.Operation]:
+    def transfer_domain(self) -> Callable[[domains.TransferDomainRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TransferDomain(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_registration(
-        self,
-    ) -> Callable[[domains.UpdateRegistrationRequest], operations_pb2.Operation]:
+    def update_registration(self) -> Callable[[domains.UpdateRegistrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRegistration(self._session, self._host, self._interceptor)  # type: ignore

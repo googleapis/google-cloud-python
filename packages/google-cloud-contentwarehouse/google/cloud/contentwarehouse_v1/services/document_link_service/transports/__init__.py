@@ -22,9 +22,7 @@ from .grpc_asyncio import DocumentLinkServiceGrpcAsyncIOTransport
 from .rest import DocumentLinkServiceRestInterceptor, DocumentLinkServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DocumentLinkServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DocumentLinkServiceTransport]]
 _transport_registry["grpc"] = DocumentLinkServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DocumentLinkServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = DocumentLinkServiceRestTransport

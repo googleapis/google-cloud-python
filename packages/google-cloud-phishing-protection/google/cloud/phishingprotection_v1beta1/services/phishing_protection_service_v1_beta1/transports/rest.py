@@ -87,13 +87,8 @@ class PhishingProtectionServiceV1Beta1RestInterceptor:
     """
 
     def pre_report_phishing(
-        self,
-        request: phishingprotection.ReportPhishingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        phishingprotection.ReportPhishingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: phishingprotection.ReportPhishingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[phishingprotection.ReportPhishingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for report_phishing
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +96,7 @@ class PhishingProtectionServiceV1Beta1RestInterceptor:
         """
         return request, metadata
 
-    def post_report_phishing(
-        self, response: phishingprotection.ReportPhishingResponse
-    ) -> phishingprotection.ReportPhishingResponse:
+    def post_report_phishing(self, response: phishingprotection.ReportPhishingResponse) -> phishingprotection.ReportPhishingResponse:
         """Post-rpc interceptor for report_phishing
 
         DEPRECATED. Please use the `post_report_phishing_with_metadata`
@@ -117,13 +110,8 @@ class PhishingProtectionServiceV1Beta1RestInterceptor:
         return response
 
     def post_report_phishing_with_metadata(
-        self,
-        response: phishingprotection.ReportPhishingResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        phishingprotection.ReportPhishingResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: phishingprotection.ReportPhishingResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[phishingprotection.ReportPhishingResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for report_phishing
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,9 +134,7 @@ class PhishingProtectionServiceV1Beta1RestStub:
     _interceptor: PhishingProtectionServiceV1Beta1RestInterceptor
 
 
-class PhishingProtectionServiceV1Beta1RestTransport(
-    _BasePhishingProtectionServiceV1Beta1RestTransport
-):
+class PhishingProtectionServiceV1Beta1RestTransport(_BasePhishingProtectionServiceV1Beta1RestTransport):
     """REST backend synchronous transport for PhishingProtectionServiceV1Beta1.
 
     Service to report phishing URIs.
@@ -220,33 +206,18 @@ class PhishingProtectionServiceV1Beta1RestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or PhishingProtectionServiceV1Beta1RestInterceptor()
-        )
+        self._interceptor = interceptor or PhishingProtectionServiceV1Beta1RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ReportPhishing(
-        _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing,
-        PhishingProtectionServiceV1Beta1RestStub,
-    ):
+    class _ReportPhishing(_BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing, PhishingProtectionServiceV1Beta1RestStub):
         def __hash__(self):
             return hash("PhishingProtectionServiceV1Beta1RestTransport.ReportPhishing")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -288,30 +259,18 @@ class PhishingProtectionServiceV1Beta1RestTransport(
 
             """
 
-            http_options = (
-                _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_http_options()
-            )
+            http_options = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_http_options()
 
             request, metadata = self._interceptor.pre_report_phishing(request, metadata)
-            transcoded_request = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_transcoded_request(http_options, request)
 
-            body = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePhishingProtectionServiceV1Beta1RestTransport._BaseReportPhishing._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -335,13 +294,7 @@ class PhishingProtectionServiceV1Beta1RestTransport(
 
             # Send the request
             response = PhishingProtectionServiceV1Beta1RestTransport._ReportPhishing._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -357,16 +310,10 @@ class PhishingProtectionServiceV1Beta1RestTransport(
 
             resp = self._interceptor.post_report_phishing(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_report_phishing_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_report_phishing_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        phishingprotection.ReportPhishingResponse.to_json(response)
-                    )
+                    response_payload = phishingprotection.ReportPhishingResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -386,12 +333,7 @@ class PhishingProtectionServiceV1Beta1RestTransport(
             return resp
 
     @property
-    def report_phishing(
-        self,
-    ) -> Callable[
-        [phishingprotection.ReportPhishingRequest],
-        phishingprotection.ReportPhishingResponse,
-    ]:
+    def report_phishing(self) -> Callable[[phishingprotection.ReportPhishingRequest], phishingprotection.ReportPhishingResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReportPhishing(self._session, self._host, self._interceptor)  # type: ignore

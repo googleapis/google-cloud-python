@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.vmwareengine_v1 import gapic_version as package_version
 from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class VmwareEngineTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -873,130 +863,72 @@ class VmwareEngineTransport(abc.ABC):
     def list_private_clouds(
         self,
     ) -> Callable[
-        [vmwareengine.ListPrivateCloudsRequest],
-        Union[
-            vmwareengine.ListPrivateCloudsResponse,
-            Awaitable[vmwareengine.ListPrivateCloudsResponse],
-        ],
+        [vmwareengine.ListPrivateCloudsRequest], Union[vmwareengine.ListPrivateCloudsResponse, Awaitable[vmwareengine.ListPrivateCloudsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_private_cloud(
         self,
-    ) -> Callable[
-        [vmwareengine.GetPrivateCloudRequest],
-        Union[
-            vmwareengine_resources.PrivateCloud,
-            Awaitable[vmwareengine_resources.PrivateCloud],
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.GetPrivateCloudRequest], Union[vmwareengine_resources.PrivateCloud, Awaitable[vmwareengine_resources.PrivateCloud]]]:
         raise NotImplementedError()
 
     @property
     def create_private_cloud(
         self,
-    ) -> Callable[
-        [vmwareengine.CreatePrivateCloudRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreatePrivateCloudRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_private_cloud(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdatePrivateCloudRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdatePrivateCloudRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_private_cloud(
         self,
-    ) -> Callable[
-        [vmwareengine.DeletePrivateCloudRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeletePrivateCloudRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undelete_private_cloud(
         self,
-    ) -> Callable[
-        [vmwareengine.UndeletePrivateCloudRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UndeletePrivateCloudRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_clusters(
         self,
-    ) -> Callable[
-        [vmwareengine.ListClustersRequest],
-        Union[
-            vmwareengine.ListClustersResponse,
-            Awaitable[vmwareengine.ListClustersResponse],
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.ListClustersRequest], Union[vmwareengine.ListClustersResponse, Awaitable[vmwareengine.ListClustersResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_cluster(
         self,
-    ) -> Callable[
-        [vmwareengine.GetClusterRequest],
-        Union[
-            vmwareengine_resources.Cluster, Awaitable[vmwareengine_resources.Cluster]
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.GetClusterRequest], Union[vmwareengine_resources.Cluster, Awaitable[vmwareengine_resources.Cluster]]]:
         raise NotImplementedError()
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[
-        [vmwareengine.CreateClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_cluster(self) -> Callable[[vmwareengine.CreateClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_cluster(self) -> Callable[[vmwareengine.UpdateClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[
-        [vmwareengine.DeleteClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_cluster(self) -> Callable[[vmwareengine.DeleteClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_nodes(
         self,
-    ) -> Callable[
-        [vmwareengine.ListNodesRequest],
-        Union[
-            vmwareengine.ListNodesResponse, Awaitable[vmwareengine.ListNodesResponse]
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.ListNodesRequest], Union[vmwareengine.ListNodesResponse, Awaitable[vmwareengine.ListNodesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_node(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetNodeRequest],
-        Union[vmwareengine_resources.Node, Awaitable[vmwareengine_resources.Node]],
-    ]:
+    def get_node(self) -> Callable[[vmwareengine.GetNodeRequest], Union[vmwareengine_resources.Node, Awaitable[vmwareengine_resources.Node]]]:
         raise NotImplementedError()
 
     @property
@@ -1004,10 +936,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListExternalAddressesRequest],
-        Union[
-            vmwareengine.ListExternalAddressesResponse,
-            Awaitable[vmwareengine.ListExternalAddressesResponse],
-        ],
+        Union[vmwareengine.ListExternalAddressesResponse, Awaitable[vmwareengine.ListExternalAddressesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1016,10 +945,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.FetchNetworkPolicyExternalAddressesRequest],
-        Union[
-            vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
-            Awaitable[vmwareengine.FetchNetworkPolicyExternalAddressesResponse],
-        ],
+        Union[vmwareengine.FetchNetworkPolicyExternalAddressesResponse, Awaitable[vmwareengine.FetchNetworkPolicyExternalAddressesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1027,69 +953,40 @@ class VmwareEngineTransport(abc.ABC):
     def get_external_address(
         self,
     ) -> Callable[
-        [vmwareengine.GetExternalAddressRequest],
-        Union[
-            vmwareengine_resources.ExternalAddress,
-            Awaitable[vmwareengine_resources.ExternalAddress],
-        ],
+        [vmwareengine.GetExternalAddressRequest], Union[vmwareengine_resources.ExternalAddress, Awaitable[vmwareengine_resources.ExternalAddress]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_external_address(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateExternalAddressRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateExternalAddressRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_external_address(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateExternalAddressRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateExternalAddressRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_external_address(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteExternalAddressRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteExternalAddressRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_subnets(
         self,
-    ) -> Callable[
-        [vmwareengine.ListSubnetsRequest],
-        Union[
-            vmwareengine.ListSubnetsResponse,
-            Awaitable[vmwareengine.ListSubnetsResponse],
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.ListSubnetsRequest], Union[vmwareengine.ListSubnetsResponse, Awaitable[vmwareengine.ListSubnetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_subnet(
-        self,
-    ) -> Callable[
-        [vmwareengine.GetSubnetRequest],
-        Union[vmwareengine_resources.Subnet, Awaitable[vmwareengine_resources.Subnet]],
-    ]:
+    def get_subnet(self) -> Callable[[vmwareengine.GetSubnetRequest], Union[vmwareengine_resources.Subnet, Awaitable[vmwareengine_resources.Subnet]]]:
         raise NotImplementedError()
 
     @property
-    def update_subnet(
-        self,
-    ) -> Callable[
-        [vmwareengine.UpdateSubnetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_subnet(self) -> Callable[[vmwareengine.UpdateSubnetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1097,10 +994,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListExternalAccessRulesRequest],
-        Union[
-            vmwareengine.ListExternalAccessRulesResponse,
-            Awaitable[vmwareengine.ListExternalAccessRulesResponse],
-        ],
+        Union[vmwareengine.ListExternalAccessRulesResponse, Awaitable[vmwareengine.ListExternalAccessRulesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1109,49 +1003,33 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetExternalAccessRuleRequest],
-        Union[
-            vmwareengine_resources.ExternalAccessRule,
-            Awaitable[vmwareengine_resources.ExternalAccessRule],
-        ],
+        Union[vmwareengine_resources.ExternalAccessRule, Awaitable[vmwareengine_resources.ExternalAccessRule]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_external_access_rule(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateExternalAccessRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateExternalAccessRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_external_access_rule(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateExternalAccessRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateExternalAccessRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_external_access_rule(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteExternalAccessRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteExternalAccessRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_logging_servers(
         self,
     ) -> Callable[
-        [vmwareengine.ListLoggingServersRequest],
-        Union[
-            vmwareengine.ListLoggingServersResponse,
-            Awaitable[vmwareengine.ListLoggingServersResponse],
-        ],
+        [vmwareengine.ListLoggingServersRequest], Union[vmwareengine.ListLoggingServersResponse, Awaitable[vmwareengine.ListLoggingServersResponse]]
     ]:
         raise NotImplementedError()
 
@@ -1159,136 +1037,85 @@ class VmwareEngineTransport(abc.ABC):
     def get_logging_server(
         self,
     ) -> Callable[
-        [vmwareengine.GetLoggingServerRequest],
-        Union[
-            vmwareengine_resources.LoggingServer,
-            Awaitable[vmwareengine_resources.LoggingServer],
-        ],
+        [vmwareengine.GetLoggingServerRequest], Union[vmwareengine_resources.LoggingServer, Awaitable[vmwareengine_resources.LoggingServer]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_logging_server(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateLoggingServerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateLoggingServerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_logging_server(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateLoggingServerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateLoggingServerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_logging_server(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteLoggingServerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteLoggingServerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_node_types(
         self,
-    ) -> Callable[
-        [vmwareengine.ListNodeTypesRequest],
-        Union[
-            vmwareengine.ListNodeTypesResponse,
-            Awaitable[vmwareengine.ListNodeTypesResponse],
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.ListNodeTypesRequest], Union[vmwareengine.ListNodeTypesResponse, Awaitable[vmwareengine.ListNodeTypesResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_node_type(
         self,
-    ) -> Callable[
-        [vmwareengine.GetNodeTypeRequest],
-        Union[
-            vmwareengine_resources.NodeType, Awaitable[vmwareengine_resources.NodeType]
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.GetNodeTypeRequest], Union[vmwareengine_resources.NodeType, Awaitable[vmwareengine_resources.NodeType]]]:
         raise NotImplementedError()
 
     @property
     def show_nsx_credentials(
         self,
-    ) -> Callable[
-        [vmwareengine.ShowNsxCredentialsRequest],
-        Union[
-            vmwareengine_resources.Credentials,
-            Awaitable[vmwareengine_resources.Credentials],
-        ],
-    ]:
+    ) -> Callable[[vmwareengine.ShowNsxCredentialsRequest], Union[vmwareengine_resources.Credentials, Awaitable[vmwareengine_resources.Credentials]]]:
         raise NotImplementedError()
 
     @property
     def show_vcenter_credentials(
         self,
     ) -> Callable[
-        [vmwareengine.ShowVcenterCredentialsRequest],
-        Union[
-            vmwareengine_resources.Credentials,
-            Awaitable[vmwareengine_resources.Credentials],
-        ],
+        [vmwareengine.ShowVcenterCredentialsRequest], Union[vmwareengine_resources.Credentials, Awaitable[vmwareengine_resources.Credentials]]
     ]:
         raise NotImplementedError()
 
     @property
     def reset_nsx_credentials(
         self,
-    ) -> Callable[
-        [vmwareengine.ResetNsxCredentialsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.ResetNsxCredentialsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def reset_vcenter_credentials(
         self,
-    ) -> Callable[
-        [vmwareengine.ResetVcenterCredentialsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.ResetVcenterCredentialsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_dns_forwarding(
         self,
     ) -> Callable[
-        [vmwareengine.GetDnsForwardingRequest],
-        Union[
-            vmwareengine_resources.DnsForwarding,
-            Awaitable[vmwareengine_resources.DnsForwarding],
-        ],
+        [vmwareengine.GetDnsForwardingRequest], Union[vmwareengine_resources.DnsForwarding, Awaitable[vmwareengine_resources.DnsForwarding]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_dns_forwarding(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateDnsForwardingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateDnsForwardingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_network_peering(
         self,
     ) -> Callable[
-        [vmwareengine.GetNetworkPeeringRequest],
-        Union[
-            vmwareengine_resources.NetworkPeering,
-            Awaitable[vmwareengine_resources.NetworkPeering],
-        ],
+        [vmwareengine.GetNetworkPeeringRequest], Union[vmwareengine_resources.NetworkPeering, Awaitable[vmwareengine_resources.NetworkPeering]]
     ]:
         raise NotImplementedError()
 
@@ -1297,59 +1124,40 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListNetworkPeeringsRequest],
-        Union[
-            vmwareengine.ListNetworkPeeringsResponse,
-            Awaitable[vmwareengine.ListNetworkPeeringsResponse],
-        ],
+        Union[vmwareengine.ListNetworkPeeringsResponse, Awaitable[vmwareengine.ListNetworkPeeringsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_network_peering(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateNetworkPeeringRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateNetworkPeeringRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_network_peering(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteNetworkPeeringRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteNetworkPeeringRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_network_peering(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateNetworkPeeringRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateNetworkPeeringRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_peering_routes(
         self,
     ) -> Callable[
-        [vmwareengine.ListPeeringRoutesRequest],
-        Union[
-            vmwareengine.ListPeeringRoutesResponse,
-            Awaitable[vmwareengine.ListPeeringRoutesResponse],
-        ],
+        [vmwareengine.ListPeeringRoutesRequest], Union[vmwareengine.ListPeeringRoutesResponse, Awaitable[vmwareengine.ListPeeringRoutesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_hcx_activation_key(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateHcxActivationKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateHcxActivationKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1357,10 +1165,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListHcxActivationKeysRequest],
-        Union[
-            vmwareengine.ListHcxActivationKeysResponse,
-            Awaitable[vmwareengine.ListHcxActivationKeysResponse],
-        ],
+        Union[vmwareengine.ListHcxActivationKeysResponse, Awaitable[vmwareengine.ListHcxActivationKeysResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1368,11 +1173,7 @@ class VmwareEngineTransport(abc.ABC):
     def get_hcx_activation_key(
         self,
     ) -> Callable[
-        [vmwareengine.GetHcxActivationKeyRequest],
-        Union[
-            vmwareengine_resources.HcxActivationKey,
-            Awaitable[vmwareengine_resources.HcxActivationKey],
-        ],
+        [vmwareengine.GetHcxActivationKeyRequest], Union[vmwareengine_resources.HcxActivationKey, Awaitable[vmwareengine_resources.HcxActivationKey]]
     ]:
         raise NotImplementedError()
 
@@ -1380,11 +1181,7 @@ class VmwareEngineTransport(abc.ABC):
     def get_network_policy(
         self,
     ) -> Callable[
-        [vmwareengine.GetNetworkPolicyRequest],
-        Union[
-            vmwareengine_resources.NetworkPolicy,
-            Awaitable[vmwareengine_resources.NetworkPolicy],
-        ],
+        [vmwareengine.GetNetworkPolicyRequest], Union[vmwareengine_resources.NetworkPolicy, Awaitable[vmwareengine_resources.NetworkPolicy]]
     ]:
         raise NotImplementedError()
 
@@ -1393,38 +1190,26 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListNetworkPoliciesRequest],
-        Union[
-            vmwareengine.ListNetworkPoliciesResponse,
-            Awaitable[vmwareengine.ListNetworkPoliciesResponse],
-        ],
+        Union[vmwareengine.ListNetworkPoliciesResponse, Awaitable[vmwareengine.ListNetworkPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_network_policy(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateNetworkPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateNetworkPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_network_policy(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateNetworkPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateNetworkPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_network_policy(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteNetworkPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteNetworkPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1432,10 +1217,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListManagementDnsZoneBindingsRequest],
-        Union[
-            vmwareengine.ListManagementDnsZoneBindingsResponse,
-            Awaitable[vmwareengine.ListManagementDnsZoneBindingsResponse],
-        ],
+        Union[vmwareengine.ListManagementDnsZoneBindingsResponse, Awaitable[vmwareengine.ListManagementDnsZoneBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1444,74 +1226,50 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetManagementDnsZoneBindingRequest],
-        Union[
-            vmwareengine_resources.ManagementDnsZoneBinding,
-            Awaitable[vmwareengine_resources.ManagementDnsZoneBinding],
-        ],
+        Union[vmwareengine_resources.ManagementDnsZoneBinding, Awaitable[vmwareengine_resources.ManagementDnsZoneBinding]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_management_dns_zone_binding(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateManagementDnsZoneBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateManagementDnsZoneBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_management_dns_zone_binding(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateManagementDnsZoneBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateManagementDnsZoneBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_management_dns_zone_binding(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteManagementDnsZoneBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteManagementDnsZoneBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def repair_management_dns_zone_binding(
         self,
-    ) -> Callable[
-        [vmwareengine.RepairManagementDnsZoneBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.RepairManagementDnsZoneBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_vmware_engine_network(
         self,
-    ) -> Callable[
-        [vmwareengine.CreateVmwareEngineNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreateVmwareEngineNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_vmware_engine_network(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdateVmwareEngineNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdateVmwareEngineNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_vmware_engine_network(
         self,
-    ) -> Callable[
-        [vmwareengine.DeleteVmwareEngineNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeleteVmwareEngineNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1519,10 +1277,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetVmwareEngineNetworkRequest],
-        Union[
-            vmwareengine_resources.VmwareEngineNetwork,
-            Awaitable[vmwareengine_resources.VmwareEngineNetwork],
-        ],
+        Union[vmwareengine_resources.VmwareEngineNetwork, Awaitable[vmwareengine_resources.VmwareEngineNetwork]],
     ]:
         raise NotImplementedError()
 
@@ -1531,20 +1286,14 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListVmwareEngineNetworksRequest],
-        Union[
-            vmwareengine.ListVmwareEngineNetworksResponse,
-            Awaitable[vmwareengine.ListVmwareEngineNetworksResponse],
-        ],
+        Union[vmwareengine.ListVmwareEngineNetworksResponse, Awaitable[vmwareengine.ListVmwareEngineNetworksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_private_connection(
         self,
-    ) -> Callable[
-        [vmwareengine.CreatePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.CreatePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1552,10 +1301,7 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetPrivateConnectionRequest],
-        Union[
-            vmwareengine_resources.PrivateConnection,
-            Awaitable[vmwareengine_resources.PrivateConnection],
-        ],
+        Union[vmwareengine_resources.PrivateConnection, Awaitable[vmwareengine_resources.PrivateConnection]],
     ]:
         raise NotImplementedError()
 
@@ -1564,29 +1310,20 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListPrivateConnectionsRequest],
-        Union[
-            vmwareengine.ListPrivateConnectionsResponse,
-            Awaitable[vmwareengine.ListPrivateConnectionsResponse],
-        ],
+        Union[vmwareengine.ListPrivateConnectionsResponse, Awaitable[vmwareengine.ListPrivateConnectionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_private_connection(
         self,
-    ) -> Callable[
-        [vmwareengine.UpdatePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.UpdatePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_private_connection(
         self,
-    ) -> Callable[
-        [vmwareengine.DeletePrivateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.DeletePrivateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1594,20 +1331,14 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.ListPrivateConnectionPeeringRoutesRequest],
-        Union[
-            vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
-            Awaitable[vmwareengine.ListPrivateConnectionPeeringRoutesResponse],
-        ],
+        Union[vmwareengine.ListPrivateConnectionPeeringRoutesResponse, Awaitable[vmwareengine.ListPrivateConnectionPeeringRoutesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def grant_dns_bind_permission(
         self,
-    ) -> Callable[
-        [vmwareengine.GrantDnsBindPermissionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.GrantDnsBindPermissionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1615,20 +1346,14 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.GetDnsBindPermissionRequest],
-        Union[
-            vmwareengine_resources.DnsBindPermission,
-            Awaitable[vmwareengine_resources.DnsBindPermission],
-        ],
+        Union[vmwareengine_resources.DnsBindPermission, Awaitable[vmwareengine_resources.DnsBindPermission]],
     ]:
         raise NotImplementedError()
 
     @property
     def revoke_dns_bind_permission(
         self,
-    ) -> Callable[
-        [vmwareengine.RevokeDnsBindPermissionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[vmwareengine.RevokeDnsBindPermissionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1636,20 +1361,14 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1661,19 +1380,13 @@ class VmwareEngineTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1691,22 +1404,13 @@ class VmwareEngineTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -258,12 +258,10 @@ class DatabaseProperties(proto.Message):
         number=3,
         message="DbBackupConfig",
     )
-    database_management_config: pluggable_database.DatabaseManagementConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=4,
-            message=pluggable_database.DatabaseManagementConfig,
-        )
+    database_management_config: pluggable_database.DatabaseManagementConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=pluggable_database.DatabaseManagementConfig,
     )
 
 
@@ -410,9 +408,7 @@ class DbBackupConfig(proto.Message):
         proto.BOOL,
         number=1,
     )
-    backup_destination_details: MutableSequence[
-        BackupDestinationDetails
-    ] = proto.RepeatedField(
+    backup_destination_details: MutableSequence[BackupDestinationDetails] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=BackupDestinationDetails,

@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.visionai_v1alpha1 import gapic_version as package_version
 from google.cloud.visionai_v1alpha1.types import warehouse
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class WarehouseTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -395,277 +385,137 @@ class WarehouseTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[
-        [warehouse.CreateAssetRequest],
-        Union[warehouse.Asset, Awaitable[warehouse.Asset]],
-    ]:
+    def create_asset(self) -> Callable[[warehouse.CreateAssetRequest], Union[warehouse.Asset, Awaitable[warehouse.Asset]]]:
         raise NotImplementedError()
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateAssetRequest],
-        Union[warehouse.Asset, Awaitable[warehouse.Asset]],
-    ]:
+    def update_asset(self) -> Callable[[warehouse.UpdateAssetRequest], Union[warehouse.Asset, Awaitable[warehouse.Asset]]]:
         raise NotImplementedError()
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[
-        [warehouse.GetAssetRequest], Union[warehouse.Asset, Awaitable[warehouse.Asset]]
-    ]:
+    def get_asset(self) -> Callable[[warehouse.GetAssetRequest], Union[warehouse.Asset, Awaitable[warehouse.Asset]]]:
         raise NotImplementedError()
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [warehouse.ListAssetsRequest],
-        Union[warehouse.ListAssetsResponse, Awaitable[warehouse.ListAssetsResponse]],
-    ]:
+    def list_assets(self) -> Callable[[warehouse.ListAssetsRequest], Union[warehouse.ListAssetsResponse, Awaitable[warehouse.ListAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteAssetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_asset(self) -> Callable[[warehouse.DeleteAssetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_corpus(
-        self,
-    ) -> Callable[
-        [warehouse.CreateCorpusRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_corpus(self) -> Callable[[warehouse.CreateCorpusRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_corpus(
-        self,
-    ) -> Callable[
-        [warehouse.GetCorpusRequest],
-        Union[warehouse.Corpus, Awaitable[warehouse.Corpus]],
-    ]:
+    def get_corpus(self) -> Callable[[warehouse.GetCorpusRequest], Union[warehouse.Corpus, Awaitable[warehouse.Corpus]]]:
         raise NotImplementedError()
 
     @property
-    def update_corpus(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateCorpusRequest],
-        Union[warehouse.Corpus, Awaitable[warehouse.Corpus]],
-    ]:
+    def update_corpus(self) -> Callable[[warehouse.UpdateCorpusRequest], Union[warehouse.Corpus, Awaitable[warehouse.Corpus]]]:
         raise NotImplementedError()
 
     @property
     def list_corpora(
         self,
-    ) -> Callable[
-        [warehouse.ListCorporaRequest],
-        Union[warehouse.ListCorporaResponse, Awaitable[warehouse.ListCorporaResponse]],
-    ]:
+    ) -> Callable[[warehouse.ListCorporaRequest], Union[warehouse.ListCorporaResponse, Awaitable[warehouse.ListCorporaResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_corpus(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteCorpusRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_corpus(self) -> Callable[[warehouse.DeleteCorpusRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_data_schema(
-        self,
-    ) -> Callable[
-        [warehouse.CreateDataSchemaRequest],
-        Union[warehouse.DataSchema, Awaitable[warehouse.DataSchema]],
-    ]:
+    def create_data_schema(self) -> Callable[[warehouse.CreateDataSchemaRequest], Union[warehouse.DataSchema, Awaitable[warehouse.DataSchema]]]:
         raise NotImplementedError()
 
     @property
-    def update_data_schema(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateDataSchemaRequest],
-        Union[warehouse.DataSchema, Awaitable[warehouse.DataSchema]],
-    ]:
+    def update_data_schema(self) -> Callable[[warehouse.UpdateDataSchemaRequest], Union[warehouse.DataSchema, Awaitable[warehouse.DataSchema]]]:
         raise NotImplementedError()
 
     @property
-    def get_data_schema(
-        self,
-    ) -> Callable[
-        [warehouse.GetDataSchemaRequest],
-        Union[warehouse.DataSchema, Awaitable[warehouse.DataSchema]],
-    ]:
+    def get_data_schema(self) -> Callable[[warehouse.GetDataSchemaRequest], Union[warehouse.DataSchema, Awaitable[warehouse.DataSchema]]]:
         raise NotImplementedError()
 
     @property
-    def delete_data_schema(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteDataSchemaRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_data_schema(self) -> Callable[[warehouse.DeleteDataSchemaRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_data_schemas(
         self,
-    ) -> Callable[
-        [warehouse.ListDataSchemasRequest],
-        Union[
-            warehouse.ListDataSchemasResponse,
-            Awaitable[warehouse.ListDataSchemasResponse],
-        ],
-    ]:
+    ) -> Callable[[warehouse.ListDataSchemasRequest], Union[warehouse.ListDataSchemasResponse, Awaitable[warehouse.ListDataSchemasResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_annotation(
-        self,
-    ) -> Callable[
-        [warehouse.CreateAnnotationRequest],
-        Union[warehouse.Annotation, Awaitable[warehouse.Annotation]],
-    ]:
+    def create_annotation(self) -> Callable[[warehouse.CreateAnnotationRequest], Union[warehouse.Annotation, Awaitable[warehouse.Annotation]]]:
         raise NotImplementedError()
 
     @property
-    def get_annotation(
-        self,
-    ) -> Callable[
-        [warehouse.GetAnnotationRequest],
-        Union[warehouse.Annotation, Awaitable[warehouse.Annotation]],
-    ]:
+    def get_annotation(self) -> Callable[[warehouse.GetAnnotationRequest], Union[warehouse.Annotation, Awaitable[warehouse.Annotation]]]:
         raise NotImplementedError()
 
     @property
     def list_annotations(
         self,
-    ) -> Callable[
-        [warehouse.ListAnnotationsRequest],
-        Union[
-            warehouse.ListAnnotationsResponse,
-            Awaitable[warehouse.ListAnnotationsResponse],
-        ],
-    ]:
+    ) -> Callable[[warehouse.ListAnnotationsRequest], Union[warehouse.ListAnnotationsResponse, Awaitable[warehouse.ListAnnotationsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_annotation(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateAnnotationRequest],
-        Union[warehouse.Annotation, Awaitable[warehouse.Annotation]],
-    ]:
+    def update_annotation(self) -> Callable[[warehouse.UpdateAnnotationRequest], Union[warehouse.Annotation, Awaitable[warehouse.Annotation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_annotation(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteAnnotationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_annotation(self) -> Callable[[warehouse.DeleteAnnotationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def ingest_asset(
         self,
-    ) -> Callable[
-        [warehouse.IngestAssetRequest],
-        Union[warehouse.IngestAssetResponse, Awaitable[warehouse.IngestAssetResponse]],
-    ]:
+    ) -> Callable[[warehouse.IngestAssetRequest], Union[warehouse.IngestAssetResponse, Awaitable[warehouse.IngestAssetResponse]]]:
         raise NotImplementedError()
 
     @property
-    def clip_asset(
-        self,
-    ) -> Callable[
-        [warehouse.ClipAssetRequest],
-        Union[warehouse.ClipAssetResponse, Awaitable[warehouse.ClipAssetResponse]],
-    ]:
+    def clip_asset(self) -> Callable[[warehouse.ClipAssetRequest], Union[warehouse.ClipAssetResponse, Awaitable[warehouse.ClipAssetResponse]]]:
         raise NotImplementedError()
 
     @property
     def generate_hls_uri(
         self,
-    ) -> Callable[
-        [warehouse.GenerateHlsUriRequest],
-        Union[
-            warehouse.GenerateHlsUriResponse,
-            Awaitable[warehouse.GenerateHlsUriResponse],
-        ],
-    ]:
+    ) -> Callable[[warehouse.GenerateHlsUriRequest], Union[warehouse.GenerateHlsUriResponse, Awaitable[warehouse.GenerateHlsUriResponse]]]:
         raise NotImplementedError()
 
     @property
     def create_search_config(
         self,
-    ) -> Callable[
-        [warehouse.CreateSearchConfigRequest],
-        Union[warehouse.SearchConfig, Awaitable[warehouse.SearchConfig]],
-    ]:
+    ) -> Callable[[warehouse.CreateSearchConfigRequest], Union[warehouse.SearchConfig, Awaitable[warehouse.SearchConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_search_config(
         self,
-    ) -> Callable[
-        [warehouse.UpdateSearchConfigRequest],
-        Union[warehouse.SearchConfig, Awaitable[warehouse.SearchConfig]],
-    ]:
+    ) -> Callable[[warehouse.UpdateSearchConfigRequest], Union[warehouse.SearchConfig, Awaitable[warehouse.SearchConfig]]]:
         raise NotImplementedError()
 
     @property
-    def get_search_config(
-        self,
-    ) -> Callable[
-        [warehouse.GetSearchConfigRequest],
-        Union[warehouse.SearchConfig, Awaitable[warehouse.SearchConfig]],
-    ]:
+    def get_search_config(self) -> Callable[[warehouse.GetSearchConfigRequest], Union[warehouse.SearchConfig, Awaitable[warehouse.SearchConfig]]]:
         raise NotImplementedError()
 
     @property
-    def delete_search_config(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteSearchConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_search_config(self) -> Callable[[warehouse.DeleteSearchConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_search_configs(
         self,
-    ) -> Callable[
-        [warehouse.ListSearchConfigsRequest],
-        Union[
-            warehouse.ListSearchConfigsResponse,
-            Awaitable[warehouse.ListSearchConfigsResponse],
-        ],
-    ]:
+    ) -> Callable[[warehouse.ListSearchConfigsRequest], Union[warehouse.ListSearchConfigsResponse, Awaitable[warehouse.ListSearchConfigsResponse]]]:
         raise NotImplementedError()
 
     @property
     def search_assets(
         self,
-    ) -> Callable[
-        [warehouse.SearchAssetsRequest],
-        Union[
-            warehouse.SearchAssetsResponse, Awaitable[warehouse.SearchAssetsResponse]
-        ],
-    ]:
+    ) -> Callable[[warehouse.SearchAssetsRequest], Union[warehouse.SearchAssetsResponse, Awaitable[warehouse.SearchAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -673,20 +523,14 @@ class WarehouseTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -704,19 +548,13 @@ class WarehouseTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -734,22 +572,13 @@ class WarehouseTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,14 +41,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.retail_v2beta.types import (
-    common,
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.retail_v2beta.types import common, export_config, import_config, purge_config, user_event, user_event_service
 
 from .client import UserEventServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
@@ -93,30 +75,16 @@ class UserEventServiceAsyncClient:
     parse_catalog_path = staticmethod(UserEventServiceClient.parse_catalog_path)
     product_path = staticmethod(UserEventServiceClient.product_path)
     parse_product_path = staticmethod(UserEventServiceClient.parse_product_path)
-    common_billing_account_path = staticmethod(
-        UserEventServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        UserEventServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(UserEventServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(UserEventServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(UserEventServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        UserEventServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        UserEventServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        UserEventServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(UserEventServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(UserEventServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(UserEventServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(UserEventServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        UserEventServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(UserEventServiceClient.parse_common_project_path)
     common_location_path = staticmethod(UserEventServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        UserEventServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(UserEventServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -152,9 +120,7 @@ class UserEventServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -221,11 +187,7 @@ class UserEventServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, UserEventServiceTransport, Callable[..., UserEventServiceTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, UserEventServiceTransport, Callable[..., UserEventServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -285,20 +247,14 @@ class UserEventServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.retail_v2beta.UserEventServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.retail.v2beta.UserEventService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -376,15 +332,11 @@ class UserEventServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.write_user_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.write_user_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -402,9 +354,7 @@ class UserEventServiceAsyncClient:
 
     async def collect_user_event(
         self,
-        request: Optional[
-            Union[user_event_service.CollectUserEventRequest, dict]
-        ] = None,
+        request: Optional[Union[user_event_service.CollectUserEventRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -518,15 +468,11 @@ class UserEventServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.collect_user_event
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.collect_user_event]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -616,15 +562,11 @@ class UserEventServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.purge_user_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.purge_user_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -730,15 +672,11 @@ class UserEventServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_user_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_user_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -839,15 +777,11 @@ class UserEventServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.export_user_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.export_user_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -873,9 +807,7 @@ class UserEventServiceAsyncClient:
 
     async def rejoin_user_events(
         self,
-        request: Optional[
-            Union[user_event_service.RejoinUserEventsRequest, dict]
-        ] = None,
+        request: Optional[Union[user_event_service.RejoinUserEventsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -952,15 +884,11 @@ class UserEventServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.rejoin_user_events
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.rejoin_user_events]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1021,9 +949,7 @@ class UserEventServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1076,9 +1002,7 @@ class UserEventServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1101,9 +1025,7 @@ class UserEventServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

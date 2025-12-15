@@ -27,16 +27,9 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.maps.fleetengine_delivery_v1 import gapic_version as package_version
-from google.maps.fleetengine_delivery_v1.types import (
-    delivery_api,
-    delivery_vehicles,
-    task_tracking_info,
-    tasks,
-)
+from google.maps.fleetengine_delivery_v1.types import delivery_api, delivery_vehicles, task_tracking_info, tasks
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +91,15 @@ class DeliveryServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -304,44 +289,25 @@ class DeliveryServiceTransport(abc.ABC):
     def create_delivery_vehicle(
         self,
     ) -> Callable[
-        [delivery_api.CreateDeliveryVehicleRequest],
-        Union[
-            delivery_vehicles.DeliveryVehicle,
-            Awaitable[delivery_vehicles.DeliveryVehicle],
-        ],
+        [delivery_api.CreateDeliveryVehicleRequest], Union[delivery_vehicles.DeliveryVehicle, Awaitable[delivery_vehicles.DeliveryVehicle]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_delivery_vehicle(
         self,
-    ) -> Callable[
-        [delivery_api.GetDeliveryVehicleRequest],
-        Union[
-            delivery_vehicles.DeliveryVehicle,
-            Awaitable[delivery_vehicles.DeliveryVehicle],
-        ],
-    ]:
+    ) -> Callable[[delivery_api.GetDeliveryVehicleRequest], Union[delivery_vehicles.DeliveryVehicle, Awaitable[delivery_vehicles.DeliveryVehicle]]]:
         raise NotImplementedError()
 
     @property
-    def delete_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.DeleteDeliveryVehicleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_delivery_vehicle(self) -> Callable[[delivery_api.DeleteDeliveryVehicleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_delivery_vehicle(
         self,
     ) -> Callable[
-        [delivery_api.UpdateDeliveryVehicleRequest],
-        Union[
-            delivery_vehicles.DeliveryVehicle,
-            Awaitable[delivery_vehicles.DeliveryVehicle],
-        ],
+        [delivery_api.UpdateDeliveryVehicleRequest], Union[delivery_vehicles.DeliveryVehicle, Awaitable[delivery_vehicles.DeliveryVehicle]]
     ]:
         raise NotImplementedError()
 
@@ -349,67 +315,37 @@ class DeliveryServiceTransport(abc.ABC):
     def batch_create_tasks(
         self,
     ) -> Callable[
-        [delivery_api.BatchCreateTasksRequest],
-        Union[
-            delivery_api.BatchCreateTasksResponse,
-            Awaitable[delivery_api.BatchCreateTasksResponse],
-        ],
+        [delivery_api.BatchCreateTasksRequest], Union[delivery_api.BatchCreateTasksResponse, Awaitable[delivery_api.BatchCreateTasksResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[
-        [delivery_api.CreateTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]
-    ]:
+    def create_task(self) -> Callable[[delivery_api.CreateTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]]:
         raise NotImplementedError()
 
     @property
-    def get_task(
-        self,
-    ) -> Callable[
-        [delivery_api.GetTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]
-    ]:
+    def get_task(self) -> Callable[[delivery_api.GetTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]]:
         raise NotImplementedError()
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[
-        [delivery_api.DeleteTaskRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_task(self) -> Callable[[delivery_api.DeleteTaskRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def update_task(
-        self,
-    ) -> Callable[
-        [delivery_api.UpdateTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]
-    ]:
+    def update_task(self) -> Callable[[delivery_api.UpdateTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]]:
         raise NotImplementedError()
 
     @property
     def list_tasks(
         self,
-    ) -> Callable[
-        [delivery_api.ListTasksRequest],
-        Union[
-            delivery_api.ListTasksResponse, Awaitable[delivery_api.ListTasksResponse]
-        ],
-    ]:
+    ) -> Callable[[delivery_api.ListTasksRequest], Union[delivery_api.ListTasksResponse, Awaitable[delivery_api.ListTasksResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_task_tracking_info(
         self,
     ) -> Callable[
-        [delivery_api.GetTaskTrackingInfoRequest],
-        Union[
-            task_tracking_info.TaskTrackingInfo,
-            Awaitable[task_tracking_info.TaskTrackingInfo],
-        ],
+        [delivery_api.GetTaskTrackingInfoRequest], Union[task_tracking_info.TaskTrackingInfo, Awaitable[task_tracking_info.TaskTrackingInfo]]
     ]:
         raise NotImplementedError()
 
@@ -418,10 +354,7 @@ class DeliveryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [delivery_api.ListDeliveryVehiclesRequest],
-        Union[
-            delivery_api.ListDeliveryVehiclesResponse,
-            Awaitable[delivery_api.ListDeliveryVehiclesResponse],
-        ],
+        Union[delivery_api.ListDeliveryVehiclesResponse, Awaitable[delivery_api.ListDeliveryVehiclesResponse]],
     ]:
         raise NotImplementedError()
 

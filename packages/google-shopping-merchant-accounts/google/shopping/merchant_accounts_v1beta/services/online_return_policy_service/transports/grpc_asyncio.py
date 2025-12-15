@@ -32,9 +32,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import (
-    online_return_policy as gsma_online_return_policy,
-)
+from google.shopping.merchant_accounts_v1beta.types import online_return_policy as gsma_online_return_policy
 from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 
 from .base import DEFAULT_CLIENT_INFO, OnlineReturnPolicyServiceTransport
@@ -50,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -276,18 +263,14 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -323,9 +306,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -342,10 +323,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     @property
     def get_online_return_policy(
         self,
-    ) -> Callable[
-        [online_return_policy.GetOnlineReturnPolicyRequest],
-        Awaitable[online_return_policy.OnlineReturnPolicy],
-    ]:
+    ) -> Callable[[online_return_policy.GetOnlineReturnPolicyRequest], Awaitable[online_return_policy.OnlineReturnPolicy]]:
         r"""Return a callable for the get online return policy method over gRPC.
 
         Gets an existing return policy for a given merchant.
@@ -371,10 +349,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     @property
     def list_online_return_policies(
         self,
-    ) -> Callable[
-        [online_return_policy.ListOnlineReturnPoliciesRequest],
-        Awaitable[online_return_policy.ListOnlineReturnPoliciesResponse],
-    ]:
+    ) -> Callable[[online_return_policy.ListOnlineReturnPoliciesRequest], Awaitable[online_return_policy.ListOnlineReturnPoliciesResponse]]:
         r"""Return a callable for the list online return policies method over gRPC.
 
         Lists all existing return policies for a given
@@ -391,9 +366,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_online_return_policies" not in self._stubs:
-            self._stubs[
-                "list_online_return_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_online_return_policies"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/ListOnlineReturnPolicies",
                 request_serializer=online_return_policy.ListOnlineReturnPoliciesRequest.serialize,
                 response_deserializer=online_return_policy.ListOnlineReturnPoliciesResponse.deserialize,
@@ -403,10 +376,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     @property
     def create_online_return_policy(
         self,
-    ) -> Callable[
-        [gsma_online_return_policy.CreateOnlineReturnPolicyRequest],
-        Awaitable[gsma_online_return_policy.OnlineReturnPolicy],
-    ]:
+    ) -> Callable[[gsma_online_return_policy.CreateOnlineReturnPolicyRequest], Awaitable[gsma_online_return_policy.OnlineReturnPolicy]]:
         r"""Return a callable for the create online return policy method over gRPC.
 
         Creates a new return policy for a given merchant.
@@ -422,9 +392,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_online_return_policy" not in self._stubs:
-            self._stubs[
-                "create_online_return_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_online_return_policy"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
                 request_serializer=gsma_online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
                 response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
@@ -434,10 +402,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     @property
     def update_online_return_policy(
         self,
-    ) -> Callable[
-        [gsma_online_return_policy.UpdateOnlineReturnPolicyRequest],
-        Awaitable[gsma_online_return_policy.OnlineReturnPolicy],
-    ]:
+    ) -> Callable[[gsma_online_return_policy.UpdateOnlineReturnPolicyRequest], Awaitable[gsma_online_return_policy.OnlineReturnPolicy]]:
         r"""Return a callable for the update online return policy method over gRPC.
 
         Updates an existing return policy for a given
@@ -454,9 +419,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_online_return_policy" not in self._stubs:
-            self._stubs[
-                "update_online_return_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_online_return_policy"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/UpdateOnlineReturnPolicy",
                 request_serializer=gsma_online_return_policy.UpdateOnlineReturnPolicyRequest.serialize,
                 response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
@@ -464,12 +427,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         return self._stubs["update_online_return_policy"]
 
     @property
-    def delete_online_return_policy(
-        self,
-    ) -> Callable[
-        [online_return_policy.DeleteOnlineReturnPolicyRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_online_return_policy(self) -> Callable[[online_return_policy.DeleteOnlineReturnPolicyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete online return policy method over gRPC.
 
         Deletes an existing return policy.
@@ -485,9 +443,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_online_return_policy" not in self._stubs:
-            self._stubs[
-                "delete_online_return_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_online_return_policy"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/DeleteOnlineReturnPolicy",
                 request_serializer=online_return_policy.DeleteOnlineReturnPolicyRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,

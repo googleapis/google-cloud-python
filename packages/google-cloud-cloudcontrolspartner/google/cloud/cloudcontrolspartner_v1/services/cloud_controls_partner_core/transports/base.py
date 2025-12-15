@@ -36,9 +36,7 @@ from google.cloud.cloudcontrolspartner_v1.types import (
     partners,
 )
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +98,15 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -273,10 +263,7 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
     @property
     def get_workload(
         self,
-    ) -> Callable[
-        [customer_workloads.GetWorkloadRequest],
-        Union[customer_workloads.Workload, Awaitable[customer_workloads.Workload]],
-    ]:
+    ) -> Callable[[customer_workloads.GetWorkloadRequest], Union[customer_workloads.Workload, Awaitable[customer_workloads.Workload]]]:
         raise NotImplementedError()
 
     @property
@@ -284,42 +271,24 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [customer_workloads.ListWorkloadsRequest],
-        Union[
-            customer_workloads.ListWorkloadsResponse,
-            Awaitable[customer_workloads.ListWorkloadsResponse],
-        ],
+        Union[customer_workloads.ListWorkloadsResponse, Awaitable[customer_workloads.ListWorkloadsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_customer(
-        self,
-    ) -> Callable[
-        [customers.GetCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def get_customer(self) -> Callable[[customers.GetCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
     def list_customers(
         self,
-    ) -> Callable[
-        [customers.ListCustomersRequest],
-        Union[
-            customers.ListCustomersResponse, Awaitable[customers.ListCustomersResponse]
-        ],
-    ]:
+    ) -> Callable[[customers.ListCustomersRequest], Union[customers.ListCustomersResponse, Awaitable[customers.ListCustomersResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_ekm_connections(
         self,
-    ) -> Callable[
-        [ekm_connections.GetEkmConnectionsRequest],
-        Union[
-            ekm_connections.EkmConnections, Awaitable[ekm_connections.EkmConnections]
-        ],
-    ]:
+    ) -> Callable[[ekm_connections.GetEkmConnectionsRequest], Union[ekm_connections.EkmConnections, Awaitable[ekm_connections.EkmConnections]]]:
         raise NotImplementedError()
 
     @property
@@ -327,10 +296,7 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [partner_permissions.GetPartnerPermissionsRequest],
-        Union[
-            partner_permissions.PartnerPermissions,
-            Awaitable[partner_permissions.PartnerPermissions],
-        ],
+        Union[partner_permissions.PartnerPermissions, Awaitable[partner_permissions.PartnerPermissions]],
     ]:
         raise NotImplementedError()
 
@@ -339,47 +305,24 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [access_approval_requests.ListAccessApprovalRequestsRequest],
-        Union[
-            access_approval_requests.ListAccessApprovalRequestsResponse,
-            Awaitable[access_approval_requests.ListAccessApprovalRequestsResponse],
-        ],
+        Union[access_approval_requests.ListAccessApprovalRequestsResponse, Awaitable[access_approval_requests.ListAccessApprovalRequestsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_partner(
-        self,
-    ) -> Callable[
-        [partners.GetPartnerRequest],
-        Union[partners.Partner, Awaitable[partners.Partner]],
-    ]:
+    def get_partner(self) -> Callable[[partners.GetPartnerRequest], Union[partners.Partner, Awaitable[partners.Partner]]]:
         raise NotImplementedError()
 
     @property
-    def create_customer(
-        self,
-    ) -> Callable[
-        [customers.CreateCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def create_customer(self) -> Callable[[customers.CreateCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
-    def update_customer(
-        self,
-    ) -> Callable[
-        [customers.UpdateCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def update_customer(self) -> Callable[[customers.UpdateCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
-    def delete_customer(
-        self,
-    ) -> Callable[
-        [customers.DeleteCustomerRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_customer(self) -> Callable[[customers.DeleteCustomerRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property

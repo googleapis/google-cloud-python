@@ -109,13 +109,8 @@ class DocumentLinkServiceRestInterceptor:
     """
 
     def pre_create_document_link(
-        self,
-        request: document_link_service.CreateDocumentLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.CreateDocumentLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_link_service.CreateDocumentLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.CreateDocumentLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_document_link
 
         Override in a subclass to manipulate the request or metadata
@@ -123,9 +118,7 @@ class DocumentLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_document_link(
-        self, response: document_link_service.DocumentLink
-    ) -> document_link_service.DocumentLink:
+    def post_create_document_link(self, response: document_link_service.DocumentLink) -> document_link_service.DocumentLink:
         """Post-rpc interceptor for create_document_link
 
         DEPRECATED. Please use the `post_create_document_link_with_metadata`
@@ -139,12 +132,8 @@ class DocumentLinkServiceRestInterceptor:
         return response
 
     def post_create_document_link_with_metadata(
-        self,
-        response: document_link_service.DocumentLink,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.DocumentLink, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: document_link_service.DocumentLink, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.DocumentLink, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_document_link
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -160,13 +149,8 @@ class DocumentLinkServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_document_link(
-        self,
-        request: document_link_service.DeleteDocumentLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.DeleteDocumentLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_link_service.DeleteDocumentLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.DeleteDocumentLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_document_link
 
         Override in a subclass to manipulate the request or metadata
@@ -175,13 +159,8 @@ class DocumentLinkServiceRestInterceptor:
         return request, metadata
 
     def pre_list_linked_sources(
-        self,
-        request: document_link_service.ListLinkedSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.ListLinkedSourcesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_link_service.ListLinkedSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.ListLinkedSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_linked_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -189,9 +168,7 @@ class DocumentLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_linked_sources(
-        self, response: document_link_service.ListLinkedSourcesResponse
-    ) -> document_link_service.ListLinkedSourcesResponse:
+    def post_list_linked_sources(self, response: document_link_service.ListLinkedSourcesResponse) -> document_link_service.ListLinkedSourcesResponse:
         """Post-rpc interceptor for list_linked_sources
 
         DEPRECATED. Please use the `post_list_linked_sources_with_metadata`
@@ -205,13 +182,8 @@ class DocumentLinkServiceRestInterceptor:
         return response
 
     def post_list_linked_sources_with_metadata(
-        self,
-        response: document_link_service.ListLinkedSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.ListLinkedSourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_link_service.ListLinkedSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.ListLinkedSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_linked_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -227,13 +199,8 @@ class DocumentLinkServiceRestInterceptor:
         return response, metadata
 
     def pre_list_linked_targets(
-        self,
-        request: document_link_service.ListLinkedTargetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.ListLinkedTargetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_link_service.ListLinkedTargetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.ListLinkedTargetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_linked_targets
 
         Override in a subclass to manipulate the request or metadata
@@ -241,9 +208,7 @@ class DocumentLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_linked_targets(
-        self, response: document_link_service.ListLinkedTargetsResponse
-    ) -> document_link_service.ListLinkedTargetsResponse:
+    def post_list_linked_targets(self, response: document_link_service.ListLinkedTargetsResponse) -> document_link_service.ListLinkedTargetsResponse:
         """Post-rpc interceptor for list_linked_targets
 
         DEPRECATED. Please use the `post_list_linked_targets_with_metadata`
@@ -257,13 +222,8 @@ class DocumentLinkServiceRestInterceptor:
         return response
 
     def post_list_linked_targets_with_metadata(
-        self,
-        response: document_link_service.ListLinkedTargetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_link_service.ListLinkedTargetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_link_service.ListLinkedTargetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_link_service.ListLinkedTargetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_linked_targets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -279,12 +239,8 @@ class DocumentLinkServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -292,9 +248,7 @@ class DocumentLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -385,31 +339,18 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DocumentLinkServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDocumentLink(
-        _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink,
-        DocumentLinkServiceRestStub,
-    ):
+    class _CreateDocumentLink(_BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink, DocumentLinkServiceRestStub):
         def __hash__(self):
             return hash("DocumentLinkServiceRestTransport.CreateDocumentLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -452,32 +393,18 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_http_options()
-            )
+            http_options = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_document_link(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_document_link(request, metadata)
+            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentLinkServiceRestTransport._BaseCreateDocumentLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -500,16 +427,8 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DocumentLinkServiceRestTransport._CreateDocumentLink._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentLinkServiceRestTransport._CreateDocumentLink._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -525,16 +444,10 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             resp = self._interceptor.post_create_document_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_document_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_document_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = document_link_service.DocumentLink.to_json(
-                        response
-                    )
+                    response_payload = document_link_service.DocumentLink.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -553,23 +466,12 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDocumentLink(
-        _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink,
-        DocumentLinkServiceRestStub,
-    ):
+    class _DeleteDocumentLink(_BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink, DocumentLinkServiceRestStub):
         def __hash__(self):
             return hash("DocumentLinkServiceRestTransport.DeleteDocumentLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -606,32 +508,18 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_http_options()
-            )
+            http_options = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_document_link(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_document_link(request, metadata)
+            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentLinkServiceRestTransport._BaseDeleteDocumentLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -654,16 +542,8 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DocumentLinkServiceRestTransport._DeleteDocumentLink._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentLinkServiceRestTransport._DeleteDocumentLink._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -671,23 +551,12 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ListLinkedSources(
-        _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources,
-        DocumentLinkServiceRestStub,
-    ):
+    class _ListLinkedSources(_BaseDocumentLinkServiceRestTransport._BaseListLinkedSources, DocumentLinkServiceRestStub):
         def __hash__(self):
             return hash("DocumentLinkServiceRestTransport.ListLinkedSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -730,32 +599,18 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_http_options()
-            )
+            http_options = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_linked_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_linked_sources(request, metadata)
+            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentLinkServiceRestTransport._BaseListLinkedSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -778,16 +633,8 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DocumentLinkServiceRestTransport._ListLinkedSources._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentLinkServiceRestTransport._ListLinkedSources._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -803,18 +650,10 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             resp = self._interceptor.post_list_linked_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_linked_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_linked_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_link_service.ListLinkedSourcesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_link_service.ListLinkedSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -833,23 +672,12 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 )
             return resp
 
-    class _ListLinkedTargets(
-        _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets,
-        DocumentLinkServiceRestStub,
-    ):
+    class _ListLinkedTargets(_BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets, DocumentLinkServiceRestStub):
         def __hash__(self):
             return hash("DocumentLinkServiceRestTransport.ListLinkedTargets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -892,32 +720,18 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_http_options()
-            )
+            http_options = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_linked_targets(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_linked_targets(request, metadata)
+            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentLinkServiceRestTransport._BaseListLinkedTargets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -940,16 +754,8 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DocumentLinkServiceRestTransport._ListLinkedTargets._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentLinkServiceRestTransport._ListLinkedTargets._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -965,18 +771,10 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             resp = self._interceptor.post_list_linked_targets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_linked_targets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_linked_targets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_link_service.ListLinkedTargetsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_link_service.ListLinkedTargetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -996,42 +794,25 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
             return resp
 
     @property
-    def create_document_link(
-        self,
-    ) -> Callable[
-        [document_link_service.CreateDocumentLinkRequest],
-        document_link_service.DocumentLink,
-    ]:
+    def create_document_link(self) -> Callable[[document_link_service.CreateDocumentLinkRequest], document_link_service.DocumentLink]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDocumentLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_document_link(
-        self,
-    ) -> Callable[[document_link_service.DeleteDocumentLinkRequest], empty_pb2.Empty]:
+    def delete_document_link(self) -> Callable[[document_link_service.DeleteDocumentLinkRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDocumentLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_linked_sources(
-        self,
-    ) -> Callable[
-        [document_link_service.ListLinkedSourcesRequest],
-        document_link_service.ListLinkedSourcesResponse,
-    ]:
+    def list_linked_sources(self) -> Callable[[document_link_service.ListLinkedSourcesRequest], document_link_service.ListLinkedSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLinkedSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_linked_targets(
-        self,
-    ) -> Callable[
-        [document_link_service.ListLinkedTargetsRequest],
-        document_link_service.ListLinkedTargetsResponse,
-    ]:
+    def list_linked_targets(self) -> Callable[[document_link_service.ListLinkedTargetsRequest], document_link_service.ListLinkedTargetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLinkedTargets(self._session, self._host, self._interceptor)  # type: ignore
@@ -1040,23 +821,12 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDocumentLinkServiceRestTransport._BaseGetOperation,
-        DocumentLinkServiceRestStub,
-    ):
+    class _GetOperation(_BaseDocumentLinkServiceRestTransport._BaseGetOperation, DocumentLinkServiceRestStub):
         def __hash__(self):
             return hash("DocumentLinkServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1094,26 +864,16 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDocumentLinkServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDocumentLinkServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentLinkServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentLinkServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1137,12 +897,7 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
 
             # Send the request
             response = DocumentLinkServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1154,9 +909,7 @@ class DocumentLinkServiceRestTransport(_BaseDocumentLinkServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -1005,9 +1005,7 @@ class ListIdentityAwareProxyClientsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_aware_proxy_clients: MutableSequence[
-        "IdentityAwareProxyClient"
-    ] = proto.RepeatedField(
+    identity_aware_proxy_clients: MutableSequence["IdentityAwareProxyClient"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="IdentityAwareProxyClient",

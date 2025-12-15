@@ -31,12 +31,8 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.recommender_v1beta1.types import (
-    insight_type_config as gcr_insight_type_config,
-)
-from google.cloud.recommender_v1beta1.types import (
-    recommender_config as gcr_recommender_config,
-)
+from google.cloud.recommender_v1beta1.types import insight_type_config as gcr_insight_type_config
+from google.cloud.recommender_v1beta1.types import recommender_config as gcr_recommender_config
 from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import insight_type_config
 from google.cloud.recommender_v1beta1.types import recommendation
@@ -56,13 +52,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -72,10 +64,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -94,11 +83,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -280,18 +265,14 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -327,9 +308,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -344,12 +323,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._grpc_channel
 
     @property
-    def list_insights(
-        self,
-    ) -> Callable[
-        [recommender_service.ListInsightsRequest],
-        Awaitable[recommender_service.ListInsightsResponse],
-    ]:
+    def list_insights(self) -> Callable[[recommender_service.ListInsightsRequest], Awaitable[recommender_service.ListInsightsResponse]]:
         r"""Return a callable for the list insights method over gRPC.
 
         Lists insights for the specified Cloud Resource. Requires the
@@ -375,9 +349,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["list_insights"]
 
     @property
-    def get_insight(
-        self,
-    ) -> Callable[[recommender_service.GetInsightRequest], Awaitable[insight.Insight]]:
+    def get_insight(self) -> Callable[[recommender_service.GetInsightRequest], Awaitable[insight.Insight]]:
         r"""Return a callable for the get insight method over gRPC.
 
         Gets the requested insight. Requires the recommender.\*.get IAM
@@ -402,11 +374,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["get_insight"]
 
     @property
-    def mark_insight_accepted(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkInsightAcceptedRequest], Awaitable[insight.Insight]
-    ]:
+    def mark_insight_accepted(self) -> Callable[[recommender_service.MarkInsightAcceptedRequest], Awaitable[insight.Insight]]:
         r"""Return a callable for the mark insight accepted method over gRPC.
 
         Marks the Insight State as Accepted. Users can use this method
@@ -439,10 +407,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     @property
     def list_recommendations(
         self,
-    ) -> Callable[
-        [recommender_service.ListRecommendationsRequest],
-        Awaitable[recommender_service.ListRecommendationsResponse],
-    ]:
+    ) -> Callable[[recommender_service.ListRecommendationsRequest], Awaitable[recommender_service.ListRecommendationsResponse]]:
         r"""Return a callable for the list recommendations method over gRPC.
 
         Lists recommendations for the specified Cloud Resource. Requires
@@ -468,12 +433,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["list_recommendations"]
 
     @property
-    def get_recommendation(
-        self,
-    ) -> Callable[
-        [recommender_service.GetRecommendationRequest],
-        Awaitable[recommendation.Recommendation],
-    ]:
+    def get_recommendation(self) -> Callable[[recommender_service.GetRecommendationRequest], Awaitable[recommendation.Recommendation]]:
         r"""Return a callable for the get recommendation method over gRPC.
 
         Gets the requested recommendation. Requires the
@@ -500,10 +460,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     @property
     def mark_recommendation_claimed(
         self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationClaimedRequest],
-        Awaitable[recommendation.Recommendation],
-    ]:
+    ) -> Callable[[recommender_service.MarkRecommendationClaimedRequest], Awaitable[recommendation.Recommendation]]:
         r"""Return a callable for the mark recommendation claimed method over gRPC.
 
         Marks the Recommendation State as Claimed. Users can use this
@@ -529,9 +486,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "mark_recommendation_claimed" not in self._stubs:
-            self._stubs[
-                "mark_recommendation_claimed"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["mark_recommendation_claimed"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkRecommendationClaimed",
                 request_serializer=recommender_service.MarkRecommendationClaimedRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -541,10 +496,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     @property
     def mark_recommendation_succeeded(
         self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationSucceededRequest],
-        Awaitable[recommendation.Recommendation],
-    ]:
+    ) -> Callable[[recommender_service.MarkRecommendationSucceededRequest], Awaitable[recommendation.Recommendation]]:
         r"""Return a callable for the mark recommendation succeeded method over gRPC.
 
         Marks the Recommendation State as Succeeded. Users can use this
@@ -570,9 +522,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "mark_recommendation_succeeded" not in self._stubs:
-            self._stubs[
-                "mark_recommendation_succeeded"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["mark_recommendation_succeeded"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkRecommendationSucceeded",
                 request_serializer=recommender_service.MarkRecommendationSucceededRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -580,12 +530,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["mark_recommendation_succeeded"]
 
     @property
-    def mark_recommendation_failed(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationFailedRequest],
-        Awaitable[recommendation.Recommendation],
-    ]:
+    def mark_recommendation_failed(self) -> Callable[[recommender_service.MarkRecommendationFailedRequest], Awaitable[recommendation.Recommendation]]:
         r"""Return a callable for the mark recommendation failed method over gRPC.
 
         Marks the Recommendation State as Failed. Users can use this
@@ -611,9 +556,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "mark_recommendation_failed" not in self._stubs:
-            self._stubs[
-                "mark_recommendation_failed"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["mark_recommendation_failed"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkRecommendationFailed",
                 request_serializer=recommender_service.MarkRecommendationFailedRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -621,12 +564,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["mark_recommendation_failed"]
 
     @property
-    def get_recommender_config(
-        self,
-    ) -> Callable[
-        [recommender_service.GetRecommenderConfigRequest],
-        Awaitable[recommender_config.RecommenderConfig],
-    ]:
+    def get_recommender_config(self) -> Callable[[recommender_service.GetRecommenderConfigRequest], Awaitable[recommender_config.RecommenderConfig]]:
         r"""Return a callable for the get recommender config method over gRPC.
 
         Gets the requested Recommender Config. There is only
@@ -653,10 +591,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     @property
     def update_recommender_config(
         self,
-    ) -> Callable[
-        [recommender_service.UpdateRecommenderConfigRequest],
-        Awaitable[gcr_recommender_config.RecommenderConfig],
-    ]:
+    ) -> Callable[[recommender_service.UpdateRecommenderConfigRequest], Awaitable[gcr_recommender_config.RecommenderConfig]]:
         r"""Return a callable for the update recommender config method over gRPC.
 
         Updates a Recommender Config. This will create a new
@@ -683,10 +618,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     @property
     def get_insight_type_config(
         self,
-    ) -> Callable[
-        [recommender_service.GetInsightTypeConfigRequest],
-        Awaitable[insight_type_config.InsightTypeConfig],
-    ]:
+    ) -> Callable[[recommender_service.GetInsightTypeConfigRequest], Awaitable[insight_type_config.InsightTypeConfig]]:
         r"""Return a callable for the get insight type config method over gRPC.
 
         Gets the requested InsightTypeConfig. There is only
@@ -713,10 +645,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     @property
     def update_insight_type_config(
         self,
-    ) -> Callable[
-        [recommender_service.UpdateInsightTypeConfigRequest],
-        Awaitable[gcr_insight_type_config.InsightTypeConfig],
-    ]:
+    ) -> Callable[[recommender_service.UpdateInsightTypeConfigRequest], Awaitable[gcr_insight_type_config.InsightTypeConfig]]:
         r"""Return a callable for the update insight type config method over gRPC.
 
         Updates an InsightTypeConfig change. This will create
@@ -733,9 +662,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_insight_type_config" not in self._stubs:
-            self._stubs[
-                "update_insight_type_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_insight_type_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/UpdateInsightTypeConfig",
                 request_serializer=recommender_service.UpdateInsightTypeConfigRequest.serialize,
                 response_deserializer=gcr_insight_type_config.InsightTypeConfig.deserialize,
@@ -743,12 +670,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["update_insight_type_config"]
 
     @property
-    def list_recommenders(
-        self,
-    ) -> Callable[
-        [recommender_service.ListRecommendersRequest],
-        Awaitable[recommender_service.ListRecommendersResponse],
-    ]:
+    def list_recommenders(self) -> Callable[[recommender_service.ListRecommendersRequest], Awaitable[recommender_service.ListRecommendersResponse]]:
         r"""Return a callable for the list recommenders method over gRPC.
 
         Lists all available Recommenders.
@@ -773,12 +695,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["list_recommenders"]
 
     @property
-    def list_insight_types(
-        self,
-    ) -> Callable[
-        [recommender_service.ListInsightTypesRequest],
-        Awaitable[recommender_service.ListInsightTypesResponse],
-    ]:
+    def list_insight_types(self) -> Callable[[recommender_service.ListInsightTypesRequest], Awaitable[recommender_service.ListInsightTypesResponse]]:
         r"""Return a callable for the list insight types method over gRPC.
 
         Lists available InsightTypes.

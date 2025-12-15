@@ -34,10 +34,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import (
-    rollouts_resources,
-    rollouts_service,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import rollouts_resources, rollouts_service
 
 from .base import DEFAULT_CLIENT_INFO, SaasRolloutsTransport
 from .grpc import SaasRolloutsGrpcTransport
@@ -52,13 +49,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -68,10 +61,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -90,11 +80,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +258,14 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +301,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -336,12 +316,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._grpc_channel
 
     @property
-    def list_rollouts(
-        self,
-    ) -> Callable[
-        [rollouts_service.ListRolloutsRequest],
-        Awaitable[rollouts_service.ListRolloutsResponse],
-    ]:
+    def list_rollouts(self) -> Callable[[rollouts_service.ListRolloutsRequest], Awaitable[rollouts_service.ListRolloutsResponse]]:
         r"""Return a callable for the list rollouts method over gRPC.
 
         Retrieve a collection of rollouts.
@@ -365,11 +340,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["list_rollouts"]
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[
-        [rollouts_service.GetRolloutRequest], Awaitable[rollouts_resources.Rollout]
-    ]:
+    def get_rollout(self) -> Callable[[rollouts_service.GetRolloutRequest], Awaitable[rollouts_resources.Rollout]]:
         r"""Return a callable for the get rollout method over gRPC.
 
         Retrieve a single rollout.
@@ -393,11 +364,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["get_rollout"]
 
     @property
-    def create_rollout(
-        self,
-    ) -> Callable[
-        [rollouts_service.CreateRolloutRequest], Awaitable[rollouts_resources.Rollout]
-    ]:
+    def create_rollout(self) -> Callable[[rollouts_service.CreateRolloutRequest], Awaitable[rollouts_resources.Rollout]]:
         r"""Return a callable for the create rollout method over gRPC.
 
         Create a new rollout.
@@ -421,11 +388,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["create_rollout"]
 
     @property
-    def update_rollout(
-        self,
-    ) -> Callable[
-        [rollouts_service.UpdateRolloutRequest], Awaitable[rollouts_resources.Rollout]
-    ]:
+    def update_rollout(self) -> Callable[[rollouts_service.UpdateRolloutRequest], Awaitable[rollouts_resources.Rollout]]:
         r"""Return a callable for the update rollout method over gRPC.
 
         Update a single rollout.
@@ -449,9 +412,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["update_rollout"]
 
     @property
-    def delete_rollout(
-        self,
-    ) -> Callable[[rollouts_service.DeleteRolloutRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_rollout(self) -> Callable[[rollouts_service.DeleteRolloutRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete rollout method over gRPC.
 
         Delete a single rollout.
@@ -475,12 +436,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["delete_rollout"]
 
     @property
-    def list_rollout_kinds(
-        self,
-    ) -> Callable[
-        [rollouts_service.ListRolloutKindsRequest],
-        Awaitable[rollouts_service.ListRolloutKindsResponse],
-    ]:
+    def list_rollout_kinds(self) -> Callable[[rollouts_service.ListRolloutKindsRequest], Awaitable[rollouts_service.ListRolloutKindsResponse]]:
         r"""Return a callable for the list rollout kinds method over gRPC.
 
         Retrieve a collection of rollout kinds.
@@ -504,12 +460,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["list_rollout_kinds"]
 
     @property
-    def get_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.GetRolloutKindRequest],
-        Awaitable[rollouts_resources.RolloutKind],
-    ]:
+    def get_rollout_kind(self) -> Callable[[rollouts_service.GetRolloutKindRequest], Awaitable[rollouts_resources.RolloutKind]]:
         r"""Return a callable for the get rollout kind method over gRPC.
 
         Retrieve a single rollout kind.
@@ -533,12 +484,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["get_rollout_kind"]
 
     @property
-    def create_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.CreateRolloutKindRequest],
-        Awaitable[rollouts_resources.RolloutKind],
-    ]:
+    def create_rollout_kind(self) -> Callable[[rollouts_service.CreateRolloutKindRequest], Awaitable[rollouts_resources.RolloutKind]]:
         r"""Return a callable for the create rollout kind method over gRPC.
 
         Create a new rollout kind.
@@ -562,12 +508,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["create_rollout_kind"]
 
     @property
-    def update_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.UpdateRolloutKindRequest],
-        Awaitable[rollouts_resources.RolloutKind],
-    ]:
+    def update_rollout_kind(self) -> Callable[[rollouts_service.UpdateRolloutKindRequest], Awaitable[rollouts_resources.RolloutKind]]:
         r"""Return a callable for the update rollout kind method over gRPC.
 
         Update a single rollout kind.
@@ -591,11 +532,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
         return self._stubs["update_rollout_kind"]
 
     @property
-    def delete_rollout_kind(
-        self,
-    ) -> Callable[
-        [rollouts_service.DeleteRolloutKindRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_rollout_kind(self) -> Callable[[rollouts_service.DeleteRolloutKindRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete rollout kind method over gRPC.
 
         Delete a single rollout kind.
@@ -752,9 +689,7 @@ class SaasRolloutsGrpcAsyncIOTransport(SaasRolloutsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

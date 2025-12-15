@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class AggregatedListPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[Tuple[str, compute.InstanceGroupManagersScopedList]]:
@@ -180,12 +163,7 @@ class ListPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[compute.InstanceGroupManager]:
@@ -256,12 +234,7 @@ class ListErrorsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[compute.InstanceManagedByIgmError]:
@@ -292,9 +265,7 @@ class ListManagedInstancesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., compute.InstanceGroupManagersListManagedInstancesResponse
-        ],
+        method: Callable[..., compute.InstanceGroupManagersListManagedInstancesResponse],
         request: compute.ListManagedInstancesInstanceGroupManagersRequest,
         response: compute.InstanceGroupManagersListManagedInstancesResponse,
         *,
@@ -320,9 +291,7 @@ class ListManagedInstancesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = compute.ListManagedInstancesInstanceGroupManagersRequest(
-            request
-        )
+        self._request = compute.ListManagedInstancesInstanceGroupManagersRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -332,18 +301,11 @@ class ListManagedInstancesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[compute.InstanceGroupManagersListManagedInstancesResponse]:
+    def pages(self) -> Iterator[compute.InstanceGroupManagersListManagedInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[compute.ManagedInstance]:
@@ -400,9 +362,7 @@ class ListPerInstanceConfigsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = compute.ListPerInstanceConfigsInstanceGroupManagersRequest(
-            request
-        )
+        self._request = compute.ListPerInstanceConfigsInstanceGroupManagersRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -412,18 +372,11 @@ class ListPerInstanceConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[compute.InstanceGroupManagersListPerInstanceConfigsResp]:
+    def pages(self) -> Iterator[compute.InstanceGroupManagersListPerInstanceConfigsResp]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[compute.PerInstanceConfig]:

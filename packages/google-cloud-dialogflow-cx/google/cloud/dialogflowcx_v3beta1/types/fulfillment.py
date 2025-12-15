@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings as gcdc_advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import response_message
 
 __protobuf__ = proto.module(
@@ -193,17 +191,13 @@ class Fulfillment(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            case_content: MutableSequence[
-                "Fulfillment.ConditionalCases.Case.CaseContent"
-            ] = proto.RepeatedField(
+            case_content: MutableSequence["Fulfillment.ConditionalCases.Case.CaseContent"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Fulfillment.ConditionalCases.Case.CaseContent",
             )
 
-        cases: MutableSequence[
-            "Fulfillment.ConditionalCases.Case"
-        ] = proto.RepeatedField(
+        cases: MutableSequence["Fulfillment.ConditionalCases.Case"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Fulfillment.ConditionalCases.Case",

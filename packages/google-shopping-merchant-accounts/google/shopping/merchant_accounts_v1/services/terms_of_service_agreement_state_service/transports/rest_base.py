@@ -25,9 +25,7 @@ from google.shopping.merchant_accounts_v1.types import termsofserviceagreementst
 from .base import DEFAULT_CLIENT_INFO, TermsOfServiceAgreementStateServiceTransport
 
 
-class _BaseTermsOfServiceAgreementStateServiceRestTransport(
-    TermsOfServiceAgreementStateServiceTransport
-):
+class _BaseTermsOfServiceAgreementStateServiceRestTransport(TermsOfServiceAgreementStateServiceTransport):
     """Base REST backend transport for TermsOfServiceAgreementStateService.
 
     Note: This class is not meant to be used directly. Use its sync and
@@ -73,20 +71,14 @@ class _BaseTermsOfServiceAgreementStateServiceRestTransport(
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseGetTermsOfServiceAgreementState:
@@ -97,11 +89,7 @@ class _BaseTermsOfServiceAgreementStateServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -115,11 +103,7 @@ class _BaseTermsOfServiceAgreementStateServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest.pb(
-                    request
-                )
-            )
+            pb_request = termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -132,9 +116,7 @@ class _BaseTermsOfServiceAgreementStateServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState._get_unset_required_fields(
-                    query_params
-                )
+                _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -148,11 +130,7 @@ class _BaseTermsOfServiceAgreementStateServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -166,9 +144,7 @@ class _BaseTermsOfServiceAgreementStateServiceRestTransport(
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest.pb(
-                request
-            )
+            pb_request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

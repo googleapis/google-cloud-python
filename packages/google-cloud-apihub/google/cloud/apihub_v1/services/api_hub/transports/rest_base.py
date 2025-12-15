@@ -74,20 +74,14 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateApi:
@@ -98,11 +92,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -125,9 +115,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -138,11 +126,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -155,11 +139,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -182,9 +162,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -195,11 +173,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateApiOperation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateApiOperation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -212,11 +186,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -239,9 +209,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -252,11 +220,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateAttribute._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateAttribute._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -269,11 +233,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -296,9 +256,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -309,11 +267,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -326,11 +280,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -353,9 +303,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -366,11 +314,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateExternalApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateExternalApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -383,11 +327,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -410,9 +350,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -423,11 +361,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateSpec._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateSpec._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -440,11 +374,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -467,9 +397,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -480,11 +408,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseCreateVersion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseCreateVersion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -497,11 +421,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -527,11 +447,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -544,11 +460,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -574,11 +486,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteApiOperation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteApiOperation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -591,11 +499,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -621,11 +525,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteAttribute._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteAttribute._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -638,11 +538,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -668,11 +564,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -685,11 +577,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -715,11 +603,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteExternalApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteExternalApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -732,11 +616,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -762,11 +642,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteSpec._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteSpec._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -779,11 +655,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -809,11 +681,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseDeleteVersion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseDeleteVersion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -826,11 +694,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -856,11 +720,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -873,11 +733,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -903,11 +759,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetApiOperation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetApiOperation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -920,11 +772,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -950,11 +798,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetAttribute._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetAttribute._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -967,11 +811,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -997,11 +837,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetDefinition._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetDefinition._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1014,11 +850,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1044,11 +876,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1061,11 +889,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1091,11 +915,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetExternalApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetExternalApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1108,11 +928,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1138,11 +954,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetSpec._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetSpec._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1155,11 +967,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1185,11 +993,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetSpecContents._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetSpecContents._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1202,11 +1006,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1232,11 +1032,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseGetVersion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseGetVersion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1249,11 +1045,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1279,11 +1071,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListApiOperations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListApiOperations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1296,11 +1084,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1326,11 +1110,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListApis._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListApis._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1343,11 +1123,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1373,11 +1149,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListAttributes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListAttributes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1390,11 +1162,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1420,11 +1188,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListDeployments._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListDeployments._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1437,11 +1201,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1467,11 +1227,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListExternalApis._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListExternalApis._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1484,11 +1240,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1514,11 +1266,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListSpecs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListSpecs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1531,11 +1279,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1561,11 +1305,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseListVersions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseListVersions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1578,11 +1318,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1605,9 +1341,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1618,11 +1352,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseSearchResources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseSearchResources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1637,11 +1367,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1664,9 +1390,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1677,11 +1401,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1696,11 +1416,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1723,9 +1439,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1736,11 +1450,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateApiOperation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1755,11 +1465,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1782,9 +1488,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1795,11 +1499,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateAttribute._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateAttribute._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1814,11 +1514,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1841,9 +1537,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1854,11 +1548,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateDeployment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateDeployment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1873,11 +1563,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1900,9 +1586,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1913,11 +1597,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateExternalApi._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateExternalApi._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1932,11 +1612,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1959,9 +1635,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1972,11 +1646,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateSpec._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateSpec._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1991,11 +1661,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2018,9 +1684,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2031,11 +1695,7 @@ class _BaseApiHubRestTransport(ApiHubTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseApiHubRestTransport._BaseUpdateVersion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseApiHubRestTransport._BaseUpdateVersion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

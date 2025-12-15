@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.ids_v1 import gapic_version as package_version
 from google.cloud.ids_v1.types import ids
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class IDSTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -189,38 +179,19 @@ class IDSTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_endpoints(
-        self,
-    ) -> Callable[
-        [ids.ListEndpointsRequest],
-        Union[ids.ListEndpointsResponse, Awaitable[ids.ListEndpointsResponse]],
-    ]:
+    def list_endpoints(self) -> Callable[[ids.ListEndpointsRequest], Union[ids.ListEndpointsResponse, Awaitable[ids.ListEndpointsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_endpoint(
-        self,
-    ) -> Callable[
-        [ids.GetEndpointRequest], Union[ids.Endpoint, Awaitable[ids.Endpoint]]
-    ]:
+    def get_endpoint(self) -> Callable[[ids.GetEndpointRequest], Union[ids.Endpoint, Awaitable[ids.Endpoint]]]:
         raise NotImplementedError()
 
     @property
-    def create_endpoint(
-        self,
-    ) -> Callable[
-        [ids.CreateEndpointRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_endpoint(self) -> Callable[[ids.CreateEndpointRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_endpoint(
-        self,
-    ) -> Callable[
-        [ids.DeleteEndpointRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_endpoint(self) -> Callable[[ids.DeleteEndpointRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property

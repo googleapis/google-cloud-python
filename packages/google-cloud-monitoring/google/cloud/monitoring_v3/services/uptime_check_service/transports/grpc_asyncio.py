@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -275,18 +264,14 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -322,9 +307,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -341,10 +324,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
     @property
     def list_uptime_check_configs(
         self,
-    ) -> Callable[
-        [uptime_service.ListUptimeCheckConfigsRequest],
-        Awaitable[uptime_service.ListUptimeCheckConfigsResponse],
-    ]:
+    ) -> Callable[[uptime_service.ListUptimeCheckConfigsRequest], Awaitable[uptime_service.ListUptimeCheckConfigsResponse]]:
         r"""Return a callable for the list uptime check configs method over gRPC.
 
         Lists the existing valid Uptime check configurations
@@ -370,12 +350,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         return self._stubs["list_uptime_check_configs"]
 
     @property
-    def get_uptime_check_config(
-        self,
-    ) -> Callable[
-        [uptime_service.GetUptimeCheckConfigRequest],
-        Awaitable[uptime.UptimeCheckConfig],
-    ]:
+    def get_uptime_check_config(self) -> Callable[[uptime_service.GetUptimeCheckConfigRequest], Awaitable[uptime.UptimeCheckConfig]]:
         r"""Return a callable for the get uptime check config method over gRPC.
 
         Gets a single Uptime check configuration.
@@ -399,12 +374,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         return self._stubs["get_uptime_check_config"]
 
     @property
-    def create_uptime_check_config(
-        self,
-    ) -> Callable[
-        [uptime_service.CreateUptimeCheckConfigRequest],
-        Awaitable[uptime.UptimeCheckConfig],
-    ]:
+    def create_uptime_check_config(self) -> Callable[[uptime_service.CreateUptimeCheckConfigRequest], Awaitable[uptime.UptimeCheckConfig]]:
         r"""Return a callable for the create uptime check config method over gRPC.
 
         Creates a new Uptime check configuration.
@@ -420,9 +390,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_uptime_check_config" not in self._stubs:
-            self._stubs[
-                "create_uptime_check_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_uptime_check_config"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.UptimeCheckService/CreateUptimeCheckConfig",
                 request_serializer=uptime_service.CreateUptimeCheckConfigRequest.serialize,
                 response_deserializer=uptime.UptimeCheckConfig.deserialize,
@@ -430,12 +398,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         return self._stubs["create_uptime_check_config"]
 
     @property
-    def update_uptime_check_config(
-        self,
-    ) -> Callable[
-        [uptime_service.UpdateUptimeCheckConfigRequest],
-        Awaitable[uptime.UptimeCheckConfig],
-    ]:
+    def update_uptime_check_config(self) -> Callable[[uptime_service.UpdateUptimeCheckConfigRequest], Awaitable[uptime.UptimeCheckConfig]]:
         r"""Return a callable for the update uptime check config method over gRPC.
 
         Updates an Uptime check configuration. You can either replace
@@ -455,9 +418,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_uptime_check_config" not in self._stubs:
-            self._stubs[
-                "update_uptime_check_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_uptime_check_config"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.UptimeCheckService/UpdateUptimeCheckConfig",
                 request_serializer=uptime_service.UpdateUptimeCheckConfigRequest.serialize,
                 response_deserializer=uptime.UptimeCheckConfig.deserialize,
@@ -465,11 +426,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         return self._stubs["update_uptime_check_config"]
 
     @property
-    def delete_uptime_check_config(
-        self,
-    ) -> Callable[
-        [uptime_service.DeleteUptimeCheckConfigRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_uptime_check_config(self) -> Callable[[uptime_service.DeleteUptimeCheckConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete uptime check config method over gRPC.
 
         Deletes an Uptime check configuration. Note that this
@@ -488,9 +445,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_uptime_check_config" not in self._stubs:
-            self._stubs[
-                "delete_uptime_check_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_uptime_check_config"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.UptimeCheckService/DeleteUptimeCheckConfig",
                 request_serializer=uptime_service.DeleteUptimeCheckConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -498,12 +453,7 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
         return self._stubs["delete_uptime_check_config"]
 
     @property
-    def list_uptime_check_ips(
-        self,
-    ) -> Callable[
-        [uptime_service.ListUptimeCheckIpsRequest],
-        Awaitable[uptime_service.ListUptimeCheckIpsResponse],
-    ]:
+    def list_uptime_check_ips(self) -> Callable[[uptime_service.ListUptimeCheckIpsRequest], Awaitable[uptime_service.ListUptimeCheckIpsResponse]]:
         r"""Return a callable for the list uptime check ips method over gRPC.
 
         Returns the list of IP addresses that checkers run

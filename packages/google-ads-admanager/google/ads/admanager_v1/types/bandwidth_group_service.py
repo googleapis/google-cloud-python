@@ -136,9 +136,7 @@ class ListBandwidthGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    bandwidth_groups: MutableSequence[
-        bandwidth_group_messages.BandwidthGroup
-    ] = proto.RepeatedField(
+    bandwidth_groups: MutableSequence[bandwidth_group_messages.BandwidthGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=bandwidth_group_messages.BandwidthGroup,

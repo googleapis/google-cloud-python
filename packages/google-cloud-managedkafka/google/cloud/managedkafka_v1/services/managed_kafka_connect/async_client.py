@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -84,39 +73,21 @@ class ManagedKafkaConnectAsyncClient:
     _DEFAULT_UNIVERSE = ManagedKafkaConnectClient._DEFAULT_UNIVERSE
 
     connect_cluster_path = staticmethod(ManagedKafkaConnectClient.connect_cluster_path)
-    parse_connect_cluster_path = staticmethod(
-        ManagedKafkaConnectClient.parse_connect_cluster_path
-    )
+    parse_connect_cluster_path = staticmethod(ManagedKafkaConnectClient.parse_connect_cluster_path)
     connector_path = staticmethod(ManagedKafkaConnectClient.connector_path)
     parse_connector_path = staticmethod(ManagedKafkaConnectClient.parse_connector_path)
     secret_version_path = staticmethod(ManagedKafkaConnectClient.secret_version_path)
-    parse_secret_version_path = staticmethod(
-        ManagedKafkaConnectClient.parse_secret_version_path
-    )
-    common_billing_account_path = staticmethod(
-        ManagedKafkaConnectClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ManagedKafkaConnectClient.parse_common_billing_account_path
-    )
+    parse_secret_version_path = staticmethod(ManagedKafkaConnectClient.parse_secret_version_path)
+    common_billing_account_path = staticmethod(ManagedKafkaConnectClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ManagedKafkaConnectClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ManagedKafkaConnectClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ManagedKafkaConnectClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ManagedKafkaConnectClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ManagedKafkaConnectClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ManagedKafkaConnectClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ManagedKafkaConnectClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ManagedKafkaConnectClient.parse_common_organization_path)
     common_project_path = staticmethod(ManagedKafkaConnectClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ManagedKafkaConnectClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ManagedKafkaConnectClient.parse_common_project_path)
     common_location_path = staticmethod(ManagedKafkaConnectClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ManagedKafkaConnectClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ManagedKafkaConnectClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -152,9 +123,7 @@ class ManagedKafkaConnectAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -221,13 +190,7 @@ class ManagedKafkaConnectAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ManagedKafkaConnectTransport,
-                Callable[..., ManagedKafkaConnectTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ManagedKafkaConnectTransport, Callable[..., ManagedKafkaConnectTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -287,20 +250,14 @@ class ManagedKafkaConnectAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.managedkafka_v1.ManagedKafkaConnectAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.managedkafka.v1.ManagedKafkaConnect",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -311,9 +268,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def list_connect_clusters(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.ListConnectClustersRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.ListConnectClustersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -382,14 +337,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -403,15 +353,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_connect_clusters
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_connect_clusters]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -440,9 +386,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def get_connect_cluster(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.GetConnectClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.GetConnectClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -507,14 +451,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -528,15 +467,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_connect_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_connect_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -554,9 +489,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def create_connect_cluster(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.CreateConnectClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.CreateConnectClusterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         connect_cluster: Optional[resources.ConnectCluster] = None,
@@ -657,14 +590,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, connect_cluster, connect_cluster_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -682,15 +610,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_connect_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_connect_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -716,9 +640,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def update_connect_cluster(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.UpdateConnectClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.UpdateConnectClusterRequest, dict]] = None,
         *,
         connect_cluster: Optional[resources.ConnectCluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -807,14 +729,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [connect_cluster, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -830,17 +747,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_connect_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_connect_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("connect_cluster.name", request.connect_cluster.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("connect_cluster.name", request.connect_cluster.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -866,9 +777,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def delete_connect_cluster(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.DeleteConnectClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.DeleteConnectClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -946,14 +855,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -967,15 +871,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_connect_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_connect_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1001,9 +901,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def list_connectors(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.ListConnectorsRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.ListConnectorsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1071,14 +969,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1092,15 +985,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_connectors
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_connectors]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1129,9 +1018,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def get_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.GetConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.GetConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1197,14 +1084,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1218,15 +1100,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1244,9 +1122,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def create_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.CreateConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.CreateConnectorRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         connector: Optional[resources.Connector] = None,
@@ -1330,14 +1206,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, connector, connector_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1355,15 +1226,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1381,9 +1248,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def update_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.UpdateConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.UpdateConnectorRequest, dict]] = None,
         *,
         connector: Optional[resources.Connector] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1457,14 +1322,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [connector, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1480,17 +1340,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("connector.name", request.connector.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("connector.name", request.connector.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1508,9 +1362,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def delete_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.DeleteConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.DeleteConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1566,14 +1418,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1587,15 +1434,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1610,9 +1453,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def pause_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.PauseConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.PauseConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1675,14 +1516,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1696,15 +1532,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.pause_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.pause_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1722,9 +1554,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def resume_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.ResumeConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.ResumeConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1787,14 +1617,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1808,15 +1633,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.resume_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.resume_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1834,9 +1655,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def restart_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.RestartConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.RestartConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1899,14 +1718,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1920,15 +1734,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.restart_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.restart_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1946,9 +1756,7 @@ class ManagedKafkaConnectAsyncClient:
 
     async def stop_connector(
         self,
-        request: Optional[
-            Union[managed_kafka_connect.StopConnectorRequest, dict]
-        ] = None,
+        request: Optional[Union[managed_kafka_connect.StopConnectorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2011,14 +1819,9 @@ class ManagedKafkaConnectAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2032,15 +1835,11 @@ class ManagedKafkaConnectAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.stop_connector
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.stop_connector]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2093,9 +1892,7 @@ class ManagedKafkaConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2148,9 +1945,7 @@ class ManagedKafkaConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2207,9 +2002,7 @@ class ManagedKafkaConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2262,9 +2055,7 @@ class ManagedKafkaConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2314,9 +2105,7 @@ class ManagedKafkaConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2369,9 +2158,7 @@ class ManagedKafkaConnectAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2394,9 +2181,7 @@ class ManagedKafkaConnectAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

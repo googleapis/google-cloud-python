@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.ai.generativelanguage_v1beta import gapic_version as package_version
 from google.ai.generativelanguage_v1beta.types import retriever, retriever_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class RetrieverServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -411,50 +401,26 @@ class RetrieverServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_corpus(
-        self,
-    ) -> Callable[
-        [retriever_service.CreateCorpusRequest],
-        Union[retriever.Corpus, Awaitable[retriever.Corpus]],
-    ]:
+    def create_corpus(self) -> Callable[[retriever_service.CreateCorpusRequest], Union[retriever.Corpus, Awaitable[retriever.Corpus]]]:
         raise NotImplementedError()
 
     @property
-    def get_corpus(
-        self,
-    ) -> Callable[
-        [retriever_service.GetCorpusRequest],
-        Union[retriever.Corpus, Awaitable[retriever.Corpus]],
-    ]:
+    def get_corpus(self) -> Callable[[retriever_service.GetCorpusRequest], Union[retriever.Corpus, Awaitable[retriever.Corpus]]]:
         raise NotImplementedError()
 
     @property
-    def update_corpus(
-        self,
-    ) -> Callable[
-        [retriever_service.UpdateCorpusRequest],
-        Union[retriever.Corpus, Awaitable[retriever.Corpus]],
-    ]:
+    def update_corpus(self) -> Callable[[retriever_service.UpdateCorpusRequest], Union[retriever.Corpus, Awaitable[retriever.Corpus]]]:
         raise NotImplementedError()
 
     @property
-    def delete_corpus(
-        self,
-    ) -> Callable[
-        [retriever_service.DeleteCorpusRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_corpus(self) -> Callable[[retriever_service.DeleteCorpusRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_corpora(
         self,
     ) -> Callable[
-        [retriever_service.ListCorporaRequest],
-        Union[
-            retriever_service.ListCorporaResponse,
-            Awaitable[retriever_service.ListCorporaResponse],
-        ],
+        [retriever_service.ListCorporaRequest], Union[retriever_service.ListCorporaResponse, Awaitable[retriever_service.ListCorporaResponse]]
     ]:
         raise NotImplementedError()
 
@@ -462,59 +428,31 @@ class RetrieverServiceTransport(abc.ABC):
     def query_corpus(
         self,
     ) -> Callable[
-        [retriever_service.QueryCorpusRequest],
-        Union[
-            retriever_service.QueryCorpusResponse,
-            Awaitable[retriever_service.QueryCorpusResponse],
-        ],
+        [retriever_service.QueryCorpusRequest], Union[retriever_service.QueryCorpusResponse, Awaitable[retriever_service.QueryCorpusResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_document(
-        self,
-    ) -> Callable[
-        [retriever_service.CreateDocumentRequest],
-        Union[retriever.Document, Awaitable[retriever.Document]],
-    ]:
+    def create_document(self) -> Callable[[retriever_service.CreateDocumentRequest], Union[retriever.Document, Awaitable[retriever.Document]]]:
         raise NotImplementedError()
 
     @property
-    def get_document(
-        self,
-    ) -> Callable[
-        [retriever_service.GetDocumentRequest],
-        Union[retriever.Document, Awaitable[retriever.Document]],
-    ]:
+    def get_document(self) -> Callable[[retriever_service.GetDocumentRequest], Union[retriever.Document, Awaitable[retriever.Document]]]:
         raise NotImplementedError()
 
     @property
-    def update_document(
-        self,
-    ) -> Callable[
-        [retriever_service.UpdateDocumentRequest],
-        Union[retriever.Document, Awaitable[retriever.Document]],
-    ]:
+    def update_document(self) -> Callable[[retriever_service.UpdateDocumentRequest], Union[retriever.Document, Awaitable[retriever.Document]]]:
         raise NotImplementedError()
 
     @property
-    def delete_document(
-        self,
-    ) -> Callable[
-        [retriever_service.DeleteDocumentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_document(self) -> Callable[[retriever_service.DeleteDocumentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_documents(
         self,
     ) -> Callable[
-        [retriever_service.ListDocumentsRequest],
-        Union[
-            retriever_service.ListDocumentsResponse,
-            Awaitable[retriever_service.ListDocumentsResponse],
-        ],
+        [retriever_service.ListDocumentsRequest], Union[retriever_service.ListDocumentsResponse, Awaitable[retriever_service.ListDocumentsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -522,21 +460,12 @@ class RetrieverServiceTransport(abc.ABC):
     def query_document(
         self,
     ) -> Callable[
-        [retriever_service.QueryDocumentRequest],
-        Union[
-            retriever_service.QueryDocumentResponse,
-            Awaitable[retriever_service.QueryDocumentResponse],
-        ],
+        [retriever_service.QueryDocumentRequest], Union[retriever_service.QueryDocumentResponse, Awaitable[retriever_service.QueryDocumentResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_chunk(
-        self,
-    ) -> Callable[
-        [retriever_service.CreateChunkRequest],
-        Union[retriever.Chunk, Awaitable[retriever.Chunk]],
-    ]:
+    def create_chunk(self) -> Callable[[retriever_service.CreateChunkRequest], Union[retriever.Chunk, Awaitable[retriever.Chunk]]]:
         raise NotImplementedError()
 
     @property
@@ -544,29 +473,16 @@ class RetrieverServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [retriever_service.BatchCreateChunksRequest],
-        Union[
-            retriever_service.BatchCreateChunksResponse,
-            Awaitable[retriever_service.BatchCreateChunksResponse],
-        ],
+        Union[retriever_service.BatchCreateChunksResponse, Awaitable[retriever_service.BatchCreateChunksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_chunk(
-        self,
-    ) -> Callable[
-        [retriever_service.GetChunkRequest],
-        Union[retriever.Chunk, Awaitable[retriever.Chunk]],
-    ]:
+    def get_chunk(self) -> Callable[[retriever_service.GetChunkRequest], Union[retriever.Chunk, Awaitable[retriever.Chunk]]]:
         raise NotImplementedError()
 
     @property
-    def update_chunk(
-        self,
-    ) -> Callable[
-        [retriever_service.UpdateChunkRequest],
-        Union[retriever.Chunk, Awaitable[retriever.Chunk]],
-    ]:
+    def update_chunk(self) -> Callable[[retriever_service.UpdateChunkRequest], Union[retriever.Chunk, Awaitable[retriever.Chunk]]]:
         raise NotImplementedError()
 
     @property
@@ -574,40 +490,23 @@ class RetrieverServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [retriever_service.BatchUpdateChunksRequest],
-        Union[
-            retriever_service.BatchUpdateChunksResponse,
-            Awaitable[retriever_service.BatchUpdateChunksResponse],
-        ],
+        Union[retriever_service.BatchUpdateChunksResponse, Awaitable[retriever_service.BatchUpdateChunksResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_chunk(
-        self,
-    ) -> Callable[
-        [retriever_service.DeleteChunkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_chunk(self) -> Callable[[retriever_service.DeleteChunkRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def batch_delete_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.BatchDeleteChunksRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def batch_delete_chunks(self) -> Callable[[retriever_service.BatchDeleteChunksRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_chunks(
         self,
     ) -> Callable[
-        [retriever_service.ListChunksRequest],
-        Union[
-            retriever_service.ListChunksResponse,
-            Awaitable[retriever_service.ListChunksResponse],
-        ],
+        [retriever_service.ListChunksRequest], Union[retriever_service.ListChunksResponse, Awaitable[retriever_service.ListChunksResponse]]
     ]:
         raise NotImplementedError()
 
@@ -616,20 +515,14 @@ class RetrieverServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

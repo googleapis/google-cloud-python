@@ -120,12 +120,8 @@ class ControlServiceRestInterceptor:
     """
 
     def pre_create_control(
-        self,
-        request: control_service.CreateControlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control_service.CreateControlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: control_service.CreateControlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control_service.CreateControlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_control
 
         Override in a subclass to manipulate the request or metadata
@@ -147,9 +143,7 @@ class ControlServiceRestInterceptor:
         return response
 
     def post_create_control_with_metadata(
-        self,
-        response: gcd_control.Control,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_control.Control, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_control.Control, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_control
 
@@ -166,12 +160,8 @@ class ControlServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_control(
-        self,
-        request: control_service.DeleteControlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control_service.DeleteControlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: control_service.DeleteControlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control_service.DeleteControlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_control
 
         Override in a subclass to manipulate the request or metadata
@@ -180,12 +170,8 @@ class ControlServiceRestInterceptor:
         return request, metadata
 
     def pre_get_control(
-        self,
-        request: control_service.GetControlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control_service.GetControlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: control_service.GetControlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control_service.GetControlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_control
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +193,7 @@ class ControlServiceRestInterceptor:
         return response
 
     def post_get_control_with_metadata(
-        self,
-        response: control.Control,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: control.Control, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[control.Control, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_control
 
@@ -226,12 +210,8 @@ class ControlServiceRestInterceptor:
         return response, metadata
 
     def pre_list_controls(
-        self,
-        request: control_service.ListControlsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control_service.ListControlsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: control_service.ListControlsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control_service.ListControlsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_controls
 
         Override in a subclass to manipulate the request or metadata
@@ -239,9 +219,7 @@ class ControlServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_controls(
-        self, response: control_service.ListControlsResponse
-    ) -> control_service.ListControlsResponse:
+    def post_list_controls(self, response: control_service.ListControlsResponse) -> control_service.ListControlsResponse:
         """Post-rpc interceptor for list_controls
 
         DEPRECATED. Please use the `post_list_controls_with_metadata`
@@ -255,12 +233,8 @@ class ControlServiceRestInterceptor:
         return response
 
     def post_list_controls_with_metadata(
-        self,
-        response: control_service.ListControlsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control_service.ListControlsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: control_service.ListControlsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control_service.ListControlsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_controls
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -276,12 +250,8 @@ class ControlServiceRestInterceptor:
         return response, metadata
 
     def pre_update_control(
-        self,
-        request: control_service.UpdateControlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control_service.UpdateControlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: control_service.UpdateControlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control_service.UpdateControlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_control
 
         Override in a subclass to manipulate the request or metadata
@@ -303,9 +273,7 @@ class ControlServiceRestInterceptor:
         return response
 
     def post_update_control_with_metadata(
-        self,
-        response: gcd_control.Control,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_control.Control, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_control.Control, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_control
 
@@ -322,12 +290,8 @@ class ControlServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -345,12 +309,8 @@ class ControlServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +318,7 @@ class ControlServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -370,12 +328,8 @@ class ControlServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -383,9 +337,7 @@ class ControlServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -477,30 +429,18 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ControlServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateControl(
-        _BaseControlServiceRestTransport._BaseCreateControl, ControlServiceRestStub
-    ):
+    class _CreateControl(_BaseControlServiceRestTransport._BaseCreateControl, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.CreateControl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -545,30 +485,18 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseCreateControl._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseCreateControl._get_http_options()
 
             request, metadata = self._interceptor.pre_create_control(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseCreateControl._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseCreateControl._get_transcoded_request(http_options, request)
 
-            body = _BaseControlServiceRestTransport._BaseCreateControl._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseControlServiceRestTransport._BaseCreateControl._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseCreateControl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseCreateControl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -592,13 +520,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._CreateControl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -614,12 +536,8 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             resp = self._interceptor.post_create_control(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_control_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_control_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_control.Control.to_json(response)
                 except:
@@ -640,22 +558,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 )
             return resp
 
-    class _DeleteControl(
-        _BaseControlServiceRestTransport._BaseDeleteControl, ControlServiceRestStub
-    ):
+    class _DeleteControl(_BaseControlServiceRestTransport._BaseDeleteControl, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.DeleteControl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -690,26 +598,16 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseDeleteControl._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseDeleteControl._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_control(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseDeleteControl._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseDeleteControl._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseDeleteControl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseDeleteControl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -733,12 +631,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._DeleteControl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -746,22 +639,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetControl(
-        _BaseControlServiceRestTransport._BaseGetControl, ControlServiceRestStub
-    ):
+    class _GetControl(_BaseControlServiceRestTransport._BaseGetControl, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.GetControl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -805,28 +688,16 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseGetControl._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseGetControl._get_http_options()
 
             request, metadata = self._interceptor.pre_get_control(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseGetControl._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseGetControl._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseControlServiceRestTransport._BaseGetControl._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseControlServiceRestTransport._BaseGetControl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -850,12 +721,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._GetControl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -871,12 +737,8 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             resp = self._interceptor.post_get_control(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_control_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_control_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = control.Control.to_json(response)
                 except:
@@ -897,22 +759,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 )
             return resp
 
-    class _ListControls(
-        _BaseControlServiceRestTransport._BaseListControls, ControlServiceRestStub
-    ):
+    class _ListControls(_BaseControlServiceRestTransport._BaseListControls, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.ListControls")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -951,26 +803,16 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                     Response for ListControls method.
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseListControls._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseListControls._get_http_options()
 
             request, metadata = self._interceptor.pre_list_controls(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseListControls._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseListControls._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseListControls._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseListControls._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -994,12 +836,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._ListControls._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1015,16 +852,10 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             resp = self._interceptor.post_list_controls(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_controls_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_controls_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = control_service.ListControlsResponse.to_json(
-                        response
-                    )
+                    response_payload = control_service.ListControlsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1043,22 +874,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 )
             return resp
 
-    class _UpdateControl(
-        _BaseControlServiceRestTransport._BaseUpdateControl, ControlServiceRestStub
-    ):
+    class _UpdateControl(_BaseControlServiceRestTransport._BaseUpdateControl, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.UpdateControl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1103,30 +924,18 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseUpdateControl._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseUpdateControl._get_http_options()
 
             request, metadata = self._interceptor.pre_update_control(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseUpdateControl._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseUpdateControl._get_transcoded_request(http_options, request)
 
-            body = _BaseControlServiceRestTransport._BaseUpdateControl._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseControlServiceRestTransport._BaseUpdateControl._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseUpdateControl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseUpdateControl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1150,13 +959,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._UpdateControl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1172,12 +975,8 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             resp = self._interceptor.post_update_control(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_control_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_control_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_control.Control.to_json(response)
                 except:
@@ -1199,43 +998,31 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             return resp
 
     @property
-    def create_control(
-        self,
-    ) -> Callable[[control_service.CreateControlRequest], gcd_control.Control]:
+    def create_control(self) -> Callable[[control_service.CreateControlRequest], gcd_control.Control]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateControl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_control(
-        self,
-    ) -> Callable[[control_service.DeleteControlRequest], empty_pb2.Empty]:
+    def delete_control(self) -> Callable[[control_service.DeleteControlRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteControl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_control(
-        self,
-    ) -> Callable[[control_service.GetControlRequest], control.Control]:
+    def get_control(self) -> Callable[[control_service.GetControlRequest], control.Control]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetControl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_controls(
-        self,
-    ) -> Callable[
-        [control_service.ListControlsRequest], control_service.ListControlsResponse
-    ]:
+    def list_controls(self) -> Callable[[control_service.ListControlsRequest], control_service.ListControlsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListControls(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_control(
-        self,
-    ) -> Callable[[control_service.UpdateControlRequest], gcd_control.Control]:
+    def update_control(self) -> Callable[[control_service.UpdateControlRequest], gcd_control.Control]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateControl(self._session, self._host, self._interceptor)  # type: ignore
@@ -1244,22 +1031,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseControlServiceRestTransport._BaseCancelOperation, ControlServiceRestStub
-    ):
+    class _CancelOperation(_BaseControlServiceRestTransport._BaseCancelOperation, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1295,32 +1072,18 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseControlServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseControlServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseControlServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseControlServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1344,13 +1107,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1364,22 +1121,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseControlServiceRestTransport._BaseGetOperation, ControlServiceRestStub
-    ):
+    class _GetOperation(_BaseControlServiceRestTransport._BaseGetOperation, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1417,26 +1164,16 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1460,12 +1197,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1477,9 +1209,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1504,22 +1234,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseControlServiceRestTransport._BaseListOperations, ControlServiceRestStub
-    ):
+    class _ListOperations(_BaseControlServiceRestTransport._BaseListOperations, ControlServiceRestStub):
         def __hash__(self):
             return hash("ControlServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1557,26 +1277,16 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseControlServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseControlServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseControlServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseControlServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseControlServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseControlServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1600,12 +1310,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             # Send the request
             response = ControlServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1617,9 +1322,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

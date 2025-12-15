@@ -445,9 +445,7 @@ class CertificateAuthority(proto.Message):
                     field.
             """
 
-            allowed_config_values: MutableSequence[
-                "ReusableConfigWrapper"
-            ] = proto.RepeatedField(
+            allowed_config_values: MutableSequence["ReusableConfigWrapper"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="ReusableConfigWrapper",
@@ -561,9 +559,7 @@ class CertificateAuthority(proto.Message):
             oneof="config_policy",
             message="ReusableConfigWrapper",
         )
-        allowed_locations_and_organizations: MutableSequence[
-            "Subject"
-        ] = proto.RepeatedField(
+        allowed_locations_and_organizations: MutableSequence["Subject"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="Subject",
@@ -711,9 +707,7 @@ class CertificateAuthority(proto.Message):
         proto.STRING,
         number=9,
     )
-    ca_certificate_descriptions: MutableSequence[
-        "CertificateDescription"
-    ] = proto.RepeatedField(
+    ca_certificate_descriptions: MutableSequence["CertificateDescription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="CertificateDescription",

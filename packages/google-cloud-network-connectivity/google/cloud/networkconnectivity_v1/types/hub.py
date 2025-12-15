@@ -2827,9 +2827,7 @@ class SpokeSummary(proto.Message):
         number=2,
         message=SpokeStateCount,
     )
-    spoke_state_reason_counts: MutableSequence[
-        SpokeStateReasonCount
-    ] = proto.RepeatedField(
+    spoke_state_reason_counts: MutableSequence[SpokeStateReasonCount] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=SpokeStateReasonCount,

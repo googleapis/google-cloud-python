@@ -18,12 +18,8 @@ from google.cloud.bigquery_connection import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_connection_v1.services.connection_service.async_client import (
-    ConnectionServiceAsyncClient,
-)
-from google.cloud.bigquery_connection_v1.services.connection_service.client import (
-    ConnectionServiceClient,
-)
+from google.cloud.bigquery_connection_v1.services.connection_service.async_client import ConnectionServiceAsyncClient
+from google.cloud.bigquery_connection_v1.services.connection_service.client import ConnectionServiceClient
 from google.cloud.bigquery_connection_v1.types.connection import (
     AwsAccessRole,
     AwsCrossAccountRole,

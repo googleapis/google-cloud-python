@@ -111,12 +111,8 @@ class ReservationSubBlocksRestInterceptor:
     """
 
     def pre_get(
-        self,
-        request: compute.GetReservationSubBlockRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetReservationSubBlockRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetReservationSubBlockRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetReservationSubBlockRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -124,9 +120,7 @@ class ReservationSubBlocksRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.ReservationSubBlocksGetResponse
-    ) -> compute.ReservationSubBlocksGetResponse:
+    def post_get(self, response: compute.ReservationSubBlocksGetResponse) -> compute.ReservationSubBlocksGetResponse:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -140,12 +134,8 @@ class ReservationSubBlocksRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.ReservationSubBlocksGetResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ReservationSubBlocksGetResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.ReservationSubBlocksGetResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ReservationSubBlocksGetResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -161,12 +151,8 @@ class ReservationSubBlocksRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListReservationSubBlocksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListReservationSubBlocksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListReservationSubBlocksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListReservationSubBlocksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -174,9 +160,7 @@ class ReservationSubBlocksRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.ReservationSubBlocksListResponse
-    ) -> compute.ReservationSubBlocksListResponse:
+    def post_list(self, response: compute.ReservationSubBlocksListResponse) -> compute.ReservationSubBlocksListResponse:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -190,13 +174,8 @@ class ReservationSubBlocksRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.ReservationSubBlocksListResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ReservationSubBlocksListResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.ReservationSubBlocksListResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ReservationSubBlocksListResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -212,13 +191,8 @@ class ReservationSubBlocksRestInterceptor:
         return response, metadata
 
     def pre_perform_maintenance(
-        self,
-        request: compute.PerformMaintenanceReservationSubBlockRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PerformMaintenanceReservationSubBlockRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PerformMaintenanceReservationSubBlockRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PerformMaintenanceReservationSubBlockRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for perform_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +200,7 @@ class ReservationSubBlocksRestInterceptor:
         """
         return request, metadata
 
-    def post_perform_maintenance(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_perform_maintenance(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for perform_maintenance
 
         DEPRECATED. Please use the `post_perform_maintenance_with_metadata`
@@ -242,9 +214,7 @@ class ReservationSubBlocksRestInterceptor:
         return response
 
     def post_perform_maintenance_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for perform_maintenance
 
@@ -261,13 +231,8 @@ class ReservationSubBlocksRestInterceptor:
         return response, metadata
 
     def pre_report_faulty(
-        self,
-        request: compute.ReportFaultyReservationSubBlockRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ReportFaultyReservationSubBlockRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ReportFaultyReservationSubBlockRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ReportFaultyReservationSubBlockRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for report_faulty
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +254,7 @@ class ReservationSubBlocksRestInterceptor:
         return response
 
     def post_report_faulty_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for report_faulty
 
@@ -391,30 +354,18 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ReservationSubBlocksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Get(
-        _BaseReservationSubBlocksRestTransport._BaseGet, ReservationSubBlocksRestStub
-    ):
+    class _Get(_BaseReservationSubBlocksRestTransport._BaseGet, ReservationSubBlocksRestStub):
         def __hash__(self):
             return hash("ReservationSubBlocksRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -455,30 +406,16 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationSubBlocksRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseReservationSubBlocksRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseReservationSubBlocksRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationSubBlocksRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationSubBlocksRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationSubBlocksRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -502,12 +439,7 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             # Send the request
             response = ReservationSubBlocksRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -524,13 +456,9 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.ReservationSubBlocksGetResponse.to_json(
-                        response
-                    )
+                    response_payload = compute.ReservationSubBlocksGetResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -549,22 +477,12 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
                 )
             return resp
 
-    class _List(
-        _BaseReservationSubBlocksRestTransport._BaseList, ReservationSubBlocksRestStub
-    ):
+    class _List(_BaseReservationSubBlocksRestTransport._BaseList, ReservationSubBlocksRestStub):
         def __hash__(self):
             return hash("ReservationSubBlocksRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -607,28 +525,16 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationSubBlocksRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseReservationSubBlocksRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseReservationSubBlocksRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationSubBlocksRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationSubBlocksRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationSubBlocksRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -652,12 +558,7 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             # Send the request
             response = ReservationSubBlocksRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -674,13 +575,9 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.ReservationSubBlocksListResponse.to_json(
-                        response
-                    )
+                    response_payload = compute.ReservationSubBlocksListResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -699,23 +596,12 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
                 )
             return resp
 
-    class _PerformMaintenance(
-        _BaseReservationSubBlocksRestTransport._BasePerformMaintenance,
-        ReservationSubBlocksRestStub,
-    ):
+    class _PerformMaintenance(_BaseReservationSubBlocksRestTransport._BasePerformMaintenance, ReservationSubBlocksRestStub):
         def __hash__(self):
             return hash("ReservationSubBlocksRestTransport.PerformMaintenance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -773,28 +659,16 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationSubBlocksRestTransport._BasePerformMaintenance._get_http_options()
-            )
+            http_options = _BaseReservationSubBlocksRestTransport._BasePerformMaintenance._get_http_options()
 
-            request, metadata = self._interceptor.pre_perform_maintenance(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationSubBlocksRestTransport._BasePerformMaintenance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_perform_maintenance(request, metadata)
+            transcoded_request = _BaseReservationSubBlocksRestTransport._BasePerformMaintenance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationSubBlocksRestTransport._BasePerformMaintenance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationSubBlocksRestTransport._BasePerformMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -817,15 +691,8 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationSubBlocksRestTransport._PerformMaintenance._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationSubBlocksRestTransport._PerformMaintenance._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -841,12 +708,8 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             resp = self._interceptor.post_perform_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -867,23 +730,12 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
                 )
             return resp
 
-    class _ReportFaulty(
-        _BaseReservationSubBlocksRestTransport._BaseReportFaulty,
-        ReservationSubBlocksRestStub,
-    ):
+    class _ReportFaulty(_BaseReservationSubBlocksRestTransport._BaseReportFaulty, ReservationSubBlocksRestStub):
         def __hash__(self):
             return hash("ReservationSubBlocksRestTransport.ReportFaulty")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -942,30 +794,18 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_http_options()
-            )
+            http_options = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_http_options()
 
             request, metadata = self._interceptor.pre_report_faulty(request, metadata)
-            transcoded_request = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationSubBlocksRestTransport._BaseReportFaulty._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -989,13 +829,7 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             # Send the request
             response = ReservationSubBlocksRestTransport._ReportFaulty._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1011,12 +845,8 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
 
             resp = self._interceptor.post_report_faulty(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_report_faulty_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_report_faulty_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1038,40 +868,25 @@ class ReservationSubBlocksRestTransport(_BaseReservationSubBlocksRestTransport):
             return resp
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetReservationSubBlockRequest], compute.ReservationSubBlocksGetResponse
-    ]:
+    def get(self) -> Callable[[compute.GetReservationSubBlockRequest], compute.ReservationSubBlocksGetResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListReservationSubBlocksRequest],
-        compute.ReservationSubBlocksListResponse,
-    ]:
+    def list(self) -> Callable[[compute.ListReservationSubBlocksRequest], compute.ReservationSubBlocksListResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def perform_maintenance(
-        self,
-    ) -> Callable[
-        [compute.PerformMaintenanceReservationSubBlockRequest], compute.Operation
-    ]:
+    def perform_maintenance(self) -> Callable[[compute.PerformMaintenanceReservationSubBlockRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PerformMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def report_faulty(
-        self,
-    ) -> Callable[[compute.ReportFaultyReservationSubBlockRequest], compute.Operation]:
+    def report_faulty(self) -> Callable[[compute.ReportFaultyReservationSubBlockRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReportFaulty(self._session, self._host, self._interceptor)  # type: ignore

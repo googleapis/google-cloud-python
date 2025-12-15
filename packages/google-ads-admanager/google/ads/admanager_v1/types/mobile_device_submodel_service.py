@@ -138,9 +138,7 @@ class ListMobileDeviceSubmodelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mobile_device_submodels: MutableSequence[
-        mobile_device_submodel_messages.MobileDeviceSubmodel
-    ] = proto.RepeatedField(
+    mobile_device_submodels: MutableSequence[mobile_device_submodel_messages.MobileDeviceSubmodel] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=mobile_device_submodel_messages.MobileDeviceSubmodel,

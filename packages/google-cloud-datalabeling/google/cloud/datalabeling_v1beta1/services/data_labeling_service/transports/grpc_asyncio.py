@@ -33,9 +33,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datalabeling_v1beta1.types import (
-    annotation_spec_set as gcd_annotation_spec_set,
-)
+from google.cloud.datalabeling_v1beta1.types import annotation_spec_set as gcd_annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import data_labeling_service
@@ -58,13 +56,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -74,10 +68,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -96,11 +87,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -279,18 +266,14 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -326,9 +309,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -351,19 +332,13 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.CreateDatasetRequest], Awaitable[gcd_dataset.Dataset]
-    ]:
+    def create_dataset(self) -> Callable[[data_labeling_service.CreateDatasetRequest], Awaitable[gcd_dataset.Dataset]]:
         r"""Return a callable for the create dataset method over gRPC.
 
         Creates dataset. If success return a Dataset
@@ -388,11 +363,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["create_dataset"]
 
     @property
-    def get_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetDatasetRequest], Awaitable[dataset.Dataset]
-    ]:
+    def get_dataset(self) -> Callable[[data_labeling_service.GetDatasetRequest], Awaitable[dataset.Dataset]]:
         r"""Return a callable for the get dataset method over gRPC.
 
         Gets dataset by resource name.
@@ -416,12 +387,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["get_dataset"]
 
     @property
-    def list_datasets(
-        self,
-    ) -> Callable[
-        [data_labeling_service.ListDatasetsRequest],
-        Awaitable[data_labeling_service.ListDatasetsResponse],
-    ]:
+    def list_datasets(self) -> Callable[[data_labeling_service.ListDatasetsRequest], Awaitable[data_labeling_service.ListDatasetsResponse]]:
         r"""Return a callable for the list datasets method over gRPC.
 
         Lists datasets under a project. Pagination is
@@ -446,11 +412,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["list_datasets"]
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteDatasetRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_dataset(self) -> Callable[[data_labeling_service.DeleteDatasetRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete dataset method over gRPC.
 
         Deletes a dataset by resource name.
@@ -474,11 +436,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["delete_dataset"]
 
     @property
-    def import_data(
-        self,
-    ) -> Callable[
-        [data_labeling_service.ImportDataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_data(self) -> Callable[[data_labeling_service.ImportDataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import data method over gRPC.
 
         Imports data into dataset based on source locations
@@ -507,11 +465,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["import_data"]
 
     @property
-    def export_data(
-        self,
-    ) -> Callable[
-        [data_labeling_service.ExportDataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def export_data(self) -> Callable[[data_labeling_service.ExportDataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export data method over gRPC.
 
         Exports data and annotations from dataset.
@@ -535,11 +489,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["export_data"]
 
     @property
-    def get_data_item(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetDataItemRequest], Awaitable[dataset.DataItem]
-    ]:
+    def get_data_item(self) -> Callable[[data_labeling_service.GetDataItemRequest], Awaitable[dataset.DataItem]]:
         r"""Return a callable for the get data item method over gRPC.
 
         Gets a data item in a dataset by resource name. This
@@ -564,12 +514,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["get_data_item"]
 
     @property
-    def list_data_items(
-        self,
-    ) -> Callable[
-        [data_labeling_service.ListDataItemsRequest],
-        Awaitable[data_labeling_service.ListDataItemsResponse],
-    ]:
+    def list_data_items(self) -> Callable[[data_labeling_service.ListDataItemsRequest], Awaitable[data_labeling_service.ListDataItemsResponse]]:
         r"""Return a callable for the list data items method over gRPC.
 
         Lists data items in a dataset. This API can be called
@@ -595,12 +540,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["list_data_items"]
 
     @property
-    def get_annotated_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetAnnotatedDatasetRequest],
-        Awaitable[dataset.AnnotatedDataset],
-    ]:
+    def get_annotated_dataset(self) -> Callable[[data_labeling_service.GetAnnotatedDatasetRequest], Awaitable[dataset.AnnotatedDataset]]:
         r"""Return a callable for the get annotated dataset method over gRPC.
 
         Gets an annotated dataset by resource name.
@@ -626,10 +566,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def list_annotated_datasets(
         self,
-    ) -> Callable[
-        [data_labeling_service.ListAnnotatedDatasetsRequest],
-        Awaitable[data_labeling_service.ListAnnotatedDatasetsResponse],
-    ]:
+    ) -> Callable[[data_labeling_service.ListAnnotatedDatasetsRequest], Awaitable[data_labeling_service.ListAnnotatedDatasetsResponse]]:
         r"""Return a callable for the list annotated datasets method over gRPC.
 
         Lists annotated datasets for a dataset. Pagination is
@@ -654,12 +591,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["list_annotated_datasets"]
 
     @property
-    def delete_annotated_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteAnnotatedDatasetRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_annotated_dataset(self) -> Callable[[data_labeling_service.DeleteAnnotatedDatasetRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete annotated dataset method over gRPC.
 
         Deletes an annotated dataset by resource name.
@@ -683,11 +615,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["delete_annotated_dataset"]
 
     @property
-    def label_image(
-        self,
-    ) -> Callable[
-        [data_labeling_service.LabelImageRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def label_image(self) -> Callable[[data_labeling_service.LabelImageRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the label image method over gRPC.
 
         Starts a labeling task for image. The type of image
@@ -712,11 +640,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["label_image"]
 
     @property
-    def label_video(
-        self,
-    ) -> Callable[
-        [data_labeling_service.LabelVideoRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def label_video(self) -> Callable[[data_labeling_service.LabelVideoRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the label video method over gRPC.
 
         Starts a labeling task for video. The type of video
@@ -741,11 +665,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["label_video"]
 
     @property
-    def label_text(
-        self,
-    ) -> Callable[
-        [data_labeling_service.LabelTextRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def label_text(self) -> Callable[[data_labeling_service.LabelTextRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the label text method over gRPC.
 
         Starts a labeling task for text. The type of text
@@ -770,11 +690,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["label_text"]
 
     @property
-    def get_example(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetExampleRequest], Awaitable[dataset.Example]
-    ]:
+    def get_example(self) -> Callable[[data_labeling_service.GetExampleRequest], Awaitable[dataset.Example]]:
         r"""Return a callable for the get example method over gRPC.
 
         Gets an example by resource name, including both data
@@ -799,12 +715,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["get_example"]
 
     @property
-    def list_examples(
-        self,
-    ) -> Callable[
-        [data_labeling_service.ListExamplesRequest],
-        Awaitable[data_labeling_service.ListExamplesResponse],
-    ]:
+    def list_examples(self) -> Callable[[data_labeling_service.ListExamplesRequest], Awaitable[data_labeling_service.ListExamplesResponse]]:
         r"""Return a callable for the list examples method over gRPC.
 
         Lists examples in an annotated dataset. Pagination is
@@ -831,10 +742,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def create_annotation_spec_set(
         self,
-    ) -> Callable[
-        [data_labeling_service.CreateAnnotationSpecSetRequest],
-        Awaitable[gcd_annotation_spec_set.AnnotationSpecSet],
-    ]:
+    ) -> Callable[[data_labeling_service.CreateAnnotationSpecSetRequest], Awaitable[gcd_annotation_spec_set.AnnotationSpecSet]]:
         r"""Return a callable for the create annotation spec set method over gRPC.
 
         Creates an annotation spec set by providing a set of
@@ -851,9 +759,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_annotation_spec_set" not in self._stubs:
-            self._stubs[
-                "create_annotation_spec_set"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_annotation_spec_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateAnnotationSpecSet",
                 request_serializer=data_labeling_service.CreateAnnotationSpecSetRequest.serialize,
                 response_deserializer=gcd_annotation_spec_set.AnnotationSpecSet.deserialize,
@@ -863,10 +769,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def get_annotation_spec_set(
         self,
-    ) -> Callable[
-        [data_labeling_service.GetAnnotationSpecSetRequest],
-        Awaitable[annotation_spec_set.AnnotationSpecSet],
-    ]:
+    ) -> Callable[[data_labeling_service.GetAnnotationSpecSetRequest], Awaitable[annotation_spec_set.AnnotationSpecSet]]:
         r"""Return a callable for the get annotation spec set method over gRPC.
 
         Gets an annotation spec set by resource name.
@@ -892,10 +795,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def list_annotation_spec_sets(
         self,
-    ) -> Callable[
-        [data_labeling_service.ListAnnotationSpecSetsRequest],
-        Awaitable[data_labeling_service.ListAnnotationSpecSetsResponse],
-    ]:
+    ) -> Callable[[data_labeling_service.ListAnnotationSpecSetsRequest], Awaitable[data_labeling_service.ListAnnotationSpecSetsResponse]]:
         r"""Return a callable for the list annotation spec sets method over gRPC.
 
         Lists annotation spec sets for a project. Pagination
@@ -920,12 +820,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["list_annotation_spec_sets"]
 
     @property
-    def delete_annotation_spec_set(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteAnnotationSpecSetRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_annotation_spec_set(self) -> Callable[[data_labeling_service.DeleteAnnotationSpecSetRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete annotation spec set method over gRPC.
 
         Deletes an annotation spec set by resource name.
@@ -941,9 +836,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_annotation_spec_set" not in self._stubs:
-            self._stubs[
-                "delete_annotation_spec_set"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_annotation_spec_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotationSpecSet",
                 request_serializer=data_labeling_service.DeleteAnnotationSpecSetRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -951,12 +844,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["delete_annotation_spec_set"]
 
     @property
-    def create_instruction(
-        self,
-    ) -> Callable[
-        [data_labeling_service.CreateInstructionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_instruction(self) -> Callable[[data_labeling_service.CreateInstructionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create instruction method over gRPC.
 
         Creates an instruction for how data should be
@@ -981,12 +869,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["create_instruction"]
 
     @property
-    def get_instruction(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetInstructionRequest],
-        Awaitable[instruction.Instruction],
-    ]:
+    def get_instruction(self) -> Callable[[data_labeling_service.GetInstructionRequest], Awaitable[instruction.Instruction]]:
         r"""Return a callable for the get instruction method over gRPC.
 
         Gets an instruction by resource name.
@@ -1012,10 +895,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def list_instructions(
         self,
-    ) -> Callable[
-        [data_labeling_service.ListInstructionsRequest],
-        Awaitable[data_labeling_service.ListInstructionsResponse],
-    ]:
+    ) -> Callable[[data_labeling_service.ListInstructionsRequest], Awaitable[data_labeling_service.ListInstructionsResponse]]:
         r"""Return a callable for the list instructions method over gRPC.
 
         Lists instructions for a project. Pagination is
@@ -1040,11 +920,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["list_instructions"]
 
     @property
-    def delete_instruction(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteInstructionRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_instruction(self) -> Callable[[data_labeling_service.DeleteInstructionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete instruction method over gRPC.
 
         Deletes an instruction object by resource name.
@@ -1068,11 +944,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["delete_instruction"]
 
     @property
-    def get_evaluation(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetEvaluationRequest], Awaitable[evaluation.Evaluation]
-    ]:
+    def get_evaluation(self) -> Callable[[data_labeling_service.GetEvaluationRequest], Awaitable[evaluation.Evaluation]]:
         r"""Return a callable for the get evaluation method over gRPC.
 
         Gets an evaluation by resource name (to search, use
@@ -1099,10 +971,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def search_evaluations(
         self,
-    ) -> Callable[
-        [data_labeling_service.SearchEvaluationsRequest],
-        Awaitable[data_labeling_service.SearchEvaluationsResponse],
-    ]:
+    ) -> Callable[[data_labeling_service.SearchEvaluationsRequest], Awaitable[data_labeling_service.SearchEvaluationsResponse]]:
         r"""Return a callable for the search evaluations method over gRPC.
 
         Searches
@@ -1130,10 +999,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def search_example_comparisons(
         self,
-    ) -> Callable[
-        [data_labeling_service.SearchExampleComparisonsRequest],
-        Awaitable[data_labeling_service.SearchExampleComparisonsResponse],
-    ]:
+    ) -> Callable[[data_labeling_service.SearchExampleComparisonsRequest], Awaitable[data_labeling_service.SearchExampleComparisonsResponse]]:
         r"""Return a callable for the search example comparisons method over gRPC.
 
         Searches example comparisons from an evaluation. The
@@ -1152,9 +1018,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_example_comparisons" not in self._stubs:
-            self._stubs[
-                "search_example_comparisons"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_example_comparisons"] = self._logged_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchExampleComparisons",
                 request_serializer=data_labeling_service.SearchExampleComparisonsRequest.serialize,
                 response_deserializer=data_labeling_service.SearchExampleComparisonsResponse.deserialize,
@@ -1162,12 +1026,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["search_example_comparisons"]
 
     @property
-    def create_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.CreateEvaluationJobRequest],
-        Awaitable[evaluation_job.EvaluationJob],
-    ]:
+    def create_evaluation_job(self) -> Callable[[data_labeling_service.CreateEvaluationJobRequest], Awaitable[evaluation_job.EvaluationJob]]:
         r"""Return a callable for the create evaluation job method over gRPC.
 
         Creates an evaluation job.
@@ -1191,12 +1050,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["create_evaluation_job"]
 
     @property
-    def update_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.UpdateEvaluationJobRequest],
-        Awaitable[gcd_evaluation_job.EvaluationJob],
-    ]:
+    def update_evaluation_job(self) -> Callable[[data_labeling_service.UpdateEvaluationJobRequest], Awaitable[gcd_evaluation_job.EvaluationJob]]:
         r"""Return a callable for the update evaluation job method over gRPC.
 
         Updates an evaluation job. You can only update certain fields of
@@ -1227,12 +1081,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["update_evaluation_job"]
 
     @property
-    def get_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetEvaluationJobRequest],
-        Awaitable[evaluation_job.EvaluationJob],
-    ]:
+    def get_evaluation_job(self) -> Callable[[data_labeling_service.GetEvaluationJobRequest], Awaitable[evaluation_job.EvaluationJob]]:
         r"""Return a callable for the get evaluation job method over gRPC.
 
         Gets an evaluation job by resource name.
@@ -1256,11 +1105,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["get_evaluation_job"]
 
     @property
-    def pause_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.PauseEvaluationJobRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def pause_evaluation_job(self) -> Callable[[data_labeling_service.PauseEvaluationJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the pause evaluation job method over gRPC.
 
         Pauses an evaluation job. Pausing an evaluation job that is
@@ -1285,11 +1130,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["pause_evaluation_job"]
 
     @property
-    def resume_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.ResumeEvaluationJobRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def resume_evaluation_job(self) -> Callable[[data_labeling_service.ResumeEvaluationJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the resume evaluation job method over gRPC.
 
         Resumes a paused evaluation job. A deleted evaluation
@@ -1315,11 +1156,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         return self._stubs["resume_evaluation_job"]
 
     @property
-    def delete_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteEvaluationJobRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_evaluation_job(self) -> Callable[[data_labeling_service.DeleteEvaluationJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete evaluation job method over gRPC.
 
         Stops and deletes an evaluation job.
@@ -1345,10 +1182,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def list_evaluation_jobs(
         self,
-    ) -> Callable[
-        [data_labeling_service.ListEvaluationJobsRequest],
-        Awaitable[data_labeling_service.ListEvaluationJobsResponse],
-    ]:
+    ) -> Callable[[data_labeling_service.ListEvaluationJobsRequest], Awaitable[data_labeling_service.ListEvaluationJobsResponse]]:
         r"""Return a callable for the list evaluation jobs method over gRPC.
 
         Lists all evaluation jobs within a project with

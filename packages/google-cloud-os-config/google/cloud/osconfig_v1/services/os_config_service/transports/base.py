@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.osconfig_v1 import gapic_version as package_version
 from google.cloud.osconfig_v1.types import patch_deployments, patch_jobs
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class OsConfigServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -206,42 +196,21 @@ class OsConfigServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def execute_patch_job(
-        self,
-    ) -> Callable[
-        [patch_jobs.ExecutePatchJobRequest],
-        Union[patch_jobs.PatchJob, Awaitable[patch_jobs.PatchJob]],
-    ]:
+    def execute_patch_job(self) -> Callable[[patch_jobs.ExecutePatchJobRequest], Union[patch_jobs.PatchJob, Awaitable[patch_jobs.PatchJob]]]:
         raise NotImplementedError()
 
     @property
-    def get_patch_job(
-        self,
-    ) -> Callable[
-        [patch_jobs.GetPatchJobRequest],
-        Union[patch_jobs.PatchJob, Awaitable[patch_jobs.PatchJob]],
-    ]:
+    def get_patch_job(self) -> Callable[[patch_jobs.GetPatchJobRequest], Union[patch_jobs.PatchJob, Awaitable[patch_jobs.PatchJob]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_patch_job(
-        self,
-    ) -> Callable[
-        [patch_jobs.CancelPatchJobRequest],
-        Union[patch_jobs.PatchJob, Awaitable[patch_jobs.PatchJob]],
-    ]:
+    def cancel_patch_job(self) -> Callable[[patch_jobs.CancelPatchJobRequest], Union[patch_jobs.PatchJob, Awaitable[patch_jobs.PatchJob]]]:
         raise NotImplementedError()
 
     @property
     def list_patch_jobs(
         self,
-    ) -> Callable[
-        [patch_jobs.ListPatchJobsRequest],
-        Union[
-            patch_jobs.ListPatchJobsResponse,
-            Awaitable[patch_jobs.ListPatchJobsResponse],
-        ],
-    ]:
+    ) -> Callable[[patch_jobs.ListPatchJobsRequest], Union[patch_jobs.ListPatchJobsResponse, Awaitable[patch_jobs.ListPatchJobsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -249,10 +218,7 @@ class OsConfigServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [patch_jobs.ListPatchJobInstanceDetailsRequest],
-        Union[
-            patch_jobs.ListPatchJobInstanceDetailsResponse,
-            Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse],
-        ],
+        Union[patch_jobs.ListPatchJobInstanceDetailsResponse, Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -260,11 +226,7 @@ class OsConfigServiceTransport(abc.ABC):
     def create_patch_deployment(
         self,
     ) -> Callable[
-        [patch_deployments.CreatePatchDeploymentRequest],
-        Union[
-            patch_deployments.PatchDeployment,
-            Awaitable[patch_deployments.PatchDeployment],
-        ],
+        [patch_deployments.CreatePatchDeploymentRequest], Union[patch_deployments.PatchDeployment, Awaitable[patch_deployments.PatchDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -272,11 +234,7 @@ class OsConfigServiceTransport(abc.ABC):
     def get_patch_deployment(
         self,
     ) -> Callable[
-        [patch_deployments.GetPatchDeploymentRequest],
-        Union[
-            patch_deployments.PatchDeployment,
-            Awaitable[patch_deployments.PatchDeployment],
-        ],
+        [patch_deployments.GetPatchDeploymentRequest], Union[patch_deployments.PatchDeployment, Awaitable[patch_deployments.PatchDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -285,31 +243,21 @@ class OsConfigServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [patch_deployments.ListPatchDeploymentsRequest],
-        Union[
-            patch_deployments.ListPatchDeploymentsResponse,
-            Awaitable[patch_deployments.ListPatchDeploymentsResponse],
-        ],
+        Union[patch_deployments.ListPatchDeploymentsResponse, Awaitable[patch_deployments.ListPatchDeploymentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_patch_deployment(
         self,
-    ) -> Callable[
-        [patch_deployments.DeletePatchDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[patch_deployments.DeletePatchDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_patch_deployment(
         self,
     ) -> Callable[
-        [patch_deployments.UpdatePatchDeploymentRequest],
-        Union[
-            patch_deployments.PatchDeployment,
-            Awaitable[patch_deployments.PatchDeployment],
-        ],
+        [patch_deployments.UpdatePatchDeploymentRequest], Union[patch_deployments.PatchDeployment, Awaitable[patch_deployments.PatchDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -317,11 +265,7 @@ class OsConfigServiceTransport(abc.ABC):
     def pause_patch_deployment(
         self,
     ) -> Callable[
-        [patch_deployments.PausePatchDeploymentRequest],
-        Union[
-            patch_deployments.PatchDeployment,
-            Awaitable[patch_deployments.PatchDeployment],
-        ],
+        [patch_deployments.PausePatchDeploymentRequest], Union[patch_deployments.PatchDeployment, Awaitable[patch_deployments.PatchDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -329,11 +273,7 @@ class OsConfigServiceTransport(abc.ABC):
     def resume_patch_deployment(
         self,
     ) -> Callable[
-        [patch_deployments.ResumePatchDeploymentRequest],
-        Union[
-            patch_deployments.PatchDeployment,
-            Awaitable[patch_deployments.PatchDeployment],
-        ],
+        [patch_deployments.ResumePatchDeploymentRequest], Union[patch_deployments.PatchDeployment, Awaitable[patch_deployments.PatchDeployment]]
     ]:
         raise NotImplementedError()
 

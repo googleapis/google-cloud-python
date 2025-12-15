@@ -18,12 +18,8 @@ from google.cloud.eventarc_publishing import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.eventarc_publishing_v1.services.publisher.async_client import (
-    PublisherAsyncClient,
-)
-from google.cloud.eventarc_publishing_v1.services.publisher.client import (
-    PublisherClient,
-)
+from google.cloud.eventarc_publishing_v1.services.publisher.async_client import PublisherAsyncClient
+from google.cloud.eventarc_publishing_v1.services.publisher.client import PublisherClient
 from google.cloud.eventarc_publishing_v1.types.cloud_event import CloudEvent
 from google.cloud.eventarc_publishing_v1.types.publisher import (
     PublishChannelConnectionEventsRequest,
